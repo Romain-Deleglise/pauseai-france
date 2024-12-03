@@ -1,0 +1,32 @@
+name: Sync with Upstream
+
+on:
+  schedule:
+    - cron: '0 2 * * *' # Planifie une exécution tous les jours à 2h du matin (heure UTC)
+  workflow_dispatch: # Permet aussi de déclencher manuellement
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          ref: main
+
+      - name: Configure Git
+        run: |
+          git config user.name "Romain Deleglise"
+          git config user.email "rom.deleglise@orange.fr"
+
+      - name: Add Upstream Remote
+        run: git remote add upstream https://github.com/moiri-gamboni/pauseai-france
+
+      - name: Fetch Upstream
+        run: git fetch upstream
+
+      - name: Rebase with Upstream
+        run: git rebase upstream/main
+
+      - name: Push Changes to Fork
+        run: git push origin main --force
