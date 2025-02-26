@@ -1,109 +1,81 @@
 <script lang="ts">
-	import ArticleCard from '$components/ArticleCard.svelte'
 	import Button from '$components/Button.svelte'
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
-	import { onMount } from 'svelte'
+	import Fly from '$components/Fly.svelte'
+	import ArticlesContent from '$posts/articles.md'
 
 	const label_id = 'articles-title'
-
-	let articles: { title: string; blurb: string; url: string }[] = []
-	let title = ''
-	let maxArticles = Infinity
-
-	onMount(async () => {
-		const response = await fetch('/src/posts/articles.md')
-		if (!response.ok) {
-			console.error('Failed to fetch articles.md:', response.statusText)
-			return
-		}
-		const text = await response.text()
-		const { content, metadata } = parseMarkdown(text)
-		title = metadata.title
-		maxArticles = metadata.maxArticles || Infinity
-		articles = parseArticles(content).slice(0, maxArticles) as {
-			title: string
-			blurb: string
-			url: string
-		}[]
-		document.documentElement.style.setProperty('--columns', Math.ceil(maxArticles / 2).toString())
-	})
-
-	function parseMarkdown(text: string) {
-		const [metadata, ...content] = text.split('---').slice(1)
-		const metadataObj = Object.fromEntries(
-			metadata
-				.trim()
-				.split('\n')
-				.map((line) => line.split(': ').map((str) => str.trim()))
-		)
-		return { metadata: metadataObj, content: content.join('---') }
-	}
-
-	function parseArticles(content: string) {
-		const articles = []
-		const lines = content.split('\n').filter((line) => line.trim() !== '')
-		let article: { title?: string; blurb?: string; url?: string } = {}
-		for (const line of lines) {
-			if (line.startsWith('- title:')) {
-				if (Object.keys(article).length > 0) {
-					articles.push(article)
-					article = {}
-				}
-				article.title = line.replace('- title:', '').trim()
-			} else if (line.startsWith('  blurb:')) {
-				article.blurb = line.replace('  blurb:', '').trim()
-			} else if (line.startsWith('  url:')) {
-				article.url = line.replace('  url:', '').trim()
-			}
-		}
-		if (Object.keys(article).length > 0) {
-			articles.push(article)
-		}
-		return articles
-	}
 </script>
 
-<section aria-labelledby={label_id}>
-	<UnderlinedTitle id={label_id}>{title}</UnderlinedTitle>
+<section class="articles" aria-labelledby={label_id}>
+	<Fly>
+		<UnderlinedTitle id={label_id}>Nos articles mis en avant</UnderlinedTitle>
+	</Fly>
 	<div class="articles-grid">
-		{#each articles as article}
-			<ArticleCard title={article.title} blurb={article.blurb} url={article.url} />
-		{/each}
+		<ArticlesContent />
 	</div>
-	<div style="margin-top: 2rem; text-align: left;">
-		<Button href="https://pauseia.substack.com/#articles-title">Voir tous les articles</Button>
+	<div class="button-container">
+		<Button href="https://pauseia.substack.com/">Voir tous nos articles</Button>
 	</div>
 </section>
 
 <style>
-	.articles-grid {
+	section {
+		/* Appliquer une largeur constante au conteneur principal */
+		width: 100%;
+		box-sizing: border-box;
+		position: relative;
+	}
+
+	.articles-grid :global(ul) {
+		list-style: none;
+		padding: 0;
+		margin: 0;
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-		gap: 1rem;
-		margin-bottom: 2rem; /* Ajoute de l'espace en dessous des articles */
+		grid-template-columns: repeat(3, 1fr);
+		gap: 0.7rem;
+		box-sizing: border-box;
 	}
 
-	@media (min-width: 1200px) {
-		.articles-grid {
-			grid-template-columns: repeat(var(--columns), 1fr);
-		}
+	/* Ajouter des coins arrondis aux cartes d'articles */
+	.articles-grid :global(ul li) {
+		border-radius: 1.3rem; /* Ajuster selon la préférence */
+		overflow: hidden; /* Important pour que le border-radius fonctionne */
 	}
 
-	@media (min-width: 900px) and (max-width: 1199px) {
-		.articles-grid {
+	/* Cibler spécifiquement les cartes pour s'assurer que le style est appliqué */
+	.articles-grid :global(ul li a.article-link) {
+		border-radius: 1.3rem;
+		overflow: hidden;
+	}
+
+	/* Cibler spécifiquement le titre pour l'aligner */
+	:global(.articles h2) {
+		margin-left: 0;
+		padding-left: 0;
+	}
+
+	/* S'assurer que le premier élément de la grille est aligné */
+	.articles-grid :global(ul li:first-child) {
+		margin-left: 0;
+		padding-left: 0;
+	}
+
+	@media (max-width: 1024px) {
+		.articles-grid :global(ul) {
 			grid-template-columns: repeat(2, 1fr);
 		}
 	}
 
-	@media (min-width: 600px) and (max-width: 899px) {
-		.articles-grid {
-			grid-template-columns: repeat(2, 1fr);
-		}
-	}
-
-	@media (max-width: 599px) {
-		.articles-grid {
+	@media (max-width: 640px) {
+		.articles-grid :global(ul) {
 			grid-template-columns: 1fr;
 		}
+	}
+
+	.button-container {
+		display: flex;
+		justify-content: left;
+		margin-top: 2rem;
 	}
 </style>
