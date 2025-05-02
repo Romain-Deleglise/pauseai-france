@@ -5,6 +5,7 @@
 	export let blurb
 	export let category = ''
 	export let url
+	export let linkText = "Lire l'article"
 </script>
 
 <a class="article-link" href={url}>
@@ -14,7 +15,7 @@
 		<div class="footer small-text">
 			<span>{category}</span>
 			<span class="read-more">
-				Lire l'article<span class="link-icon"><MoveUpRight size="1.5rem" /></span>
+				{linkText}<span class="link-icon"><MoveUpRight size="1.5rem" /></span>
 			</span>
 		</div>
 	</article>
