@@ -21,7 +21,7 @@ extract_nested_property() {
     sed -n '/^---$/,/^---$/p' "$file" | sed -n "/^$parent:/,/^[a-z]/p" | grep "^[[:space:]]*$child:" | sed "s/^[[:space:]]*$child:[[:space:]]*//"
 }
 
-# Search for .md files in src/posts/ and its subdirectories
+# Search for .md files in src/posts/ and its subdirectories, collect lines, sort, and write
 find "$SCRIPT_DIR/src/posts" -type f -name "*.md" | while read -r file; do
     # Check if the file has an "original" property in the frontmatter
     if grep -q "^original:" "$file"; then
@@ -33,9 +33,9 @@ find "$SCRIPT_DIR/src/posts" -type f -name "*.md" | while read -r file; do
         # Format the file path for markdown
         file_path=$(realpath --relative-to="$SCRIPT_DIR" "$file")
         
-        # Append the information to TRANSLATIONS.md
-        echo "- [$current_title]($file_path) - Original: [$original_title]($original_url)" >> "$SCRIPT_DIR/TRANSLATIONS.md"
+        # Output the information line for sorting
+        echo "- [$current_title]($file_path) - Original: [$original_title]($original_url)"
     fi
-done
+done | sort >> "$SCRIPT_DIR/TRANSLATIONS.md"
 
 echo "TRANSLATIONS.md has been updated."
