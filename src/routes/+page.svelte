@@ -21,12 +21,12 @@
 
 <Risks />
 
-<Supporters />
-
-<Articles />
-
 <Videos />
 
 <Inserts />
+
+<Articles />
+
+<Supporters />
 
 <Faq />
