@@ -15,8 +15,8 @@
 		{
 			name: 'Gilles Bréda',
 			blurb: 'Cofondateur',
-			image: 'membres/gilles.jpg',
-			job: 'Musicien professionnel'
+			image: 'membres/gilles.png',
+			job: 'Musicien'
 		},
 		{
 			name: 'Moïri',
@@ -53,6 +53,72 @@
 			blurb: 'Volontaire',
 			image: 'membres/stelian.jpg',
 			job: 'Psychologue-psychothérapeute'
+		},
+		{
+			name: 'Bahman',
+			blurb: 'Volontaire',
+			image: 'membres/bahman.jpeg',
+			job: 'Psychologue cognitiviste'
+		},
+		{
+			name: 'Damien',
+			blurb: 'Volontaire',
+			image: 'membres/damien.jpg',
+			job: 'Ingénieur du son chez studiobreton.fr'
+		},
+		{
+			name: 'Eloise',
+			blurb: 'Volontaire',
+			image: 'membres/eloise.jpg',
+			job: 'Chercheuse indépendante en sécurité de l\'IA'
+		},
+		{
+			name: 'Emmanuel',
+			blurb: 'Volontaire',
+			image: 'membres/emmanuel.jpg',
+			job: ''
+		},
+		{
+			name: 'Karine',
+			blurb: 'Volontaire',
+			image: 'membres/karine.jpg',
+			job: 'Hypnothérapeute et coach bien-être'
+		},
+		{
+			name: 'Muriel',
+			blurb: 'Volontaire',
+			image: 'membres/muriel.jpg',
+			job: 'Traductrice'
+		},
+		{
+			name: 'Sandra',
+			blurb: 'Volontaire',
+			image: 'membres/sandra.jfif',
+			job: 'Enseignante de littérature et autrice'
+		},
+		{
+			name: 'Sandrine',
+			blurb: 'Volontaire',
+			image: 'membres/sandrine.jpg',
+			job: 'Psychopédagogue'
+		},
+		{
+			name: 'Jérémy',
+			blurb: 'Volontaire',
+			image: 'membres/jeremy.png',
+			job: 'Chercheur en sécurité de l\'IA, Suboptimal IA'
+		},
+		{
+			name: 'Mandelle',
+			blurb: 'Volontaire',
+			image: 'membres/Mandelle.jpg',
+			job: 'Enseignante'
+		},
+		{
+			name: 'Marilyn',
+			blurb: 'Volontaire',
+			image: 'membres/Marilyn.jpg',
+			job: 'Cheffe de projet en communication digitale'
 		}
 	]
 
