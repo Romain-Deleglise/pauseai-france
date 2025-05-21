@@ -107,6 +107,18 @@
 			blurb: 'Volontaire',
 			image: 'membres/jeremy.png',
 			job: 'Chercheur en sécurité de l\'IA, Suboptimal IA'
+		},
+		{
+			name: 'Mandelle',
+			blurb: 'Volontaire',
+			image: 'membres/Mandelle.jpg',
+			job: 'Enseignante'
+		},
+		{
+			name: 'Marilyn',
+			blurb: 'Volontaire',
+			image: 'membres/Marilyn.jpg',
+			job: 'Cheffe de projet en communication digitale'
 		}
 	]
 
