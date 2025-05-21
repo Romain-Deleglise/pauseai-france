@@ -106,7 +106,7 @@
 			name: 'Jérémy',
 			blurb: 'Volontaire',
 			image: 'membres/jeremy.png',
-			job: 'Chercheur en sécurité de l'IA, Suboptimal IA'
+			job: 'Chercheur en sécurité de l\'IA, Suboptimal IA'
 		}
 	]
 
