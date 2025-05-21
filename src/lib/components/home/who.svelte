@@ -81,7 +81,7 @@
 		{
 			name: 'Karine',
 			blurb: 'Volontaire',
-			image: 'membres/karine.png',
+			image: 'membres/karine.jpg',
 			job: 'Hypnothérapeute et coach bien-être'
 		},
 		{
