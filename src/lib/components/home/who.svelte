@@ -67,7 +67,7 @@
 			job: 'Ingénieur du son chez studiobreton.fr'
 		},
 		{
-			name: 'Eloise',
+			name: 'Éloïse',
 			blurb: 'Volontaire',
 			image: 'membres/eloise.jpg',
 			job: 'Chercheuse indépendante en sécurité de l\'IA'
