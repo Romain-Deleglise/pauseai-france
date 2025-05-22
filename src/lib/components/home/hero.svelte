@@ -29,15 +29,15 @@
 		</div>
 		<div class="content" in:fade={{ duration: 500, delay: 200 }}>
 			<h1 id={label_id}>
-				Ne laissons pas l'IA nous{'\u00A0'}détruire, <br /><Mark>agissons maintenant</Mark>
+				Pour garder l'IA sous contrôle, <br /><Mark>agissons maintenant</Mark>
 			</h1>
 			<div class="description">
 				<p>
-					Selon de nombreux experts, le développement rapide de l'intelligence artificielle présente
-					un danger catastrophique pour l'humanité à court terme, au potentiel plus dévastateur que
-					la bombe atomique.
+					L’IA redéfinit déjà nos emplois, nos élections et notre vie quotidienne. 
+					Tous les mois, de nouveaux systèmes franchissent des seuils que l’on pensait lointains. 
+					D'après la plupart des experts en sécurité de l'IA, poursuivre cette course sans garde-fous fait peser un risque catastrophique sur l’humanité à court terme.
 				</p>
-				<p>Nous faisons face à la menace la plus urgente de notre histoire. Chaque jour compte.</p>
+				<p>La fenêtre se referme vite : agissons maintenant.</p>
 				<div class="buttons">
 					<div in:fly={{ y: 20, duration: 300, delay: 700 }}>
 						<Button href="/agir">Agir</Button>
