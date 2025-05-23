@@ -7,7 +7,7 @@ layout: waitbutwhy
 
 **Note du traducteur**
 
-Le texte traduit ici est issu [du blog original de Tim Urban de 2015](https://waitbutwhy.com/2015/01/artificial-intelligence-revolution-2.html),
+Le texte traduit ici est issu [du blog original de Tim Urban de 2015](https://waitbutwhy.com/2015/01/artificial-intelligence-revolution-2.html). Il s'agit d'une traduction non officielle, mais faite avec l'accord de l'auteur.
 
 Avec l'avènement des LLM, les voix avertissant sur les dangers de l'IA sont devenues plus nombreuses et plus pressantes.
 Nous donnons une perspective actualisée de cet essai de WaitButWhy [dans un article sur notre blog](https://pauseia.substack.com/p/la-revolution-de-lia-dix-ans-apres).
