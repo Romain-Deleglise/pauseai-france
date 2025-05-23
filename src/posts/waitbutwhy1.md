@@ -1,17 +1,19 @@
 ---
 title: Wait But Why - IA - Partie 1
 description: Partie 1
-date: '20254-04-02'
+date: '2025-05-23'
 layout: waitbutwhy
 ---
 
-Note du traducteur : le texte traduit ici est issu [du blog original de Tim Urban de 2015](https://waitbutwhy.com/2015/01/artificial-intelligence-revolution-1.html), parfois légèrement explicité pour le rendre accessible à un locuteur français. Depuis lors - et 10 ans, en termes informatique modernes, c’est une éternité - de nombreux exemples illustrant les capacités ou limitations des IAs sont devenus obsolètes. En 2015 par exemple, il n’existait pas encore de LLM et ChatGPT n’était même pas un concept. Néanmoins, le texte reste tout à fait pertinent et l’écart même entre les capacités des IA actuelles et celles mentionnées en 2015 nous permet de mesurer le chemin parcouru en si peu de temps.
+**Note du traducteur**
+
+Le texte traduit ici est issu [du blog original de Tim Urban de 2015](https://waitbutwhy.com/2015/01/artificial-intelligence-revolution-1.html), parfois légèrement explicité pour le rendre accessible à un locuteur français. Depuis lors - et 10 ans, en termes informatique modernes, c’est une éternité - de nombreux exemples illustrant les capacités ou limitations des IAs sont devenus obsolètes. En 2015 par exemple, il n’existait pas encore de LLM et ChatGPT n’était même pas un concept. Néanmoins, le texte reste tout à fait pertinent et l’écart même entre les capacités des IA actuelles et celles mentionnées en 2015 nous permet de mesurer le chemin parcouru en si peu de temps.
 
 L'une des forces de WaitButwhy est d'avoir su présenter ce sujet complexe de manière simple, complète, et avec une pointe d'humour.
 Nous avons décidé de traduire cette série pour le rendre accessible au public francophone.
 
 Avec l'avènement des LLM, les voix avertissant sur les dangers de l'IA sont devenues plus nombreuses et plus pressantes.
-Nous donnerons une perspective actualisée de cet essai de WaitButWhy dans un article sur notre propre blog.
+Nous donnons une perspective actualisée de cet essai de WaitButWhy [dans un article sur notre propre blog](https://pauseia.substack.com/p/la-revolution-de-lia-dix-ans-apres).
 
 ---
 

@@ -1,15 +1,22 @@
 ---
-title: Wait But Why Part 2
-description: 2e partie de l'analyse
-date: '2025-4-4'
+title: Wait But Why - IA - Partie 2
+description: Partie 2
+date: '2025-05-23'
 layout: waitbutwhy
 ---
 
-Original : https://waitbutwhy.com/2015/01/artificial-intelligence-revolution-2.html
+**Note du traducteur**
+
+Le texte traduit ici est issu [du blog original de Tim Urban de 2015](https://waitbutwhy.com/2015/01/artificial-intelligence-revolution-2.html),
+
+Avec l'avènement des LLM, les voix avertissant sur les dangers de l'IA sont devenues plus nombreuses et plus pressantes.
+Nous donnons une perspective actualisée de cet essai de WaitButWhy [dans un article sur notre blog](https://pauseia.substack.com/p/la-revolution-de-lia-dix-ans-apres).
+
+---
 
 # La Révolution de l'IA : Notre Immortalité ou Notre Extinction
 
-27 janvier 2015 Par Tim Urban
+27 janvier 2015 Par Tim Urban – traduction de Mai 2025
 
 **Note** : _Ceci est la Partie 2 d'une série en deux parties sur l'IA. La Partie 1 est [ici](/waitbutwhy1)._
 
