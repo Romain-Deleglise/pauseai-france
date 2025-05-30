@@ -355,7 +355,7 @@ L'objectif n'est pas de "forcer la main", mais de rendre le "oui" aussi simple e
 
 ☐ **URGENCE/EXCLUSIVITÉ :** Ma demande a-t-elle un caractère opportun/spécial *maintenant* ?
 ☐ **CLARTÉ :** L'action est-elle limpide (1 verbe, 1 lien) ?
-☐ **IMMÉDIATETÉ :** Réalisable en &lt; 2 min ou engagement pris sur-le-champ ?
+☐ **IMMÉDIATETÉ :** Réalisable en <code>&lt; 2 min</code> ou engagement pris sur-le-champ ?
 ☐ **PLAN B :** Ai-je une alternative plus légère ?
 ☐ **ÉTHIQUE :** Suis-je prêt(e) à un "non" respectueux ?
 
