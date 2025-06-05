@@ -95,6 +95,33 @@ section:not(:last-child) {
 	margin-bottom: 5rem;
 }
 
+blockquote {
+	margin: 2rem 0;
+	padding: 1rem 1.5rem;
+	background-color: var(--bg-subtle);
+	border-left: 4px solid var(--brand);
+	border-radius: 0.3125rem;
+	font-style: normal;
+}
+
+blockquote > :first-child {
+	margin-top: 0;
+}
+
+blockquote > :last-child {
+	margin-bottom: 0;
+}
+
+/* Nested lists in blockquotes need adjusted spacing */
+blockquote ul,
+blockquote ol {
+	margin: 1rem 0;
+}
+
+blockquote li {
+	margin: 0.5rem 0;
+}
+
 @media (min-width: 640px) {
 	h1,
 	h2,
@@ -116,6 +143,10 @@ section:not(:last-child) {
 
 	section:not(:last-child) {
 		margin-bottom: 10rem;
+	}
+
+	blockquote {
+		padding: 1.5rem 2rem;
 	}
 }
 
