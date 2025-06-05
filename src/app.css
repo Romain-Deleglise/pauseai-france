@@ -170,7 +170,7 @@ tbody tr:nth-child(even) {
 }
 
 tbody tr:nth-child(odd) {
-	background-color: transparent;
+	background-color: var(--bg-subtle);
 }
 
 /* For the first table with 3 columns - allow it to be responsive */
