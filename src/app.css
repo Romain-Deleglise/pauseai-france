@@ -122,6 +122,129 @@ blockquote li {
 	margin: 0.5rem 0;
 }
 
+/* Table styles */
+table {
+	width: 100%;
+	margin: 2rem 0;
+	border-collapse: collapse;
+	font-size: 0.95rem;
+	background-color: var(--bg);
+	display: block;
+	overflow-x: auto;
+	white-space: nowrap;
+}
+
+/* Reset display for semantic table elements */
+thead,
+tbody,
+tfoot,
+tr {
+	display: table;
+	width: 100%;
+	table-layout: fixed;
+}
+
+th,
+td {
+	padding: 0.75rem 1rem;
+	text-align: left;
+	border: 1px solid #e6e6e6;
+	white-space: normal;
+	word-wrap: break-word;
+}
+
+th {
+	background-color: var(--bg-subtle);
+	font-weight: 700;
+	font-family: var(--font-heading);
+}
+
+/* Alternate row coloring */
+tbody tr:nth-child(even) {
+	background-color: #fafafa;
+}
+
+/* For the first table with 3 columns - allow it to be responsive */
+table:first-of-type {
+	table-layout: auto;
+}
+
+/* For tables with many columns, set minimum widths */
+table th:nth-child(3),
+table td:nth-child(3),
+table th:nth-child(4),
+table td:nth-child(4),
+table th:nth-child(5),
+table td:nth-child(5),
+table th:nth-child(6),
+table td:nth-child(6) {
+	min-width: 200px;
+}
+
+/* First two columns can be narrower */
+table th:nth-child(1),
+table td:nth-child(1) {
+	min-width: 120px;
+}
+
+table th:nth-child(2),
+table td:nth-child(2) {
+	min-width: 250px;
+}
+
+/* Responsive table wrapper */
+.table-wrapper {
+	overflow-x: auto;
+	margin: 2rem -1rem;
+	padding: 0 1rem;
+}
+
+/* For tables with many columns, prevent text wrapping on mobile */
+@media (max-width: 768px) {
+	table {
+		font-size: 0.875rem;
+		margin: 2rem -1rem;
+		border-left: 0;
+		border-right: 0;
+		border-radius: 0;
+		position: relative;
+	}
+	
+	/* Add gradient indicators for horizontal scroll */
+	table::before,
+	table::after {
+		content: '';
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		width: 20px;
+		pointer-events: none;
+		z-index: 1;
+	}
+	
+	table::before {
+		left: 0;
+		background: linear-gradient(to right, var(--bg) 0%, transparent 100%);
+	}
+	
+	table::after {
+		right: 0;
+		background: linear-gradient(to left, var(--bg) 0%, transparent 100%);
+	}
+	
+	/* Add some visual indicator that the table is scrollable */
+	table {
+		box-shadow: 
+			inset -1px 0 0 0 #e6e6e6,
+			inset 1px 0 0 0 #e6e6e6;
+	}
+	
+	th,
+	td {
+		padding: 0.5rem 0.75rem;
+	}
+}
+
 @media (min-width: 640px) {
 	h1,
 	h2,
@@ -147,6 +270,17 @@ blockquote li {
 
 	blockquote {
 		padding: 1.5rem 2rem;
+	}
+
+	/* Tables on larger screens */
+	table {
+		font-size: 1rem;
+		margin: 2.5rem 0;
+	}
+	
+	th,
+	td {
+		padding: 1rem 1.25rem;
 	}
 }
 
