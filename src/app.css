@@ -128,10 +128,12 @@ table {
 	margin: 2rem 0;
 	border-collapse: collapse;
 	font-size: 0.95rem;
-	background-color: var(--bg);
+	background-color: transparent;
 	display: block;
 	overflow-x: auto;
 	white-space: nowrap;
+	border-radius: 0.3125rem;
+	overflow: hidden;
 }
 
 /* Reset display for semantic table elements */
@@ -148,20 +150,27 @@ th,
 td {
 	padding: 0.75rem 1rem;
 	text-align: left;
-	border: 1px solid #e6e6e6;
+	border: none;
+	border-bottom: 1px solid #f0e6d6;
 	white-space: normal;
 	word-wrap: break-word;
 }
 
 th {
-	background-color: var(--bg-subtle);
+	background-color: var(--white);
 	font-weight: 700;
 	font-family: var(--font-heading);
+	border-bottom: 2px solid var(--brand);
+	position: relative;
 }
 
-/* Alternate row coloring */
+/* Alternate row coloring with warm palette */
 tbody tr:nth-child(even) {
-	background-color: #fafafa;
+	background-color: var(--white);
+}
+
+tbody tr:nth-child(odd) {
+	background-color: transparent;
 }
 
 /* For the first table with 3 columns - allow it to be responsive */
@@ -204,13 +213,11 @@ table td:nth-child(2) {
 	table {
 		font-size: 0.875rem;
 		margin: 2rem -1rem;
-		border-left: 0;
-		border-right: 0;
 		border-radius: 0;
 		position: relative;
 	}
 	
-	/* Add gradient indicators for horizontal scroll */
+	/* Add subtle gradient indicators for horizontal scroll */
 	table::before,
 	table::after {
 		content: '';
@@ -224,19 +231,12 @@ table td:nth-child(2) {
 	
 	table::before {
 		left: 0;
-		background: linear-gradient(to right, var(--bg) 0%, transparent 100%);
+		background: linear-gradient(to right, var(--bg-subtle) 0%, transparent 100%);
 	}
 	
 	table::after {
 		right: 0;
-		background: linear-gradient(to left, var(--bg) 0%, transparent 100%);
-	}
-	
-	/* Add some visual indicator that the table is scrollable */
-	table {
-		box-shadow: 
-			inset -1px 0 0 0 #e6e6e6,
-			inset 1px 0 0 0 #e6e6e6;
+		background: linear-gradient(to left, var(--bg-subtle) 0%, transparent 100%);
 	}
 	
 	th,
