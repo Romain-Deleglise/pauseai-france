@@ -4,7 +4,8 @@ description: Guide étape par étape pour recruter de nouveaux bénévoles pour 
 date: '2025-05-30'
 ---
 
-## Partie 1 : Pourquoi votre rôle est absolument déterminant
+<h2 id="partie-1-pourquoi-votre-role-est-absolument-determinant">Partie 1 : Pourquoi votre rôle est absolument déterminant</h2>
+
 *... et pourquoi c'est aussi une opportunité pour vous !*
 
 > Léa, développeuse à Nantes, se sentait un peu intimidée. "Je n'ai pas vraiment l'âme d'une militante," se disait-elle après avoir rejoint Pause IA. Pourtant, une inquiétude grandissait en elle face aux avancées fulgurantes de l'IA. Sur les conseils de l'équipe, elle a envoyé simplement un message à son ancien collègue, Marc, qui s'était récemment plaint que son travail de traducteur était menacé. Marc, déjà sensibilisé, participe à une session Q&A de Pause IA. Enthousiaste, il en parle à deux amis entrepreneurs qui, à leur tour, ont invité leur député local à une discussion informelle sur la régulation de l'IA. Le député repart avec une liste de préoccupations concrètes et les cite lors d'un débat à l'Assemblée. 
@@ -21,7 +22,7 @@ Chaque personne que vous ralliez à notre cause, chaque nouveau bénévole que v
 *   **Pensez exponentiel, pas linéaire :** Si chaque personne recrutée s'engage à son tour à recruter une autre personne chaque mois, notre croissance ne sera pas une simple addition, mais une multiplication. Imaginez : vous recrutez une personne ce mois-ci. Le mois suivant, vous recrutez une nouvelle personne, et votre première recrue fait de même. Vous êtes maintenant une équipe de 4. Si ce schéma se poursuit, vous passez à 8, puis 16, puis 32... **et plus de 4000 en un an** ! En quelques mois, un effort individuel modeste peut se transformer en une vague de mobilisation. Chaque conversation que vous initiez est comme une graine plantée ; ensemble, nous cultivons une véritable forêt d'influence et d'action.
 *   **Une course contre la montre :** Les capacités des IA les plus avancées doublent tous les quelques mois. Notre capacité à sensibiliser, à mobiliser et à influencer doit progresser à un rythme similaire si nous voulons avoir une chance de façonner un avenir où l'IA reste bénéfique et sous contrôle humain. Votre rôle dans cette accélération est direct.
 
-### La science du changement : pourquoi votre réseau personnel est notre meilleur allié
+<h3 id="la-science-du-changement-pourquoi-votre-reseau-personnel-est-notre-meilleur-allie">La science du changement : pourquoi votre réseau personnel est notre meilleur allié</h3>
 
 Les experts en changement social, comme Damon Centola de l'Université de Pennsylvanie (auteur de *Change: How to Make Big Things Happen*), nous montrent quelque chose de fondamental :
 
@@ -70,7 +71,8 @@ L'enjeu est immense, mais notre potentiel collectif l'est tout autant. Chaque b�
 
 **Tournez la page. Dans quelques minutes, vous aurez déjà en tête la première personne avec qui vous pourriez engager la conversation. Et c'est ainsi que tout commence.**
 
-# 4 Principes pour connecter et convaincre
+<h1 id="4-principes-pour-connecter-et-convaincre">4 Principes pour connecter et convaincre</h1>
+
 ### Principe 1 : La relation avant tout
 
 **Le recrutement n'est pas une simple transaction, mais le début d'une relation de confiance et de respect mutuel, car c'est par des liens solides que les idées se propagent durablement.**
@@ -115,7 +117,8 @@ Personne n'aime se sentir submergé ou engagé de force. Proposez d'abord une ac
 
 ## Partie 3 : Votre boîte à outils de recrutement
 
-### Cartographie de réseau 101 : transformez vos contacts en plan d'action concret
+<h3 id="cartographie-de-reseau-101-transformez-vos-contacts-en-plan-daction-concret">Cartographie de réseau 101 : transformez vos contacts en plan d'action concret</h3>
+
 *(Temps de lecture ≈ 4 minutes)*
 
 **Une précision importante avant de commencer :** L'objectif de cet exercice n'est pas de porter un jugement ou d'étiqueter les personnes de votre entourage. Il s'agit d'une méthode structurée pour vous aider à identifier où vos premières conversations pourraient avoir le plus d'impact et un effet domino. Abordez-le comme un outil de réflexion stratégique, avec bienveillance.
@@ -181,7 +184,8 @@ Commencez par les trois scores les plus élevés – ce sera votre liste cible p
 
 **Rappelez-vous :** Une conversation bien placée peut déclencher une réaction en chaîne. Votre carte est un point de départ pour maximiser ces chances.
 
-### Dialogue authentique : écouter pour connecter
+<h3 id="dialogue-authentique-ecouter-pour-connecter">Dialogue authentique : écouter pour connecter</h3>
+
 *(Temps de lecture ≈ 5 minutes)*
 
 Maintenant que vous avez identifié vos premiers contacts grâce à la cartographie de réseau, l'étape suivante est d'engager la conversation. L'objectif n'est pas de "vendre" Pause IA, ni de dérouler un argumentaire, mais de créer un véritable échange. Une conversation authentique est la clé pour bâtir la confiance, comprendre réellement votre interlocuteur, et identifier naturellement comment Pause IA peut résonner avec ses propres préoccupations.
@@ -245,7 +249,8 @@ Toute conversation n'aboutira pas à un recrutement immédiat, et ce n'est pas g
 *   **Les suppositions :** Ne présumez pas de ce que pense ou ressent votre interlocuteur. Demandez-lui.
 *   **Précipiter la demande :** Laissez la conversation se dérouler naturellement avant de proposer une action.
 
-### Créer des ponts : connecter les préoccupations à l'action
+<h3 id="creer-des-ponts-connecter-les-preoccupations-a-laction">Créer des ponts : connecter les préoccupations à l'action</h3>
+
 *(Temps de lecture ≈ 4 minutes)*
 
 Vous avez écouté attentivement, et votre interlocuteur a partagé ce qui le préoccupe. C'est le moment clé pour "faire le pont" : montrer comment les enjeux de l'IA, et donc la mission de Pause IA, rejoignent directement ses propres inquiétudes. Il ne s'agit pas d'un grand discours, mais d'une connexion simple et pertinente.
