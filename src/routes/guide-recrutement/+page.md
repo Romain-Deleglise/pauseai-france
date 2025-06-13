@@ -299,7 +299,8 @@ Adaptez ces phrases à votre style et à la conversation.
 
 Faire le pont, c'est simplement aider votre interlocuteur à voir que les enjeux de l'IA ne sont pas abstraits ou lointains, mais qu'ils touchent déjà à ce qui compte pour lui. Une phrase bien placée peut suffire à transformer une inquiétude isolée en une prise de conscience, et peut-être, en une envie d'agir ensemble.
 
-### L'art de la demande : transformer l'intérêt en action avec U.C.I.
+<h3 id="lart-de-la-demande-transformer-linteret-en-action-avec-uci">L'art de la demande : transformer l'intérêt en action avec U.C.I.</h3>
+
 *(Temps de lecture ≈ 3 minutes)*
 
 Vous avez écouté, créé des ponts. L'intérêt est là. C'est le moment de proposer une action concrète. Pour que cette "demande" soit naturelle et suivie d'effet, utilisez la formule **U.C.I.** :
