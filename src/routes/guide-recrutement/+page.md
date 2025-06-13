@@ -4,12 +4,27 @@ description: Guide étape par étape pour recruter de nouveaux bénévoles pour 
 date: '2025-05-30'
 ---
 
+<script>
+	import Callout from '$lib/components/Callout.svelte';
+</script>
+
+<header class="guide-header">
+	<h1>📚 Guide de Recrutement Complet</h1>
+	<div class="guide-subtitle">
+		<span class="guide-title-main">Guide de Recrutement Pause IA :</span>
+		<span class="guide-title-sub">Maîtrisez l'Art du Recrutement Relationnel</span>
+	</div>
+</header>
+
 <h2 id="partie-1-pourquoi-votre-role-est-absolument-determinant">Partie 1 : Pourquoi votre rôle est absolument déterminant</h2>
 
 *... et pourquoi c'est aussi une opportunité pour vous !*
 
-> Léa, développeuse à Nantes, se sentait un peu intimidée. "Je n'ai pas vraiment l'âme d'une militante," se disait-elle après avoir rejoint Pause IA. Pourtant, une inquiétude grandissait en elle face aux avancées fulgurantes de l'IA. Sur les conseils de l'équipe, elle a envoyé simplement un message à son ancien collègue, Marc, qui s'était récemment plaint que son travail de traducteur était menacé. Marc, déjà sensibilisé, participe à une session Q&A de Pause IA. Enthousiaste, il en parle à deux amis entrepreneurs qui, à leur tour, ont invité leur député local à une discussion informelle sur la régulation de l'IA. Le député repart avec une liste de préoccupations concrètes et les cite lors d'un débat à l'Assemblée. 
-> Léa réalise qu'un simple message, une conversation, a suffi pour mettre tout cela en mouvement.
+<Callout>
+	Léa, développeuse à Nantes, se sentait un peu intimidée. "Je n'ai pas vraiment l'âme d'une militante," se disait-elle après avoir rejoint Pause IA. Pourtant, une inquiétude grandissait en elle face aux avancées fulgurantes de l'IA. Sur les conseils de l'équipe, elle a envoyé simplement un message à son ancien collègue, Marc, qui s'était récemment plaint que son travail de traducteur était menacé. Marc, déjà sensibilisé, participe à une session Q&A de Pause IA. Enthousiaste, il en parle à deux amis entrepreneurs qui, à leur tour, ont invité leur député local à une discussion informelle sur la régulation de l'IA. Le député repart avec une liste de préoccupations concrètes et les cite lors d'un débat à l'Assemblée.
+
+	Léa réalise qu'un simple message, une conversation, a suffi pour mettre tout cela en mouvement.
+</Callout>
 
 Votre première étincelle peut être tout aussi simple. Et tout aussi puissante.
 
@@ -38,9 +53,11 @@ C'est pourquoi votre rôle est irremplaçable. Maxime, notre fondateur, peut fai
 
 ---
 
-> **📖 L'IMPACT D'UNE SEULE CONVERSATION : L'EXEMPLE DE SAHIYO**
->
-> En 2016, en Inde, les ONG Sahiyo et WeSpeakOut ont lancé la campagne "Une Conversation Chacun" (*Each One Reach One*) contre les mutilations génitales féminines. L'appel était simple : chaque membre devait avoir *une seule conversation* sur ce sujet tabou avec un ami ou un parent. En un an, ces conversations discrètes ont créé un effet boule de neige, menant à 126 parents s'engageant publiquement ("Pas Ma Fille !") et propulsant le sujet à l'agenda politique national. **Une conversation, répétée, a transformé un tabou communautaire.** Si une conversation peut ébranler un tabou ancestral, imaginez l'impact de vos conversations sur la gouvernance de l'IA.
+<Callout>
+	**📖 L'IMPACT D'UNE SEULE CONVERSATION : L'EXEMPLE DE SAHIYO**
+
+	En 2016, en Inde, les ONG Sahiyo et WeSpeakOut ont lancé la campagne "Une Conversation Chacun" (*Each One Reach One*) contre les mutilations génitales féminines. L'appel était simple : chaque membre devait avoir *une seule conversation* sur ce sujet tabou avec un ami ou un parent. En un an, ces conversations discrètes ont créé un effet boule de neige, menant à 126 parents s'engageant publiquement ("Pas Ma Fille !") et propulsant le sujet à l'agenda politique national. **Une conversation, répétée, a transformé un tabou communautaire.** Si une conversation peut ébranler un tabou ancestral, imaginez l'impact de vos conversations sur la gouvernance de l'IA.
+</Callout>
 
 ---
 
@@ -385,13 +402,15 @@ Pour répondre de manière constructive, nous vous suggérons un cadre simple en
 
 ---
 
-> **💡 MINI-EXEMPLE DU CADRE V.B.P. EN ACTION**
->
-> **Objection :** *"Franchement, je ne vois pas comment Pause IA peut changer quoi que ce soit face aux géants de la tech."*
->
-> *   **(V) Valider :** *"C'est vrai que la puissance des GAFAM peut sembler décourageante, je comprends ce que tu veux dire."*
-> *   **(B) Brèche :** *"Pourtant, l'histoire montre que des mobilisations citoyennes bien ciblées ont déjà fait plier des industries entières. Et même certains dirigeants de ces entreprises appellent à une régulation externe, car ils sont conscients des dynamiques de course aux armements."*
-> *   **(P) Proposer :** *"Tu serais surpris de l'influence que peut avoir un groupe de citoyens déterminés. On a quelques exemples concrets, ça t'intéresserait d'y jeter un œil ?"*
+<Callout>
+	**💡 MINI-EXEMPLE DU CADRE V.B.P. EN ACTION**
+
+	**Objection :** *"Franchement, je ne vois pas comment Pause IA peut changer quoi que ce soit face aux géants de la tech."*
+
+	*   **(V) Valider :** *"C'est vrai que la puissance des GAFAM peut sembler décourageante, je comprends ce que tu veux dire."*
+	*   **(B) Brèche :** *"Pourtant, l'histoire montre que des mobilisations citoyennes bien ciblées ont déjà fait plier des industries entières. Et même certains dirigeants de ces entreprises appellent à une régulation externe, car ils sont conscients des dynamiques de course aux armements."*
+	*   **(P) Proposer :** *"Tu serais surpris de l'influence que peut avoir un groupe de citoyens déterminés. On a quelques exemples concrets, ça t'intéresserait d'y jeter un œil ?"*
+</Callout>
 
 ---
 
@@ -454,3 +473,61 @@ Dans les sections suivantes, nous allons nous concentrer sur la "Brèche" (B) po
 ---
 
 N'oubliez pas : votre objectif n'est pas de "gagner" le débat, mais d'ouvrir une porte, de semer une graine, et d'inviter à une réflexion partagée. L'écoute et l'empathie restent vos meilleurs alliés.
+
+<style>
+	/* Guide Header Styling */
+	.guide-header {
+		text-align: center;
+		margin-bottom: 3rem;
+		padding: 2rem 0;
+	}
+
+	.guide-header h1 {
+		font-size: 1.8rem;
+		color: var(--brand);
+		margin-bottom: 1.5rem;
+		border-bottom: 2px solid var(--brand);
+		padding-bottom: 0.5rem;
+		display: inline-block;
+	}
+
+	.guide-subtitle {
+		line-height: 1.2;
+	}
+
+	.guide-title-main {
+		display: block;
+		font-size: 2rem;
+		font-weight: 700;
+		color: var(--brand);
+		margin-bottom: 0.5rem;
+	}
+
+	.guide-title-sub {
+		display: block;
+		font-size: 1.5rem;
+		font-weight: 700;
+		color: var(--text);
+	}
+
+	/* Responsive adjustments */
+	@media (min-width: 640px) {
+		.guide-title-main {
+			font-size: 2.5rem;
+		}
+
+		.guide-title-sub {
+			font-size: 1.8rem;
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.guide-title-main {
+			font-size: 3rem;
+		}
+
+		.guide-title-sub {
+			font-size: 2.2rem;
+		}
+	}
+</style>
