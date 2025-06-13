@@ -403,6 +403,7 @@ Pour répondre de manière constructive, nous vous suggérons un cadre simple en
 ---
 
 <Callout>
+
 	**💡 MINI-EXEMPLE DU CADRE V.B.P. EN ACTION**
 
 	**Objection :** *"Franchement, je ne vois pas comment Pause IA peut changer quoi que ce soit face aux géants de la tech."*
@@ -410,6 +411,7 @@ Pour répondre de manière constructive, nous vous suggérons un cadre simple en
 	-   **(V) Valider :** *"C'est vrai que la puissance des GAFAM peut sembler décourageante, je comprends ce que tu veux dire."*
 	-   **(B) Brèche :** *"Pourtant, l'histoire montre que des mobilisations citoyennes bien ciblées ont déjà fait plier des industries entières. Et même certains dirigeants de ces entreprises appellent à une régulation externe, car ils sont conscients des dynamiques de course aux armements."*
 	-   **(P) Proposer :** *"Tu serais surpris de l'influence que peut avoir un groupe de citoyens déterminés. On a quelques exemples concrets, ça t'intéresserait d'y jeter un œil ?"*
+
 </Callout>
 
 ---
