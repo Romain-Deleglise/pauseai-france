@@ -97,7 +97,7 @@
 					/>
 				</div>
 				
-				<p class="reference"><em>(Lire l'analyse complète : <a href="{base}/guide-recrutement">Guide de Recrutement Pause IA</a> – Partie 1 : Pourquoi votre rôle est absolument déterminant)</em></p>
+				<p class="reference"><em>(Lire l'analyse complète : <a href="{base}/guide-recrutement#partie-1-pourquoi-votre-role-est-absolument-determinant">Guide de Recrutement Pause IA</a> – Partie 1 : Pourquoi votre rôle est absolument déterminant)</em></p>
 
 				<h4>2. Une Course Contre la Montre</h4>
 				<p>Les capacités des IA avancées progressent à une vitesse fulgurante. Notre capacité à sensibiliser, mobiliser et influencer doit suivre ce rythme effréné pour façonner un avenir souhaitable. Votre rôle dans cette accélération est direct.</p>
@@ -105,7 +105,7 @@
 				<h4>3. La Science du Changement</h4>
 				<p>Des experts comme Damon Centola (<em>Change: How to Make Big Things Happen</em>) montrent que les changements de comportement "complexes" (comme s'engager activement) se propagent par la <strong>confiance</strong> et la <strong>validation sociale</strong> au sein de réseaux personnels. Un message entendu dans un podcast (contagion simple) informe. Mais ce sont VOS conversations avec VOS proches (contagion complexe) qui transforment la prise de conscience en action.</p>
 				
-				<p class="reference"><em>(Comprendre la dynamique : <a href="{base}/guide-recrutement#la-science-du-changement--pourquoi-votre-réseau-personnel-est-notre-meilleur-allié">Guide de Recrutement Pause IA</a> – La science du changement, <a href="https://www.youtube.com/watch?v=Y-1qLR2w60M" target="_blank" rel="noopener noreferrer">Vidéo</a>)</em></p>
+				<p class="reference"><em>(Comprendre la dynamique : <a href="{base}/guide-recrutement#la-science-du-changement-pourquoi-votre-reseau-personnel-est-notre-meilleur-allie">Guide de Recrutement Pause IA</a> – La science du changement, <a href="https://www.youtube.com/watch?v=Y-1qLR2w60M" target="_blank" rel="noopener noreferrer">Vidéo</a>)</em></p>
 			</section>
 
 			<section>
@@ -133,7 +133,7 @@
 						</ol>
 					</li>
 					<li><strong>Ne partagez pas cette liste avec Pause IA.</strong> Elle est pour vous seul(e).</li>
-					<li><strong><em>Votre guide complet pour une cartographie efficace :</em></strong> <a href="{base}/guide-recrutement#cartographie-de-réseau-101--transformez-vos-contacts-en-plan-daction-concret">Guide de Recrutement Pause IA</a> – Cartographie de réseau 101</li>
+					<li><strong><em>Votre guide complet pour une cartographie efficace :</em></strong> <a href="{base}/guide-recrutement#cartographie-de-reseau-101-transformez-vos-contacts-en-plan-daction-concret">Guide de Recrutement Pause IA</a> – Cartographie de réseau 101</li>
 				</ul>
 
 				<h4>ÉTAPE 2 : ENGAGEZ LA CONVERSATION (L'Art d'Écouter pour Connecter)</h4>
@@ -147,8 +147,8 @@
 							<li><strong>Relier :</strong> Faites le lien entre <em>ses</em> préoccupations et les enjeux de l'IA, en utilisant notre cadre de la "Perte de Contrôle".</li>
 						</ul>
 					</li>
-					<li><strong><em>Maîtrisez l'écoute et le dialogue :</em></strong> <a href="{base}/guide-recrutement#dialogue-authentique--écouter-pour-connecter">Guide de Recrutement Pause IA</a> – Dialogue authentique</li>
-					<li><strong><em>Pour créer des ponts pertinents :</em></strong> <a href="{base}/guide-recrutement#créer-des-ponts--connecter-les-préoccupations-à-laction">Guide de Recrutement Pause IA</a> – Créer des ponts</li>
+					<li><strong><em>Maîtrisez l'écoute et le dialogue :</em></strong> <a href="{base}/guide-recrutement#dialogue-authentique-ecouter-pour-connecter">Guide de Recrutement Pause IA</a> – Dialogue authentique</li>
+					<li><strong><em>Pour créer des ponts pertinents :</em></strong> <a href="{base}/guide-recrutement#creer-des-ponts-connecter-les-preoccupations-a-laction">Guide de Recrutement Pause IA</a> – Créer des ponts</li>
 				</ul>
 
 				<h4>ÉTAPE 3 : FAITES UNE DEMANDE CLAIRE (Le "Petit Pas Suivant")</h4>
@@ -156,13 +156,13 @@
 					<li>Proposez une action <strong>simple, claire et immédiate</strong></li>
 					<li><strong>Exemple de "Demande du Mois" :</strong> Inviter à notre prochaine session Q&A en ligne.</li>
 					<li>Adaptez la demande à l'intérêt de votre contact (lire un article, rejoindre Discord, participer à un événement...).</li>
-					<li><strong><em>Toutes les techniques et exemples de demandes :</em></strong> <a href="{base}/guide-recrutement#lart-de-la-demande--transformer-lintérêt-en-action-avec-uci">Guide de Recrutement Pause IA</a> – L'art de la demande</li>
+					<li><strong><em>Toutes les techniques et exemples de demandes :</em></strong> <a href="{base}/guide-recrutement#lart-de-la-demande-transformer-linteret-en-action-avec-uci">Guide de Recrutement Pause IA</a> – L'art de la demande</li>
 				</ul>
 			</section>
 
 			<section>
 				<h3>Et si on vous dit "Non" ou si on Hésite ?</h3>
-				<p>C'est parfaitement normal ! L'important est de maintenir le dialogue ouvert et de respecter le choix de l'autre. Le guide complet vous offre des pistes pour répondre aux objections les plus courantes avec bienveillance. <strong>Apprenez à gérer les objections :</strong> <a href="{base}/guide-recrutement#anticiper-les-objections--transformer-les-doutes-en-dialogue">Guide de Recrutement Pause IA</a> – Anticiper les objections</p>
+				<p>C'est parfaitement normal ! L'important est de maintenir le dialogue ouvert et de respecter le choix de l'autre. Le guide complet vous offre des pistes pour répondre aux objections les plus courantes avec bienveillance. <strong>Apprenez à gérer les objections :</strong> <a href="{base}/guide-recrutement#anticiper-les-objections-transformer-les-doutes-en-dialogue">Guide de Recrutement Pause IA</a> – Anticiper les objections</p>
 			</section>
 		</div>
 	</section>
