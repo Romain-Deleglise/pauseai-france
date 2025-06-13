@@ -21,9 +21,11 @@ date: '2025-05-30'
 *... et pourquoi c'est aussi une opportunité pour vous !*
 
 <Callout>
+
 	Léa, développeuse à Nantes, se sentait un peu intimidée. "Je n'ai pas vraiment l'âme d'une militante," se disait-elle après avoir rejoint Pause IA. Pourtant, une inquiétude grandissait en elle face aux avancées fulgurantes de l'IA. Sur les conseils de l'équipe, elle a envoyé simplement un message à son ancien collègue, Marc, qui s'était récemment plaint que son travail de traducteur était menacé. Marc, déjà sensibilisé, participe à une session Q&A de Pause IA. Enthousiaste, il en parle à deux amis entrepreneurs qui, à leur tour, ont invité leur député local à une discussion informelle sur la régulation de l'IA. Le député repart avec une liste de préoccupations concrètes et les cite lors d'un débat à l'Assemblée.
 
 	Léa réalise qu'un simple message, une conversation, a suffi pour mettre tout cela en mouvement.
+
 </Callout>
 
 Votre première étincelle peut être tout aussi simple. Et tout aussi puissante.
@@ -54,9 +56,11 @@ C'est pourquoi votre rôle est irremplaçable. Maxime, notre fondateur, peut fai
 ---
 
 <Callout>
+
 	**📖 L'IMPACT D'UNE SEULE CONVERSATION : L'EXEMPLE DE SAHIYO**
 
 	En 2016, en Inde, les ONG Sahiyo et WeSpeakOut ont lancé la campagne "Une Conversation Chacun" (*Each One Reach One*) contre les mutilations génitales féminines. L'appel était simple : chaque membre devait avoir *une seule conversation* sur ce sujet tabou avec un ami ou un parent. En un an, ces conversations discrètes ont créé un effet boule de neige, menant à 126 parents s'engageant publiquement ("Pas Ma Fille !") et propulsant le sujet à l'agenda politique national. **Une conversation, répétée, a transformé un tabou communautaire.** Si une conversation peut ébranler un tabou ancestral, imaginez l'impact de vos conversations sur la gouvernance de l'IA.
+
 </Callout>
 
 ---
