@@ -138,13 +138,13 @@
 
 				<h4>ÉTAPE 2 : ENGAGEZ LA CONVERSATION (L'Art d'Écouter pour Connecter)</h4>
 				<ul>
-					<li><strong>La Clé : L'ÉCOUTE AUTHENTIQUE.</strong> Votre objectif est de comprendre, pas de prêcher. Visez 80% d'écoute, 20% de parole.</li>
+					<li><strong>La clé : L'ÉCOUTE AUTHENTIQUE.</strong> Votre objectif est de comprendre, pas de prêcher. Visez 80% d'écoute, 20% de parole.</li>
 					<li><strong>Soyez transparent(e) sur votre démarche</strong> dès le début (voir exemples dans le guide complet).</li>
 					<li><strong>Utilisez le cadre L.O.R. (Lancer, Observer, Relier) :</strong>
 						<ul class="sub-list">
 							<li><strong>Lancer :</strong> Introduisez le sujet de l'IA et de vos préoccupations.</li>
 							<li><strong>Observer :</strong> Écoutez activement ce que votre interlocuteur exprime (ses craintes, espoirs, valeurs). Reformulez pour assurer votre compréhension.</li>
-							<li><strong>Relier :</strong> Faites le lien entre <em>ses</em> préoccupations et les enjeux de l'IA, en utilisant notre cadre de la "Perte de Contrôle".</li>
+							<li><strong>Relier :</strong> Faites le lien entre <em>ses</em> préoccupations et les enjeux de l'IA.</li>
 						</ul>
 					</li>
 					<li><strong><em>Maîtrisez l'écoute et le dialogue :</em></strong> <a href="{base}/guide-recrutement#dialogue-authentique-ecouter-pour-connecter">Guide de Recrutement Pause IA</a> – Dialogue authentique</li>
@@ -168,7 +168,7 @@
 			</section>
 
 			<section>
-				<h3>Et si on vous dit "Non" ou si on Hésite ?</h3>
+				<h3>Et si on vous dit "Non" ou si on hésite ?</h3>
 				<p>C'est parfaitement normal ! L'important est de maintenir le dialogue ouvert et de respecter le choix de l'autre. Le guide complet vous offre des pistes pour répondre aux objections les plus courantes avec bienveillance. <strong>Apprenez à gérer les objections :</strong> <a href="{base}/guide-recrutement#anticiper-les-objections-transformer-les-doutes-en-dialogue">Guide de Recrutement Pause IA</a> – Anticiper les objections</p>
 			</section>
 
@@ -189,7 +189,7 @@
 			<h2>Envie d'aller plus loin ?</h2>
 			<p>Ceci était le guide express pour vous donner les bases du recrutement relationnel. Pour une formation complète avec exemples détaillés, techniques avancées, réponses aux objections courantes, et ressources supplémentaires...</p>
 			<a href="{base}/guide-recrutement" class="conclusion-cta">
-				📚 Découvrez le Guide de Recrutement Complet
+				📚 Découvrez le guide de recrutement complet
 			</a>
 		</div>
 	</section>
