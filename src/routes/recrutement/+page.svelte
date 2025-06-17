@@ -154,8 +154,15 @@
 				<h4>ÉTAPE 3 : FAITES UNE DEMANDE CLAIRE (Le "Petit Pas Suivant")</h4>
 				<ul>
 					<li>Proposez une action <strong>simple, claire et immédiate</strong></li>
-					<li><strong>Exemple de "Demande du Mois" :</strong> Inviter à notre prochaine session Q&A en ligne.</li>
-					<li>Adaptez la demande à l'intérêt de votre contact (lire un article, rejoindre Discord, participer à un événement...).</li>
+					<li><strong>Quelques options, de la plus légère à la plus engageante :</strong>
+						<ul class="sub-list">
+							<li>Partager une vidéo courte ou un article</li>
+							<li>Faire la dernière action proposée par Pause IA (dans le groupe WhatsApp "Pause Action")</li>
+							<li>Inviter à rejoindre notre <a href="https://pauseia.substack.com/" target="_blank" rel="noopener noreferrer">newsletter</a> ou notre <a href="https://chat.whatsapp.com/LThhghXc0Hk3sTwQMyy1wU" target="_blank" rel="noopener noreferrer">groupe WhatsApp "Pause Action"</a></li>
+							<li>Suggérer de participer à notre webinaire mensuel (en construction) ou de rejoindre notre <a href="https://discord.gg/vyXGd7AeGc" target="_blank" rel="noopener noreferrer">Discord</a></li>
+							<li><a href="https://pauseia.fr/nous-rejoindre" target="_blank" rel="noopener noreferrer">Devenir membre</a> de Pause IA ou <a href="https://pauseia.fr/dons" target="_blank" rel="noopener noreferrer">faire un don</a> à l'association</li>
+						</ul>
+					</li>
 					<li><strong><em>Toutes les techniques et exemples de demandes :</em></strong> <a href="{base}/guide-recrutement#lart-de-la-demande-transformer-linteret-en-action-avec-uci">Guide de Recrutement Pause IA</a> – L'art de la demande</li>
 				</ul>
 			</section>
@@ -164,7 +171,16 @@
 				<h3>Et si on vous dit "Non" ou si on Hésite ?</h3>
 				<p>C'est parfaitement normal ! L'important est de maintenir le dialogue ouvert et de respecter le choix de l'autre. Le guide complet vous offre des pistes pour répondre aux objections les plus courantes avec bienveillance. <strong>Apprenez à gérer les objections :</strong> <a href="{base}/guide-recrutement#anticiper-les-objections-transformer-les-doutes-en-dialogue">Guide de Recrutement Pause IA</a> – Anticiper les objections</p>
 			</section>
+
+			<section>
+				<h3>Besoin d'aide ou d'échanger ?</h3>
+				<p>Rejoignez notre réunion hebdomadaire pour échanger, partager son progrès, et bénéficier du soutien de l'équipe. Vous la trouverez dans la section événements de notre <a href="https://discord.gg/vyXGd7AeGc" target="_blank" rel="noopener noreferrer">Discord</a>.</p>
+			</section>
 		</div>
+		
+		<Callout>
+			<p><strong>Rappelez-vous : chaque conversation compte. Chaque personne sensibilisée est une victoire. Vous avez le pouvoir de faire grandir notre mouvement de manière significative. Merci pour votre engagement !</strong></p>
+		</Callout>
 	</section>
 
 	<!-- Conclusion Section -->
