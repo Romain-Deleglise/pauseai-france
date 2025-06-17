@@ -16,6 +16,10 @@ date: '2025-05-30'
 	</div>
 </header>
 
+<Callout>
+📌 **Note :** Vous consultez le guide complet de recrutement. Si vous préférez commencer par une version condensée (5-10 min de lecture), consultez notre [Guide Express sur la page principale de recrutement]({base}/recrutement).
+</Callout>
+
 <h2 id="partie-1-pourquoi-votre-role-est-absolument-determinant">Partie 1 : Pourquoi votre rôle est absolument déterminant</h2>
 
 *... et pourquoi c'est aussi une opportunité pour vous !*
