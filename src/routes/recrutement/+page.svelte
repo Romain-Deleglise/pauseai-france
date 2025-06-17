@@ -45,7 +45,7 @@
 				<div class="card-icon">📄</div>
 				<h3>PDF Express</h3>
 				<p>Version portable du guide express pour imprimer ou lire hors ligne</p>
-				<a href="/pdfs/guide_recrutement.pdf" download class="card-button secondary">Télécharger le PDF</a>
+				<a href="/pdfs/guide_recrutement_express.pdf" download class="card-button secondary">Télécharger le PDF</a>
 			</div>
 			
 			<div class="resource-card">
