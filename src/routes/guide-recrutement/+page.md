@@ -49,11 +49,11 @@ Chaque personne que vous ralliez à notre cause, chaque nouveau bénévole que v
 
 Les experts en changement social, comme Damon Centola de l'Université de Pennsylvanie (auteur de *Change: How to Make Big Things Happen*), nous montrent quelque chose de fondamental :
 
-1.  **Contagion Simple vs. Contagion Complexe :**
+1.  **Contagion simple vs. contagion complexe :**
     *   Une **contagion simple**, c'est une information qui se répand facilement (une actualité, le nom "Pause IA" entendu dans un podcast). Cela crée une *prise de conscience*. C'est utile, et c'est en partie notre rôle en tant qu'organisation de diffuser largement ces messages.
     *   Mais rejoindre Pause IA, s'engager activement, parler d'un sujet potentiellement anxiogène ou à contre-courant, c'est un **comportement "complexe"**. Cela a un coût social (peur de paraître alarmiste, de déranger). Pour adopter un tel comportement, les gens ont besoin de plus qu'une simple information. Ils ont besoin de **validation et de renforcement de la part de leurs pairs.**
 
-2.  **Le Pouvoir des "Ponts Larges" entre Clusters :**
+2.  **Le pouvoir des "ponts larges" entre clusters :**
     *   Centola montre que les changements de comportement complexes ne se propagent pas efficacement depuis un "grand influenceur" central vers une masse passive. Ils émergent et se consolident au sein de **petits groupes connectés (des "clusters")** puis se diffusent à d'autres groupes via des **"ponts larges"** (multiples connexions entre ces groupes).
     *   **Votre réseau personnel – vos amis, votre famille, vos collègues – est un de ces clusters.** Lorsque plusieurs personnes au sein de ce cercle commencent à parler de Pause IA et à s'engager, cela crée la norme locale et la crédibilité nécessaires pour que d'autres suivent. Une personne isolée qui entend parler de nous à la radio hésitera peut-être. Mais si son ami Paul, sa cousine Sophie ET son collègue David sont tous impliqués, l'engagement devient beaucoup plus probable.
 
