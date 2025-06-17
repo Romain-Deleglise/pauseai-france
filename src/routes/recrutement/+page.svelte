@@ -10,7 +10,7 @@
 </script>
 
 <svelte:head>
-	<title>Devenez Recruteur pour Pause IA - Centre de Ressources</title>
+	<title>Devenez recruteur pour Pause IA - Centre de Ressources</title>
 	<meta name="description" content="Découvrez comment amplifier l'impact de Pause IA grâce au recrutement relationnel. Guides, PDFs et ressources pour devenir un recruteur efficace." />
 </svelte:head>
 
