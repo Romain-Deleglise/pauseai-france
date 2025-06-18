@@ -26,21 +26,22 @@ Vous en faites désormais partie.
 - **Ajoutez Pause IA à LinkedIn et activez « partagez ces mises à jour du profil avec votre réseau ».** C'est un moyen simple de faire connaître nos efforts à de nombreuses personnes.
 - **Échangez** sur les risques de l'IA sur les réseaux sociaux.
 - **[Envoyez un email à un politicien](https://pauseai.info/email-builder)** : Les emails sont très efficaces, vous pourriez être surpris !
-- **[Faites du lobbying](https://pauseai.info/lobby-tips)** : Persuadez votre gouvernement d'œuvrer pour un moratoire international sur l’IA et préparez-vous pour [le sommet](https://pauseai.info/summit).
+- **[Faites du lobbying](https://pauseai.info/lobby-tips)** : Persuadez votre gouvernement d'œuvrer pour un moratoire international sur l’IA.
 - **[Manifestez](https://pauseai.info/protests)** : Rejoignez une des [manifestations](https://pauseai.info/protests) en France et dans le monde.
 
 ## Et si...
 
 ### Vous êtes un bon orateur
 
-- **Tentez de convaincre un membre du gouvernement de se préparer pour [le sommet](https://pauseai.info/summit) et de travailler sur un moratoire international.** C'est la chose la plus importante que vous puissiez faire.
+- **Tentez de convaincre un membre du gouvernement de travailler sur un moratoire international.** C'est la chose la plus importante que vous puissiez faire.
 - **Tentez de convaincre des journalistes** d'écrire sur la question de la sécurité de l'IA.
 - **Contactez des influenceurs pour les inciter à aborder** et faire des vidéos sur la sécurité de l'IA.
 - **Demandez à la direction** de l’organisme officiel auquel vous appartenez, si tel est le cas, de prendre position sur ce sujet au niveau institutionnel.
 
 ### Vous êtes un politique ou travaillez pour le gouvernement
 
-- **Préparez-vous pour le [sommet sur la sécurité de l'IA](https://pauseai.info/summit).** Formez des coalitions avec d'autres pays. Renseignez-vous sur le [problème](/dangers) et ses [solutions](/propositions).
+- **Renseignez-vous sur le [problème](/dangers) et ses [solutions](/propositions).**
+- **Formez des coalitions avec d'autres pays.**
 - **Invitez les dirigeants des laboratoires d'IA** à des auditions parlementaires pour qu'ils exposent la façon dont ils appréhendent et ont l’intention d’anticiper les potentiels risques catastrophiques liés à l’IA, et selon quel calendrier.
 - **Mettez en place une commission** pour étudier les [risques de l'IA](/dangers).
 
