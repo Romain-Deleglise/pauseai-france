@@ -24,7 +24,7 @@ original:
 - [Qui êtes-vous ?](#accordion1)
 - [N’êtes-vous pas tout simplement des technophobes ?](#accordion2)
 - [Voulez-vous interdire toute forme d'IA ?](#accordion3)
-- [Croyez-vous que GPT-4 va tous nous tuer ?](#accordion4)
+- [Croyez-vous que ChatGPT va tous nous tuer ?](#accordion4)
 - [Un moratoire ne risque-t-il pas d'aggraver les choses ?](#accordion5)
 - [Un moratoire est-il possible ?](#accordion6)
 - [Qui vous finance ?](#accordion7)
@@ -61,9 +61,9 @@ C'est précisément pour cette raison que la prise de conscience des risques exi
 
 ### Voulez-vous interdire toute forme d'IA ?
 
-Non. Nous voulons uniquement interdire le développement des plus gros systèmes d'IA à usage général souvent appelés « modèles de pointe ». La quasi-totalité des modèles existants, ainsi que la plupart des futurs modèles d'IA, resteraient [légaux selon notre proposition](/propositions). Nous demandons l'interdiction des systèmes plus puissants que GPT-4o, jusqu'à ce que nous puissions exercer un contrôle démocratique sur ces modèles et que nous soyons en mesure de les créer en toute sécurité.
+Non. Nous voulons uniquement interdire le développement des plus gros systèmes d'IA à usage général souvent appelés « modèles de pointe ». La quasi-totalité des modèles existants, ainsi que la plupart des futurs modèles d'IA, resteraient [légaux selon notre proposition](/propositions). Nous demandons l'interdiction des Intelligences Artificielles Générales (IAG), jusqu'à ce que nous puissions exercer un contrôle démocratique sur ces modèles et que nous soyons en mesure de les créer en toute sécurité.
 
-### Croyez-vous que GPT-4 va tous nous tuer ?
+### Croyez-vous que ChatGPT va tous nous tuer ?
 
 Non, nous ne croyons pas que les modèles actuels représentent un risque existentiel et probablement que la plupart des prochains modèles non plus. Mais si nous poursuivons le développement de systèmes toujours plus puissants, nous atteindrons un point de non-retour où l'un d'eux deviendra [une menace existentielle](/dangers/pour-l'humanite).
 
