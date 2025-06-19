@@ -156,11 +156,11 @@
 					<li>Proposez une action <strong>simple, claire et immédiate</strong></li>
 					<li><strong>Quelques options, de la plus légère à la plus engageante :</strong>
 						<ul class="sub-list">
-							<li>Partager une vidéo courte ou un article</li>
-							<li>Faire la dernière action proposée par Pause IA (dans le groupe WhatsApp "Pause Action")</li>
-							<li>Inviter à rejoindre notre <a href="https://pauseia.substack.com/" target="_blank" rel="noopener noreferrer">newsletter</a> ou notre <a href="https://chat.whatsapp.com/LThhghXc0Hk3sTwQMyy1wU" target="_blank" rel="noopener noreferrer">groupe WhatsApp "Pause Action"</a></li>
-							<li>Suggérer de participer à notre webinaire mensuel (en construction) ou de rejoindre notre <a href="https://discord.gg/vyXGd7AeGc" target="_blank" rel="noopener noreferrer">Discord</a></li>
-							<li><a href="https://pauseia.fr/nous-rejoindre" target="_blank" rel="noopener noreferrer">Devenir membre</a> de Pause IA ou <a href="https://pauseia.fr/dons" target="_blank" rel="noopener noreferrer">faire un don</a> à l'association</li>
+							<li>Partager une vidéo courte ou un article.</li>
+							<li>Faire la dernière action proposée par Pause IA (dans le groupe WhatsApp "Pause Action").</li>
+							<li>Inviter à rejoindre notre <a href="https://pauseia.substack.com/" target="_blank" rel="noopener noreferrer">newsletter</a> ou notre <a href="https://chat.whatsapp.com/LThhghXc0Hk3sTwQMyy1wU" target="_blank" rel="noopener noreferrer">groupe WhatsApp "Pause Action".</a></li>
+							<li>Suggérer de participer à notre webinaire mensuel (en construction) ou de rejoindre notre <a href="https://discord.gg/vyXGd7AeGc" target="_blank" rel="noopener noreferrer">Discord</a>.</li>
+							<li><a href="https://pauseia.fr/nous-rejoindre" target="_blank" rel="noopener noreferrer">Devenir membre</a> de Pause IA ou <a href="https://pauseia.fr/dons" target="_blank" rel="noopener noreferrer">faire un don</a> à l'association.</li>
 						</ul>
 					</li>
 					<li><strong><em>Toutes les techniques et exemples de demandes :</em></strong> <a href="{base}/guide-recrutement#lart-de-la-demande-transformer-linteret-en-action-avec-uci">Guide de Recrutement Pause IA</a> – L'art de la demande</li>
