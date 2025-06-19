@@ -57,7 +57,7 @@ Les experts en changement social, comme Damon Centola de l'Université de Pennsy
     *   Centola montre que les changements de comportement complexes ne se propagent pas efficacement depuis un "grand influenceur" central vers une masse passive. Ils émergent et se consolident au sein de **petits groupes connectés (des "clusters")** puis se diffusent à d'autres groupes via des **"ponts larges"** (multiples connexions entre ces groupes).
     *   **Votre réseau personnel – vos amis, votre famille, vos collègues – est un de ces clusters.** Lorsque plusieurs personnes au sein de ce cercle commencent à parler de Pause IA et à s'engager, cela crée la norme locale et la crédibilité nécessaires pour que d'autres suivent. Une personne isolée qui entend parler de nous à la radio hésitera peut-être. Mais si son ami Paul, sa cousine Sophie ET son collègue David sont tous impliqués, l'engagement devient beaucoup plus probable.
 
-C'est pourquoi votre rôle est irremplaçable. Maxime, notre fondateur, peut faire des dizaines de podcasts (contagion simple), mais ce sont VOS conversations au sein de VOS réseaux qui transformeront cette prise de conscience diffuse en action concrète et en croissance réelle (contagion complexe).
+C'est pourquoi votre rôle est irremplaçable. Maxime, fondateur de Pause IA, peut faire des dizaines de podcasts (contagion simple), mais ce sont VOS conversations au sein de VOS réseaux qui transformeront cette prise de conscience diffuse en action concrète et en croissance réelle (contagion complexe).
 
 ---
 
@@ -88,7 +88,7 @@ Nous comprenons ces appréhensions. C'est pourquoi ce guide existe.
 
 Chaque personne qui rejoint Pause IA grâce à vous est une victoire collective. Chaque conversation que vous initiez, même si elle ne mène pas immédiatement à un recrutement, sème une graine de sensibilisation.
 
-Vous n'avez pas besoin d'être un expert en IA ou un tribun hors pair. Vous avez juste besoin d'être vous-même, armé(e) d'une conviction sincère et des outils que nous allons vous donner. Vous commencerez par les conversations les plus faciles, avec les personnes les plus ouvertes de votre entourage. Au fur et à mesure que vous gagnerez en confiance et que vous verrez les premiers résultats, vous serez surpris(e) de ce que vous pouvez accomplir.
+Vous n'avez pas besoin d'être un expert en IA ou un grand orateur. Vous avez juste besoin d'être vous-même, armé(e) d'une conviction sincère et des outils que nous allons vous donner. Vous commencerez par les conversations les plus faciles, avec les personnes les plus ouvertes de votre entourage. Au fur et à mesure que vous gagnerez en confiance et que vous verrez les premiers résultats, vous serez surpris(e) de ce que vous pouvez accomplir.
 
 ### Prêt(e) à pousser le premier domino ?
 
@@ -96,9 +96,9 @@ Ce guide est conçu pour vous accompagner pas à pas. Nous allons décomposer le
 
 L'enjeu est immense, mais notre potentiel collectif l'est tout autant. Chaque bénévole qui s'engage activement dans le recrutement devient un maillon essentiel d'une chaîne qui peut, et doit, grandir de manière exponentielle.
 
-**Tournez la page. Dans quelques minutes, vous aurez déjà en tête la première personne avec qui vous pourriez engager la conversation. Et c'est ainsi que tout commence.**
+**Dans quelques minutes, vous aurez déjà en tête la première personne avec qui vous pourriez engager la conversation. Et c'est ainsi que tout commence.**
 
-<h1 id="4-principes-pour-connecter-et-convaincre">4 Principes pour connecter et convaincre</h1>
+<h1 id="4-principes-pour-connecter-et-convaincre">Partie 2 : 4 Principes pour connecter et convaincre</h1>
 
 ### Principe 1 : La relation avant tout
 
@@ -127,7 +127,7 @@ Adoptez la règle du 80/20 : 80% d'écoute active, 20% de parole pour créer des
 **Ancrez le risque IA dans le quotidien et les préoccupations concrètes de votre contact, en utilisant le cadre de la "perte de contrôle" pour faire le lien entre l'immédiat et l'existentiel.**
 Chacun perçoit le monde à travers ses propres filtres. Un syndicaliste sera sensible à la perte de pouvoir des travailleurs face à l'automatisation, un parent à l'impact des deepfakes sur ses enfants, un entrepreneur aux manipulations de marché. Notre cadre de la "perte de contrôle" (Personnel → Groupe → Société → Existentiel) vous aide à identifier le point d'entrée le plus pertinent. L'idée est de montrer comment un enjeu qui leur est cher est *déjà* affecté ou menacé par une IA non maîtrisée, puis de les amener progressivement à voir les implications plus larges, sans jamais les brusquer.
 
-*   *Connectez l'IA à ce qui touche *directement* votre interlocuteur (son travail, sa famille, ses valeurs démocratiques).*
+*   *Connectez l'IA à ce qui touche **directement** votre interlocuteur (son travail, sa famille, ses valeurs démocratiques).*
 *   *Utilisez des exemples concrets et actuels plutôt que des concepts abstraits.*
 *   *Ne cherchez pas à les amener au risques les plus extremes en une seule conversation ; progressez par étapes.*
 
@@ -200,8 +200,11 @@ Commencez par les trois scores les plus élevés – ce sera votre liste cible p
 **CONSEILS & PIÈGES À ÉVITER**
 
 ✓ **Vérification simple :** Puis-je envoyer un SMS ou appeler cette personne directement et naturellement ? Si non, gardez-la pour plus tard.
+
 ✓ Si vous bloquez à 10 noms, parcourez vos contacts téléphoniques ou votre liste d'amis sur les réseaux sociaux pour vous rafraîchir la mémoire.
+
 ✗ Ne surestimez pas la "célébrité" : un cousin célèbre qui ne répond jamais est moins utile que votre délégué syndical avec qui vous discutez souvent.
+
 ✗ **SOYEZ IMPARFAIT**. La perfection est l'ennemie du progrès. Une carte approximative sur laquelle vous agissez vaut mieux qu'un diagramme magnifique jamais terminé.
 
 **ET ENSUITE ?**
@@ -253,7 +256,7 @@ Une fois la conversation engagée, votre super-pouvoir est l'écoute. Nous vous 
 
 *   **Relier (Tisser les Premiers Liens) :**
     Ici, vous commencez à tisser des ponts entre les préoccupations de votre interlocuteur et les enjeux de l'IA ou la mission de Pause IA. Il ne s'agit pas encore d'argumenter, mais de **suggérer des connexions pertinentes** qui montrent que le sujet le/la concerne personnellement.
-    *   **Principe :** Introduisez l'idée que ses centres d'intérêt (emploi, éthique, démocratie...) sont ou seront impactés par l'IA. Par exemple : *"Ce que tu évoques sur \[sa préoccupation] me fait penser à l'impact de l'IA sur ce type de sujet..."*
+    *   **Principe :** Introduire l'idée que ses centres d'intérêt (emploi, éthique, démocratie...) sont ou seront impactés par l'IA. Par exemple : *"Ce que tu évoques sur \[sa préoccupation] me fait penser à l'impact de l'IA sur ce type de sujet..."*
     *   **Objectif :** Éveiller sa curiosité et souligner la pertinence du sujet *pour lui/elle*, afin de préparer une discussion plus approfondie.
     *   **Pour les outils concrets :** Le module suivant, **"Créer des ponts : connecter les préoccupations à l'action"**, détaillera comment faire ces liens efficacement, notamment avec notre cadre de "la perte de contrôle".
 
@@ -386,9 +389,13 @@ L'objectif n'est pas de "forcer la main", mais de rendre le "oui" aussi simple e
 #### Mini-checklist U.C.I. avant chaque demande :
 
 ☐ **URGENCE/EXCLUSIVITÉ :** Ma demande a-t-elle un caractère opportun/spécial *maintenant* ?
+
 ☐ **CLARTÉ :** L'action est-elle limpide (1 verbe, 1 lien) ?
+
 ☐ **IMMÉDIATETÉ :** Réalisable en moins de 2 min ou engagement pris sur-le-champ ?
+
 ☐ **PLAN B :** Ai-je une alternative plus légère ?
+
 ☐ **ÉTHIQUE :** Suis-je prêt(e) à un "non" respectueux ?
 
 ---
@@ -428,13 +435,13 @@ Dans les sections suivantes, nous allons nous concentrer sur la "Brèche" (B) po
 
 ---
 
-**AGENCE / EFFICACITÉ**
+**IMPACT INDIVIDUEL / EFFICACITÉ**
 
-**A1. « Mon geste est une goutte d'eau, ça ne changera rien. »**
+**I1. « Mon geste est une goutte d'eau, ça ne changera rien. »**
 
 > C'est vrai que face à l'ampleur du défi, on peut se sentir petit. Mais pense à l'effet cumulé : si chaque personne qui pense ainsi décide d'agir, on devient une vague. De plus, très peu de gens s'engagent activement ; ceux qui le font ont donc un impact disproportionné. Chaque nouvelle personne qui nous rejoint ne s'ajoute pas seulement, elle multiplie notre potentiel d'action et de conviction, comme un domino qui en fait tomber d'autres.
 
-**A2. « De toute façon, les GAFAM / les lobbys sont trop puissants. »**
+**I2. « De toute façon, les GAFAM / les lobbys sont trop puissants. »**
 
 > Leur puissance est réelle, mais pas absolue. Ces entreprises sont composées de milliers d'employés, qui ont des familles, des amis, et qui sont de plus en plus nombreux à s'interroger en interne. Une pression citoyenne et politique forte, relayée par les médias, peut créer des fissures et obliger au changement. L'histoire regorge d'exemples où David a fait bouger Goliath, de la lutte anti-apartheid aux campagnes pour l'environnement.
 
@@ -472,11 +479,11 @@ Dans les sections suivantes, nous allons nous concentrer sur la "Brèche" (B) po
 
 **CONNAISSANCE / SCEPTICISME TECHNIQUE**
 
-**K1. « On pourra toujours débrancher la prise si ça dérape. »**
+**C1. « On pourra toujours débrancher la prise si ça dérape. »**
 
 > "Débrancher la prise" suppose plusieurs choses : qu'on détecte le "dérapage" à temps, qu'on sache *quelle* prise débrancher (une IA pourrait être distribuée sur de multiples serveurs, voire sur tout internet), et qu'on ait l'autorité et la capacité technique de le faire mondialement et instantanément. Si des experts en sécurité IA nous alertent *aujourd'hui* sur des risques majeurs, pourquoi attendre un signal encore plus clair qui pourrait arriver trop tard ou être impossible à gérer ?
 
-**K2. « L'IA Générale (AGI) / le risque existentiel, c'est de la science-fiction. »**
+**C2. « L'IA Générale (AGI) / le risque existentiel, c'est de la science-fiction. »**
 
 > Ce qui était de la science-fiction il y a 5 ans, comme ChatGPT, est aujourd'hui banal. Les progrès sont exponentiels. De nombreux experts en IA, y compris les pionniers du domaine, estiment que l'AGI pourrait arriver d'ici quelques années ou décennies, et que les dangers associés sont terrifiants. Ce n'est pas un fantasme, mais un sujet de recherche actif en sécurité de l'IA depuis plus de 15 ans. Ne pas y réfléchir sérieusement serait ignorer les avertissements de ceux qui construisent ces systèmes.
 
