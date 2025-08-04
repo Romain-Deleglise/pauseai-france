@@ -16,7 +16,6 @@
 		"test": "vitest --run"
 	},
 	"devDependencies": {
-		"@stripe/stripe-js": "^7.8.0",
 		"@sveltejs/adapter-netlify": "^4.2.0",
 		"@sveltejs/enhanced-img": "^0.2.0",
 		"@sveltejs/kit": "^2.5.7",

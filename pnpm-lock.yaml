@@ -72,9 +72,6 @@ importers:
         specifier: ^0.5.8
         version: 0.5.9
     devDependencies:
-      '@stripe/stripe-js':
-        specifier: ^7.8.0
-        version: 7.8.0
       '@sveltejs/adapter-netlify':
         specifier: ^4.2.0
         version: 4.3.1(@sveltejs/kit@2.5.18(@sveltejs/vite-plugin-svelte@3.1.1(svelte@4.2.18)(vite@5.3.4(@types/node@20.14.12)))(svelte@4.2.18)(vite@5.3.4(@types/node@20.14.12)))
@@ -670,10 +667,6 @@ packages:
 
   '@shikijs/core@1.11.1':
     resolution: {integrity: sha512-Qsn8h15SWgv5TDRoDmiHNzdQO2BxDe86Yq6vIHf5T0cCvmfmccJKIzHtep8bQO9HMBZYCtCBzaXdd1MnxZBPSg==}
-
-  '@stripe/stripe-js@7.8.0':
-    resolution: {integrity: sha512-DNXRfYUgkZlrniQORbA/wH8CdFRhiBSE0R56gYU0V5vvpJ9WZwvGrz9tBAZmfq2aTgw6SK7mNpmTizGzLWVezw==}
-    engines: {node: '>=12.16'}
 
   '@sveltejs/adapter-netlify@4.3.1':
     resolution: {integrity: sha512-KG/We5SbNygKSSU2zagWqLrV7RGHlmcnOPWn/9W9RYjNaMwgsvtw+4h50lP12+Dj9dZ2xDZcBl/X+R9kgiuL5g==}
@@ -2721,8 +2714,6 @@ snapshots:
   '@shikijs/core@1.11.1':
     dependencies:
       '@types/hast': 3.0.4
-
-  '@stripe/stripe-js@7.8.0': {}
 
   '@sveltejs/adapter-netlify@4.3.1(@sveltejs/kit@2.5.18(@sveltejs/vite-plugin-svelte@3.1.1(svelte@4.2.18)(vite@5.3.4(@types/node@20.14.12)))(svelte@4.2.18)(vite@5.3.4(@types/node@20.14.12)))':
     dependencies:

@@ -1,14 +1,13 @@
 import { json, error } from '@sveltejs/kit'
 import type { RequestHandler } from './$types'
 import Stripe from 'stripe'
+import { STRIPE_SECRET_KEY } from '$env/static/private'
 
-// Initialize Stripe with secret key - will be null if env var not set
-// eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
+// Initialize Stripe with secret key
 const getStripe = (): Stripe | null => {
-	const secretKey = process.env.STRIPE_SECRET_KEY
-	if (secretKey) {
+	if (STRIPE_SECRET_KEY) {
 		// eslint-disable-next-line @typescript-eslint/no-unsafe-call
-		return new Stripe(secretKey)
+		return new Stripe(STRIPE_SECRET_KEY)
 	}
 	return null
 }
@@ -23,6 +22,7 @@ interface CheckoutSessionRequest {
 export const POST: RequestHandler = async ({ request }) => {
 	try {
 		if (!stripe) {
+			console.error('Stripe not initialized - STRIPE_SECRET_KEY missing')
 			return error(500, 'Configuration Stripe manquante')
 		}
 
