@@ -31,14 +31,24 @@ export const POST: RequestHandler = async ({ request, url }) => {
 		// Create checkout session
 		const session = await stripe.checkout.sessions.create({
 			customer: customer.id,
-			payment_method_types: ['sepa_debit'],
+			payment_method_types: ['customer_balance'],
+			payment_method_options: {
+				customer_balance: {
+					funding_type: 'bank_transfer',
+					bank_transfer: {
+						type: 'eu_bank_transfer',
+						eu_bank_transfer: { country: 'FR' }
+					}
+				}
+			},
 			mode: 'payment',
+			submit_type: 'donate',
 			line_items: [
 				{
 					price_data: {
 						currency: 'eur',
 						product_data: {
-							name: 'Don à Pause IA France'
+							name: 'Don à Pause IA'
 						},
 						unit_amount: Number(amount)
 					},
@@ -49,14 +59,23 @@ export const POST: RequestHandler = async ({ request, url }) => {
 				customer_id: customer.id,
 				is_donation: 'true'
 			},
-			success_url: `${url.origin}/merci?session_id={CHECKOUT_SESSION_ID}`,
+			success_url: `${url.origin}/merci`,
 			cancel_url: `${url.origin}/dons`,
-			locale: 'fr'
+			locale: 'fr',
+			billing_address_collection: 'required',
+			phone_number_collection: {
+				enabled: true
+			}
 		})
 
 		return json({ url: session.url })
-	} catch (stripeError) {
-		console.error('Stripe error:', stripeError)
-		return error(500, 'Erreur lors de la création du paiement')
+	} catch (err) {
+		console.error('Erreur création Checkout Session:', err)
+
+		if (err instanceof Stripe.errors.StripeError) {
+			return error(400, err.message)
+		}
+
+		return error(500, 'Impossible de créer la session Checkout')
 	}
 }
