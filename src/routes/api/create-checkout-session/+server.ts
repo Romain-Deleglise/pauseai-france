@@ -3,28 +3,19 @@ import type { RequestHandler } from './$types'
 import Stripe from 'stripe'
 import { STRIPE_SECRET_KEY } from '$env/static/private'
 
-// Initialize Stripe with secret key
-const getStripe = (): Stripe | null => {
-	if (STRIPE_SECRET_KEY) {
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-call
-		return new Stripe(STRIPE_SECRET_KEY)
-	}
-	return null
-}
-
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-const stripe = getStripe()
-
 interface CheckoutSessionRequest {
 	amount: number
 }
 
 export const POST: RequestHandler = async ({ request }) => {
 	try {
-		if (!stripe) {
+		// Initialize Stripe with secret key inside the request handler
+		if (!STRIPE_SECRET_KEY) {
 			console.error('Stripe not initialized - STRIPE_SECRET_KEY missing')
 			return error(500, 'Configuration Stripe manquante')
 		}
+
+		const stripe = new Stripe(STRIPE_SECRET_KEY)
 
 		const requestData = (await request.json()) as CheckoutSessionRequest
 		const { amount } = requestData
@@ -35,7 +26,6 @@ export const POST: RequestHandler = async ({ request }) => {
 		}
 
 		// Create customer first (required for bank transfers)
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
 		const customer = await stripe.customers.create({
 			metadata: {
 				source: 'don_pauseia_svelte',
@@ -45,9 +35,7 @@ export const POST: RequestHandler = async ({ request }) => {
 		})
 
 		// Create Checkout Session for bank transfers (like your PHP code)
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
 		const checkoutSession = await stripe.checkout.sessions.create({
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
 			customer: customer.id,
 			payment_method_types: ['customer_balance'],
 			payment_method_options: {
@@ -91,15 +79,12 @@ export const POST: RequestHandler = async ({ request }) => {
 		})
 
 		return json({
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
 			url: checkoutSession.url
 		})
 	} catch (err: unknown) {
 		console.error('Erreur création Checkout Session:', err)
 
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 		if (err instanceof Stripe.errors.StripeError) {
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 			return error(400, err.message)
 		}
 
