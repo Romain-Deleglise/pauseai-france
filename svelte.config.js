@@ -37,8 +37,7 @@ const config = {
 	preprocess: [vitePreprocess(), mdsvex(mdsvexOptions)],
 	kit: {
 		adapter: adapter({
-			edge: true,
-			excludeRoutes: ['/.netlify/functions/*']
+			edge: true
 		}),
 		prerender: {
 			entries: process.env.PUBLIC_UNDER_CONSTRUCTION === 'true' ? [] : ['*']
