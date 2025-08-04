@@ -59,6 +59,12 @@ export const POST: RequestHandler = async ({ request, url }) => {
 				customer_id: customer.id,
 				is_donation: 'true'
 			},
+			custom_text: {
+				submit: {
+					message:
+						'En cliquant sur "Donner", vous recevrez les instructions de virement bancaire sécurisé.'
+				}
+			},
 			success_url: `${url.origin}/merci`,
 			cancel_url: `${url.origin}/dons`,
 			locale: 'fr',
