@@ -1,10 +1,5 @@
-import type { Handler, Config } from '@netlify/functions'
+import type { Handler } from '@netlify/functions'
 import Stripe from 'stripe'
-
-export const config: Config = {
-	// Expose this function at a friendly path
-	path: '/api/checkout'
-}
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '')
 
@@ -66,8 +61,7 @@ export const handler: Handler = async (event) => {
 			},
 			success_url: `${event.headers.origin ?? 'https://pauseia.fr'}/merci`,
 			cancel_url: `${event.headers.origin ?? 'https://pauseia.fr'}/dons`,
-			locale: 'fr',
-			expires_after_minutes: 30
+			locale: 'fr'
 		})
 
 		return {
