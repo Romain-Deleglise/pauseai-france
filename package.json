@@ -16,6 +16,7 @@
 		"test": "vitest --run"
 	},
 	"devDependencies": {
+		"@netlify/functions": "^4.2.1",
 		"@sveltejs/adapter-netlify": "^4.2.0",
 		"@sveltejs/enhanced-img": "^0.2.0",
 		"@sveltejs/kit": "^2.5.7",
