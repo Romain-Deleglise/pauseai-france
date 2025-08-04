@@ -34,6 +34,10 @@ module.exports = {
 		{
 			extends: ['plugin:@typescript-eslint/disable-type-checked'],
 			files: ['./svelte.config.js', './create-pagefind-index.js']
+		},
+		{
+			extends: ['plugin:@typescript-eslint/disable-type-checked'],
+			files: ['netlify/functions/**/*.ts']
 		}
 	]
 }
