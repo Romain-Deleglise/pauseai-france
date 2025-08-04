@@ -4,17 +4,45 @@ import Stripe from 'stripe'
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '')
 
 export const handler: Handler = async (event) => {
+	// CORS headers for production
+	const headers = {
+		'Access-Control-Allow-Origin': '*',
+		'Access-Control-Allow-Headers': 'Content-Type',
+		'Access-Control-Allow-Methods': 'POST, OPTIONS'
+	}
+
+	// Handle preflight OPTIONS request
+	if (event.httpMethod === 'OPTIONS') {
+		return {
+			statusCode: 200,
+			headers,
+			body: ''
+		}
+	}
+
 	try {
 		if (event.httpMethod !== 'POST') {
-			return { statusCode: 405, body: 'Method Not Allowed' }
+			return {
+				statusCode: 405,
+				headers,
+				body: 'Method Not Allowed'
+			}
 		}
 
 		const { amount } = JSON.parse(event.body || '{}') as { amount: number }
 		if (!amount || amount < 100) {
-			return { statusCode: 400, body: 'Montant minimum : 1€' }
+			return {
+				statusCode: 400,
+				headers,
+				body: 'Montant minimum : 1€'
+			}
 		}
 		if (!process.env.STRIPE_SECRET_KEY) {
-			return { statusCode: 500, body: 'Configuration Stripe manquante' }
+			return {
+				statusCode: 500,
+				headers,
+				body: 'Configuration Stripe manquante'
+			}
 		}
 
 		// Create a blank Customer; Checkout will collect & save details
@@ -66,11 +94,18 @@ export const handler: Handler = async (event) => {
 
 		return {
 			statusCode: 200,
-			headers: { 'content-type': 'application/json' },
+			headers: {
+				...headers,
+				'content-type': 'application/json'
+			},
 			body: JSON.stringify({ url: session.url })
 		}
 	} catch (err: unknown) {
 		const msg = err instanceof Error ? err.message : 'Stripe error'
-		return { statusCode: 400, body: msg }
+		return {
+			statusCode: 400,
+			headers,
+			body: msg
+		}
 	}
 }
