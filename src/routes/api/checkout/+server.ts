@@ -1,47 +1,61 @@
 import { json } from '@sveltejs/kit'
 import type { RequestHandler } from './$types'
+import Stripe from 'stripe'
+import { STRIPE_SECRET_KEY } from '$env/static/private'
+
+const stripe = new Stripe(STRIPE_SECRET_KEY)
 
 export const POST: RequestHandler = async ({ request, url }) => {
 	try {
-		// Get the request body
 		const body = (await request.json()) as { amount: number }
+		const { amount } = body
 
-		// Forward the request to the Netlify function using full URL
-		const functionUrl = new URL('/.netlify/functions/create-checkout', url.origin)
-		const response = await fetch(functionUrl, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(body)
+		if (!amount || amount < 100) {
+			return new Response('Montant minimum : 1€', { status: 400 })
+		}
+
+		if (!STRIPE_SECRET_KEY) {
+			return new Response('Configuration Stripe manquante', { status: 500 })
+		}
+
+		// Create customer
+		const customer = await stripe.customers.create({
+			metadata: {
+				source: 'don_pauseia_svelte',
+				amount_requested: `${(amount / 100).toString()}€`,
+				timestamp: Date.now().toString()
+			}
 		})
 
-		if (!response.ok) {
-			const errorText = await response.text()
-			return new Response(errorText, {
-				status: response.status,
-				headers: {
-					'Content-Type': 'text/plain'
+		// Create checkout session
+		const session = await stripe.checkout.sessions.create({
+			customer: customer.id,
+			payment_method_types: ['sepa_debit'],
+			mode: 'payment',
+			line_items: [
+				{
+					price_data: {
+						currency: 'eur',
+						product_data: {
+							name: 'Don à Pause IA France'
+						},
+						unit_amount: Number(amount)
+					},
+					quantity: 1
 				}
-			})
-		}
+			],
+			metadata: {
+				customer_id: customer.id,
+				is_donation: 'true'
+			},
+			success_url: `${url.origin}/merci?session_id={CHECKOUT_SESSION_ID}`,
+			cancel_url: `${url.origin}/dons`,
+			locale: 'fr'
+		})
 
-		const data = (await response.json()) as { url: string }
-		return json(data)
+		return json({ url: session.url })
 	} catch (error) {
-		console.error('Error proxying to Netlify function:', error)
-		return new Response('Internal server error', { status: 500 })
+		console.error('Stripe error:', error)
+		return new Response('Erreur lors de la création du paiement', { status: 500 })
 	}
-}
-
-// Handle preflight requests
-export const OPTIONS: RequestHandler = () => {
-	return new Response(null, {
-		status: 200,
-		headers: {
-			'Access-Control-Allow-Origin': '*',
-			'Access-Control-Allow-Methods': 'POST, OPTIONS',
-			'Access-Control-Allow-Headers': 'Content-Type'
-		}
-	})
 }
