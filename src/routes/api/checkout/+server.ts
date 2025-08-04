@@ -1,13 +1,14 @@
 import { json } from '@sveltejs/kit'
 import type { RequestHandler } from './$types'
 
-export const POST: RequestHandler = async ({ request, fetch }) => {
+export const POST: RequestHandler = async ({ request, url }) => {
 	try {
 		// Get the request body
 		const body = (await request.json()) as { amount: number }
 
-		// Forward the request to the Netlify function
-		const response = await fetch('/.netlify/functions/create-checkout', {
+		// Forward the request to the Netlify function using full URL
+		const functionUrl = new URL('/.netlify/functions/create-checkout', url.origin)
+		const response = await fetch(functionUrl, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
