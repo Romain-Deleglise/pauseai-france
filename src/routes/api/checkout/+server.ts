@@ -1,23 +1,24 @@
-import { json } from '@sveltejs/kit'
+import { error, json } from '@sveltejs/kit'
 import type { RequestHandler } from './$types'
 import Stripe from 'stripe'
-import { STRIPE_SECRET_KEY } from '$env/static/private'
-
-const stripe = new Stripe(STRIPE_SECRET_KEY)
+import { env } from '$env/dynamic/private'
 
 export const POST: RequestHandler = async ({ request, url }) => {
+	const key = env.STRIPE_SECRET_KEY
+
 	try {
 		const body = (await request.json()) as { amount: number }
 		const { amount } = body
 
 		if (!amount || amount < 100) {
-			return new Response('Montant minimum : 1€', { status: 400 })
+			return error(400, 'Montant minimum : 1€')
 		}
 
-		if (!STRIPE_SECRET_KEY) {
-			return new Response('Configuration Stripe manquante', { status: 500 })
+		if (!key) {
+			return error(500, 'Configuration Stripe manquante')
 		}
 
+		const stripe = new Stripe(key)
 		// Create customer
 		const customer = await stripe.customers.create({
 			metadata: {
@@ -54,8 +55,8 @@ export const POST: RequestHandler = async ({ request, url }) => {
 		})
 
 		return json({ url: session.url })
-	} catch (error) {
-		console.error('Stripe error:', error)
-		return new Response('Erreur lors de la création du paiement', { status: 500 })
+	} catch (stripeError) {
+		console.error('Stripe error:', stripeError)
+		return error(500, 'Erreur lors de la création du paiement')
 	}
 }
