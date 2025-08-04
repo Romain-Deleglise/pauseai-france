@@ -33,7 +33,7 @@ module.exports = {
 		},
 		{
 			extends: ['plugin:@typescript-eslint/disable-type-checked'],
-			files: ['./svelte.config.js', './create-pagefind-index.js']
+			files: ['./svelte.config.js']
 		},
 		{
 			extends: ['plugin:@typescript-eslint/disable-type-checked'],
