@@ -11,7 +11,7 @@
 	const description = 'Grâce à votre soutien financier, nous pouvons avoir un plus grand impact.'
 
 	let showAmountForm = false
-	let amount = 200
+	let amount = 500
 	let isProcessing = false
 	let paymentError = ''
 
