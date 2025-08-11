@@ -5,6 +5,7 @@
 	import Accordion from '$components/Accordion.svelte'
 	import { title as siteName } from '$config'
 	import { browser } from '$app/environment'
+	import { CreditCard, Landmark } from 'lucide-svelte'
 
 	const title = 'Faire un don à Pause IA'
 	const description = 'Grâce à votre soutien financier, nous pouvons avoir un plus grand impact.'
@@ -102,7 +103,13 @@
 	<section class="donation-options">
 		{#if !showAmountForm}
 			<div class="donation-card helloasso-card">
-				<h3>💳 Don par carte bancaire <span class="monthly-badge">Simple & rapide</span></h3>
+				<h3 class="title-with-icon">
+					<span class="icon-and-text">
+						<CreditCard size="1em" />
+						<span class="title-text">Don par carte bancaire</span>
+					</span>
+					<span class="monthly-badge">Simple & rapide</span>
+				</h3>
 				<p>
 					Choisissez entre un don ponctuel ou un soutien mensuel. Paiement sécurisé par carte
 					bancaire via HelloAsso.
@@ -110,21 +117,30 @@
 				<Button href="https://www.helloasso.com/associations/pause-ia/formulaires/1"
 					>Donner par carte</Button
 				>
-				<small class="donation-note"> 💳 Don ponctuel ou mensuel au choix </small>
+				<small class="donation-note"
+					><CreditCard size="1em" /> Don ponctuel ou mensuel au choix</small
+				>
 			</div>
 
 			<div class="donation-card">
-				<h3>🏦 Don par virement bancaire</h3>
-				<p>
-					Idéal pour les montants importants. Frais de transaction très réduits par rapport aux
-					paiements par carte.
-				</p>
+				<h3 class="title-with-icon">
+					<span class="icon-and-text">
+						<Landmark size="1em" />
+						<span class="title-text">Don par virement bancaire</span>
+					</span>
+				</h3>
+				<p>Idéal pour les montants importants.</p>
 				<Button on:click={showAmountEntry}>Faire un virement</Button>
-				<small class="donation-note"> 🏦 Recommandé pour les dons > 200€ </small>
+				<small class="donation-note"><Landmark size="1em" /> Recommandé pour les dons > 500€</small>
 			</div>
 		{:else}
 			<div class="donation-card amount-form-card">
-				<h3 class="form-title">🏦 Don par virement bancaire</h3>
+				<h3 class="form-title title-with-icon">
+					<span class="icon-and-text">
+						<Landmark size="1em" />
+						<span class="title-text">Don par virement bancaire</span>
+					</span>
+				</h3>
 
 				<div class="amount-container">
 					<label for="amount-input" class="amount-label">Montant du don</label>
@@ -148,8 +164,8 @@
 
 				<div class="bank-transfer-info">
 					<p>
-						💳 Vous allez être redirigé vers une page sécurisée avec les instructions de virement
-						bancaire.
+						<CreditCard size="1em" /> Vous allez être redirigé vers une page sécurisée avec les instructions
+						de virement bancaire.
 					</p>
 				</div>
 
@@ -195,8 +211,7 @@
 			<svelte:fragment slot="details">
 				<p>
 					Nous acceptons les paiements par carte bancaire via HelloAsso (don ponctuel ou mensuel) et
-					les virements bancaires. Le virement est recommandé pour les montants importants car les
-					frais de transaction sont très réduits.
+					les virements bancaires (recommandé pour les montants importants).
 				</p>
 			</svelte:fragment>
 		</Accordion>
@@ -316,6 +331,24 @@
 		color: var(--text);
 	}
 
+	.title-with-icon {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 0.25rem;
+	}
+
+	.icon-and-text {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5em;
+	}
+
+	.icon-and-text :global(svg) {
+		display: inline-block;
+		line-height: 1;
+	}
+
 	.donation-card p {
 		color: #666;
 		margin-bottom: 1.5rem;
@@ -338,9 +371,18 @@
 		font-weight: 500;
 	}
 
+	/* Place badge under the whole heading, left-aligned with the icon */
+	.title-with-icon .monthly-badge {
+		display: inline-flex;
+		align-self: flex-start;
+		margin-top: 0;
+	}
+
 	.donation-note {
-		display: block;
-		margin-top: 0.5rem;
+		display: flex;
+		align-items: center;
+		gap: 0.4em;
+		margin-top: 1rem;
 		color: #666;
 		font-size: 0.9rem;
 		text-align: left;
@@ -471,6 +513,9 @@
 
 	.bank-transfer-info p {
 		margin: 0;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4em;
 		color: #6b7280;
 		font-size: 0.95rem;
 	}

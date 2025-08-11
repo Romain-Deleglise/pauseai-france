@@ -62,7 +62,7 @@ export const POST: RequestHandler = async ({ request, url }) => {
 			custom_text: {
 				submit: {
 					message:
-						'En cliquant sur "Donner", vous recevrez les instructions de virement bancaire sécurisé.'
+						'En cliquant sur "Faire un don", vous recevrez les instructions de virement bancaire sécurisé.\nUtilisez un virement bancaire standard (1-3 jours ouvrés) - les virements instantanés ne sont pas supportés.'
 				}
 			},
 			success_url: `${url.origin}/merci`,
