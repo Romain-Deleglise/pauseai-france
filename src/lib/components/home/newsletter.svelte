@@ -78,7 +78,7 @@
 	}
 </script>
 
-<section class="newsletter" aria-labelledby={label_id}>
+<section id="newsletter" class="newsletter" aria-labelledby={label_id}>
 	<Fly>
 		<UnderlinedTitle id={label_id} underlineColor="white">Restez informé·e</UnderlinedTitle>
 	</Fly>
