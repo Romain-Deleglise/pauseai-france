@@ -80,7 +80,7 @@
 
 <section class="newsletter" aria-labelledby={label_id}>
 	<Fly>
-		<UnderlinedTitle id={label_id}>Restez informé·e</UnderlinedTitle>
+		<UnderlinedTitle id={label_id} underlineColor="white">Restez informé·e</UnderlinedTitle>
 	</Fly>
 	<Fly>
 		<div class="content">
@@ -90,51 +90,58 @@
 			</p>
 
 			<form on:submit|preventDefault={handleSubmit} class="signup-form">
-				<div class="inputs-grid">
-					<div class="form-group">
-						<label for="newsletter-email">Adresse e-mail *</label>
-						<input
-							id="newsletter-email"
-							type="email"
-							bind:value={email}
-							placeholder="votre@email.com"
-							required
-							disabled={isSubmitting}
-						/>
+				<div class="form-card">
+					<div class="inputs-grid">
+						<div class="form-group">
+							<label for="newsletter-email">Adresse e-mail *</label>
+							<input
+								id="newsletter-email"
+								type="email"
+								bind:value={email}
+								placeholder="votre@email.com"
+								required
+								disabled={isSubmitting}
+							/>
+						</div>
 					</div>
+
+					<fieldset class="subscriptions">
+						<legend>Abonnements</legend>
+						<div class="checkbox-group">
+							<label class="checkbox-label">
+								<input type="checkbox" bind:checked={subscribeNewsletter} disabled={isSubmitting} />
+								<span class="checkmark"></span>
+								<div class="checkbox-content">
+									<span class="checkbox-title">Newsletter Pause IA</span>
+									<small>Actualités et actions importantes</small>
+								</div>
+							</label>
+
+							<label class="checkbox-label">
+								<input type="checkbox" bind:checked={subscribeSubstack} disabled={isSubmitting} />
+								<span class="checkmark"></span>
+								<div class="checkbox-content">
+									<span class="checkbox-title">Blog Substack</span>
+									<small>Analyses approfondies et réflexions</small>
+								</div>
+							</label>
+						</div>
+					</fieldset>
+					{#if message}
+						<div
+							class="message"
+							aria-live="polite"
+							role="status"
+							class:error={isError}
+							class:success={!isError}
+						>
+							{message}
+						</div>
+					{/if}
 				</div>
 
-				<fieldset class="subscriptions">
-					<legend>Abonnements</legend>
-					<div class="checkbox-group">
-						<label class="checkbox-label">
-							<input type="checkbox" bind:checked={subscribeNewsletter} disabled={isSubmitting} />
-							<span class="checkmark"></span>
-							<div class="checkbox-content">
-								<span class="checkbox-title">Newsletter Pause IA</span>
-								<small>Actualités et actions importantes</small>
-							</div>
-						</label>
-
-						<label class="checkbox-label">
-							<input type="checkbox" bind:checked={subscribeSubstack} disabled={isSubmitting} />
-							<span class="checkmark"></span>
-							<div class="checkbox-content">
-								<span class="checkbox-title">Blog Substack</span>
-								<small>Analyses approfondies et réflexions</small>
-							</div>
-						</label>
-					</div>
-				</fieldset>
-
-				{#if message}
-					<div class="message" class:error={isError} class:success={!isError}>
-						{message}
-					</div>
-				{/if}
-
 				<div class="submit-button">
-					<Button type="submit" disabled={isSubmitting}>
+					<Button alt type="submit" disabled={isSubmitting}>
 						{#if isSubmitting}Inscription...{:else}S'abonner{/if}
 					</Button>
 				</div>
@@ -145,16 +152,39 @@
 
 <style>
 	.newsletter {
-		align-self: center;
-		max-width: 60rem;
+		width: 100vw;
+		margin-left: calc(50% - 50vw);
+		margin-right: calc(50% - 50vw);
+		background: var(--brand);
+		color: var(--black);
+		padding: 2.5rem 1rem;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
+		position: relative;
+		isolation: isolate;
+		overflow: hidden;
 	}
 
 	.content {
 		width: 100%;
 		max-width: 50rem;
+		margin: 0 auto;
+		text-align: center;
+		position: relative;
+		z-index: 1;
+	}
+
+	.content p {
+		margin-left: auto;
+		margin-right: auto;
+		max-width: 46rem;
+	}
+
+	/* Ensure headings are visible on brand background */
+	.newsletter :global(h1),
+	.newsletter :global(h2) {
+		color: var(--black);
 		text-align: center;
 	}
 
@@ -164,6 +194,16 @@
 		flex-direction: column;
 		gap: 1.75rem;
 		text-align: left;
+	}
+
+	.form-card {
+		background-color: var(--white);
+		border: 1px solid #f0f0f0;
+		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+		border-radius: 0.75rem;
+		padding: 1.25rem;
+		display: grid;
+		gap: 1.25rem;
 	}
 
 	.inputs-grid {
@@ -185,8 +225,8 @@
 
 	input[type='email'] {
 		padding: 0.75rem;
-		border: 1px solid var(--border);
-		border-radius: 0.3125rem;
+		border: 2px solid color-mix(in srgb, var(--black) 25%, transparent);
+		border-radius: 0.5rem;
 		font-family: var(--font-body);
 		font-size: 1rem;
 		background-color: var(--bg);
@@ -215,13 +255,17 @@
 
 	legend {
 		font-weight: 600;
-		padding: 0 0.5rem;
+		padding: 0;
 		color: var(--text);
 	}
 
 	.subscriptions {
-		background-color: var(--bg-subtle);
-		border-color: #f0f0f0;
+		border: 0;
+		padding: 0;
+	}
+
+	.subscriptions legend {
+		margin-bottom: 0.5rem;
 	}
 
 	.checkbox-group {
@@ -258,7 +302,7 @@
 	.checkmark {
 		width: 1.25rem;
 		height: 1.25rem;
-		border: 2px solid var(--border);
+		border: 2px solid color-mix(in srgb, var(--black) 25%, transparent);
 		border-radius: 0.25rem;
 		background-color: var(--bg);
 		display: flex;
@@ -299,21 +343,24 @@
 	}
 
 	.message {
-		padding: 0.75rem;
-		border-radius: 0.3125rem;
+		padding: 0.75rem 1rem;
+		border-radius: 0.5rem;
 		text-align: center;
-		font-weight: 500;
+		font-weight: 600;
+		background-color: rgba(255, 255, 255, 0.8);
+		border: 1px solid rgba(0, 0, 0, 0.08);
+		color: var(--text);
 	}
 
 	.message.success {
-		background-color: rgba(34, 197, 94, 0.1);
-		border: 1px solid rgba(34, 197, 94, 0.3);
+		background-color: rgba(34, 197, 94, 0.12);
+		border: 1px solid rgba(34, 197, 94, 0.35);
 		color: rgb(21, 128, 61);
 	}
 
 	.message.error {
-		background-color: rgba(239, 68, 68, 0.1);
-		border: 1px solid rgba(239, 68, 68, 0.3);
+		background-color: rgba(239, 68, 68, 0.12);
+		border: 1px solid rgba(239, 68, 68, 0.35);
 		color: rgb(185, 28, 28);
 	}
 
@@ -326,8 +373,16 @@
 	/* Button styles now inherited from Button component */
 
 	@media (min-width: 768px) {
+		.newsletter {
+			padding: 3rem 2rem;
+		}
+		/* Use default underline size and positioning from component */
+		.form-card {
+			padding: 1.75rem 2rem;
+			gap: 1.5rem;
+		}
 		.inputs-grid {
-			grid-template-columns: 1fr 1fr;
+			grid-template-columns: 1fr;
 			gap: 1.25rem 1rem;
 		}
 

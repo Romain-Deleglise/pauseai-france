@@ -1,13 +1,6 @@
 import { json, type RequestHandler } from '@sveltejs/kit'
 
-import {
-	CIVICRM_BASE_URL,
-	CIVICRM_API_KEY,
-	CIVICRM_NEWSLETTER_GROUP_ID,
-	CIVICRM_SUBSTACK_GROUP_ID,
-	CIVICRM_SITE_KEY,
-	CIVICRM_NEWSLETTER_API_CONTACT_ID
-} from '$env/static/private'
+import { env as privateEnv } from '$env/dynamic/private'
 
 interface SubscriptionRequest {
 	email: string
@@ -59,8 +52,8 @@ async function callApi4<T = Record<string, unknown>>(
 	action: string,
 	params: Record<string, unknown> = {}
 ): Promise<Api4Result<T>> {
-	const base = (CIVICRM_BASE_URL || '').replace(/\/+$/, '')
-	const apiKey = CIVICRM_API_KEY
+	const base = (privateEnv.CIVICRM_BASE_URL || '').replace(/\/+$/, '')
+	const apiKey = privateEnv.CIVICRM_API_KEY || ''
 	if (!base || !apiKey) throw new Error('Missing required CiviCRM configuration')
 
 	const url = `${base}/civicrm/ajax/api4/${encodeURIComponent(entity)}/${encodeURIComponent(action)}`
@@ -74,7 +67,7 @@ async function callApi4<T = Record<string, unknown>>(
 	}
 
 	// Site key guard (required)
-	const siteKey = CIVICRM_SITE_KEY
+	const siteKey = (privateEnv.CIVICRM_SITE_KEY || '').trim()
 	if (!siteKey) {
 		throw new Error('Missing required CiviCRM site key')
 	}
@@ -141,11 +134,63 @@ export const POST: RequestHandler = async ({ request }) => {
 		let createdNewContact = false
 
 		if (emailResult.count && emailResult.count > 0 && emailResult.values) {
-			// Contact exists
 			const emailRecord = emailResult.values[0]
-			contactId = emailRecord.contact_id
+			const candidateId = Number(emailRecord.contact_id)
+			if (candidateId && candidateId > 0) {
+				// Verify contact actually exists (guard against orphaned email)
+				const contactLookup = await callApi4<ContactRecord>('Contact', 'get', {
+					select: ['id'],
+					where: [['id', '=', candidateId]],
+					limit: 1
+				})
+				if (contactLookup.count && contactLookup.values && contactLookup.values.length > 0) {
+					contactId = candidateId
+				} else {
+					// Orphan email: create contact, then reassign the email to this contact
+					const contactResult = await callApi4<ContactRecord>('Contact', 'create', {
+						values: {
+							contact_type: 'Individual',
+							display_name: data.email,
+							source: 'pauseia.fr homepage',
+							contact_sub_type: ['Sympathisant']
+						}
+					})
+					if (!contactResult.values || contactResult.values.length === 0) {
+						throw new Error('Failed to create contact')
+					}
+					contactId = contactResult.values[0].id
+					createdNewContact = true
+					// Reassign existing email to the new contact
+					await callApi4('Email', 'save', {
+						match: ['id'],
+						records: [
+							{
+								id: emailRecord.id,
+								contact_id: contactId,
+								is_primary: true,
+								'location_type_id:label': 'Domicile'
+							}
+						]
+					})
+				}
+			} else {
+				// No valid contact_id on Email row: create contact and attach a new email record
+				const contactResult = await callApi4<ContactRecord>('Contact', 'create', {
+					values: {
+						contact_type: 'Individual',
+						display_name: data.email,
+						source: 'pauseia.fr homepage',
+						contact_sub_type: ['Sympathisant']
+					}
+				})
+				if (!contactResult.values || contactResult.values.length === 0) {
+					throw new Error('Failed to create contact')
+				}
+				contactId = contactResult.values[0].id
+				createdNewContact = true
+			}
 		} else {
-			// Create new contact
+			// No email row found: create contact
 			const contactResult = await callApi4<ContactRecord>('Contact', 'create', {
 				values: {
 					contact_type: 'Individual',
@@ -163,7 +208,7 @@ export const POST: RequestHandler = async ({ request }) => {
 			createdNewContact = true
 		}
 
-		// Create email record for new contact
+		// Ensure email record exists and is attached
 		if (createdNewContact) {
 			await callApi4('Email', 'create', {
 				values: {
@@ -175,37 +220,39 @@ export const POST: RequestHandler = async ({ request }) => {
 			})
 		}
 
+		// Resolve group IDs at runtime
+		const newsletterGroupId = Number(privateEnv.CIVICRM_NEWSLETTER_GROUP_ID)
+		const substackGroupId = Number(privateEnv.CIVICRM_SUBSTACK_GROUP_ID)
+		if (
+			(data.subscribeNewsletter && !Number.isFinite(newsletterGroupId)) ||
+			(data.subscribeSubstack && !Number.isFinite(substackGroupId))
+		) {
+			throw new Error('Missing group configuration')
+		}
+
 		// Query existing group memberships to tailor message
 		const existingMemberships = await callApi4<{ group_id: number }>('GroupContact', 'get', {
 			select: ['group_id'],
 			where: [
 				['contact_id', '=', contactId],
 				['status', '=', 'Added'],
-				['group_id', 'IN', [Number(CIVICRM_NEWSLETTER_GROUP_ID), Number(CIVICRM_SUBSTACK_GROUP_ID)]]
+				['group_id', 'IN', [newsletterGroupId, substackGroupId]]
 			]
 		})
 
 		const alreadyInNewsletter = Boolean(
-			existingMemberships.values?.some((g) => g.group_id === Number(CIVICRM_NEWSLETTER_GROUP_ID))
+			existingMemberships.values?.some((g) => g.group_id === newsletterGroupId)
 		)
 		const alreadyInSubstack = Boolean(
-			existingMemberships.values?.some((g) => g.group_id === Number(CIVICRM_SUBSTACK_GROUP_ID))
+			existingMemberships.values?.some((g) => g.group_id === substackGroupId)
 		)
 
 		// Upsert groups via GroupContact.save with match on contact_id + group_id
 		const groupRecords: Array<{ contact_id: number; group_id: number; status?: string }> = []
 		if (data.subscribeNewsletter && !alreadyInNewsletter)
-			groupRecords.push({
-				contact_id: contactId,
-				group_id: Number(CIVICRM_NEWSLETTER_GROUP_ID),
-				status: 'Added'
-			})
+			groupRecords.push({ contact_id: contactId, group_id: newsletterGroupId, status: 'Added' })
 		if (data.subscribeSubstack && !alreadyInSubstack)
-			groupRecords.push({
-				contact_id: contactId,
-				group_id: Number(CIVICRM_SUBSTACK_GROUP_ID),
-				status: 'Added'
-			})
+			groupRecords.push({ contact_id: contactId, group_id: substackGroupId, status: 'Added' })
 		if (groupRecords.length > 0) {
 			await callApi4('GroupContact', 'save', {
 				match: ['contact_id', 'group_id'],
@@ -220,7 +267,7 @@ export const POST: RequestHandler = async ({ request }) => {
 				values: buildActivityValues(
 					WEBSITE_SIGNUP_ACTIVITY_ID,
 					subjectText,
-					Number(CIVICRM_NEWSLETTER_API_CONTACT_ID),
+					Number(privateEnv.CIVICRM_NEWSLETTER_API_CONTACT_ID || ''),
 					[contactId]
 				)
 			})
