@@ -1,0 +1,343 @@
+<script lang="ts">
+	import Button from '$components/Button.svelte'
+	import Fly from '$components/Fly.svelte'
+	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
+
+	const label_id = 'newsletter-title'
+
+	let email = ''
+	let subscribeNewsletter = false
+	let subscribeSubstack = false
+	let isSubmitting = false
+	let message = ''
+	let isError = false
+
+	interface ApiResponse {
+		success?: boolean
+		message?: string
+		error?: string
+		details?: string
+		contact_id?: number
+	}
+
+	async function handleSubmit() {
+		// Reset previous messages
+		message = ''
+		isError = false
+
+		// Validate email
+		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+		if (!email || !emailRegex.test(email)) {
+			message = 'Veuillez saisir une adresse e-mail valide'
+			isError = true
+			return
+		}
+
+		// Check at least one subscription is selected
+		if (!subscribeNewsletter && !subscribeSubstack) {
+			message = "Veuillez sélectionner au moins une option d'abonnement"
+			isError = true
+			return
+		}
+
+		isSubmitting = true
+
+		try {
+			const response = await fetch('/api/subscribe', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					email,
+					subscribeNewsletter,
+					subscribeSubstack
+				})
+			})
+
+			const result = (await response.json()) as ApiResponse
+
+			if (response.ok) {
+				message = result.message ?? 'Inscription réussie !'
+				isError = false
+				// Reset form
+				email = ''
+				subscribeNewsletter = false
+				subscribeSubstack = false
+			} else {
+				message = result.error ?? 'Une erreur est survenue'
+				isError = true
+			}
+		} catch (error) {
+			message = 'Erreur de connexion. Veuillez réessayer.'
+			isError = true
+			console.error('Newsletter subscription error:', error)
+		} finally {
+			isSubmitting = false
+		}
+	}
+</script>
+
+<section class="newsletter" aria-labelledby={label_id}>
+	<Fly>
+		<UnderlinedTitle id={label_id}>Restez informé·e</UnderlinedTitle>
+	</Fly>
+	<Fly>
+		<div class="content">
+			<p>
+				Suivez l'actualité de l'IA et nos actions pour un développement responsable de cette
+				technologie. Recevez nos analyses, nos propositions et les opportunités d'engagement.
+			</p>
+
+			<form on:submit|preventDefault={handleSubmit} class="signup-form">
+				<div class="inputs-grid">
+					<div class="form-group">
+						<label for="newsletter-email">Adresse e-mail *</label>
+						<input
+							id="newsletter-email"
+							type="email"
+							bind:value={email}
+							placeholder="votre@email.com"
+							required
+							disabled={isSubmitting}
+						/>
+					</div>
+				</div>
+
+				<fieldset class="subscriptions">
+					<legend>Abonnements</legend>
+					<div class="checkbox-group">
+						<label class="checkbox-label">
+							<input type="checkbox" bind:checked={subscribeNewsletter} disabled={isSubmitting} />
+							<span class="checkmark"></span>
+							<div class="checkbox-content">
+								<span class="checkbox-title">Newsletter Pause IA</span>
+								<small>Actualités et actions importantes</small>
+							</div>
+						</label>
+
+						<label class="checkbox-label">
+							<input type="checkbox" bind:checked={subscribeSubstack} disabled={isSubmitting} />
+							<span class="checkmark"></span>
+							<div class="checkbox-content">
+								<span class="checkbox-title">Blog Substack</span>
+								<small>Analyses approfondies et réflexions</small>
+							</div>
+						</label>
+					</div>
+				</fieldset>
+
+				{#if message}
+					<div class="message" class:error={isError} class:success={!isError}>
+						{message}
+					</div>
+				{/if}
+
+				<div class="submit-button">
+					<Button type="submit" disabled={isSubmitting}>
+						{#if isSubmitting}Inscription...{:else}S'abonner{/if}
+					</Button>
+				</div>
+			</form>
+		</div>
+	</Fly>
+</section>
+
+<style>
+	.newsletter {
+		align-self: center;
+		max-width: 60rem;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.content {
+		width: 100%;
+		max-width: 50rem;
+		text-align: center;
+	}
+
+	.signup-form {
+		margin-top: 2rem;
+		display: flex;
+		flex-direction: column;
+		gap: 1.75rem;
+		text-align: left;
+	}
+
+	.inputs-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 1rem;
+	}
+
+	.form-group {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	label {
+		font-weight: 600;
+		color: var(--text);
+	}
+
+	input[type='email'] {
+		padding: 0.75rem;
+		border: 1px solid var(--border);
+		border-radius: 0.3125rem;
+		font-family: var(--font-body);
+		font-size: 1rem;
+		background-color: var(--bg);
+		color: var(--text);
+		transition: border-color 0.2s ease;
+	}
+
+	input[type='email']:focus {
+		outline: none;
+		border-color: var(--brand);
+		box-shadow: 0 0 0 3px rgba(255, 147, 23, 0.1);
+	}
+
+	input[type='email']:disabled {
+		background-color: var(--bg-subtle);
+		cursor: not-allowed;
+		opacity: 0.7;
+	}
+
+	fieldset {
+		border: 1px solid var(--border);
+		border-radius: 0.3125rem;
+		padding: 1rem;
+		margin: 0;
+	}
+
+	legend {
+		font-weight: 600;
+		padding: 0 0.5rem;
+		color: var(--text);
+	}
+
+	.subscriptions {
+		background-color: var(--bg-subtle);
+		border-color: #f0f0f0;
+	}
+
+	.checkbox-group {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+
+	.checkbox-label {
+		display: grid;
+		grid-template-columns: 1.25rem auto;
+		align-items: start;
+		gap: 0.75rem;
+		cursor: pointer;
+		position: relative;
+		font-weight: normal;
+	}
+
+	.checkbox-title {
+		font-weight: 600;
+	}
+
+	.checkbox-label:hover .checkmark {
+		border-color: var(--brand);
+	}
+
+	input[type='checkbox'] {
+		opacity: 0;
+		position: absolute;
+		width: 0;
+		height: 0;
+	}
+
+	.checkmark {
+		width: 1.25rem;
+		height: 1.25rem;
+		border: 2px solid var(--border);
+		border-radius: 0.25rem;
+		background-color: var(--bg);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: all 0.2s ease;
+		flex-shrink: 0;
+		margin-top: 0.25rem; /* aligns with first text baseline */
+		box-sizing: border-box;
+	}
+
+	input[type='checkbox']:checked + .checkmark {
+		background-color: var(--brand);
+		border-color: var(--brand);
+	}
+
+	input[type='checkbox']:checked + .checkmark::after {
+		content: '✓';
+		color: white;
+		font-weight: bold;
+		font-size: 0.875rem;
+	}
+
+	input[type='checkbox']:focus + .checkmark {
+		box-shadow: 0 0 0 2px rgba(255, 147, 23, 0.2);
+	}
+
+	.checkbox-content {
+		display: flex;
+		flex-direction: column;
+		gap: 0.125rem;
+	}
+
+	.checkbox-label small {
+		display: block;
+		color: var(--text-secondary);
+		font-size: 0.95rem;
+	}
+
+	.message {
+		padding: 0.75rem;
+		border-radius: 0.3125rem;
+		text-align: center;
+		font-weight: 500;
+	}
+
+	.message.success {
+		background-color: rgba(34, 197, 94, 0.1);
+		border: 1px solid rgba(34, 197, 94, 0.3);
+		color: rgb(21, 128, 61);
+	}
+
+	.message.error {
+		background-color: rgba(239, 68, 68, 0.1);
+		border: 1px solid rgba(239, 68, 68, 0.3);
+		color: rgb(185, 28, 28);
+	}
+
+	.submit-button {
+		display: flex;
+		justify-content: center;
+		margin-top: 1rem;
+	}
+
+	/* Button styles now inherited from Button component */
+
+	@media (min-width: 768px) {
+		.inputs-grid {
+			grid-template-columns: 1fr 1fr;
+			gap: 1.25rem 1rem;
+		}
+
+		.checkbox-group {
+			flex-direction: row;
+			gap: 2rem;
+		}
+
+		.checkbox-label {
+			flex: 1;
+		}
+	}
+</style>
