@@ -282,15 +282,17 @@ export const POST: RequestHandler = async ({ request }) => {
 
 		let message: string
 		if (bothAlready) {
-			message = 'Déjà abonné·e'
+			message = 'Déjà inscrit·e'
 		} else if (bothAdded) {
 			message = 'Inscription confirmée'
 		} else {
 			const parts: string[] = []
 			if (data.subscribeNewsletter)
-				parts.push(`Newsletter: ${alreadyInNewsletter ? 'déjà abonné·e' : 'inscription confirmée'}`)
+				parts.push(
+					`Newsletter: ${alreadyInNewsletter ? 'déjà inscrit·e' : 'inscription confirmée'}`
+				)
 			if (data.subscribeSubstack)
-				parts.push(`Substack: ${alreadyInSubstack ? 'déjà abonné·e' : 'inscription confirmée'}`)
+				parts.push(`Substack: ${alreadyInSubstack ? 'déjà inscrit·e' : 'inscription confirmée'}`)
 			message = parts.length ? parts.join(' • ') : 'Inscription réussie!'
 		}
 		return json({ success: true, message, contact_id: contactId })

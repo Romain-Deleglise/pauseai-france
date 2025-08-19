@@ -35,7 +35,7 @@
 
 		// Check at least one subscription is selected
 		if (!subscribeNewsletter && !subscribeSubstack) {
-			message = "Veuillez sélectionner au moins une option d'abonnement"
+			message = "Veuillez sélectionner au moins une option d'inscription"
 			isError = true
 			return
 		}
@@ -85,15 +85,15 @@
 	<Fly>
 		<div class="content">
 			<p>
-				Suivez l'actualité de l'IA et nos actions pour un développement responsable de cette
-				technologie. Recevez nos analyses, nos propositions et les opportunités d'engagement.
+				Veille critique par Pause IA : décryptages, enjeux de gouvernance, politiques publiques —
+				inscrivez-vous pour recevoir l'essentiel.
 			</p>
 
 			<form on:submit|preventDefault={handleSubmit} class="signup-form">
 				<div class="form-card">
 					<div class="inputs-grid">
 						<div class="form-group">
-							<label for="newsletter-email">Adresse e-mail *</label>
+							<label for="newsletter-email">Adresse e-mail</label>
 							<input
 								id="newsletter-email"
 								type="email"
@@ -106,7 +106,7 @@
 					</div>
 
 					<fieldset class="subscriptions">
-						<legend>Abonnements</legend>
+						<legend>Inscriptions</legend>
 						<div class="checkbox-group">
 							<label class="checkbox-label">
 								<input type="checkbox" bind:checked={subscribeNewsletter} disabled={isSubmitting} />
@@ -142,7 +142,7 @@
 
 				<div class="submit-button">
 					<Button alt type="submit" disabled={isSubmitting}>
-						{#if isSubmitting}Inscription...{:else}S'abonner{/if}
+						{#if isSubmitting}Inscription...{:else}S'inscrire{/if}
 					</Button>
 				</div>
 			</form>
