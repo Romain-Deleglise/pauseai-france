@@ -39,8 +39,8 @@
 				<NavLink href="/qui-sommes-nous">A propos</NavLink>
 				<NavLink href="/dangers">Dangers</NavLink>
 				<NavLink href="/propositions">Propositions</NavLink>
-				<NavLink href="/agir">Agir</NavLink>
 				<NavLink href="https://pauseia.substack.com/">Blog</NavLink>
+				<NavLink href="/agir">Agir</NavLink>
 				<NavLink href="/dons">Donner</NavLink>
 				<Button href="/rejoindre" alt={onHomepage}>Rejoindre</Button>
 			</div>
