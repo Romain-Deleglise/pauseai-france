@@ -74,7 +74,7 @@
 			Vous avez peu de temps mais une grande envie d'agir ? Rejoignez notre groupe WhatsApp "Pause Action" pour recevoir des actions simples et rapides à réaliser en quelques minutes par semaine.
 		</p>
 		<!-- IMPORTANT: Remplacer ce lien par votre lien d'invitation au groupe WhatsApp -->
-		<Button href="https://chat.whatsapp.com/LThhghXc0Hk3sTwQMyy1wU">Rejoindre</Button>
+		<Button href="https://chat.whatsapp.com/LThhghXc0Hk3sTwQMyy1wU">Rejoindre Pause Action</Button>
 	</div>
 
 	<!-- Section FAQ -->
