@@ -39,13 +39,12 @@
 				<span class="badge support-badge">Soutien officiel</span>
 			</h3>
 			<p>
-				Soutenez officiellement notre mission et nos statuts. En tant que membre, vous renforcez notre poids collectif et participez à la vie démocratique de l'association. C'est le signal fort de votre engagement.
+				Soutenez officiellement notre mission et nos statuts. En tant que membre, vous renforcez notre poids collectif et participez à la vie de l'association. C'est le signal fort de votre engagement.
 			</p>
 			<!-- IMPORTANT: Remplacer ce lien par l'URL de votre formulaire d'adhésion HelloAsso -->
 			<Button href="https://www.helloasso.com/associations/pause-ia/adhesions/formulaire-d-adhesion-a-pause-ia">Adhérer à l'association</Button>
 			<small class="engagement-note">
 				Prix libre, minimum 24 €/an.
-                Le droit de vote en Assemblée Générale est octroyé au delà d'une heure de bénévolat par semaine.
 			</small>
 		</div>
 
@@ -58,7 +57,7 @@
 				<span class="badge community-badge">Le cœur de l'action</span>
 			</h3>
 			<p>
-				Rejoignez notre communauté sur Discord pour échanger, vous informer et, si vous le souhaitez, passer à l'action. C'est la porte d'entrée unique pour devenir bénévole, quel que soit le temps que vous souhaitez y consacrer.
+				Rejoignez notre communauté sur Discord pour échanger, vous informer et, si vous le souhaitez, passer à l'action. C'est la porte d'entrée unique pour devenir bénévole, quel que soit le temps que vous pouvez y consacrer.
 			</p>
 			<!-- IMPORTANT: Remplacer ce lien par votre lien d'invitation Discord permanent -->
 			<Button href="https://discord.gg/vyXGd7AeGc">Rejoindre la communauté</Button>
@@ -107,8 +106,11 @@
 			<svelte:fragment slot="head">Je n'ai pas de compétence particulière, puis-je quand même aider ?</svelte:fragment>
 			<svelte:fragment slot="details">
 				<p>
-					Absolument. Nos actions de Tier 0 et Tier 1 (plaidoyer citoyen, recrutement) sont conçues pour être accessibles à tous. Nous vous fournissons les guides et le coaching nécessaire. Votre motivation est votre meilleure compétence.
-				</p>
+                    Absolument. Nos actions de Tier 0 et Tier 1 (plaidoyer citoyen, recrutement) sont conçues pour être accessibles à tous. Nous vous fournissons les guides et le coaching nécessaire. Votre motivation est votre meilleure compétence.
+                </p>
+                <p>
+                    Et cela vaut aussi pour un engagement plus important (Tier 2) ! La motivation, la fiabilité et le sens de l'organisation sont des compétences précieuses en soi. De nombreuses missions au sein de nos équipes ne demandent pas d'expertise technique préalable, et c'est une excellente occasion de développer de nouvelles compétences à nos côtés.
+                </p>
 			</svelte:fragment>
 		</Accordion>
 
