@@ -20,7 +20,7 @@
 <article>
 	<!-- Section d'introduction (Hero) -->
 	<section class="hero">
-		<UnderlinedTitle as="h1">Nous rejoindre</UnderlinedTitle>
+		<UnderlinedTitle as="h1">Rejoindre Pause IA</UnderlinedTitle>
 		<p class="hero-description">
 			Face à une course technologique qui s'accélère chaque jour, <strong>l'action collective est notre plus grande force</strong>. Chaque voix, chaque heure de bénévolat, chaque adhésion renforce notre capacité à influencer le débat public et à reprendre le contrôle.
 			<br/><br/>
@@ -57,7 +57,7 @@
 				<span class="badge community-badge">Le cœur de l'action</span>
 			</h3>
 			<p>
-				Rejoignez notre communauté sur Discord pour échanger, vous informer et, si vous le souhaitez, passer à l'action. C'est la porte d'entrée unique pour devenir bénévole, quel que soit le temps que vous pouvez y consacrer.
+				Rejoignez notre communauté sur Discord pour échanger, vous informer et, si vous le souhaitez, passer à l'action. <b>C'est la porte d'entrée unique pour devenir bénévole</b>, quel que soit le temps que vous pouvez y consacrer.
 			</p>
 			<!-- IMPORTANT: Remplacer ce lien par votre lien d'invitation Discord permanent -->
 			<Button href="https://discord.gg/vyXGd7AeGc">Rejoindre la communauté</Button>

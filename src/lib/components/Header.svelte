@@ -96,7 +96,7 @@
 				<a href="/agir" on:click={() => (open = !open)}><h2>Agir</h2></a>
 				<a href="https://pauseia.substack.com/" on:click={() => (open = !open)}><h2>Blog</h2></a>
 				<a href="/dons" on:click={() => (open = !open)}><h2>Dons</h2></a>
-				<a href="/nous-rejoindre" on:click={() => (open = !open)}><h2>Nous rejoindre</h2></a>
+				<a href="/rejoindre" on:click={() => (open = !open)}><h2>Nous rejoindre</h2></a>
 			</div>
 		</div>
 	</nav>
