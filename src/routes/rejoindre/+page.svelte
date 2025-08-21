@@ -22,7 +22,7 @@
 	<section class="hero">
 		<UnderlinedTitle as="h1">Nous rejoindre</UnderlinedTitle>
 		<p class="hero-description">
-			Face à une course technologique qui s'accélère chaque jour, <strong>l'action collective est notre plus grande force</strong>. Chaque voix, chaque heure de bénévolat, chaque adhésion renforce notre capacité à influencer le débat public et à promouvoir un développement de l'IA plus sûr et responsable.
+			Face à une course technologique qui s'accélère chaque jour, <strong>l'action collective est notre plus grande force</strong>. Chaque voix, chaque heure de bénévolat, chaque adhésion renforce notre capacité à influencer le débat public et à reprendre le contrôle.
 			<br/><br/>
 			Que vous ayez 10 minutes par semaine ou plusieurs heures à nous consacrer, il existe une place pour vous chez Pause IA. Découvrez comment vous pouvez agir à nos côtés.
 		</p>
@@ -34,17 +34,18 @@
 			<h3 class="title-with-icon">
 				<span class="icon-and-text">
 					<UserCheck size="1em" />
-					<span class="title-text">Devenir Membre de l'association</span>
+					<span class="title-text">Devenir Membre</span>
 				</span>
 				<span class="badge support-badge">Soutien officiel</span>
 			</h3>
 			<p>
-				Adhérer à Pause IA, c'est soutenir officiellement notre mission et nos statuts. En tant que membre, vous participez à la vie démocratique de l'association et donnez plus de poids à nos actions. Le droit de vote en Assemblée Générale est octroyé au delà d'une heure de bénévolat par semaine.
+				Soutenez officiellement notre mission et nos statuts. En tant que membre, vous renforcez notre poids collectif et participez à la vie démocratique de l'association. C'est le signal fort de votre engagement.
 			</p>
 			<!-- IMPORTANT: Remplacer ce lien par l'URL de votre formulaire d'adhésion HelloAsso -->
-			<Button href="https://www.helloasso.com/associations/pause-ia/adhesions/adhesion-a-pause-ia">Adhérer à l'association</Button>
+			<Button href="https://www.helloasso.com/associations/pause-ia/adhesions/formulaire-d-adhesion-a-pause-ia">Adhérer à l'association</Button>
 			<small class="engagement-note">
 				Prix libre, minimum 24 €/an.
+                Le droit de vote en Assemblée Générale est octroyé au delà d'une heure de bénévolat par semaine.
 			</small>
 		</div>
 
@@ -52,15 +53,15 @@
 			<h3 class="title-with-icon">
 				<span class="icon-and-text">
 					<Users size="1em" />
-					<span class="title-text">Rejoindre notre Communauté</span>
+					<span class="title-text">Rejoindre la Communauté</span>
 				</span>
 				<span class="badge community-badge">Le cœur de l'action</span>
 			</h3>
 			<p>
-				Notre serveur Discord est le point de ralliement de tous nos sympathisants. C'est l'endroit idéal pour échanger, vous informer et, si vous le souhaitez, passer à l'action. <strong>C'est la porte d'entrée unique pour devenir bénévole</strong>, quel que soit le temps que vous souhaitez y consacrer.
+				Rejoignez notre communauté sur Discord pour échanger, vous informer et, si vous le souhaitez, passer à l'action. C'est la porte d'entrée unique pour devenir bénévole, quel que soit le temps que vous souhaitez y consacrer.
 			</p>
 			<!-- IMPORTANT: Remplacer ce lien par votre lien d'invitation Discord permanent -->
-			<Button href="https://discord.gg/pauseai">Rejoindre la communauté</Button>
+			<Button href="https://discord.gg/vyXGd7AeGc">Rejoindre la communauté</Button>
 			<small class="engagement-note">
 				Pour échanger ou devenir bénévole.
 			</small>
@@ -74,7 +75,7 @@
 			Vous avez peu de temps mais une grande envie d'agir ? Rejoignez notre groupe WhatsApp "Pause Action" pour recevoir des actions simples et rapides à réaliser en quelques minutes par semaine.
 		</p>
 		<!-- IMPORTANT: Remplacer ce lien par votre lien d'invitation au groupe WhatsApp -->
-		<Button href="https://chat.whatsapp.com/INVITE_LINK">Rejoindre le groupe WhatsApp</Button>
+		<Button href="https://chat.whatsapp.com/LThhghXc0Hk3sTwQMyy1wU">Rejoindre</Button>
 	</div>
 
 	<!-- Section FAQ -->
