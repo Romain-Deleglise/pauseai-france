@@ -1,16 +1,17 @@
 <script lang="ts">
 	export let id = ''
 	export let as = 'h2'
+	export let underlineColor = 'var(--brand)'
 </script>
 
 {#if as === 'h1'}
-	<h1 {id}>
+	<h1 {id} style={`--underline-color: ${underlineColor}`}>
 		<span>
 			<slot />
 		</span>
 	</h1>
 {:else if as === 'h2'}
-	<h2 {id}>
+	<h2 {id} style={`--underline-color: ${underlineColor}`}>
 		<span>
 			<slot />
 		</span>
@@ -37,8 +38,10 @@
 		background-image: linear-gradient(
 			transparent,
 			/* Transparent from top... */ transparent calc(100% - var(--underline-thickness)),
-			/* ...until the start of underline */ var(--brand) calc(100% - var(--underline-thickness)),
-			/* Start of underline color */ var(--brand) 100% /* Full underline color to bottom */
+			/* ...until the start of underline */ var(--underline-color)
+				calc(100% - var(--underline-thickness)),
+			/* Start of underline color */ var(--underline-color) 100%
+				/* Full underline color to bottom */
 		);
 		background-repeat: no-repeat;
 

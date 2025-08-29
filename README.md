@@ -7,7 +7,6 @@ This repository contains the source code for the [PauseIA.fr](https://pauseia.fr
 - **SvelteKit Framework**: Modern, fast, and flexible web development with Svelte.
 - **Markdown-based Content**: Articles and pages are written in Markdown, processed by `mdsvex`.
 - **Internationalization Support**: Manages translations with clear attribution via `TRANSLATIONS.md` and an automated script (`translation-info.sh`).
-- **Client-Side Search (Pagefind)**: The build process includes Pagefind to generate a client-side search index. _Note: A search bar interface for this functionality is not currently implemented on the live website._
 - **Custom Typography**: Implements French typography rules using a custom `remark` plugin.
 - **Custom Components**: Includes reusable Svelte components for UI elements and enhanced Markdown rendering.
 - **CI/CD**: Continuous deployment to Netlify.
@@ -51,7 +50,7 @@ Here's an overview of the main directories and files:
 │   ├── app.html              # Main HTML template
 │   ├── hooks.server.ts       # SvelteKit server hooks
 │   └── mdsvex.svelte         # Default layout for mdsvex-processed Markdown content
-├── static/                   # Static assets (images, redirects, Pagefind index)
+├── static/                   # Static assets (images, redirects)
 │   ├── _redirects            # Netlify redirect rules
 │   └── logo.svg              # Site logo
 ├── tests/                    # Unit and integration tests
@@ -64,7 +63,6 @@ Here's an overview of the main directories and files:
 ├── .nvmrc                    # Specifies the Node.js version for the project
 ├── .prettierignore           # Files/directories to ignore for Prettier
 ├── .prettierrc               # Prettier configuration
-├── create-pagefind-index.js  # Script to generate the Pagefind search index
 ├── LICENSE                   # Project license (CC-BY 4.0)
 ├── package.json              # Project dependencies, scripts, and metadata
 ├── README.md                 # This file
@@ -161,15 +159,6 @@ If an article is a translation of content from another source (e.g., PauseAI Glo
 - **Development Build**: `pnpm run build:dev`
 - **Production Build**: `pnpm run build`
 
-The build process includes:
-
-1.  SvelteKit building the application.
-2.  Running `node create-pagefind-index.js`: This script generates a client-side search index using Pagefind.
-    - It indexes the content of the `build` directory.
-    - The search index is written to `static/pagefind` and then copied to `build/pagefind`.
-    - It also updates the Netlify edge functions manifest (`.netlify/edge-functions/manifest.json`) to exclude Pagefind paths from server-side rendering.
-    - _Note: While the search index is generated, a user-facing search interface is not currently implemented on the website._
-
 ## Development Practices
 
 ### Linting and Formatting
@@ -207,7 +196,6 @@ Before each commit, the following actions are performed:
   - **Rehype Plugins**:
     - `rehype-slug`: Adds `id` attributes to headings.
     - `faqPlugin`: Custom plugin (`src/lib/faqPlugin.js`) that transforms FAQ Markdown (specifically `faq.md`) into an accordion structure using the `<Accordion>` component.
-- **Pagefind**: Integrated into the build process (`create-pagefind-index.js`) to generate a search index. _A user interface for search is not currently active on the site._
 - **Enhanced Images (`@sveltejs/enhanced-img`)**: SvelteKit utility for optimizing images. Used in components like `SupporterCard.svelte` and `hero.svelte`.
 - **Vite Typography Plugin**: A custom Vite plugin (`src/lib/typographyPlugin.js` - `viteTypographyPlugin` export) that works with `remarkFrenchTypography` to generate a diff log of typography changes during build.
 

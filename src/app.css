@@ -12,6 +12,10 @@
 	--bg: var(--white);
 	--bg-subtle: var(--brand-light);
 
+	/* Generic UI tokens */
+	--border: #e5e7eb;
+	--text-secondary: #676e7a;
+
 	/* Buttons */
 	--btn-bg: var(--brand);
 	--btn-hover-bg: #ffa945;

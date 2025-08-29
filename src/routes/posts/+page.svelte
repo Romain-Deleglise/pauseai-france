@@ -10,7 +10,7 @@
 	<title>{title}</title>
 </svelte:head>
 
-<section data-pagefind-ignore>
+<section>
 	<ul class="posts">
 		{#each posts as { slug, title, description, date }}
 			<li class="post">

@@ -37,7 +37,7 @@ const config = {
 	preprocess: [vitePreprocess(), mdsvex(mdsvexOptions)],
 	kit: {
 		adapter: adapter({
-			edge: true
+			edge: false
 		}),
 		prerender: {
 			entries: process.env.PUBLIC_UNDER_CONSTRUCTION === 'true' ? [] : ['*']
