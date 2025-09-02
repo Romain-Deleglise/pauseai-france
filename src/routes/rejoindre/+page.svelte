@@ -1,14 +1,9 @@
 <script lang="ts">
-	// Import des composants réutilisés depuis la page "Donner"
 	import PostMeta from '$components/PostMeta.svelte'
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
 	import Button from '$components/Button.svelte'
 	import Accordion from '$components/Accordion.svelte'
-
-	// Import des icônes pour illustrer les cartes et les notes
 	import { UserCheck, Users, Zap } from 'lucide-svelte'
-
-	// Métadonnées de la page pour le SEO
 	const title = 'Nous rejoindre | Pause IA'
 	const description =
 		'Rejoignez notre communauté pour agir avec nous ou devenez membre pour soutenir officiellement notre mission.'
@@ -17,7 +12,6 @@
 <PostMeta {title} {description} />
 
 <article>
-	<!-- Section d'introduction (Hero) -->
 	<section class="hero">
 		<UnderlinedTitle as="h1">Rejoindre Pause IA</UnderlinedTitle>
 		<p class="hero-description">
@@ -31,7 +25,6 @@
 		</p>
 	</section>
 
-	<!-- Section des options d'engagement -->
 	<section class="engagement-options">
 		<div class="engagement-card">
 			<h3 class="title-with-icon">
@@ -46,7 +39,6 @@
 				notre poids collectif et participez à la vie de l'association. C'est le signal fort de votre
 				engagement.
 			</p>
-			<!-- IMPORTANT: Remplacer ce lien par l'URL de votre formulaire d'adhésion HelloAsso -->
 			<Button
 				href="https://www.helloasso.com/associations/pause-ia/adhesions/formulaire-d-adhesion-a-pause-ia"
 				>Adhérer à l'association</Button
@@ -67,13 +59,11 @@
 				souhaitez, passer à l'action. <b>C'est la porte d'entrée unique pour devenir bénévole</b>,
 				quel que soit le temps que vous pouvez y consacrer.
 			</p>
-			<!-- IMPORTANT: Remplacer ce lien par votre lien d'invitation Discord permanent -->
 			<Button href="https://discord.gg/vyXGd7AeGc">Rejoindre la communauté</Button>
 			<small class="engagement-note"> Pour échanger ou devenir bénévole. </small>
 		</div>
 	</section>
 
-	<!-- Bannière spéciale "Pause Action" -->
 	<div class="impact-highlight">
 		<h3><Zap size="1.2em" /> L'action rapide : Rejoignez Pause Action !</h3>
 		<p>
@@ -81,11 +71,11 @@
 			Action" pour recevoir des actions simples et rapides à réaliser en quelques minutes par
 			semaine.
 		</p>
-		<!-- IMPORTANT: Remplacer ce lien par votre lien d'invitation au groupe WhatsApp -->
-		<Button href="https://chat.whatsapp.com/LThhghXc0Hk3sTwQMyy1wU">Rejoindre Pause Action</Button>
+		<Button alt href="https://chat.whatsapp.com/LThhghXc0Hk3sTwQMyy1wU"
+			>Rejoindre Pause Action</Button
+		>
 	</div>
 
-	<!-- Section FAQ -->
 	<section class="faq-section">
 		<UnderlinedTitle>Questions fréquentes</UnderlinedTitle>
 
@@ -161,7 +151,6 @@
 </article>
 
 <style>
-	/* Styles de base de la page, repris de la page "Donner" */
 	article {
 		max-inline-size: 50rem;
 		margin-inline: auto;
@@ -184,7 +173,6 @@
 		margin-bottom: 1.5rem;
 	}
 
-	/* Grille pour les cartes d'engagement */
 	.engagement-options {
 		display: grid;
 		gap: 1.5rem;
@@ -198,7 +186,6 @@
 		}
 	}
 
-	/* Style des cartes individuelles */
 	.engagement-card {
 		background: var(--bg);
 		border-radius: 12px;
@@ -253,7 +240,6 @@
 		max-width: 100% !important;
 	}
 
-	/* Style des badges */
 	.badge {
 		color: white;
 		padding: 0.25rem 0.75rem;
@@ -266,11 +252,11 @@
 	}
 
 	.support-badge {
-		background: #4caf50; /* Vert, comme sur la page Don */
+		background: #4caf50;
 	}
 
 	.community-badge {
-		background: #3498db; /* Un bleu pour la communauté */
+		background: #3498db;
 	}
 
 	.engagement-note {
@@ -283,7 +269,6 @@
 		text-align: left;
 	}
 
-	/* Bannière "Pause Action" */
 	.impact-highlight {
 		background: linear-gradient(135deg, var(--brand), #ff6b35);
 		color: var(--black);
@@ -309,7 +294,6 @@
 		max-width: 300px !important;
 	}
 
-	/* Section FAQ */
 	.faq-section {
 		margin-top: 3rem;
 	}
