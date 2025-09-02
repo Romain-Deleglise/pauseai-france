@@ -1,5 +1,6 @@
 import * as config from '$config'
 import type { Post } from '$lib/types'
+import { getStaticRoutes } from '$lib/routes'
 
 export const prerender = true
 
@@ -7,6 +8,8 @@ export async function GET({ fetch }) {
 	const response = await fetch('api/posts')
 	const posts: Post[] = await response.json()
 	const website = config.url
+
+	const staticRoutes = getStaticRoutes()
 
 	const headers = { 'Content-Type': 'application/xml' }
 
@@ -25,6 +28,16 @@ export async function GET({ fetch }) {
 			<changefreq>daily</changefreq>
 			<priority>0.7</priority>
 		</url>
+		  ${staticRoutes
+				.map(
+					(route) =>
+						`<url>
+							<loc>${website}${route === '/' ? '' : route}</loc>
+							<changefreq>weekly</changefreq>
+							<priority>0.6</priority>
+						</url>`
+				)
+				.join('')}
 		  ${posts
 				.map(
 					(post) =>
