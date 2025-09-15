@@ -43,12 +43,6 @@
 			job: 'Etudiant en mathématiques'
 		},
 		{
-			name: 'Shaïman',
-			blurb: 'Volontaire',
-			image: 'membres/shaiman.png',
-			job: 'Vidéaste et podcasteur sur les enjeux de l’intelligence artificielle'
-		},
-		{
 			name: 'Stélian',
 			blurb: 'Volontaire',
 			image: 'membres/stelian.jpg',
@@ -70,7 +64,7 @@
 			name: 'Éloïse',
 			blurb: 'Volontaire',
 			image: 'membres/eloise.jpg',
-			job: 'Chercheuse indépendante en sécurité de l\'IA'
+			job: "Chercheuse indépendante en sécurité de l'IA"
 		},
 		{
 			name: 'Emmanuel',
@@ -106,7 +100,7 @@
 			name: 'Jérémy',
 			blurb: 'Volontaire',
 			image: 'membres/jeremy.png',
-			job: 'Chercheur en sécurité de l\'IA, Suboptimal IA'
+			job: "Chercheur en sécurité de l'IA, Suboptimal IA"
 		},
 		{
 			name: 'Mandelle',
