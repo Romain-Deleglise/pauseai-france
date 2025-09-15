@@ -1,5 +1,6 @@
 ---
-title: Offre d'emploi : PauseAI recrute un·e Directeur·rice exécutif·ve en France pour piloter la stratégie, coordonner les bénévoles et développer les antennes locales.
+title: Offre d'emploi - Directeur·rice Exécutif·ve de Pause IA
+description: Pause IA France recrute un·e Directeur·rice exécutif·ve pour piloter la stratégie, coordonner les bénévoles et développer les antennes locales.
 ---
 
 **Description du rôle**
