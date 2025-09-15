@@ -16,6 +16,7 @@ Ce rôle s'inscrit au sein de l'association Pause IA France déjà établie, qui
 * Coordonner ses actions avec le bureau de l'association française, tout en maintenant le lien hiérarchique avec PauseAI Global.
 * Renforcer la culture axée sur le bénévolat qui a été mise en place.
 
+
 **Missions Principales**
 
 * **Leadership et coordination nationale :** Agir en tant que coordinateur·rice et point de contact principal pour toutes les activités de PauseAI en France.
@@ -26,6 +27,7 @@ Ce rôle s'inscrit au sein de l'association Pause IA France déjà établie, qui
 * **Gestion d'événements :** Participer à la coordination des futurs événements PauseCon en France et en Europe, ainsi qu'à l'organisation d'actions telles que des manifestations, des ateliers, des rendez-vous de lobbying et des événements conviviaux pour les membres.
 * **Partenariats stratégiques :** Établir des relations productives et collaboratives avec les organisations françaises spécialisées dans la sécurité de l'IA, les institutions académiques et les groupes de réflexion.
 * **Relations avec les médias :** Agir en tant que porte-parole de PauseAI en France et assurer la coordination avec les médias nationaux et locaux, en lien avec notre directeur·rice de la Communication Mondiale.
+
 
 **Profil recherché**
 
@@ -38,6 +40,7 @@ Ce rôle s'inscrit au sein de l'association Pause IA France déjà établie, qui
 * Style de leadership collaboratif qui responsabilise et valorise les équipes existantes.
 * Compréhension des enjeux de la sécurité de l'IA et soutien à la solution d'un traité international pour une pause.
 * Anglais courant indispensable pour la coordination internationale.
+
 
 **Conditions**
 
