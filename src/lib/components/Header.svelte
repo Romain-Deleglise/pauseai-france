@@ -19,7 +19,7 @@
 </script>
 
 <Banner visible={true}>
-	Nous avons <a href="/waitbutwhy1" target="_blank">traduit</a> et <a href="https://pauseia.substack.com/p/la-revolution-de-lia-dix-ans-apres" target="_blank">mis en perspective</a> la série de Wait But Why sur l'IA ! Fun et pédagogique, elle permet de se familiariser avec le potentiel et les dangers de l'IA.
+	Pause IA recrute un·e directeur·rice executif·ve ! <a href="/directeur-france">Postulez ici</a>.
 </Banner>
 
 <!-- probably have to change nav colors and classes to respond to banner presence instead of route -->
