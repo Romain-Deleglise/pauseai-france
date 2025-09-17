@@ -19,7 +19,7 @@
 </script>
 
 <Banner visible={true}>
-	Pause IA recrute un·e directeur·rice executif·ve ! <a href="/directeur-france.md">Postulez ici</a>.
+	Pause IA recrute un·e directeur·rice executif·ve ! <a href="/directeur-france">Postulez ici</a>.
 </Banner>
 
 <!-- probably have to change nav colors and classes to respond to banner presence instead of route -->
