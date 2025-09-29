@@ -10,6 +10,8 @@
 
 	$: onHomepage = $page.url.pathname == '/'
 
+	$: onEmploiePage = $page.url.pathname == '/emploi-ia'
+
 	let open = false
 	// Workaround to trigger transitions on render
 	let mounted = false
@@ -27,7 +29,7 @@
 	<nav in:fade={{ duration: 500, delay: 200 }}>
 		<a href="/" class="logo">
 			<div class="big-logo">
-				<Logo animate fill_pause={onHomepage ? 'white' : 'black'} />
+				<Logo animate fill_pause={onHomepage ? 'white' : 'black'} emploi_ia={onEmploiePage} />
 			</div>
 			<div class="small-logo">
 				<Logo animate only_circle />
