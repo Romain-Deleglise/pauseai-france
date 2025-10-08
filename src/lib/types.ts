@@ -32,3 +32,12 @@ export interface Team {
 	leadName: string
 	leadEmail: string
 }
+
+export interface ArticlePreview {
+	category: string
+	image: string
+	date: string
+	title: string
+	summary: string
+	url: string
+}

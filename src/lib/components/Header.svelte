@@ -10,7 +10,7 @@
 
 	$: onHomepage = $page.url.pathname == '/'
 
-	$: onEmploiePage = $page.url.pathname == '/emploi-ia'
+	$: onEmploiePage = /^\/emploi-ia(?:\/|$)/.test($page.url.pathname)
 
 	let open = false
 	// Workaround to trigger transitions on render
@@ -27,7 +27,7 @@
 <!-- probably have to change nav colors and classes to respond to banner presence instead of route -->
 {#if mounted || !onHomepage}
 	<nav in:fade={{ duration: 500, delay: 200 }}>
-		<a href="/" class="logo">
+		<a href={onEmploiePage ? '/emploi-ia' : '/'} class="logo">
 			<div class="big-logo">
 				<Logo animate fill_pause={onHomepage ? 'white' : 'black'} emploi_ia={onEmploiePage} />
 			</div>
