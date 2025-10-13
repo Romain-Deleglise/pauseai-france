@@ -1,4 +1,18 @@
-<form action="" id="avis-form">
+<script>
+	import { enhance } from '$app/forms'
+	import toast from 'svelte-french-toast'
+</script>
+
+<form
+	method="post"
+	id="avis-form"
+	use:enhance={() => {
+		toast.success('Merci pour votre retour !', {
+			duration: 4000,
+			position: 'top-center'
+		})
+	}}
+>
 	<label for="avis"> Faites-nous un retour sur ce que vous aimeriez que l’on améliore ? </label>
 	<textarea
 		id="avis"

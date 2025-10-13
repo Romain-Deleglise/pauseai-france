@@ -2,14 +2,18 @@
 	import Button from '$lib/components/Button.svelte'
 	import { goto } from '$app/navigation'
 	import toast from 'svelte-french-toast'
+	import ThanksMessage from '$components/thanksMessage.svelte'
 
 	let formData = {
 		// Section 1: Informations personnelles
 		sexe: '',
 		age: '',
 		statutProfessionnel: '',
+		autreStatutProfessionnel: '',
 		niveauEtudes: '',
 		secteurActivite: '',
+		autreSecteurActivite: '',
+		profession: '',
 
 		// Section 2: Impact de l'IA
 		frequenceInformation: '',
@@ -101,12 +105,14 @@
 	async function nextStep() {
 		if (validateStep(currentStep)) {
 			if (currentStep === 3) {
-				if (formData.veutPlusQuestions === 'oui') {
+				if (formData.veutPlusQuestions === 'Oui') {
 					showSection4 = true
 					currentStep = 4
 				} else {
 					await submitForm()
 				}
+			} else if (currentStep === 4) {
+				await submitForm()
 			} else {
 				currentStep++
 			}
@@ -129,7 +135,7 @@
 		try {
 			// Ici, vous devrez implémenter l'envoi des données
 			// Par exemple, vers un endpoint API
-			const response = await fetch('/api/emploi-ia/submit', {
+			const response = await fetch('/api/emploi-ia/form', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
@@ -200,10 +206,10 @@
 						Sexe <span class="required">*</span>
 					</label>
 					<select id="sexe" bind:value={formData.sexe} required>
-						<option value="">- Sélectionner -</option>
-						<option value="femme">Femme</option>
-						<option value="homme">Homme</option>
-						<option value="autre">Autre</option>
+						<option value="" disabled selected>-- Sélectionner --</option>
+						<option value="Femme">Femme</option>
+						<option value="Homme">Homme</option>
+						<option value="Autre">Autre</option>
 					</select>
 				</div>
 
@@ -227,30 +233,48 @@
 						Votre statut professionnel <span class="required">*</span>
 					</label>
 					<select id="statutProfessionnel" bind:value={formData.statutProfessionnel} required>
-						<option value="">- Sélectionner -</option>
-						<option value="actif_fonctionnaire">Actif fonctionnaire</option>
-						<option value="actif_salarie">Actif salarié</option>
-						<option value="actif_independant">Actif indépendant</option>
-						<option value="actif_benevole">Actif bénévole</option>
-						<option value="actif_interimaire">Actif intérimaire / intermittent</option>
-						<option value="actif_sans_emploi">Actif sans emploi / au chômage</option>
-						<option value="diplome_recherche">Diplômé à la recherche d'un premier emploi</option>
-						<option value="etudiant">Elève / étudiant / apprenti</option>
-						<option value="retraite">Retraité</option>
-						<option value="autre">Autre</option>
+						<option value="" disabled selected>-- Sélectionner --</option>
+						<option value="Actif fonctionnaire">Actif fonctionnaire</option>
+						<option value="Actif salarié">Actif salarié</option>
+						<option value="Actif indépendant">Actif indépendant</option>
+						<option value="Actif bénévole">Actif bénévole</option>
+						<option value="Actif intérimaire / intermittent"
+							>Actif intérimaire / intermittent</option
+						>
+						<option value="Actif sans emploi / au chômage">Actif sans emploi / au chômage</option>
+						<option value="Diplômé à la recherche d'un premier emploi"
+							>Diplômé à la recherche d'un premier emploi</option
+						>
+						<option value="Élève / étudiant / apprenti">Élève / étudiant / apprenti</option>
+						<option value="Retraité">Retraité</option>
+						<option value="Autre">Autre</option>
 					</select>
 				</div>
+
+				{#if formData.statutProfessionnel === 'Autre'}
+					<div class="form-group">
+						<label for="autreStatutProfessionnel">Préciser votre statut professionnel :</label>
+						<input
+							type="text"
+							id="autreStatutProfessionnel"
+							bind:value={formData.autreStatutProfessionnel}
+						/>
+					</div>
+				{/if}
 
 				<div class="form-group">
 					<label for="niveauEtudes">Votre niveau d'études</label>
 					<select id="niveauEtudes" bind:value={formData.niveauEtudes}>
-						<option value="">- Aucun(e) -</option>
-						<option value="aucun">Aucun diplôme / Brevet des collèges</option>
-						<option value="cap_bac_pro">CAP ou bac professionnel</option>
-						<option value="bac_general">Bac général</option>
-						<option value="bac_2_3">Bac +2 ou bac +3</option>
-						<option value="bac_5">Bac +5</option>
-						<option value="sup_bac_5">&gt; Bac +5</option>
+						<option value="" disabled selected>-- Sélectionner --</option>
+						<option value="Ne souhaite pas répondre">Ne souhaite pas répondre</option>
+						<option value="Aucun diplôme / Brevet des collèges"
+							>Aucun diplôme / Brevet des collèges</option
+						>
+						<option value="CAP ou bac professionnel">CAP ou bac professionnel</option>
+						<option value="Bac général">Bac général</option>
+						<option value="Bac +2 ou bac +3">Bac +2 ou bac +3</option>
+						<option value="Bac +5">Bac +5</option>
+						<option value="> Bac +5">&gt; Bac +5</option>
 					</select>
 				</div>
 
@@ -259,11 +283,26 @@
 						Votre secteur d'activité <span class="required">*</span>
 					</label>
 					<select id="secteurActivite" bind:value={formData.secteurActivite} required>
-						<option value="">- Sélectionner -</option>
+						<option value="" disabled selected>-- Sélectionner --</option>
 						{#each secteurs as secteur}
 							<option value={secteur}>{secteur}</option>
 						{/each}
 					</select>
+				</div>
+
+				{#if formData.secteurActivite === 'Autres'}
+					<div class="form-group">
+						<label for="autreSecteurActivite">Préciser votre secteur d'activité :</label>
+						<input
+							type="text"
+							id="autreSecteurActivite"
+							bind:value={formData.autreSecteurActivite}
+						/>
+					</div>
+				{/if}
+				<div class="form-group">
+					<label for="profession">Préciser votre profession :</label>
+					<input type="text" id="profession" bind:value={formData.profession} />
 				</div>
 			</section>
 		{/if}
@@ -278,12 +317,17 @@
 						Q2.1 À quelle fréquence vous informez-vous sur les apports de l'IA ?
 					</label>
 					<select id="frequenceInformation" bind:value={formData.frequenceInformation}>
-						<option value="">- Aucun(e) -</option>
-						<option value="jamais">Jamais</option>
-						<option value="ponctuel">Moins d'une fois par mois, ponctuellement</option>
-						<option value="mensuel">Mensuelle et de façon active</option>
-						<option value="hebdomadaire">Hebdomadaire ou équivalent</option>
-						<option value="quotidien">Quotidienne ou quasi-quotidienne</option>
+						<option value="" disabled selected>-- Sélectionner --</option>
+						<option value="Ne souhaite pas répondre">Ne souhaite pas répondre</option>
+						<option value="Jamais">Jamais</option>
+						<option value="Moins d'une fois par mois, ponctuellement"
+							>Moins d'une fois par mois, ponctuellement</option
+						>
+						<option value="Mensuelle et de façon active">Mensuelle et de façon active</option>
+						<option value="Hebdomadaire ou équivalent">Hebdomadaire ou équivalent</option>
+						<option value="Quotidienne ou quasi-quotidienne"
+							>Quotidienne ou quasi-quotidienne</option
+						>
 					</select>
 				</div>
 
@@ -292,16 +336,21 @@
 						Q2.2 Dans quelle mesure pensez-vous être impacté par l'IA au travail ?
 					</label>
 					<select id="impactIA" bind:value={formData.impactIA}>
-						<option value="">- Aucun(e) -</option>
-						<option value="jamais">Jamais</option>
-						<option value="peu">Peu d'impact / Pas tout de suite</option>
-						<option value="moyen">
+						<option value="" disabled selected>-- Sélectionner --</option>
+						<option value="Ne souhaite pas répondre">Ne souhaite pas répondre</option>
+						<option value="Jamais">Jamais</option>
+						<option value="Peu d'impact / Pas tout de suite"
+							>Peu d'impact / Pas tout de suite</option
+						>
+						<option
+							value="Impact moyen : transformations auxquelles je m'adapte sans grandes difficultés"
+						>
 							Impact moyen : transformations auxquelles je m'adapte sans grandes difficultés
 						</option>
-						<option value="fort">
+						<option value="Fort impact : menace de perte d'emploi transformations difficiles">
 							Fort impact : menace de perte d'emploi, transformations difficiles
 						</option>
-						<option value="tres_fort">
+						<option value="Très fort impact : emploi perdu métier disparu compétences inutiles...">
 							Très fort impact : emploi perdu, métier disparu, compétences inutiles...
 						</option>
 					</select>
@@ -313,33 +362,61 @@
 					>
 					<div class="radio-group" role="radiogroup" aria-labelledby="rapportIA-legend">
 						<label class="radio-label">
-							<input type="radio" bind:group={formData.rapportIA} value="excitation" />
+							<input
+								type="radio"
+								bind:group={formData.rapportIA}
+								value="Ne souhaite pas répondre"
+							/>
+							Ne souhaite pas répondre
+						</label>
+						<label class="radio-label">
+							<input
+								type="radio"
+								bind:group={formData.rapportIA}
+								value="L'excitation à l'idée de l'utiliser davantage"
+							/>
 							L'excitation à l'idée de l'utiliser davantage
 						</label>
 						<label class="radio-label">
-							<input type="radio" bind:group={formData.rapportIA} value="confiance" />
+							<input
+								type="radio"
+								bind:group={formData.rapportIA}
+								value="La confiance dans ces nouveaux outils"
+							/>
 							La confiance dans ces nouveaux outils
 						</label>
 						<label class="radio-label">
-							<input type="radio" bind:group={formData.rapportIA} value="neutre" />
+							<input
+								type="radio"
+								bind:group={formData.rapportIA}
+								value="Pas de rapport particulier"
+							/>
 							Pas de rapport particulier
 						</label>
 						<label class="radio-label">
-							<input type="radio" bind:group={formData.rapportIA} value="prudence" />
+							<input
+								type="radio"
+								bind:group={formData.rapportIA}
+								value="L'observation et la prudence"
+							/>
 							L'observation et la prudence
 						</label>
 						<label class="radio-label">
-							<input type="radio" bind:group={formData.rapportIA} value="anxiete" />
+							<input
+								type="radio"
+								bind:group={formData.rapportIA}
+								value="Le malaise voire l'anxiété"
+							/>
 							Le malaise voire l'anxiété
 						</label>
 						<label class="radio-label">
-							<input type="radio" bind:group={formData.rapportIA} value="autre" />
+							<input type="radio" bind:group={formData.rapportIA} value="Un autre rapport" />
 							Un autre rapport
 						</label>
 					</div>
 				</fieldset>
 
-				{#if formData.rapportIA === 'autre'}
+				{#if formData.rapportIA === 'Un autre rapport'}
 					<div class="form-group">
 						<label for="autreRapport">Si autre rapport, indiquer lequel :</label>
 						<input type="text" id="autreRapport" bind:value={formData.autreRapport} />
@@ -358,52 +435,83 @@
 						Q3.1 Seriez-vous intéressé à participer à une cellule de réflexion IA et emplois ?
 					</label>
 					<select id="interesseCellule" bind:value={formData.interesseCellule}>
-						<option value="">- Aucun(e) -</option>
-						<option value="oui">Oui</option>
-						<option value="non">Non</option>
-						<option value="ne_sais_pas">Ne sais pas</option>
+						<option value="" disabled selected>-- Sélectionner --</option>
+						<option value="Ne souhaite pas répondre">Ne souhaite pas répondre</option>
+						<option value="Oui">Oui</option>
+						<option value="Non">Non</option>
+						<option value="Ne sais pas">Ne sais pas</option>
 					</select>
 				</div>
+				{#if formData.interesseCellule === 'Oui'}
+					<fieldset class="form-group">
+						<legend id="objectifsCellule-legend">Q3.2 qu'y chercheriez-vous ?</legend>
+						<div class="checkbox-group">
+							<label class="checkbox-label">
+								<input
+									type="checkbox"
+									bind:group={formData.objectifsCellule}
+									value="Partager mon expérience / témoigner"
+								/>
+								Partager mon expérience / témoigner
+							</label>
+							<label class="checkbox-label">
+								<input
+									type="checkbox"
+									bind:group={formData.objectifsCellule}
+									value="Du conseil pour une reconversion / un choix avisé de formation"
+								/>
+								Du conseil pour une reconversion / un choix avisé de formation
+							</label>
+							<label class="checkbox-label">
+								<input
+									type="checkbox"
+									bind:group={formData.objectifsCellule}
+									value="Du soutien psychologique"
+								/>
+								Du soutien psychologique
+							</label>
+							<label class="checkbox-label">
+								<input
+									type="checkbox"
+									bind:group={formData.objectifsCellule}
+									value="De l'information sur mes droits de travailleur"
+								/>
+								De l'information sur mes droits de travailleur
+							</label>
+							<label class="checkbox-label">
+								<input
+									type="checkbox"
+									bind:group={formData.objectifsCellule}
+									value="De l'information / échanges sur les avancées de l'IA dans mon métier / secteur / mes compétences"
+								/>
+								De l'information / échanges sur les avancées de l'IA dans mon métier / secteur / mes
+								compétences
+							</label>
+							<label class="checkbox-label">
+								<input
+									type="checkbox"
+									bind:group={formData.objectifsCellule}
+									value="Des moyens d'agir sur ma situation personnelle au travail"
+								/>
+								Des moyens d'agir sur ma situation personnelle au travail
+							</label>
+							<label class="checkbox-label">
+								<input
+									type="checkbox"
+									bind:group={formData.objectifsCellule}
+									value="Des moyens d'agir sur la société et le monde du travail"
+								/>
+								Des moyens d'agir sur la société et le monde du travail
+							</label>
+							<label class="checkbox-label">
+								<input type="checkbox" bind:group={formData.objectifsCellule} value="Autre" />
+								Autre
+							</label>
+						</div>
+					</fieldset>
+				{/if}
 
-				<fieldset class="form-group">
-					<legend id="objectifsCellule-legend">Q3.2 Et si oui, qu'y chercheriez-vous ?</legend>
-					<div class="checkbox-group">
-						<label class="checkbox-label">
-							<input type="checkbox" bind:group={formData.objectifsCellule} value="partager" />
-							Partager mon expérience / témoigner
-						</label>
-						<label class="checkbox-label">
-							<input type="checkbox" bind:group={formData.objectifsCellule} value="conseil" />
-							Du conseil pour une reconversion / un choix avisé de formation
-						</label>
-						<label class="checkbox-label">
-							<input type="checkbox" bind:group={formData.objectifsCellule} value="soutien" />
-							Du soutien psychologique
-						</label>
-						<label class="checkbox-label">
-							<input type="checkbox" bind:group={formData.objectifsCellule} value="droits" />
-							De l'information sur mes droits de travailleur
-						</label>
-						<label class="checkbox-label">
-							<input type="checkbox" bind:group={formData.objectifsCellule} value="avancees_ia" />
-							De l'information / échanges sur les avancées de l'IA dans mon métier / secteur / mes compétences
-						</label>
-						<label class="checkbox-label">
-							<input type="checkbox" bind:group={formData.objectifsCellule} value="agir_perso" />
-							Des moyens d'agir sur ma situation personnelle au travail
-						</label>
-						<label class="checkbox-label">
-							<input type="checkbox" bind:group={formData.objectifsCellule} value="agir_societe" />
-							Des moyens d'agir sur la société et le monde du travail
-						</label>
-						<label class="checkbox-label">
-							<input type="checkbox" bind:group={formData.objectifsCellule} value="autre" />
-							Autre
-						</label>
-					</div>
-				</fieldset>
-
-				{#if formData.objectifsCellule.includes('autre')}
+				{#if formData.objectifsCellule.includes('Autre')}
 					<div class="form-group">
 						<label for="autreObjectif">Préciser ce que vous y chercheriez d'autre :</label>
 						<input type="text" id="autreObjectif" bind:value={formData.autreObjectif} />
@@ -433,16 +541,8 @@
 
 					{#if formData.consentementPartage}
 						<div class="form-group">
-							<label for="prenom">
-								Votre prénom (pour signer votre témoignage) <span class="required">*</span>
-							</label>
-							<input
-								type="text"
-								id="prenom"
-								bind:value={formData.prenom}
-								required
-								placeholder="Ex: Marie"
-							/>
+							<label for="prenom"> Votre prénom (pour signer votre témoignage) </label>
+							<input type="text" id="prenom" bind:value={formData.prenom} placeholder="Ex: Marie" />
 							<p class="field-description">
 								Votre prénom sera affiché avec votre témoignage si vous consentez à le partager.
 							</p>
@@ -473,24 +573,13 @@
 						<span class="required">*</span>
 					</label>
 					<select id="veutPlusQuestions" bind:value={formData.veutPlusQuestions} required>
-						<option value="">- Sélectionner -</option>
-						<option value="oui">Oui</option>
-						<option value="non">Non</option>
+						<option value="Oui">Oui</option>
+						<option value="Non">Non</option>
 					</select>
 				</div>
 
-				{#if formData.veutPlusQuestions === 'non'}
-					<div class="thank-you-message">
-						<p><strong>Merci d'avoir répondu à ce questionnaire !</strong></p>
-						<p>
-							Si vous n'y êtes pas déjà, vous pourrez trouver de l'information sur le site
-							<a href="https://pauseia.fr" target="_blank">Pause IA.fr</a>
-							et
-							<a href="https://discord.com/invite/YkKvW9APP9" target="_blank">son serveur Discord</a
-							>. Vous pourrez échanger avec d'autres personnes sur le sujet, vous informer et même
-							agir !
-						</p>
-					</div>
+				{#if formData.veutPlusQuestions === 'Non'}
+					<ThanksMessage />
 				{/if}
 			</section>
 		{/if}
@@ -505,13 +594,14 @@
 						Q4.1 Quelle est votre utilisation de l'IA dans votre activité professionnelle ?
 					</label>
 					<select id="utilisationIA" bind:value={formData.utilisationIA}>
-						<option value="">- Aucun(e) -</option>
-						<option value="jamais">Jamais</option>
-						<option value="ponctuel">Très ponctuellement</option>
-						<option value="hebdomadaire">Toutes les semaines</option>
-						<option value="quotidien">Tous les jours</option>
-						<option value="permanent">Toutes mes tâches ou presque</option>
-						<option value="ne_sais_pas">Je ne sais pas</option>
+						<option value="" disabled selected>-- Sélectionner --</option>
+						<option value="Ne souhaite pas répondre">Ne souhaite pas répondre</option>
+						<option value="Jamais">Jamais</option>
+						<option value="Très ponctuellement">Très ponctuellement</option>
+						<option value="Toutes les semaines">Toutes les semaines</option>
+						<option value="Tous les jours">Tous les jours</option>
+						<option value="Toutes mes tâches ou presque">Toutes mes tâches ou presque</option>
+						<option value="Je ne sais pas">Je ne sais pas</option>
 					</select>
 				</div>
 
@@ -519,46 +609,62 @@
 					<legend>Q4.2 Pour quel(s) type(s) de tâches utilisez-vous l'IA ?</legend>
 					<div class="checkbox-group">
 						<label class="checkbox-label">
-							<input type="checkbox" bind:group={formData.typeTaches} value="generation_media" />
+							<input
+								type="checkbox"
+								bind:group={formData.typeTaches}
+								value="Génération d'images, de sons, de vidéos"
+							/>
 							Génération d'images, de sons, de vidéos
 						</label>
 						<label class="checkbox-label">
-							<input type="checkbox" bind:group={formData.typeTaches} value="analyse_resume" />
+							<input
+								type="checkbox"
+								bind:group={formData.typeTaches}
+								value="Analyse / Résumé de document (texte, vidéo...)"
+							/>
 							Analyse / Résumé de document (texte, vidéo...)
 						</label>
 						<label class="checkbox-label">
-							<input type="checkbox" bind:group={formData.typeTaches} value="traduction" />
+							<input type="checkbox" bind:group={formData.typeTaches} value="Traduction" />
 							Traduction
 						</label>
 						<label class="checkbox-label">
 							<input
 								type="checkbox"
 								bind:group={formData.typeTaches}
-								value="correction_redaction"
+								value="Correction et rédaction de texte"
 							/>
 							Correction et rédaction de texte
 						</label>
 						<label class="checkbox-label">
-							<input type="checkbox" bind:group={formData.typeTaches} value="automatisation" />
+							<input
+								type="checkbox"
+								bind:group={formData.typeTaches}
+								value="Automatisation de tâches répétitives"
+							/>
 							Automatisation de tâches répétitives
 						</label>
 						<label class="checkbox-label">
-							<input type="checkbox" bind:group={formData.typeTaches} value="codage" />
+							<input type="checkbox" bind:group={formData.typeTaches} value="Codage" />
 							Codage
 						</label>
 						<label class="checkbox-label">
-							<input type="checkbox" bind:group={formData.typeTaches} value="gestion_planning" />
+							<input
+								type="checkbox"
+								bind:group={formData.typeTaches}
+								value="Gestion de planning / projet"
+							/>
 							Gestion de planning / projet
 						</label>
 						<label class="checkbox-label">
-							<input type="checkbox" bind:group={formData.typeTaches} value="analyse_donnees" />
+							<input type="checkbox" bind:group={formData.typeTaches} value="Analyse de données" />
 							Analyse de données
 						</label>
 						<label class="checkbox-label">
 							<input
 								type="checkbox"
 								bind:group={formData.typeTaches}
-								value="gestion_relationnelle"
+								value="Gestion relationnelle (chatbot, mail..)"
 							/>
 							Gestion relationnelle (chatbot, mail..)
 						</label>
@@ -566,22 +672,26 @@
 							<input
 								type="checkbox"
 								bind:group={formData.typeTaches}
-								value="pilotage_dispositifs"
+								value="Pilotage/contrôle de dispositifs connectés"
 							/>
 							Pilotage/contrôle de dispositifs connectés
 						</label>
 						<label class="checkbox-label">
-							<input type="checkbox" bind:group={formData.typeTaches} value="aide_decision" />
+							<input
+								type="checkbox"
+								bind:group={formData.typeTaches}
+								value="Prise de décision / aide à la décision"
+							/>
 							Prise de décision / aide à la décision
 						</label>
 						<label class="checkbox-label">
-							<input type="checkbox" bind:group={formData.typeTaches} value="autre" />
+							<input type="checkbox" bind:group={formData.typeTaches} value="Autre" />
 							Autre
 						</label>
 					</div>
 				</fieldset>
 
-				{#if formData.typeTaches.includes('autre')}
+				{#if formData.typeTaches.includes('Autre')}
 					<div class="form-group">
 						<label for="autreTache">Préciser quelles autres tâches :</label>
 						<input type="text" id="autreTache" bind:value={formData.autreTache} />
@@ -592,22 +702,34 @@
 					<legend>Q4.3 Pour quelle(s) raison(s) utilisez-vous l'IA au travail ?</legend>
 					<div class="checkbox-group">
 						<label class="checkbox-label">
-							<input type="checkbox" bind:group={formData.raisonsUtilisation} value="curiosite" />
+							<input
+								type="checkbox"
+								bind:group={formData.raisonsUtilisation}
+								value="Par pure curiosité"
+							/>
 							Par pure curiosité
 						</label>
 						<label class="checkbox-label">
-							<input type="checkbox" bind:group={formData.raisonsUtilisation} value="formation" />
+							<input
+								type="checkbox"
+								bind:group={formData.raisonsUtilisation}
+								value="Suite à une formation / demande de ma direction"
+							/>
 							Suite à une formation / demande de ma direction
 						</label>
 						<label class="checkbox-label">
-							<input type="checkbox" bind:group={formData.raisonsUtilisation} value="collegues" />
+							<input
+								type="checkbox"
+								bind:group={formData.raisonsUtilisation}
+								value="Suite aux conseils de mes collègues"
+							/>
 							Suite aux conseils de mes collègues
 						</label>
 						<label class="checkbox-label">
 							<input
 								type="checkbox"
 								bind:group={formData.raisonsUtilisation}
-								value="pression_concurrentielle"
+								value="Suite à la pression concurrentielle"
 							/>
 							Suite à la pression concurrentielle
 						</label>
@@ -615,7 +737,7 @@
 							<input
 								type="checkbox"
 								bind:group={formData.raisonsUtilisation}
-								value="realiser_taches"
+								value="Pour pouvoir réaliser toutes mes tâches"
 							/>
 							Pour pouvoir réaliser toutes mes tâches
 						</label>
@@ -623,22 +745,26 @@
 							<input
 								type="checkbox"
 								bind:group={formData.raisonsUtilisation}
-								value="manque_competences"
+								value="Par manque de compétences"
 							/>
 							Par manque de compétences
 						</label>
 						<label class="checkbox-label">
-							<input type="checkbox" bind:group={formData.raisonsUtilisation} value="efficacite" />
+							<input
+								type="checkbox"
+								bind:group={formData.raisonsUtilisation}
+								value="Pour gagner du temps, être plus efficace"
+							/>
 							Pour gagner du temps, être plus efficace
 						</label>
 						<label class="checkbox-label">
-							<input type="checkbox" bind:group={formData.raisonsUtilisation} value="autre" />
+							<input type="checkbox" bind:group={formData.raisonsUtilisation} value="Autre" />
 							Autre
 						</label>
 					</div>
 				</fieldset>
 
-				{#if formData.raisonsUtilisation.includes('autre')}
+				{#if formData.raisonsUtilisation.includes('Autre')}
 					<div class="form-group">
 						<label for="autreRaison">Préciser les autres raisons :</label>
 						<input type="text" id="autreRaison" bind:value={formData.autreRaison} />
@@ -650,34 +776,24 @@
 						Q4.4 Êtes-vous satisfait de cette utilisation ?
 					</label>
 					<select id="satisfactionUtilisation" bind:value={formData.satisfactionUtilisation}>
-						<option value="">- Aucun(e) -</option>
-						<option value="non_pas_utiliser">Non, je ne sais pas bien l'utiliser</option>
-						<option value="non_resultats"
+						<option value="" disabled selected>-- Sélectionner --</option>
+						<option value="Ne souhaite pas répondre">Ne souhaite pas répondre</option>
+						<option value="Non je ne sais pas bien l'utiliser"
+							>Non, je ne sais pas bien l'utiliser</option
+						>
+						<option value="Non les résultats obtenus ne sont pas satisfaisants"
 							>Non, les résultats obtenus ne sont pas satisfaisants</option
 						>
-						<option value="mitige">Oui et non, cela dépend des tâches</option>
-						<option value="oui_precieux">Oui, c'est un outil de travail précieux</option>
-						<option value="oui_decuple">Oui, cela décuple mes capacités</option>
+						<option value="Oui et non cela dépend des tâches"
+							>Oui et non, cela dépend des tâches</option
+						>
+						<option value="Oui c'est un outil de travail précieux"
+							>Oui, c'est un outil de travail précieux</option
+						>
+						<option value="Oui cela décuple mes capacités">Oui, cela décuple mes capacités</option>
 					</select>
 				</div>
-
-				<div class="thank-you-message">
-					<p><strong>Merci d'avoir répondu à ce questionnaire !</strong></p>
-					<p>
-						Merci d’avoir répondu à notre questionnaire 🙂. N’hésitez pas à parcourir le site de
-						<a href="https://pauseia.fr" target="_blank" rel="noopener noreferrer">Pause IA.fr</a>
-						l’association derrière le groupe de travail
-						<a href="https://pauseia.fr/emploi-ia" target="_blank" rel="noopener noreferrer"
-							>emploi IA</a
-						>, pour découvrir nos revendications et nos actions. Et si vous souhaitez rester
-						connectés avec nous, rejoignez
-						<a
-							href="https://discord.com/invite/YkKvW9APP9"
-							target="_blank"
-							rel="noopener noreferrer">notre groupe Discord</a
-						>. vous pourrez y échanger directement avec les membres de l’association.
-					</p>
-				</div>
+				<ThanksMessage />
 			</section>
 		{/if}
 
@@ -686,15 +802,15 @@
 			{#if currentStep > 1}
 				<Button type="button" alt on:click={prevStep}>Précédent</Button>
 			{/if}
-			{#if currentStep < 3 || (currentStep === 3 && formData.veutPlusQuestions === 'oui') || currentStep === 4}
+			{#if currentStep < 3 || (currentStep === 3 && formData.veutPlusQuestions === 'Oui') || currentStep === 4}
 				<Button type="submit" disabled={isSubmitting}>
-					{#if currentStep === 4 || (currentStep === 3 && formData.veutPlusQuestions === 'non')}
+					{#if currentStep === 4 || (currentStep === 3 && formData.veutPlusQuestions === 'Non')}
 						{isSubmitting ? 'Envoi en cours...' : 'Soumettre'}
 					{:else}
 						Suivant
 					{/if}
 				</Button>
-			{:else if currentStep === 3 && formData.veutPlusQuestions === 'non'}
+			{:else if currentStep === 3 && formData.veutPlusQuestions === 'Non'}
 				<Button type="submit" disabled={isSubmitting}>
 					{isSubmitting ? 'Envoi en cours...' : 'Soumettre'}
 				</Button>
@@ -871,18 +987,6 @@
 		font-size: 0.875rem;
 		color: var(--text-secondary);
 		margin-top: 0.5rem;
-		margin-bottom: 0;
-	}
-
-	.thank-you-message {
-		background-color: var(--brand-light);
-		padding: 1.5rem;
-		border-radius: 0.5rem;
-		margin-top: 2rem;
-		border-left: 4px solid var(--brand);
-	}
-
-	.thank-you-message p:last-child {
 		margin-bottom: 0;
 	}
 

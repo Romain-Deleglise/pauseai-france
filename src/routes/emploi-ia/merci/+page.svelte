@@ -34,7 +34,7 @@
 		</div>
 
 		<div class="back-link">
-			<a href="/emploi-ia">← Retour à la page IA et emploi</a>
+			<a href="/emploi-ia">← Retour à la page du groupe de travail emploi IA</a>
 		</div>
 	</div>
 </article>

@@ -71,10 +71,10 @@
 				<div class="scrollable">
 					<header class="heading">
 						<h3>
-							{#if currentTestimonial.name && currentTestimonial.age}
-								{currentTestimonial.name}
+							{#if currentTestimonial.name}
+								{currentTestimonial.name},
 							{/if}
-							{#if currentTestimonial.age}
+							{#if Number(currentTestimonial.age) && currentTestimonial.name}
 								{currentTestimonial.age} ans,
 							{/if}
 							{currentTestimonial.job}
