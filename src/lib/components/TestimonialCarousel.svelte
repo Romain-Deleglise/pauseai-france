@@ -77,7 +77,9 @@
 							{#if Number(currentTestimonial.age) && currentTestimonial.name}
 								{currentTestimonial.age} ans,
 							{/if}
-							{currentTestimonial.job}
+							{#if currentTestimonial.job}
+								{currentTestimonial.job}
+							{/if}
 						</h3>
 						<p class="date">{formattedDate}</p>
 					</header>
