@@ -133,8 +133,6 @@
 		isSubmitting = true
 
 		try {
-			// Ici, vous devrez implémenter l'envoi des données
-			// Par exemple, vers un endpoint API
 			const response = await fetch('/api/emploi-ia/form', {
 				method: 'POST',
 				headers: {
@@ -150,7 +148,6 @@
 				toast.error('Une erreur est survenue. Veuillez réessayer.')
 			}
 		} catch (error) {
-			console.error('Erreur lors de la soumission:', error)
 			toast.error('Une erreur est survenue. Veuillez réessayer.')
 		} finally {
 			isSubmitting = false

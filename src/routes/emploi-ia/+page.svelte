@@ -8,8 +8,6 @@
 
 	export let data: PageData
 
-	console.log(data)
-
 	interface Testimonial {
 		name: string | null
 		age: number | null
@@ -55,6 +53,26 @@
 		name="description"
 		content="Découvrez Emploi IA, un groupe de Pause IA dédié à comprendre l'impact de l'intelligence artificielle sur le travail et à préparer l'avenir."
 	/>
+	<meta
+		name="keywords"
+		content="Emploi, IA, Intelligence Artificielle, Travail, Automatisation, Marché du travail, Recrutement, Compétences, Formation, Reconversion, Chômage, Futur du travail"
+	/>
+	<meta name="robots" content="index, follow" />
+	<meta property="og:title" content="Emploi et IA - Informez vous et agissez | PauseAI France" />
+	<meta
+		property="og:description"
+		content="Découvrez Emploi IA, un groupe de Pause IA dédié à comprendre l'impact de l'intelligence artificielle sur le travail et à préparer l'avenir."
+	/>
+	<meta property="og:image" content="https://pauseia.fr/emploi-ia/emploi-IA.png" />
+	<meta property="og:url" content="https://pauseia.fr/emploi-ia" />
+	<meta property="og:type" content="website" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content="Emploi et IA - Informez vous et agissez | PauseAI France" />
+	<meta
+		name="twitter:description"
+		content="Découvrez Emploi IA, un groupe de Pause IA dédié à comprendre l'impact de l'intelligence artificielle sur le travail et à préparer l'avenir."
+	/>
+	<meta name="twitter:image" content="https://pauseia.fr/emploi-ia/emploi-IA.png" />
 </svelte:head>
 
 <article>
@@ -119,10 +137,8 @@
 			<p>
 				Nous recueillons régulièrement des témoignages de personnes dont la vie professionnelle a
 				été impactée par l’IA. Si vous aussi avez été concerné, ou pensez que cela pourrait arriver,
-				vous pouvez partager votre expérience <a
-					href="https://framaforms.org/enquete-2025-ia-et-emploi-1750943896"
-					target="_blank"
-					rel="noopener noreferrer">grâce à notre questionnaire</a
+				vous pouvez partager votre expérience <a href="/emploi-ia/questionnaire"
+					>grâce à notre questionnaire</a
 				>.
 			</p>
 

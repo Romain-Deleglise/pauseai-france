@@ -8,8 +8,6 @@ const notion = new Client({
 export const prerender = false
 
 export async function load() {
-	console.log('testimaonls datasource id:', process.env.TESTIMONIALS_ID)
-
 	const testimonials_datasource = await notion.dataSources.query({
 		data_source_id: process.env.TESTIMONIALS_ID || ''
 	})
@@ -68,9 +66,7 @@ export const actions = {
 			const page = await notion.pages.create({
 				parent: { data_source_id: process.env.FEEDBACK_ID || '' },
 
-				// properties must match your database property names & types
 				properties: {
-					// If your DB has a Title property called "Name" or "Title"
 					Avis: {
 						title: [
 							{
@@ -78,17 +74,12 @@ export const actions = {
 							}
 						]
 					}
-
-					// Optional examples:
-					// Rating: { number: 5 },
-					// Status: { select: { name: "New" } },
-					// CreatedAt: { date: { start: new Date().toISOString() } },
 				}
 			})
 
 			return { success: true, pageId: page.id }
 		} catch (error) {
-			console.error('Notion error:', error)
+			return { success: false, error: 'Une erreur est survenue.' }
 		}
 	}
 } satisfies Actions

@@ -10,7 +10,6 @@ export const POST: RequestHandler = async ({ request }) => {
 	try {
 		let data = await request.json()
 
-		// Validation basique
 		if (
 			!data.email ||
 			!data.sexe ||
@@ -42,17 +41,7 @@ export const POST: RequestHandler = async ({ request }) => {
 				.join('\n\n')
 		}
 
-		console.log('Données reçues:', data)
-
-		// Pour l'instant, on log simplement les données
-		console.log('Nouvelle réponse au questionnaire:', {
-			timestamp: new Date().toISOString(),
-			...data
-		})
-
-		// Build properties object, excluding empty select fields
 		const properties: any = {
-			// If your DB has a Title property called "Name" or "Title"
 			Prenom: {
 				title: [
 					{
@@ -130,7 +119,6 @@ export const POST: RequestHandler = async ({ request }) => {
 			}
 		}
 
-		// Add optional select fields only if they have values
 		if (data.niveauEtudes && data.niveauEtudes.trim()) {
 			properties.Niveau_études = {
 				select: { name: data.niveauEtudes }
@@ -168,7 +156,6 @@ export const POST: RequestHandler = async ({ request }) => {
 
 		return json({ success: true })
 	} catch (error) {
-		console.error('Erreur lors de la soumission du questionnaire:', error)
 		return json({ error: 'Erreur serveur' }, { status: 500 })
 	}
 }
