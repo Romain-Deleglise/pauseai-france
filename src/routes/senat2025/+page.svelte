@@ -83,22 +83,23 @@
     <div class="content">
         <div class="two-col">
             <div>
+                <h2>Restez informé·e</h2>
+                <p>Inscrivez-vous pour recevoir :
+                <ul class="features">
+                    <li>→ Notre analyse détaillée</li>
+                    <li>→ Notre newsletter</li>
+                    <li>→ Nos propositions législatives</li>
+                    <li>→ Les prochains événements</li>
+                </ul>
+                </p>
+            </div>
+            <div>
                 <h2>Ce que vous trouverez</h2>
                 <ul class="features">
                     <li>✓ Synthèse des interventions</li>
                     <li>✓ Recommandations concrètes pour les parlementaires</li>
                     <li>✓ Ressources pour approfondir</li>
                     <li>✓ Prochaines étapes & actions</li>
-                </ul>
-            </div>
-            <div>
-                <h2>Restez informé·e</h2>
-                <p>Inscrivez-vous pour recevoir :</p>
-                <ul class="features">
-                    <li>→ Notre analyse détaillée</li>
-                    <li>→ Notre newsletter</li>
-                    <li>→ Nos propositions législatives</li>
-                    <li>→ Les prochains événements</li>
                 </ul>
             </div>
         </div>
