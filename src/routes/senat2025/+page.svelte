@@ -1,5 +1,4 @@
 <script lang="ts">
-    export const excludeFromSitemap = true
 
     let firstName = ''
     let lastName = ''
@@ -67,13 +66,11 @@
 </script>
 
 <svelte:head>
-    <meta name="robots" content="noindex, nofollow" />
-    <meta name="pagefind:exclude" content="true" />
     <meta name="description" content="Colloque au Sénat — Accédez aux recommandations, synthèses et prochaines étapes. Inscrivez-vous pour recevoir notre compte-rendu et nos propositions législatives." />
     <title>Colloque Sénat — Recommandations & compte-rendu | Pause IA</title>
 </svelte:head>
 
-<section class="wrap" data-pagefind-ignore>
+<section class="wrap">
     <div class="hero">
         <img src="/Cover.jpg" alt="Colloque Sénat — Intelligence Artificielle : Sécuriser les pratiques, contenir les risques" />
         <div class="hero-text">
