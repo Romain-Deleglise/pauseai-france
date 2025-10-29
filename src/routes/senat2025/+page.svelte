@@ -84,14 +84,13 @@
         <div class="two-col">
             <div>
                 <h2>Restez informé·e</h2>
-                <p>Inscrivez-vous pour recevoir :
+                <p>Inscrivez-vous pour recevoir :</p>
                 <ul class="features">
                     <li>→ Notre analyse détaillée</li>
                     <li>→ Notre newsletter</li>
                     <li>→ Nos propositions législatives</li>
                     <li>→ Les prochains événements</li>
                 </ul>
-                </p>
             </div>
             <div>
                 <h2>Ce que vous trouverez</h2>
@@ -147,11 +146,6 @@
 
             <button type="submit" disabled={isSubmitting}>Envoyer</button>
         </form>
-
-        <div class="footer">
-            <img src="/logo.svg" alt="Pause IA" class="logo" />
-            <a class="contact" href="mailto:contact@pauseia.fr">contact@pauseia.fr</a>
-        </div>
     </div>
 </section>
 
