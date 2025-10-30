@@ -146,6 +146,7 @@ export const POST: RequestHandler = async ({ request }) => {
 
 		let contactId: number
 		let createdNewContact = false
+		let needsEmailCreation = false // Track whether we need to create email record
 
 		if (emailResult.count && emailResult.count > 0 && emailResult.values) {
 			const emailRecord = emailResult.values[0]
@@ -191,9 +192,10 @@ export const POST: RequestHandler = async ({ request }) => {
 							}
 						]
 					})
+					needsEmailCreation = false // Email was reassigned, don't create new one
 				}
 			} else {
-				// No valid contact_id on Email row: create contact and attach a new email record
+				// No valid contact_id on Email row: create contact and reassign email
 				const contactResult = await callApi4<ContactRecord>('Contact', 'create', {
 					values: {
 						contact_type: 'Individual',
@@ -212,9 +214,22 @@ export const POST: RequestHandler = async ({ request }) => {
 				}
 				contactId = contactResult.values[0].id
 				createdNewContact = true
+				// Reassign existing email to the new contact
+				await callApi4('Email', 'save', {
+					match: ['id'],
+					records: [
+						{
+							id: emailRecord.id,
+							contact_id: contactId,
+							is_primary: true,
+							'location_type_id:label': 'Domicile'
+						}
+					]
+				})
+				needsEmailCreation = false // Email was reassigned, don't create new one
 			}
 		} else {
-			// No email row found: create contact
+			// No email row found: create contact and email record
 			const contactResult = await callApi4<ContactRecord>('Contact', 'create', {
 				values: {
 					contact_type: 'Individual',
@@ -235,6 +250,7 @@ export const POST: RequestHandler = async ({ request }) => {
 
 			contactId = contactResult.values[0].id
 			createdNewContact = true
+			needsEmailCreation = true // Need to create new email record
 		}
 
 		// Optionally update existing contact names if provided
@@ -256,8 +272,8 @@ export const POST: RequestHandler = async ({ request }) => {
 			}
 		}
 
-		// Ensure email record exists and is attached
-		if (createdNewContact) {
+		// Create email record if needed (when no email existed before)
+		if (needsEmailCreation) {
 			await callApi4('Email', 'create', {
 				values: {
 					contact_id: contactId,
