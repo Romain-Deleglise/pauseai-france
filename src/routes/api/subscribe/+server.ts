@@ -366,14 +366,13 @@ export const POST: RequestHandler = async ({ request }) => {
 				? alreadyInConference
 					? 'Compte-rendu: déjà inscrit·e'
 					: 'Compte-rendu: inscription confirmée'
-				: null
-		].filter(Boolean) as string[]
-		if (data.subscribePolicyProposals)
-			selections.push(
-				alreadyInPolicyProposals
+				: null,
+			data.subscribePolicyProposals
+				? alreadyInPolicyProposals
 					? 'Propositions législatives: déjà inscrit·e'
 					: 'Propositions législatives: inscription confirmée'
-			)
+				: null
+		].filter(Boolean) as string[]
 
 		const message = selections.length ? selections.join(' • ') : 'Inscription réussie!'
 		return json({ success: true, message, contact_id: contactId })
