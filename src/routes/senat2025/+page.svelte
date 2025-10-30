@@ -4,8 +4,8 @@
 	let email = ''
 	let subscribeNewsletter = true
 	let subscribeSubstack = false
-	let policyProposals = true
-	let conferenceReport = true
+	let subscribePolicyProposals = true
+	let subscribeConferenceReport = true
 	let isSubmitting = false
 	let message = ''
 	let isError = false
@@ -23,7 +23,12 @@
 		}
 
 		// Require at least one subscription option
-		if (!subscribeNewsletter && !subscribeSubstack && !conferenceReport && !policyProposals) {
+		if (
+			!subscribeNewsletter &&
+			!subscribeSubstack &&
+			!subscribeConferenceReport &&
+			!subscribePolicyProposals
+		) {
 			isError = true
 			message = 'Sélectionnez au moins une option'
 			return
@@ -38,8 +43,8 @@
 					email,
 					subscribeNewsletter,
 					subscribeSubstack,
-					conferenceReport,
-					policyProposals,
+					subscribeConferenceReport,
+					subscribePolicyProposals,
 					firstName: firstName || undefined,
 					lastName: lastName || undefined,
 					source: 'senat2025'
@@ -131,11 +136,11 @@
 			<fieldset class="choices">
 				<legend>Choix d'abonnement</legend>
 				<label class="check">
-					<input type="checkbox" bind:checked={conferenceReport} disabled={isSubmitting} />
+					<input type="checkbox" bind:checked={subscribeConferenceReport} disabled={isSubmitting} />
 					<span>Recevoir le compte-rendu de la conférence</span>
 				</label>
 				<label class="check">
-					<input type="checkbox" bind:checked={policyProposals} disabled={isSubmitting} />
+					<input type="checkbox" bind:checked={subscribePolicyProposals} disabled={isSubmitting} />
 					<span>Nos propositions législatives</span>
 				</label>
 				<label class="check">
