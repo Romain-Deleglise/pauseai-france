@@ -51,7 +51,8 @@
 				body: JSON.stringify({
 					email,
 					subscribeNewsletter,
-					subscribeSubstack
+					subscribeSubstack,
+					source: 'homepage'
 				})
 			})
 
