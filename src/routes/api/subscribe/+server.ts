@@ -6,10 +6,10 @@ interface SubscriptionRequest {
 	email: string
 	subscribeNewsletter: boolean
 	subscribeSubstack: boolean
-	conferenceReport?: boolean
+	subscribeConferenceReport?: boolean
 	firstName?: string
 	lastName?: string
-	policyProposals?: boolean
+	subscribePolicyProposals?: boolean
 }
 
 interface Api4Result<T = Record<string, unknown>> {
@@ -119,8 +119,8 @@ export const POST: RequestHandler = async ({ request }) => {
 		if (
 			!data.subscribeNewsletter &&
 			!data.subscribeSubstack &&
-			!data.conferenceReport &&
-			!data.policyProposals
+			!data.subscribeConferenceReport &&
+			!data.subscribePolicyProposals
 		) {
 			return json(
 				{ error: "Au moins une option d'abonnement doit être sélectionnée" },
@@ -132,8 +132,8 @@ export const POST: RequestHandler = async ({ request }) => {
 		const subscriptionTypes: string[] = []
 		if (data.subscribeNewsletter) subscriptionTypes.push('Newsletter Pause IA')
 		if (data.subscribeSubstack) subscriptionTypes.push('Blog Substack Pause IA')
-		if (data.conferenceReport) subscriptionTypes.push('Compte-rendu Conférence Sénat')
-		if (data.policyProposals) subscriptionTypes.push('Propositions législatives')
+		if (data.subscribeConferenceReport) subscriptionTypes.push('Compte-rendu Conférence Sénat')
+		if (data.subscribePolicyProposals) subscriptionTypes.push('Propositions législatives')
 		const subjectText = `Inscription: ${subscriptionTypes.join(' + ')}`
 
 		// Find contact by email using Email entity (API v4 approach)
@@ -276,8 +276,8 @@ export const POST: RequestHandler = async ({ request }) => {
 		if (
 			(data.subscribeNewsletter && !Number.isFinite(newsletterGroupId)) ||
 			(data.subscribeSubstack && !Number.isFinite(substackGroupId)) ||
-			(data.conferenceReport && !Number.isFinite(conferenceGroupId)) ||
-			(data.policyProposals && !Number.isFinite(policyProposalsGroupId))
+			(data.subscribeConferenceReport && !Number.isFinite(conferenceGroupId)) ||
+			(data.subscribePolicyProposals && !Number.isFinite(policyProposalsGroupId))
 		) {
 			throw new Error('Missing group configuration')
 		}
@@ -320,9 +320,9 @@ export const POST: RequestHandler = async ({ request }) => {
 			groupRecords.push({ contact_id: contactId, group_id: newsletterGroupId, status: 'Added' })
 		if (data.subscribeSubstack && !alreadyInSubstack)
 			groupRecords.push({ contact_id: contactId, group_id: substackGroupId, status: 'Added' })
-		if (data.conferenceReport && !alreadyInConference)
+		if (data.subscribeConferenceReport && !alreadyInConference)
 			groupRecords.push({ contact_id: contactId, group_id: conferenceGroupId, status: 'Added' })
-		if (data.policyProposals && !alreadyInPolicyProposals)
+		if (data.subscribePolicyProposals && !alreadyInPolicyProposals)
 			groupRecords.push({
 				contact_id: contactId,
 				group_id: policyProposalsGroupId,
@@ -362,13 +362,13 @@ export const POST: RequestHandler = async ({ request }) => {
 					? 'Substack: déjà inscrit·e'
 					: 'Substack: inscription confirmée'
 				: null,
-			data.conferenceReport
+			data.subscribeConferenceReport
 				? alreadyInConference
 					? 'Compte-rendu: déjà inscrit·e'
 					: 'Compte-rendu: inscription confirmée'
 				: null
 		].filter(Boolean) as string[]
-		if (data.policyProposals)
+		if (data.subscribePolicyProposals)
 			selections.push(
 				alreadyInPolicyProposals
 					? 'Propositions législatives: déjà inscrit·e'
