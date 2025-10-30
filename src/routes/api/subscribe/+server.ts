@@ -116,7 +116,12 @@ export const POST: RequestHandler = async ({ request }) => {
 		}
 
 		// At least one subscription must be selected
-		if (!data.subscribeNewsletter && !data.subscribeSubstack) {
+		if (
+			!data.subscribeNewsletter &&
+			!data.subscribeSubstack &&
+			!data.conferenceReport &&
+			!data.policyProposals
+		) {
 			return json(
 				{ error: "Au moins une option d'abonnement doit être sélectionnée" },
 				{ status: 400 }
