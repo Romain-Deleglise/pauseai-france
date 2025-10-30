@@ -41,7 +41,8 @@
 					conferenceReport,
 					policyProposals,
 					firstName: firstName || undefined,
-					lastName: lastName || undefined
+					lastName: lastName || undefined,
+					source: 'senat2025'
 				})
 			})
 			const json = await res.json()

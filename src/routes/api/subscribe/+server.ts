@@ -10,6 +10,7 @@ interface SubscriptionRequest {
 	firstName?: string
 	lastName?: string
 	subscribePolicyProposals?: boolean
+	source?: string
 }
 
 interface Api4Result<T = Record<string, unknown>> {
@@ -171,7 +172,7 @@ export const POST: RequestHandler = async ({ request }) => {
 									: data.email,
 							first_name: data.firstName || undefined,
 							last_name: data.lastName || undefined,
-							source: 'pauseia.fr homepage',
+							source: data.source || 'pauseia.fr',
 							contact_sub_type: ['Sympathisant']
 						}
 					})
@@ -205,7 +206,7 @@ export const POST: RequestHandler = async ({ request }) => {
 								: data.email,
 						first_name: data.firstName || undefined,
 						last_name: data.lastName || undefined,
-						source: 'pauseia.fr homepage',
+						source: data.source || 'pauseia.fr',
 						contact_sub_type: ['Sympathisant']
 					}
 				})
@@ -239,7 +240,7 @@ export const POST: RequestHandler = async ({ request }) => {
 							: data.email,
 					first_name: data.firstName || undefined,
 					last_name: data.lastName || undefined,
-					source: 'pauseia.fr homepage',
+					source: data.source || 'pauseia.fr',
 					contact_sub_type: ['Sympathisant']
 				}
 			})
