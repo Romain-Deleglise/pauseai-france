@@ -164,7 +164,11 @@ export const POST: RequestHandler = async ({ request }) => {
 		})
 
 		return json({ success: true })
-	} catch (error) {
+	} catch (err) {
+		console.error('Error creating Notion entry:', {
+			error: err instanceof Error ? err.message : String(err),
+			timestamp: new Date().toISOString()
+		})
 		return json({ error: 'Erreur serveur' }, { status: 500 })
 	}
 }

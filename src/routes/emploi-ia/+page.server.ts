@@ -78,7 +78,11 @@ export const actions = {
 			})
 
 			return { success: true, pageId: page.id }
-		} catch (error) {
+		} catch (err) {
+			console.error('Error submitting feedback:', {
+				error: err instanceof Error ? err.message : String(err),
+				timestamp: new Date().toISOString()
+			})
 			return { success: false, error: 'Une erreur est survenue.' }
 		}
 	}
