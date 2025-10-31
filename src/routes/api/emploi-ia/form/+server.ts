@@ -16,11 +16,20 @@ export const POST: RequestHandler = async ({ request }) => {
 			!data.age ||
 			!data.statutProfessionnel ||
 			!data.secteurActivite ||
-			!data.veutPlusQuestions ||
-			!data.secteurActivite ||
-			!data.email
+			!data.veutPlusQuestions
 		) {
 			return json({ error: 'Champs requis manquants' }, { status: 400 })
+		}
+
+		// Validate email format (simple check for @ symbol)
+		if (typeof data.email !== 'string' || !data.email.includes('@')) {
+			return json({ error: "Format d'email invalide" }, { status: 400 })
+		}
+
+		// Validate age range
+		const age = Number(data.age)
+		if (isNaN(age) || age < 1 || age > 120) {
+			return json({ error: "L'âge doit être entre 1 et 120" }, { status: 400 })
 		}
 
 		if (Array.isArray(data.objectifsCellule)) {
