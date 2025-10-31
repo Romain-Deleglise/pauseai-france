@@ -27,7 +27,6 @@
 	export let showArrows = true
 	export let showDots = true
 	export let maxVisibleDots = 7
-	export let href: string | null = null
 
 	const select = (index: number) => {
 		dispatch('select', { index })
@@ -109,7 +108,7 @@
 </script>
 
 {#if items.length > 1 || showArrows}
-	<a class="controls" {href} aria-label={ariaLabel}>
+	<nav class="controls" aria-label={ariaLabel}>
 		{#if showArrows}
 			<button class="nav" type="button" aria-label={previousLabel} on:click={previous}>
 				&lsaquo;
@@ -140,7 +139,7 @@
 		{#if showArrows}
 			<button class="nav" type="button" aria-label={nextLabel} on:click={next}> &rsaquo; </button>
 		{/if}
-	</a>
+	</nav>
 {/if}
 
 <style>

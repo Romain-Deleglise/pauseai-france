@@ -149,7 +149,6 @@
 		on:previous={previousPage}
 		on:next={nextPage}
 		on:select={handleSelect}
-		href="#showcase"
 	/>
 </section>
 
