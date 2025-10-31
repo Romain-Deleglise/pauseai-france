@@ -195,7 +195,7 @@
 	button[role='tab'] {
 		border-radius: 999px;
 		border: 1px solid var(--carousel-border, #d9c7b0);
-		background: #ffffff;
+		background: var(--white);
 		padding: 0.5rem 1.3rem;
 		color: var(--carousel-text, #414042);
 		cursor: pointer;
@@ -208,15 +208,15 @@
 
 	button[role='tab']:hover,
 	button[role='tab']:focus-visible {
-		border-color: var(--carousel-accent, #ff9416);
+		border-color: var(--carousel-accent, var(--brand));
 		outline: none;
 		transform: translateY(-2px);
 	}
 
 	button[role='tab'].tab--active {
-		background: var(--carousel-accent, #ff9416);
-		color: #ffffff;
-		border-color: var(--carousel-accent, #ff9416);
+		background: var(--carousel-accent, var(--brand));
+		color: var(--white);
+		border-color: var(--carousel-accent, var(--brand));
 	}
 
 	.grid {
@@ -228,7 +228,7 @@
 	.empty {
 		margin: 0;
 		text-align: center;
-		color: #6b6b6b;
+		color: var(--text-secondary);
 		font-size: 0.95rem;
 	}
 

@@ -30,7 +30,7 @@
 		border-radius: 18px;
 		overflow: hidden;
 		text-decoration: none;
-		background: #ffffff;
+		background: var(--white);
 		color: inherit;
 		transition:
 			transform 200ms ease,
@@ -86,7 +86,7 @@
 
 	.date {
 		font-size: 0.85rem;
-		color: #6b6b6b;
+		color: var(--text-secondary);
 		line-height: 1.2;
 		display: block;
 	}
@@ -120,8 +120,8 @@
 	.cta {
 		padding: 0.55rem 1.15rem;
 		border-radius: 999px;
-		background: var(--carousel-accent, #ff9416);
-		color: #ffffff;
+		background: var(--carousel-accent, var(--brand));
+		color: var(--white);
 		font-weight: 600;
 		font-size: 0.875rem;
 		line-height: 1;
@@ -133,7 +133,7 @@
 
 	.card:hover .cta,
 	.card:focus-visible .cta {
-		background: #e68512;
+		background: var(--btn-active-bg);
 	}
 
 	@media (max-width: 768px) {

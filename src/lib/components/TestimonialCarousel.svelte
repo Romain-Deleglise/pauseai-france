@@ -105,9 +105,9 @@
 	}
 
 	.slide {
-		background: #ffffff;
+		background: var(--white);
 		border-radius: 18px;
-		border: 1px solid #e4d5c3;
+		border: 1px solid var(--carousel-border, #d9c7b0);
 		padding: 2rem 2.4rem;
 		min-height: 220px;
 		display: flex;
@@ -137,7 +137,7 @@
 	.date {
 		margin: 0.35rem 0 0;
 		font-size: 0.92rem;
-		color: #6b6b6b;
+		color: var(--text-secondary);
 	}
 
 	.testimony {
