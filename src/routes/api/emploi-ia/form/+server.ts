@@ -1,9 +1,10 @@
 import { json } from '@sveltejs/kit'
 import type { RequestHandler } from './$types'
 import { Client } from '@notionhq/client'
+import type { CreatePageParameters } from '@notionhq/client'
 
 const notion = new Client({
-	auth: process.env.NOTION_TOKEN
+	auth: process.env.NOTION_TOKEN as string
 })
 
 export const POST: RequestHandler = async ({ request }) => {
@@ -50,7 +51,7 @@ export const POST: RequestHandler = async ({ request }) => {
 				.join('\n\n')
 		}
 
-		const properties: any = {
+		const properties: CreatePageParameters['properties'] = {
 			Prenom: {
 				title: [
 					{
@@ -159,7 +160,7 @@ export const POST: RequestHandler = async ({ request }) => {
 		}
 
 		const page = await notion.pages.create({
-			parent: { data_source_id: process.env.TESTIMONIALS_ID || '' },
+			parent: { data_source_id: process.env.TESTIMONIALS_ID as string },
 			properties
 		})
 

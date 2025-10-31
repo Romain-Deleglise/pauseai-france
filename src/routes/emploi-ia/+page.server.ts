@@ -1,55 +1,76 @@
 import { Client } from '@notionhq/client'
+import type { PageObjectResponse } from '@notionhq/client'
 import type { Actions } from './$types'
+import { error as svelteKitError } from '@sveltejs/kit'
+import {
+	getCheckbox,
+	getRichTextContent,
+	getTitleContent,
+	getDateStart,
+	getUrl,
+	getSelectName
+} from '$lib/notion-helpers'
 
 const notion = new Client({
-	auth: process.env.NOTION_TOKEN
+	auth: process.env.NOTION_TOKEN as string
 })
+
+// Type guard to check if result is a full page with properties
+function isPageWithProperties(result: PageObjectResponse | any): result is PageObjectResponse {
+	return result.object === 'page' && 'properties' in result
+}
 
 export const prerender = false
 
 export async function load() {
-	const testimonials_datasource = await notion.dataSources.query({
-		data_source_id: process.env.TESTIMONIALS_ID || ''
-	})
-
-	const articleShowcase_datasource = await notion.dataSources.query({
-		data_source_id: process.env.ARTICLE_SHOWCASE_ID || ''
-	})
-
-	const testimonials = testimonials_datasource.results
-		.filter(
-			(item) =>
-				item.properties.Afficher.checkbox && item.properties.Témoignage.rich_text[0]?.plain_text
-		)
-		.map((item) => {
-			return {
-				name: item.properties.Consentement.checkbox
-					? item.properties.Prenom.title[0]?.plain_text
-					: undefined,
-				age: item.properties.Age.rich_text[0]?.plain_text,
-				job: item.properties.Profession.rich_text[0]?.plain_text,
-				date: item.properties.Date.date?.start,
-				testimony: item.properties.Témoignage.rich_text[0]?.plain_text
-			}
+	try {
+		const testimonials_datasource = await notion.dataSources.query({
+			data_source_id: process.env.TESTIMONIALS_ID as string
 		})
 
-	const articleShowcaseItems = articleShowcase_datasource.results
-		.filter((item) => item.properties.Afficher.checkbox)
-		.map((item) => {
-			return {
-				title: item.properties.Titre.title[0]?.plain_text,
-				summary: item.properties.Résumé.rich_text[0]?.plain_text,
-				date: item.properties.Date.date?.start,
-				url: item.properties.URL.url,
-				category: item.properties.Catégorie.select?.name,
-				image: item.properties.Image.url
-			}
+		const articleShowcase_datasource = await notion.dataSources.query({
+			data_source_id: process.env.ARTICLE_SHOWCASE_ID as string
 		})
 
-	return {
-		testimonials: testimonials,
-		articleShowcaseItems: articleShowcaseItems,
-		testimonials_datasource: testimonials_datasource
+		const testimonials = testimonials_datasource.results
+			.filter(isPageWithProperties)
+			.filter(
+				(item) =>
+					getCheckbox(item.properties.Afficher) && getRichTextContent(item.properties.Témoignage)
+			)
+			.map((item) => ({
+				name:
+					getCheckbox(item.properties.Consentement) && getTitleContent(item.properties.Prenom)
+						? getTitleContent(item.properties.Prenom)
+						: undefined,
+				age: getRichTextContent(item.properties.Age),
+				job: getRichTextContent(item.properties.Profession),
+				date: getDateStart(item.properties.Date),
+				testimony: getRichTextContent(item.properties.Témoignage)
+			}))
+
+		const articleShowcaseItems = articleShowcase_datasource.results
+			.filter(isPageWithProperties)
+			.filter((item) => getCheckbox(item.properties.Afficher))
+			.map((item) => ({
+				title: getTitleContent(item.properties.Titre),
+				summary: getRichTextContent(item.properties.Résumé),
+				date: getDateStart(item.properties.Date),
+				url: getUrl(item.properties.URL),
+				category: getSelectName(item.properties.Catégorie),
+				image: getUrl(item.properties.Image)
+			}))
+
+		return {
+			testimonials: testimonials,
+			articleShowcaseItems: articleShowcaseItems
+		}
+	} catch (err) {
+		console.error('Error loading emploi-ia page data:', {
+			error: err instanceof Error ? err.message : String(err),
+			timestamp: new Date().toISOString()
+		})
+		throw svelteKitError(500, 'Unable to load page data. Please try again later.')
 	}
 }
 
@@ -64,7 +85,7 @@ export const actions = {
 
 		try {
 			const page = await notion.pages.create({
-				parent: { data_source_id: process.env.FEEDBACK_ID || '' },
+				parent: { data_source_id: process.env.FEEDBACK_ID as string },
 
 				properties: {
 					Avis: {
