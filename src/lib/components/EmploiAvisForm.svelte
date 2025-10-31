@@ -1,16 +1,30 @@
 <script>
 	import { enhance } from '$app/forms'
 	import toast from 'svelte-french-toast'
+
+	let isSubmitting = false
 </script>
 
 <form
 	method="post"
 	id="avis-form"
 	use:enhance={() => {
-		toast.success('Merci pour votre retour !', {
-			duration: 4000,
-			position: 'top-center'
-		})
+		isSubmitting = true
+		return async ({ result, update }) => {
+			isSubmitting = false
+			if (result.type === 'success') {
+				toast.success('Merci pour votre retour !', {
+					duration: 4000,
+					position: 'top-center'
+				})
+			} else if (result.type === 'failure') {
+				toast.error('Une erreur est survenue. Veuillez réessayer.', {
+					duration: 4000,
+					position: 'top-center'
+				})
+			}
+			await update()
+		}
 	}}
 >
 	<label for="avis"> Faites-nous un retour sur ce que vous aimeriez que l’on améliore ? </label>
@@ -23,7 +37,9 @@
 		required
 	></textarea>
 
-	<button type="submit">Envoyer</button>
+	<button type="submit" disabled={isSubmitting}>
+		{isSubmitting ? 'Envoi en cours...' : 'Envoyer'}
+	</button>
 </form>
 
 <style>
@@ -63,7 +79,12 @@
 		font-weight: bold;
 	}
 
-	button:hover {
+	button:hover:not(:disabled) {
 		background-color: #e68314;
+	}
+
+	button:disabled {
+		opacity: 0.6;
+		cursor: not-allowed;
 	}
 </style>
