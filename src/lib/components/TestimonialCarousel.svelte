@@ -1,14 +1,7 @@
 <script lang="ts">
 	import CarouselNavigation from '$components/CarouselNavigation.svelte'
 	import { formatFrenchDate } from '$lib/utils'
-
-	interface Testimonial {
-		name: string | null
-		age: number | null
-		job: string
-		date: string
-		testimony: string
-	}
+	import type { Testimonial } from '$lib/types'
 
 	export let testimonials: Testimonial[] = []
 

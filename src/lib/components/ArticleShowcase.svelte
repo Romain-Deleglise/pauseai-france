@@ -2,27 +2,19 @@
 	import { onMount } from 'svelte'
 	import CarouselNavigation from '$components/CarouselNavigation.svelte'
 	import ArticleTeaserCard from '$components/ArticleTeaserCard.svelte'
+	import type { ArticleShowcaseItem } from '$lib/types'
 
 	const ALL_CATEGORY = 'Toutes'
 
-	interface ArticleItem {
-		category: string
-		image: string
-		date: string
-		title: string
-		summary: string
-		url: string
-	}
-
-	export let articles: ArticleItem[] = []
+	export let articles: ArticleShowcaseItem[] = []
 
 	let activeCategory: string = ALL_CATEGORY
 	let currentPage = 0
 	let categories: string[] = []
 	let tabs: string[] = []
-	let filteredArticles: ArticleItem[] = []
+	let filteredArticles: ArticleShowcaseItem[] = []
 	let totalPages = 1
-	let pageArticles: ArticleItem[] = []
+	let pageArticles: ArticleShowcaseItem[] = []
 	let navItems: { label: string }[] = []
 	let itemsPerPage = 6
 
@@ -82,7 +74,11 @@
 		currentPage = 0
 	}
 
-	$: categories = Array.from(new Set<string>(articles.map((article) => article.category)))
+	$: categories = Array.from(
+		new Set<string>(
+			articles.map((article) => article.category).filter((cat): cat is string => !!cat)
+		)
+	)
 	$: tabs = [ALL_CATEGORY, ...categories]
 	$: filteredArticles =
 		activeCategory === ALL_CATEGORY

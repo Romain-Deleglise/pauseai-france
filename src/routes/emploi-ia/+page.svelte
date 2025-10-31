@@ -5,25 +5,9 @@
 	import EmploiAvisForm from '$components/EmploiAvisForm.svelte'
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
 	import A from '$components/custom/a.svelte'
+	import type { Testimonial, ArticleShowcaseItem } from '$lib/types'
 
 	export let data: PageData
-
-	interface Testimonial {
-		name: string | null
-		age: number | null
-		job: string
-		date: string
-		testimony: string
-	}
-
-	interface ArticleShowcaseItem {
-		category: string
-		image: string
-		date: string
-		title: string
-		summary: string
-		url: string
-	}
 
 	interface PageData {
 		testimonials: Testimonial[]
