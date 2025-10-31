@@ -4,7 +4,6 @@
 	import ArticleTeaserCard from '$components/ArticleTeaserCard.svelte'
 
 	const ALL_CATEGORY = 'Toutes'
-	const MOBILE_BREAKPOINT = 768
 
 	interface ArticleItem {
 		category: string
@@ -27,22 +26,33 @@
 	let navItems: { label: string }[] = []
 	let itemsPerPage = 6
 
-	const updateItemsPerPage = () => {
-		const wasMobile = itemsPerPage === 4
-		itemsPerPage = window.innerWidth < MOBILE_BREAKPOINT ? 4 : 6
+	// Read page size from CSS custom property
+	function getPageSize(): number {
+		if (typeof window === 'undefined') return 6
+		const value = getComputedStyle(document.documentElement).getPropertyValue(
+			'--articles-page-size'
+		)
+		return parseInt(value, 10) || 6
+	}
 
-		// Reset to first page if switching between mobile/desktop
-		if (wasMobile !== (itemsPerPage === 4)) {
-			currentPage = 0
+	function updatePageSize() {
+		const newSize = getPageSize()
+		if (newSize !== itemsPerPage) {
+			// Keep the first visible item stable when size changes
+			const firstIndex = currentPage * itemsPerPage
+			currentPage = Math.floor(firstIndex / newSize)
+			itemsPerPage = newSize
 		}
 	}
 
 	onMount(() => {
-		updateItemsPerPage()
-		window.addEventListener('resize', updateItemsPerPage)
+		updatePageSize()
+
+		const mediaQuery = window.matchMedia('(min-width: 768px)')
+		mediaQuery.addEventListener('change', updatePageSize)
 
 		return () => {
-			window.removeEventListener('resize', updateItemsPerPage)
+			mediaQuery.removeEventListener('change', updatePageSize)
 		}
 	})
 
@@ -148,6 +158,16 @@
 </section>
 
 <style>
+	:root {
+		--articles-page-size: 4;
+	}
+
+	@media (min-width: 768px) {
+		:root {
+			--articles-page-size: 6;
+		}
+	}
+
 	#showcase {
 		margin: 3rem 0 5rem;
 		padding-top: 2rem;
