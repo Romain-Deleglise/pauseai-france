@@ -1,20 +1,12 @@
 <script lang="ts">
+	import { formatFrenchDate } from '$lib/utils'
+
 	export let category = ''
 	export let image = ''
 	export let date = ''
 	export let title = ''
 	export let summary = ''
 	export let url = '#'
-
-	const formatDate = (value: string) => {
-		const parsed = new Date(value)
-
-		if (Number.isNaN(parsed.getTime())) {
-			return value
-		}
-
-		return new Intl.DateTimeFormat('fr-FR').format(parsed)
-	}
 </script>
 
 <a class="card" href={url} target="_blank" title="Lire l'article {title}" rel="noopener noreferrer">
@@ -23,7 +15,7 @@
 	</figure>
 	<div class="content">
 		<span class="category">{category}</span>
-		<time class="date" datetime={date}>{formatDate(date)}</time>
+		<time class="date" datetime={date}>{formatFrenchDate(date)}</time>
 		<h3 class="title">{title}</h3>
 		<p class="summary">{summary}</p>
 		<span class="cta">Lire l'article</span>

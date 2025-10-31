@@ -1,5 +1,6 @@
 <script lang="ts">
 	import CarouselNavigation from '$components/CarouselNavigation.svelte'
+	import { formatFrenchDate } from '$lib/utils'
 
 	interface Testimonial {
 		name: string | null
@@ -30,16 +31,6 @@
 		goTo(current + 1)
 	}
 
-	const formatDate = (value: string) => {
-		const parsed = new Date(value)
-
-		if (Number.isNaN(parsed.getTime())) {
-			return value
-		}
-
-		return new Intl.DateTimeFormat('fr-FR').format(parsed)
-	}
-
 	let currentTestimonial: Testimonial | null = null
 	let formattedDate = ''
 
@@ -56,7 +47,7 @@
 			const inBounds = current >= 0 && current < testimonials.length
 			const item = inBounds ? testimonials[current] : null
 			currentTestimonial = item
-			formattedDate = item ? formatDate(item.date) : ''
+			formattedDate = item?.date ? formatFrenchDate(item.date) : ''
 		} else {
 			currentTestimonial = null
 			formattedDate = ''
