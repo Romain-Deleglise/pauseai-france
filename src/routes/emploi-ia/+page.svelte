@@ -35,10 +35,18 @@
 	let articleShowcaseItems = data.articleShowcaseItems
 
 	// Sort testimonials by date descending (most recent first)
-	testimonials.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+	testimonials.sort((a, b) => {
+		const dateA = a.date ? new Date(a.date).getTime() : 0
+		const dateB = b.date ? new Date(b.date).getTime() : 0
+		return dateB - dateA
+	})
 
 	// Sort articleShowcaseItems by date descending
-	articleShowcaseItems.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+	articleShowcaseItems.sort((a, b) => {
+		const dateA = a.date ? new Date(a.date).getTime() : 0
+		const dateB = b.date ? new Date(b.date).getTime() : 0
+		return dateB - dateA
+	})
 
 	// Set default image for articleShowcaseItems if undefined
 	articleShowcaseItems = articleShowcaseItems.map((item) => ({
