@@ -6,6 +6,11 @@ interface SubscriptionRequest {
 	email: string
 	subscribeNewsletter: boolean
 	subscribeSubstack: boolean
+	subscribeConferenceReport?: boolean
+	firstName?: string
+	lastName?: string
+	subscribePolicyProposals?: boolean
+	source?: string
 }
 
 interface Api4Result<T = Record<string, unknown>> {
@@ -108,18 +113,28 @@ export const POST: RequestHandler = async ({ request }) => {
 		// Validate email
 		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 		if (!data.email || !emailRegex.test(data.email)) {
-			return json({ error: 'Invalid email format' }, { status: 400 })
+			return json({ error: "Format d'adresse e-mail invalide" }, { status: 400 })
 		}
 
 		// At least one subscription must be selected
-		if (!data.subscribeNewsletter && !data.subscribeSubstack) {
-			return json({ error: 'At least one subscription option must be selected' }, { status: 400 })
+		if (
+			!data.subscribeNewsletter &&
+			!data.subscribeSubstack &&
+			!data.subscribeConferenceReport &&
+			!data.subscribePolicyProposals
+		) {
+			return json(
+				{ error: "Au moins une option d'abonnement doit être sélectionnée" },
+				{ status: 400 }
+			)
 		}
 
 		// Determine subject text for activity
 		const subscriptionTypes: string[] = []
 		if (data.subscribeNewsletter) subscriptionTypes.push('Newsletter Pause IA')
 		if (data.subscribeSubstack) subscriptionTypes.push('Blog Substack Pause IA')
+		if (data.subscribeConferenceReport) subscriptionTypes.push('Compte-rendu Conférence Sénat')
+		if (data.subscribePolicyProposals) subscriptionTypes.push('Propositions législatives')
 		const subjectText = `Inscription: ${subscriptionTypes.join(' + ')}`
 
 		// Find contact by email using Email entity (API v4 approach)
@@ -132,6 +147,7 @@ export const POST: RequestHandler = async ({ request }) => {
 
 		let contactId: number
 		let createdNewContact = false
+		let needsEmailCreation = false // Track whether we need to create email record
 
 		if (emailResult.count && emailResult.count > 0 && emailResult.values) {
 			const emailRecord = emailResult.values[0]
@@ -150,8 +166,13 @@ export const POST: RequestHandler = async ({ request }) => {
 					const contactResult = await callApi4<ContactRecord>('Contact', 'create', {
 						values: {
 							contact_type: 'Individual',
-							display_name: data.email,
-							source: 'pauseia.fr homepage',
+							display_name:
+								data.firstName || data.lastName
+									? [data.firstName, data.lastName].filter(Boolean).join(' ')
+									: data.email,
+							first_name: data.firstName || undefined,
+							last_name: data.lastName || undefined,
+							source: data.source || 'pauseia.fr',
 							contact_sub_type: ['Sympathisant']
 						}
 					})
@@ -172,14 +193,20 @@ export const POST: RequestHandler = async ({ request }) => {
 							}
 						]
 					})
+					needsEmailCreation = false // Email was reassigned, don't create new one
 				}
 			} else {
-				// No valid contact_id on Email row: create contact and attach a new email record
+				// No valid contact_id on Email row: create contact and reassign email
 				const contactResult = await callApi4<ContactRecord>('Contact', 'create', {
 					values: {
 						contact_type: 'Individual',
-						display_name: data.email,
-						source: 'pauseia.fr homepage',
+						display_name:
+							data.firstName || data.lastName
+								? [data.firstName, data.lastName].filter(Boolean).join(' ')
+								: data.email,
+						first_name: data.firstName || undefined,
+						last_name: data.lastName || undefined,
+						source: data.source || 'pauseia.fr',
 						contact_sub_type: ['Sympathisant']
 					}
 				})
@@ -188,14 +215,32 @@ export const POST: RequestHandler = async ({ request }) => {
 				}
 				contactId = contactResult.values[0].id
 				createdNewContact = true
+				// Reassign existing email to the new contact
+				await callApi4('Email', 'save', {
+					match: ['id'],
+					records: [
+						{
+							id: emailRecord.id,
+							contact_id: contactId,
+							is_primary: true,
+							'location_type_id:label': 'Domicile'
+						}
+					]
+				})
+				needsEmailCreation = false // Email was reassigned, don't create new one
 			}
 		} else {
-			// No email row found: create contact
+			// No email row found: create contact and email record
 			const contactResult = await callApi4<ContactRecord>('Contact', 'create', {
 				values: {
 					contact_type: 'Individual',
-					display_name: data.email,
-					source: 'pauseia.fr homepage',
+					display_name:
+						data.firstName || data.lastName
+							? [data.firstName, data.lastName].filter(Boolean).join(' ')
+							: data.email,
+					first_name: data.firstName || undefined,
+					last_name: data.lastName || undefined,
+					source: data.source || 'pauseia.fr',
 					contact_sub_type: ['Sympathisant']
 				}
 			})
@@ -206,10 +251,30 @@ export const POST: RequestHandler = async ({ request }) => {
 
 			contactId = contactResult.values[0].id
 			createdNewContact = true
+			needsEmailCreation = true // Need to create new email record
 		}
 
-		// Ensure email record exists and is attached
-		if (createdNewContact) {
+		// Optionally update existing contact names if provided
+		if (!createdNewContact && (data.firstName || data.lastName)) {
+			try {
+				await callApi4('Contact', 'create', {
+					values: {
+						id: contactId,
+						first_name: data.firstName || undefined,
+						last_name: data.lastName || undefined,
+						display_name:
+							data.firstName || data.lastName
+								? [data.firstName, data.lastName].filter(Boolean).join(' ')
+								: undefined
+					}
+				})
+			} catch (e) {
+				console.warn('[subscribe] failed to update contact name (continuing):', e)
+			}
+		}
+
+		// Create email record if needed (when no email existed before)
+		if (needsEmailCreation) {
 			await callApi4('Email', 'create', {
 				values: {
 					contact_id: contactId,
@@ -223,9 +288,13 @@ export const POST: RequestHandler = async ({ request }) => {
 		// Resolve group IDs at runtime
 		const newsletterGroupId = Number(privateEnv.CIVICRM_NEWSLETTER_GROUP_ID)
 		const substackGroupId = Number(privateEnv.CIVICRM_SUBSTACK_GROUP_ID)
+		const conferenceGroupId = Number(privateEnv.CIVICRM_CONFERENCE_GROUP_ID)
+		const policyProposalsGroupId = Number(privateEnv.CIVICRM_POLICY_GROUP_ID)
 		if (
 			(data.subscribeNewsletter && !Number.isFinite(newsletterGroupId)) ||
-			(data.subscribeSubstack && !Number.isFinite(substackGroupId))
+			(data.subscribeSubstack && !Number.isFinite(substackGroupId)) ||
+			(data.subscribeConferenceReport && !Number.isFinite(conferenceGroupId)) ||
+			(data.subscribePolicyProposals && !Number.isFinite(policyProposalsGroupId))
 		) {
 			throw new Error('Missing group configuration')
 		}
@@ -236,7 +305,16 @@ export const POST: RequestHandler = async ({ request }) => {
 			where: [
 				['contact_id', '=', contactId],
 				['status', '=', 'Added'],
-				['group_id', 'IN', [newsletterGroupId, substackGroupId]]
+				[
+					'group_id',
+					'IN',
+					[
+						Number.isFinite(newsletterGroupId) ? newsletterGroupId : undefined,
+						Number.isFinite(substackGroupId) ? substackGroupId : undefined,
+						Number.isFinite(conferenceGroupId) ? conferenceGroupId : undefined,
+						Number.isFinite(policyProposalsGroupId) ? policyProposalsGroupId : undefined
+					].filter((v) => Number.isFinite(Number(v)))
+				]
 			]
 		})
 
@@ -246,6 +324,12 @@ export const POST: RequestHandler = async ({ request }) => {
 		const alreadyInSubstack = Boolean(
 			existingMemberships.values?.some((g) => g.group_id === substackGroupId)
 		)
+		const alreadyInConference = Boolean(
+			existingMemberships.values?.some((g) => g.group_id === conferenceGroupId)
+		)
+		const alreadyInPolicyProposals = Boolean(
+			existingMemberships.values?.some((g) => g.group_id === policyProposalsGroupId)
+		)
 
 		// Upsert groups via GroupContact.save with match on contact_id + group_id
 		const groupRecords: Array<{ contact_id: number; group_id: number; status?: string }> = []
@@ -253,6 +337,14 @@ export const POST: RequestHandler = async ({ request }) => {
 			groupRecords.push({ contact_id: contactId, group_id: newsletterGroupId, status: 'Added' })
 		if (data.subscribeSubstack && !alreadyInSubstack)
 			groupRecords.push({ contact_id: contactId, group_id: substackGroupId, status: 'Added' })
+		if (data.subscribeConferenceReport && !alreadyInConference)
+			groupRecords.push({ contact_id: contactId, group_id: conferenceGroupId, status: 'Added' })
+		if (data.subscribePolicyProposals && !alreadyInPolicyProposals)
+			groupRecords.push({
+				contact_id: contactId,
+				group_id: policyProposalsGroupId,
+				status: 'Added'
+			})
 		if (groupRecords.length > 0) {
 			await callApi4('GroupContact', 'save', {
 				match: ['contact_id', 'group_id'],
@@ -276,25 +368,30 @@ export const POST: RequestHandler = async ({ request }) => {
 		}
 
 		// Clear, concise response message
-		const selectedBoth = data.subscribeNewsletter && data.subscribeSubstack
-		const bothAlready = selectedBoth && alreadyInNewsletter && alreadyInSubstack
-		const bothAdded = selectedBoth && !alreadyInNewsletter && !alreadyInSubstack
+		const selections = [
+			data.subscribeNewsletter
+				? alreadyInNewsletter
+					? 'Newsletter: déjà inscrit·e'
+					: 'Newsletter: inscription confirmée'
+				: null,
+			data.subscribeSubstack
+				? alreadyInSubstack
+					? 'Substack: déjà inscrit·e'
+					: 'Substack: inscription confirmée'
+				: null,
+			data.subscribeConferenceReport
+				? alreadyInConference
+					? 'Compte-rendu: déjà inscrit·e'
+					: 'Compte-rendu: inscription confirmée'
+				: null,
+			data.subscribePolicyProposals
+				? alreadyInPolicyProposals
+					? 'Propositions législatives: déjà inscrit·e'
+					: 'Propositions législatives: inscription confirmée'
+				: null
+		].filter(Boolean) as string[]
 
-		let message: string
-		if (bothAlready) {
-			message = 'Déjà inscrit·e'
-		} else if (bothAdded) {
-			message = 'Inscription confirmée'
-		} else {
-			const parts: string[] = []
-			if (data.subscribeNewsletter)
-				parts.push(
-					`Newsletter: ${alreadyInNewsletter ? 'déjà inscrit·e' : 'inscription confirmée'}`
-				)
-			if (data.subscribeSubstack)
-				parts.push(`Substack: ${alreadyInSubstack ? 'déjà inscrit·e' : 'inscription confirmée'}`)
-			message = parts.length ? parts.join(' • ') : 'Inscription réussie!'
-		}
+		const message = selections.length ? selections.join(' • ') : 'Inscription réussie!'
 		return json({ success: true, message, contact_id: contactId })
 	} catch (error) {
 		console.error('Subscription error:', error)

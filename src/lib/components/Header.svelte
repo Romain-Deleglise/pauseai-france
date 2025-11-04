@@ -21,7 +21,9 @@
 </script>
 
 <Banner visible={true}>
-	Pause IA recrute un·e directeur·rice executif·ve ! <a href="/directeur-france">Postulez ici</a>.
+	Colloque IA au Sénat le 31 oct : sécuriser les pratiques, contenir les risques. <a
+		href="/senat2025">Restez informé·e</a
+	>.
 </Banner>
 
 <!-- probably have to change nav colors and classes to respond to banner presence instead of route -->
