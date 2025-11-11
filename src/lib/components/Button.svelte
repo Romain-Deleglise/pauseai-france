@@ -2,12 +2,13 @@
 	export let alt = false
 	export let href = ''
 	export let target = ''
+	export let rel = ''
 	export let type: 'button' | 'submit' | 'reset' = 'button'
 	export let disabled = false
 </script>
 
 {#if href}
-	<a {href} {target} class:alt aria-disabled={disabled}>
+	<a {href} {target} {rel} class:alt aria-disabled={disabled}>
 		<slot />
 	</a>
 {:else}
