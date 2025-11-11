@@ -77,7 +77,7 @@
 	<!-- Hero Section -->
 	<div class="hero">
 		<img
-			src="/Cover.jpg"
+			src="/senat-2025-colloque.png"
 			alt="Colloque Sénat — Intelligence Artificielle : Sécuriser les pratiques, contenir les risques"
 		/>
 		<div class="hero-text">
