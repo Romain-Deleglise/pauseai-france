@@ -21,8 +21,8 @@
 </script>
 
 <Banner visible={true}>
-	Colloque IA au Sénat le 31 oct : sécuriser les pratiques, contenir les risques. <a
-		href="/senat2025">Restez informé·e</a
+	Compte-rendu du colloque au Sénat disponible. <a href="/senat2025"
+		>Consultez nos recommandations</a
 	>.
 </Banner>
 

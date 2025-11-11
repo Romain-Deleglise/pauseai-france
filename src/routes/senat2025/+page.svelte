@@ -7,7 +7,6 @@
 	let subscribeNewsletter = true
 	let subscribeSubstack = false
 	let subscribePolicyProposals = true
-	let subscribeConferenceReport = true
 	let isSubmitting = false
 	let message = ''
 	let isError = false
@@ -25,12 +24,7 @@
 		}
 
 		// Require at least one subscription option
-		if (
-			!subscribeNewsletter &&
-			!subscribeSubstack &&
-			!subscribeConferenceReport &&
-			!subscribePolicyProposals
-		) {
+		if (!subscribeNewsletter && !subscribeSubstack && !subscribePolicyProposals) {
 			isError = true
 			message = 'Sélectionnez au moins une option'
 			return
@@ -45,7 +39,6 @@
 					email,
 					subscribeNewsletter,
 					subscribeSubstack,
-					subscribeConferenceReport,
 					subscribePolicyProposals,
 					firstName: firstName || undefined,
 					lastName: lastName || undefined,
@@ -319,14 +312,6 @@
 
 				<fieldset class="choices">
 					<legend>Choix d'abonnement</legend>
-					<label class="check">
-						<input
-							type="checkbox"
-							bind:checked={subscribeConferenceReport}
-							disabled={isSubmitting}
-						/>
-						<span>Recevoir le compte-rendu de la conférence</span>
-					</label>
 					<label class="check">
 						<input type="checkbox" bind:checked={subscribePolicyProposals} disabled={isSubmitting} />
 						<span>Nos propositions législatives</span>
