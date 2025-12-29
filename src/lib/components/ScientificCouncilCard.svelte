@@ -1,11 +1,11 @@
 <script lang="ts">
 	export let name: string
+	export let job: string
 	export let image: string | null = null
-	export let job: string = ''
 </script>
 
-<article class="article-link">
-	<div class="supporter-image">
+<article class="scientist-card">
+	<div class="scientist-image">
 		{#if image}
 			<img src={image} alt={name} />
 		{:else}
@@ -16,31 +16,31 @@
 			</div>
 		{/if}
 	</div>
-	<div class="info">
+	<div class="scientist-info">
 		<h3>{name}</h3>
-		{#if job}
-			<p class="job">{job}</p>
-		{/if}
+		<p class="job">{job}</p>
 	</div>
 </article>
 
 <style>
-	article {
+	.scientist-card {
 		display: flex;
 		flex-direction: column;
 		gap: 0.5rem;
 	}
-	.supporter-image {
-		width: 13rem;
-		height: 13rem;
-		flex-shrink: 0;
+
+	.scientist-image {
+		width: 11rem;
+		height: 11rem;
 	}
-	.supporter-image img {
+
+	.scientist-image img {
 		width: 100%;
 		height: 100%;
 		border-radius: 0.3125rem;
 		object-fit: cover;
 	}
+
 	.placeholder {
 		width: 100%;
 		height: 100%;
@@ -50,30 +50,36 @@
 		align-items: center;
 		justify-content: center;
 	}
+
 	.placeholder svg {
 		width: 50%;
 		height: 50%;
 		color: #888;
 	}
-	.info {
-		max-width: 13rem;
+
+	.scientist-info {
+		max-width: 11rem;
 	}
+
 	h3 {
 		margin: 0;
 		font-weight: 700;
-		font-size: 1.1rem;
+		font-size: 1rem;
 	}
+
 	.job {
 		margin: 0.2rem 0 0 0;
 		font-weight: 300;
 		font-size: 0.9rem;
 	}
-	.article-link {
-		text-decoration: none;
-		border-radius: 0.625rem;
-	}
-	.article-link:hover {
-		color: inherit;
+
+	@media (min-width: 768px) {
+		.scientist-image {
+			width: 13rem;
+			height: 13rem;
+		}
+		.scientist-info {
+			max-width: 13rem;
+		}
 	}
 </style>
-
