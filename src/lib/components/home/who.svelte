@@ -21,7 +21,7 @@
 		{
 			name: 'Clémence Peyrot',
 			role: 'Directrice exécutive',
-			image: null
+			image: 'membres/clemence.jpeg'
 		},
 		{
 			name: 'Moïri',
@@ -56,79 +56,66 @@
 	const members = [
 		{
 			name: 'Aurélia',
-			blurb: 'Volontaire',
 			image: 'membres/aurelia.jpg',
 			job: "Professeur d'anglais en classe préparatoire"
 		},
 		{
 			name: 'Salim',
-			blurb: 'Volontaire',
 			image: 'membres/salim.jpg',
 			job: 'Etudiant en mathématiques'
 		},
 		{
 			name: 'Stélian',
-			blurb: 'Volontaire',
 			image: 'membres/stelian.jpg',
 			job: 'Psychologue-psychothérapeute'
 		},
 		{
 			name: 'Bahman',
-			blurb: 'Volontaire',
 			image: 'membres/bahman.jpeg',
 			job: 'Psychologue cognitiviste'
 		},
 		{
 			name: 'Damien',
-			blurb: 'Volontaire',
 			image: 'membres/damien.jpg',
 			job: 'Ingénieur du son chez studiobreton.fr'
 		},
 		{
 			name: 'Éloïse',
-			blurb: 'Volontaire',
 			image: 'membres/eloise.jpg',
 			job: "Chercheuse indépendante en sécurité de l'IA"
 		},
 		{
 			name: 'Emmanuel',
-			blurb: 'Volontaire',
 			image: 'membres/emmanuel.jpg',
 			job: ''
 		},
 		{
 			name: 'Karine',
-			blurb: 'Volontaire',
 			image: 'membres/karine.jpg',
 			job: 'Hypnothérapeute et coach bien-être'
 		},
 		{
 			name: 'Muriel',
-			blurb: 'Volontaire',
 			image: 'membres/muriel.jpg',
 			job: 'Traductrice'
 		},
 		{
 			name: 'Sandra',
-			blurb: 'Volontaire',
 			image: 'membres/sandra.jfif',
 			job: 'Enseignante de littérature et autrice'
 		},
 		{
 			name: 'Sandrine',
-			blurb: 'Volontaire',
 			image: 'membres/sandrine.jpg',
 			job: 'Psychopédagogue'
 		},
 		{
 			name: 'Mandelle',
-			blurb: 'Volontaire',
 			image: 'membres/Mandelle.jpg',
 			job: 'Enseignante'
 		},
 		{
 			name: 'Marilyn',
-			blurb: 'Volontaire',
 			image: 'membres/Marilyn.jpg',
 			job: 'Cheffe de projet en communication digitale'
 		}
@@ -153,12 +140,11 @@
 		{/each}
 	</div>
 
-	<h2 class="section-title">Membres bénévoles</h2>
+	<h2 class="section-title">Membres et bénévoles</h2>
 	<div class="cards-grid members-grid">
 		{#each members as supporter}
 			<SupporterCard
 				name={supporter.name}
-				blurb={supporter.blurb}
 				image={supporter.image}
 				job={supporter.job}
 			/>
@@ -233,10 +219,13 @@
 	}
 
 	.member-count {
-		margin-top: 2rem;
-		font-size: 1.1rem;
-		font-style: italic;
-		color: var(--text-secondary, #666);
+		margin-top: 2.5rem;
+		padding: 1rem 2rem;
+		font-size: 1.3rem;
+		font-weight: 600;
+		color: var(--text-primary, #333);
 		text-align: center;
+		background: linear-gradient(135deg, #f0f0f0 0%, #e8e8e8 100%);
+		border-radius: 0.5rem;
 	}
 </style>

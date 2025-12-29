@@ -1,8 +1,7 @@
 <script lang="ts">
 	export let name: string
-	export let blurb: string
 	export let image: string | null = null
-	export let job: string
+	export let job: string = ''
 </script>
 
 <article class="article-link">
@@ -17,23 +16,24 @@
 			</div>
 		{/if}
 	</div>
-	<div>
+	<div class="info">
 		<h3>{name}</h3>
-		<p>{blurb}</p>
-		<p class="job">{job}</p>
+		{#if job}
+			<p class="job">{job}</p>
+		{/if}
 	</div>
 </article>
 
 <style>
 	article {
-		height: auto;
 		display: flex;
 		flex-direction: column;
-		gap: 0rem;
+		gap: 0.5rem;
 	}
 	.supporter-image {
-		width: 17.5rem;
-		height: 17.5rem;
+		width: 13rem;
+		height: 13rem;
+		flex-shrink: 0;
 	}
 	.supporter-image img {
 		width: 100%;
@@ -55,17 +55,18 @@
 		height: 50%;
 		color: #888;
 	}
-	p {
-		margin: 0;
-	}
-	.job {
-		font-weight: 300;
-		font-size: 1rem;
+	.info {
+		max-width: 13rem;
 	}
 	h3 {
-		margin-top: 0;
-		margin-bottom: 0;
+		margin: 0;
 		font-weight: 700;
+		font-size: 1.1rem;
+	}
+	.job {
+		margin: 0.2rem 0 0 0;
+		font-weight: 300;
+		font-size: 0.9rem;
 	}
 	.article-link {
 		text-decoration: none;
@@ -74,16 +75,5 @@
 	.article-link:hover {
 		color: inherit;
 	}
-	@media (min-width: 768px) {
-		.supporter-image {
-			width: 19.5rem;
-			height: 19.5rem;
-		}
-	}
-	@media (min-width: 1024px) {
-		.supporter-image {
-			width: 13rem;
-			height: 13rem;
-		}
-	}
 </style>
+
