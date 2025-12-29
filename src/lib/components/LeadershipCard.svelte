@@ -74,13 +74,4 @@
 		color: var(--text-secondary, #666);
 	}
 
-	@media (min-width: 768px) {
-		.leader-image {
-			width: 15rem;
-			height: 15rem;
-		}
-		.leader-info {
-			max-width: 15rem;
-		}
-	}
 </style>
