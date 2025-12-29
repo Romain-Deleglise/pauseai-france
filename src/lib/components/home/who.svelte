@@ -1,35 +1,59 @@
 <script lang="ts">
+	import LeadershipCard from '$components/LeadershipCard.svelte'
+	import ScientificCouncilCard from '$components/ScientificCouncilCard.svelte'
 	import SupporterCard from '$components/WhoCard.svelte'
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
 	import FAQ from '$posts/qui-sommes-nous.md'
 
 	const label_id = 'who-title'
 
-	const supporters = [
+	const leadership = [
 		{
 			name: 'Maxime Fournes',
-			blurb: 'Cofondateur',
-			image: 'membres/maxime.png',
-			job: 'Ingénieur et chercheur en IA'
+			role: 'Co-fondateur et Président',
+			image: 'membres/maxime.png'
 		},
 		{
 			name: 'Gilles Bréda',
-			blurb: 'Cofondateur',
-			image: 'membres/gilles.png',
-			job: 'Musicien'
+			role: 'Co-fondateur et Trésorier',
+			image: 'membres/gilles.png'
+		},
+		{
+			name: 'Clémence Peyrot',
+			role: 'Directrice exécutive',
+			image: null
 		},
 		{
 			name: 'Moïri',
-			blurb: 'Référent Plateformes',
-			image: 'membres/moiri.jpeg',
-			job: 'Ingénieur informatique'
+			role: 'Secrétaire général',
+			image: 'membres/moiri.jpeg'
 		},
 		{
-			name: 'Pierre',
-			blurb: 'Référent Rédaction',
-			image: 'membres/pierre.png',
-			job: 'Archéologue et forgeron'
+			name: 'Pierre Lamotte',
+			role: "Conseil d'administration et Responsable communication",
+			image: 'membres/pierre.png'
 		},
+		{
+			name: 'Romain',
+			role: "Conseil d'administration et Responsable financement",
+			image: null
+		}
+	]
+
+	const scientificCouncil = [
+		{
+			name: 'Maxime Fournes',
+			job: 'Ingénieur et chercheur en IA',
+			image: 'membres/maxime.png'
+		},
+		{
+			name: 'Jérémy Perret',
+			job: "Chercheur en sécurité de l'IA, Suboptimal IA",
+			image: 'membres/jeremy.png'
+		}
+	]
+
+	const members = [
 		{
 			name: 'Aurélia',
 			blurb: 'Volontaire',
@@ -97,12 +121,6 @@
 			job: 'Psychopédagogue'
 		},
 		{
-			name: 'Jérémy',
-			blurb: 'Volontaire',
-			image: 'membres/jeremy.png',
-			job: "Chercheur en sécurité de l'IA, Suboptimal IA"
-		},
-		{
 			name: 'Mandelle',
 			blurb: 'Volontaire',
 			image: 'membres/Mandelle.jpg',
@@ -115,72 +133,110 @@
 			job: 'Cheffe de projet en communication digitale'
 		}
 	]
-
-	const secondsPerLogo = 5
-	$: animationDuration = secondsPerLogo * supporters.length
 </script>
 
 <section aria-labelledby={label_id}>
 	<UnderlinedTitle id={label_id}>Qui sommes-nous ?</UnderlinedTitle>
 	<FAQ />
-	<div class="logos" style="--animation-duration: {animationDuration}s;">
-		<!-- eslint-disable-next-line @typescript-eslint/no-unused-vars -->
-		<div class="logo_items">
-			{#each supporters as supporter}
-				<SupporterCard
-					name={supporter.name}
-					blurb={supporter.blurb}
-					image={supporter.image}
-					job={supporter.job}
-				/>
-			{/each}
-		</div>
+
+	<h2 class="section-title">Direction</h2>
+	<div class="cards-grid leadership-grid">
+		{#each leadership as leader}
+			<LeadershipCard name={leader.name} role={leader.role} image={leader.image} />
+		{/each}
 	</div>
+
+	<h2 class="section-title">Conseil scientifique</h2>
+	<div class="cards-grid council-grid">
+		{#each scientificCouncil as scientist}
+			<ScientificCouncilCard name={scientist.name} job={scientist.job} image={scientist.image} />
+		{/each}
+	</div>
+
+	<h2 class="section-title">Membres bénévoles</h2>
+	<div class="cards-grid members-grid">
+		{#each members as supporter}
+			<SupporterCard
+				name={supporter.name}
+				blurb={supporter.blurb}
+				image={supporter.image}
+				job={supporter.job}
+			/>
+		{/each}
+	</div>
+
+	<p class="member-count">+ une centaine de membres et bénévoles</p>
 </section>
 
 <style>
-	@keyframes slides {
-		from {
-			transform: translateX(0);
-		}
-		to {
-			transform: translateX(calc(-100% - 1rem));
-		}
+	.section-title {
+		margin-top: 3rem;
+		margin-bottom: 1.5rem;
+		font-size: 1.5rem;
+		font-weight: 600;
 	}
 
-	.logos {
-		display: flex;
-		gap: 1rem;
-	}
-
-	.logo_items {
+	.cards-grid {
 		display: grid;
-		grid-template-columns: repeat(1, 1fr);
 		gap: 2rem;
 	}
 
-	@media (min-width: 600px) {
-		.logo_items {
-			grid-template-columns: repeat(1, 1fr);
-		}
+	.leadership-grid {
+		grid-template-columns: repeat(1, 1fr);
 	}
-	@media (min-width: 768px) {
-		.logo_items {
+
+	.council-grid {
+		grid-template-columns: repeat(1, 1fr);
+	}
+
+	.members-grid {
+		grid-template-columns: repeat(1, 1fr);
+	}
+
+	@media (min-width: 600px) {
+		.leadership-grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+		.council-grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+		.members-grid {
 			grid-template-columns: repeat(2, 1fr);
 		}
 	}
+
+	@media (min-width: 768px) {
+		.leadership-grid {
+			grid-template-columns: repeat(3, 1fr);
+		}
+	}
+
 	@media (min-width: 1024px) {
-		.logo_items {
+		.leadership-grid {
+			grid-template-columns: repeat(3, 1fr);
+		}
+		.council-grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+		.members-grid {
 			grid-template-columns: repeat(4, 1fr);
 		}
 	}
+
 	@media (min-width: 1280px) {
-		.logo_items {
+		.leadership-grid {
+			grid-template-columns: repeat(3, 1fr);
+		}
+		.members-grid {
 			grid-template-columns: repeat(5, 1fr);
 		}
 	}
 
-	.logos:hover .logo_items {
-		animation-play-state: paused;
+	.member-count {
+		margin-top: 2rem;
+		font-size: 1.1rem;
+		font-style: italic;
+		color: var(--text-secondary, #666);
+		text-align: center;
 	}
 </style>

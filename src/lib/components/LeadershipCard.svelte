@@ -1,12 +1,11 @@
 <script lang="ts">
 	export let name: string
-	export let blurb: string
+	export let role: string
 	export let image: string | null = null
-	export let job: string
 </script>
 
-<article class="article-link">
-	<div class="supporter-image">
+<article class="leadership-card">
+	<div class="leader-image">
 		{#if image}
 			<img src={image} alt={name} />
 		{:else}
@@ -17,30 +16,31 @@
 			</div>
 		{/if}
 	</div>
-	<div>
+	<div class="leader-info">
 		<h3>{name}</h3>
-		<p>{blurb}</p>
-		<p class="job">{job}</p>
+		<p class="role">{role}</p>
 	</div>
 </article>
 
 <style>
-	article {
-		height: auto;
+	.leadership-card {
 		display: flex;
 		flex-direction: column;
-		gap: 0rem;
+		gap: 0.5rem;
 	}
-	.supporter-image {
-		width: 17.5rem;
-		height: 17.5rem;
+
+	.leader-image {
+		width: 13rem;
+		height: 13rem;
 	}
-	.supporter-image img {
+
+	.leader-image img {
 		width: 100%;
 		height: 100%;
 		border-radius: 0.3125rem;
 		object-fit: cover;
 	}
+
 	.placeholder {
 		width: 100%;
 		height: 100%;
@@ -50,40 +50,37 @@
 		align-items: center;
 		justify-content: center;
 	}
+
 	.placeholder svg {
 		width: 50%;
 		height: 50%;
 		color: #888;
 	}
-	p {
-		margin: 0;
+
+	.leader-info {
+		max-width: 13rem;
 	}
-	.job {
-		font-weight: 300;
-		font-size: 1rem;
-	}
+
 	h3 {
-		margin-top: 0;
-		margin-bottom: 0;
+		margin: 0;
 		font-weight: 700;
+		font-size: 1.1rem;
 	}
-	.article-link {
-		text-decoration: none;
-		border-radius: 0.625rem;
+
+	.role {
+		margin: 0.25rem 0 0 0;
+		font-weight: 400;
+		font-size: 0.95rem;
+		color: var(--text-secondary, #666);
 	}
-	.article-link:hover {
-		color: inherit;
-	}
+
 	@media (min-width: 768px) {
-		.supporter-image {
-			width: 19.5rem;
-			height: 19.5rem;
+		.leader-image {
+			width: 15rem;
+			height: 15rem;
 		}
-	}
-	@media (min-width: 1024px) {
-		.supporter-image {
-			width: 13rem;
-			height: 13rem;
+		.leader-info {
+			max-width: 15rem;
 		}
 	}
 </style>
