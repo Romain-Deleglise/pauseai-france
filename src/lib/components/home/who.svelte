@@ -60,34 +60,14 @@
 			job: "Professeur d'anglais en classe préparatoire"
 		},
 		{
-			name: 'Salim',
-			image: 'membres/salim.jpg',
-			job: 'Etudiant en mathématiques'
-		},
-		{
-			name: 'Stélian',
-			image: 'membres/stelian.jpg',
-			job: 'Psychologue-psychothérapeute'
-		},
-		{
-			name: 'Bahman',
-			image: 'membres/bahman.jpeg',
-			job: 'Psychologue cognitiviste'
-		},
-		{
-			name: 'Damien',
-			image: 'membres/damien.jpg',
-			job: 'Ingénieur du son chez studiobreton.fr'
-		},
-		{
 			name: 'Éloïse',
 			image: 'membres/eloise.jpg',
 			job: "Chercheuse indépendante en sécurité de l'IA"
 		},
 		{
-			name: 'Emmanuel',
-			image: 'membres/emmanuel.jpg',
-			job: ''
+			name: 'Salim',
+			image: 'membres/salim.jpg',
+			job: 'Etudiant en mathématiques'
 		},
 		{
 			name: 'Karine',
@@ -100,6 +80,11 @@
 			job: 'Traductrice'
 		},
 		{
+			name: 'Stélian',
+			image: 'membres/stelian.jpg',
+			job: 'Psychologue-psychothérapeute'
+		},
+		{
 			name: 'Sandra',
 			image: 'membres/sandra.jfif',
 			job: 'Enseignante de littérature et autrice'
@@ -110,6 +95,11 @@
 			job: 'Psychopédagogue'
 		},
 		{
+			name: 'Bahman',
+			image: 'membres/bahman.jpeg',
+			job: 'Psychologue cognitiviste'
+		},
+		{
 			name: 'Mandelle',
 			image: 'membres/Mandelle.jpg',
 			job: 'Enseignante'
@@ -118,6 +108,16 @@
 			name: 'Marilyn',
 			image: 'membres/Marilyn.jpg',
 			job: 'Cheffe de projet en communication digitale'
+		},
+		{
+			name: 'Damien',
+			image: 'membres/damien.jpg',
+			job: 'Ingénieur du son chez studiobreton.fr'
+		},
+		{
+			name: 'Emmanuel',
+			image: 'membres/emmanuel.jpg',
+			job: ''
 		}
 	]
 </script>
