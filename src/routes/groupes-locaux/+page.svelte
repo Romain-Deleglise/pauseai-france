@@ -116,6 +116,7 @@
 		margin: 0;
 		font-size: 1.1rem;
 		opacity: 0.9;
+		flex-grow: 1;
 	}
 
 	@media (max-width: 640px) {
