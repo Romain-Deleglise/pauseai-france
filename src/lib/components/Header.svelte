@@ -43,8 +43,8 @@
 				<NavLink href="/qui-sommes-nous">A propos</NavLink>
 				<NavLink href="/dangers">Dangers</NavLink>
 				<NavLink href="/propositions">Propositions</NavLink>
-				<NavLink href="https://pauseia.substack.com/">Blog</NavLink>
 				<NavLink href="/agir">Agir</NavLink>
+				<NavLink href="/municipales-2026">Campagnes</NavLink>
 				<NavLink href="/groupes-locaux">Groupes locaux</NavLink>
 				<NavLink href="/dons">Donner</NavLink>
 				<Button href="/rejoindre" alt={onHomepage}>Rejoindre</Button>
@@ -100,6 +100,7 @@
 				<a href="/dangers" on:click={() => (open = !open)}><h2>Dangers</h2></a>
 				<a href="/propositions" on:click={() => (open = !open)}><h2>Propositions</h2></a>
 				<a href="/agir" on:click={() => (open = !open)}><h2>Agir</h2></a>
+				<a href="/municipales-2026" on:click={() => (open = !open)}><h2>Campagnes</h2></a>
 				<a href="/groupes-locaux" on:click={() => (open = !open)}><h2>Groupes locaux</h2></a>
 				<a href="https://pauseia.substack.com/" on:click={() => (open = !open)}><h2>Blog</h2></a>
 				<a href="/dons" on:click={() => (open = !open)}><h2>Dons</h2></a>
