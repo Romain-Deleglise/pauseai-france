@@ -1,5 +1,6 @@
 <script lang="ts">
 	import PostMeta from '$components/PostMeta.svelte'
+	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
 	import Button from '$lib/components/Button.svelte'
 
 	const title = 'Élections municipales 2026'
@@ -11,28 +12,30 @@
 
 <PostMeta {title} {description} />
 
-<section class="wrap">
-	<div class="content">
-		<h1>{title}</h1>
+<article>
+	<section class="hero">
+		<UnderlinedTitle as="h1">Élections municipales 2026</UnderlinedTitle>
 
 		<p class="intro">
 			{description}
 		</p>
+	</section>
 
-		<section class="charte-engagement">
+	<section class="charte-engagement">
+		<div class="charte-header">
 			<h2>Demander à vos candidats de s'engager sur la charte de Pause IA</h2>
 			<p>
 				Vous pouvez agir localement en interpellant les candidats de votre ville. Invitez-les à
 				découvrir et à signer la charte de Pause IA. L'ensemble des signataires sera prochainement
 				affiché sur cette page.
 			</p>
+		</div>
 
-			<div class="cta-container">
-				<Button on:click={() => (showModal = true)}>Je découvre la charte</Button>
-			</div>
-		</section>
-	</div>
-</section>
+		<div class="cta-container">
+			<Button on:click={() => (showModal = true)}>Je découvre la charte</Button>
+		</div>
+	</section>
+</article>
 
 {#if showModal}
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -47,41 +50,38 @@
 {/if}
 
 <style>
-	.wrap {
-		max-width: 800px;
-		margin: 0 auto;
-		padding: 3rem 1rem 5rem;
+	article {
+		max-inline-size: 60rem;
+		margin-inline: auto;
+		margin-top: 3rem;
+		padding: 0 2rem;
 	}
 
-	.content {
-		display: flex;
-		flex-direction: column;
-		gap: 2.5rem;
-	}
-
-	h1 {
-		font-size: 3rem;
-		font-weight: 800;
-		text-align: center;
-		margin: 0;
-		color: var(--text-heading, #111);
+	.hero {
+		text-align: left;
+		margin-bottom: 4rem;
 	}
 
 	.intro {
 		font-size: 1.25rem;
 		line-height: 1.6;
-		text-align: center;
 		color: var(--text-muted, #444);
 		max-width: 700px;
-		margin: 0 auto;
 	}
 
 	.charte-engagement {
 		background: #fafafa;
 		border-radius: 16px;
-		padding: 2.5rem;
+		padding: 3rem 2rem;
 		border: 1px solid #eee;
 		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+		text-align: center;
+		margin-bottom: 5rem;
+	}
+
+	.charte-header {
+		max-width: 45rem;
+		margin: 0 auto 2rem;
 	}
 
 	h2 {
@@ -94,7 +94,7 @@
 	.charte-engagement p {
 		font-size: 1.1rem;
 		line-height: 1.7;
-		margin-bottom: 2rem;
+		margin-bottom: 0;
 	}
 
 	.cta-container {
@@ -102,6 +102,7 @@
 		gap: 1rem;
 		flex-wrap: wrap;
 		justify-content: center;
+		margin-top: 2rem;
 	}
 
 	/* Modal Styles */
