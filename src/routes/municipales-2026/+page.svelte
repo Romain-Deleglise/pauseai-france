@@ -66,7 +66,6 @@
 		font-size: 1.25rem;
 		line-height: 1.6;
 		color: var(--text-muted, #444);
-		max-width: 700px;
 	}
 
 	.charte-engagement {
