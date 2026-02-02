@@ -8,7 +8,22 @@
 		'Les élections municipales de mars 2026 représentent une opportunité majeure de sensibilisation au niveau local. À cette occasion, Pause IA appelle les candidats à s’engager concrètement en signant notre charte.'
 
 	let showModal = false
+
+	function openActivoice() {
+		const embedEl = document.getElementById(
+			'activoice-embed-1d572d9b_9638_4731_84c0_ce7fd867cccb'
+		) as any
+		if ((window as any).Activoice) {
+			;(window as any).Activoice.bootstrap().then(() => {
+				embedEl?.openWithId('1d572d9b-9638-4731-84c0-ce7fd867cccb')
+			})
+		}
+	}
 </script>
+
+<svelte:head>
+	<script src="https://activoice.online/embed/activoice-12.0.0.js"></script>
+</svelte:head>
 
 <PostMeta {title} {description} />
 
@@ -33,7 +48,11 @@
 
 		<div class="cta-container">
 			<Button on:click={() => (showModal = true)}>Je découvre la charte</Button>
+			<Button on:click={openActivoice} color="orange">J'interpelle les candidats de ma ville</Button
+			>
 		</div>
+
+		<activoice-embed id="activoice-embed-1d572d9b_9638_4731_84c0_ce7fd867cccb" />
 	</section>
 </article>
 
