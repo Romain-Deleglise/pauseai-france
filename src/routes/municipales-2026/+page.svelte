@@ -48,8 +48,7 @@
 
 		<div class="cta-container">
 			<Button on:click={() => (showModal = true)}>Je découvre la charte</Button>
-			<Button on:click={openActivoice} color="orange">J'interpelle les candidats de ma ville</Button
-			>
+			<Button on:click={openActivoice}>J'interpelle les candidats de ma ville</Button>
 		</div>
 
 		<activoice-embed id="activoice-embed-1d572d9b_9638_4731_84c0_ce7fd867cccb" />
@@ -182,10 +181,6 @@
 	}
 
 	@media (max-width: 600px) {
-		h1 {
-			font-size: 2.5rem;
-		}
-
 		h2 {
 			font-size: 1.5rem;
 		}

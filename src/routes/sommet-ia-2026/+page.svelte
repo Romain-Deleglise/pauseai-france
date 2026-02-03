@@ -38,7 +38,7 @@
 		</div>
 
 		<div class="cta-container">
-			<Button on:click={openActivoice} color="orange">J'interpelle les politiques</Button>
+			<Button on:click={openActivoice}>J'interpelle les politiques</Button>
 		</div>
 
 		<activoice-embed id="activoice-embed-a0fa93be_f050_4d77_8a0c_9e70e3fe02b6" />
@@ -58,10 +58,9 @@
 		margin-bottom: 4rem;
 	}
 
-	.intro {
-		font-size: 1.25rem;
-		line-height: 1.6;
-		color: var(--text-muted, #444);
+	.hero {
+		text-align: left;
+		margin-bottom: 4rem;
 	}
 
 	.campaign-content {
@@ -79,11 +78,9 @@
 		margin: 0 auto 2rem;
 	}
 
-	h2 {
-		font-size: 2rem;
-		margin-top: 0;
-		margin-bottom: 1.5rem;
-		color: var(--text-heading, #222);
+	.content-header {
+		max-width: 45rem;
+		margin: 0 auto 2rem;
 	}
 
 	.campaign-content p {
@@ -101,10 +98,6 @@
 	}
 
 	@media (max-width: 600px) {
-		h2 {
-			font-size: 1.5rem;
-		}
-
 		.campaign-content {
 			padding: 1.5rem;
 		}
