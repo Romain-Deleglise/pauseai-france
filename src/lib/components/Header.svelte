@@ -5,11 +5,12 @@
 	import Button from '$components/Button.svelte'
 	import Banner from '$components/Banner.svelte'
 
-	const enableBot = false
 	import { onMount } from 'svelte'
-	import { fade, fly, blur } from 'svelte/transition'
+	import { fade } from 'svelte/transition'
 
 	$: onHomepage = $page.url.pathname == '/'
+
+	$: onEmploiePage = /^\/emploi-ia(?:\/|$)/.test($page.url.pathname)
 
 	let open = false
 	// Workaround to trigger transitions on render
@@ -19,17 +20,18 @@
 	})
 </script>
 
-<Banner>
-	Forum des solutions pour une IA compatible avec l'humanité |
-	<a href="https://controleia.org/" target="_blank">Conférences et échanges le 8 février 2025</a>
+<Banner visible={true}>
+	Compte-rendu du colloque au Sénat disponible. <a href="/senat2025"
+		>Consultez nos recommandations</a
+	>.
 </Banner>
 
 <!-- probably have to change nav colors and classes to respond to banner presence instead of route -->
 {#if mounted || !onHomepage}
 	<nav in:fade={{ duration: 500, delay: 200 }}>
-		<a href="/" class="logo">
+		<a href={onEmploiePage ? '/emploi-ia' : '/'} class="logo">
 			<div class="big-logo">
-				<Logo animate fill_pause={onHomepage ? 'white' : 'black'} />
+				<Logo animate fill_pause={onHomepage ? 'white' : 'black'} emploi_ia={onEmploiePage} />
 			</div>
 			<div class="small-logo">
 				<Logo animate only_circle />
@@ -41,9 +43,11 @@
 				<NavLink href="/qui-sommes-nous">A propos</NavLink>
 				<NavLink href="/dangers">Dangers</NavLink>
 				<NavLink href="/propositions">Propositions</NavLink>
-				<NavLink href="https://pauseia.substack.com/">Blog</NavLink>
+				<NavLink href="/agir">Agir</NavLink>
+				<NavLink href="/municipales-2026">Campagnes</NavLink>
+				<NavLink href="/groupes-locaux">Groupes locaux</NavLink>
 				<NavLink href="/dons">Donner</NavLink>
-				<Button href="/agir" alt={onHomepage}>Agir</Button>
+				<Button href="/rejoindre" alt={onHomepage}>Rejoindre</Button>
 			</div>
 			<button aria-label="Open mobile menu" class="hamburger" on:click={() => (open = !open)}>
 				<svg
@@ -96,9 +100,11 @@
 				<a href="/dangers" on:click={() => (open = !open)}><h2>Dangers</h2></a>
 				<a href="/propositions" on:click={() => (open = !open)}><h2>Propositions</h2></a>
 				<a href="/agir" on:click={() => (open = !open)}><h2>Agir</h2></a>
+				<a href="/municipales-2026" on:click={() => (open = !open)}><h2>Campagnes</h2></a>
+				<a href="/groupes-locaux" on:click={() => (open = !open)}><h2>Groupes locaux</h2></a>
 				<a href="https://pauseia.substack.com/" on:click={() => (open = !open)}><h2>Blog</h2></a>
 				<a href="/dons" on:click={() => (open = !open)}><h2>Dons</h2></a>
-				<a href="/nous-rejoindre" on:click={() => (open = !open)}><h2>Nous rejoindre</h2></a>
+				<a href="/rejoindre" on:click={() => (open = !open)}><h2>Nous rejoindre</h2></a>
 			</div>
 		</div>
 	</nav>

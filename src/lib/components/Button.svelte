@@ -2,14 +2,17 @@
 	export let alt = false
 	export let href = ''
 	export let target = ''
+	export let rel = ''
+	export let type: 'button' | 'submit' | 'reset' = 'button'
+	export let disabled = false
 </script>
 
 {#if href}
-	<a {href} {target} class:alt>
+	<a {href} {target} {rel} class:alt aria-disabled={disabled}>
 		<slot />
 	</a>
 {:else}
-	<button on:click class:alt>
+	<button {disabled} {type} on:click class:alt>
 		<slot />
 	</button>
 {/if}
@@ -70,5 +73,13 @@
 		background-color: var(--btn-alt-focus-bg);
 		outline: var(--btn-alt-focus-border) solid 0.25rem;
 		outline-offset: 0;
+	}
+
+	/* Disabled state */
+	button:disabled,
+	a[aria-disabled='true'] {
+		background-color: var(--bg-subtle);
+		cursor: not-allowed;
+		opacity: 0.7;
 	}
 </style>

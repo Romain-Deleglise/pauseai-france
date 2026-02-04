@@ -41,7 +41,7 @@
 			</p>
 			<div class="buttons" in:fly={{ y: 20, duration: 300, delay: 700 }}>
 				<Button href="/dangers">Informez-vous</Button>
-				<Button href="/nous-rejoindre">Rejoignez-nous</Button>
+				<Button href="/rejoindre">Rejoignez-nous</Button>
 				<Button href="/agir">Passez à l’action</Button>
 			</div>
 		</div>
@@ -61,11 +61,14 @@
 		flex-direction: column;
 		gap: 2rem;
 		margin-top: 2rem;
+		/* Centrer les boutons en affichage mobile */
+		align-items: center;
 	}
 
 	@media (min-width: 768px) {
 		.buttons {
 			flex-direction: row;
+			/* En desktop l'alignement est déjà bon grâce au align-items: center du parent */
 		}
 	}
 </style>

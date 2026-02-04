@@ -1,12 +1,12 @@
 ---
 title: Propositions de Pause IA
-description: Mettre en place un moratoire sur l'entraînement des systèmes d'IA plus puissants que GPT-4, interdire l'entraînement des systèmes d'IA sur du matériel sous droit d'auteur, tenir les créateurs de modèles d'IA responsables.
+description: Mettre en place un moratoire sur l'entraînement des systèmes d'IA Générale (IAG), interdire l'entraînement des systèmes d'IA sur du matériel sous droit d'auteur, tenir les créateurs de modèles d'IA responsables.
 original:
   title: PauseAI Proposal
   url: https://github.com/PauseAI/pauseai-website/blob/0cabfef1037097bd7a99f4fddd1bcd73abbe6760/src/posts/proposal.md
 ---
 
-**Instaurer un moratoire sur l'entraînement des systèmes d'IA plus puissants que GPT-4** jusqu'à ce que nous sachions comment les développer en toute sécurité et les maintenir sous contrôle démocratique.
+**Instaurer un moratoire sur l'entraînement des systèmes d'IA Générale (IAG)** jusqu'à ce que nous sachions comment les développer en toute sécurité et les maintenir sous contrôle démocratique.
 
 Chaque pays peut et doit mettre en œuvre cette mesure _immédiatement_. En particulier, les États-Unis (ou la Californie spécifiquement) devraient instaurer un moratoire, puisqu'ils hébergent pratiquement toutes les grandes entreprises d'IA. De nombreux scientifiques et leaders de l'industrie [conviennent qu'un moratoire est nécessaire](https://futureoflife.org/open-letter/pause-giant-ai-experiments/), et le grand public soutient également une telle mesure ([64%](https://www.campaignforaisafety.org/usa-ai-x-risk-perception-tracker/) - [69%](https://today.yougov.com/topics/technology/survey-results/daily/2023/04/03/ad825/2)).
 
@@ -28,9 +28,9 @@ Similaire à l'AIEA (Agence Internationale de l'Énergie Atomique), les préroga
 
 ### Entraînement de systèmes d'IA générale
 
-Autoriser l'entraînement de systèmes d'IA générale plus puissants que GPT-4 uniquement si leur sécurité peut être garantie :
+Autoriser l'entraînement de systèmes d'IA générale puissants uniquement si leur sécurité peut être garantie :
 
-- Par « plus puissants que GPT-4 », nous entendons tous les modèles d'IA qui sont soit 1) de taille supérieure à 10^12 paramètres, 2) utilisent plus de 10^25 FLOP pour l'entraînement, ou 3) dont les capacités s’apprêtent à dépasser celles de GPT-4.
+- Par « puissants », nous entendons tous les modèles d'IA qui sont soit 1) de taille supérieure à 10^12 paramètres, 2) utilisent plus de 10^25 FLOP pour l'entraînement.
 - Ces prérogatives ne ciblent pas les systèmes d'IA _étroits_ (dits spécialisés), comme la reconnaissance d'images utilisée pour diagnostiquer des problèmes médicaux.
 - Exiger une [supervision pendant les sessions d'entraînement.](https://www.alignmentforum.org/posts/Zfk6faYvcf5Ht7xDx/compute-thresholds-proposed-rules-to-mitigate-risk-of-a-lab)
 - La sécurité ne peut être garantie que par l’existence d’un fort consensus scientifique et par [la preuve](https://arxiv.org/abs/2309.01933) que le _problème de l’alignement a été résolu_. Pour l'instant, ce n'est pas le cas, nous ne devrions donc pas permettre l'entraînement de tels systèmes.
@@ -64,4 +64,4 @@ Arrivera un moment où des modèles d'IA potentiellement superintelligents pourr
 
 ## **Aidez-nous à réaliser cet objectif**
 
-[Rejoignez](/nous-rejoindre) le mouvement pour nous aider ou [agissez](/agir) par vous-même !
+[Rejoignez](/rejoindre) le mouvement pour nous aider ou [agissez](/agir) par vous-même !

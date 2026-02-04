@@ -9,6 +9,11 @@
 	<UnderlinedTitle id={label_id}>Nos articles mis en avant</UnderlinedTitle>
 	<div class="articles-grid">
 		<ArticleCard
+			title="WaitButWhy et l'IA, 10 ans après"
+			blurb="En 2015, WaitButWhy écrivait sur les dangers de l'IA. Nous avons traduit la série originelle, et donné une perspective 10 ans après."
+			url="https://pauseia.substack.com/p/la-revolution-de-lia-dix-ans-apres"
+		/>
+		<ArticleCard
 			title="L’IA et la Cybersécurité"
 			blurb="Les systèmes d'IA peuvent déjà analyser et écrire du code, identifier des vulnérabilités et les exploiter."
 			url="https://pauseia.substack.com/p/lia-et-la-cybersecurite"
@@ -39,7 +44,12 @@
 			url="https://pauseia.substack.com/p/pourquoi-une-superintelligence-pourrait"
 		/>
 	</div>
-	<Button href="https://pauseia.substack.com/">Voir tous les articles</Button>
+	<div class="buttons-row">
+		<Button href="https://pauseia.substack.com/">Voir tous les articles</Button>
+		<Button alt href="https://pauseia.substack.com/subscribe" target="_blank">
+			S'abonner au blog
+		</Button>
+	</div>
 </section>
 
 <style>
@@ -47,6 +57,13 @@
 		display: grid;
 		gap: 1rem;
 		margin-bottom: 2rem;
+	}
+
+	.buttons-row {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1rem;
+		justify-content: center;
 	}
 
 	@media (min-width: 640px) {

@@ -1,48 +1,72 @@
 <script lang="ts">
-	export let name
-	export let blurb
-	export let image
-	export let job
+	export let name: string
+	export let image: string | null = null
+	export let job: string = ''
 </script>
 
 <article class="article-link">
 	<div class="supporter-image">
-		<img src={image} alt={name} />
+		{#if image}
+			<img src={image} alt={name} />
+		{:else}
+			<div class="placeholder">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+					<path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+				</svg>
+			</div>
+		{/if}
 	</div>
-	<div>
+	<div class="info">
 		<h3>{name}</h3>
-		<p>{blurb}</p>
-		<p class="job">{job}</p>
+		{#if job}
+			<p class="job">{job}</p>
+		{/if}
 	</div>
 </article>
 
 <style>
 	article {
-		height: auto;
 		display: flex;
 		flex-direction: column;
-		gap: 0rem;
+		gap: 0.5rem;
 	}
 	.supporter-image {
-		width: 17.5rem;
-		height: 17.5rem;
+		width: 13rem;
+		height: 13rem;
+		flex-shrink: 0;
 	}
 	.supporter-image img {
 		width: 100%;
 		height: 100%;
 		border-radius: 0.3125rem;
+		object-fit: cover;
 	}
-	p {
-		margin: 0;
+	.placeholder {
+		width: 100%;
+		height: 100%;
+		border-radius: 0.3125rem;
+		background: linear-gradient(135deg, #e0e0e0 0%, #c0c0c0 100%);
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
-	.job {
-		font-weight: 300;
-		font-size: 1rem;
+	.placeholder svg {
+		width: 50%;
+		height: 50%;
+		color: #888;
+	}
+	.info {
+		max-width: 13rem;
 	}
 	h3 {
-		margin-top: 0;
-		margin-bottom: 0;
+		margin: 0;
 		font-weight: 700;
+		font-size: 1.1rem;
+	}
+	.job {
+		margin: 0.2rem 0 0 0;
+		font-weight: 300;
+		font-size: 0.9rem;
 	}
 	.article-link {
 		text-decoration: none;
@@ -51,16 +75,5 @@
 	.article-link:hover {
 		color: inherit;
 	}
-	@media (min-width: 768px) {
-		.supporter-image {
-			width: 19.5rem;
-			height: 19.5rem;
-		}
-	}
-	@media (min-width: 1024px) {
-		.supporter-image {
-			width: 13rem;
-			height: 13rem;
-		}
-	}
 </style>
+

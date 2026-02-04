@@ -9,7 +9,6 @@ vite.config.ts.timestamp-*
 .vercel
 # Local Netlify folder
 .netlify
-/static/pagefind
 .env
 /TODO*
 .typographyChanges.json
