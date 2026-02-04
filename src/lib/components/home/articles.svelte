@@ -44,7 +44,12 @@
 			url="https://pauseia.substack.com/p/pourquoi-une-superintelligence-pourrait"
 		/>
 	</div>
-	<Button href="https://pauseia.substack.com/">Voir tous les articles</Button>
+	<div class="buttons-row">
+		<Button href="https://pauseia.substack.com/">Voir tous les articles</Button>
+		<Button alt href="https://pauseia.substack.com/subscribe" target="_blank">
+			S'abonner au blog
+		</Button>
+	</div>
 </section>
 
 <style>
@@ -52,6 +57,13 @@
 		display: grid;
 		gap: 1rem;
 		margin-bottom: 2rem;
+	}
+
+	.buttons-row {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1rem;
+		justify-content: center;
 	}
 
 	@media (min-width: 640px) {
