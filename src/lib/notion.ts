@@ -1,9 +1,4 @@
-import {
-	NOTION_API_KEY,
-	NOTION_VIDEOS_DATABASE_ID,
-	NOTION_ARTICLES_DATABASE_ID,
-	NOTION_REPORTS_DATABASE_ID
-} from '$env/static/private'
+import { env } from '$env/dynamic/private'
 
 const NOTION_API_VERSION = '2022-06-28'
 
@@ -98,7 +93,7 @@ function getSelect(property: NotionProperty | undefined): string {
 }
 
 async function queryDatabase<T>(databaseId: string, mapper: (page: NotionPage) => T): Promise<T[]> {
-	const apiKey = NOTION_API_KEY
+	const apiKey = env.NOTION_API_KEY
 	if (!apiKey || !databaseId) {
 		console.warn('Notion API key or database ID not configured')
 		return []
@@ -132,7 +127,7 @@ async function queryDatabase<T>(databaseId: string, mapper: (page: NotionPage) =
 }
 
 export async function getVideos(): Promise<Video[]> {
-	const databaseId = NOTION_VIDEOS_DATABASE_ID
+	const databaseId = env.NOTION_VIDEOS_DATABASE_ID
 	if (!databaseId) return []
 
 	const videos = await queryDatabase<Video | null>(databaseId, (page) => {
@@ -152,7 +147,7 @@ export async function getVideos(): Promise<Video[]> {
 }
 
 export async function getArticles(): Promise<Article[]> {
-	const databaseId = NOTION_ARTICLES_DATABASE_ID
+	const databaseId = env.NOTION_ARTICLES_DATABASE_ID
 	if (!databaseId) return []
 
 	const articles = await queryDatabase<Article | null>(databaseId, (page) => {
@@ -176,7 +171,7 @@ export async function getArticles(): Promise<Article[]> {
 }
 
 export async function getReports(): Promise<Report[]> {
-	const databaseId = NOTION_REPORTS_DATABASE_ID
+	const databaseId = env.NOTION_REPORTS_DATABASE_ID
 	if (!databaseId) return []
 
 	const reports = await queryDatabase<Report | null>(databaseId, (page) => {
