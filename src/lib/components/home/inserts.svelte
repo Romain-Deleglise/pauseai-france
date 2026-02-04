@@ -42,21 +42,25 @@
 				blurb={report.description}
 				url={report.url}
 				linkText="Voir le site"
+				category="Rapport"
 			/>
 		{/each}
 	</div>
 </section>
 
 <style>
+	section {
+		margin-bottom: 1rem;
+	}
+
 	.inserts-grid {
 		display: grid;
-		gap: 1rem;
-		margin-bottom: 2rem;
+		gap: 1.5rem;
 	}
 
 	@media (min-width: 640px) {
 		.inserts-grid {
-			grid-template-columns: 1fr 1fr;
+			grid-template-columns: repeat(2, 1fr);
 		}
 	}
 </style>

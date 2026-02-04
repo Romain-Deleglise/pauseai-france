@@ -59,22 +59,38 @@
 	<UnderlinedTitle id={label_id}>Nos articles mis en avant</UnderlinedTitle>
 	<div class="articles-grid">
 		{#each displayArticles as article (article.id)}
-			<ArticleCard title={article.title} blurb={article.description} url={article.url} />
+			<ArticleCard
+				title={article.title}
+				blurb={article.description}
+				url={article.url}
+				category={article.type === 'Newsletter' ? 'Newsletter' : ''}
+			/>
 		{/each}
 	</div>
-	<Button href="https://pauseia.substack.com/">Voir tous les articles</Button>
+	<div class="button-container">
+		<Button href="https://pauseia.substack.com/">Voir tous les articles</Button>
+	</div>
 </section>
 
 <style>
+	section {
+		margin-bottom: 1rem;
+	}
+
 	.articles-grid {
 		display: grid;
-		gap: 1rem;
+		gap: 1.5rem;
 		margin-bottom: 2rem;
+	}
+
+	.button-container {
+		display: flex;
+		justify-content: center;
 	}
 
 	@media (min-width: 640px) {
 		.articles-grid {
-			grid-template-columns: 1fr 1fr;
+			grid-template-columns: repeat(2, 1fr);
 		}
 	}
 </style>
