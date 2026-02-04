@@ -68,7 +68,7 @@
 		</a>
 		<p>Pour une IA alignée sur l'humanité.</p>
 	</div>
-	<div class="newsletter-section">
+	<div id="newsletter" class="newsletter-section">
 		<h2>Newsletter</h2>
 		<p class="newsletter-desc">Recevez l'essentiel des actualités de Pause IA</p>
 		<form on:submit={handleNewsletterSubmit} class="newsletter-form">
