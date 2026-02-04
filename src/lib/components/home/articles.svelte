@@ -66,6 +66,10 @@
 		justify-content: center;
 	}
 
+	.buttons-row :global(a.alt) {
+		border: 2px solid var(--text);
+	}
+
 	@media (min-width: 640px) {
 		.articles-grid {
 			grid-template-columns: 1fr 1fr;

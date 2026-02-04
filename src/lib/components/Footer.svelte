@@ -70,7 +70,7 @@
 	</div>
 	<div id="newsletter" class="newsletter-section">
 		<h2>Newsletter</h2>
-		<p class="newsletter-desc">Recevez l'essentiel des actualités de Pause IA</p>
+		<p class="newsletter-desc">L'essentiel de l'actualité IA décrypté chaque mois</p>
 		<form on:submit={handleNewsletterSubmit} class="newsletter-form">
 			<div class="input-group">
 				<input
