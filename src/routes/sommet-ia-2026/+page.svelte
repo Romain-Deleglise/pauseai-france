@@ -38,6 +38,9 @@
 		</div>
 
 		<div class="cta-container">
+			<Button href="https://www.change.org/fr-ia-sommet-inde" target="_blank"
+				>Je signe la pétition</Button
+			>
 			<Button on:click={openActivoice}>J'interpelle les politiques</Button>
 		</div>
 
