@@ -45,6 +45,9 @@
 		display: grid;
 		gap: 1.5rem;
 		margin-bottom: 2rem;
+		max-width: 500px;
+		margin-left: auto;
+		margin-right: auto;
 	}
 
 	.button-container {
@@ -52,15 +55,10 @@
 		justify-content: center;
 	}
 
-	@media (min-width: 768px) {
-		.video-grid {
-			grid-template-columns: repeat(2, 1fr);
-		}
-	}
-
-	@media (min-width: 1024px) {
+	@media (min-width: 640px) {
 		.video-grid {
 			grid-template-columns: repeat(3, 1fr);
+			max-width: none;
 		}
 	}
 </style>

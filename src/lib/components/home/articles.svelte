@@ -67,9 +67,6 @@
 			/>
 		{/each}
 	</div>
-	<div class="button-container">
-		<Button href="https://pauseia.substack.com/">Voir tous les articles</Button>
-	</div>
 	<div class="buttons-row">
 		<Button href="https://pauseia.substack.com/">Voir tous les articles</Button>
 		<Button alt href="https://pauseia.substack.com/subscribe" target="_blank">
