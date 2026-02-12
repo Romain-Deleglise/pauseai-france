@@ -26,17 +26,14 @@
 			0 4px 6px -1px rgba(0, 0, 0, 0.1),
 			0 2px 4px -2px rgba(0, 0, 0, 0.1);
 		background-color: #000;
-		border: 2px solid transparent;
 		transition:
 			transform 0.2s ease,
-			box-shadow 0.2s ease,
-			border-color 0.2s ease;
+			box-shadow 0.2s ease;
 	}
 
 	.video-container:hover {
 		transform: translateY(-4px);
-		box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.15);
-		border-color: var(--brand);
+		box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.2);
 	}
 
 	iframe {

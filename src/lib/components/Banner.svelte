@@ -52,19 +52,16 @@
 
 	:global(.banner a) {
 		font-weight: 700;
-		text-decoration: underline;
-		text-decoration-thickness: 2px;
-		text-underline-offset: 3px;
+		text-decoration: none;
 		color: var(--black);
+		background-color: rgba(255, 255, 255, 0.35);
+		padding: 0.25rem 0.5rem;
+		border-radius: 4px;
 		transition: all 0.2s ease;
 	}
 
 	:global(.banner a:hover) {
-		background-color: rgba(0, 0, 0, 0.15);
-		padding: 0.125rem 0.375rem;
-		margin: -0.125rem -0.375rem;
-		border-radius: 4px;
-		text-decoration: none;
+		background-color: rgba(255, 255, 255, 0.6);
 	}
 
 	.close-btn {

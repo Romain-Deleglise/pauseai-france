@@ -22,7 +22,7 @@
 		{
 			id: '4',
 			title: 'Intelligence artificielle : faut-il en avoir peur ?',
-			youtubeId: 'dZ-POjPimpo',
+			youtubeId: 'Y3MTcvOyj0s',
 			order: 4,
 			visible: true
 		}

@@ -42,11 +42,11 @@
 		},
 		{
 			id: '4',
-			title: 'Classement p(doom) des scientifiques',
+			title: 'Newsletter Pause IA - Février 2025',
 			description:
-				"L'estimation du potentiel de destruction de l'IA par les scientifiques du secteur de l'IA",
-			url: 'https://pauseia.substack.com/p/classement-pdoom-des-scientifiques',
-			type: 'Article',
+				"Retrouvez toute l'actualité de Pause IA : actions, événements, et analyses sur les risques de l'intelligence artificielle.",
+			url: 'https://civicrm.pauseia.fr/civicrm/mailing/view?id=93&reset=1',
+			type: 'Newsletter',
 			order: 4,
 			visible: true
 		}
