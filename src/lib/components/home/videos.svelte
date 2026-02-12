@@ -18,6 +18,13 @@
 			youtubeId: 'XQv_3gO7Zxo',
 			order: 3,
 			visible: true
+		},
+		{
+			id: '4',
+			title: 'Intelligence artificielle : faut-il en avoir peur ?',
+			youtubeId: 'dZ-POjPimpo',
+			order: 4,
+			visible: true
 		}
 	]
 
@@ -55,18 +62,10 @@
 		justify-content: center;
 	}
 
-	/* Tablet: 2 columns */
+	/* Tablet and up: 2 columns */
 	@media (min-width: 640px) {
 		.video-grid {
 			grid-template-columns: repeat(2, 1fr);
-			max-width: 700px;
-		}
-	}
-
-	/* Desktop: 3 columns */
-	@media (min-width: 900px) {
-		.video-grid {
-			grid-template-columns: repeat(3, 1fr);
 			max-width: none;
 		}
 	}
