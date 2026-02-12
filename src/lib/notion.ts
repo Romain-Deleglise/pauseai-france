@@ -100,6 +100,52 @@ function getSelect(property: NotionProperty | undefined): string {
 	return property.select?.name || ''
 }
 
+// Validation helpers
+function isValidVideo(video: Video): boolean {
+	// YouTube ID must be present and look valid (11 characters)
+	if (!video.youtubeId || video.youtubeId.length < 5) {
+		console.warn(`Invalid video: missing or invalid YouTube ID for "${video.title}"`)
+		return false
+	}
+	if (!video.title) {
+		console.warn(`Invalid video: missing title for YouTube ID "${video.youtubeId}"`)
+		return false
+	}
+	return true
+}
+
+function isValidArticle(article: Article): boolean {
+	if (!article.title) {
+		console.warn(`Invalid article: missing title`)
+		return false
+	}
+	if (!article.url) {
+		console.warn(`Invalid article: missing URL for "${article.title}"`)
+		return false
+	}
+	return true
+}
+
+function isValidReport(report: Report): boolean {
+	if (!report.title) {
+		console.warn(`Invalid report: missing title`)
+		return false
+	}
+	if (!report.url) {
+		console.warn(`Invalid report: missing URL for "${report.title}"`)
+		return false
+	}
+	return true
+}
+
+function isValidBanner(banner: Banner): boolean {
+	if (!banner.message) {
+		console.warn(`Invalid banner: missing message`)
+		return false
+	}
+	return true
+}
+
 async function queryDatabase<T>(databaseId: string, mapper: (page: NotionPage) => T): Promise<T[]> {
 	const apiKey = env.NOTION_API_KEY
 	if (!apiKey || !databaseId) {
@@ -142,13 +188,16 @@ export async function getVideos(): Promise<Video[]> {
 		const visible = getCheckbox(page.properties['Visible'])
 		if (!visible) return null
 
-		return {
+		const video: Video = {
 			id: page.id,
 			title: getText(page.properties['Titre']),
 			youtubeId: getText(page.properties['YouTube ID']),
 			order: getNumber(page.properties['Ordre']),
 			visible
 		}
+
+		// Validate before returning
+		return isValidVideo(video) ? video : null
 	})
 
 	return videos.filter((v): v is Video => v !== null)
@@ -164,7 +213,7 @@ export async function getArticles(): Promise<Article[]> {
 
 		const typeValue = getSelect(page.properties['Type'])
 
-		return {
+		const article: Article = {
 			id: page.id,
 			title: getText(page.properties['Titre']),
 			description: getText(page.properties['Description']),
@@ -173,6 +222,9 @@ export async function getArticles(): Promise<Article[]> {
 			order: getNumber(page.properties['Ordre']),
 			visible
 		}
+
+		// Validate before returning
+		return isValidArticle(article) ? article : null
 	})
 
 	return articles.filter((a): a is Article => a !== null)
@@ -186,7 +238,7 @@ export async function getReports(): Promise<Report[]> {
 		const visible = getCheckbox(page.properties['Visible'])
 		if (!visible) return null
 
-		return {
+		const report: Report = {
 			id: page.id,
 			title: getText(page.properties['Titre']),
 			description: getText(page.properties['Description']),
@@ -195,6 +247,9 @@ export async function getReports(): Promise<Report[]> {
 			order: getNumber(page.properties['Ordre']),
 			visible
 		}
+
+		// Validate before returning
+		return isValidReport(report) ? report : null
 	})
 
 	return reports.filter((r): r is Report => r !== null)
@@ -208,13 +263,16 @@ export async function getBanner(): Promise<Banner | null> {
 		const visible = getCheckbox(page.properties['Visible'])
 		if (!visible) return null
 
-		return {
+		const banner: Banner = {
 			id: page.id,
 			message: getText(page.properties['Message']),
 			linkText: getText(page.properties['Texte du lien']),
 			linkUrl: getUrl(page.properties['URL du lien']),
 			visible
 		}
+
+		// Validate before returning
+		return isValidBanner(banner) ? banner : null
 	})
 
 	// Return the first visible banner
