@@ -56,6 +56,14 @@ export interface Report {
 	visible: boolean
 }
 
+export interface Banner {
+	id: string
+	message: string
+	linkText: string
+	linkUrl: string
+	visible: boolean
+}
+
 // Helper to extract text from Notion rich_text or title
 function getText(property: NotionProperty | undefined): string {
 	if (!property) return ''
@@ -190,4 +198,25 @@ export async function getReports(): Promise<Report[]> {
 	})
 
 	return reports.filter((r): r is Report => r !== null)
+}
+
+export async function getBanner(): Promise<Banner | null> {
+	const databaseId = env.NOTION_BANNER_DATABASE_ID
+	if (!databaseId) return null
+
+	const banners = await queryDatabase<Banner | null>(databaseId, (page) => {
+		const visible = getCheckbox(page.properties['Visible'])
+		if (!visible) return null
+
+		return {
+			id: page.id,
+			message: getText(page.properties['Message']),
+			linkText: getText(page.properties['Texte du lien']),
+			linkUrl: getUrl(page.properties['URL du lien']),
+			visible
+		}
+	})
+
+	// Return the first visible banner
+	return banners.find((b): b is Banner => b !== null) || null
 }

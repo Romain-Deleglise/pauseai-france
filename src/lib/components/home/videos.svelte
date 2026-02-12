@@ -55,7 +55,16 @@
 		justify-content: center;
 	}
 
+	/* Tablet: 2 columns */
 	@media (min-width: 640px) {
+		.video-grid {
+			grid-template-columns: repeat(2, 1fr);
+			max-width: 700px;
+		}
+	}
+
+	/* Desktop: 3 columns */
+	@media (min-width: 900px) {
 		.video-grid {
 			grid-template-columns: repeat(3, 1fr);
 			max-width: none;
