@@ -56,7 +56,7 @@
 </script>
 
 <section aria-labelledby={label_id}>
-	<UnderlinedTitle id={label_id}>Nos articles mis en avant</UnderlinedTitle>
+	<UnderlinedTitle id={label_id}>Nos publications</UnderlinedTitle>
 	<div class="articles-grid">
 		{#each displayArticles as article (article.id)}
 			<ArticleCard

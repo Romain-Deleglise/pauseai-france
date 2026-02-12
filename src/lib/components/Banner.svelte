@@ -53,12 +53,18 @@
 	:global(.banner a) {
 		font-weight: 700;
 		text-decoration: underline;
-		text-underline-offset: 2px;
-		transition: opacity 0.2s ease;
+		text-decoration-thickness: 2px;
+		text-underline-offset: 3px;
+		color: var(--black);
+		transition: all 0.2s ease;
 	}
 
 	:global(.banner a:hover) {
-		opacity: 0.8;
+		background-color: rgba(0, 0, 0, 0.15);
+		padding: 0.125rem 0.375rem;
+		margin: -0.125rem -0.375rem;
+		border-radius: 4px;
+		text-decoration: none;
 	}
 
 	.close-btn {
