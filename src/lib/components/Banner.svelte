@@ -41,13 +41,25 @@
 	}
 
 	.banner-icon {
-		display: flex;
+		display: none;
 		align-items: center;
 		flex-shrink: 0;
 	}
 
 	.banner-message {
 		text-align: center;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		align-items: center;
+		gap: 0.375rem;
+	}
+
+	/* Show icon only on larger screens */
+	@media (min-width: 640px) {
+		.banner-icon {
+			display: flex;
+		}
 	}
 
 	:global(.banner a) {
@@ -86,10 +98,6 @@
 	@media (max-width: 640px) {
 		.banner-content {
 			font-size: 0.875rem;
-		}
-
-		.banner-icon {
-			display: none;
 		}
 	}
 </style>

@@ -63,7 +63,7 @@
 				title={article.title}
 				blurb={article.description}
 				url={article.url}
-				category={article.type === 'Newsletter' ? 'Newsletter' : ''}
+				category={article.type}
 			/>
 		{/each}
 	</div>

@@ -62,10 +62,18 @@
 		justify-content: center;
 	}
 
-	/* Tablet and up: 2 columns */
+	/* Tablet and up: 2 columns with max-width */
 	@media (min-width: 640px) {
 		.video-grid {
 			grid-template-columns: repeat(2, 1fr);
+			max-width: 800px;
+		}
+	}
+
+	/* Large screens: 4 columns */
+	@media (min-width: 1024px) {
+		.video-grid {
+			grid-template-columns: repeat(4, 1fr);
 			max-width: none;
 		}
 	}
