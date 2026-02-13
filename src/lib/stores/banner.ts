@@ -4,9 +4,9 @@ import type { Banner } from '$lib/notion'
 // Default banner content (fallback when Notion is not configured)
 const defaultBanner: Banner = {
 	id: 'default',
-	message: 'Compte-rendu du colloque au Sénat disponible.',
-	linkText: 'Consultez nos recommandations',
-	linkUrl: '/senat2025',
+	message: "Sommet de l'IA à Delhi : agissez maintenant",
+	linkText: 'En savoir plus',
+	linkUrl: '/sommet-ia-2026',
 	visible: true
 }
 

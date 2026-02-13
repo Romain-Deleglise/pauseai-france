@@ -12,40 +12,40 @@
 	const fallbackArticles: Article[] = [
 		{
 			id: '1',
-			title: "WaitButWhy et l'IA, 10 ans après",
+			title: 'Newsletter Pause IA - Janvier 2025',
 			description:
-				"En 2015, WaitButWhy écrivait sur les dangers de l'IA. Nous avons traduit la série originelle, et donné une perspective 10 ans après.",
-			url: 'https://pauseia.substack.com/p/la-revolution-de-lia-dix-ans-apres',
-			type: 'Article',
+				"Pourquoi l'IA est notre priorité absolue ; Action au sommet pour l'action sur l'IA ; Nouvelles du front ; Les actus du mois.",
+			url: 'https://civicrm.pauseia.fr/civicrm/mailing/view?id=88&reset=1',
+			type: 'Newsletter',
 			order: 1,
 			visible: true
 		},
 		{
 			id: '2',
-			title: "L'IA et la Cybersécurité",
+			title: 'Newsletter Pause IA - Décembre 2024',
 			description:
-				"Les systèmes d'IA peuvent déjà analyser et écrire du code, identifier des vulnérabilités et les exploiter.",
-			url: 'https://pauseia.substack.com/p/lia-et-la-cybersecurite',
-			type: 'Article',
+				'Retour sur le colloque au Sénat ; Notre roadmap pour 2025 ; Nouvelles du front ; Les actus du mois.',
+			url: 'https://civicrm.pauseia.fr/civicrm/mailing/view?id=85&reset=1',
+			type: 'Newsletter',
 			order: 2,
 			visible: true
 		},
 		{
 			id: '3',
-			title: "Quatre niveaux de réglementation de l'IA",
+			title: 'Newsletter Pause IA - Novembre 2024',
 			description:
-				"Clarifier et mesurer l'efficacité des réglementations aux différentes étapes du processus de création d'un modèle.",
-			url: 'https://pauseia.substack.com/p/quatre-niveaux-de-reglementation',
-			type: 'Article',
+				'Colloque au Sénat - programme et inscription ; Nouvelles du front ; Les actus du mois.',
+			url: 'https://civicrm.pauseia.fr/civicrm/mailing/view?id=82&reset=1',
+			type: 'Newsletter',
 			order: 3,
 			visible: true
 		},
 		{
 			id: '4',
-			title: 'Newsletter Pause IA - Février 2025',
+			title: 'Newsletter Pause IA - Octobre 2024',
 			description:
-				"Retrouvez toute l'actualité de Pause IA : actions, événements, et analyses sur les risques de l'intelligence artificielle.",
-			url: 'https://civicrm.pauseia.fr/civicrm/mailing/view?id=93&reset=1',
+				'Retour sur nos actions de rentrée ; Annonce du colloque au Sénat ; Nouvelles du front ; Les actus du mois.',
+			url: 'https://civicrm.pauseia.fr/civicrm/mailing/view?id=78&reset=1',
 			type: 'Newsletter',
 			order: 4,
 			visible: true
