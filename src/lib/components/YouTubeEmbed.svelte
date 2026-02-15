@@ -1,15 +1,47 @@
 <script lang="ts">
 	export let id: string
+	export let title: string = 'Vidéo YouTube'
 </script>
 
-<iframe
-	width="560"
-	height="315"
-	src="https://www.youtube-nocookie.com/embed/{id}"
-	title="YouTube video player"
-	frameborder="0"
-	allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-	referrerpolicy="strict-origin-when-cross-origin"
-	allowfullscreen
-	loading="lazy"
-></iframe>
+<div class="video-container">
+	<iframe
+		src="https://www.youtube-nocookie.com/embed/{id}"
+		{title}
+		frameborder="0"
+		allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+		referrerpolicy="strict-origin-when-cross-origin"
+		allowfullscreen
+		loading="lazy"
+	></iframe>
+</div>
+
+<style>
+	.video-container {
+		position: relative;
+		width: 100%;
+		aspect-ratio: 16 / 9;
+		border-radius: 0.75rem;
+		overflow: hidden;
+		box-shadow:
+			0 4px 6px -1px rgba(0, 0, 0, 0.1),
+			0 2px 4px -2px rgba(0, 0, 0, 0.1);
+		background-color: #000;
+		transition:
+			transform 0.2s ease,
+			box-shadow 0.2s ease;
+	}
+
+	.video-container:hover {
+		transform: translateY(-4px);
+		box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.2);
+	}
+
+	iframe {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		border: none;
+	}
+</style>

@@ -9,6 +9,15 @@
 	import Videos from '$components/home/videos.svelte'
 	import Supporters from '$components/home/supporters.svelte'
 	import Inserts from '$components/home/inserts.svelte'
+	import { bannerStore } from '$lib/stores/banner'
+	import type { PageData } from './$types'
+
+	export let data: PageData
+
+	// Update banner store if we got data from Notion
+	$: if (data.banner) {
+		bannerStore.set(data.banner)
+	}
 
 	const title = 'Exigeons une Pause IA'
 	const description = "Ne laissons pas l'IA nous détruire, agissons maintenant"
@@ -22,11 +31,11 @@
 
 <Risks />
 
-<Videos />
+<Videos videos={data.videos} />
 
-<Inserts />
+<Inserts reports={data.reports} />
 
-<Articles />
+<Articles articles={data.articles} />
 
 <NewsletterCta />
 

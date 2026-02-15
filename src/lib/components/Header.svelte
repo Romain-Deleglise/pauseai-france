@@ -4,6 +4,7 @@
 	import { page } from '$app/stores'
 	import Button from '$components/Button.svelte'
 	import Banner from '$components/Banner.svelte'
+	import { bannerStore } from '$lib/stores/banner'
 
 	import { onMount } from 'svelte'
 	import { fade } from 'svelte/transition'
@@ -20,10 +21,11 @@
 	})
 </script>
 
-<Banner visible={true}>
-	Compte-rendu du colloque au Sénat disponible. <a href="/senat2025"
-		>Consultez nos recommandations</a
-	>.
+<Banner visible={$bannerStore.visible}>
+	{$bannerStore.message}
+	{#if $bannerStore.linkUrl}
+		<a href={$bannerStore.linkUrl}>{$bannerStore.linkText}</a>
+	{/if}
 </Banner>
 
 <!-- probably have to change nav colors and classes to respond to banner presence instead of route -->
