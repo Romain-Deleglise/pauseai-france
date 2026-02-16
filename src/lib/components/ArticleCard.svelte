@@ -96,9 +96,18 @@
 	}
 
 	.category {
-		font-size: 0.8125rem;
-		color: var(--text-2);
-		font-weight: 500;
+		font-size: 0.75rem;
+		color: var(--brand);
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.5px;
+		background-color: rgba(255, 148, 22, 0.12);
+		padding: 0.25rem 0.5rem;
+		border-radius: 4px;
+	}
+
+	.category:empty {
+		display: none;
 	}
 
 	.read-more {

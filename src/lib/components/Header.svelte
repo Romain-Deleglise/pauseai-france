@@ -4,6 +4,7 @@
 	import { page } from '$app/stores'
 	import Button from '$components/Button.svelte'
 	import Banner from '$components/Banner.svelte'
+	import { bannerStore } from '$lib/stores/banner'
 
 	import { onMount } from 'svelte'
 	import { fade } from 'svelte/transition'
@@ -20,10 +21,11 @@
 	})
 </script>
 
-<Banner visible={true}>
-	Compte-rendu du colloque au Sénat disponible. <a href="/senat2025"
-		>Consultez nos recommandations</a
-	>.
+<Banner visible={$bannerStore.visible}>
+	{$bannerStore.message}
+	{#if $bannerStore.linkUrl}
+		<a href={$bannerStore.linkUrl}>{$bannerStore.linkText}</a>
+	{/if}
 </Banner>
 
 <!-- probably have to change nav colors and classes to respond to banner presence instead of route -->
@@ -44,7 +46,7 @@
 				<NavLink href="/dangers">Dangers</NavLink>
 				<NavLink href="/propositions">Propositions</NavLink>
 				<NavLink href="/agir">Agir</NavLink>
-				<NavLink href="/municipales-2026">Campagnes</NavLink>
+				<NavLink href="/campagnes">Campagnes</NavLink>
 				<NavLink href="/groupes-locaux">Groupes locaux</NavLink>
 				<NavLink href="/dons">Donner</NavLink>
 				<Button href="/rejoindre" alt={onHomepage}>Rejoindre</Button>
@@ -100,7 +102,7 @@
 				<a href="/dangers" on:click={() => (open = !open)}><h2>Dangers</h2></a>
 				<a href="/propositions" on:click={() => (open = !open)}><h2>Propositions</h2></a>
 				<a href="/agir" on:click={() => (open = !open)}><h2>Agir</h2></a>
-				<a href="/municipales-2026" on:click={() => (open = !open)}><h2>Campagnes</h2></a>
+				<a href="/campagnes" on:click={() => (open = !open)}><h2>Campagnes</h2></a>
 				<a href="/groupes-locaux" on:click={() => (open = !open)}><h2>Groupes locaux</h2></a>
 				<a href="https://pauseia.substack.com/" on:click={() => (open = !open)}><h2>Blog</h2></a>
 				<a href="/dons" on:click={() => (open = !open)}><h2>Dons</h2></a>
