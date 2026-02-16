@@ -14,6 +14,7 @@ interface NotionProperty {
 	number?: number
 	checkbox?: boolean
 	select?: { name: string }
+	date?: { start: string; end?: string | null }
 }
 
 interface NotionPage {
@@ -64,6 +65,16 @@ export interface Banner {
 	visible: boolean
 }
 
+export interface PressRelease {
+	id: string
+	title: string
+	date: string
+	url: string
+	description: string
+	order: number
+	visible: boolean
+}
+
 // Helper to extract text from Notion rich_text or title
 function getText(property: NotionProperty | undefined): string {
 	if (!property) return ''
@@ -98,6 +109,12 @@ function getCheckbox(property: NotionProperty | undefined): boolean {
 function getSelect(property: NotionProperty | undefined): string {
 	if (!property) return ''
 	return property.select?.name || ''
+}
+
+// Helper to extract date
+function getDate(property: NotionProperty | undefined): string {
+	if (!property) return ''
+	return property.date?.start || ''
 }
 
 // Validation helpers
@@ -141,6 +158,18 @@ function isValidReport(report: Report): boolean {
 function isValidBanner(banner: Banner): boolean {
 	if (!banner.message) {
 		console.warn(`Invalid banner: missing message`)
+		return false
+	}
+	return true
+}
+
+function isValidPressRelease(pr: PressRelease): boolean {
+	if (!pr.title) {
+		console.warn(`Invalid press release: missing title`)
+		return false
+	}
+	if (!pr.url) {
+		console.warn(`Invalid press release: missing URL for "${pr.title}"`)
 		return false
 	}
 	return true
@@ -296,4 +325,32 @@ export async function getBanner(): Promise<Banner | null> {
 
 	// Return the first visible banner
 	return banners.find((b): b is Banner => b !== null) || null
+}
+
+export async function getPressReleases(): Promise<PressRelease[]> {
+	const databaseId = env.NOTION_PRESS_DATABASE_ID
+	if (!databaseId) return []
+
+	const pressReleases = await queryDatabase<PressRelease | null>(
+		databaseId,
+		(page) => {
+			const visible = getCheckbox(page.properties['Visible'])
+			if (!visible) return null
+
+			const pr: PressRelease = {
+				id: page.id,
+				title: getText(page.properties['Titre']),
+				date: getDate(page.properties['Date']),
+				url: getUrl(page.properties['URL']),
+				description: getText(page.properties['Description']),
+				order: getNumber(page.properties['Ordre']),
+				visible
+			}
+
+			return isValidPressRelease(pr) ? pr : null
+		},
+		{ sortBy: 'Ordre' }
+	)
+
+	return pressReleases.filter((pr): pr is PressRelease => pr !== null)
 }
