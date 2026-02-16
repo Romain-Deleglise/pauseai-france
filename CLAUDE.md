@@ -272,7 +272,6 @@ interface Team {
 - `src/lib/components/home/videos.svelte` - Video embeds
 - `src/lib/components/home/faq.svelte` - FAQ section
 - `src/lib/components/home/newsletter.svelte` - Newsletter signup
-- `src/lib/components/home/supporters.svelte` - Supporter cards
 - `src/lib/components/home/who.svelte` - Team section
 - `src/lib/components/home/inserts.svelte` - Insert cards
 
@@ -289,7 +288,6 @@ interface Team {
 - `src/lib/components/PdfViewer.svelte` - PDF viewer
 - `src/lib/components/PostMeta.svelte` - Post metadata display
 - `src/lib/components/Socials.svelte` - Social media links
-- `src/lib/components/SupporterCard.svelte` - Individual supporter card
 - `src/lib/components/TabList.svelte` - Tab navigation
 - `src/lib/components/UnderlinedTitle.svelte` - Styled title
 - `src/lib/components/WhoCard.svelte` - Team member card
