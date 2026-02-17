@@ -7,7 +7,7 @@
 <article class="leadership-card">
 	<div class="leader-image">
 		{#if image}
-			<img src={image} alt={name} />
+			<img src={image} alt={name} loading="lazy" width="208" height="208" />
 		{:else}
 			<div class="placeholder">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
@@ -29,12 +29,18 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		gap: 0.5rem;
+		gap: 0.75rem;
+		width: 13rem;
 	}
 
 	.leader-image {
-		width: 13rem;
-		height: 13rem;
+		width: 10rem;
+		height: 10rem;
+		transition: transform 0.2s ease;
+	}
+
+	.leadership-card:hover .leader-image {
+		transform: scale(1.05);
 	}
 
 	.leader-image img {
@@ -42,23 +48,25 @@
 		height: 100%;
 		border-radius: 50%;
 		object-fit: cover;
-		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+		border: 3px solid var(--brand, #ff9416);
 	}
 
 	.placeholder {
 		width: 100%;
 		height: 100%;
 		border-radius: 50%;
-		background: linear-gradient(135deg, #e0e0e0 0%, #c0c0c0 100%);
+		background: linear-gradient(135deg, #e8e8e8 0%, #d0d0d0 100%);
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		border: 3px solid var(--border, #e5e7eb);
 	}
 
 	.placeholder svg {
-		width: 50%;
-		height: 50%;
-		color: #888;
+		width: 40%;
+		height: 40%;
+		color: #999;
 	}
 
 	.leader-info {
@@ -69,13 +77,14 @@
 	h3 {
 		margin: 0;
 		font-weight: 700;
-		font-size: 1.1rem;
+		font-size: 1.05rem;
 	}
 
 	.role {
 		margin: 0.25rem 0 0 0;
 		font-weight: 400;
-		font-size: 0.95rem;
+		font-size: 0.9rem;
 		color: var(--text-secondary, #666);
+		line-height: 1.3;
 	}
 </style>

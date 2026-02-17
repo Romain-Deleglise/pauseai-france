@@ -4,10 +4,10 @@
 	export let job: string = ''
 </script>
 
-<article class="article-link">
-	<div class="supporter-image">
+<article class="member-card">
+	<div class="member-image">
 		{#if image}
-			<img src={image} alt={name} />
+			<img src={image} alt={name} loading="lazy" width="144" height="144" />
 		{:else}
 			<div class="placeholder">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
@@ -27,57 +27,67 @@
 </article>
 
 <style>
-	article {
+	.member-card {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		gap: 0.5rem;
+		width: 10rem;
 	}
-	.supporter-image {
-		width: 13rem;
-		height: 13rem;
+
+	.member-image {
+		width: 7rem;
+		height: 7rem;
 		flex-shrink: 0;
+		transition: transform 0.2s ease;
 	}
-	.supporter-image img {
+
+	.member-card:hover .member-image {
+		transform: scale(1.05);
+	}
+
+	.member-image img {
 		width: 100%;
 		height: 100%;
 		border-radius: 50%;
 		object-fit: cover;
 		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+		border: 2px solid var(--border, #e5e7eb);
 	}
+
 	.placeholder {
 		width: 100%;
 		height: 100%;
 		border-radius: 50%;
-		background: linear-gradient(135deg, #e0e0e0 0%, #c0c0c0 100%);
+		background: linear-gradient(135deg, #e8e8e8 0%, #d0d0d0 100%);
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		border: 2px solid var(--border, #e5e7eb);
 	}
+
 	.placeholder svg {
-		width: 50%;
-		height: 50%;
-		color: #888;
+		width: 40%;
+		height: 40%;
+		color: #999;
 	}
+
 	.info {
-		max-width: 13rem;
+		max-width: 10rem;
 		text-align: center;
 	}
+
 	h3 {
 		margin: 0;
-		font-weight: 700;
-		font-size: 1.1rem;
+		font-weight: 600;
+		font-size: 0.95rem;
 	}
+
 	.job {
-		margin: 0.2rem 0 0 0;
-		font-weight: 300;
-		font-size: 0.9rem;
-	}
-	.article-link {
-		text-decoration: none;
-		border-radius: 0.625rem;
-	}
-	.article-link:hover {
-		color: inherit;
+		margin: 0.15rem 0 0 0;
+		font-weight: 400;
+		font-size: 0.8rem;
+		color: var(--text-secondary, #666);
+		line-height: 1.3;
 	}
 </style>
