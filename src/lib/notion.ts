@@ -6,6 +6,12 @@ interface NotionRichText {
 	plain_text: string
 }
 
+interface NotionFile {
+	type: 'file' | 'external'
+	file?: { url: string; expiry_time?: string }
+	external?: { url: string }
+}
+
 interface NotionProperty {
 	type: string
 	title?: NotionRichText[]
@@ -15,6 +21,7 @@ interface NotionProperty {
 	checkbox?: boolean
 	select?: { name: string }
 	date?: { start: string; end?: string | null }
+	files?: NotionFile[]
 }
 
 interface NotionPage {
@@ -136,6 +143,15 @@ function getSelect(property: NotionProperty | undefined): string {
 function getDate(property: NotionProperty | undefined): string {
 	if (!property) return ''
 	return property.date?.start || ''
+}
+
+// Helper to extract first file URL from files property
+function getFileUrl(property: NotionProperty | undefined): string {
+	if (!property || !property.files || property.files.length === 0) return ''
+	const file = property.files[0]
+	if (file.type === 'file' && file.file) return file.file.url
+	if (file.type === 'external' && file.external) return file.external.url
+	return ''
 }
 
 // Validation helpers
@@ -463,4 +479,61 @@ export async function getPressCoverage(): Promise<PressCoverage[]> {
 	)
 
 	return items.filter((pc): pc is PressCoverage => pc !== null)
+}
+
+// Team members
+export type TeamCategory = 'Direction' | 'Conseil scientifique' | 'Membre'
+
+export interface TeamMember {
+	id: string
+	name: string
+	role: string
+	profession: string
+	category: TeamCategory
+	image: string
+	order: number
+	visible: boolean
+}
+
+function isValidTeamMember(member: TeamMember): boolean {
+	if (!member.name) {
+		console.warn(`Invalid team member: missing name`)
+		return false
+	}
+	if (!member.category) {
+		console.warn(`Invalid team member: missing category for "${member.name}"`)
+		return false
+	}
+	return true
+}
+
+export async function getTeamMembers(): Promise<TeamMember[]> {
+	const databaseId = env.NOTION_TEAM_DATABASE_ID
+	if (!databaseId) return []
+
+	const members = await queryDatabase<TeamMember | null>(
+		databaseId,
+		(page) => {
+			const visible = getCheckbox(page.properties['Visible'])
+			if (!visible) return null
+
+			const categoryValue = getSelect(page.properties['Catégorie'])
+
+			const member: TeamMember = {
+				id: page.id,
+				name: getText(page.properties['Nom']),
+				role: getText(page.properties['Rôle']),
+				profession: getText(page.properties['Profession']),
+				category: (categoryValue as TeamCategory) || 'Membre',
+				image: getFileUrl(page.properties['Photo']),
+				order: getNumber(page.properties['Ordre']),
+				visible
+			}
+
+			return isValidTeamMember(member) ? member : null
+		},
+		{ sortBy: 'Ordre' }
+	)
+
+	return members.filter((m): m is TeamMember => m !== null)
 }

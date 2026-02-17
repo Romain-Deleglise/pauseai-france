@@ -1,13 +1,17 @@
 <script lang="ts">
 	import LeadershipCard from '$components/LeadershipCard.svelte'
 	import ScientificCouncilCard from '$components/ScientificCouncilCard.svelte'
-	import SupporterCard from '$components/WhoCard.svelte'
+	import WhoCard from '$components/WhoCard.svelte'
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
 	import FAQ from '$posts/qui-sommes-nous.md'
+	import type { TeamMember } from '$lib/notion'
+
+	export let teamMembers: TeamMember[] = []
 
 	const label_id = 'who-title'
 
-	const leadership = [
+	// Fallback data when Notion is not configured
+	const fallbackLeadership = [
 		{
 			name: 'Maxime Fournes',
 			role: 'Co-fondateur et Président',
@@ -40,7 +44,7 @@
 		}
 	]
 
-	const scientificCouncil = [
+	const fallbackScientificCouncil = [
 		{
 			name: 'Maxime Fournes',
 			job: 'Ingénieur et chercheur en IA',
@@ -53,7 +57,7 @@
 		}
 	]
 
-	const members = [
+	const fallbackMembers = [
 		{
 			name: 'Aurélia',
 			image: 'membres/aurelia.jpg',
@@ -120,63 +124,120 @@
 			job: ''
 		}
 	]
+
+	// Derive display data from Notion or fallback
+	$: hasNotionData = teamMembers.length > 0
+
+	$: leadership = hasNotionData
+		? teamMembers
+				.filter((m) => m.category === 'Direction')
+				.map((m) => ({ name: m.name, role: m.role, image: m.image || null }))
+		: fallbackLeadership
+
+	$: scientificCouncil = hasNotionData
+		? teamMembers
+				.filter((m) => m.category === 'Conseil scientifique')
+				.map((m) => ({ name: m.name, job: m.profession, image: m.image || null }))
+		: fallbackScientificCouncil
+
+	$: members = hasNotionData
+		? teamMembers
+				.filter((m) => m.category === 'Membre')
+				.map((m) => ({ name: m.name, job: m.profession, image: m.image || null }))
+		: fallbackMembers
 </script>
 
 <section aria-labelledby={label_id}>
 	<UnderlinedTitle id={label_id}>Qui sommes-nous ?</UnderlinedTitle>
 	<FAQ />
 
-	<h2 class="section-title">Direction</h2>
-	<div class="cards-grid leadership-grid">
-		{#each leadership as leader}
-			<LeadershipCard name={leader.name} role={leader.role} image={leader.image} />
-		{/each}
+	<div class="team-section">
+		<h2 class="section-title">Direction</h2>
+		<p class="section-description">
+			Les membres du bureau et du conseil d'administration qui pilotent la stratégie et les
+			opérations de l'association.
+		</p>
+		<div class="cards-grid">
+			{#each leadership as leader}
+				<LeadershipCard name={leader.name} role={leader.role} image={leader.image} />
+			{/each}
+		</div>
 	</div>
 
-	<h2 class="section-title">Conseil scientifique</h2>
-	<div class="cards-grid council-grid">
-		{#each scientificCouncil as scientist}
-			<ScientificCouncilCard name={scientist.name} job={scientist.job} image={scientist.image} />
-		{/each}
+	<div class="team-section">
+		<h2 class="section-title">Conseil scientifique</h2>
+		<p class="section-description">
+			Nos experts qui éclairent nos positions sur les enjeux techniques et scientifiques de
+			l'intelligence artificielle.
+		</p>
+		<div class="cards-grid">
+			{#each scientificCouncil as scientist}
+				<ScientificCouncilCard name={scientist.name} job={scientist.job} image={scientist.image} />
+			{/each}
+		</div>
 	</div>
 
-	<h2 class="section-title">Membres et bénévoles</h2>
-	<div class="cards-grid members-grid">
-		{#each members as supporter}
-			<SupporterCard
-				name={supporter.name}
-				image={supporter.image}
-				job={supporter.job}
-			/>
-		{/each}
+	<div class="team-section">
+		<h2 class="section-title">Membres et bénévoles</h2>
+		<p class="section-description">
+			Les bénévoles qui font vivre l'association au quotidien à travers leurs compétences et leur
+			engagement.
+		</p>
+		<div class="cards-grid">
+			{#each members as member}
+				<WhoCard name={member.name} image={member.image} job={member.job} />
+			{/each}
+		</div>
 	</div>
 
 	<p class="member-count">+ une centaine de membres et bénévoles</p>
 </section>
 
 <style>
-	.section-title {
+	section {
+		max-width: 960px;
+		margin: 0 auto;
+	}
+
+	.team-section {
 		margin-top: 3rem;
-		margin-bottom: 1.5rem;
+		padding-top: 2rem;
+		border-top: 1px solid var(--border, #e5e7eb);
+	}
+
+	.team-section:first-of-type {
+		border-top: none;
+	}
+
+	.section-title {
+		margin-top: 0;
+		margin-bottom: 0.5rem;
 		font-size: 1.5rem;
-		font-weight: 600;
+		font-weight: 700;
+	}
+
+	.section-description {
+		margin-bottom: 1.5rem;
+		color: var(--text-secondary, #676e7a);
+		font-size: 1rem;
 	}
 
 	.cards-grid {
 		display: grid;
 		gap: 2rem;
-		grid-template-columns: repeat(auto-fill, 13rem);
+		grid-template-columns: repeat(auto-fill, minmax(10rem, 13rem));
 		justify-content: start;
 	}
 
 	.member-count {
-		margin-top: 2.5rem;
-		padding: 1rem 2rem;
-		font-size: 1.3rem;
+		margin-top: 3rem;
+		padding: 1.25rem 2rem;
+		font-size: 1.2rem;
 		font-weight: 600;
-		color: var(--text-primary, #333);
+		color: var(--text, #333);
 		text-align: center;
-		background: linear-gradient(135deg, #f0f0f0 0%, #e8e8e8 100%);
+		background: var(--bg-subtle, #fff5e8);
 		border-radius: 0.5rem;
+		border: 1px solid var(--border, #e5e7eb);
 	}
 </style>
