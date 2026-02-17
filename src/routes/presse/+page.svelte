@@ -1,8 +1,10 @@
 <script lang="ts">
-	import { MoveUpRight } from 'lucide-svelte'
+	import { MoveUpRight, ChevronLeft, ChevronRight } from 'lucide-svelte'
 	import type { PressRelease } from '$lib/notion'
 
 	export let data: { pressReleases: PressRelease[] }
+
+	const PER_PAGE = 15
 
 	const fallbackPressReleases: PressRelease[] = [
 		{
@@ -18,6 +20,20 @@
 	]
 
 	$: pressReleases = data.pressReleases.length > 0 ? data.pressReleases : fallbackPressReleases
+
+	// Pagination
+	let currentPage = 1
+	$: totalPages = Math.ceil(pressReleases.length / PER_PAGE)
+	$: startIndex = (currentPage - 1) * PER_PAGE
+	$: paginatedReleases = pressReleases.slice(startIndex, startIndex + PER_PAGE)
+
+	function goToPage(page: number) {
+		currentPage = page
+		const section = document.getElementById('press-releases-top')
+		if (section) {
+			section.scrollIntoView({ behavior: 'smooth', block: 'start' })
+		}
+	}
 
 	function formatDate(dateStr: string): string {
 		if (!dateStr) return ''
@@ -43,6 +59,16 @@
 		const el = document.getElementById(`pr-${id}`)
 		if (el) {
 			el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+		}
+	}
+
+	// Mobile dropdown navigation
+	function onMobileSelect(event: Event) {
+		const select = event.target as HTMLSelectElement
+		const id = select.value
+		if (id) {
+			scrollToCard(id)
+			select.value = ''
 		}
 	}
 </script>
@@ -85,14 +111,26 @@
 	</section>
 
 	<section class="press-releases-section">
-		<h2>Nos communiqués de presse</h2>
+		<h2 id="press-releases-top">Nos communiqués de presse</h2>
+
+		<!-- Mobile: dropdown navigation -->
+		<div class="mobile-nav">
+			<select class="mobile-select" on:change={onMobileSelect}>
+				<option value="" disabled selected>Accès rapide...</option>
+				{#each paginatedReleases as pr (pr.id)}
+					<option value={pr.id}>
+						{pr.title} ({formatDateShort(pr.date)})
+					</option>
+				{/each}
+			</select>
+		</div>
 
 		<div class="press-layout">
-			<!-- Sidebar navigation -->
+			<!-- Desktop: sidebar navigation -->
 			<nav class="press-sidebar">
 				<h3 class="sidebar-title">Accès rapide</h3>
 				<ul class="sidebar-list">
-					{#each pressReleases as pr (pr.id)}
+					{#each paginatedReleases as pr (pr.id)}
 						<li>
 							<button class="sidebar-item" on:click={() => scrollToCard(pr.id)}>
 								<span class="sidebar-item-title">{pr.title}</span>
@@ -105,11 +143,16 @@
 						</li>
 					{/each}
 				</ul>
+				{#if totalPages > 1}
+					<div class="sidebar-page-info">
+						Page {currentPage} / {totalPages}
+					</div>
+				{/if}
 			</nav>
 
 			<!-- Press releases list -->
 			<div class="press-releases-list">
-				{#each pressReleases as pr (pr.id)}
+				{#each paginatedReleases as pr (pr.id)}
 					<a
 						id="pr-{pr.id}"
 						class="press-release-card"
@@ -134,6 +177,41 @@
 						</div>
 					</a>
 				{/each}
+
+				<!-- Pagination -->
+				{#if totalPages > 1}
+					<nav class="pagination" aria-label="Pagination des communiqués">
+						<button
+							class="pagination-btn"
+							disabled={currentPage === 1}
+							on:click={() => goToPage(currentPage - 1)}
+							aria-label="Page précédente"
+						>
+							<ChevronLeft size="1.25rem" />
+						</button>
+
+						{#each Array(totalPages) as _, i}
+							<button
+								class="pagination-num"
+								class:active={currentPage === i + 1}
+								on:click={() => goToPage(i + 1)}
+								aria-label="Page {i + 1}"
+								aria-current={currentPage === i + 1 ? 'page' : undefined}
+							>
+								{i + 1}
+							</button>
+						{/each}
+
+						<button
+							class="pagination-btn"
+							disabled={currentPage === totalPages}
+							on:click={() => goToPage(currentPage + 1)}
+							aria-label="Page suivante"
+						>
+							<ChevronRight size="1.25rem" />
+						</button>
+					</nav>
+				{/if}
 			</div>
 		</div>
 	</section>
@@ -246,6 +324,34 @@
 		font-size: 1.4rem;
 	}
 
+	/* Mobile dropdown nav - hidden on desktop */
+	.mobile-nav {
+		display: none;
+		margin-bottom: 1.5rem;
+	}
+
+	.mobile-select {
+		width: 100%;
+		padding: 0.75rem 1rem;
+		font-size: 0.95rem;
+		font-family: var(--font-body);
+		border: 1px solid var(--border);
+		border-radius: 0.5rem;
+		background-color: var(--white);
+		color: var(--text);
+		appearance: none;
+		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23676e7a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+		background-repeat: no-repeat;
+		background-position: right 0.75rem center;
+		padding-right: 2.5rem;
+		cursor: pointer;
+	}
+
+	.mobile-select:focus {
+		outline: 2px solid var(--brand);
+		outline-offset: 2px;
+	}
+
 	/* Layout with sidebar */
 	.press-layout {
 		display: flex;
@@ -253,7 +359,7 @@
 		align-items: flex-start;
 	}
 
-	/* Sidebar */
+	/* Sidebar - hidden on mobile */
 	.press-sidebar {
 		position: sticky;
 		top: 1rem;
@@ -322,6 +428,15 @@
 	.sidebar-item-date {
 		font-size: 0.7rem;
 		color: var(--text-secondary);
+	}
+
+	.sidebar-page-info {
+		margin-top: 0.75rem;
+		padding-top: 0.75rem;
+		border-top: 1px solid var(--border);
+		font-size: 0.75rem;
+		color: var(--text-secondary);
+		text-align: center;
 	}
 
 	/* Press releases list */
@@ -413,6 +528,71 @@
 		transform: translate(2px, -2px);
 	}
 
+	/* Pagination */
+	.pagination {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 0.375rem;
+		margin-top: 1rem;
+		padding-top: 1.5rem;
+	}
+
+	.pagination-btn {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 2.25rem;
+		height: 2.25rem;
+		border: 1px solid var(--border);
+		border-radius: 0.375rem;
+		background: var(--white);
+		color: var(--text);
+		cursor: pointer;
+		transition:
+			background-color 0.15s ease,
+			border-color 0.15s ease;
+	}
+
+	.pagination-btn:hover:not(:disabled) {
+		background-color: var(--bg-subtle);
+		border-color: var(--brand);
+	}
+
+	.pagination-btn:disabled {
+		opacity: 0.35;
+		cursor: not-allowed;
+	}
+
+	.pagination-num {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 2.25rem;
+		height: 2.25rem;
+		border: 1px solid var(--border);
+		border-radius: 0.375rem;
+		background: var(--white);
+		color: var(--text);
+		font-size: 0.875rem;
+		font-weight: 600;
+		cursor: pointer;
+		transition:
+			background-color 0.15s ease,
+			border-color 0.15s ease;
+	}
+
+	.pagination-num:hover {
+		background-color: var(--bg-subtle);
+		border-color: var(--brand);
+	}
+
+	.pagination-num.active {
+		background-color: var(--brand);
+		border-color: var(--brand);
+		color: var(--white);
+	}
+
 	/* About section */
 	.about-section {
 		margin-top: 3rem;
@@ -442,17 +622,18 @@
 		margin-bottom: 0;
 	}
 
-	/* Responsive: sidebar hidden on mobile, shown as horizontal scroll */
+	/* Mobile */
 	@media (max-width: 768px) {
+		.mobile-nav {
+			display: block;
+		}
+
 		.press-layout {
 			flex-direction: column;
 		}
 
 		.press-sidebar {
-			position: static;
-			width: 100%;
-			max-height: 12rem;
-			overflow-y: auto;
+			display: none;
 		}
 	}
 
