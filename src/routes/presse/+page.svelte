@@ -28,13 +28,30 @@
 			year: 'numeric'
 		})
 	}
+
+	function formatDateShort(dateStr: string): string {
+		if (!dateStr) return ''
+		const date = new Date(dateStr + 'T00:00:00')
+		return date.toLocaleDateString('fr-FR', {
+			day: 'numeric',
+			month: 'short',
+			year: 'numeric'
+		})
+	}
+
+	function scrollToCard(id: string) {
+		const el = document.getElementById(`pr-${id}`)
+		if (el) {
+			el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+		}
+	}
 </script>
 
 <svelte:head>
 	<title>Espace Presse - Pause IA</title>
 	<meta
 		name="description"
-		content="Espace presse de Pause IA : communiqu\u00e9s de presse, contact m\u00e9dias et ressources pour les journalistes."
+		content="Espace presse de Pause IA\u202F: communiqu\u00e9s de presse, contact m\u00e9dias et ressources pour les journalistes."
 	/>
 </svelte:head>
 
@@ -50,46 +67,93 @@
 			<p class="contact-note">R\u00e9serv\u00e9 aux journalistes</p>
 			<div class="contact-info">
 				<p>
-					<strong>Email :</strong>
+					<strong>Email\u202F:</strong>
 					<a href="mailto:presse@pauseia.fr">presse@pauseia.fr</a>
 				</p>
 			</div>
 			<p class="redirect">
 				Si vous n'\u00eates pas journaliste, nous vous invitons \u00e0
-				<a href="/rejoindre">vous rendre sur cette page</a> pour nous contacter.
+				<a href="/qui-sommes-nous">vous rendre sur cette page</a> pour nous contacter.
 			</p>
 		</div>
 	</section>
 
 	<section class="press-releases-section">
 		<h2>Nos communiqu\u00e9s de presse</h2>
-		<div class="press-releases-list">
-			{#each pressReleases as pr (pr.id)}
-				<a class="press-release-card" href={pr.url} target="_blank" rel="noopener noreferrer">
-					<div class="pr-content">
-						<h3>{pr.title}</h3>
-						{#if pr.description}
-							<p class="pr-description">{pr.description}</p>
-						{/if}
-					</div>
-					<div class="pr-footer">
-						{#if pr.date}
-							<time datetime={pr.date}>{formatDate(pr.date)}</time>
-						{/if}
-						<span class="read-link">
-							Lire le communiqu\u00e9
-							<span class="link-icon"><MoveUpRight size="1.25rem" /></span>
-						</span>
-					</div>
-				</a>
-			{/each}
+
+		<div class="press-layout">
+			<!-- Sidebar navigation -->
+			<nav class="press-sidebar">
+				<h3 class="sidebar-title">Acc\u00e8s rapide</h3>
+				<ul class="sidebar-list">
+					{#each pressReleases as pr (pr.id)}
+						<li>
+							<button class="sidebar-item" on:click={() => scrollToCard(pr.id)}>
+								<span class="sidebar-item-title">{pr.title}</span>
+								{#if pr.date}
+									<time class="sidebar-item-date" datetime={pr.date}
+										>{formatDateShort(pr.date)}</time
+									>
+								{/if}
+							</button>
+						</li>
+					{/each}
+				</ul>
+			</nav>
+
+			<!-- Press releases list -->
+			<div class="press-releases-list">
+				{#each pressReleases as pr (pr.id)}
+					<a
+						id="pr-{pr.id}"
+						class="press-release-card"
+						href={pr.url}
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						<div class="pr-content">
+							<h3>{pr.title}</h3>
+							{#if pr.description}
+								<p class="pr-description">{pr.description}</p>
+							{/if}
+						</div>
+						<div class="pr-footer">
+							{#if pr.date}
+								<time datetime={pr.date}>{formatDate(pr.date)}</time>
+							{/if}
+							<span class="read-link">
+								Lire le communiqu\u00e9
+								<span class="link-icon"><MoveUpRight size="1.25rem" /></span>
+							</span>
+						</div>
+					</a>
+				{/each}
+			</div>
+		</div>
+	</section>
+
+	<section class="about-section">
+		<div class="about-card">
+			<h2>\u00c0 propos de Pause IA</h2>
+			<p>
+				Pause IA est une association de b\u00e9n\u00e9voles qui alerte les citoyens et les pouvoirs
+				publics fran\u00e7ais sur les graves dangers que la course \u00e0 l'intelligence
+				artificielle fait courir \u00e0 la soci\u00e9t\u00e9 humaine, et les incite \u00e0 agir
+				\u00e0 leur niveau pour s'y opposer.
+			</p>
+			<p>
+				Pause IA est la repr\u00e9sentation en France de Pause AI Global, qui demande un moratoire
+				sur l'entra\u00eenement des syst\u00e8mes d'IA g\u00e9n\u00e9rale (IAG) jusqu'\u00e0 ce que
+				toutes les conditions de s\u00e9curit\u00e9 et de contr\u00f4le d\u00e9mocratique soient
+				r\u00e9unies.
+			</p>
 		</div>
 	</section>
 </div>
 
 <style>
 	.press-page {
-		max-width: 50rem;
+		max-width: 64rem;
 		margin: 0 auto;
 		padding: 2rem 1rem;
 	}
@@ -166,21 +230,101 @@
 		font-size: 1.4rem;
 	}
 
+	/* Layout with sidebar */
+	.press-layout {
+		display: flex;
+		gap: 2rem;
+		align-items: flex-start;
+	}
+
+	/* Sidebar */
+	.press-sidebar {
+		position: sticky;
+		top: 1rem;
+		flex-shrink: 0;
+		width: 16rem;
+		max-height: calc(100vh - 2rem);
+		overflow-y: auto;
+		background-color: var(--black);
+		border-radius: 0.75rem;
+		padding: 1.25rem;
+	}
+
+	.sidebar-title {
+		margin: 0 0 0.75rem;
+		font-size: 0.85rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--brand);
+	}
+
+	.sidebar-list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+	}
+
+	.sidebar-list li {
+		padding: 0;
+		margin: 0;
+	}
+
+	.sidebar-item {
+		display: flex;
+		flex-direction: column;
+		gap: 0.125rem;
+		width: 100%;
+		padding: 0.5rem 0.625rem;
+		border: none;
+		background: transparent;
+		border-radius: 0.375rem;
+		cursor: pointer;
+		text-align: left;
+		transition: background-color 0.15s ease;
+	}
+
+	.sidebar-item:hover {
+		background-color: rgba(255, 255, 255, 0.1);
+	}
+
+	.sidebar-item-title {
+		font-size: 0.8rem;
+		font-weight: 600;
+		color: var(--white);
+		line-height: 1.3;
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+	}
+
+	.sidebar-item-date {
+		font-size: 0.7rem;
+		color: rgba(255, 255, 255, 0.5);
+	}
+
+	/* Press releases list */
 	.press-releases-list {
 		display: flex;
 		flex-direction: column;
-		gap: 1rem;
+		gap: 1.25rem;
+		flex-grow: 1;
+		min-width: 0;
 	}
 
 	.press-release-card {
 		display: flex;
 		flex-direction: column;
 		padding: 1.5rem;
-		background-color: var(--bg-subtle);
+		background-color: var(--black);
 		border: 2px solid transparent;
 		border-radius: 0.75rem;
 		text-decoration: none;
-		color: var(--text);
+		color: var(--white);
 		transition:
 			transform 0.2s ease,
 			box-shadow 0.2s ease,
@@ -189,9 +333,9 @@
 
 	.press-release-card:hover {
 		transform: translateY(-2px);
-		box-shadow: 0 8px 20px -6px rgba(0, 0, 0, 0.12);
+		box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.3);
 		border-color: var(--brand);
-		color: var(--text);
+		color: var(--white);
 	}
 
 	.pr-content {
@@ -203,12 +347,13 @@
 		font-size: 1.125rem;
 		font-weight: 700;
 		line-height: 1.4;
+		color: var(--white);
 	}
 
 	.pr-description {
 		margin: 0;
 		font-size: 0.95rem;
-		color: var(--text-secondary);
+		color: rgba(255, 255, 255, 0.7);
 		line-height: 1.5;
 	}
 
@@ -218,12 +363,12 @@
 		align-items: center;
 		margin-top: 1rem;
 		padding-top: 1rem;
-		border-top: 1px solid rgba(0, 0, 0, 0.08);
+		border-top: 1px solid rgba(255, 255, 255, 0.15);
 	}
 
-	time {
+	.press-release-card time {
 		font-size: 0.85rem;
-		color: var(--text-secondary);
+		color: rgba(255, 255, 255, 0.5);
 	}
 
 	.read-link {
@@ -232,7 +377,7 @@
 		gap: 0.375rem;
 		font-size: 0.875rem;
 		font-weight: 600;
-		color: var(--text);
+		color: var(--brand);
 		transition: color 0.2s ease;
 	}
 
@@ -248,6 +393,49 @@
 
 	.press-release-card:hover .link-icon {
 		transform: translate(2px, -2px);
+	}
+
+	/* About section */
+	.about-section {
+		margin-top: 3rem;
+	}
+
+	.about-card {
+		background-color: var(--bg-subtle);
+		border-left: 4px solid var(--brand);
+		border-radius: 0.5rem;
+		padding: 1.5rem 2rem;
+	}
+
+	.about-card h2 {
+		margin-top: 0;
+		margin-bottom: 1rem;
+		font-size: 1.3rem;
+	}
+
+	.about-card p {
+		font-size: 0.95rem;
+		line-height: 1.6;
+		color: var(--text-secondary);
+		margin-bottom: 0.75rem;
+	}
+
+	.about-card p:last-child {
+		margin-bottom: 0;
+	}
+
+	/* Responsive: sidebar hidden on mobile, shown as horizontal scroll */
+	@media (max-width: 768px) {
+		.press-layout {
+			flex-direction: column;
+		}
+
+		.press-sidebar {
+			position: static;
+			width: 100%;
+			max-height: 12rem;
+			overflow-y: auto;
+		}
 	}
 
 	@media (min-width: 640px) {
