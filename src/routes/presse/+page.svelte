@@ -133,28 +133,27 @@
 			<h2>Contact presse</h2>
 			<p class="contact-note">Réservé aux journalistes</p>
 			<div class="contact-info">
-				<div class="contact-person">
-					<p class="contact-name">Clémence Peyrot</p>
-					<p>
-						<strong>Email :</strong>
-						<a href="mailto:presse@pauseia.fr">presse@pauseia.fr</a>
-					</p>
-					<p>
-						<strong>Tél. :</strong>
-						<a href="tel:+33645513415">06 45 51 34 15</a>
-					</p>
+				<div class="contact-email-main">
+					<strong>Email :</strong>
+					<a href="mailto:presse@pauseia.fr">presse@pauseia.fr</a>
 				</div>
-				<div class="contact-person">
-					<p class="contact-name">Maxime Fournes</p>
-					<p class="contact-role">Co-fondateur de Pause IA</p>
-					<p>
-						<strong>Email :</strong>
-						<a href="mailto:presse@pauseia.fr">presse@pauseia.fr</a>
-					</p>
-					<p>
-						<strong>Tél. :</strong>
-						<a href="tel:+33743155617">07 43 15 56 17</a>
-					</p>
+				<div class="contact-persons">
+					<div class="contact-person">
+						<p class="contact-name">Clémence Peyrot</p>
+						<p class="contact-role">Directrice exécutive de Pause IA</p>
+						<p>
+							<strong>Tél. :</strong>
+							<a href="tel:+33645513415">06 45 51 34 15</a>
+						</p>
+					</div>
+					<div class="contact-person">
+						<p class="contact-name">Maxime Fournes</p>
+						<p class="contact-role">Co-fondateur de Pause IA</p>
+						<p>
+							<strong>Tél. :</strong>
+							<a href="tel:+33743155617">07 43 15 56 17</a>
+						</p>
+					</div>
 				</div>
 			</div>
 			<p class="redirect">
@@ -193,8 +192,9 @@
 		{#if activeTab === 'national'}
 			<!-- Mobile: dropdown navigation -->
 			<div class="mobile-nav">
-				<select class="mobile-select" on:change={onMobileSelect}>
-					<option value="" disabled selected>Accès rapide...</option>
+				<label class="mobile-nav-label" for="mobile-select-national">Accès rapide</label>
+				<select id="mobile-select-national" class="mobile-select" on:change={onMobileSelect}>
+					<option value="" disabled selected>Choisir un communiqué...</option>
 					{#each paginatedReleases as pr (pr.id)}
 						<option value={pr.id}>
 							{pr.title} ({formatDateShort(pr.date)})
@@ -324,8 +324,9 @@
 			{:else}
 				<!-- Mobile: dropdown navigation -->
 				<div class="mobile-nav">
-					<select class="mobile-select" on:change={onMobileSelect}>
-						<option value="" disabled selected>Accès rapide...</option>
+					<label class="mobile-nav-label" for="mobile-select-local">Accès rapide</label>
+					<select id="mobile-select-local" class="mobile-select" on:change={onMobileSelect}>
+						<option value="" disabled selected>Choisir un communiqué...</option>
 						{#each paginatedLocalReleases as pr (pr.id)}
 							<option value={pr.id}>
 								[{pr.department}] {pr.title} ({formatDateShort(pr.date)})
@@ -476,53 +477,65 @@
 		background-color: var(--bg-subtle);
 		border: 2px solid var(--brand);
 		border-radius: 0.5rem;
-		padding: 1.5rem;
+		padding: 1.25rem 1.5rem;
 	}
 
 	.contact-card h2 {
 		margin-top: 0;
-		margin-bottom: 0.25rem;
-		font-size: 1.4rem;
+		margin-bottom: 0.125rem;
+		font-size: 1.3rem;
 	}
 
 	.contact-note {
-		font-size: 0.9rem;
+		font-size: 0.85rem;
 		color: var(--text-secondary);
-		margin-bottom: 1rem;
+		margin-bottom: 0.75rem;
 		font-style: italic;
 	}
 
 	.contact-info {
 		display: flex;
 		flex-direction: column;
-		gap: 1rem;
-		margin-bottom: 1rem;
+		gap: 0.75rem;
+		margin-bottom: 0.75rem;
 	}
 
-	.contact-person {
-		padding-bottom: 1rem;
+	.contact-email-main {
+		font-size: 1rem;
+		padding-bottom: 0.75rem;
 		border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 	}
 
-	.contact-person:last-child {
-		padding-bottom: 0;
-		border-bottom: none;
+	.contact-email-main a {
+		color: var(--brand);
+		font-weight: 600;
+	}
+
+	.contact-persons {
+		display: flex;
+		gap: 2rem;
+		flex-wrap: wrap;
+	}
+
+	.contact-person {
+		flex: 1;
+		min-width: 12rem;
 	}
 
 	.contact-person p {
-		margin: 0.25rem 0;
+		margin: 0.15rem 0;
 	}
 
 	.contact-name {
 		font-weight: 700;
-		font-size: 1.05rem;
+		font-size: 1rem;
 		margin-bottom: 0;
 	}
 
 	.contact-role {
 		color: var(--text-secondary);
-		font-size: 0.9rem;
-		margin-bottom: 0.5rem;
+		font-size: 0.85rem;
+		margin-bottom: 0.25rem;
 	}
 
 	.contact-info a {
@@ -536,6 +549,7 @@
 		margin-bottom: 0;
 		padding-top: 1rem;
 		border-top: 1px solid rgba(0, 0, 0, 0.08);
+		text-align: justify;
 	}
 
 	.redirect a {
@@ -661,23 +675,37 @@
 	.mobile-nav {
 		display: none;
 		margin-bottom: 1.5rem;
+		background-color: var(--bg-subtle);
+		border: 1px solid var(--border);
+		border-radius: 0.75rem;
+		padding: 0.75rem 1rem;
+	}
+
+	.mobile-nav-label {
+		display: block;
+		font-size: 0.75rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--brand);
+		margin-bottom: 0.5rem;
 	}
 
 	.mobile-select {
 		width: 100%;
-		padding: 0.75rem 1rem;
-		font-size: 0.95rem;
+		padding: 0.625rem 2.5rem 0.625rem 0.75rem;
+		font-size: 0.875rem;
 		font-family: var(--font-body);
 		border: 1px solid var(--border);
-		border-radius: 0.5rem;
+		border-radius: 0.375rem;
 		background-color: var(--white);
 		color: var(--text);
 		appearance: none;
 		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23676e7a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
 		background-repeat: no-repeat;
-		background-position: right 0.75rem center;
-		padding-right: 2.5rem;
+		background-position: right 0.625rem center;
 		cursor: pointer;
+		line-height: 1.4;
 	}
 
 	.mobile-select:focus {
@@ -821,6 +849,7 @@
 		font-size: 0.95rem;
 		color: var(--text-secondary);
 		line-height: 1.5;
+		text-align: justify;
 	}
 
 	.pr-footer {
@@ -932,16 +961,19 @@
 	}
 
 	.about-card {
-		background-color: var(--bg-subtle);
+		background-color: rgba(var(--brand-rgb, 0, 0, 0), 0.05);
+		border: 1px solid rgba(var(--brand-rgb, 0, 0, 0), 0.15);
 		border-left: 4px solid var(--brand);
-		border-radius: 0.5rem;
-		padding: 1.5rem 2rem;
+		border-radius: 0.75rem;
+		padding: 2rem 2.5rem;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 	}
 
 	.about-card h2 {
 		margin-top: 0;
 		margin-bottom: 1rem;
 		font-size: 1.3rem;
+		color: var(--brand);
 	}
 
 	.about-card p {
@@ -949,6 +981,7 @@
 		line-height: 1.6;
 		color: var(--text-secondary);
 		margin-bottom: 0.75rem;
+		text-align: justify;
 	}
 
 	.about-card p:last-child {
@@ -990,7 +1023,8 @@
 			width: 100%;
 		}
 
-		.contact-info {
+		.contact-persons {
+			flex-direction: column;
 			gap: 0.75rem;
 		}
 	}
@@ -1005,7 +1039,7 @@
 		}
 
 		.contact-card {
-			padding: 2rem;
+			padding: 1.5rem 2rem;
 		}
 	}
 </style>
