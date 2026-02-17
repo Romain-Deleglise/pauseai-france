@@ -11,7 +11,9 @@
 		{:else}
 			<div class="placeholder">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-					<path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+					<path
+						d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
+					/>
 				</svg>
 			</div>
 		{/if}
@@ -26,6 +28,7 @@
 	.scientist-card {
 		display: flex;
 		flex-direction: column;
+		align-items: center;
 		gap: 0.5rem;
 	}
 
@@ -37,14 +40,15 @@
 	.scientist-image img {
 		width: 100%;
 		height: 100%;
-		border-radius: 0.3125rem;
+		border-radius: 50%;
 		object-fit: cover;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 	}
 
 	.placeholder {
 		width: 100%;
 		height: 100%;
-		border-radius: 0.3125rem;
+		border-radius: 50%;
 		background: linear-gradient(135deg, #e0e0e0 0%, #c0c0c0 100%);
 		display: flex;
 		align-items: center;
@@ -58,7 +62,8 @@
 	}
 
 	.scientist-info {
-		max-width: 11rem;
+		max-width: 13rem;
+		text-align: center;
 	}
 
 	h3 {
