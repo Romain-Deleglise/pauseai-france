@@ -66,9 +66,15 @@
 			<h2>Contact presse</h2>
 			<p class="contact-note">Réservé aux journalistes</p>
 			<div class="contact-info">
+				<p class="contact-name">Maxime Fournes</p>
+				<p class="contact-role">Co-fondateur de Pause IA</p>
 				<p>
 					<strong>Email :</strong>
 					<a href="mailto:presse@pauseia.fr">presse@pauseia.fr</a>
+				</p>
+				<p>
+					<strong>Tél. :</strong>
+					<a href="tel:+33743155617">07 43 15 56 17</a>
 				</p>
 			</div>
 			<p class="redirect">
@@ -204,6 +210,18 @@
 		margin: 0.25rem 0;
 	}
 
+	.contact-name {
+		font-weight: 700;
+		font-size: 1.05rem;
+		margin-bottom: 0;
+	}
+
+	.contact-role {
+		color: var(--text-secondary);
+		font-size: 0.9rem;
+		margin-bottom: 0.75rem;
+	}
+
 	.contact-info a {
 		color: var(--brand);
 		font-weight: 600;
@@ -243,7 +261,8 @@
 		width: 16rem;
 		max-height: calc(100vh - 2rem);
 		overflow-y: auto;
-		background-color: var(--black);
+		background-color: var(--bg-subtle);
+		border: 1px solid var(--border);
 		border-radius: 0.75rem;
 		padding: 1.25rem;
 	}
@@ -286,13 +305,13 @@
 	}
 
 	.sidebar-item:hover {
-		background-color: rgba(255, 255, 255, 0.1);
+		background-color: rgba(0, 0, 0, 0.05);
 	}
 
 	.sidebar-item-title {
 		font-size: 0.8rem;
 		font-weight: 600;
-		color: var(--white);
+		color: var(--text);
 		line-height: 1.3;
 		display: -webkit-box;
 		-webkit-line-clamp: 2;
@@ -302,7 +321,7 @@
 
 	.sidebar-item-date {
 		font-size: 0.7rem;
-		color: rgba(255, 255, 255, 0.5);
+		color: var(--text-secondary);
 	}
 
 	/* Press releases list */
@@ -318,11 +337,12 @@
 		display: flex;
 		flex-direction: column;
 		padding: 1.5rem;
-		background-color: var(--black);
-		border: 2px solid transparent;
+		background-color: var(--white);
+		border: 1px solid var(--border);
 		border-radius: 0.75rem;
 		text-decoration: none;
-		color: var(--white);
+		color: var(--text);
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
 		transition:
 			transform 0.2s ease,
 			box-shadow 0.2s ease,
@@ -331,9 +351,9 @@
 
 	.press-release-card:hover {
 		transform: translateY(-2px);
-		box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.3);
+		box-shadow: 0 8px 20px -6px rgba(0, 0, 0, 0.12);
 		border-color: var(--brand);
-		color: var(--white);
+		color: var(--text);
 	}
 
 	.pr-content {
@@ -345,13 +365,13 @@
 		font-size: 1.125rem;
 		font-weight: 700;
 		line-height: 1.4;
-		color: var(--white);
+		color: var(--text);
 	}
 
 	.pr-description {
 		margin: 0;
 		font-size: 0.95rem;
-		color: rgba(255, 255, 255, 0.7);
+		color: var(--text-secondary);
 		line-height: 1.5;
 	}
 
@@ -361,12 +381,12 @@
 		align-items: center;
 		margin-top: 1rem;
 		padding-top: 1rem;
-		border-top: 1px solid rgba(255, 255, 255, 0.15);
+		border-top: 1px solid var(--border);
 	}
 
 	.press-release-card time {
 		font-size: 0.85rem;
-		color: rgba(255, 255, 255, 0.5);
+		color: var(--text-secondary);
 	}
 
 	.read-link {
