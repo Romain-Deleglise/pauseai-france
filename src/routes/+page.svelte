@@ -7,7 +7,6 @@
 	import NewsletterCta from '$components/home/newsletter-cta.svelte'
 	import Faq from '$components/home/faq.svelte'
 	import Videos from '$components/home/videos.svelte'
-	import Supporters from '$components/home/supporters.svelte'
 	import Inserts from '$components/home/inserts.svelte'
 	import { bannerStore } from '$lib/stores/banner'
 	import type { PageData } from './$types'
@@ -38,7 +37,5 @@
 <Articles articles={data.articles} />
 
 <NewsletterCta />
-
-<Supporters />
 
 <Faq />
