@@ -123,7 +123,7 @@
 				>Marchandises</ExternalLink
 			>
 			<a href="https://pauseai.info/protests">Manifestations</a>
-			<a href="/directeur-france">Offres d'emploi</a>
+			<a href="/recrutement-emploi">Offres d'emploi</a>
 		</div>
 		<div class="column">
 			<h2>Autres</h2>
