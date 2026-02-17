@@ -51,7 +51,7 @@
 	<title>Espace Presse - Pause IA</title>
 	<meta
 		name="description"
-		content="Espace presse de Pause IA\u202F: communiqu\u00e9s de presse, contact m\u00e9dias et ressources pour les journalistes."
+		content="Espace presse de Pause IA : communiqués de presse, contact médias et ressources pour les journalistes."
 	/>
 </svelte:head>
 
@@ -64,27 +64,27 @@
 	<section class="contact-section">
 		<div class="contact-card">
 			<h2>Contact presse</h2>
-			<p class="contact-note">R\u00e9serv\u00e9 aux journalistes</p>
+			<p class="contact-note">Réservé aux journalistes</p>
 			<div class="contact-info">
 				<p>
-					<strong>Email\u202F:</strong>
+					<strong>Email :</strong>
 					<a href="mailto:presse@pauseia.fr">presse@pauseia.fr</a>
 				</p>
 			</div>
 			<p class="redirect">
-				Si vous n'\u00eates pas journaliste, nous vous invitons \u00e0
+				Si vous n'êtes pas journaliste, nous vous invitons à
 				<a href="/qui-sommes-nous">vous rendre sur cette page</a> pour nous contacter.
 			</p>
 		</div>
 	</section>
 
 	<section class="press-releases-section">
-		<h2>Nos communiqu\u00e9s de presse</h2>
+		<h2>Nos communiqués de presse</h2>
 
 		<div class="press-layout">
 			<!-- Sidebar navigation -->
 			<nav class="press-sidebar">
-				<h3 class="sidebar-title">Acc\u00e8s rapide</h3>
+				<h3 class="sidebar-title">Accès rapide</h3>
 				<ul class="sidebar-list">
 					{#each pressReleases as pr (pr.id)}
 						<li>
@@ -122,7 +122,7 @@
 								<time datetime={pr.date}>{formatDate(pr.date)}</time>
 							{/if}
 							<span class="read-link">
-								Lire le communiqu\u00e9
+								Lire le communiqué
 								<span class="link-icon"><MoveUpRight size="1.25rem" /></span>
 							</span>
 						</div>
@@ -134,18 +134,16 @@
 
 	<section class="about-section">
 		<div class="about-card">
-			<h2>\u00c0 propos de Pause IA</h2>
+			<h2>À propos de Pause IA</h2>
 			<p>
-				Pause IA est une association de b\u00e9n\u00e9voles qui alerte les citoyens et les pouvoirs
-				publics fran\u00e7ais sur les graves dangers que la course \u00e0 l'intelligence
-				artificielle fait courir \u00e0 la soci\u00e9t\u00e9 humaine, et les incite \u00e0 agir
-				\u00e0 leur niveau pour s'y opposer.
+				Pause IA est une association de bénévoles qui alerte les citoyens et les pouvoirs publics
+				français sur les graves dangers que la course à l'intelligence artificielle fait courir à la
+				société humaine, et les incite à agir à leur niveau pour s'y opposer.
 			</p>
 			<p>
-				Pause IA est la repr\u00e9sentation en France de Pause AI Global, qui demande un moratoire
-				sur l'entra\u00eenement des syst\u00e8mes d'IA g\u00e9n\u00e9rale (IAG) jusqu'\u00e0 ce que
-				toutes les conditions de s\u00e9curit\u00e9 et de contr\u00f4le d\u00e9mocratique soient
-				r\u00e9unies.
+				Pause IA est la représentation en France de Pause AI Global, qui demande un moratoire sur
+				l'entraînement des systèmes d'IA générale (IAG) jusqu'à ce que toutes les conditions de
+				sécurité et de contrôle démocratique soient réunies.
 			</p>
 		</div>
 	</section>
