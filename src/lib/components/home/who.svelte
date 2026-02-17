@@ -232,6 +232,11 @@
 		margin-top: 1.5rem;
 	}
 
+	.contact-cta :global(a),
+	.contact-cta :global(button) {
+		box-shadow: inset 0 0 0 2px var(--black, #000);
+	}
+
 	.team-section {
 		margin-top: 3rem;
 		padding-top: 2rem;
