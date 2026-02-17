@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { MoveUpRight, ChevronLeft, ChevronRight } from 'lucide-svelte'
+	import { MoveUpRight, ChevronLeft, ChevronRight, Search, X } from 'lucide-svelte'
 	import type { PressRelease, LocalPressRelease } from '$lib/notion'
 
 	export let data: { pressReleases: PressRelease[]; localPressReleases: LocalPressRelease[] }
@@ -19,6 +19,116 @@
 		}
 	]
 
+	// Mapping des numéros de département vers leurs noms
+	const DEPT_NAMES: Record<string, string> = {
+		'01': 'Ain',
+		'02': 'Aisne',
+		'03': 'Allier',
+		'04': 'Alpes-de-Haute-Provence',
+		'05': 'Hautes-Alpes',
+		'06': 'Alpes-Maritimes',
+		'07': 'Ardèche',
+		'08': 'Ardennes',
+		'09': 'Ariège',
+		'10': 'Aube',
+		'11': 'Aude',
+		'12': 'Aveyron',
+		'13': 'Bouches-du-Rhône',
+		'14': 'Calvados',
+		'15': 'Cantal',
+		'16': 'Charente',
+		'17': 'Charente-Maritime',
+		'18': 'Cher',
+		'19': 'Corrèze',
+		'2A': 'Corse-du-Sud',
+		'2B': 'Haute-Corse',
+		'21': "Côte-d'Or",
+		'22': "Côtes-d'Armor",
+		'23': 'Creuse',
+		'24': 'Dordogne',
+		'25': 'Doubs',
+		'26': 'Drôme',
+		'27': 'Eure',
+		'28': 'Eure-et-Loir',
+		'29': 'Finistère',
+		'30': 'Gard',
+		'31': 'Haute-Garonne',
+		'32': 'Gers',
+		'33': 'Gironde',
+		'34': 'Hérault',
+		'35': 'Ille-et-Vilaine',
+		'36': 'Indre',
+		'37': 'Indre-et-Loire',
+		'38': 'Isère',
+		'39': 'Jura',
+		'40': 'Landes',
+		'41': 'Loir-et-Cher',
+		'42': 'Loire',
+		'43': 'Haute-Loire',
+		'44': 'Loire-Atlantique',
+		'45': 'Loiret',
+		'46': 'Lot',
+		'47': 'Lot-et-Garonne',
+		'48': 'Lozère',
+		'49': 'Maine-et-Loire',
+		'50': 'Manche',
+		'51': 'Marne',
+		'52': 'Haute-Marne',
+		'53': 'Mayenne',
+		'54': 'Meurthe-et-Moselle',
+		'55': 'Meuse',
+		'56': 'Morbihan',
+		'57': 'Moselle',
+		'58': 'Nièvre',
+		'59': 'Nord',
+		'60': 'Oise',
+		'61': 'Orne',
+		'62': 'Pas-de-Calais',
+		'63': 'Puy-de-Dôme',
+		'64': 'Pyrénées-Atlantiques',
+		'65': 'Hautes-Pyrénées',
+		'66': 'Pyrénées-Orientales',
+		'67': 'Bas-Rhin',
+		'68': 'Haut-Rhin',
+		'69': 'Rhône',
+		'70': 'Haute-Saône',
+		'71': 'Saône-et-Loire',
+		'72': 'Sarthe',
+		'73': 'Savoie',
+		'74': 'Haute-Savoie',
+		'75': 'Paris',
+		'76': 'Seine-Maritime',
+		'77': 'Seine-et-Marne',
+		'78': 'Yvelines',
+		'79': 'Deux-Sèvres',
+		'80': 'Somme',
+		'81': 'Tarn',
+		'82': 'Tarn-et-Garonne',
+		'83': 'Var',
+		'84': 'Vaucluse',
+		'85': 'Vendée',
+		'86': 'Vienne',
+		'87': 'Haute-Vienne',
+		'88': 'Vosges',
+		'89': 'Yonne',
+		'90': 'Territoire de Belfort',
+		'91': 'Essonne',
+		'92': 'Hauts-de-Seine',
+		'93': 'Seine-Saint-Denis',
+		'94': 'Val-de-Marne',
+		'95': "Val-d'Oise",
+		'971': 'Guadeloupe',
+		'972': 'Martinique',
+		'973': 'Guyane',
+		'974': 'La Réunion',
+		'976': 'Mayotte'
+	}
+
+	function getDeptLabel(code: string): string {
+		const name = DEPT_NAMES[code]
+		return name ? `${code} — ${name}` : code
+	}
+
 	$: pressReleases = data.pressReleases.length > 0 ? data.pressReleases : fallbackPressReleases
 	$: localPressReleases = data.localPressReleases
 
@@ -31,6 +141,8 @@
 		currentPage = 1
 		localCurrentPage = 1
 		selectedDepartment = ''
+		deptSearchQuery = ''
+		deptDropdownOpen = false
 	}
 
 	// --- National pagination ---
@@ -56,6 +168,85 @@
 		? localPressReleases.filter((pr) => pr.department === selectedDepartment)
 		: localPressReleases
 
+	// --- Department search combobox ---
+	let deptSearchQuery = ''
+	let deptDropdownOpen = false
+	let highlightedIndex = -1
+	let deptInputEl: HTMLInputElement
+
+	function normalize(str: string): string {
+		return str
+			.toLowerCase()
+			.normalize('NFD')
+			.replace(/[\u0300-\u036f]/g, '')
+	}
+
+	$: filteredDepartments = (() => {
+		if (!deptSearchQuery.trim()) return departments
+		const q = normalize(deptSearchQuery.trim())
+		return departments.filter((code) => {
+			const name = DEPT_NAMES[code] || ''
+			return code.startsWith(q) || normalize(name).includes(q)
+		})
+	})()
+
+	function selectDepartment(code: string) {
+		selectedDepartment = code
+		deptSearchQuery = getDeptLabel(code)
+		deptDropdownOpen = false
+		highlightedIndex = -1
+		localCurrentPage = 1
+	}
+
+	function clearDepartment() {
+		selectedDepartment = ''
+		deptSearchQuery = ''
+		deptDropdownOpen = false
+		highlightedIndex = -1
+		localCurrentPage = 1
+		deptInputEl?.focus()
+	}
+
+	function onDeptInputFocus() {
+		deptDropdownOpen = true
+		if (selectedDepartment) {
+			deptSearchQuery = ''
+			selectedDepartment = ''
+			localCurrentPage = 1
+		}
+	}
+
+	function onDeptInputBlur() {
+		// Delay to allow click on dropdown item
+		setTimeout(() => {
+			deptDropdownOpen = false
+			if (!selectedDepartment) {
+				deptSearchQuery = ''
+			}
+		}, 200)
+	}
+
+	function onDeptKeydown(e: KeyboardEvent) {
+		if (!deptDropdownOpen && e.key !== 'Escape') {
+			deptDropdownOpen = true
+		}
+		if (e.key === 'ArrowDown') {
+			e.preventDefault()
+			highlightedIndex = Math.min(highlightedIndex + 1, filteredDepartments.length - 1)
+		} else if (e.key === 'ArrowUp') {
+			e.preventDefault()
+			highlightedIndex = Math.max(highlightedIndex - 1, 0)
+		} else if (e.key === 'Enter') {
+			e.preventDefault()
+			if (highlightedIndex >= 0 && highlightedIndex < filteredDepartments.length) {
+				selectDepartment(filteredDepartments[highlightedIndex])
+			}
+		} else if (e.key === 'Escape') {
+			deptDropdownOpen = false
+			deptInputEl?.blur()
+		}
+	}
+
 	let localCurrentPage = 1
 	$: localTotalPages = Math.ceil(filteredLocalReleases.length / PER_PAGE)
 	$: localStartIndex = (localCurrentPage - 1) * PER_PAGE
@@ -70,10 +261,6 @@
 		if (section) {
 			section.scrollIntoView({ behavior: 'smooth', block: 'start' })
 		}
-	}
-
-	function onDepartmentChange() {
-		localCurrentPage = 1
 	}
 
 	// --- Shared helpers ---
@@ -295,27 +482,69 @@
 
 		<!-- ===== LOCAL (DEPARTMENTAL) TAB ===== -->
 		{#if activeTab === 'local'}
-			<!-- Department filter -->
+			<!-- Department search combobox -->
 			<div class="department-filter">
-				<label for="dept-select" class="dept-label">Filtrer par département :</label>
-				<select
-					id="dept-select"
-					class="dept-select"
-					bind:value={selectedDepartment}
-					on:change={onDepartmentChange}
+				<label for="dept-search" class="dept-label">Rechercher un département :</label>
+				<div
+					class="dept-combobox"
+					role="combobox"
+					aria-expanded={deptDropdownOpen}
+					aria-haspopup="listbox"
+					aria-controls="dept-listbox"
 				>
-					<option value="">Tous les départements</option>
-					{#each departments as dept}
-						<option value={dept}>{dept}</option>
-					{/each}
-				</select>
+					<div class="dept-input-wrapper">
+						<span class="dept-search-icon"><Search size="1rem" /></span>
+						<input
+							id="dept-search"
+							type="text"
+							class="dept-input"
+							placeholder="Numéro ou nom du département..."
+							bind:value={deptSearchQuery}
+							bind:this={deptInputEl}
+							on:focus={onDeptInputFocus}
+							on:blur={onDeptInputBlur}
+							on:keydown={onDeptKeydown}
+							autocomplete="off"
+							aria-controls="dept-listbox"
+							aria-autocomplete="list"
+						/>
+						{#if selectedDepartment || deptSearchQuery}
+							<button
+								class="dept-clear-btn"
+								on:mousedown|preventDefault={clearDepartment}
+								aria-label="Effacer la sélection"
+							>
+								<X size="1rem" />
+							</button>
+						{/if}
+					</div>
+					{#if deptDropdownOpen && filteredDepartments.length > 0}
+						<ul id="dept-listbox" class="dept-dropdown" role="listbox">
+							{#each filteredDepartments as code, i (code)}
+								<li
+									role="option"
+									class="dept-option"
+									class:highlighted={i === highlightedIndex}
+									aria-selected={code === selectedDepartment}
+									on:mousedown|preventDefault={() => selectDepartment(code)}
+								>
+									<span class="dept-option-code">{code}</span>
+									<span class="dept-option-name">{DEPT_NAMES[code] || code}</span>
+								</li>
+							{/each}
+						</ul>
+					{/if}
+					{#if deptDropdownOpen && filteredDepartments.length === 0 && deptSearchQuery}
+						<div class="dept-dropdown dept-no-result">Aucun département trouvé</div>
+					{/if}
+				</div>
 			</div>
 
 			{#if filteredLocalReleases.length === 0}
 				<div class="empty-state">
 					<p>
 						{#if selectedDepartment}
-							Aucun communiqué pour le département {selectedDepartment}.
+							Aucun communiqué pour le département {getDeptLabel(selectedDepartment)}.
 						{:else}
 							Aucun communiqué départemental disponible pour le moment.
 						{/if}
@@ -343,7 +572,7 @@
 							{#each paginatedLocalReleases as pr (pr.id)}
 								<li>
 									<button class="sidebar-item" on:click={() => scrollToCard(pr.id)}>
-										<span class="sidebar-item-dept">{pr.department}</span>
+										<span class="sidebar-item-dept">{getDeptLabel(pr.department)}</span>
 										<span class="sidebar-item-title">{pr.title}</span>
 										{#if pr.date}
 											<time class="sidebar-item-date" datetime={pr.date}
@@ -372,7 +601,7 @@
 								rel="noopener noreferrer"
 							>
 								<div class="pr-content">
-									<div class="pr-dept-badge">{pr.department}</div>
+									<div class="pr-dept-badge">{getDeptLabel(pr.department)}</div>
 									<h3>{pr.title}</h3>
 									{#if pr.description}
 										<p class="pr-description">{pr.description}</p>
@@ -605,7 +834,7 @@
 		background-color: var(--brand);
 	}
 
-	/* Department filter */
+	/* Department filter combobox */
 	.department-filter {
 		display: flex;
 		align-items: center;
@@ -621,24 +850,124 @@
 		white-space: nowrap;
 	}
 
-	.dept-select {
-		padding: 0.5rem 2.25rem 0.5rem 0.75rem;
-		font-size: 0.9rem;
-		border: 1px solid var(--border);
-		border-radius: 0.375rem;
-		background-color: var(--white);
-		color: var(--text);
-		appearance: none;
-		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23676e7a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
-		background-repeat: no-repeat;
-		background-position: right 0.5rem center;
-		cursor: pointer;
-		min-width: 14rem;
+	.dept-combobox {
+		position: relative;
+		flex: 1;
+		min-width: 16rem;
+		max-width: 24rem;
 	}
 
-	.dept-select:focus {
-		outline: 2px solid var(--brand);
-		outline-offset: 2px;
+	.dept-input-wrapper {
+		display: flex;
+		align-items: center;
+		border: 1px solid var(--border);
+		border-radius: 0.5rem;
+		background-color: var(--white);
+		transition:
+			border-color 0.15s ease,
+			box-shadow 0.15s ease;
+	}
+
+	.dept-input-wrapper:focus-within {
+		border-color: var(--brand);
+		box-shadow: 0 0 0 3px rgba(var(--brand-rgb, 0, 0, 0), 0.1);
+	}
+
+	.dept-search-icon {
+		display: flex;
+		align-items: center;
+		padding-left: 0.75rem;
+		color: var(--text-secondary);
+		flex-shrink: 0;
+	}
+
+	.dept-input {
+		flex: 1;
+		padding: 0.5rem 0.5rem;
+		font-size: 0.9rem;
+		font-family: var(--font-body);
+		border: none;
+		background: transparent;
+		color: var(--text);
+		outline: none;
+		min-width: 0;
+	}
+
+	.dept-input::placeholder {
+		color: var(--text-secondary);
+		opacity: 0.7;
+	}
+
+	.dept-clear-btn {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0.375rem;
+		margin-right: 0.375rem;
+		border: none;
+		background: transparent;
+		color: var(--text-secondary);
+		cursor: pointer;
+		border-radius: 0.25rem;
+		transition:
+			color 0.15s ease,
+			background-color 0.15s ease;
+	}
+
+	.dept-clear-btn:hover {
+		color: var(--text);
+		background-color: rgba(0, 0, 0, 0.06);
+	}
+
+	.dept-dropdown {
+		position: absolute;
+		top: calc(100% + 4px);
+		left: 0;
+		right: 0;
+		max-height: 15rem;
+		overflow-y: auto;
+		background-color: var(--white);
+		border: 1px solid var(--border);
+		border-radius: 0.5rem;
+		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+		z-index: 50;
+		list-style: none;
+		padding: 0.25rem;
+		margin: 0;
+	}
+
+	.dept-option {
+		display: flex;
+		align-items: center;
+		gap: 0.625rem;
+		padding: 0.5rem 0.75rem;
+		border-radius: 0.375rem;
+		cursor: pointer;
+		transition: background-color 0.1s ease;
+	}
+
+	.dept-option:hover,
+	.dept-option.highlighted {
+		background-color: rgba(var(--brand-rgb, 0, 0, 0), 0.06);
+	}
+
+	.dept-option-code {
+		font-weight: 700;
+		font-size: 0.9rem;
+		color: var(--brand);
+		min-width: 2rem;
+	}
+
+	.dept-option-name {
+		font-size: 0.875rem;
+		color: var(--text);
+	}
+
+	.dept-no-result {
+		padding: 0.75rem 1rem;
+		font-size: 0.875rem;
+		color: var(--text-secondary);
+		text-align: center;
 	}
 
 	/* Empty state */
@@ -1018,9 +1347,9 @@
 			align-items: stretch;
 		}
 
-		.dept-select {
+		.dept-combobox {
 			min-width: 0;
-			width: 100%;
+			max-width: none;
 		}
 
 		.contact-persons {
