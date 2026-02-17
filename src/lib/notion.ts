@@ -86,6 +86,16 @@ export interface LocalPressRelease {
 	visible: boolean
 }
 
+export interface PressCoverage {
+	id: string
+	title: string
+	source: string
+	date: string
+	url: string
+	order: number
+	visible: boolean
+}
+
 // Helper to extract text from Notion rich_text or title
 function getText(property: NotionProperty | undefined): string {
 	if (!property) return ''
@@ -197,6 +207,22 @@ function isValidLocalPressRelease(pr: LocalPressRelease): boolean {
 	}
 	if (!pr.department) {
 		console.warn(`Invalid local press release: missing department for "${pr.title}"`)
+		return false
+	}
+	return true
+}
+
+function isValidPressCoverage(pc: PressCoverage): boolean {
+	if (!pc.title) {
+		console.warn(`Invalid press coverage: missing title`)
+		return false
+	}
+	if (!pc.url) {
+		console.warn(`Invalid press coverage: missing URL for "${pc.title}"`)
+		return false
+	}
+	if (!pc.source) {
+		console.warn(`Invalid press coverage: missing source for "${pc.title}"`)
 		return false
 	}
 	return true
@@ -409,4 +435,32 @@ export async function getLocalPressReleases(): Promise<LocalPressRelease[]> {
 	)
 
 	return pressReleases.filter((pr): pr is LocalPressRelease => pr !== null)
+}
+
+export async function getPressCoverage(): Promise<PressCoverage[]> {
+	const databaseId = env.NOTION_PRESS_COVERAGE_DATABASE_ID
+	if (!databaseId) return []
+
+	const items = await queryDatabase<PressCoverage | null>(
+		databaseId,
+		(page) => {
+			const visible = getCheckbox(page.properties['Visible'])
+			if (!visible) return null
+
+			const pc: PressCoverage = {
+				id: page.id,
+				title: getText(page.properties['Titre']),
+				source: getText(page.properties['Source']),
+				date: getDate(page.properties['Date']),
+				url: getUrl(page.properties['URL']),
+				order: getNumber(page.properties['Ordre']),
+				visible
+			}
+
+			return isValidPressCoverage(pc) ? pc : null
+		},
+		{ sortBy: 'Ordre' }
+	)
+
+	return items.filter((pc): pc is PressCoverage => pc !== null)
 }

@@ -1,8 +1,14 @@
 <script lang="ts">
-	import { MoveUpRight, ChevronLeft, ChevronRight, Search, X } from 'lucide-svelte'
-	import type { PressRelease, LocalPressRelease } from '$lib/notion'
+	import { MoveUpRight, ChevronLeft, ChevronRight, Search, X, Newspaper } from 'lucide-svelte'
+	import type { PressRelease, LocalPressRelease, PressCoverage } from '$lib/notion'
 
-	export let data: { pressReleases: PressRelease[]; localPressReleases: LocalPressRelease[] }
+	export let data: {
+		pressReleases: PressRelease[]
+		localPressReleases: LocalPressRelease[]
+		pressCoverage: PressCoverage[]
+	}
+
+	$: pressCoverage = data.pressCoverage
 
 	const PER_PAGE = 15
 
@@ -362,7 +368,10 @@
 				role="tab"
 				aria-selected={activeTab === 'national'}
 			>
-				Nationaux
+				<span class="tab-label">Nationaux</span>
+				{#if pressReleases.length > 0}
+					<span class="tab-count">{pressReleases.length}</span>
+				{/if}
 			</button>
 			<button
 				class="tab"
@@ -371,7 +380,10 @@
 				role="tab"
 				aria-selected={activeTab === 'local'}
 			>
-				Par département
+				<span class="tab-label">Par département</span>
+				{#if localPressReleases.length > 0}
+					<span class="tab-count">{localPressReleases.length}</span>
+				{/if}
 			</button>
 		</div>
 
@@ -658,6 +670,29 @@
 		{/if}
 	</section>
 
+	{#if pressCoverage.length > 0}
+		<section class="coverage-section">
+			<h2>
+				<Newspaper
+					size="1.25rem"
+					style="display:inline;vertical-align:-0.15em;margin-right:0.375rem"
+				/>
+				Ils parlent de nous
+			</h2>
+			<div class="coverage-grid">
+				{#each pressCoverage as item (item.id)}
+					<a class="coverage-card" href={item.url} target="_blank" rel="noopener noreferrer">
+						<span class="coverage-source">{item.source}</span>
+						<span class="coverage-title">{item.title}</span>
+						{#if item.date}
+							<time class="coverage-date" datetime={item.date}>{formatDate(item.date)}</time>
+						{/if}
+					</a>
+				{/each}
+			</div>
+		</section>
+	{/if}
+
 	<section class="about-section">
 		<div class="about-card">
 			<h2>À propos de Pause IA</h2>
@@ -794,44 +829,65 @@
 
 	/* Tabs */
 	.tabs {
-		display: flex;
-		gap: 0;
+		display: inline-flex;
+		gap: 0.25rem;
 		margin-bottom: 1.5rem;
-		border-bottom: 2px solid var(--border);
+		background-color: #f1f3f5;
+		border-radius: 0.625rem;
+		padding: 0.25rem;
 	}
 
 	.tab {
-		padding: 0.75rem 1.5rem;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0.625rem 1.25rem;
 		border: none;
 		background: transparent;
-		font-size: 0.95rem;
+		font-size: 0.9rem;
 		font-weight: 600;
 		color: var(--text-secondary);
 		cursor: pointer;
 		position: relative;
 		transition:
-			color 0.15s ease,
-			background-color 0.15s ease;
-		border-radius: 0.375rem 0.375rem 0 0;
+			color 0.2s ease,
+			background-color 0.2s ease,
+			box-shadow 0.2s ease;
+		border-radius: 0.5rem;
 	}
 
 	.tab:hover {
 		color: var(--text);
-		background-color: rgba(0, 0, 0, 0.03);
 	}
 
 	.tab.active {
 		color: var(--brand);
+		background-color: var(--white);
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 	}
 
-	.tab.active::after {
-		content: '';
-		position: absolute;
-		bottom: -2px;
-		left: 0;
-		right: 0;
-		height: 2px;
-		background-color: var(--brand);
+	.tab-label {
+		white-space: nowrap;
+	}
+
+	.tab-count {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-width: 1.375rem;
+		height: 1.375rem;
+		padding: 0 0.375rem;
+		font-size: 0.75rem;
+		font-weight: 700;
+		border-radius: 999px;
+		background-color: rgba(0, 0, 0, 0.08);
+		color: var(--text-secondary);
+		line-height: 1;
+	}
+
+	.tab.active .tab-count {
+		background-color: rgba(var(--brand-rgb, 255, 148, 22), 0.15);
+		color: var(--brand);
 	}
 
 	/* Department filter combobox */
@@ -1284,18 +1340,77 @@
 		color: var(--white);
 	}
 
+	/* Press coverage section */
+	.coverage-section {
+		margin-top: 3rem;
+	}
+
+	.coverage-section h2 {
+		margin-top: 0;
+		margin-bottom: 1.25rem;
+		font-size: 1.4rem;
+	}
+
+	.coverage-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+		gap: 1rem;
+	}
+
+	.coverage-card {
+		display: flex;
+		flex-direction: column;
+		gap: 0.375rem;
+		padding: 1.125rem 1.25rem;
+		background-color: var(--white);
+		border: 1px solid var(--border);
+		border-radius: 0.625rem;
+		text-decoration: none;
+		color: var(--text);
+		transition:
+			transform 0.2s ease,
+			box-shadow 0.2s ease,
+			border-color 0.2s ease;
+	}
+
+	.coverage-card:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 6px 16px -4px rgba(0, 0, 0, 0.1);
+		border-color: var(--brand);
+		color: var(--text);
+	}
+
+	.coverage-source {
+		font-size: 0.75rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		color: var(--brand);
+	}
+
+	.coverage-title {
+		font-size: 0.925rem;
+		font-weight: 600;
+		line-height: 1.4;
+		color: var(--text);
+	}
+
+	.coverage-date {
+		font-size: 0.8rem;
+		color: var(--text-secondary);
+	}
+
 	/* About section */
 	.about-section {
 		margin-top: 3rem;
 	}
 
 	.about-card {
-		background-color: rgba(var(--brand-rgb, 0, 0, 0), 0.05);
-		border: 1px solid rgba(var(--brand-rgb, 0, 0, 0), 0.15);
+		background-color: #f8f9fa;
+		border: 1px solid #e9ecef;
 		border-left: 4px solid var(--brand);
 		border-radius: 0.75rem;
 		padding: 2rem 2.5rem;
-		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 	}
 
 	.about-card h2 {
@@ -1332,14 +1447,15 @@
 		}
 
 		.tabs {
-			gap: 0;
+			display: flex;
+			width: 100%;
 		}
 
 		.tab {
 			flex: 1;
+			justify-content: center;
 			padding: 0.625rem 0.5rem;
-			font-size: 0.875rem;
-			text-align: center;
+			font-size: 0.85rem;
 		}
 
 		.department-filter {

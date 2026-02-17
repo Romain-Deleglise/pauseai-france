@@ -1,16 +1,18 @@
-import { getPressReleases, getLocalPressReleases } from '$lib/notion'
+import { getPressReleases, getLocalPressReleases, getPressCoverage } from '$lib/notion'
 import type { PageServerLoad } from './$types'
 
 export const prerender = false
 
 export const load: PageServerLoad = async () => {
-	const [pressReleases, localPressReleases] = await Promise.all([
+	const [pressReleases, localPressReleases, pressCoverage] = await Promise.all([
 		getPressReleases(),
-		getLocalPressReleases()
+		getLocalPressReleases(),
+		getPressCoverage()
 	])
 
 	return {
 		pressReleases,
-		localPressReleases
+		localPressReleases,
+		pressCoverage
 	}
 }
