@@ -45,6 +45,8 @@ export interface Article {
 	type: 'Article' | 'Newsletter'
 	order: number
 	visible: boolean
+	image?: string
+	date?: string
 }
 
 export interface Report {
@@ -315,7 +317,9 @@ export async function getArticles(): Promise<Article[]> {
 				url: getUrl(page.properties['URL']),
 				type: typeValue === 'Newsletter' ? 'Newsletter' : 'Article',
 				order: getNumber(page.properties['Ordre']),
-				visible
+				visible,
+				image: getUrl(page.properties['Image']) || undefined,
+				date: getDate(page.properties['Date']) || undefined
 			}
 
 			// Validate before returning
@@ -325,6 +329,11 @@ export async function getArticles(): Promise<Article[]> {
 	)
 
 	return articles.filter((a): a is Article => a !== null)
+}
+
+export async function getNewsletters(): Promise<Article[]> {
+	const articles = await getArticles()
+	return articles.filter((a) => a.type === 'Newsletter')
 }
 
 export async function getReports(): Promise<Report[]> {
