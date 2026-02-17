@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { MoveUpRight, ChevronLeft, ChevronRight } from 'lucide-svelte'
-	import type { PressRelease } from '$lib/notion'
+	import type { PressRelease, LocalPressRelease } from '$lib/notion'
 
-	export let data: { pressReleases: PressRelease[] }
+	export let data: { pressReleases: PressRelease[]; localPressReleases: LocalPressRelease[] }
 
 	const PER_PAGE = 15
 
@@ -20,8 +20,20 @@
 	]
 
 	$: pressReleases = data.pressReleases.length > 0 ? data.pressReleases : fallbackPressReleases
+	$: localPressReleases = data.localPressReleases
 
-	// Pagination
+	// Tabs
+	type Tab = 'national' | 'local'
+	let activeTab: Tab = 'national'
+
+	function switchTab(tab: Tab) {
+		activeTab = tab
+		currentPage = 1
+		localCurrentPage = 1
+		selectedDepartment = ''
+	}
+
+	// --- National pagination ---
 	let currentPage = 1
 	$: totalPages = Math.ceil(pressReleases.length / PER_PAGE)
 	$: startIndex = (currentPage - 1) * PER_PAGE
@@ -35,6 +47,36 @@
 		}
 	}
 
+	// --- Local (departmental) filtering & pagination ---
+	let selectedDepartment = ''
+	$: departments = [
+		...new Set(localPressReleases.map((pr) => pr.department).filter(Boolean))
+	].sort()
+	$: filteredLocalReleases = selectedDepartment
+		? localPressReleases.filter((pr) => pr.department === selectedDepartment)
+		: localPressReleases
+
+	let localCurrentPage = 1
+	$: localTotalPages = Math.ceil(filteredLocalReleases.length / PER_PAGE)
+	$: localStartIndex = (localCurrentPage - 1) * PER_PAGE
+	$: paginatedLocalReleases = filteredLocalReleases.slice(
+		localStartIndex,
+		localStartIndex + PER_PAGE
+	)
+
+	function goToLocalPage(page: number) {
+		localCurrentPage = page
+		const section = document.getElementById('press-releases-top')
+		if (section) {
+			section.scrollIntoView({ behavior: 'smooth', block: 'start' })
+		}
+	}
+
+	function onDepartmentChange() {
+		localCurrentPage = 1
+	}
+
+	// --- Shared helpers ---
 	function formatDate(dateStr: string): string {
 		if (!dateStr) return ''
 		const date = new Date(dateStr + 'T00:00:00')
@@ -62,7 +104,6 @@
 		}
 	}
 
-	// Mobile dropdown navigation
 	function onMobileSelect(event: Event) {
 		const select = event.target as HTMLSelectElement
 		const id = select.value
@@ -92,16 +133,29 @@
 			<h2>Contact presse</h2>
 			<p class="contact-note">Réservé aux journalistes</p>
 			<div class="contact-info">
-				<p class="contact-name">Maxime Fournes</p>
-				<p class="contact-role">Co-fondateur de Pause IA</p>
-				<p>
-					<strong>Email :</strong>
-					<a href="mailto:presse@pauseia.fr">presse@pauseia.fr</a>
-				</p>
-				<p>
-					<strong>Tél. :</strong>
-					<a href="tel:+33743155617">07 43 15 56 17</a>
-				</p>
+				<div class="contact-person">
+					<p class="contact-name">Clémence Peyrot</p>
+					<p>
+						<strong>Email :</strong>
+						<a href="mailto:presse@pauseia.fr">presse@pauseia.fr</a>
+					</p>
+					<p>
+						<strong>Tél. :</strong>
+						<a href="tel:+33645513415">06 45 51 34 15</a>
+					</p>
+				</div>
+				<div class="contact-person">
+					<p class="contact-name">Maxime Fournes</p>
+					<p class="contact-role">Co-fondateur de Pause IA</p>
+					<p>
+						<strong>Email :</strong>
+						<a href="mailto:presse@pauseia.fr">presse@pauseia.fr</a>
+					</p>
+					<p>
+						<strong>Tél. :</strong>
+						<a href="tel:+33743155617">07 43 15 56 17</a>
+					</p>
+				</div>
 			</div>
 			<p class="redirect">
 				Si vous n'êtes pas journaliste, nous vous invitons à
@@ -113,107 +167,265 @@
 	<section class="press-releases-section">
 		<h2 id="press-releases-top">Nos communiqués de presse</h2>
 
-		<!-- Mobile: dropdown navigation -->
-		<div class="mobile-nav">
-			<select class="mobile-select" on:change={onMobileSelect}>
-				<option value="" disabled selected>Accès rapide...</option>
-				{#each paginatedReleases as pr (pr.id)}
-					<option value={pr.id}>
-						{pr.title} ({formatDateShort(pr.date)})
-					</option>
-				{/each}
-			</select>
+		<!-- Tabs -->
+		<div class="tabs" role="tablist">
+			<button
+				class="tab"
+				class:active={activeTab === 'national'}
+				on:click={() => switchTab('national')}
+				role="tab"
+				aria-selected={activeTab === 'national'}
+			>
+				Nationaux
+			</button>
+			<button
+				class="tab"
+				class:active={activeTab === 'local'}
+				on:click={() => switchTab('local')}
+				role="tab"
+				aria-selected={activeTab === 'local'}
+			>
+				Par département
+			</button>
 		</div>
 
-		<div class="press-layout">
-			<!-- Desktop: sidebar navigation -->
-			<nav class="press-sidebar">
-				<h3 class="sidebar-title">Accès rapide</h3>
-				<ul class="sidebar-list">
+		<!-- ===== NATIONAL TAB ===== -->
+		{#if activeTab === 'national'}
+			<!-- Mobile: dropdown navigation -->
+			<div class="mobile-nav">
+				<select class="mobile-select" on:change={onMobileSelect}>
+					<option value="" disabled selected>Accès rapide...</option>
 					{#each paginatedReleases as pr (pr.id)}
-						<li>
-							<button class="sidebar-item" on:click={() => scrollToCard(pr.id)}>
-								<span class="sidebar-item-title">{pr.title}</span>
-								{#if pr.date}
-									<time class="sidebar-item-date" datetime={pr.date}
-										>{formatDateShort(pr.date)}</time
-									>
-								{/if}
-							</button>
-						</li>
+						<option value={pr.id}>
+							{pr.title} ({formatDateShort(pr.date)})
+						</option>
 					{/each}
-				</ul>
-				{#if totalPages > 1}
-					<div class="sidebar-page-info">
-						Page {currentPage} / {totalPages}
-					</div>
-				{/if}
-			</nav>
+				</select>
+			</div>
 
-			<!-- Press releases list -->
-			<div class="press-releases-list">
-				{#each paginatedReleases as pr (pr.id)}
-					<a
-						id="pr-{pr.id}"
-						class="press-release-card"
-						href={pr.url}
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						<div class="pr-content">
-							<h3>{pr.title}</h3>
-							{#if pr.description}
-								<p class="pr-description">{pr.description}</p>
-							{/if}
+			<div class="press-layout">
+				<!-- Desktop: sidebar navigation -->
+				<nav class="press-sidebar">
+					<h3 class="sidebar-title">Accès rapide</h3>
+					<ul class="sidebar-list">
+						{#each paginatedReleases as pr (pr.id)}
+							<li>
+								<button class="sidebar-item" on:click={() => scrollToCard(pr.id)}>
+									<span class="sidebar-item-title">{pr.title}</span>
+									{#if pr.date}
+										<time class="sidebar-item-date" datetime={pr.date}
+											>{formatDateShort(pr.date)}</time
+										>
+									{/if}
+								</button>
+							</li>
+						{/each}
+					</ul>
+					{#if totalPages > 1}
+						<div class="sidebar-page-info">
+							Page {currentPage} / {totalPages}
 						</div>
-						<div class="pr-footer">
-							{#if pr.date}
-								<time datetime={pr.date}>{formatDate(pr.date)}</time>
-							{/if}
-							<span class="read-link">
-								Lire le communiqué
-								<span class="link-icon"><MoveUpRight size="1.25rem" /></span>
-							</span>
-						</div>
-					</a>
-				{/each}
+					{/if}
+				</nav>
 
-				<!-- Pagination -->
-				{#if totalPages > 1}
-					<nav class="pagination" aria-label="Pagination des communiqués">
-						<button
-							class="pagination-btn"
-							disabled={currentPage === 1}
-							on:click={() => goToPage(currentPage - 1)}
-							aria-label="Page précédente"
+				<!-- Press releases list -->
+				<div class="press-releases-list">
+					{#each paginatedReleases as pr (pr.id)}
+						<a
+							id="pr-{pr.id}"
+							class="press-release-card"
+							href={pr.url}
+							target="_blank"
+							rel="noopener noreferrer"
 						>
-							<ChevronLeft size="1.25rem" />
-						</button>
+							<div class="pr-content">
+								<h3>{pr.title}</h3>
+								{#if pr.description}
+									<p class="pr-description">{pr.description}</p>
+								{/if}
+							</div>
+							<div class="pr-footer">
+								{#if pr.date}
+									<time datetime={pr.date}>{formatDate(pr.date)}</time>
+								{/if}
+								<span class="read-link">
+									Lire le communiqué
+									<span class="link-icon"><MoveUpRight size="1.25rem" /></span>
+								</span>
+							</div>
+						</a>
+					{/each}
 
-						{#each Array(totalPages) as _, i}
+					{#if totalPages > 1}
+						<nav class="pagination" aria-label="Pagination des communiqués nationaux">
 							<button
-								class="pagination-num"
-								class:active={currentPage === i + 1}
-								on:click={() => goToPage(i + 1)}
-								aria-label="Page {i + 1}"
-								aria-current={currentPage === i + 1 ? 'page' : undefined}
+								class="pagination-btn"
+								disabled={currentPage === 1}
+								on:click={() => goToPage(currentPage - 1)}
+								aria-label="Page précédente"
 							>
-								{i + 1}
+								<ChevronLeft size="1.25rem" />
 							</button>
+
+							{#each Array(totalPages) as _, i}
+								<button
+									class="pagination-num"
+									class:active={currentPage === i + 1}
+									on:click={() => goToPage(i + 1)}
+									aria-label="Page {i + 1}"
+									aria-current={currentPage === i + 1 ? 'page' : undefined}
+								>
+									{i + 1}
+								</button>
+							{/each}
+
+							<button
+								class="pagination-btn"
+								disabled={currentPage === totalPages}
+								on:click={() => goToPage(currentPage + 1)}
+								aria-label="Page suivante"
+							>
+								<ChevronRight size="1.25rem" />
+							</button>
+						</nav>
+					{/if}
+				</div>
+			</div>
+		{/if}
+
+		<!-- ===== LOCAL (DEPARTMENTAL) TAB ===== -->
+		{#if activeTab === 'local'}
+			<!-- Department filter -->
+			<div class="department-filter">
+				<label for="dept-select" class="dept-label">Filtrer par département :</label>
+				<select
+					id="dept-select"
+					class="dept-select"
+					bind:value={selectedDepartment}
+					on:change={onDepartmentChange}
+				>
+					<option value="">Tous les départements</option>
+					{#each departments as dept}
+						<option value={dept}>{dept}</option>
+					{/each}
+				</select>
+			</div>
+
+			{#if filteredLocalReleases.length === 0}
+				<div class="empty-state">
+					<p>
+						{#if selectedDepartment}
+							Aucun communiqué pour le département {selectedDepartment}.
+						{:else}
+							Aucun communiqué départemental disponible pour le moment.
+						{/if}
+					</p>
+				</div>
+			{:else}
+				<!-- Mobile: dropdown navigation -->
+				<div class="mobile-nav">
+					<select class="mobile-select" on:change={onMobileSelect}>
+						<option value="" disabled selected>Accès rapide...</option>
+						{#each paginatedLocalReleases as pr (pr.id)}
+							<option value={pr.id}>
+								[{pr.department}] {pr.title} ({formatDateShort(pr.date)})
+							</option>
+						{/each}
+					</select>
+				</div>
+
+				<div class="press-layout">
+					<!-- Desktop: sidebar navigation -->
+					<nav class="press-sidebar">
+						<h3 class="sidebar-title">Accès rapide</h3>
+						<ul class="sidebar-list">
+							{#each paginatedLocalReleases as pr (pr.id)}
+								<li>
+									<button class="sidebar-item" on:click={() => scrollToCard(pr.id)}>
+										<span class="sidebar-item-dept">{pr.department}</span>
+										<span class="sidebar-item-title">{pr.title}</span>
+										{#if pr.date}
+											<time class="sidebar-item-date" datetime={pr.date}
+												>{formatDateShort(pr.date)}</time
+											>
+										{/if}
+									</button>
+								</li>
+							{/each}
+						</ul>
+						{#if localTotalPages > 1}
+							<div class="sidebar-page-info">
+								Page {localCurrentPage} / {localTotalPages}
+							</div>
+						{/if}
+					</nav>
+
+					<!-- Local press releases list -->
+					<div class="press-releases-list">
+						{#each paginatedLocalReleases as pr (pr.id)}
+							<a
+								id="pr-{pr.id}"
+								class="press-release-card"
+								href={pr.url}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								<div class="pr-content">
+									<div class="pr-dept-badge">{pr.department}</div>
+									<h3>{pr.title}</h3>
+									{#if pr.description}
+										<p class="pr-description">{pr.description}</p>
+									{/if}
+								</div>
+								<div class="pr-footer">
+									{#if pr.date}
+										<time datetime={pr.date}>{formatDate(pr.date)}</time>
+									{/if}
+									<span class="read-link">
+										Lire le communiqué
+										<span class="link-icon"><MoveUpRight size="1.25rem" /></span>
+									</span>
+								</div>
+							</a>
 						{/each}
 
-						<button
-							class="pagination-btn"
-							disabled={currentPage === totalPages}
-							on:click={() => goToPage(currentPage + 1)}
-							aria-label="Page suivante"
-						>
-							<ChevronRight size="1.25rem" />
-						</button>
-					</nav>
-				{/if}
-			</div>
-		</div>
+						{#if localTotalPages > 1}
+							<nav class="pagination" aria-label="Pagination des communiqués départementaux">
+								<button
+									class="pagination-btn"
+									disabled={localCurrentPage === 1}
+									on:click={() => goToLocalPage(localCurrentPage - 1)}
+									aria-label="Page précédente"
+								>
+									<ChevronLeft size="1.25rem" />
+								</button>
+
+								{#each Array(localTotalPages) as _, i}
+									<button
+										class="pagination-num"
+										class:active={localCurrentPage === i + 1}
+										on:click={() => goToLocalPage(i + 1)}
+										aria-label="Page {i + 1}"
+										aria-current={localCurrentPage === i + 1 ? 'page' : undefined}
+									>
+										{i + 1}
+									</button>
+								{/each}
+
+								<button
+									class="pagination-btn"
+									disabled={localCurrentPage === localTotalPages}
+									on:click={() => goToLocalPage(localCurrentPage + 1)}
+									aria-label="Page suivante"
+								>
+									<ChevronRight size="1.25rem" />
+								</button>
+							</nav>
+						{/if}
+					</div>
+				</div>
+			{/if}
+		{/if}
 	</section>
 
 	<section class="about-section">
@@ -281,10 +493,23 @@
 	}
 
 	.contact-info {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
 		margin-bottom: 1rem;
 	}
 
-	.contact-info p {
+	.contact-person {
+		padding-bottom: 1rem;
+		border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+	}
+
+	.contact-person:last-child {
+		padding-bottom: 0;
+		border-bottom: none;
+	}
+
+	.contact-person p {
 		margin: 0.25rem 0;
 	}
 
@@ -297,7 +522,7 @@
 	.contact-role {
 		color: var(--text-secondary);
 		font-size: 0.9rem;
-		margin-bottom: 0.75rem;
+		margin-bottom: 0.5rem;
 	}
 
 	.contact-info a {
@@ -320,8 +545,116 @@
 	/* Press releases section */
 	.press-releases-section h2 {
 		margin-top: 0;
-		margin-bottom: 2rem;
+		margin-bottom: 1.5rem;
 		font-size: 1.4rem;
+	}
+
+	/* Tabs */
+	.tabs {
+		display: flex;
+		gap: 0;
+		margin-bottom: 1.5rem;
+		border-bottom: 2px solid var(--border);
+	}
+
+	.tab {
+		padding: 0.75rem 1.5rem;
+		border: none;
+		background: transparent;
+		font-size: 0.95rem;
+		font-weight: 600;
+		color: var(--text-secondary);
+		cursor: pointer;
+		position: relative;
+		transition:
+			color 0.15s ease,
+			background-color 0.15s ease;
+		border-radius: 0.375rem 0.375rem 0 0;
+	}
+
+	.tab:hover {
+		color: var(--text);
+		background-color: rgba(0, 0, 0, 0.03);
+	}
+
+	.tab.active {
+		color: var(--brand);
+	}
+
+	.tab.active::after {
+		content: '';
+		position: absolute;
+		bottom: -2px;
+		left: 0;
+		right: 0;
+		height: 2px;
+		background-color: var(--brand);
+	}
+
+	/* Department filter */
+	.department-filter {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+		margin-bottom: 1.5rem;
+		flex-wrap: wrap;
+	}
+
+	.dept-label {
+		font-size: 0.9rem;
+		font-weight: 600;
+		color: var(--text);
+		white-space: nowrap;
+	}
+
+	.dept-select {
+		padding: 0.5rem 2.25rem 0.5rem 0.75rem;
+		font-size: 0.9rem;
+		border: 1px solid var(--border);
+		border-radius: 0.375rem;
+		background-color: var(--white);
+		color: var(--text);
+		appearance: none;
+		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23676e7a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+		background-repeat: no-repeat;
+		background-position: right 0.5rem center;
+		cursor: pointer;
+		min-width: 14rem;
+	}
+
+	.dept-select:focus {
+		outline: 2px solid var(--brand);
+		outline-offset: 2px;
+	}
+
+	/* Empty state */
+	.empty-state {
+		text-align: center;
+		padding: 3rem 1rem;
+		color: var(--text-secondary);
+		font-size: 0.95rem;
+	}
+
+	/* Department badge on cards */
+	.pr-dept-badge {
+		display: inline-block;
+		padding: 0.2rem 0.5rem;
+		margin-bottom: 0.5rem;
+		font-size: 0.75rem;
+		font-weight: 700;
+		color: var(--brand);
+		background-color: rgba(var(--brand-rgb, 0, 0, 0), 0.08);
+		border: 1px solid var(--brand);
+		border-radius: 0.25rem;
+	}
+
+	/* Sidebar department label */
+	.sidebar-item-dept {
+		font-size: 0.7rem;
+		font-weight: 700;
+		color: var(--brand);
+		text-transform: uppercase;
+		letter-spacing: 0.03em;
 	}
 
 	/* Mobile dropdown nav - hidden on desktop */
@@ -634,6 +967,31 @@
 
 		.press-sidebar {
 			display: none;
+		}
+
+		.tabs {
+			gap: 0;
+		}
+
+		.tab {
+			flex: 1;
+			padding: 0.625rem 0.5rem;
+			font-size: 0.875rem;
+			text-align: center;
+		}
+
+		.department-filter {
+			flex-direction: column;
+			align-items: stretch;
+		}
+
+		.dept-select {
+			min-width: 0;
+			width: 100%;
+		}
+
+		.contact-info {
+			gap: 0.75rem;
 		}
 	}
 

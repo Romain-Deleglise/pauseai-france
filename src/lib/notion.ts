@@ -75,6 +75,17 @@ export interface PressRelease {
 	visible: boolean
 }
 
+export interface LocalPressRelease {
+	id: string
+	title: string
+	date: string
+	url: string
+	description: string
+	department: string
+	order: number
+	visible: boolean
+}
+
 // Helper to extract text from Notion rich_text or title
 function getText(property: NotionProperty | undefined): string {
 	if (!property) return ''
@@ -170,6 +181,22 @@ function isValidPressRelease(pr: PressRelease): boolean {
 	}
 	if (!pr.url) {
 		console.warn(`Invalid press release: missing URL for "${pr.title}"`)
+		return false
+	}
+	return true
+}
+
+function isValidLocalPressRelease(pr: LocalPressRelease): boolean {
+	if (!pr.title) {
+		console.warn(`Invalid local press release: missing title`)
+		return false
+	}
+	if (!pr.url) {
+		console.warn(`Invalid local press release: missing URL for "${pr.title}"`)
+		return false
+	}
+	if (!pr.department) {
+		console.warn(`Invalid local press release: missing department for "${pr.title}"`)
 		return false
 	}
 	return true
@@ -353,4 +380,33 @@ export async function getPressReleases(): Promise<PressRelease[]> {
 	)
 
 	return pressReleases.filter((pr): pr is PressRelease => pr !== null)
+}
+
+export async function getLocalPressReleases(): Promise<LocalPressRelease[]> {
+	const databaseId = env.NOTION_LOCAL_PRESS_DATABASE_ID
+	if (!databaseId) return []
+
+	const pressReleases = await queryDatabase<LocalPressRelease | null>(
+		databaseId,
+		(page) => {
+			const visible = getCheckbox(page.properties['Visible'])
+			if (!visible) return null
+
+			const pr: LocalPressRelease = {
+				id: page.id,
+				title: getText(page.properties['Titre']),
+				date: getDate(page.properties['Date']),
+				url: getUrl(page.properties['URL']),
+				description: getText(page.properties['Description']),
+				department: getText(page.properties['Département']),
+				order: getNumber(page.properties['Ordre']),
+				visible
+			}
+
+			return isValidLocalPressRelease(pr) ? pr : null
+		},
+		{ sortBy: 'Ordre' }
+	)
+
+	return pressReleases.filter((pr): pr is LocalPressRelease => pr !== null)
 }
