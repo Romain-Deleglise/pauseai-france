@@ -22,7 +22,7 @@
 	<nav class="breadcrumb">
 		<a href="/publications" class="back-link">
 			<ArrowLeft size="1rem" />
-			Toutes les newsletters
+			Toutes les publications
 		</a>
 	</nav>
 
@@ -58,7 +58,7 @@
 	<footer class="newsletter-footer">
 		<a href="/publications" class="back-link">
 			<ArrowLeft size="1rem" />
-			Retour aux newsletters
+			Retour aux publications
 		</a>
 	</footer>
 </div>
@@ -67,7 +67,7 @@
 	.page {
 		max-width: 52rem;
 		margin: 0 auto;
-		padding: 2rem 1rem 4rem;
+		padding: 1.5rem 0.5rem 3rem;
 	}
 
 	.breadcrumb {
@@ -201,6 +201,21 @@
 		opacity: 0.8;
 	}
 
+	/* Style blockquotes / citations */
+	.newsletter-content :global(blockquote) {
+		border-left: 3px solid var(--brand, #ff9416);
+		margin: 1em 0;
+		padding: 0.5em 1em;
+		color: var(--text-secondary, #676e7a);
+		font-style: italic;
+	}
+
+	/* Center images that are alone in a cell/paragraph */
+	.newsletter-content :global(td > img:only-child),
+	.newsletter-content :global(p > img:only-child) {
+		margin: 0.5em auto;
+	}
+
 	/* Remove any remaining inline width constraints */
 	.newsletter-content :global(div),
 	.newsletter-content :global(span) {
@@ -223,6 +238,12 @@
 		margin-top: 3rem;
 		padding-top: 2rem;
 		border-top: 2px solid var(--border, #e5e7eb);
+	}
+
+	@media (min-width: 480px) {
+		.page {
+			padding: 2rem 1rem 4rem;
+		}
 	}
 
 	@media (min-width: 640px) {
