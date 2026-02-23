@@ -196,17 +196,20 @@
 	</div>
 
 	<div class="search-bar">
+		<label for="newsletter-search" class="search-label">Rechercher :</label>
 		<div class="search-input-wrapper">
-			<Search size="1.25rem" />
+			<span class="search-icon"><Search size="1rem" /></span>
 			<input
+				id="newsletter-search"
 				type="text"
 				bind:value={searchQuery}
-				placeholder="Rechercher une newsletter..."
+				placeholder="Titre, mots-clés, date..."
 				aria-label="Rechercher une newsletter"
+				autocomplete="off"
 			/>
 			{#if searchQuery}
 				<button class="clear-btn" on:click={clearSearch} aria-label="Effacer la recherche">
-					<X size="1.125rem" />
+					<X size="1rem" />
 				</button>
 			{/if}
 		</div>
@@ -388,60 +391,84 @@
 		color: #991b1b;
 	}
 
-	/* Search bar */
+	/* Search bar — matches press page combobox style */
 	.search-bar {
-		max-width: 36rem;
-		margin: 0 auto 2rem;
-	}
-
-	.search-input-wrapper {
 		display: flex;
 		align-items: center;
 		gap: 0.75rem;
-		background: white;
-		border: 2px solid var(--border, #e5e7eb);
-		border-radius: 0.75rem;
-		padding: 0.75rem 1rem;
+		max-width: 36rem;
+		margin: 0 auto 2rem;
+		flex-wrap: wrap;
+	}
+
+	.search-label {
+		font-size: 0.9rem;
+		font-weight: 600;
+		color: var(--text, black);
+		white-space: nowrap;
+	}
+
+	.search-input-wrapper {
+		flex: 1;
+		display: flex;
+		align-items: center;
+		border: 1px solid var(--border, #e5e7eb);
+		border-radius: 0.5rem;
+		background-color: white;
 		transition:
-			border-color 0.2s ease,
-			box-shadow 0.2s ease;
-		color: var(--text-secondary, #676e7a);
+			border-color 0.15s ease,
+			box-shadow 0.15s ease;
 	}
 
 	.search-input-wrapper:focus-within {
 		border-color: var(--brand, #ff9416);
-		box-shadow: 0 0 0 3px rgba(255, 148, 22, 0.15);
+		box-shadow: 0 0 0 3px rgba(255, 148, 22, 0.1);
+	}
+
+	.search-icon {
+		display: flex;
+		align-items: center;
+		padding-left: 0.75rem;
+		color: var(--text-secondary, #676e7a);
+		flex-shrink: 0;
 	}
 
 	.search-input-wrapper input {
 		flex: 1;
+		padding: 0.5rem 0.5rem;
+		font-size: 0.9rem;
+		font-family: var(--font-body, inherit);
 		border: none;
-		outline: none;
 		background: transparent;
-		font-family: var(--font-body);
-		font-size: 1rem;
 		color: var(--text, black);
+		outline: none;
+		min-width: 0;
 	}
 
 	.search-input-wrapper input::placeholder {
 		color: var(--text-secondary, #676e7a);
+		opacity: 0.7;
 	}
 
 	.clear-btn {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		background: none;
+		padding: 0.375rem;
+		margin-right: 0.375rem;
 		border: none;
-		cursor: pointer;
+		background: transparent;
 		color: var(--text-secondary, #676e7a);
-		padding: 0.25rem;
-		border-radius: 4px;
-		transition: color 0.2s ease;
+		cursor: pointer;
+		border-radius: 0.25rem;
+		transition:
+			color 0.15s ease,
+			background-color 0.15s ease;
 	}
 
 	.clear-btn:hover {
 		color: var(--text, black);
+		background-color: rgba(0, 0, 0, 0.06);
 	}
 
 	/* Results count */
