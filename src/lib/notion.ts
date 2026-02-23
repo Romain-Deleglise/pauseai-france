@@ -450,9 +450,9 @@ function cleanContent(html: string): string {
 	// Remove unsubscribe/opt-out links section (common in CiviCRM mailings)
 	cleaned = cleaned.replace(/<[^>]*class="[^"]*opt-out[^"]*"[^>]*>[\s\S]*?<\/[^>]+>/gi, '')
 
-	// Remove "View in browser" links
+	// Remove "View in browser" links (target only anchor tags with short text)
 	cleaned = cleaned.replace(
-		/<[^>]*>[\s\S]*?(?:voir|view)[\s\S]*?(?:navigateur|browser)[\s\S]*?<\/[^>]+>/gi,
+		/<a[^>]*>[^<]{0,100}(?:voir[^<]{0,30}navigateur|view[^<]{0,30}browser)[^<]{0,50}<\/a>/gi,
 		''
 	)
 
