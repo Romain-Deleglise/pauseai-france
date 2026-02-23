@@ -56,7 +56,7 @@
 		}
 	]
 
-	$: displayArticles = articles.length > 0 ? articles : fallbackArticles
+	$: displayArticles = (articles.length > 0 ? articles : fallbackArticles).slice(0, 4)
 </script>
 
 <section aria-labelledby={label_id}>

@@ -28,7 +28,7 @@
 		}
 	]
 
-	$: displayVideos = videos.length > 0 ? videos : fallbackVideos
+	$: displayVideos = (videos.length > 0 ? videos : fallbackVideos).slice(0, 4)
 </script>
 
 <section aria-labelledby={label_id}>
