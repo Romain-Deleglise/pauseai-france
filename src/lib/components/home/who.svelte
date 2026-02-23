@@ -155,7 +155,6 @@
 		<FAQ />
 		<div class="contact-cta">
 			<Button href="mailto:contact@pauseia.fr">Nous contacter</Button>
-			<Button alt href="/rejoindre">Rejoindre l'association</Button>
 		</div>
 	</div>
 
