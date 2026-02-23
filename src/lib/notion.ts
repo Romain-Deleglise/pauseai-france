@@ -480,41 +480,6 @@ function cleanContent(html: string): string {
 	// Remove style tags
 	cleaned = cleaned.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
 
-	// Remove CiviCRM navigation/chrome elements
-	cleaned = cleaned.replace(/<div[^>]*id="[^"]*crm-navigation[^"]*"[^>]*>[\s\S]*?<\/div>/gi, '')
-	cleaned = cleaned.replace(/<div[^>]*class="[^"]*crm-breadcrumb[^"]*"[^>]*>[\s\S]*?<\/div>/gi, '')
-
-	// Remove unsubscribe/opt-out links section (common in CiviCRM mailings)
-	cleaned = cleaned.replace(/<[^>]*class="[^"]*opt-out[^"]*"[^>]*>[\s\S]*?<\/[^>]+>/gi, '')
-
-	// Remove "View in browser" / "Lire dans le navigateur" links (anchor tags with short text)
-	cleaned = cleaned.replace(
-		/<a[^>]*>[^<]{0,100}(?:voir[^<]{0,30}navigateur|view[^<]{0,30}browser|lire[^<]{0,30}navigateur)[^<]{0,50}<\/a>/gi,
-		''
-	)
-
-	// Remove unsubscribe / "Se désinscrire" links
-	cleaned = cleaned.replace(
-		/<a[^>]*>[^<]{0,100}(?:d[eé]sinscri|unsubscribe|opt.?out)[^<]{0,50}<\/a>/gi,
-		''
-	)
-
-	// Remove elements containing unsubscribe/browser text even if wrapped in other tags
-	// (e.g., <p><strong><a>Se désinscrire</a></strong></p>)
-	cleaned = cleaned.replace(
-		/<(?:p|div|span|td|tr|strong|em|b|i)[^>]*>[\s\n]*(?:<[^>]*>[\s\n]*)*[^<]{0,20}(?:d[eé]sinscri|unsubscribe|opt.?out|lire[^<]{0,30}navigateur|voir[^<]{0,30}navigateur|view[^<]{0,30}browser)[^<]{0,50}(?:[\s\n]*<\/[^>]*>)*[\s\n]*<\/(?:p|div|span|td|tr|strong|em|b|i)>/gi,
-		''
-	)
-
-	// Remove CiviCRM form elements (e.g., subscription forms)
-	cleaned = cleaned.replace(/<form[^>]*>[\s\S]*?<\/form>/gi, '')
-
-	// Remove hidden elements
-	cleaned = cleaned.replace(
-		/<[^>]*style="[^"]*display\s*:\s*none[^"]*"[^>]*>[\s\S]*?<\/[^>]+>/gi,
-		''
-	)
-
 	// Remove HTML comments
 	cleaned = cleaned.replace(/<!--[\s\S]*?-->/g, '')
 
@@ -523,6 +488,72 @@ function cleanContent(html: string): string {
 
 	// Remove link, meta tags
 	cleaned = cleaned.replace(/<(?:link|meta)[^>]*\/?>/gi, '')
+
+	// Remove CiviCRM navigation/chrome elements
+	cleaned = cleaned.replace(/<div[^>]*id="[^"]*crm-navigation[^"]*"[^>]*>[\s\S]*?<\/div>/gi, '')
+	cleaned = cleaned.replace(/<div[^>]*class="[^"]*crm-breadcrumb[^"]*"[^>]*>[\s\S]*?<\/div>/gi, '')
+
+	// Remove unsubscribe/opt-out links section
+	cleaned = cleaned.replace(/<[^>]*class="[^"]*opt-out[^"]*"[^>]*>[\s\S]*?<\/[^>]+>/gi, '')
+
+	// Remove CiviCRM form elements
+	cleaned = cleaned.replace(/<form[^>]*>[\s\S]*?<\/form>/gi, '')
+
+	// Remove hidden elements
+	cleaned = cleaned.replace(
+		/<[^>]*style="[^"]*display\s*:\s*none[^"]*"[^>]*>[\s\S]*?<\/[^>]+>/gi,
+		''
+	)
+
+	// --- Remove CiviCRM mailing footer ---
+	// Cut everything from the org signature/footer block onwards.
+	// Typical patterns: "Gérer mes préférences", org address, "Se désinscrire"
+	// Look for the footer starting with the org name + address pattern
+	const footerPatterns = [
+		// "Gérer mes préférences" and everything after
+		/[\s\S]*?G[ée]rer\s+mes\s+pr[ée]f[ée]rences[\s\S]*/i,
+		// Organization address block and everything after
+		/[\s\S]*?32\s+boulevard\s+de\s+Strasbourg[\s\S]*/i,
+		// "Se désinscrire" link and everything after
+		/[\s\S]*?[Ss]e\s+d[ée]sinscrire[\s\S]*/i
+	]
+
+	for (const pattern of footerPatterns) {
+		const match = cleaned.match(pattern)
+		if (match) {
+			// Find the position of the footer text and cut from a reasonable point before it
+			const footerText =
+				match[0].match(
+					/G[ée]rer\s+mes\s+pr[ée]f[ée]rences|32\s+boulevard\s+de\s+Strasbourg|[Ss]e\s+d[ée]sinscrire/i
+				)?.[0] || ''
+			const idx = cleaned.indexOf(footerText)
+			if (idx > 0) {
+				// Walk back to find the nearest table/div opening tag to cut cleanly
+				const before = cleaned.substring(0, idx)
+				// Find the last "Soutenir Pause IA" or similar section header before footer
+				const soutenirIdx = before.lastIndexOf('Soutenir Pause IA')
+				if (soutenirIdx > 0) {
+					cleaned = cleaned.substring(0, soutenirIdx)
+				} else {
+					// Just cut at the footer text position
+					cleaned = before
+				}
+				break
+			}
+		}
+	}
+
+	// Remove "View in browser" / "Lire dans le navigateur" text and links
+	cleaned = cleaned.replace(
+		/<a[^>]*>[^<]{0,100}(?:voir[^<]{0,30}navigateur|view[^<]{0,30}browser|lire[^<]{0,30}navigateur)[^<]{0,50}<\/a>/gi,
+		''
+	)
+
+	// Remove unsubscribe / "Se désinscrire" links (in case any remain)
+	cleaned = cleaned.replace(
+		/<a[^>]*>[^<]{0,100}(?:d[eé]sinscri|unsubscribe|opt.?out)[^<]{0,50}<\/a>/gi,
+		''
+	)
 
 	// Fix relative URLs to CiviCRM
 	cleaned = cleaned.replace(
@@ -533,8 +564,43 @@ function cleanContent(html: string): string {
 		}
 	)
 
-	// Clean up excessive whitespace/empty elements
-	cleaned = cleaned.replace(/(<(?:p|div|span|td|tr)[^>]*>)\s*(<\/(?:p|div|span|td|tr)>)/gi, '')
+	// --- Clean up spacing ---
+	// Strip inline height attributes from table elements (spacer rows)
+	cleaned = cleaned.replace(/(<(?:tr|td|th|table|div)[^>]*)\s+height="[^"]*"/gi, '$1')
+
+	// Strip inline style padding/margin/height that create excessive spacing
+	cleaned = cleaned.replace(/style="([^"]*)"/gi, (_match, styles: string) => {
+		const filtered = styles
+			.split(';')
+			.filter((s: string) => {
+				const prop = s.trim().toLowerCase()
+				// Remove excessive spacing properties
+				if (/^(padding|margin)(-top|-bottom)?\s*:/i.test(prop)) {
+					// Keep small values (less than 15px), remove large ones
+					const valueMatch = prop.match(/:\s*(\d+)/)
+					if (valueMatch && parseInt(valueMatch[1]) > 15) return false
+				}
+				if (/^(height|min-height|line-height)\s*:/i.test(prop)) {
+					const valueMatch = prop.match(/:\s*(\d+)/)
+					if (valueMatch && parseInt(valueMatch[1]) > 30) return false
+				}
+				return true
+			})
+			.join(';')
+		return filtered.trim() ? `style="${filtered}"` : ''
+	})
+
+	// Remove empty spacer elements (td/div/p with only &nbsp; or whitespace)
+	cleaned = cleaned.replace(/<(td|div|p|span)[^>]*>(\s|&nbsp;|&#160;|\u00a0)*<\/\1>/gi, '')
+
+	// Remove empty table rows
+	cleaned = cleaned.replace(/<tr[^>]*>\s*<\/tr>/gi, '')
+
+	// Remove <br> chains (more than 1 consecutive)
+	cleaned = cleaned.replace(/(<br\s*\/?\s*>\s*){2,}/gi, '<br>')
+
+	// Collapse multiple &nbsp;
+	cleaned = cleaned.replace(/(&nbsp;\s*){3,}/gi, ' ')
 
 	return cleaned.trim()
 }
