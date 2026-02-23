@@ -47,7 +47,6 @@
 				<NavLink href="/propositions">Propositions</NavLink>
 				<NavLink href="/agir">Agir</NavLink>
 				<NavLink href="/campagnes">Campagnes</NavLink>
-				<NavLink href="/publications">Newsletters</NavLink>
 				<NavLink href="/groupes-locaux">Groupes locaux</NavLink>
 				<NavLink href="/dons">Donner</NavLink>
 				<Button href="/rejoindre" alt={onHomepage}>Rejoindre</Button>
@@ -105,7 +104,6 @@
 				<a href="/agir" on:click={() => (open = !open)}><h2>Agir</h2></a>
 				<a href="/campagnes" on:click={() => (open = !open)}><h2>Campagnes</h2></a>
 				<a href="/groupes-locaux" on:click={() => (open = !open)}><h2>Groupes locaux</h2></a>
-				<a href="/publications" on:click={() => (open = !open)}><h2>Newsletters</h2></a>
 				<a href="/dons" on:click={() => (open = !open)}><h2>Dons</h2></a>
 				<a href="/rejoindre" on:click={() => (open = !open)}><h2>Nous rejoindre</h2></a>
 			</div>
