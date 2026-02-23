@@ -122,6 +122,9 @@
 		left: 100%;
 		transition: left 0.3s ease-in-out;
 		z-index: 1000;
+		overflow-y: auto;
+		display: flex;
+		flex-direction: column;
 	}
 
 	.sidebar-links {
