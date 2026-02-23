@@ -14,6 +14,7 @@
 		{
 			id: '1',
 			title: 'Newsletter Pause IA - Janvier 2025',
+			slug: 'newsletter-pause-ia---janvier-2025',
 			description:
 				"Pourquoi l'IA est notre priorité absolue ; Action au sommet pour l'action sur l'IA ; Nouvelles du front ; Les actus du mois.",
 			url: 'https://civicrm.pauseia.fr/civicrm/mailing/view?id=88&reset=1',
@@ -25,6 +26,7 @@
 		{
 			id: '2',
 			title: 'Newsletter Pause IA - Décembre 2024',
+			slug: 'newsletter-pause-ia---decembre-2024',
 			description:
 				'Retour sur le colloque au Sénat ; Notre roadmap pour 2025 ; Nouvelles du front ; Les actus du mois.',
 			url: 'https://civicrm.pauseia.fr/civicrm/mailing/view?id=85&reset=1',
@@ -36,6 +38,7 @@
 		{
 			id: '3',
 			title: 'Newsletter Pause IA - Novembre 2024',
+			slug: 'newsletter-pause-ia---novembre-2024',
 			description:
 				'Colloque au Sénat - programme et inscription ; Nouvelles du front ; Les actus du mois.',
 			url: 'https://civicrm.pauseia.fr/civicrm/mailing/view?id=82&reset=1',
@@ -47,6 +50,7 @@
 		{
 			id: '4',
 			title: 'Newsletter Pause IA - Octobre 2024',
+			slug: 'newsletter-pause-ia---octobre-2024',
 			description:
 				'Retour sur nos actions de rentrée ; Annonce du colloque au Sénat ; Nouvelles du front ; Les actus du mois.',
 			url: 'https://civicrm.pauseia.fr/civicrm/mailing/view?id=78&reset=1',
@@ -222,6 +226,7 @@
 					title={newsletter.title}
 					description={newsletter.description}
 					url={newsletter.url}
+					slug={newsletter.slug}
 					date={newsletter.date || ''}
 					image={newsletter.image || ''}
 				/>

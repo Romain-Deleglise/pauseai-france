@@ -4,8 +4,12 @@
 	export let title: string
 	export let description: string = ''
 	export let url: string
+	export let slug: string = ''
 	export let date: string = ''
 	export let image: string = ''
+
+	$: href = slug ? `/publications/${slug}` : url
+	$: isExternal = !slug
 
 	function formatDate(dateStr: string): string {
 		if (!dateStr) return ''
@@ -18,7 +22,12 @@
 	}
 </script>
 
-<a class="card-link" href={url} target="_blank" rel="noopener noreferrer">
+<a
+	class="card-link"
+	{href}
+	target={isExternal ? '_blank' : undefined}
+	rel={isExternal ? 'noopener noreferrer' : undefined}
+>
 	<article class="card" class:has-image={!!image}>
 		{#if image}
 			<div class="card-image">

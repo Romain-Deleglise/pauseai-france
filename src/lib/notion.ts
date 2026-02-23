@@ -47,6 +47,7 @@ export interface Video {
 export interface Article {
 	id: string
 	title: string
+	slug: string
 	description: string
 	url: string
 	type: 'Article' | 'Newsletter'
@@ -54,6 +55,17 @@ export interface Article {
 	visible: boolean
 	image?: string
 	date?: string
+}
+
+function generateSlug(title: string): string {
+	return title
+		.toLowerCase()
+		.normalize('NFD')
+		.replace(/[\u0300-\u036f]/g, '') // Remove diacritics
+		.replace(/[^a-z0-9\s-]/g, '') // Remove special chars
+		.replace(/\s+/g, '-') // Spaces to hyphens
+		.replace(/-+/g, '-') // Collapse multiple hyphens
+		.replace(/^-|-$/g, '') // Trim hyphens
 }
 
 export interface Report {
@@ -329,9 +341,11 @@ export async function getArticles(): Promise<Article[]> {
 
 			const typeValue = getSelect(page.properties['Type'])
 
+			const title = getText(page.properties['Titre'])
 			const article: Article = {
 				id: page.id,
-				title: getText(page.properties['Titre']),
+				title,
+				slug: generateSlug(title),
 				description: getText(page.properties['Description']),
 				url: getUrl(page.properties['URL']),
 				type: typeValue === 'Newsletter' ? 'Newsletter' : 'Article',
@@ -353,6 +367,105 @@ export async function getArticles(): Promise<Article[]> {
 export async function getNewsletters(): Promise<Article[]> {
 	const articles = await getArticles()
 	return articles.filter((a) => a.type === 'Newsletter')
+}
+
+export async function getNewsletterBySlug(slug: string): Promise<Article | null> {
+	const newsletters = await getNewsletters()
+	return newsletters.find((n) => n.slug === slug) || null
+}
+
+/**
+ * Fetches newsletter HTML content from a CiviCRM mailing URL and extracts the body.
+ * Returns cleaned HTML string, or null if fetch fails.
+ */
+export async function fetchNewsletterContent(url: string): Promise<string | null> {
+	try {
+		const response = await fetch(url, {
+			headers: {
+				'User-Agent':
+					'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+				Accept: 'text/html,application/xhtml+xml'
+			}
+		})
+
+		if (!response.ok) return null
+
+		const html = await response.text()
+		return extractMailingContent(html)
+	} catch (error) {
+		console.error('Failed to fetch newsletter content:', error)
+		return null
+	}
+}
+
+/**
+ * Extracts the newsletter body from a CiviCRM mailing view HTML page.
+ * Tries multiple strategies to find the content.
+ */
+function extractMailingContent(html: string): string {
+	// Strategy 1: Look for CiviCRM mailing body wrapper
+	// CiviCRM wraps the mailing content in a specific container
+	const bodyPatterns = [
+		// Common CiviCRM mailing view containers
+		/<div[^>]*class="[^"]*crm-mailing-body[^"]*"[^>]*>([\s\S]*?)<\/div>\s*(?:<div[^>]*class="[^"]*crm-mailing-footer|$)/i,
+		// The actual email content is often in a centered table
+		/(<table[^>]*width="[56]\d{2}"[^>]*>[\s\S]*?<\/table>)\s*(?:<\/(?:div|td|body)>)/i
+	]
+
+	for (const pattern of bodyPatterns) {
+		const match = html.match(pattern)
+		if (match && match[1] && match[1].length > 200) {
+			return cleanContent(match[1])
+		}
+	}
+
+	// Strategy 2: Extract full <body> content and clean it
+	const bodyMatch = html.match(/<body[^>]*>([\s\S]*?)<\/body>/i)
+	if (bodyMatch && bodyMatch[1]) {
+		return cleanContent(bodyMatch[1])
+	}
+
+	// Strategy 3: If no body tag, the response might already be the content
+	if (html.length > 200 && !html.includes('<!DOCTYPE')) {
+		return cleanContent(html)
+	}
+
+	return html
+}
+
+/**
+ * Cleans extracted HTML content by removing CiviCRM chrome,
+ * scripts, and fixing relative URLs.
+ */
+function cleanContent(html: string): string {
+	let cleaned = html
+
+	// Remove script tags
+	cleaned = cleaned.replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
+
+	// Remove CiviCRM navigation/chrome elements
+	cleaned = cleaned.replace(/<div[^>]*id="[^"]*crm-navigation[^"]*"[^>]*>[\s\S]*?<\/div>/gi, '')
+	cleaned = cleaned.replace(/<div[^>]*class="[^"]*crm-breadcrumb[^"]*"[^>]*>[\s\S]*?<\/div>/gi, '')
+
+	// Remove unsubscribe/opt-out links section (common in CiviCRM mailings)
+	cleaned = cleaned.replace(/<[^>]*class="[^"]*opt-out[^"]*"[^>]*>[\s\S]*?<\/[^>]+>/gi, '')
+
+	// Remove "View in browser" links
+	cleaned = cleaned.replace(
+		/<[^>]*>[\s\S]*?(?:voir|view)[\s\S]*?(?:navigateur|browser)[\s\S]*?<\/[^>]+>/gi,
+		''
+	)
+
+	// Fix relative URLs to CiviCRM
+	cleaned = cleaned.replace(
+		/(?:src|href)="(?!http|mailto|#|data:)([^"]*)"/gi,
+		(_match, path: string) => {
+			const attr = _match.startsWith('src') ? 'src' : 'href'
+			return `${attr}="https://civicrm.pauseia.fr/${path.replace(/^\//, '')}"`
+		}
+	)
+
+	return cleaned.trim()
 }
 
 export async function getReports(): Promise<Report[]> {
