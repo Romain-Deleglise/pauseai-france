@@ -6,6 +6,12 @@ interface NotionRichText {
 	plain_text: string
 }
 
+interface NotionFile {
+	type: 'file' | 'external'
+	file?: { url: string; expiry_time?: string }
+	external?: { url: string }
+}
+
 interface NotionProperty {
 	type: string
 	title?: NotionRichText[]
@@ -15,6 +21,7 @@ interface NotionProperty {
 	checkbox?: boolean
 	select?: { name: string }
 	date?: { start: string; end?: string | null }
+	files?: NotionFile[]
 }
 
 interface NotionPage {
@@ -138,6 +145,18 @@ function getSelect(property: NotionProperty | undefined): string {
 function getDate(property: NotionProperty | undefined): string {
 	if (!property) return ''
 	return property.date?.start || ''
+}
+
+// Helper to extract file URL from Notion files/attachments
+function getFileUrl(property: NotionProperty | undefined): string {
+	if (!property) return ''
+	// Support both "files" type (attachments) and "url" type
+	if (property.files && property.files.length > 0) {
+		const file = property.files[0]
+		if (file.type === 'file' && file.file?.url) return file.file.url
+		if (file.type === 'external' && file.external?.url) return file.external.url
+	}
+	return property.url || ''
 }
 
 // Validation helpers
@@ -318,7 +337,7 @@ export async function getArticles(): Promise<Article[]> {
 				type: typeValue === 'Newsletter' ? 'Newsletter' : 'Article',
 				order: getNumber(page.properties['Ordre']),
 				visible,
-				image: getUrl(page.properties['Image']) || undefined,
+				image: getFileUrl(page.properties['Image']) || undefined,
 				date: getDate(page.properties['Date']) || undefined
 			}
 
