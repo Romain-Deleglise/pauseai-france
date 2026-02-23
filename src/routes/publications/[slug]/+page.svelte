@@ -1,6 +1,6 @@
 <script lang="ts">
 	import PostMeta from '$components/PostMeta.svelte'
-	import { ArrowLeft, ExternalLink, Calendar, Maximize2, X } from 'lucide-svelte'
+	import { ArrowLeft, ArrowRight, ExternalLink, Calendar, Maximize2, X } from 'lucide-svelte'
 	import type { PageData } from './$types'
 
 	export let data: PageData
@@ -65,6 +65,31 @@
 			/>
 		{/if}
 	</article>
+
+	<nav class="newsletter-nav">
+		<div class="nav-link-wrapper">
+			{#if data.prev}
+				<a href="/publications/{data.prev.slug}" class="nav-link nav-prev">
+					<ArrowLeft size="1.25rem" />
+					<span class="nav-label">
+						<span class="nav-direction">Précédente</span>
+						<span class="nav-title">{data.prev.title}</span>
+					</span>
+				</a>
+			{/if}
+		</div>
+		<div class="nav-link-wrapper nav-link-right">
+			{#if data.next}
+				<a href="/publications/{data.next.slug}" class="nav-link nav-next">
+					<span class="nav-label">
+						<span class="nav-direction">Suivante</span>
+						<span class="nav-title">{data.next.title}</span>
+					</span>
+					<ArrowRight size="1.25rem" />
+				</a>
+			{/if}
+		</div>
+	</nav>
 
 	<footer class="newsletter-footer">
 		<a href="/publications" class="back-link">
@@ -271,13 +296,81 @@
 		border-radius: 0.5rem;
 	}
 
-	.newsletter-footer {
+	/* Prev/Next navigation */
+	.newsletter-nav {
+		display: flex;
+		gap: 1rem;
 		margin-top: 3rem;
 		padding-top: 2rem;
 		border-top: 2px solid var(--border, #e5e7eb);
 	}
 
-	/* Floating fullscreen button - mobile only */
+	.nav-link-wrapper {
+		flex: 1;
+		min-width: 0;
+	}
+
+	.nav-link-right {
+		text-align: right;
+	}
+
+	.nav-link {
+		display: inline-flex;
+		align-items: flex-start;
+		gap: 0.5rem;
+		text-decoration: none;
+		color: var(--text, #1a1a1a);
+		padding: 0.75rem;
+		border-radius: 0.5rem;
+		transition:
+			background 0.2s,
+			color 0.2s;
+		max-width: 100%;
+	}
+
+	.nav-link:hover {
+		background: var(--bg-secondary, #f5f5f5);
+		color: var(--brand, #ff9416);
+	}
+
+	.nav-next {
+		flex-direction: row;
+		justify-content: flex-end;
+	}
+
+	.nav-label {
+		display: flex;
+		flex-direction: column;
+		gap: 0.125rem;
+		min-width: 0;
+	}
+
+	.nav-direction {
+		font-size: 0.8125rem;
+		color: var(--text-secondary, #676e7a);
+		text-transform: uppercase;
+		letter-spacing: 0.03em;
+		font-weight: 600;
+	}
+
+	.nav-title {
+		font-size: 0.9375rem;
+		font-weight: 500;
+		line-height: 1.3;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+	}
+
+	.newsletter-footer {
+		margin-top: 1.5rem;
+		padding-top: 1.5rem;
+		border-top: 1px solid var(--border, #e5e7eb);
+	}
+
+	/* Floating fullscreen button */
 	.fullscreen-btn {
 		position: fixed;
 		bottom: 1.5rem;
@@ -422,11 +515,6 @@
 
 		.newsletter-header h1 {
 			font-size: 2.5rem;
-		}
-
-		/* Hide fullscreen button on desktop */
-		.fullscreen-btn {
-			display: none;
 		}
 	}
 </style>
