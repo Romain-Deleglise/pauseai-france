@@ -72,7 +72,7 @@
 				<a href="/publications/{data.prev.slug}" class="nav-link nav-prev">
 					<ArrowLeft size="1.25rem" />
 					<span class="nav-label">
-						<span class="nav-direction">Précédente</span>
+						<span class="nav-direction">Plus récente</span>
 						<span class="nav-title">{data.prev.title}</span>
 					</span>
 				</a>
@@ -82,7 +82,7 @@
 			{#if data.next}
 				<a href="/publications/{data.next.slug}" class="nav-link nav-next">
 					<span class="nav-label">
-						<span class="nav-direction">Suivante</span>
+						<span class="nav-direction">Plus ancienne</span>
 						<span class="nav-title">{data.next.title}</span>
 					</span>
 					<ArrowRight size="1.25rem" />
@@ -114,7 +114,16 @@
 		</div>
 		<div class="fullscreen-body">
 			{#if data.hasContent}
-				{@html data.content}
+				<div class="newsletter-content">
+					{@html data.content}
+				</div>
+			{:else}
+				<iframe
+					src={data.newsletter.url}
+					title={data.newsletter.title}
+					class="newsletter-iframe fullscreen-iframe"
+					sandbox="allow-same-origin"
+				/>
 			{/if}
 		</div>
 	</div>
@@ -320,17 +329,21 @@
 		gap: 0.5rem;
 		text-decoration: none;
 		color: var(--text, #1a1a1a);
-		padding: 0.75rem;
+		padding: 0.75rem 1rem;
 		border-radius: 0.5rem;
+		border: 1px solid var(--border, #e5e7eb);
+		background: var(--bg-secondary, #f9f9f9);
 		transition:
 			background 0.2s,
-			color 0.2s;
+			border-color 0.2s,
+			box-shadow 0.2s;
 		max-width: 100%;
 	}
 
 	.nav-link:hover {
-		background: var(--bg-secondary, #f5f5f5);
-		color: var(--brand, #ff9416);
+		background: var(--bg, #fff);
+		border-color: var(--brand, #ff9416);
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 	}
 
 	.nav-next {
@@ -448,58 +461,17 @@
 
 	.fullscreen-body {
 		flex: 1;
+		min-height: 0;
 		overflow-y: auto;
 		-webkit-overflow-scrolling: touch;
 		padding: 1rem;
 		line-height: 1.7;
 	}
 
-	/* Apply same content styles in fullscreen */
-	.fullscreen-body :global(table) {
-		max-width: 100% !important;
-		width: 100% !important;
-		height: auto !important;
-		border-spacing: 0 !important;
-		border-collapse: collapse !important;
-	}
-
-	.fullscreen-body :global(td),
-	.fullscreen-body :global(th) {
-		max-width: 100%;
-		word-wrap: break-word;
-		overflow-wrap: break-word;
-		height: auto !important;
-		padding-top: 2px !important;
-		padding-bottom: 2px !important;
-	}
-
-	.fullscreen-body :global(td:empty),
-	.fullscreen-body :global(td:blank) {
-		display: none;
-	}
-
-	.fullscreen-body :global(img) {
-		max-width: 100%;
-		height: auto !important;
-		display: block;
-	}
-
-	.fullscreen-body :global(p) {
-		margin: 0.5em 0;
-	}
-
-	.fullscreen-body :global(a) {
-		color: var(--brand, #ff9416);
-		text-decoration: underline;
-	}
-
-	.fullscreen-body :global(div),
-	.fullscreen-body :global(span) {
-		max-width: 100% !important;
-	}
-
-	.fullscreen-body :global(br + br) {
-		display: none;
+	.fullscreen-iframe {
+		height: 100%;
+		min-height: 0;
+		border: none;
 	}
 
 	@media (min-width: 480px) {
