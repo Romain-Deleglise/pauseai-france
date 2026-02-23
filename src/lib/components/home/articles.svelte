@@ -73,7 +73,6 @@
 	</div>
 	<div class="buttons-row">
 		<Button href="/publications">Voir toutes les newsletters</Button>
-		<Button alt href="/#newsletter">S'abonner</Button>
 	</div>
 </section>
 
@@ -93,10 +92,6 @@
 		flex-wrap: wrap;
 		gap: 1rem;
 		justify-content: center;
-	}
-
-	.buttons-row :global(a.alt) {
-		border: 2px solid var(--text);
 	}
 
 	@media (min-width: 640px) {
