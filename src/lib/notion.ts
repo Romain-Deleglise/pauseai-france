@@ -338,7 +338,7 @@ export async function getArticles(): Promise<Article[]> {
 				order: getNumber(page.properties['Ordre']),
 				visible,
 				image: getFileUrl(page.properties['Image']) || undefined,
-				date: getDate(page.properties['Date']) || undefined
+				date: getDate(page.properties['Date de publication']) || undefined
 			}
 
 			// Validate before returning
