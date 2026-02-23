@@ -3,7 +3,7 @@
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
 	import NewsletterCard from '$components/NewsletterCard.svelte'
 	import Button from '$components/Button.svelte'
-	import { Search, X, Mail } from 'lucide-svelte'
+	import { Search, X, Mail, ChevronLeft, ChevronRight } from 'lucide-svelte'
 	import type { Article } from '$lib/notion'
 	import type { PageData } from './$types'
 
@@ -155,6 +155,29 @@
 		}
 	}
 
+	// Quick access helpers
+	function formatDateShort(dateStr: string): string {
+		if (!dateStr) return ''
+		const date = new Date(dateStr + 'T00:00:00')
+		return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' })
+	}
+
+	function scrollToCard(id: string) {
+		const el = document.getElementById(`nl-${id}`)
+		if (el) {
+			el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+		}
+	}
+
+	function onMobileSelect(event: Event) {
+		const select = event.target as HTMLSelectElement
+		const id = select.value
+		if (id) {
+			scrollToCard(id)
+			select.value = ''
+		}
+	}
+
 	const title = 'Newsletters'
 	const description = 'Retrouvez toutes les newsletters de Pause IA'
 </script>
@@ -216,57 +239,102 @@
 	</div>
 
 	{#if filteredNewsletters.length > 0}
-		<p class="results-count">
+		<p class="results-count" id="newsletters-top">
 			{filteredNewsletters.length}
 			{filteredNewsletters.length === 1 ? 'newsletter' : 'newsletters'}
 			{#if searchQuery.trim()}
 				pour «&nbsp;{searchQuery.trim()}&nbsp;»
 			{/if}
 		</p>
-		<div class="newsletter-grid">
-			{#each paginatedNewsletters as newsletter (newsletter.id)}
-				<NewsletterCard
-					title={newsletter.title}
-					description={newsletter.description}
-					url={newsletter.url}
-					slug={newsletter.slug}
-					date={newsletter.date || ''}
-					image={newsletter.image || ''}
-				/>
-			{/each}
+
+		<!-- Mobile: dropdown quick access -->
+		<div class="mobile-nav">
+			<label class="mobile-nav-label" for="mobile-select-nl">Accès rapide</label>
+			<select id="mobile-select-nl" class="mobile-select" on:change={onMobileSelect}>
+				<option value="" disabled selected>Choisir une newsletter...</option>
+				{#each paginatedNewsletters as nl (nl.id)}
+					<option value={nl.id}>
+						{nl.title} ({formatDateShort(nl.date || '')})
+					</option>
+				{/each}
+			</select>
 		</div>
 
-		{#if totalPages > 1}
-			<nav class="pagination" aria-label="Pagination des newsletters">
-				<button
-					class="pagination-btn"
-					disabled={currentPage === 1}
-					on:click={() => goToPage(currentPage - 1)}
-					aria-label="Page précédente"
-				>
-					&larr;
-				</button>
-				{#each Array.from({ length: totalPages }, (_, i) => i + 1) as page}
-					<button
-						class="pagination-btn"
-						class:active={page === currentPage}
-						on:click={() => goToPage(page)}
-						aria-label="Page {page}"
-						aria-current={page === currentPage ? 'page' : undefined}
-					>
-						{page}
-					</button>
-				{/each}
-				<button
-					class="pagination-btn"
-					disabled={currentPage === totalPages}
-					on:click={() => goToPage(currentPage + 1)}
-					aria-label="Page suivante"
-				>
-					&rarr;
-				</button>
+		<div class="content-layout">
+			<!-- Desktop: sidebar quick access -->
+			<nav class="sidebar">
+				<h3 class="sidebar-title">Accès rapide</h3>
+				<ul class="sidebar-list">
+					{#each paginatedNewsletters as nl (nl.id)}
+						<li>
+							<button class="sidebar-item" on:click={() => scrollToCard(nl.id)}>
+								<span class="sidebar-item-title">{nl.title}</span>
+								{#if nl.date}
+									<time class="sidebar-item-date" datetime={nl.date}
+										>{formatDateShort(nl.date)}</time
+									>
+								{/if}
+							</button>
+						</li>
+					{/each}
+				</ul>
+				{#if totalPages > 1}
+					<div class="sidebar-page-info">
+						Page {currentPage} / {totalPages}
+					</div>
+				{/if}
 			</nav>
-		{/if}
+
+			<!-- Newsletter cards -->
+			<div class="newsletter-list">
+				<div class="newsletter-grid">
+					{#each paginatedNewsletters as newsletter (newsletter.id)}
+						<div id="nl-{newsletter.id}">
+							<NewsletterCard
+								title={newsletter.title}
+								description={newsletter.description}
+								url={newsletter.url}
+								slug={newsletter.slug}
+								date={newsletter.date || ''}
+								image={newsletter.image || ''}
+							/>
+						</div>
+					{/each}
+				</div>
+
+				{#if totalPages > 1}
+					<nav class="pagination" aria-label="Pagination des newsletters">
+						<button
+							class="pagination-btn"
+							disabled={currentPage === 1}
+							on:click={() => goToPage(currentPage - 1)}
+							aria-label="Page précédente"
+						>
+							<ChevronLeft size="1.25rem" />
+						</button>
+						{#each Array.from({ length: totalPages }, (_, i) => i + 1) as page}
+							<button
+								class="pagination-btn"
+								class:active={page === currentPage}
+								on:click={() => goToPage(page)}
+								aria-label="Page {page}"
+								aria-current={page === currentPage ? 'page' : undefined}
+							>
+								{page}
+							</button>
+						{/each}
+						<button
+							class="pagination-btn"
+							disabled={currentPage === totalPages}
+							on:click={() => goToPage(currentPage + 1)}
+							aria-label="Page suivante"
+						>
+							<ChevronRight size="1.25rem" />
+						</button>
+					</nav>
+				{/if}
+			</div>
+		</div>
 	{:else}
 		<div class="empty-state">
 			<p>Aucune newsletter ne correspond à votre recherche.</p>
@@ -478,6 +546,141 @@
 		margin-bottom: 1.5rem;
 	}
 
+	/* Mobile dropdown quick access — hidden on desktop */
+	.mobile-nav {
+		display: none;
+		margin-bottom: 1.5rem;
+		background-color: var(--bg-subtle, #fafafa);
+		border: 1px solid var(--border, #e5e7eb);
+		border-radius: 0.75rem;
+		padding: 0.75rem 1rem;
+	}
+
+	.mobile-nav-label {
+		display: block;
+		font-size: 0.75rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--brand, #ff9416);
+		margin-bottom: 0.5rem;
+	}
+
+	.mobile-select {
+		width: 100%;
+		padding: 0.625rem 2.5rem 0.625rem 0.75rem;
+		font-size: 0.875rem;
+		font-family: var(--font-body, inherit);
+		border: 1px solid var(--border, #e5e7eb);
+		border-radius: 0.375rem;
+		background-color: white;
+		color: var(--text, black);
+		appearance: none;
+		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23676e7a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+		background-repeat: no-repeat;
+		background-position: right 0.625rem center;
+		cursor: pointer;
+		line-height: 1.4;
+	}
+
+	.mobile-select:focus {
+		outline: 2px solid var(--brand, #ff9416);
+		outline-offset: 2px;
+	}
+
+	/* Layout with sidebar */
+	.content-layout {
+		display: flex;
+		gap: 2rem;
+		align-items: flex-start;
+	}
+
+	/* Sidebar — hidden on mobile */
+	.sidebar {
+		position: sticky;
+		top: 1rem;
+		flex-shrink: 0;
+		width: 16rem;
+		max-height: calc(100vh - 2rem);
+		overflow-y: auto;
+		background-color: var(--bg-subtle, #fafafa);
+		border: 1px solid var(--border, #e5e7eb);
+		border-radius: 0.75rem;
+		padding: 1.25rem;
+	}
+
+	.sidebar-title {
+		margin: 0 0 0.75rem;
+		font-size: 0.85rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--brand, #ff9416);
+	}
+
+	.sidebar-list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+	}
+
+	.sidebar-list li {
+		padding: 0;
+		margin: 0;
+	}
+
+	.sidebar-item {
+		display: flex;
+		flex-direction: column;
+		gap: 0.125rem;
+		width: 100%;
+		padding: 0.5rem 0.625rem;
+		border: none;
+		background: transparent;
+		border-radius: 0.375rem;
+		cursor: pointer;
+		text-align: left;
+		transition: background-color 0.15s ease;
+	}
+
+	.sidebar-item:hover {
+		background-color: rgba(0, 0, 0, 0.05);
+	}
+
+	.sidebar-item-title {
+		font-size: 0.8rem;
+		font-weight: 600;
+		color: var(--text, black);
+		line-height: 1.3;
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+	}
+
+	.sidebar-item-date {
+		font-size: 0.7rem;
+		color: var(--text-secondary, #676e7a);
+	}
+
+	.sidebar-page-info {
+		margin-top: 0.75rem;
+		padding-top: 0.75rem;
+		border-top: 1px solid var(--border, #e5e7eb);
+		font-size: 0.75rem;
+		color: var(--text-secondary, #676e7a);
+		text-align: center;
+	}
+
+	/* Newsletter list (right side) */
+	.newsletter-list {
+		flex-grow: 1;
+		min-width: 0;
+	}
+
 	/* Newsletter grid */
 	.newsletter-grid {
 		display: grid;
@@ -502,46 +705,59 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		gap: 0.5rem;
-		margin-top: 3rem;
+		gap: 0.375rem;
+		margin-top: 1.5rem;
+		padding-top: 1.5rem;
 	}
 
 	.pagination-btn {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		min-width: 2.5rem;
-		height: 2.5rem;
-		padding: 0 0.75rem;
-		border: 1.5px solid var(--border, #e5e7eb);
-		border-radius: 0.5rem;
+		width: 2.25rem;
+		height: 2.25rem;
+		border: 1px solid var(--border, #e5e7eb);
+		border-radius: 0.375rem;
 		background: white;
 		color: var(--text, black);
-		font-size: 0.9375rem;
-		font-weight: 500;
+		font-size: 0.875rem;
+		font-weight: 600;
 		font-family: inherit;
 		cursor: pointer;
 		transition:
-			border-color 0.2s,
-			background 0.2s,
-			color 0.2s;
+			background-color 0.15s ease,
+			border-color 0.15s ease;
 	}
 
 	.pagination-btn:hover:not(:disabled):not(.active) {
+		background-color: var(--bg-subtle, #fafafa);
 		border-color: var(--brand, #ff9416);
-		color: var(--brand, #ff9416);
 	}
 
 	.pagination-btn.active {
-		background: var(--brand, #ff9416);
+		background-color: var(--brand, #ff9416);
 		border-color: var(--brand, #ff9416);
 		color: white;
-		font-weight: 700;
 	}
 
 	.pagination-btn:disabled {
 		opacity: 0.35;
 		cursor: not-allowed;
+	}
+
+	/* Mobile */
+	@media (max-width: 768px) {
+		.mobile-nav {
+			display: block;
+		}
+
+		.content-layout {
+			flex-direction: column;
+		}
+
+		.sidebar {
+			display: none;
+		}
 	}
 
 	@media (min-width: 640px) {
@@ -564,11 +780,11 @@
 
 	@media (min-width: 1024px) {
 		.page {
-			padding: 4rem 4rem 8rem;
+			padding: 4rem 2rem 8rem;
 		}
 
 		.newsletter-grid {
-			grid-template-columns: repeat(3, 1fr);
+			grid-template-columns: repeat(2, 1fr);
 		}
 	}
 </style>
