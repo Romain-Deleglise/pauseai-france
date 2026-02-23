@@ -1,9 +1,11 @@
 <script lang="ts">
 	import PostMeta from '$components/PostMeta.svelte'
-	import { ArrowLeft, ExternalLink, Calendar } from 'lucide-svelte'
+	import { ArrowLeft, ExternalLink, Calendar, Maximize2, X } from 'lucide-svelte'
 	import type { PageData } from './$types'
 
 	export let data: PageData
+
+	let fullscreen = false
 
 	function formatDate(dateStr: string): string {
 		if (!dateStr) return ''
@@ -14,6 +16,15 @@
 			return dateStr
 		}
 	}
+
+	function toggleFullscreen() {
+		fullscreen = !fullscreen
+		if (fullscreen) {
+			document.body.style.overflow = 'hidden'
+		} else {
+			document.body.style.overflow = ''
+		}
+	}
 </script>
 
 <PostMeta title={data.newsletter.title} description={data.newsletter.description} />
@@ -22,7 +33,7 @@
 	<nav class="breadcrumb">
 		<a href="/publications" class="back-link">
 			<ArrowLeft size="1rem" />
-			Toutes les publications
+			Toutes les newsletters
 		</a>
 	</nav>
 
@@ -58,10 +69,36 @@
 	<footer class="newsletter-footer">
 		<a href="/publications" class="back-link">
 			<ArrowLeft size="1rem" />
-			Retour aux publications
+			Retour aux newsletters
 		</a>
 	</footer>
 </div>
+
+<!-- Fullscreen overlay -->
+{#if fullscreen}
+	<div class="fullscreen-overlay">
+		<div class="fullscreen-header">
+			<span class="fullscreen-title">{data.newsletter.title}</span>
+			<button
+				class="fullscreen-close"
+				on:click={toggleFullscreen}
+				aria-label="Fermer le plein écran"
+			>
+				<X size="1.25rem" />
+			</button>
+		</div>
+		<div class="fullscreen-body">
+			{#if data.hasContent}
+				{@html data.content}
+			{/if}
+		</div>
+	</div>
+{/if}
+
+<!-- Floating fullscreen button (mobile only) -->
+<button class="fullscreen-btn" on:click={toggleFullscreen} aria-label="Lire en plein écran">
+	<Maximize2 size="1.25rem" />
+</button>
 
 <style>
 	.page {
@@ -240,6 +277,138 @@
 		border-top: 2px solid var(--border, #e5e7eb);
 	}
 
+	/* Floating fullscreen button - mobile only */
+	.fullscreen-btn {
+		position: fixed;
+		bottom: 1.5rem;
+		right: 1.5rem;
+		width: 3rem;
+		height: 3rem;
+		border-radius: 50%;
+		border: none;
+		background: var(--brand, #ff9416);
+		color: white;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+		cursor: pointer;
+		z-index: 50;
+		transition:
+			transform 0.2s,
+			box-shadow 0.2s;
+	}
+
+	.fullscreen-btn:hover {
+		transform: scale(1.1);
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+	}
+
+	/* Fullscreen overlay */
+	.fullscreen-overlay {
+		position: fixed;
+		inset: 0;
+		z-index: 100;
+		background: var(--bg, #fff);
+		display: flex;
+		flex-direction: column;
+		overflow: hidden;
+	}
+
+	.fullscreen-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.75rem;
+		padding: 0.75rem 1rem;
+		border-bottom: 1px solid var(--border, #e5e7eb);
+		flex-shrink: 0;
+	}
+
+	.fullscreen-title {
+		font-weight: 700;
+		font-size: 0.9375rem;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		min-width: 0;
+	}
+
+	.fullscreen-close {
+		flex-shrink: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 2.25rem;
+		height: 2.25rem;
+		border-radius: 50%;
+		border: none;
+		background: transparent;
+		color: var(--text-secondary, #676e7a);
+		cursor: pointer;
+		transition: background 0.2s;
+	}
+
+	.fullscreen-close:hover {
+		background: var(--border, #e5e7eb);
+	}
+
+	.fullscreen-body {
+		flex: 1;
+		overflow-y: auto;
+		-webkit-overflow-scrolling: touch;
+		padding: 1rem;
+		line-height: 1.7;
+	}
+
+	/* Apply same content styles in fullscreen */
+	.fullscreen-body :global(table) {
+		max-width: 100% !important;
+		width: 100% !important;
+		height: auto !important;
+		border-spacing: 0 !important;
+		border-collapse: collapse !important;
+	}
+
+	.fullscreen-body :global(td),
+	.fullscreen-body :global(th) {
+		max-width: 100%;
+		word-wrap: break-word;
+		overflow-wrap: break-word;
+		height: auto !important;
+		padding-top: 2px !important;
+		padding-bottom: 2px !important;
+	}
+
+	.fullscreen-body :global(td:empty),
+	.fullscreen-body :global(td:blank) {
+		display: none;
+	}
+
+	.fullscreen-body :global(img) {
+		max-width: 100%;
+		height: auto !important;
+		display: block;
+	}
+
+	.fullscreen-body :global(p) {
+		margin: 0.5em 0;
+	}
+
+	.fullscreen-body :global(a) {
+		color: var(--brand, #ff9416);
+		text-decoration: underline;
+	}
+
+	.fullscreen-body :global(div),
+	.fullscreen-body :global(span) {
+		max-width: 100% !important;
+	}
+
+	.fullscreen-body :global(br + br) {
+		display: none;
+	}
+
 	@media (min-width: 480px) {
 		.page {
 			padding: 2rem 1rem 4rem;
@@ -253,6 +422,11 @@
 
 		.newsletter-header h1 {
 			font-size: 2.5rem;
+		}
+
+		/* Hide fullscreen button on desktop */
+		.fullscreen-btn {
+			display: none;
 		}
 	}
 </style>
