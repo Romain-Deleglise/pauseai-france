@@ -43,7 +43,16 @@
 	</header>
 
 	<article class="newsletter-content">
-		{@html data.content}
+		{#if data.hasContent}
+			{@html data.content}
+		{:else}
+			<iframe
+				src={data.newsletter.url}
+				title={data.newsletter.title}
+				class="newsletter-iframe"
+				sandbox="allow-same-origin"
+			/>
+		{/if}
 	</article>
 
 	<footer class="newsletter-footer">
@@ -154,6 +163,13 @@
 
 	.newsletter-content :global(a:hover) {
 		opacity: 0.8;
+	}
+
+	.newsletter-iframe {
+		width: 100%;
+		min-height: 80vh;
+		border: 1px solid var(--border, #e5e7eb);
+		border-radius: 0.5rem;
 	}
 
 	.newsletter-footer {

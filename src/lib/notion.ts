@@ -388,12 +388,33 @@ export async function fetchNewsletterContent(url: string): Promise<string | null
 			}
 		})
 
-		if (!response.ok) return null
+		if (!response.ok) {
+			console.error(`[Newsletter] HTTP ${response.status} for ${url}`)
+			return null
+		}
 
 		const html = await response.text()
-		return extractMailingContent(html)
+		console.log(`[Newsletter] Fetched ${html.length} chars from ${url}`)
+
+		const content = extractMailingContent(html)
+
+		// Check if extracted content has meaningful text (strip tags and check length)
+		const textOnly = content.replace(/<[^>]*>/g, '').trim()
+		console.log(
+			`[Newsletter] Extracted content: ${content.length} chars HTML, ${textOnly.length} chars text`
+		)
+
+		if (textOnly.length < 100) {
+			console.warn(
+				`[Newsletter] Content too short (${textOnly.length} chars text), raw HTML preview:`
+			)
+			console.warn(html.substring(0, 2000))
+			console.warn('--- end preview ---')
+		}
+
+		return content
 	} catch (error) {
-		console.error('Failed to fetch newsletter content:', error)
+		console.error('[Newsletter] Failed to fetch content:', error)
 		return null
 	}
 }
@@ -404,32 +425,45 @@ export async function fetchNewsletterContent(url: string): Promise<string | null
  */
 function extractMailingContent(html: string): string {
 	// Strategy 1: Look for CiviCRM mailing body wrapper
-	// CiviCRM wraps the mailing content in a specific container
 	const bodyPatterns = [
-		// Common CiviCRM mailing view containers
+		// CiviCRM mailing body container
 		/<div[^>]*class="[^"]*crm-mailing-body[^"]*"[^>]*>([\s\S]*?)<\/div>\s*(?:<div[^>]*class="[^"]*crm-mailing-footer|$)/i,
 		// The actual email content is often in a centered table
-		/(<table[^>]*width="[56]\d{2}"[^>]*>[\s\S]*?<\/table>)\s*(?:<\/(?:div|td|body)>)/i
+		/(<table[^>]*width="[56]\d{2}"[^>]*>[\s\S]*?<\/table>)\s*(?:<\/(?:div|td|body)>)/i,
+		// CiviCRM view-content wrapper
+		/<div[^>]*class="[^"]*view-content[^"]*"[^>]*>([\s\S]*?)<\/div>\s*<\/div>/i,
+		// Generic content wrapper in CiviCRM pages
+		/<div[^>]*id="[^"]*content[^"]*"[^>]*>([\s\S]*?)<\/div>\s*(?:<\/div>|<div[^>]*id="footer)/i
 	]
 
 	for (const pattern of bodyPatterns) {
 		const match = html.match(pattern)
-		if (match && match[1] && match[1].length > 200) {
-			return cleanContent(match[1])
+		if (match && match[1]) {
+			const cleaned = cleanContent(match[1])
+			const textOnly = cleaned.replace(/<[^>]*>/g, '').trim()
+			if (textOnly.length > 100) {
+				console.log(
+					`[Newsletter] Extraction strategy 1 matched (pattern), text length: ${textOnly.length}`
+				)
+				return cleaned
+			}
 		}
 	}
 
 	// Strategy 2: Extract full <body> content and clean it
-	const bodyMatch = html.match(/<body[^>]*>([\s\S]*?)<\/body>/i)
+	const bodyMatch = html.match(/<body[^>]*>([\s\S]*)<\/body>/i)
 	if (bodyMatch && bodyMatch[1]) {
+		console.log(`[Newsletter] Extraction strategy 2: full body (${bodyMatch[1].length} chars)`)
 		return cleanContent(bodyMatch[1])
 	}
 
 	// Strategy 3: If no body tag, the response might already be the content
 	if (html.length > 200 && !html.includes('<!DOCTYPE')) {
+		console.log(`[Newsletter] Extraction strategy 3: raw content`)
 		return cleanContent(html)
 	}
 
+	console.warn(`[Newsletter] No extraction strategy matched`)
 	return html
 }
 
@@ -443,6 +477,9 @@ function cleanContent(html: string): string {
 	// Remove script tags
 	cleaned = cleaned.replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
 
+	// Remove style tags
+	cleaned = cleaned.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
+
 	// Remove CiviCRM navigation/chrome elements
 	cleaned = cleaned.replace(/<div[^>]*id="[^"]*crm-navigation[^"]*"[^>]*>[\s\S]*?<\/div>/gi, '')
 	cleaned = cleaned.replace(/<div[^>]*class="[^"]*crm-breadcrumb[^"]*"[^>]*>[\s\S]*?<\/div>/gi, '')
@@ -450,11 +487,42 @@ function cleanContent(html: string): string {
 	// Remove unsubscribe/opt-out links section (common in CiviCRM mailings)
 	cleaned = cleaned.replace(/<[^>]*class="[^"]*opt-out[^"]*"[^>]*>[\s\S]*?<\/[^>]+>/gi, '')
 
-	// Remove "View in browser" links (target only anchor tags with short text)
+	// Remove "View in browser" / "Lire dans le navigateur" links (anchor tags with short text)
 	cleaned = cleaned.replace(
-		/<a[^>]*>[^<]{0,100}(?:voir[^<]{0,30}navigateur|view[^<]{0,30}browser)[^<]{0,50}<\/a>/gi,
+		/<a[^>]*>[^<]{0,100}(?:voir[^<]{0,30}navigateur|view[^<]{0,30}browser|lire[^<]{0,30}navigateur)[^<]{0,50}<\/a>/gi,
 		''
 	)
+
+	// Remove unsubscribe / "Se désinscrire" links
+	cleaned = cleaned.replace(
+		/<a[^>]*>[^<]{0,100}(?:d[eé]sinscri|unsubscribe|opt.?out)[^<]{0,50}<\/a>/gi,
+		''
+	)
+
+	// Remove elements containing unsubscribe/browser text even if wrapped in other tags
+	// (e.g., <p><strong><a>Se désinscrire</a></strong></p>)
+	cleaned = cleaned.replace(
+		/<(?:p|div|span|td|tr|strong|em|b|i)[^>]*>[\s\n]*(?:<[^>]*>[\s\n]*)*[^<]{0,20}(?:d[eé]sinscri|unsubscribe|opt.?out|lire[^<]{0,30}navigateur|voir[^<]{0,30}navigateur|view[^<]{0,30}browser)[^<]{0,50}(?:[\s\n]*<\/[^>]*>)*[\s\n]*<\/(?:p|div|span|td|tr|strong|em|b|i)>/gi,
+		''
+	)
+
+	// Remove CiviCRM form elements (e.g., subscription forms)
+	cleaned = cleaned.replace(/<form[^>]*>[\s\S]*?<\/form>/gi, '')
+
+	// Remove hidden elements
+	cleaned = cleaned.replace(
+		/<[^>]*style="[^"]*display\s*:\s*none[^"]*"[^>]*>[\s\S]*?<\/[^>]+>/gi,
+		''
+	)
+
+	// Remove HTML comments
+	cleaned = cleaned.replace(/<!--[\s\S]*?-->/g, '')
+
+	// Remove head tag content if present
+	cleaned = cleaned.replace(/<head[^>]*>[\s\S]*?<\/head>/gi, '')
+
+	// Remove link, meta tags
+	cleaned = cleaned.replace(/<(?:link|meta)[^>]*\/?>/gi, '')
 
 	// Fix relative URLs to CiviCRM
 	cleaned = cleaned.replace(
@@ -464,6 +532,9 @@ function cleanContent(html: string): string {
 			return `${attr}="https://civicrm.pauseia.fr/${path.replace(/^\//, '')}"`
 		}
 	)
+
+	// Clean up excessive whitespace/empty elements
+	cleaned = cleaned.replace(/(<(?:p|div|span|td|tr)[^>]*>)\s*(<\/(?:p|div|span|td|tr)>)/gi, '')
 
 	return cleaned.trim()
 }

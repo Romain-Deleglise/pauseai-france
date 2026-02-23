@@ -18,8 +18,13 @@ export const load: PageServerLoad = async ({ params }) => {
 		throw redirect(307, newsletter.url)
 	}
 
+	// Check if extracted content has enough meaningful text
+	const textOnly = content.replace(/<[^>]*>/g, '').trim()
+	const hasContent = textOnly.length > 100
+
 	return {
 		newsletter,
-		content
+		content,
+		hasContent
 	}
 }
