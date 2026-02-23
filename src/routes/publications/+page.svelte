@@ -3,7 +3,7 @@
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
 	import NewsletterCard from '$components/NewsletterCard.svelte'
 	import Button from '$components/Button.svelte'
-	import { Search, X } from 'lucide-svelte'
+	import { Search, X, Mail } from 'lucide-svelte'
 	import type { Article } from '$lib/notion'
 	import type { PageData } from './$types'
 
@@ -73,8 +73,82 @@
 			})
 		: newsletters
 
+	// Pagination
+	const PAGE_SIZE = 12
+	let currentPage = 1
+
+	// Reset to page 1 when search changes
+	$: if (searchQuery !== undefined) currentPage = 1
+
+	$: totalPages = Math.max(1, Math.ceil(filteredNewsletters.length / PAGE_SIZE))
+	$: paginatedNewsletters = filteredNewsletters.slice(
+		(currentPage - 1) * PAGE_SIZE,
+		currentPage * PAGE_SIZE
+	)
+
+	function goToPage(page: number) {
+		currentPage = page
+		window.scrollTo({ top: 0, behavior: 'smooth' })
+	}
+
 	function clearSearch() {
 		searchQuery = ''
+	}
+
+	// Newsletter subscription form
+	let email = ''
+	let isSubmitting = false
+	let message = ''
+	let isError = false
+
+	interface ApiResponse {
+		success?: boolean
+		message?: string
+		error?: string
+	}
+
+	async function handleSubscribe(event: Event) {
+		event.preventDefault()
+		message = ''
+		isError = false
+
+		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+		if (!email || !emailRegex.test(email)) {
+			message = 'Adresse e-mail invalide'
+			isError = true
+			return
+		}
+
+		isSubmitting = true
+
+		try {
+			const response = await fetch('/api/subscribe', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					email,
+					subscribeNewsletter: true,
+					subscribeSubstack: false,
+					source: 'publications-page'
+				})
+			})
+
+			const result = (await response.json()) as ApiResponse
+
+			if (response.ok) {
+				message = 'Inscription confirmée !'
+				isError = false
+				email = ''
+			} else {
+				message = result.error ?? 'Une erreur est survenue'
+				isError = true
+			}
+		} catch {
+			message = 'Erreur de connexion'
+			isError = true
+		} finally {
+			isSubmitting = false
+		}
 	}
 
 	const title = 'Newsletters'
@@ -91,6 +165,31 @@
 			actualités de l'IA et les moyens d'agir.
 		</p>
 	</header>
+
+	<div class="subscribe-bar">
+		<div class="subscribe-icon">
+			<Mail size="1.25rem" />
+		</div>
+		<form on:submit={handleSubscribe} class="subscribe-form">
+			<div class="subscribe-input-group">
+				<input
+					type="email"
+					bind:value={email}
+					placeholder="votre@email.com"
+					disabled={isSubmitting}
+					aria-label="Adresse e-mail"
+				/>
+				<button type="submit" disabled={isSubmitting}>
+					{#if isSubmitting}...{:else}S'abonner{/if}
+				</button>
+			</div>
+			{#if message}
+				<p class="subscribe-message" class:error={isError} class:success={!isError}>
+					{message}
+				</p>
+			{/if}
+		</form>
+	</div>
 
 	<div class="search-bar">
 		<div class="search-input-wrapper">
@@ -118,7 +217,7 @@
 			{/if}
 		</p>
 		<div class="newsletter-grid">
-			{#each filteredNewsletters as newsletter (newsletter.id)}
+			{#each paginatedNewsletters as newsletter (newsletter.id)}
 				<NewsletterCard
 					title={newsletter.title}
 					description={newsletter.description}
@@ -128,23 +227,44 @@
 				/>
 			{/each}
 		</div>
+
+		{#if totalPages > 1}
+			<nav class="pagination" aria-label="Pagination des newsletters">
+				<button
+					class="pagination-btn"
+					disabled={currentPage === 1}
+					on:click={() => goToPage(currentPage - 1)}
+					aria-label="Page précédente"
+				>
+					&larr;
+				</button>
+				{#each Array.from({ length: totalPages }, (_, i) => i + 1) as page}
+					<button
+						class="pagination-btn"
+						class:active={page === currentPage}
+						on:click={() => goToPage(page)}
+						aria-label="Page {page}"
+						aria-current={page === currentPage ? 'page' : undefined}
+					>
+						{page}
+					</button>
+				{/each}
+				<button
+					class="pagination-btn"
+					disabled={currentPage === totalPages}
+					on:click={() => goToPage(currentPage + 1)}
+					aria-label="Page suivante"
+				>
+					&rarr;
+				</button>
+			</nav>
+		{/if}
 	{:else}
 		<div class="empty-state">
 			<p>Aucune newsletter ne correspond à votre recherche.</p>
 			<Button on:click={clearSearch}>Effacer la recherche</Button>
 		</div>
 	{/if}
-
-	<div class="cta-section">
-		<div class="cta-content">
-			<h2>Ne manquez aucune newsletter</h2>
-			<p>
-				Recevez chaque mois nos actualités, analyses et appels à l'action directement dans votre
-				boîte mail.
-			</p>
-			<Button href="/#newsletter">S'abonner à la newsletter</Button>
-		</div>
-	</div>
 </div>
 
 <style>
@@ -169,6 +289,98 @@
 		color: var(--text-secondary, #676e7a);
 		font-size: 1.125rem;
 		line-height: 1.6;
+	}
+
+	/* Subscribe bar */
+	.subscribe-bar {
+		display: flex;
+		align-items: flex-start;
+		gap: 0.75rem;
+		max-width: 36rem;
+		margin: 0 auto 2rem;
+		padding: 1rem 1.25rem;
+		background: linear-gradient(135deg, #fff8f0 0%, #fff0e0 100%);
+		border: 1px solid rgba(255, 148, 22, 0.2);
+		border-radius: 0.75rem;
+	}
+
+	.subscribe-icon {
+		color: var(--brand, #ff9416);
+		flex-shrink: 0;
+		margin-top: 0.5rem;
+	}
+
+	.subscribe-form {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		gap: 0.375rem;
+	}
+
+	.subscribe-input-group {
+		display: flex;
+		gap: 0.5rem;
+		flex-wrap: wrap;
+	}
+
+	.subscribe-form input[type='email'] {
+		flex: 1;
+		min-width: 160px;
+		padding: 0.5rem 0.75rem;
+		border: 1.5px solid rgba(0, 0, 0, 0.12);
+		border-radius: 0.375rem;
+		font-size: 0.9rem;
+		font-family: inherit;
+		background: white;
+		color: var(--text);
+		transition: border-color 0.2s;
+	}
+
+	.subscribe-form input[type='email']:focus {
+		outline: none;
+		border-color: var(--brand, #ff9416);
+	}
+
+	.subscribe-form input[type='email']:disabled {
+		opacity: 0.6;
+		cursor: not-allowed;
+	}
+
+	.subscribe-form button {
+		padding: 0.5rem 1rem;
+		background: var(--brand, #ff9416);
+		color: white;
+		border: none;
+		border-radius: 0.375rem;
+		font-size: 0.9rem;
+		font-weight: 600;
+		font-family: inherit;
+		cursor: pointer;
+		transition: opacity 0.2s;
+		white-space: nowrap;
+	}
+
+	.subscribe-form button:hover:not(:disabled) {
+		opacity: 0.85;
+	}
+
+	.subscribe-form button:disabled {
+		opacity: 0.6;
+		cursor: not-allowed;
+	}
+
+	.subscribe-message {
+		margin: 0;
+		font-size: 0.8125rem;
+		font-weight: 500;
+	}
+
+	.subscribe-message.success {
+		color: #166534;
+	}
+
+	.subscribe-message.error {
+		color: #991b1b;
 	}
 
 	/* Search bar */
@@ -253,26 +465,51 @@
 		margin-bottom: 1.5rem;
 	}
 
-	/* CTA section */
-	.cta-section {
-		margin-top: 4rem;
-		padding: 3rem 2rem;
-		background: linear-gradient(135deg, #fff8f0 0%, #fff0e0 100%);
-		border-radius: 1rem;
-		text-align: center;
+	/* Pagination */
+	.pagination {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 0.5rem;
+		margin-top: 3rem;
 	}
 
-	.cta-content h2 {
-		margin-top: 0;
-		margin-bottom: 0.75rem;
-		font-size: 1.5rem;
+	.pagination-btn {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		min-width: 2.5rem;
+		height: 2.5rem;
+		padding: 0 0.75rem;
+		border: 1.5px solid var(--border, #e5e7eb);
+		border-radius: 0.5rem;
+		background: white;
+		color: var(--text, black);
+		font-size: 0.9375rem;
+		font-weight: 500;
+		font-family: inherit;
+		cursor: pointer;
+		transition:
+			border-color 0.2s,
+			background 0.2s,
+			color 0.2s;
 	}
 
-	.cta-content p {
-		color: var(--text-secondary, #676e7a);
-		max-width: 32rem;
-		margin: 0 auto 1.5rem;
-		line-height: 1.6;
+	.pagination-btn:hover:not(:disabled):not(.active) {
+		border-color: var(--brand, #ff9416);
+		color: var(--brand, #ff9416);
+	}
+
+	.pagination-btn.active {
+		background: var(--brand, #ff9416);
+		border-color: var(--brand, #ff9416);
+		color: white;
+		font-weight: 700;
+	}
+
+	.pagination-btn:disabled {
+		opacity: 0.35;
+		cursor: not-allowed;
 	}
 
 	@media (min-width: 640px) {
@@ -300,10 +537,6 @@
 
 		.newsletter-grid {
 			grid-template-columns: repeat(3, 1fr);
-		}
-
-		.cta-section {
-			margin-top: 5rem;
 		}
 	}
 </style>
