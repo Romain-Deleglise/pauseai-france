@@ -60,7 +60,7 @@
 </script>
 
 <section aria-labelledby={label_id}>
-	<UnderlinedTitle id={label_id}>Nos publications</UnderlinedTitle>
+	<UnderlinedTitle id={label_id}>Nos newsletters</UnderlinedTitle>
 	<div class="articles-grid">
 		{#each displayArticles as article (article.id)}
 			<ArticleCard
@@ -72,7 +72,7 @@
 		{/each}
 	</div>
 	<div class="buttons-row">
-		<Button href="/publications">Voir toutes les newsletters</Button>
+		<Button href="/newsletters">Voir toutes les newsletters</Button>
 	</div>
 </section>
 

@@ -31,7 +31,7 @@
 
 <div class="page">
 	<nav class="breadcrumb">
-		<a href="/publications" class="back-link">
+		<a href="/newsletters" class="back-link">
 			<ArrowLeft size="1rem" />
 			Toutes les newsletters
 		</a>
@@ -69,7 +69,7 @@
 	<nav class="newsletter-nav">
 		<div class="nav-link-wrapper">
 			{#if data.prev}
-				<a href="/publications/{data.prev.slug}" class="nav-link nav-prev">
+				<a href="/newsletters/{data.prev.slug}" class="nav-link nav-prev">
 					<ArrowLeft size="1.25rem" />
 					<span class="nav-label">
 						<span class="nav-direction">Plus récente</span>
@@ -80,7 +80,7 @@
 		</div>
 		<div class="nav-link-wrapper nav-link-right">
 			{#if data.next}
-				<a href="/publications/{data.next.slug}" class="nav-link nav-next">
+				<a href="/newsletters/{data.next.slug}" class="nav-link nav-next">
 					<span class="nav-label">
 						<span class="nav-direction">Plus ancienne</span>
 						<span class="nav-title">{data.next.title}</span>
@@ -92,7 +92,7 @@
 	</nav>
 
 	<footer class="newsletter-footer">
-		<a href="/publications" class="back-link">
+		<a href="/newsletters" class="back-link">
 			<ArrowLeft size="1rem" />
 			Retour aux newsletters
 		</a>

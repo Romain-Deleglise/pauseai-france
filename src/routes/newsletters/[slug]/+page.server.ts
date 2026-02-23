@@ -9,7 +9,7 @@ export const load: PageServerLoad = async ({ params }) => {
 	const index = newsletters.findIndex((n) => n.slug === params.slug)
 
 	if (index === -1) {
-		throw redirect(307, '/publications')
+		throw redirect(307, '/newsletters')
 	}
 
 	const newsletter = newsletters[index]

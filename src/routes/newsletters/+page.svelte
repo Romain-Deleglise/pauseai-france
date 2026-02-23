@@ -133,7 +133,7 @@
 					email,
 					subscribeNewsletter: true,
 					subscribeSubstack: false,
-					source: 'publications-page'
+					source: 'newsletters-page'
 				})
 			})
 
@@ -397,6 +397,7 @@
 		display: flex;
 		gap: 0.5rem;
 		flex-wrap: wrap;
+		justify-content: center;
 	}
 
 	.subscribe-form input[type='email'] {

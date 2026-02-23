@@ -8,7 +8,7 @@
 	export let date: string = ''
 	export let image: string = ''
 
-	$: href = slug ? `/publications/${slug}` : url
+	$: href = slug ? `/newsletters/${slug}` : url
 	$: isExternal = !slug
 
 	function formatDate(dateStr: string): string {
