@@ -61,11 +61,13 @@
 	}
 
 	.details {
-		padding: 1rem 1.25rem 1.5rem 1.25rem;
-		margin: 0 0.25rem 0.75rem 0.25rem;
-		background-color: var(--brand-light, #fff5e8);
-		border-radius: 0.5rem;
-		border-left: 3px solid var(--brand, #ff9416);
+		padding: 1rem 1.5rem 1.5rem 1.5rem;
+		margin: 0.25rem 0.5rem 1rem 0.5rem;
+		background-color: white;
+		border-radius: 0.75rem;
+		box-shadow:
+			0 1px 3px rgba(0, 0, 0, 0.08),
+			0 4px 12px rgba(0, 0, 0, 0.06);
 		text-align: justify;
 	}
 
