@@ -47,7 +47,13 @@
 		background-color: transparent;
 		text-align: left;
 		align-items: center;
-		padding: 1.5rem 0;
+		padding: 1.5rem 0.75rem;
+		border-radius: 0.5rem;
+		transition: background-color 0.2s ease;
+	}
+
+	.header:hover {
+		background-color: var(--brand-light, #fff5e8);
 	}
 
 	.header .title {
@@ -55,14 +61,20 @@
 	}
 
 	.details {
-		padding: 2rem 0 1.5rem 0;
+		padding: 1rem 0.75rem 1.5rem 0.75rem;
 	}
 
 	.icon {
-		font-size: 3rem;
-		font-weight: 200;
+		font-size: 2.5rem;
+		font-weight: 300;
 		line-height: 0;
 		margin-left: 1rem;
+		color: var(--brand, #ff9416);
+		transition: transform 0.3s ease;
+	}
+
+	.header[aria-expanded='true'] .icon {
+		transform: rotate(90deg);
 	}
 
 	h3 {
