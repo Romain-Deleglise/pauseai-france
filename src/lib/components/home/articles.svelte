@@ -13,6 +13,7 @@
 		{
 			id: '1',
 			title: 'Newsletter Pause IA - Janvier 2025',
+			slug: 'newsletter-pause-ia---janvier-2025',
 			description:
 				"Pourquoi l'IA est notre priorité absolue ; Action au sommet pour l'action sur l'IA ; Nouvelles du front ; Les actus du mois.",
 			url: 'https://civicrm.pauseia.fr/civicrm/mailing/view?id=88&reset=1',
@@ -23,6 +24,7 @@
 		{
 			id: '2',
 			title: 'Newsletter Pause IA - Décembre 2024',
+			slug: 'newsletter-pause-ia---decembre-2024',
 			description:
 				'Retour sur le colloque au Sénat ; Notre roadmap pour 2025 ; Nouvelles du front ; Les actus du mois.',
 			url: 'https://civicrm.pauseia.fr/civicrm/mailing/view?id=85&reset=1',
@@ -33,6 +35,7 @@
 		{
 			id: '3',
 			title: 'Newsletter Pause IA - Novembre 2024',
+			slug: 'newsletter-pause-ia---novembre-2024',
 			description:
 				'Colloque au Sénat - programme et inscription ; Nouvelles du front ; Les actus du mois.',
 			url: 'https://civicrm.pauseia.fr/civicrm/mailing/view?id=82&reset=1',
@@ -43,6 +46,7 @@
 		{
 			id: '4',
 			title: 'Newsletter Pause IA - Octobre 2024',
+			slug: 'newsletter-pause-ia---octobre-2024',
 			description:
 				'Retour sur nos actions de rentrée ; Annonce du colloque au Sénat ; Nouvelles du front ; Les actus du mois.',
 			url: 'https://civicrm.pauseia.fr/civicrm/mailing/view?id=78&reset=1',
@@ -52,11 +56,11 @@
 		}
 	]
 
-	$: displayArticles = articles.length > 0 ? articles : fallbackArticles
+	$: displayArticles = (articles.length > 0 ? articles : fallbackArticles).slice(0, 4)
 </script>
 
 <section aria-labelledby={label_id}>
-	<UnderlinedTitle id={label_id}>Nos publications</UnderlinedTitle>
+	<UnderlinedTitle id={label_id}>Nos newsletters</UnderlinedTitle>
 	<div class="articles-grid">
 		{#each displayArticles as article (article.id)}
 			<ArticleCard
@@ -68,10 +72,7 @@
 		{/each}
 	</div>
 	<div class="buttons-row">
-		<Button href="https://pauseia.substack.com/">Voir tous les articles</Button>
-		<Button alt href="https://pauseia.substack.com/subscribe" target="_blank">
-			S'abonner au blog
-		</Button>
+		<Button href="/newsletters">Voir toutes les newsletters</Button>
 	</div>
 </section>
 
@@ -91,10 +92,6 @@
 		flex-wrap: wrap;
 		gap: 1rem;
 		justify-content: center;
-	}
-
-	.buttons-row :global(a.alt) {
-		border: 2px solid var(--text);
 	}
 
 	@media (min-width: 640px) {
