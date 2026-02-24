@@ -7,6 +7,8 @@
 	import Footer from '$components/Footer.svelte'
 	import Header from '$components/Header.svelte'
 	// import Toc from '$components/Toc.svelte'
+	import { bannerStore } from '$lib/stores/banner'
+	import { onMount } from 'svelte'
 
 	import '@fontsource/ibm-plex-sans/200.css' // extra-light
 	import '@fontsource/ibm-plex-sans/400.css' // regular
@@ -19,6 +21,21 @@
 	// export let data
 
 	$: bgWhite = $page.url.pathname == '/'
+
+	// Fetch banner from Notion API on all pages
+	onMount(async () => {
+		try {
+			const res = await fetch('/api/banner')
+			if (res.ok) {
+				const banner = await res.json()
+				if (banner) {
+					bannerStore.set(banner)
+				}
+			}
+		} catch {
+			// Silently fall back to default banner
+		}
+	})
 </script>
 
 <h2 style="width: 0; height: 0; margin: 0; padding: 0; visibility: hidden;">(Top)</h2>
