@@ -149,75 +149,14 @@
 			</div>
 
 			<div class="sidebar-links">
-				{#each navGroups as group}
-					<div class="sidebar-section">
-						<!-- svelte-ignore a11y-no-static-element-interactions -->
-						<div
-							class="sidebar-section-header"
-							role="button"
-							tabindex="0"
-							aria-expanded={expandedSection === group.id}
-							on:click={() => toggleSection(group.id)}
-							on:keydown={(e) => e.key === 'Enter' && toggleSection(group.id)}
-						>
-							<h2>{group.label}</h2>
-							<svg
-								class="section-chevron"
-								class:rotated={expandedSection === group.id}
-								width="16"
-								height="16"
-								viewBox="0 0 16 16"
-								fill="none"
-								aria-hidden="true"
-							>
-								<path
-									d="M3 6L8 11L13 6"
-									stroke="currentColor"
-									stroke-width="2"
-									stroke-linecap="round"
-									stroke-linejoin="round"
-								/>
-							</svg>
-						</div>
-
-						{#if expandedSection === group.id}
-							<div class="sidebar-subsection">
-								{#each group.items as item}
-									<a
-										href={item.href}
-										on:click={closeMenu}
-										target={item.external ? '_blank' : undefined}
-										rel={item.external ? 'noopener noreferrer' : undefined}
-									>
-										{item.label}
-										{#if item.external}
-											<svg
-												class="ext-icon"
-												width="12"
-												height="12"
-												viewBox="0 0 12 12"
-												fill="none"
-												aria-hidden="true"
-											>
-												<path
-													d="M7 1h4v4M11 1L5.5 6.5M4 3H2a1 1 0 00-1 1v6a1 1 0 001 1h6a1 1 0 001-1V9"
-													stroke="currentColor"
-													stroke-width="1.5"
-													stroke-linecap="round"
-													stroke-linejoin="round"
-												/>
-											</svg>
-										{/if}
-									</a>
-								{/each}
-							</div>
-						{/if}
-					</div>
-				{/each}
-
-				<div class="sidebar-divider"></div>
-				<a href="/dons" class="sidebar-cta" on:click={closeMenu}>Faire un don</a>
-				<a href="/rejoindre" class="sidebar-join" on:click={closeMenu}>Nous rejoindre</a>
+				<a href="/qui-sommes-nous" on:click={() => (open = !open)}><h2>A propos</h2></a>
+				<a href="/dangers" on:click={() => (open = !open)}><h2>Dangers</h2></a>
+				<a href="/propositions" on:click={() => (open = !open)}><h2>Propositions</h2></a>
+				<a href="/agir" on:click={() => (open = !open)}><h2>Agir</h2></a>
+				<a href="/campagnes" on:click={() => (open = !open)}><h2>Campagnes</h2></a>
+				<a href="/groupes-locaux" on:click={() => (open = !open)}><h2>Groupes locaux</h2></a>
+				<a href="/dons" on:click={() => (open = !open)}><h2>Dons</h2></a>
+				<a href="/rejoindre" on:click={() => (open = !open)}><h2>Nous rejoindre</h2></a>
 			</div>
 		</div>
 	</nav>
