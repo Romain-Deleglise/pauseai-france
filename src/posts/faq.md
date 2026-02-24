@@ -22,7 +22,7 @@ original:
 ## Sommaire
 
 - [Qui êtes-vous ?](#accordion1)
-- [Qu'est-ce que le problème d'alignement et pourquoi est-il si difficile ?](#accordion2)
+- [Qu'est-ce que le problème de l'alignement et pourquoi est-il si difficile ?](#accordion2)
 - [Les IA actuelles montrent-elles déjà des comportements préoccupants ?](#accordion3)
 - [Quelle est la probabilité que l'apparition d'une superintelligence ait de graves conséquences ?](#accordion4)
 - [Combien de temps nous reste-t-il ?](#accordion5)
@@ -32,7 +32,7 @@ original:
 - [Croyez-vous que ChatGPT va tous nous tuer ?](#accordion9)
 - [Un moratoire ne risque-t-il pas d'aggraver les choses ?](#accordion10)
 - [Un moratoire est-il possible ?](#accordion11)
-- [L'IA ne pourrait-elle pas aider à résoudre le problème d'alignement ?](#accordion12)
+- [L'IA ne pourrait-elle pas aider à résoudre le problème de l'alignement ?](#accordion12)
 - [Que font OpenAI, Google et les autres entreprises d'IA ?](#accordion13)
 - [Et la Chine ?](#accordion14)
 - [Les entreprises d'IA prétendent-elles que le risque existentiel est réel pour nous manipuler ?](#accordion15)
@@ -56,9 +56,9 @@ Bien que nous soyons en relation avec [PauseAI Global](https://pauseai.info/), n
 
 Vous pouvez nous rejoindre sur [Discord](https://discord.gg/vyXGd7AeGc) (le coeur de nos discussions et actions), [Twitter](https://twitter.com/pause_ia), [Facebook](https://www.facebook.com/Pause.IA), [TikTok](https://www.tiktok.com/@pause_ia), [LinkedIn](https://www.linkedin.com/company/pause-ia/), [YouTube](https://www.youtube.com/@Pause_IA), [Instagram](https://www.instagram.com/pause_ia) et [Threads](https://www.threads.net/@pause_ia). Vous pouvez également nous contacter par mail à [contact@pauseia.fr](mailto:contact@pauseia.fr).
 
-### Qu'est-ce que le problème d'alignement et pourquoi est-il si difficile ?
+### Qu'est-ce que le problème de l'alignement et pourquoi est-il si difficile ?
 
-Le problème d'alignement est la question centrale de la sécurité de l'IA : **comment s'assurer qu'un système d'IA très capable poursuit des objectifs réellement alignés avec le bien humain ?**
+Le problème de l'alignement est la question centrale de la sécurité de l'IA : **comment s'assurer qu'un système d'IA très capable poursuit des objectifs réellement alignés avec le bien humain ?**
 
 Ce n'est pas un problème d'ingénierie ordinaire, et voici pourquoi :
 
@@ -117,7 +117,7 @@ C'est probablement la question la plus importante pour comprendre la situation a
 - **[Biais de normalité.](https://en.wikipedia.org/wiki/Normalcy_bias)** Nos cerveaux sont câblés pour supposer que l'avenir ressemblera au passé. Les événements sans précédent sont systématiquement sous-évalués, même face à des données claires.
 - **[Conformisme social.](https://en.wikipedia.org/wiki/Asch_conformity_experiments)** Si personne autour de nous ne panique, notre cerveau en conclut que la situation est gérable. C'est une heuristique habituellement utile mais qui échoue face à des risques sans précédent — précisément parce que l'absence de précédent est la raison pour laquelle personne ne panique.
 - **[Raisonnement motivé.](https://en.wikipedia.org/wiki/Motivated_reasoning)** Le cerveau humain ne fonctionne pas comme un processeur logique. Il part de la conclusion émotionnellement préférée et cherche des justifications. La conclusion « tout va bien » est émotionnellement préférée, donc le cerveau la défend.
-- **Complexité et abstraction.** Le problème d'alignement est techniquement complexe. Il n'y a pas d'image simple qui le rende immédiatement tangible, contrairement à une bombe nucléaire ou un astéroïde.
+- **Complexité et abstraction.** Le problème de l'alignement est techniquement complexe. Il n'y a pas d'image simple qui le rende immédiatement tangible, contrairement à une bombe nucléaire ou un astéroïde.
 
 Ces biais sont documentés par des décennies de recherche en psychologie cognitive ([Kahneman](https://fr.wikipedia.org/wiki/Daniel_Kahneman), [Haidt](https://en.wikipedia.org/wiki/Jonathan_Haidt), [Asch](https://fr.wikipedia.org/wiki/Exp%C3%A9rience_de_Asch)). Ce n'est pas une critique — c'est un constat qui nous concerne tous.
 
@@ -137,7 +137,7 @@ Non. Nous voulons uniquement interdire le développement des plus gros systèmes
 
 Non, nous ne croyons pas que les modèles actuels représentent un risque existentiel direct. Mais ils montrent déjà des [comportements préoccupants](#accordion3) — alignment faking, scheming, reward hacking — même s'ils ne sont pas encore directement dangereux.
 
-Le danger n'est pas qu'un modèle spécifique « nous tue », mais que la trajectoire actuelle de développement — sans solution au problème d'alignement, dans un contexte de course effrénée entre entreprises — mène à une catastrophe. Si nous poursuivons le développement de systèmes toujours plus puissants sans résoudre ce problème fondamental, nous atteindrons un point de non-retour où l'un d'eux deviendra [une menace existentielle](/dangers/pour-l'humanite).
+Le danger n'est pas qu'un modèle spécifique « nous tue », mais que la trajectoire actuelle de développement — sans solution au problème de l'alignement, dans un contexte de course effrénée entre entreprises — mène à une catastrophe. Si nous poursuivons le développement de systèmes toujours plus puissants sans résoudre ce problème fondamental, nous atteindrons un point de non-retour où l'un d'eux deviendra [une menace existentielle](/dangers/pour-l'humanite).
 
 ### Un moratoire ne risque-t-il pas d'aggraver les choses ?
 
@@ -149,7 +149,7 @@ L'émergence d'une superintelligence n'est pas inévitable. Sa création nécess
 
 PauseAI Global : [en savoir plus sur la faisabilité d'un moratoire](https://pauseai.info/feasibility)
 
-### L'IA ne pourrait-elle pas aider à résoudre le problème d'alignement ?
+### L'IA ne pourrait-elle pas aider à résoudre le problème de l'alignement ?
 
 En théorie, oui. Les systèmes d'IA actuels peuvent déjà assister la recherche en [interprétabilité](https://www.anthropic.com/research/mapping-mind-language-model) et en « [red teaming](https://en.wikipedia.org/wiki/Red_team) » (tests adversariaux). C'est d'ailleurs un des scénarios de survie les plus souvent évoqués.
 
