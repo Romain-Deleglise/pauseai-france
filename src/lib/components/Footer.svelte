@@ -101,6 +101,7 @@
 			<a href="/faq">FAQ</a>
 			<a href="/dangers">Dangers</a>
 			<a href="/propositions">Propositions</a>
+			<a href="/newsletters">Newsletters</a>
 			<a href="https://pauseia.substack.com/">Blog</a>
 			<a href="/agir">Agir</a>
 			<a href="/dons">Donner</a>
