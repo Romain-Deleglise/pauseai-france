@@ -61,7 +61,12 @@
 	}
 
 	.details {
-		padding: 1rem 0.75rem 1.5rem 0.75rem;
+		padding: 1rem 1.25rem 1.5rem 1.25rem;
+		margin: 0 0.25rem 0.75rem 0.25rem;
+		background-color: var(--brand-light, #fff5e8);
+		border-radius: 0.5rem;
+		border-left: 3px solid var(--brand, #ff9416);
+		text-align: justify;
 	}
 
 	.icon {
