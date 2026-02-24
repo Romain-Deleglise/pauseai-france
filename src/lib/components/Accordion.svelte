@@ -55,7 +55,14 @@
 	}
 
 	.details {
-		padding: 2rem 0 1.5rem 0;
+		padding: 1rem 1.5rem 1.5rem 1.5rem;
+		margin: 0.25rem 0.5rem 1rem 0.5rem;
+		background-color: white;
+		border-radius: 0.75rem;
+		box-shadow:
+			0 1px 3px rgba(0, 0, 0, 0.08),
+			0 4px 12px rgba(0, 0, 0, 0.06);
+		text-align: justify;
 	}
 
 	.icon {
