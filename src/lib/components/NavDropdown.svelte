@@ -153,17 +153,11 @@
 
 	.menu {
 		position: absolute;
-		top: calc(100% + 0.75rem);
+		top: 100%;
 		left: 50%;
 		transform: translateX(-50%) translateY(-6px);
-		background: white;
-		border: 1px solid rgba(0, 0, 0, 0.08);
-		border-radius: 0.75rem;
-		box-shadow:
-			0 8px 24px rgba(0, 0, 0, 0.12),
-			0 2px 8px rgba(0, 0, 0, 0.06);
 		min-width: 15rem;
-		padding: 0.4rem;
+		padding: 0.75rem 0 0;
 		z-index: 200;
 		opacity: 0;
 		visibility: hidden;
@@ -174,11 +168,25 @@
 		pointer-events: none;
 	}
 
+	/* Inner box with visual styling */
+	.menu::after {
+		content: '';
+		position: absolute;
+		inset: 0.75rem 0 0;
+		background: white;
+		border: 1px solid rgba(0, 0, 0, 0.08);
+		border-radius: 0.75rem;
+		box-shadow:
+			0 8px 24px rgba(0, 0, 0, 0.12),
+			0 2px 8px rgba(0, 0, 0, 0.06);
+		z-index: -1;
+	}
+
 	/* Small arrow pointing up */
 	.menu::before {
 		content: '';
 		position: absolute;
-		top: -6px;
+		top: calc(0.75rem - 6px);
 		left: 50%;
 		transform: translateX(-50%);
 		width: 12px;
