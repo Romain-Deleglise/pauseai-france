@@ -1,5 +1,6 @@
 <script lang="ts">
 	import NavLink from '$components/Navlink.svelte'
+	import NavDropdown from '$components/NavDropdown.svelte'
 	import Logo from '$components/Logo.svelte'
 	import { page } from '$app/stores'
 	import Button from '$components/Button.svelte'
@@ -14,11 +15,62 @@
 	$: onEmploiePage = /^\/emploi-ia(?:\/|$)/.test($page.url.pathname)
 
 	let open = false
+	let expandedSection: string | null = null
 	// Workaround to trigger transitions on render
 	let mounted = false
 	onMount(() => {
 		mounted = true
 	})
+
+	function closeMenu() {
+		open = false
+		expandedSection = null
+	}
+
+	function toggleSection(section: string) {
+		expandedSection = expandedSection === section ? null : section
+	}
+
+	// Navigation groups — modify here to add/remove pages from the nav
+	const navGroups = [
+		{
+			id: 'comprendre',
+			label: 'Comprendre',
+			items: [
+				{ href: '/dangers', label: "Les dangers de l'IA" },
+				{ href: '/faq', label: 'FAQ' },
+				{ href: '/videos', label: 'Vidéos' }
+			]
+		},
+		{
+			id: 'agir',
+			label: 'Agir',
+			items: [
+				{ href: '/agir', label: 'Comment agir ?' },
+				{ href: '/groupes-locaux', label: 'Groupes locaux' }
+			]
+		},
+		{
+			id: 'campagnes',
+			label: 'Campagnes',
+			items: [
+				{ href: '/campagnes', label: 'Toutes nos campagnes' },
+				{ href: '/sommet-ia-2026', label: 'Sommet IA 2026' },
+				{ href: '/municipales-2026', label: 'Municipales 2026' },
+				{ href: '/senat2025', label: 'Sénat 2025' }
+			]
+		},
+		{
+			id: 'apropos',
+			label: 'À propos',
+			items: [
+				{ href: '/qui-sommes-nous', label: 'Qui sommes-nous ?' },
+				{ href: '/propositions', label: 'Nos propositions' },
+				{ href: '/presse', label: 'Espace presse' },
+				{ href: 'https://pauseia.substack.com/', label: 'Blog', external: true }
+			]
+		}
+	]
 </script>
 
 <Banner visible={$bannerStore.visible}>
@@ -42,13 +94,10 @@
 
 		<div class="nav-right">
 			<div class="nav-links">
-				<NavLink href="/qui-sommes-nous">A propos</NavLink>
-				<NavLink href="/dangers">Dangers</NavLink>
-				<NavLink href="/propositions">Propositions</NavLink>
-				<NavLink href="/agir">Agir</NavLink>
-				<NavLink href="/campagnes">Campagnes</NavLink>
-				<NavLink href="/groupes-locaux">Groupes locaux</NavLink>
-				<NavLink href="/dons">Donner</NavLink>
+				{#each navGroups as group}
+					<NavDropdown label={group.label} items={group.items} />
+				{/each}
+				<NavLink href="/dons" c2a>Donner</NavLink>
 				<Button href="/rejoindre" alt={onHomepage}>Rejoindre</Button>
 			</div>
 			<button aria-label="Open mobile menu" class="hamburger" on:click={() => (open = !open)}>
@@ -66,12 +115,13 @@
 			</button>
 		</div>
 
+		<!-- Mobile/tablet sidebar -->
 		<div class="sidebar" class:open>
 			<div class="sidebar-head">
-				<a href="/" class="logo">
+				<a href="/" class="logo" on:click={closeMenu}>
 					<Logo animate={onHomepage} fill_circle="white" fill_ai="white" />
 				</a>
-				<button aria-label="Close mobile menu" class="hamburger" on:click={() => (open = !open)}>
+				<button aria-label="Close mobile menu" class="hamburger" on:click={closeMenu}>
 					<svg
 						width="24"
 						height="24"
@@ -97,16 +147,77 @@
 					</svg>
 				</button>
 			</div>
+
 			<div class="sidebar-links">
-				<a href="/qui-sommes-nous" on:click={() => (open = !open)}><h2>A propos</h2></a>
-				<a href="/dangers" on:click={() => (open = !open)}><h2>Dangers</h2></a>
-				<a href="/propositions" on:click={() => (open = !open)}><h2>Propositions</h2></a>
-				<a href="/agir" on:click={() => (open = !open)}><h2>Agir</h2></a>
-				<a href="/campagnes" on:click={() => (open = !open)}><h2>Campagnes</h2></a>
-				<a href="/groupes-locaux" on:click={() => (open = !open)}><h2>Groupes locaux</h2></a>
-				<a href="https://pauseia.substack.com/" on:click={() => (open = !open)}><h2>Blog</h2></a>
-				<a href="/dons" on:click={() => (open = !open)}><h2>Dons</h2></a>
-				<a href="/rejoindre" on:click={() => (open = !open)}><h2>Nous rejoindre</h2></a>
+				{#each navGroups as group}
+					<div class="sidebar-section">
+						<!-- svelte-ignore a11y-no-static-element-interactions -->
+						<div
+							class="sidebar-section-header"
+							role="button"
+							tabindex="0"
+							aria-expanded={expandedSection === group.id}
+							on:click={() => toggleSection(group.id)}
+							on:keydown={(e) => e.key === 'Enter' && toggleSection(group.id)}
+						>
+							<h2>{group.label}</h2>
+							<svg
+								class="section-chevron"
+								class:rotated={expandedSection === group.id}
+								width="16"
+								height="16"
+								viewBox="0 0 16 16"
+								fill="none"
+								aria-hidden="true"
+							>
+								<path
+									d="M3 6L8 11L13 6"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+								/>
+							</svg>
+						</div>
+
+						{#if expandedSection === group.id}
+							<div class="sidebar-subsection">
+								{#each group.items as item}
+									<a
+										href={item.href}
+										on:click={closeMenu}
+										target={item.external ? '_blank' : undefined}
+										rel={item.external ? 'noopener noreferrer' : undefined}
+									>
+										{item.label}
+										{#if item.external}
+											<svg
+												class="ext-icon"
+												width="12"
+												height="12"
+												viewBox="0 0 12 12"
+												fill="none"
+												aria-hidden="true"
+											>
+												<path
+													d="M7 1h4v4M11 1L5.5 6.5M4 3H2a1 1 0 00-1 1v6a1 1 0 001 1h6a1 1 0 001-1V9"
+													stroke="currentColor"
+													stroke-width="1.5"
+													stroke-linecap="round"
+													stroke-linejoin="round"
+												/>
+											</svg>
+										{/if}
+									</a>
+								{/each}
+							</div>
+						{/if}
+					</div>
+				{/each}
+
+				<div class="sidebar-divider"></div>
+				<a href="/dons" class="sidebar-cta" on:click={closeMenu}>Faire un don</a>
+				<a href="/rejoindre" class="sidebar-join" on:click={closeMenu}>Nous rejoindre</a>
 			</div>
 		</div>
 	</nav>
@@ -127,28 +238,123 @@
 		flex-direction: column;
 	}
 
+	/* Sidebar sections */
 	.sidebar-links {
 		display: flex;
 		flex-direction: column;
 	}
 
-	.sidebar-links a {
+	.sidebar-section {
+		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+	}
+
+	.sidebar-section-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		cursor: pointer;
+		padding: 0.25rem 0;
+		user-select: none;
+	}
+
+	.sidebar-section-header:hover {
+		opacity: 0.8;
+	}
+
+	.sidebar-section-header h2 {
+		margin: 0;
+	}
+
+	.section-chevron {
+		transition: transform 0.2s ease;
+		flex-shrink: 0;
+		opacity: 0.7;
+	}
+
+	.section-chevron.rotated {
+		transform: rotate(180deg);
+	}
+
+	.sidebar-subsection {
+		display: flex;
+		flex-direction: column;
+		gap: 0.15rem;
+		padding: 0.25rem 0 0.75rem 1rem;
+	}
+
+	.sidebar-subsection a {
+		display: flex;
+		align-items: center;
+		gap: 0.375rem;
 		text-decoration: none;
+		font-size: 1.1rem;
+		font-family: var(--font-heading);
+		font-weight: 500;
+		color: rgba(0, 0, 0, 0.8);
+		padding: 0.35rem 0;
+		transition: color 0.15s;
 	}
 
-	.sidebar-links a:hover {
-		color: white;
+	.sidebar-subsection a:hover {
+		color: black;
 	}
 
-	.sidebar-links h2 {
+	.ext-icon {
+		opacity: 0.5;
+		flex-shrink: 0;
+	}
+
+	.sidebar-divider {
+		height: 1px;
+		background: rgba(0, 0, 0, 0.15);
+		margin: 1.25rem 0 1rem;
+	}
+
+	.sidebar-cta {
+		display: block;
+		text-decoration: none;
 		font-size: 1.5rem;
-		margin-bottom: 2rem;
+		font-family: var(--font-heading);
+		font-weight: 700;
+		padding: 0.25rem 0;
+		margin-bottom: 1rem;
+		color: black;
+		transition: opacity 0.15s;
+	}
+
+	.sidebar-cta:hover {
+		opacity: 0.7;
+	}
+
+	.sidebar-join {
+		display: block;
+		text-decoration: none;
+		background: black;
+		color: white;
+		text-align: center;
+		padding: 0.75rem 1.5rem;
+		border-radius: 0.5rem;
+		font-family: var(--font-heading);
+		font-weight: 700;
+		font-size: 1.25rem;
+		transition: opacity 0.15s;
+	}
+
+	.sidebar-join:hover {
+		opacity: 0.85;
 	}
 
 	.sidebar-head {
 		display: flex;
 		justify-content: space-between;
 		margin-bottom: 2rem;
+	}
+
+	.sidebar-links h2 {
+		font-size: 1.5rem;
+		margin-bottom: 0;
+		margin-top: 0;
+		padding: 0.5rem 0;
 	}
 
 	.open {
@@ -177,7 +383,7 @@
 		display: none;
 		flex-wrap: wrap;
 		justify-content: center;
-		align-items: stretch;
+		align-items: center;
 		gap: 1rem;
 	}
 
