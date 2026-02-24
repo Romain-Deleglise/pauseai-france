@@ -31,7 +31,7 @@ find "$SCRIPT_DIR/src/posts" -type f -name "*.md" | while read -r file; do
         original_url=$(extract_nested_property "$file" "original" "url")
         
         # Format the file path for markdown
-        file_path=$(realpath --relative-to="$SCRIPT_DIR" "$file")
+        file_path="${file#$SCRIPT_DIR/}"
         
         # Output the information line for sorting
         echo "- [$current_title]($file_path) - Original: [$original_title]($original_url)"
