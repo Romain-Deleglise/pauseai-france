@@ -67,6 +67,7 @@
 				{ href: '/qui-sommes-nous', label: 'Qui sommes-nous ?' },
 				{ href: '/propositions', label: 'Nos propositions' },
 				{ href: '/presse', label: 'Espace presse' },
+				{ href: '/newsletters', label: 'Newsletters' },
 				{ href: 'https://pauseia.substack.com/', label: 'Blog', external: true }
 			]
 		}
