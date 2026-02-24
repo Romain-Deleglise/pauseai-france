@@ -6,6 +6,12 @@ interface NotionRichText {
 	plain_text: string
 }
 
+interface NotionFile {
+	type: 'file' | 'external'
+	file?: { url: string; expiry_time?: string }
+	external?: { url: string }
+}
+
 interface NotionProperty {
 	type: string
 	title?: NotionRichText[]
@@ -15,6 +21,7 @@ interface NotionProperty {
 	checkbox?: boolean
 	select?: { name: string }
 	date?: { start: string; end?: string | null }
+	files?: NotionFile[]
 }
 
 interface NotionPage {
@@ -40,11 +47,25 @@ export interface Video {
 export interface Article {
 	id: string
 	title: string
+	slug: string
 	description: string
 	url: string
 	type: 'Article' | 'Newsletter'
 	order: number
 	visible: boolean
+	image?: string
+	date?: string
+}
+
+function generateSlug(title: string): string {
+	return title
+		.toLowerCase()
+		.normalize('NFD')
+		.replace(/[\u0300-\u036f]/g, '') // Remove diacritics
+		.replace(/[^a-z0-9\s-]/g, '') // Remove special chars
+		.replace(/\s+/g, '-') // Spaces to hyphens
+		.replace(/-+/g, '-') // Collapse multiple hyphens
+		.replace(/^-|-$/g, '') // Trim hyphens
 }
 
 export interface Report {
@@ -136,6 +157,18 @@ function getSelect(property: NotionProperty | undefined): string {
 function getDate(property: NotionProperty | undefined): string {
 	if (!property) return ''
 	return property.date?.start || ''
+}
+
+// Helper to extract file URL from Notion files/attachments
+function getFileUrl(property: NotionProperty | undefined): string {
+	if (!property) return ''
+	// Support both "files" type (attachments) and "url" type
+	if (property.files && property.files.length > 0) {
+		const file = property.files[0]
+		if (file.type === 'file' && file.file?.url) return file.file.url
+		if (file.type === 'external' && file.external?.url) return file.external.url
+	}
+	return property.url || ''
 }
 
 // Validation helpers
@@ -308,14 +341,18 @@ export async function getArticles(): Promise<Article[]> {
 
 			const typeValue = getSelect(page.properties['Type'])
 
+			const title = getText(page.properties['Titre'])
 			const article: Article = {
 				id: page.id,
-				title: getText(page.properties['Titre']),
+				title,
+				slug: generateSlug(title),
 				description: getText(page.properties['Description']),
 				url: getUrl(page.properties['URL']),
 				type: typeValue === 'Newsletter' ? 'Newsletter' : 'Article',
 				order: getNumber(page.properties['Ordre']),
-				visible
+				visible,
+				image: getFileUrl(page.properties['Image']) || undefined,
+				date: getDate(page.properties['Date de publication']) || undefined
 			}
 
 			// Validate before returning
@@ -325,6 +362,247 @@ export async function getArticles(): Promise<Article[]> {
 	)
 
 	return articles.filter((a): a is Article => a !== null)
+}
+
+export async function getNewsletters(): Promise<Article[]> {
+	const articles = await getArticles()
+	return articles.filter((a) => a.type === 'Newsletter')
+}
+
+export async function getNewsletterBySlug(slug: string): Promise<Article | null> {
+	const newsletters = await getNewsletters()
+	return newsletters.find((n) => n.slug === slug) || null
+}
+
+/**
+ * Fetches newsletter HTML content from a CiviCRM mailing URL and extracts the body.
+ * Returns cleaned HTML string, or null if fetch fails.
+ */
+export async function fetchNewsletterContent(url: string): Promise<string | null> {
+	try {
+		const response = await fetch(url, {
+			headers: {
+				'User-Agent':
+					'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+				Accept: 'text/html,application/xhtml+xml'
+			}
+		})
+
+		if (!response.ok) {
+			console.error(`[Newsletter] HTTP ${response.status} for ${url}`)
+			return null
+		}
+
+		const html = await response.text()
+		console.log(`[Newsletter] Fetched ${html.length} chars from ${url}`)
+
+		const content = extractMailingContent(html)
+
+		// Check if extracted content has meaningful text (strip tags and check length)
+		const textOnly = content.replace(/<[^>]*>/g, '').trim()
+		console.log(
+			`[Newsletter] Extracted content: ${content.length} chars HTML, ${textOnly.length} chars text`
+		)
+
+		if (textOnly.length < 100) {
+			console.warn(
+				`[Newsletter] Content too short (${textOnly.length} chars text), raw HTML preview:`
+			)
+			console.warn(html.substring(0, 2000))
+			console.warn('--- end preview ---')
+		}
+
+		return content
+	} catch (error) {
+		console.error('[Newsletter] Failed to fetch content:', error)
+		return null
+	}
+}
+
+/**
+ * Extracts the newsletter body from a CiviCRM mailing view HTML page.
+ * Tries multiple strategies to find the content.
+ */
+function extractMailingContent(html: string): string {
+	// Strategy 1: Look for CiviCRM mailing body wrapper
+	const bodyPatterns = [
+		// CiviCRM mailing body container
+		/<div[^>]*class="[^"]*crm-mailing-body[^"]*"[^>]*>([\s\S]*?)<\/div>\s*(?:<div[^>]*class="[^"]*crm-mailing-footer|$)/i,
+		// The actual email content is often in a centered table
+		/(<table[^>]*width="[56]\d{2}"[^>]*>[\s\S]*?<\/table>)\s*(?:<\/(?:div|td|body)>)/i,
+		// CiviCRM view-content wrapper
+		/<div[^>]*class="[^"]*view-content[^"]*"[^>]*>([\s\S]*?)<\/div>\s*<\/div>/i,
+		// Generic content wrapper in CiviCRM pages
+		/<div[^>]*id="[^"]*content[^"]*"[^>]*>([\s\S]*?)<\/div>\s*(?:<\/div>|<div[^>]*id="footer)/i
+	]
+
+	for (const pattern of bodyPatterns) {
+		const match = html.match(pattern)
+		if (match && match[1]) {
+			const cleaned = cleanContent(match[1])
+			const textOnly = cleaned.replace(/<[^>]*>/g, '').trim()
+			if (textOnly.length > 100) {
+				console.log(
+					`[Newsletter] Extraction strategy 1 matched (pattern), text length: ${textOnly.length}`
+				)
+				return cleaned
+			}
+		}
+	}
+
+	// Strategy 2: Extract full <body> content and clean it
+	const bodyMatch = html.match(/<body[^>]*>([\s\S]*)<\/body>/i)
+	if (bodyMatch && bodyMatch[1]) {
+		console.log(`[Newsletter] Extraction strategy 2: full body (${bodyMatch[1].length} chars)`)
+		return cleanContent(bodyMatch[1])
+	}
+
+	// Strategy 3: If no body tag, the response might already be the content
+	if (html.length > 200 && !html.includes('<!DOCTYPE')) {
+		console.log(`[Newsletter] Extraction strategy 3: raw content`)
+		return cleanContent(html)
+	}
+
+	console.warn(`[Newsletter] No extraction strategy matched`)
+	return html
+}
+
+/**
+ * Cleans extracted HTML content by removing CiviCRM chrome,
+ * scripts, and fixing relative URLs.
+ */
+function cleanContent(html: string): string {
+	let cleaned = html
+
+	// Remove script tags
+	cleaned = cleaned.replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
+
+	// Remove style tags
+	cleaned = cleaned.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
+
+	// Remove HTML comments
+	cleaned = cleaned.replace(/<!--[\s\S]*?-->/g, '')
+
+	// Remove head tag content if present
+	cleaned = cleaned.replace(/<head[^>]*>[\s\S]*?<\/head>/gi, '')
+
+	// Remove link, meta tags
+	cleaned = cleaned.replace(/<(?:link|meta)[^>]*\/?>/gi, '')
+
+	// Remove CiviCRM navigation/chrome elements
+	cleaned = cleaned.replace(/<div[^>]*id="[^"]*crm-navigation[^"]*"[^>]*>[\s\S]*?<\/div>/gi, '')
+	cleaned = cleaned.replace(/<div[^>]*class="[^"]*crm-breadcrumb[^"]*"[^>]*>[\s\S]*?<\/div>/gi, '')
+
+	// Remove unsubscribe/opt-out links section
+	cleaned = cleaned.replace(/<[^>]*class="[^"]*opt-out[^"]*"[^>]*>[\s\S]*?<\/[^>]+>/gi, '')
+
+	// Remove CiviCRM form elements
+	cleaned = cleaned.replace(/<form[^>]*>[\s\S]*?<\/form>/gi, '')
+
+	// Remove hidden elements
+	cleaned = cleaned.replace(
+		/<[^>]*style="[^"]*display\s*:\s*none[^"]*"[^>]*>[\s\S]*?<\/[^>]+>/gi,
+		''
+	)
+
+	// --- Remove CiviCRM mailing footer ---
+	// Cut everything from the org signature/footer block onwards.
+	// Typical patterns: "Gérer mes préférences", org address, "Se désinscrire"
+	// Look for the footer starting with the org name + address pattern
+	const footerPatterns = [
+		// "Gérer mes préférences" and everything after
+		/[\s\S]*?G[ée]rer\s+mes\s+pr[ée]f[ée]rences[\s\S]*/i,
+		// Organization address block and everything after
+		/[\s\S]*?32\s+boulevard\s+de\s+Strasbourg[\s\S]*/i,
+		// "Se désinscrire" link and everything after
+		/[\s\S]*?[Ss]e\s+d[ée]sinscrire[\s\S]*/i
+	]
+
+	for (const pattern of footerPatterns) {
+		const match = cleaned.match(pattern)
+		if (match) {
+			// Find the position of the footer text and cut from a reasonable point before it
+			const footerText =
+				match[0].match(
+					/G[ée]rer\s+mes\s+pr[ée]f[ée]rences|32\s+boulevard\s+de\s+Strasbourg|[Ss]e\s+d[ée]sinscrire/i
+				)?.[0] || ''
+			const idx = cleaned.indexOf(footerText)
+			if (idx > 0) {
+				// Walk back to find the nearest table/div opening tag to cut cleanly
+				const before = cleaned.substring(0, idx)
+				// Find the last "Soutenir Pause IA" or similar section header before footer
+				const soutenirIdx = before.lastIndexOf('Soutenir Pause IA')
+				if (soutenirIdx > 0) {
+					cleaned = cleaned.substring(0, soutenirIdx)
+				} else {
+					// Just cut at the footer text position
+					cleaned = before
+				}
+				break
+			}
+		}
+	}
+
+	// Remove "View in browser" / "Lire dans le navigateur" text and links
+	cleaned = cleaned.replace(
+		/<a[^>]*>[^<]{0,100}(?:voir[^<]{0,30}navigateur|view[^<]{0,30}browser|lire[^<]{0,30}navigateur)[^<]{0,50}<\/a>/gi,
+		''
+	)
+
+	// Remove unsubscribe / "Se désinscrire" links (in case any remain)
+	cleaned = cleaned.replace(
+		/<a[^>]*>[^<]{0,100}(?:d[eé]sinscri|unsubscribe|opt.?out)[^<]{0,50}<\/a>/gi,
+		''
+	)
+
+	// Fix relative URLs to CiviCRM
+	cleaned = cleaned.replace(
+		/(?:src|href)="(?!http|mailto|#|data:)([^"]*)"/gi,
+		(_match, path: string) => {
+			const attr = _match.startsWith('src') ? 'src' : 'href'
+			return `${attr}="https://civicrm.pauseia.fr/${path.replace(/^\//, '')}"`
+		}
+	)
+
+	// --- Clean up spacing ---
+	// Strip inline height attributes from table elements (spacer rows)
+	cleaned = cleaned.replace(/(<(?:tr|td|th|table|div)[^>]*)\s+height="[^"]*"/gi, '$1')
+
+	// Strip inline style padding/margin/height that create excessive spacing
+	cleaned = cleaned.replace(/style="([^"]*)"/gi, (_match, styles: string) => {
+		const filtered = styles
+			.split(';')
+			.filter((s: string) => {
+				const prop = s.trim().toLowerCase()
+				// Remove excessive spacing properties
+				if (/^(padding|margin)(-top|-bottom)?\s*:/i.test(prop)) {
+					// Keep small values (less than 15px), remove large ones
+					const valueMatch = prop.match(/:\s*(\d+)/)
+					if (valueMatch && parseInt(valueMatch[1]) > 15) return false
+				}
+				if (/^(height|min-height|line-height)\s*:/i.test(prop)) {
+					const valueMatch = prop.match(/:\s*(\d+)/)
+					if (valueMatch && parseInt(valueMatch[1]) > 30) return false
+				}
+				return true
+			})
+			.join(';')
+		return filtered.trim() ? `style="${filtered}"` : ''
+	})
+
+	// Remove empty spacer elements (td/div/p with only &nbsp; or whitespace)
+	cleaned = cleaned.replace(/<(td|div|p|span)[^>]*>(\s|&nbsp;|&#160;|\u00a0)*<\/\1>/gi, '')
+
+	// Remove empty table rows
+	cleaned = cleaned.replace(/<tr[^>]*>\s*<\/tr>/gi, '')
+
+	// Remove <br> chains (more than 1 consecutive)
+	cleaned = cleaned.replace(/(<br\s*\/?\s*>\s*){2,}/gi, '<br>')
+
+	// Collapse multiple &nbsp;
+	cleaned = cleaned.replace(/(&nbsp;\s*){3,}/gi, ' ')
+
+	return cleaned.trim()
 }
 
 export async function getReports(): Promise<Report[]> {
