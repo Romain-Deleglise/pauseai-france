@@ -159,15 +159,6 @@ function getDate(property: NotionProperty | undefined): string {
 	return property.date?.start || ''
 }
 
-<<<<<<< claude/update-qui-sommes-nous-kZSqb
-// Helper to extract first file URL from files property
-function getFileUrl(property: NotionProperty | undefined): string {
-	if (!property || !property.files || property.files.length === 0) return ''
-	const file = property.files[0]
-	if (file.type === 'file' && file.file) return file.file.url
-	if (file.type === 'external' && file.external) return file.external.url
-	return ''
-=======
 // Helper to extract file URL from Notion files/attachments
 function getFileUrl(property: NotionProperty | undefined): string {
 	if (!property) return ''
@@ -178,7 +169,6 @@ function getFileUrl(property: NotionProperty | undefined): string {
 		if (file.type === 'external' && file.external?.url) return file.external.url
 	}
 	return property.url || ''
->>>>>>> main
 }
 
 // Validation helpers
