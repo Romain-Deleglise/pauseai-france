@@ -23,48 +23,33 @@
 	h2 {
 		margin-top: 0;
 		margin-bottom: 2rem;
+		padding-bottom: 1.25rem;
 		position: relative;
-		padding-left: 1rem;
 	}
 
-	/* Vertical accent bar on the left */
-	h1::before,
-	h2::before {
+	/* Full-width gradient line fading left-to-right */
+	h1::after,
+	h2::after {
 		content: '';
 		position: absolute;
+		bottom: 0;
 		left: 0;
-		top: 0.1em;
-		bottom: 0.1em;
-		width: 4px;
-		background: var(--underline-color);
+		right: 0;
+		height: 4px;
+		background: linear-gradient(to right, var(--underline-color) 0%, transparent 75%);
 		border-radius: 2px;
-	}
-
-	/* Refined text underline */
-	h1 span,
-	h2 span {
-		text-decoration: underline;
-		text-decoration-color: var(--underline-color);
-		text-decoration-thickness: 3px;
-		text-underline-offset: 5px;
 	}
 
 	@media (min-width: 640px) {
 		h1,
 		h2 {
-			padding-left: 1.25rem;
 			margin-bottom: 4rem;
+			padding-bottom: 1.5rem;
 		}
 
-		h1::before,
-		h2::before {
-			width: 5px;
-		}
-
-		h1 span,
-		h2 span {
-			text-decoration-thickness: 4px;
-			text-underline-offset: 7px;
+		h1::after,
+		h2::after {
+			height: 5px;
 		}
 	}
 </style>
