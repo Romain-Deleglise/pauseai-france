@@ -124,7 +124,7 @@
 		display: none;
 	}
 
-	/* --- Desktop : titre à gauche, pills en grille 2×2 à droite --- */
+	/* --- Desktop : titre à gauche, pills en ligne à droite --- */
 	@media (min-width: 768px) {
 		.tabs-header {
 			flex-direction: row;
@@ -134,23 +134,15 @@
 		}
 
 		ul {
-			display: grid;
-			grid-template-columns: 1fr 1fr;
-			gap: 0.5rem;
+			flex-wrap: wrap;
+			width: auto;
 			flex-shrink: 0;
-			width: 340px;
-		}
-
-		li {
-			display: flex;
+			justify-content: flex-end;
 		}
 
 		button {
-			width: 100%;
 			font-size: 0.95rem;
-			padding: 0.65rem 0.75rem;
-			white-space: normal;
-			text-align: center;
+			padding: 0.65rem 1.25rem;
 		}
 	}
 </style>
