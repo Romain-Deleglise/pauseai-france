@@ -7,23 +7,27 @@
 </script>
 
 <div class="tabs" {id}>
-	<ul role="tablist" aria-labelledby={label_id}>
-		{#each tabs as tab, i}
-			<li role="presentation">
-				<button
-					type="button"
-					role="tab"
-					class:active={active === tab}
-					on:click={() => (active = tab)}
-					aria-selected={active === tab}
-					aria-controls={`${id}-${i.toString()}`}
-					tabindex={active === tab ? 0 : -1}
-				>
-					<slot {tab}></slot>
-				</button>
-			</li>
-		{/each}
-	</ul>
+	<!-- Ligne titre + pills (côte à côte sur desktop, empilés sur mobile) -->
+	<div class="tabs-header">
+		<slot name="header" />
+		<ul role="tablist" aria-labelledby={label_id}>
+			{#each tabs as tab, i}
+				<li role="presentation">
+					<button
+						type="button"
+						role="tab"
+						class:active={active === tab}
+						on:click={() => (active = tab)}
+						aria-selected={active === tab}
+						aria-controls={`${id}-${i.toString()}`}
+						tabindex={active === tab ? 0 : -1}
+					>
+						<slot {tab}></slot>
+					</button>
+				</li>
+			{/each}
+		</ul>
+	</div>
 
 	{#each tabs as tab, i}
 		{#key active}
@@ -44,10 +48,17 @@
 </div>
 
 <style>
-	/* Pills horizontales, toujours visibles (wrap) — mobile comme desktop */
+	/* --- Mobile : titre puis pills empilées --- */
+	.tabs-header {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+		margin-bottom: 1.5rem;
+	}
+
 	ul {
 		padding: 0;
-		margin: 0 0 1.5rem;
+		margin: 0;
 		list-style: none;
 		display: flex;
 		flex-direction: row;
@@ -76,6 +87,7 @@
 			color 0.15s ease;
 		display: flex;
 		align-items: center;
+		justify-content: center;
 	}
 
 	button.active {
@@ -87,7 +99,6 @@
 		background: rgba(255, 148, 22, 0.2);
 	}
 
-	/* Animation d'entrée du panneau */
 	.panel {
 		animation: panelIn 0.2s ease;
 	}
@@ -109,15 +120,37 @@
 		}
 	}
 
-	/* Le titre du panel n'est pas nécessaire, l'onglet actif est déjà mis en valeur */
 	.panel-title {
 		display: none;
 	}
 
-	@media (min-width: 640px) {
+	/* --- Desktop : titre à gauche, pills en grille 2×2 à droite --- */
+	@media (min-width: 768px) {
+		.tabs-header {
+			flex-direction: row;
+			align-items: flex-start;
+			justify-content: space-between;
+			gap: 2.5rem;
+		}
+
+		ul {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 0.5rem;
+			flex-shrink: 0;
+			width: 340px;
+		}
+
+		li {
+			display: flex;
+		}
+
 		button {
-			font-size: 1rem;
-			padding: 0.65rem 1.25rem;
+			width: 100%;
+			font-size: 0.95rem;
+			padding: 0.65rem 0.75rem;
+			white-space: normal;
+			text-align: center;
 		}
 	}
 </style>

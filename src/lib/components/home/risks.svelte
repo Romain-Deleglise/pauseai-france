@@ -9,20 +9,20 @@
 
 <section aria-labelledby={label_id}>
 	<Fly>
-		<UnderlinedTitle id={label_id}>Les dangers</UnderlinedTitle>
-	</Fly>
-	<Fly>
 		<TabList
 			tabs={[
 				'Économiques et matériels',
 				'Pour les individus',
 				'Pour la société',
-				'Pour l’humanité'
+				'Pour l\u2019humanité'
 			]}
 			id="risks-tabs"
 			let:tab
 			{label_id}
 		>
+			<svelte:fragment slot="header">
+				<UnderlinedTitle id={label_id}>Les dangers</UnderlinedTitle>
+			</svelte:fragment>
 			{tab}
 			<svelte:fragment slot="panel" let:tab>
 				{#if tab === 'Économiques et matériels'}
@@ -47,12 +47,12 @@
 						conséquences tout aussi massives.
 					</p>
 					<p>
-						Nous devons faire preuve d’une vigilance accrue et mettre en place des régulations
+						Nous devons faire preuve d'une vigilance accrue et mettre en place des régulations
 						rigoureuses pour nous protéger.
 					</p>
 					<p>
-						Si vous souhaitez en savoir plus sur les risques de l’intelligence artificielle sur le
-						marché du travail, n’hésitez pas à visiter le site de notre groupe de travail <a
+						Si vous souhaitez en savoir plus sur les risques de l'intelligence artificielle sur le
+						marché du travail, n'hésitez pas à visiter le site de notre groupe de travail <a
 							href="/emploi-ia">Emploi IA.</a
 						>
 					</p>
@@ -69,7 +69,7 @@
 						une IA.
 					</p>
 					<p>
-						Cette évolution rapide révèle à quel point l’IA s’immisce dans notre quotidien, menace
+						Cette évolution rapide révèle à quel point l'IA s'immisce dans notre quotidien, menace
 						notre intimité, notre sécurité et notre bien-être. Chaque jour, nous risquons de voir
 						notre vie privée violée et nos <a href="https://arxiv.org/pdf/2403.14380"
 							>opinions manipulées par la désinformation</a
@@ -95,11 +95,11 @@
 						cœur même de notre société. Elle touche à la cohésion sociale et aux fondements de notre
 						démocratie. Nos processus démocratiques sont fragilisés par la polarisation et la
 						désinformation. Les biais raciaux s'exacerbent, <a href="/emploi-ia"
-							>l’automatisation des emplois se profile</a
+							>l'automatisation des emplois se profile</a
 						>, et l'ombre de nouvelles formes de guerre et de terrorisme plane sur nous.
 					</p>
 					<Button href="/dangers/pour-la-societe">En apprendre davantage</Button>
-				{:else if tab === 'Pour l’humanité'}
+				{:else if tab === 'Pour l\u2019humanité'}
 					<p>
 						OpenAI, DeepMind, Anthropic et d'autres géants technologiques investissent des milliards
 						de dollars dans la création d'une IA aux capacités surhumaines. Leurs dirigeants
