@@ -136,3 +136,17 @@
 		</TabList>
 	</Fly>
 </section>
+
+<style>
+	section {
+		background: var(--bg-subtle);
+		border-radius: 1.5rem;
+		padding: 2rem 1.5rem;
+	}
+
+	@media (min-width: 640px) {
+		section {
+			padding: 3rem 3.5rem;
+		}
+	}
+</style>
