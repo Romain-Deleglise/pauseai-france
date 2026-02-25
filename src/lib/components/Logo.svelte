@@ -72,8 +72,6 @@
 <style>
 	.logo {
 		overflow: visible;
-		height: 100%;
-		width: 100%;
 	}
 	.logo-circle {
 		transition: transform 0.1s ease-in-out;
