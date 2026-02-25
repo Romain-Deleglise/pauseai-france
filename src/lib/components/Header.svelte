@@ -38,8 +38,9 @@
 			label: 'Comprendre',
 			items: [
 				{ href: '/dangers', label: "Les dangers de l'IA" },
-				{ href: '/faq', label: 'FAQ' },
-				{ href: '/videos', label: 'Vidéos' }
+				{ href: '/newsletters', label: 'Newsletter' },
+				{ href: '/propositions', label: 'Nos propositions' },
+				{ href: 'https://pauseia.substack.com/', label: 'Blog', external: true }
 			]
 		},
 		{
@@ -314,17 +315,20 @@
 	.sidebar-cta {
 		display: block;
 		text-decoration: none;
-		font-size: 1.5rem;
+		text-align: center;
+		background: white;
+		color: black;
+		border-radius: 0.5rem;
+		padding: 0.75rem 1.5rem;
 		font-family: var(--font-heading);
 		font-weight: 700;
-		padding: 0.25rem 0;
-		margin-bottom: 1rem;
-		color: black;
+		font-size: 1.25rem;
+		margin-bottom: 0.75rem;
 		transition: opacity 0.15s;
 	}
 
 	.sidebar-cta:hover {
-		opacity: 0.7;
+		opacity: 0.85;
 	}
 
 	.sidebar-join {
