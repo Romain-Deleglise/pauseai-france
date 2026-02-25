@@ -1,13 +1,18 @@
 <script lang="ts">
 	import LeadershipCard from '$components/LeadershipCard.svelte'
 	import ScientificCouncilCard from '$components/ScientificCouncilCard.svelte'
-	import SupporterCard from '$components/WhoCard.svelte'
+	import WhoCard from '$components/WhoCard.svelte'
+	import Button from '$components/Button.svelte'
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
 	import FAQ from '$posts/qui-sommes-nous.md'
+	import type { TeamMember } from '$lib/notion'
+
+	export let teamMembers: TeamMember[] = []
 
 	const label_id = 'who-title'
 
-	const leadership = [
+	// Fallback data when Notion is not configured
+	const fallbackLeadership = [
 		{
 			name: 'Maxime Fournes',
 			role: 'Co-fondateur et Président',
@@ -40,7 +45,7 @@
 		}
 	]
 
-	const scientificCouncil = [
+	const fallbackScientificCouncil = [
 		{
 			name: 'Maxime Fournes',
 			job: 'Ingénieur et chercheur en IA',
@@ -53,7 +58,7 @@
 		}
 	]
 
-	const members = [
+	const fallbackMembers = [
 		{
 			name: 'Aurélia',
 			image: 'membres/aurelia.jpg',
@@ -120,63 +125,160 @@
 			job: ''
 		}
 	]
+
+	// Derive display data from Notion or fallback
+	$: hasNotionData = teamMembers.length > 0
+
+	$: leadership = hasNotionData
+		? teamMembers
+				.filter((m) => m.category === 'Direction')
+				.map((m) => ({ name: m.name, role: m.role, image: m.image || null }))
+		: fallbackLeadership
+
+	$: scientificCouncil = hasNotionData
+		? teamMembers
+				.filter((m) => m.category === 'Conseil scientifique')
+				.map((m) => ({ name: m.name, job: m.profession, image: m.image || null }))
+		: fallbackScientificCouncil
+
+	$: members = hasNotionData
+		? teamMembers
+				.filter((m) => m.category === 'Membre')
+				.map((m) => ({ name: m.name, job: m.profession, image: m.image || null }))
+		: fallbackMembers
 </script>
 
 <section aria-labelledby={label_id}>
 	<UnderlinedTitle id={label_id}>Qui sommes-nous ?</UnderlinedTitle>
-	<FAQ />
 
-	<h2 class="section-title">Direction</h2>
-	<div class="cards-grid leadership-grid">
-		{#each leadership as leader}
-			<LeadershipCard name={leader.name} role={leader.role} image={leader.image} />
-		{/each}
+	<div class="intro">
+		<FAQ />
+		<div class="contact-cta">
+			<Button href="mailto:contact@pauseia.fr">Nous contacter</Button>
+		</div>
 	</div>
 
-	<h2 class="section-title">Conseil scientifique</h2>
-	<div class="cards-grid council-grid">
-		{#each scientificCouncil as scientist}
-			<ScientificCouncilCard name={scientist.name} job={scientist.job} image={scientist.image} />
-		{/each}
+	<div class="team-section">
+		<h2 class="section-title">Direction</h2>
+		<p class="section-description">
+			Les membres du bureau et du conseil d'administration qui pilotent la stratégie et les
+			opérations de l'association.
+		</p>
+		<div class="cards-grid cards-centered">
+			{#each leadership as leader}
+				<LeadershipCard name={leader.name} role={leader.role} image={leader.image} />
+			{/each}
+		</div>
 	</div>
 
-	<h2 class="section-title">Membres et bénévoles</h2>
-	<div class="cards-grid members-grid">
-		{#each members as supporter}
-			<SupporterCard
-				name={supporter.name}
-				image={supporter.image}
-				job={supporter.job}
-			/>
-		{/each}
-	</div>
+	{#if scientificCouncil.length > 0}
+		<div class="team-section">
+			<h2 class="section-title">Conseil scientifique</h2>
+			<p class="section-description">
+				Nos experts qui éclairent nos positions sur les enjeux techniques et scientifiques de
+				l'intelligence artificielle.
+			</p>
+			<div class="cards-grid cards-centered">
+				{#each scientificCouncil as scientist}
+					<ScientificCouncilCard
+						name={scientist.name}
+						job={scientist.job}
+						image={scientist.image}
+					/>
+				{/each}
+			</div>
+		</div>
+	{/if}
+
+	{#if members.length > 0}
+		<div class="team-section">
+			<h2 class="section-title">Membres et bénévoles</h2>
+			<p class="section-description">
+				Les bénévoles qui font vivre l'association au quotidien à travers leurs compétences et leur
+				engagement.
+			</p>
+			<div class="cards-grid cards-centered">
+				{#each members as member}
+					<WhoCard name={member.name} image={member.image} job={member.job} />
+				{/each}
+			</div>
+		</div>
+	{/if}
 
 	<p class="member-count">+ une centaine de membres et bénévoles</p>
 </section>
 
 <style>
+	section {
+		max-width: 960px;
+		margin: 0 auto;
+	}
+
+	.intro {
+		text-align: justify;
+		margin-bottom: 1rem;
+	}
+
+	.intro :global(p) {
+		text-align: justify;
+	}
+
+	.contact-cta {
+		display: flex;
+		gap: 1rem;
+		justify-content: center;
+		flex-wrap: wrap;
+		margin-top: 1.5rem;
+	}
+
+	.contact-cta :global(a),
+	.contact-cta :global(button) {
+		box-shadow: inset 0 0 0 2px var(--black, #000);
+	}
+
+	.team-section {
+		margin-top: 2.5rem;
+		padding: 2rem 2rem 2.5rem;
+		background: var(--bg-card, #fafafa);
+		border: 1px solid var(--border, #e5e7eb);
+		border-radius: 1rem;
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+	}
+
 	.section-title {
-		margin-top: 3rem;
-		margin-bottom: 1.5rem;
+		margin-top: 0;
+		margin-bottom: 0.5rem;
 		font-size: 1.5rem;
-		font-weight: 600;
+		font-weight: 700;
+		text-align: center;
+	}
+
+	.section-description {
+		margin-bottom: 2rem;
+		color: var(--text-secondary, #676e7a);
+		font-size: 1rem;
+		text-align: center;
 	}
 
 	.cards-grid {
-		display: grid;
+		display: flex;
+		flex-wrap: wrap;
 		gap: 2rem;
-		grid-template-columns: repeat(auto-fill, 13rem);
-		justify-content: start;
+	}
+
+	.cards-centered {
+		justify-content: center;
 	}
 
 	.member-count {
-		margin-top: 2.5rem;
-		padding: 1rem 2rem;
-		font-size: 1.3rem;
+		margin-top: 3rem;
+		padding: 1.25rem 2rem;
+		font-size: 1.2rem;
 		font-weight: 600;
-		color: var(--text-primary, #333);
+		color: var(--text, #333);
 		text-align: center;
-		background: linear-gradient(135deg, #f0f0f0 0%, #e8e8e8 100%);
+		background: var(--bg-subtle, #fff5e8);
 		border-radius: 0.5rem;
+		border: 1px solid var(--border, #e5e7eb);
 	}
 </style>
