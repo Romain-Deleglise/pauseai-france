@@ -1,9 +1,7 @@
 <script lang="ts">
-	import NavLink from '$components/Navlink.svelte'
 	import NavDropdown from '$components/NavDropdown.svelte'
 	import Logo from '$components/Logo.svelte'
 	import { page } from '$app/stores'
-	import Button from '$components/Button.svelte'
 	import Banner from '$components/Banner.svelte'
 	import { bannerStore } from '$lib/stores/banner'
 
@@ -19,8 +17,16 @@
 
 	onMount(() => {
 		mounted = true
+		// Hysteresis: activate at 90px, deactivate only below 15px.
+		// This avoids the scroll-anchoring feedback loop where the banner
+		// collapsing (−40px layout shift) brings scrollY back under the
+		// threshold, causing the banner to expand again, then collapse, etc.
 		const handleScroll = () => {
-			scrolled = window.scrollY > 50
+			if (!scrolled && window.scrollY > 90) {
+				scrolled = true
+			} else if (scrolled && window.scrollY < 15) {
+				scrolled = false
+			}
 		}
 		window.addEventListener('scroll', handleScroll, { passive: true })
 		return () => window.removeEventListener('scroll', handleScroll)
@@ -115,10 +121,12 @@
 					{#each navGroups as group}
 						<NavDropdown label={group.label} items={group.items} white={onHomepage && !scrolled} />
 					{/each}
-					<!-- Separator + CTAs -->
-					<div class="nav-ctas" class:white={onHomepage && !scrolled}>
-						<NavLink href="/dons" c2a>Donner</NavLink>
-						<Button href="/rejoindre" alt={onHomepage && !scrolled}>Rejoindre</Button>
+					<!-- CTAs -->
+					<div class="nav-ctas">
+						<a href="/dons" class="btn-donate" class:on-hero={onHomepage && !scrolled}>Donner</a>
+						<a href="/rejoindre" class="btn-join" class:on-hero={onHomepage && !scrolled}
+							>Rejoindre</a
+						>
 					</div>
 				</div>
 				<button aria-label="Open mobile menu" class="hamburger" on:click={() => (open = !open)}>
@@ -260,6 +268,11 @@
 			max-height 0.3s ease,
 			opacity 0.25s ease;
 		opacity: 1;
+		/* Prevent the browser's scroll-anchoring from adjusting scrollY when
+		   the banner collapses — that would create a feedback loop where the
+		   layout shift caused by the collapse brings scrollY back below the
+		   threshold, making the banner re-expand, then collapse again, etc. */
+		overflow-anchor: none;
 	}
 
 	.banner-wrapper.scrolled {
@@ -272,14 +285,14 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		padding: 1rem;
+		padding: 0.75rem 1rem;
 		transition: padding 0.25s ease;
 	}
 
 	/* Compact nav when scrolled */
 	nav.scrolled {
-		padding-top: 0.6rem;
-		padding-bottom: 0.6rem;
+		padding-top: 0.4rem;
+		padding-bottom: 0.4rem;
 	}
 
 	.nav-right {
@@ -296,18 +309,72 @@
 		gap: 0.25rem;
 	}
 
-	/* CTAs group (Donner + Rejoindre) separated from nav links */
+	/* CTAs group (Donner + Rejoindre) — spaced from nav dropdowns */
 	.nav-ctas {
 		display: flex;
 		align-items: center;
-		gap: 0.75rem;
-		margin-left: 1rem;
-		padding-left: 1rem;
-		border-left: 1px solid rgba(0, 0, 0, 0.12);
+		gap: 0.5rem;
+		margin-left: 1.25rem;
 	}
 
-	.nav-ctas.white {
-		border-left-color: rgba(255, 255, 255, 0.25);
+	/* ─── Nav CTA buttons ────────────────────────────────────────── */
+	.btn-donate,
+	.btn-join {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		text-decoration: none;
+		font-family: var(--font-heading);
+		font-weight: 700;
+		font-size: 0.9rem;
+		border-radius: 0.4rem;
+		padding: 0.45rem 1rem;
+		white-space: nowrap;
+		transition:
+			opacity 0.15s,
+			background 0.15s;
+	}
+
+	/* "Donner" — brand orange */
+	.btn-donate {
+		background: var(--brand);
+		color: white;
+	}
+
+	.btn-donate:hover {
+		opacity: 0.85;
+	}
+
+	/* "Rejoindre" — black */
+	.btn-join {
+		background: black;
+		color: white;
+	}
+
+	.btn-join:hover {
+		opacity: 0.8;
+	}
+
+	/* On hero (white text context): invert to semi-transparent white */
+	.btn-donate.on-hero {
+		background: rgba(255, 255, 255, 0.2);
+		color: white;
+		outline: 1.5px solid rgba(255, 255, 255, 0.5);
+		outline-offset: -1.5px;
+	}
+
+	.btn-donate.on-hero:hover {
+		background: rgba(255, 255, 255, 0.32);
+		opacity: 1;
+	}
+
+	.btn-join.on-hero {
+		background: white;
+		color: black;
+	}
+
+	.btn-join.on-hero:hover {
+		opacity: 0.88;
 	}
 
 	.hamburger {
@@ -515,23 +582,23 @@
 
 	@media (min-width: 640px) {
 		nav {
-			padding: 1rem 2rem;
+			padding: 0.75rem 2rem;
 		}
 
 		nav.scrolled {
-			padding-top: 0.5rem;
-			padding-bottom: 0.5rem;
+			padding-top: 0.35rem;
+			padding-bottom: 0.35rem;
 		}
 	}
 
 	@media (min-width: 768px) {
 		nav {
-			padding: 1.25rem 4rem;
+			padding: 0.875rem 4rem;
 		}
 
 		nav.scrolled {
-			padding-top: 0.6rem;
-			padding-bottom: 0.6rem;
+			padding-top: 0.4rem;
+			padding-bottom: 0.4rem;
 		}
 	}
 
@@ -547,12 +614,12 @@
 		}
 
 		nav {
-			padding: 1.25rem 6rem;
+			padding: 0.875rem 6rem;
 		}
 
 		nav.scrolled {
-			padding-top: 0.6rem;
-			padding-bottom: 0.6rem;
+			padding-top: 0.4rem;
+			padding-bottom: 0.4rem;
 		}
 	}
 
