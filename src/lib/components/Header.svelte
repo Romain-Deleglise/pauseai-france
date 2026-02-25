@@ -15,13 +15,12 @@
 
 	let open = false
 	let scrolled = false
-	// Workaround to trigger transitions on render
 	let mounted = false
 
 	onMount(() => {
 		mounted = true
 		const handleScroll = () => {
-			scrolled = window.scrollY > 40
+			scrolled = window.scrollY > 50
 		}
 		window.addEventListener('scroll', handleScroll, { passive: true })
 		return () => window.removeEventListener('scroll', handleScroll)
@@ -31,7 +30,6 @@
 		open = false
 	}
 
-	// Navigation groups — modify here to add/remove pages from the nav
 	const navGroups = [
 		{
 			id: 'comprendre',
@@ -80,152 +78,208 @@
 	]
 </script>
 
-<Banner visible={$bannerStore.visible}>
-	{$bannerStore.message}
-	{#if $bannerStore.linkUrl}
-		<a href={$bannerStore.linkUrl}>{$bannerStore.linkText}</a>
-	{/if}
-</Banner>
+<!--
+  Wrapping Banner + nav in a single <header> solves two issues:
+  1. The layout grid sees ONE element (auto row), so main gets the 1fr row correctly.
+  2. The Banner lives in the same sticky context as the nav — no z-index collision.
+  Banner slides away via max-height CSS transition once the user scrolls.
+-->
+<header class="site-header" class:scrolled>
+	<!-- Banner: hidden via CSS when scrolled, without touching its internal dismiss state -->
+	<div class="banner-wrapper" class:scrolled>
+		<Banner visible={$bannerStore.visible}>
+			{$bannerStore.message}
+			{#if $bannerStore.linkUrl}
+				<a href={$bannerStore.linkUrl}>{$bannerStore.linkText}</a>
+			{/if}
+		</Banner>
+	</div>
 
-{#if mounted || !onHomepage}
-	<nav in:fade={{ duration: 500, delay: 200 }} class:scrolled class:homepage={onHomepage}>
-		<a href={onEmploiePage ? '/emploi-ia' : '/'} class="logo">
-			<div class="big-logo">
-				<Logo
-					animate
-					fill_pause={onHomepage && !scrolled ? 'white' : 'black'}
-					emploi_ia={onEmploiePage}
-				/>
-			</div>
-			<div class="small-logo">
-				<Logo animate only_circle />
-			</div>
-		</a>
+	{#if mounted || !onHomepage}
+		<nav in:fade={{ duration: 400, delay: 100 }} class:scrolled class:homepage={onHomepage}>
+			<a href={onEmploiePage ? '/emploi-ia' : '/'} class="logo">
+				<div class="big-logo">
+					<Logo
+						animate
+						fill_pause={onHomepage && !scrolled ? 'white' : 'black'}
+						emploi_ia={onEmploiePage}
+					/>
+				</div>
+				<div class="small-logo">
+					<Logo animate only_circle />
+				</div>
+			</a>
 
-		<div class="nav-right">
-			<div class="nav-links">
-				{#each navGroups as group}
-					<NavDropdown label={group.label} items={group.items} white={onHomepage && !scrolled} />
-				{/each}
-				<NavLink href="/dons" c2a>Donner</NavLink>
-				<Button href="/rejoindre" alt={onHomepage && !scrolled}>Rejoindre</Button>
-			</div>
-			<button aria-label="Open mobile menu" class="hamburger" on:click={() => (open = !open)}>
-				<svg
-					width="24"
-					height="24"
-					viewBox="0 0 24 24"
-					fill="none"
-					xmlns="http://www.w3.org/2000/svg"
-				>
-					<rect y="0" height="3" width="24" fill={onHomepage && !scrolled ? 'white' : 'black'} />
-					<rect y="10.5" height="3" width="24" fill={onHomepage && !scrolled ? 'white' : 'black'} />
-					<rect y="21" height="3" width="24" fill={onHomepage && !scrolled ? 'white' : 'black'} />
-				</svg>
-			</button>
-		</div>
-
-		<!-- Mobile/tablet sidebar -->
-		<div class="sidebar" class:open>
-			<div class="sidebar-head">
-				<a href="/" class="sidebar-logo" on:click={closeMenu}>
-					<Logo height={38} fill_pause="black" fill_circle="#FF9416" fill_ai="black" />
-				</a>
-				<button aria-label="Close mobile menu" class="close-btn" on:click={closeMenu}>
+			<div class="nav-right">
+				<div class="nav-links">
+					{#each navGroups as group}
+						<NavDropdown label={group.label} items={group.items} white={onHomepage && !scrolled} />
+					{/each}
+					<!-- Separator + CTAs -->
+					<div class="nav-ctas" class:white={onHomepage && !scrolled}>
+						<NavLink href="/dons" c2a>Donner</NavLink>
+						<Button href="/rejoindre" alt={onHomepage && !scrolled}>Rejoindre</Button>
+					</div>
+				</div>
+				<button aria-label="Open mobile menu" class="hamburger" on:click={() => (open = !open)}>
 					<svg
-						width="18"
-						height="18"
-						viewBox="0 0 18 18"
+						width="22"
+						height="22"
+						viewBox="0 0 24 24"
 						fill="none"
 						xmlns="http://www.w3.org/2000/svg"
 					>
-						<path
-							d="M2 2L16 16M16 2L2 16"
-							stroke="black"
-							stroke-width="2.5"
-							stroke-linecap="round"
+						<rect
+							y="0"
+							height="2.5"
+							width="24"
+							fill={onHomepage && !scrolled ? 'white' : 'black'}
+						/>
+						<rect
+							y="10.75"
+							height="2.5"
+							width="24"
+							fill={onHomepage && !scrolled ? 'white' : 'black'}
+						/>
+						<rect
+							y="21.5"
+							height="2.5"
+							width="24"
+							fill={onHomepage && !scrolled ? 'white' : 'black'}
 						/>
 					</svg>
 				</button>
 			</div>
 
-			<div class="sidebar-links">
-				{#each navGroups as group}
-					<div class="sidebar-section">
-						<p class="sidebar-section-label">{group.label}</p>
-						<div class="sidebar-subsection">
-							{#each group.items as item}
-								<a
-									href={item.href}
-									on:click={closeMenu}
-									target={item.external ? '_blank' : undefined}
-									rel={item.external ? 'noopener noreferrer' : undefined}
-									class:active={!item.href.startsWith('http') &&
-										($page.url.pathname === item.href ||
-											$page.url.pathname.startsWith(item.href + '/'))}
-								>
-									{item.label}
-									{#if item.external}
-										<svg
-											class="ext-icon"
-											width="11"
-											height="11"
-											viewBox="0 0 11 11"
-											fill="none"
-											aria-hidden="true"
-										>
-											<path
-												d="M6.5 1h3.5v3.5M10 1L4.5 6.5M3 3H1.5A.5.5 0 001 3.5v6A.5.5 0 001.5 10h6a.5.5 0 00.5-.5V8"
-												stroke="currentColor"
-												stroke-width="1.5"
-												stroke-linecap="round"
-												stroke-linejoin="round"
-											/>
-										</svg>
-									{/if}
-								</a>
-							{/each}
-						</div>
-					</div>
-				{/each}
+			<!-- Mobile/tablet sidebar -->
+			<div class="sidebar" class:open>
+				<div class="sidebar-head">
+					<a href="/" class="sidebar-logo" on:click={closeMenu}>
+						<Logo height={36} fill_pause="black" fill_circle="#FF9416" fill_ai="black" />
+					</a>
+					<button aria-label="Close mobile menu" class="close-btn" on:click={closeMenu}>
+						<svg
+							width="16"
+							height="16"
+							viewBox="0 0 16 16"
+							fill="none"
+							xmlns="http://www.w3.org/2000/svg"
+						>
+							<path
+								d="M1.5 1.5L14.5 14.5M14.5 1.5L1.5 14.5"
+								stroke="black"
+								stroke-width="2.2"
+								stroke-linecap="round"
+							/>
+						</svg>
+					</button>
+				</div>
 
-				<div class="sidebar-actions">
-					<a href="/dons" class="sidebar-cta" on:click={closeMenu}>Faire un don</a>
-					<a href="/rejoindre" class="sidebar-join" on:click={closeMenu}>Nous rejoindre</a>
+				<div class="sidebar-links">
+					{#each navGroups as group}
+						<div class="sidebar-section">
+							<p class="sidebar-section-label">{group.label}</p>
+							<div class="sidebar-subsection">
+								{#each group.items as item}
+									<a
+										href={item.href}
+										on:click={closeMenu}
+										target={item.external ? '_blank' : undefined}
+										rel={item.external ? 'noopener noreferrer' : undefined}
+										class:active={!item.href.startsWith('http') &&
+											($page.url.pathname === item.href ||
+												$page.url.pathname.startsWith(item.href + '/'))}
+									>
+										{item.label}
+										{#if item.external}
+											<svg
+												class="ext-icon"
+												width="11"
+												height="11"
+												viewBox="0 0 11 11"
+												fill="none"
+												aria-hidden="true"
+											>
+												<path
+													d="M6.5 1h3.5v3.5M10 1L4.5 6.5M3 3H1.5A.5.5 0 001 3.5v6A.5.5 0 001.5 10h6a.5.5 0 00.5-.5V8"
+													stroke="currentColor"
+													stroke-width="1.5"
+													stroke-linecap="round"
+													stroke-linejoin="round"
+												/>
+											</svg>
+										{/if}
+									</a>
+								{/each}
+							</div>
+						</div>
+					{/each}
+
+					<div class="sidebar-actions">
+						<a href="/dons" class="sidebar-cta" on:click={closeMenu}>Faire un don</a>
+						<a href="/rejoindre" class="sidebar-join" on:click={closeMenu}>Nous rejoindre</a>
+					</div>
 				</div>
 			</div>
-		</div>
 
-		<!-- Overlay backdrop -->
-		{#if open}
-			<!-- svelte-ignore a11y-no-static-element-interactions -->
-			<div class="sidebar-backdrop" on:click={closeMenu} transition:fade={{ duration: 200 }}></div>
-		{/if}
-	</nav>
-{/if}
+			{#if open}
+				<!-- svelte-ignore a11y-no-static-element-interactions -->
+				<div
+					class="sidebar-backdrop"
+					on:click={closeMenu}
+					transition:fade={{ duration: 200 }}
+				></div>
+			{/if}
+		</nav>
+	{/if}
+</header>
 
 <style>
-	/* ─── Nav ───────────────────────────────────────────────────── */
+	/* ─── Site header wrapper (sticky) ──────────────────────────── */
+	.site-header {
+		position: sticky;
+		top: 0;
+		z-index: 100;
+		transition:
+			background-color 0.25s ease,
+			box-shadow 0.25s ease;
+	}
+
+	.site-header.scrolled {
+		background: white;
+		box-shadow:
+			0 1px 0 rgba(0, 0, 0, 0.07),
+			0 2px 12px rgba(0, 0, 0, 0.05);
+	}
+
+	/* ─── Banner slide-away on scroll ───────────────────────────── */
+	.banner-wrapper {
+		overflow: hidden;
+		max-height: 8rem; /* generous, Banner is ~2.5rem */
+		transition:
+			max-height 0.3s ease,
+			opacity 0.25s ease;
+		opacity: 1;
+	}
+
+	.banner-wrapper.scrolled {
+		max-height: 0;
+		opacity: 0;
+	}
+
+	/* ─── Nav ────────────────────────────────────────────────────── */
 	nav {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		flex-wrap: wrap;
-		z-index: 100;
-		position: sticky;
-		top: 0;
 		padding: 1rem;
-		transition:
-			background-color 0.3s ease,
-			box-shadow 0.3s ease;
+		transition: padding 0.25s ease;
 	}
 
-	/* When scrolled: white background + shadow */
+	/* Compact nav when scrolled */
 	nav.scrolled {
-		background: white;
-		box-shadow:
-			0 1px 0 rgba(0, 0, 0, 0.07),
-			0 4px 16px rgba(0, 0, 0, 0.06);
+		padding-top: 0.6rem;
+		padding-bottom: 0.6rem;
 	}
 
 	.nav-right {
@@ -239,7 +293,21 @@
 		flex-wrap: wrap;
 		justify-content: center;
 		align-items: center;
-		gap: 1rem;
+		gap: 0.25rem;
+	}
+
+	/* CTAs group (Donner + Rejoindre) separated from nav links */
+	.nav-ctas {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+		margin-left: 1rem;
+		padding-left: 1rem;
+		border-left: 1px solid rgba(0, 0, 0, 0.12);
+	}
+
+	.nav-ctas.white {
+		border-left-color: rgba(255, 255, 255, 0.25);
 	}
 
 	.hamburger {
@@ -300,7 +368,7 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		padding: 1.25rem 1.5rem;
+		padding: 1.1rem 1.5rem;
 		border-bottom: 1px solid rgba(0, 0, 0, 0.07);
 		position: sticky;
 		top: 0;
@@ -316,8 +384,8 @@
 	.close-btn {
 		background: rgba(0, 0, 0, 0.06);
 		border: none;
-		border-radius: 0.5rem;
-		padding: 0.55rem;
+		border-radius: 0.45rem;
+		padding: 0.5rem;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -349,7 +417,7 @@
 
 	.sidebar-section-label {
 		font-family: var(--font-heading);
-		font-size: 0.68rem;
+		font-size: 0.67rem;
 		font-weight: 700;
 		letter-spacing: 0.09em;
 		text-transform: uppercase;
@@ -368,7 +436,7 @@
 		align-items: center;
 		gap: 0.375rem;
 		text-decoration: none;
-		font-size: 0.975rem;
+		font-size: 0.95rem;
 		font-family: var(--font-heading);
 		font-weight: 600;
 		color: rgba(0, 0, 0, 0.78);
@@ -447,13 +515,23 @@
 
 	@media (min-width: 640px) {
 		nav {
-			padding: 1.25rem 2rem;
+			padding: 1rem 2rem;
+		}
+
+		nav.scrolled {
+			padding-top: 0.5rem;
+			padding-bottom: 0.5rem;
 		}
 	}
 
 	@media (min-width: 768px) {
 		nav {
 			padding: 1.25rem 4rem;
+		}
+
+		nav.scrolled {
+			padding-top: 0.6rem;
+			padding-bottom: 0.6rem;
 		}
 	}
 
@@ -472,8 +550,9 @@
 			padding: 1.25rem 6rem;
 		}
 
-		.nav-links {
-			gap: 0.25rem;
+		nav.scrolled {
+			padding-top: 0.6rem;
+			padding-bottom: 0.6rem;
 		}
 	}
 
@@ -484,10 +563,6 @@
 
 		.small-logo {
 			display: none;
-		}
-
-		.nav-links {
-			gap: 0.5rem;
 		}
 	}
 </style>
