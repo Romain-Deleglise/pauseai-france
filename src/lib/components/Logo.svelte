@@ -27,6 +27,7 @@
 <svg
 	class="logo"
 	class:logo-animate={animate}
+	viewBox={only_circle ? `0 0 ${baseHeight} ${baseHeight}` : `0 0 ${baseWidth} ${baseHeight}`}
 	{width}
 	{height}
 	fill="none"
