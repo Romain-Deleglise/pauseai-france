@@ -11,14 +11,20 @@
 	import { fade } from 'svelte/transition'
 
 	$: onHomepage = $page.url.pathname == '/'
-
 	$: onEmploiePage = /^\/emploi-ia(?:\/|$)/.test($page.url.pathname)
 
 	let open = false
+	let scrolled = false
 	// Workaround to trigger transitions on render
 	let mounted = false
+
 	onMount(() => {
 		mounted = true
+		const handleScroll = () => {
+			scrolled = window.scrollY > 40
+		}
+		window.addEventListener('scroll', handleScroll, { passive: true })
+		return () => window.removeEventListener('scroll', handleScroll)
 	})
 
 	function closeMenu() {
@@ -55,7 +61,11 @@
 			label: 'Événements',
 			items: [
 				{ href: '/senat2025', label: 'Colloque Sénat 2025' },
-				{ href: 'https://controleia.org/solutions/', label: 'Forum ControlIA', external: true }
+				{
+					href: 'https://controleia.org/solutions/',
+					label: 'Forum solutions 2025',
+					external: true
+				}
 			]
 		},
 		{
@@ -77,12 +87,15 @@
 	{/if}
 </Banner>
 
-<!-- probably have to change nav colors and classes to respond to banner presence instead of route -->
 {#if mounted || !onHomepage}
-	<nav in:fade={{ duration: 500, delay: 200 }}>
+	<nav in:fade={{ duration: 500, delay: 200 }} class:scrolled class:homepage={onHomepage}>
 		<a href={onEmploiePage ? '/emploi-ia' : '/'} class="logo">
 			<div class="big-logo">
-				<Logo animate fill_pause={onHomepage ? 'white' : 'black'} emploi_ia={onEmploiePage} />
+				<Logo
+					animate
+					fill_pause={onHomepage && !scrolled ? 'white' : 'black'}
+					emploi_ia={onEmploiePage}
+				/>
 			</div>
 			<div class="small-logo">
 				<Logo animate only_circle />
@@ -92,10 +105,10 @@
 		<div class="nav-right">
 			<div class="nav-links">
 				{#each navGroups as group}
-					<NavDropdown label={group.label} items={group.items} />
+					<NavDropdown label={group.label} items={group.items} white={onHomepage && !scrolled} />
 				{/each}
 				<NavLink href="/dons" c2a>Donner</NavLink>
-				<Button href="/rejoindre" alt={onHomepage}>Rejoindre</Button>
+				<Button href="/rejoindre" alt={onHomepage && !scrolled}>Rejoindre</Button>
 			</div>
 			<button aria-label="Open mobile menu" class="hamburger" on:click={() => (open = !open)}>
 				<svg
@@ -105,9 +118,9 @@
 					fill="none"
 					xmlns="http://www.w3.org/2000/svg"
 				>
-					<rect y="0" height="3" width="24" fill={onHomepage ? 'white' : 'black'} />
-					<rect y="10.5" height="3" width="24" fill={onHomepage ? 'white' : 'black'} />
-					<rect y="21" height="3" width="24" fill={onHomepage ? 'white' : 'black'} />
+					<rect y="0" height="3" width="24" fill={onHomepage && !scrolled ? 'white' : 'black'} />
+					<rect y="10.5" height="3" width="24" fill={onHomepage && !scrolled ? 'white' : 'black'} />
+					<rect y="21" height="3" width="24" fill={onHomepage && !scrolled ? 'white' : 'black'} />
 				</svg>
 			</button>
 		</div>
@@ -115,19 +128,19 @@
 		<!-- Mobile/tablet sidebar -->
 		<div class="sidebar" class:open>
 			<div class="sidebar-head">
-				<a href="/" class="logo" on:click={closeMenu}>
-					<Logo animate={onHomepage} fill_circle="white" fill_ai="white" />
+				<a href="/" class="sidebar-logo" on:click={closeMenu}>
+					<Logo height={38} fill_pause="black" fill_circle="#FF9416" fill_ai="black" />
 				</a>
-				<button aria-label="Close mobile menu" class="hamburger close-btn" on:click={closeMenu}>
+				<button aria-label="Close mobile menu" class="close-btn" on:click={closeMenu}>
 					<svg
-						width="20"
-						height="20"
-						viewBox="0 0 20 20"
+						width="18"
+						height="18"
+						viewBox="0 0 18 18"
 						fill="none"
 						xmlns="http://www.w3.org/2000/svg"
 					>
 						<path
-							d="M2 2L18 18M18 2L2 18"
+							d="M2 2L16 16M16 2L2 16"
 							stroke="black"
 							stroke-width="2.5"
 							stroke-linecap="round"
@@ -192,6 +205,68 @@
 {/if}
 
 <style>
+	/* ─── Nav ───────────────────────────────────────────────────── */
+	nav {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		flex-wrap: wrap;
+		z-index: 100;
+		position: sticky;
+		top: 0;
+		padding: 1rem;
+		transition:
+			background-color 0.3s ease,
+			box-shadow 0.3s ease;
+	}
+
+	/* When scrolled: white background + shadow */
+	nav.scrolled {
+		background: white;
+		box-shadow:
+			0 1px 0 rgba(0, 0, 0, 0.07),
+			0 4px 16px rgba(0, 0, 0, 0.06);
+	}
+
+	.nav-right {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.nav-links {
+		display: none;
+		flex-wrap: wrap;
+		justify-content: center;
+		align-items: center;
+		gap: 1rem;
+	}
+
+	.hamburger {
+		display: flex;
+		align-items: center;
+		cursor: pointer;
+		background: none;
+		border: none;
+		padding: 0;
+	}
+
+	.logo {
+		line-height: 0;
+	}
+
+	.small-logo {
+		display: block;
+	}
+
+	.small-logo :global(svg) {
+		width: 3rem;
+	}
+
+	.big-logo {
+		display: none;
+	}
+
 	/* ─── Sidebar ────────────────────────────────────────────────── */
 	.sidebar {
 		position: fixed;
@@ -233,14 +308,22 @@
 		z-index: 10;
 	}
 
+	.sidebar-logo {
+		line-height: 0;
+		display: block;
+	}
+
 	.close-btn {
-		background: rgba(0, 0, 0, 0.05);
+		background: rgba(0, 0, 0, 0.06);
+		border: none;
 		border-radius: 0.5rem;
-		padding: 0.5rem;
+		padding: 0.55rem;
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		cursor: pointer;
 		transition: background 0.15s;
+		flex-shrink: 0;
 	}
 
 	.close-btn:hover {
@@ -251,13 +334,12 @@
 	.sidebar-links {
 		display: flex;
 		flex-direction: column;
-		padding: 1rem 1.5rem 2rem;
-		gap: 0;
+		padding: 0.75rem 1.5rem 2rem;
 		flex: 1;
 	}
 
 	.sidebar-section {
-		padding: 1rem 0 0.5rem;
+		padding: 0.875rem 0 0.5rem;
 		border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 	}
 
@@ -267,18 +349,18 @@
 
 	.sidebar-section-label {
 		font-family: var(--font-heading);
-		font-size: 0.7rem;
+		font-size: 0.68rem;
 		font-weight: 700;
-		letter-spacing: 0.08em;
+		letter-spacing: 0.09em;
 		text-transform: uppercase;
-		color: rgba(0, 0, 0, 0.4);
-		margin: 0 0 0.5rem;
+		color: rgba(0, 0, 0, 0.38);
+		margin: 0 0 0.4rem;
 	}
 
 	.sidebar-subsection {
 		display: flex;
 		flex-direction: column;
-		gap: 0.1rem;
+		gap: 0.05rem;
 	}
 
 	.sidebar-subsection a {
@@ -286,12 +368,12 @@
 		align-items: center;
 		gap: 0.375rem;
 		text-decoration: none;
-		font-size: 1rem;
+		font-size: 0.975rem;
 		font-family: var(--font-heading);
 		font-weight: 600;
-		color: rgba(0, 0, 0, 0.8);
-		padding: 0.45rem 0.6rem;
-		border-radius: 0.5rem;
+		color: rgba(0, 0, 0, 0.78);
+		padding: 0.4rem 0.6rem;
+		border-radius: 0.45rem;
 		transition:
 			background 0.1s,
 			color 0.1s;
@@ -304,7 +386,7 @@
 	}
 
 	.ext-icon {
-		opacity: 0.45;
+		opacity: 0.4;
 		flex-shrink: 0;
 	}
 
@@ -352,58 +434,7 @@
 		opacity: 0.85;
 	}
 
-	/* ─── Nav ───────────────────────────────────────────────────── */
-	nav {
-		display: flex;
-		justify-content: space-between;
-		flex-wrap: wrap;
-		z-index: 2;
-	}
-
-	nav,
-	.sidebar-head {
-		padding: 1rem;
-	}
-
-	.nav-right {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-
-	.nav-links {
-		display: none;
-		flex-wrap: wrap;
-		justify-content: center;
-		align-items: center;
-		gap: 1rem;
-	}
-
-	.hamburger {
-		display: flex;
-		align-items: center;
-		cursor: pointer;
-		background: none;
-		border: none;
-		padding: 0;
-	}
-
-	.logo {
-		line-height: 0;
-	}
-
-	.small-logo {
-		display: block;
-	}
-
-	.small-logo :global(svg) {
-		width: 3rem;
-	}
-
-	.big-logo {
-		display: none;
-	}
-
+	/* ─── Responsive ─────────────────────────────────────────────── */
 	@media (min-width: 480px) {
 		.big-logo {
 			display: block;
@@ -416,21 +447,17 @@
 
 	@media (min-width: 640px) {
 		nav {
-			padding: 2rem 2rem;
+			padding: 1.25rem 2rem;
 		}
 	}
+
 	@media (min-width: 768px) {
 		nav {
-			padding: 2rem 4rem;
+			padding: 1.25rem 4rem;
 		}
 	}
 
 	@media (min-width: 1024px) {
-		nav {
-			flex-direction: row;
-			align-items: center;
-		}
-
 		.nav-links {
 			display: flex;
 		}
@@ -440,11 +467,13 @@
 		.sidebar-backdrop {
 			display: none;
 		}
+
 		nav {
-			padding: 2rem 6rem;
+			padding: 1.25rem 6rem;
 		}
+
 		.nav-links {
-			gap: 1.3rem;
+			gap: 0.25rem;
 		}
 	}
 
@@ -458,7 +487,7 @@
 		}
 
 		.nav-links {
-			gap: 2rem;
+			gap: 0.5rem;
 		}
 	}
 </style>

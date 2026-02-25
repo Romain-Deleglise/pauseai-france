@@ -2,6 +2,7 @@
 	import { page } from '$app/stores'
 
 	export let label: string
+	export let white = false
 	export let items: Array<{
 		href: string
 		label: string
@@ -9,39 +10,29 @@
 	}>
 
 	let open = false
-	let dropdownEl: HTMLElement
 
 	$: hasActiveChild = items.some((item) => {
 		if (!item.href.startsWith('/')) return false
 		return (
 			$page.url.pathname === item.href ||
 			$page.url.pathname.startsWith(item.href + '/') ||
-			// Handle dangers section: /dangers/... matches /dangers
 			($page.url.pathname.startsWith('/dangers') && item.href === '/dangers')
 		)
 	})
-	$: isHomepage = $page.url.pathname === '/'
 
 	function handleKeydown(e: KeyboardEvent) {
-		if (e.key === 'Escape') {
-			open = false
-		}
+		if (e.key === 'Escape') open = false
 	}
 </script>
 
 <svelte:window on:keydown={handleKeydown} />
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<div
-	class="dropdown"
-	bind:this={dropdownEl}
-	on:mouseenter={() => (open = true)}
-	on:mouseleave={() => (open = false)}
->
+<div class="dropdown" on:mouseenter={() => (open = true)} on:mouseleave={() => (open = false)}>
 	<button
 		class="trigger"
 		class:active={hasActiveChild}
-		class:white={isHomepage}
+		class:white
 		on:click={() => (open = !open)}
 		aria-expanded={open}
 		aria-haspopup="menu"
@@ -54,7 +45,6 @@
 			height="6"
 			viewBox="0 0 10 6"
 			fill="none"
-			xmlns="http://www.w3.org/2000/svg"
 			aria-hidden="true"
 		>
 			<path
@@ -67,9 +57,13 @@
 		</svg>
 	</button>
 
+	<!--
+		The menu starts at top:100% with padding-top to bridge the gap
+		between trigger and the visual box — this prevents mouseleave
+		from firing when moving the cursor through the gap.
+	-->
 	<div class="menu" class:open role="menu">
-		<!-- Arrow tip -->
-		<div class="menu-arrow"></div>
+		<div class="menu-arrow" aria-hidden="true"></div>
 		<div class="menu-inner">
 			{#each items as item}
 				<a
@@ -83,21 +77,20 @@
 					role="menuitem"
 					on:click={() => (open = false)}
 				>
-					<span class="item-dot"></span>
-					<span class="item-label">{item.label}</span>
+					{item.label}
 					{#if item.external}
 						<svg
 							class="ext-icon"
-							width="11"
-							height="11"
-							viewBox="0 0 11 11"
+							width="10"
+							height="10"
+							viewBox="0 0 10 10"
 							fill="none"
 							aria-hidden="true"
 						>
 							<path
-								d="M6.5 1h3.5v3.5M10 1L4.5 6.5M3 3H1.5A.5.5 0 001 3.5v6A.5.5 0 001.5 10h6a.5.5 0 00.5-.5V8"
+								d="M5.5 1h3.5v3.5M9 1L4 6M3 3H1.5A.5.5 0 001 3.5v5A.5.5 0 001.5 9h5a.5.5 0 00.5-.5V7"
 								stroke="currentColor"
-								stroke-width="1.5"
+								stroke-width="1.4"
 								stroke-linecap="round"
 								stroke-linejoin="round"
 							/>
@@ -110,6 +103,7 @@
 </div>
 
 <style>
+	/* ─── Dropdown container ─────────────────────────────────────── */
 	.dropdown {
 		position: relative;
 		display: flex;
@@ -128,49 +122,52 @@
 		background: none;
 		border: none;
 		cursor: pointer;
-		padding: 0.25rem 0;
-		min-width: 48px;
-		transition: color 120ms;
+		padding: 0.5rem 0.6rem;
+		border-radius: 0.5rem;
+		transition:
+			color 120ms,
+			background-color 120ms;
 		white-space: nowrap;
-		position: relative;
-	}
-
-	/* Underline indicator */
-	.trigger::after {
-		content: '';
-		position: absolute;
-		bottom: -2px;
-		left: 0;
-		right: 0;
-		height: 2px;
-		background: var(--brand);
-		border-radius: 2px;
-		transform: scaleX(0);
-		transform-origin: center;
-		transition: transform 0.2s ease;
-	}
-
-	.trigger.active::after {
-		transform: scaleX(1);
 	}
 
 	.trigger.white {
+		color: rgba(255, 255, 255, 0.9);
+	}
+
+	.trigger:hover,
+	.trigger.active {
+		background: rgba(0, 0, 0, 0.05);
+		color: var(--text);
+	}
+
+	.trigger.white:hover,
+	.trigger.white.active {
+		background: rgba(255, 255, 255, 0.15);
 		color: white;
 	}
 
-	.trigger.active,
-	.trigger:hover {
-		color: var(--brand);
+	/* Active underline dot indicator */
+	.trigger.active::after {
+		content: '';
+		display: block;
+		position: absolute;
+		bottom: 0.1rem;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 4px;
+		height: 4px;
+		border-radius: 50%;
+		background: var(--brand);
 	}
 
-	.trigger.white.active::after {
-		background: white;
+	.trigger {
+		position: relative;
 	}
 
 	.chevron {
 		transition: transform 0.2s ease;
 		flex-shrink: 0;
-		opacity: 0.7;
+		opacity: 0.6;
 	}
 
 	.chevron.rotated {
@@ -180,17 +177,18 @@
 	/* ─── Dropdown menu ──────────────────────────────────────────── */
 	.menu {
 		position: absolute;
-		top: calc(100% + 0.75rem);
+		top: 100%; /* no gap — padding-top bridges hover area */
 		left: 50%;
-		transform: translateX(-50%) translateY(-6px);
-		min-width: 14rem;
+		transform: translateX(-50%) translateY(-4px);
+		min-width: 13rem;
+		padding-top: 0.5rem; /* hover bridge — invisible but keeps mouseenter active */
 		z-index: 200;
 		opacity: 0;
 		visibility: hidden;
 		transition:
-			opacity 0.18s ease,
-			transform 0.18s ease,
-			visibility 0.18s;
+			opacity 0.16s ease,
+			transform 0.16s ease,
+			visibility 0.16s;
 		pointer-events: none;
 	}
 
@@ -201,26 +199,23 @@
 		pointer-events: auto;
 	}
 
-	/* Arrow tip */
+	/* Arrow tip sits in the padding-top area */
 	.menu-arrow {
-		width: 12px;
-		height: 7px;
-		background: white;
+		width: 10px;
+		height: 6px;
+		background: #1e1e24;
 		clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-		margin: 0 auto;
-		position: relative;
-		z-index: 1;
-		filter: drop-shadow(0 -1px 1px rgba(0, 0, 0, 0.07));
+		margin: 0 auto 0;
 	}
 
 	.menu-inner {
-		background: white;
-		border: 1px solid rgba(0, 0, 0, 0.07);
+		background: #1e1e24;
+		border: 1px solid rgba(255, 255, 255, 0.07);
 		border-radius: 0.875rem;
 		box-shadow:
-			0 4px 6px -1px rgba(0, 0, 0, 0.07),
-			0 12px 32px rgba(0, 0, 0, 0.1);
-		padding: 0.4rem;
+			0 4px 6px -1px rgba(0, 0, 0, 0.3),
+			0 16px 40px rgba(0, 0, 0, 0.25);
+		padding: 0.35rem;
 		overflow: hidden;
 	}
 
@@ -229,11 +224,11 @@
 		display: flex;
 		align-items: center;
 		gap: 0.5rem;
-		padding: 0.55rem 0.75rem;
+		padding: 0.55rem 0.8rem;
 		font-family: var(--font-heading);
 		font-weight: 600;
-		font-size: 0.9rem;
-		color: rgba(0, 0, 0, 0.75);
+		font-size: 0.88rem;
+		color: rgba(255, 255, 255, 0.75);
 		text-decoration: none;
 		border-radius: 0.5rem;
 		transition:
@@ -243,30 +238,13 @@
 	}
 
 	.menu a:hover {
-		background-color: rgba(0, 0, 0, 0.04);
-		color: black;
+		background-color: rgba(255, 255, 255, 0.08);
+		color: white;
 	}
 
 	.menu a.active {
-		background-color: rgba(255, 148, 22, 0.1);
-		color: var(--brand);
-	}
-
-	.item-dot {
-		width: 5px;
-		height: 5px;
-		border-radius: 50%;
-		background: rgba(0, 0, 0, 0.2);
-		flex-shrink: 0;
-		transition: background 0.1s;
-	}
-
-	.menu a:hover .item-dot {
-		background: rgba(0, 0, 0, 0.5);
-	}
-
-	.menu a.active .item-dot {
-		background: var(--brand);
+		background-color: rgba(255, 148, 22, 0.18);
+		color: #ff9416;
 	}
 
 	.ext-icon {
@@ -277,7 +255,7 @@
 
 	@media (min-width: 1024px) {
 		.trigger {
-			font-size: 1.05rem;
+			font-size: 1rem;
 		}
 	}
 </style>
