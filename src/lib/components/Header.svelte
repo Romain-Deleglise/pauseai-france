@@ -292,14 +292,14 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		padding: 0.75rem 1rem;
+		padding: 1rem 1rem;
 		transition: padding 0.25s ease;
 	}
 
 	/* Compact nav when scrolled */
 	nav.scrolled {
-		padding-top: 0.35rem;
-		padding-bottom: 0.35rem;
+		padding-top: 0.5rem;
+		padding-bottom: 0.5rem;
 	}
 
 	.nav-right {
@@ -422,7 +422,7 @@
 	}
 
 	.big-logo :global(svg) {
-		height: 34px;
+		height: 42px;
 		width: auto;
 	}
 
@@ -606,23 +606,23 @@
 
 	@media (min-width: 640px) {
 		nav {
-			padding: 0.75rem 2rem;
+			padding: 1rem 2rem;
 		}
 
 		nav.scrolled {
-			padding-top: 0.35rem;
-			padding-bottom: 0.35rem;
+			padding-top: 0.5rem;
+			padding-bottom: 0.5rem;
 		}
 	}
 
 	@media (min-width: 768px) {
 		nav {
-			padding: 0.875rem 4rem;
+			padding: 1.25rem 4rem;
 		}
 
 		nav.scrolled {
-			padding-top: 0.4rem;
-			padding-bottom: 0.4rem;
+			padding-top: 0.6rem;
+			padding-bottom: 0.6rem;
 		}
 	}
 
@@ -638,12 +638,12 @@
 		}
 
 		nav {
-			padding: 0.875rem 6rem;
+			padding: 1.25rem 6rem;
 		}
 
 		nav.scrolled {
-			padding-top: 0.4rem;
-			padding-bottom: 0.4rem;
+			padding-top: 0.6rem;
+			padding-bottom: 0.6rem;
 		}
 	}
 
