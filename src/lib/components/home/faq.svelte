@@ -3,7 +3,7 @@
 	import FAQ from '$posts/faq.md'
 	import Fly from '$components/Fly.svelte'
 	import { faqBulkAction } from '$lib/stores/faq'
-	import { onMount } from 'svelte'
+	import { tick } from 'svelte'
 	// @ts-ignore - Vite raw import
 	import faqRaw from '$posts/faq.md?raw'
 
@@ -11,26 +11,58 @@
 
 	let searchQuery = ''
 	let faqContainer: HTMLElement
+	let searchInput: HTMLInputElement
 	let allExpanded = false
+	let showSuggestions = false
+	let selectedIndex = -1
+	let resultCount = -1
 
-	// Extract FAQ Q&A pairs from raw markdown for JSON-LD
-	function extractFaqData(raw: string) {
+	interface FaqItem {
+		id: string
+		question: string
+		answer: string
+		category: string
+	}
+
+	interface Suggestion {
+		item: FaqItem
+		matchType: 'title' | 'content'
+		snippet?: string
+	}
+
+	// Extract FAQ Q&A pairs from raw markdown for JSON-LD and search
+	function extractFaqData(raw: string): FaqItem[] {
 		const lines = raw.split('\n')
-		const faqs: { question: string; answer: string }[] = []
+		const faqs: FaqItem[] = []
 		let currentQuestion = ''
 		let currentAnswer = ''
+		let currentCategory = ''
+		let accordionCount = 0
 
 		for (const line of lines) {
 			if (line.startsWith('## ')) {
 				// Category header — close current Q/A if any
 				if (currentQuestion) {
-					faqs.push({ question: currentQuestion, answer: stripMarkdown(currentAnswer.trim()) })
+					accordionCount++
+					faqs.push({
+						id: `accordion${accordionCount}`,
+						question: currentQuestion,
+						answer: stripMarkdown(currentAnswer.trim()),
+						category: currentCategory
+					})
 					currentQuestion = ''
 					currentAnswer = ''
 				}
+				currentCategory = line.replace('## ', '')
 			} else if (line.startsWith('### ')) {
 				if (currentQuestion) {
-					faqs.push({ question: currentQuestion, answer: stripMarkdown(currentAnswer.trim()) })
+					accordionCount++
+					faqs.push({
+						id: `accordion${accordionCount}`,
+						question: currentQuestion,
+						answer: stripMarkdown(currentAnswer.trim()),
+						category: currentCategory
+					})
 				}
 				currentQuestion = line.replace('### ', '')
 				currentAnswer = ''
@@ -39,7 +71,13 @@
 			}
 		}
 		if (currentQuestion) {
-			faqs.push({ question: currentQuestion, answer: stripMarkdown(currentAnswer.trim()) })
+			accordionCount++
+			faqs.push({
+				id: `accordion${accordionCount}`,
+				question: currentQuestion,
+				answer: stripMarkdown(currentAnswer.trim()),
+				category: currentCategory
+			})
 		}
 		return faqs
 	}
@@ -69,7 +107,127 @@
 		}))
 	})
 
-	// Search filtering via DOM
+	// -- Suggestions engine --
+
+	function escapeHtml(text: string): string {
+		return text
+			.replace(/&/g, '&amp;')
+			.replace(/</g, '&lt;')
+			.replace(/>/g, '&gt;')
+			.replace(/"/g, '&quot;')
+	}
+
+	function highlightMatch(escapedText: string, query: string): string {
+		if (!query || query.trim().length < 2) return escapedText
+		const escapedQuery = escapeHtml(query.trim()).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+		const regex = new RegExp(`(${escapedQuery})`, 'gi')
+		return escapedText.replace(regex, '<mark>$1</mark>')
+	}
+
+	function getSuggestions(query: string): Suggestion[] {
+		const normalized = query.toLowerCase().trim()
+		if (normalized.length < 2) return []
+
+		const titleMatches: Suggestion[] = []
+		const contentMatches: Suggestion[] = []
+
+		for (const item of faqData) {
+			if (item.question.toLowerCase().includes(normalized)) {
+				titleMatches.push({ item, matchType: 'title' })
+			} else if (item.answer.toLowerCase().includes(normalized)) {
+				const idx = item.answer.toLowerCase().indexOf(normalized)
+				const start = Math.max(0, idx - 30)
+				const end = Math.min(item.answer.length, idx + normalized.length + 30)
+				const snippet =
+					(start > 0 ? '…' : '') +
+					item.answer.slice(start, end) +
+					(end < item.answer.length ? '…' : '')
+				contentMatches.push({ item, matchType: 'content', snippet })
+			}
+		}
+
+		return [...titleMatches, ...contentMatches]
+	}
+
+	$: suggestions = getSuggestions(searchQuery)
+
+	// Navigate to an accordion when a suggestion is selected
+	async function selectSuggestion(suggestion: Suggestion) {
+		showSuggestions = false
+		selectedIndex = -1
+		searchQuery = ''
+		await tick()
+
+		const el = faqContainer?.querySelector(`#${suggestion.item.id}`)
+		if (!el) return
+
+		const btn = el.querySelector('button.header') as HTMLButtonElement | null
+		if (btn?.getAttribute('aria-expanded') !== 'true') {
+			btn?.click()
+		}
+
+		await tick()
+		el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+	}
+
+	function handleKeydown(e: KeyboardEvent) {
+		if (!showSuggestions || suggestions.length === 0) {
+			if (e.key === 'Escape' && searchQuery) {
+				searchQuery = ''
+				e.preventDefault()
+			}
+			return
+		}
+
+		switch (e.key) {
+			case 'ArrowDown':
+				e.preventDefault()
+				selectedIndex = (selectedIndex + 1) % suggestions.length
+				break
+			case 'ArrowUp':
+				e.preventDefault()
+				selectedIndex = selectedIndex <= 0 ? suggestions.length - 1 : selectedIndex - 1
+				break
+			case 'Enter':
+				if (selectedIndex >= 0) {
+					e.preventDefault()
+					selectSuggestion(suggestions[selectedIndex])
+				}
+				break
+			case 'Escape':
+				e.preventDefault()
+				showSuggestions = false
+				selectedIndex = -1
+				break
+		}
+	}
+
+	function handleInput() {
+		const sug = getSuggestions(searchQuery)
+		if (searchQuery.trim().length >= 2 && sug.length > 0) {
+			showSuggestions = true
+			selectedIndex = -1
+		} else {
+			showSuggestions = false
+			selectedIndex = -1
+		}
+	}
+
+	function handleFocus() {
+		const sug = getSuggestions(searchQuery)
+		if (searchQuery.trim().length >= 2 && sug.length > 0) {
+			showSuggestions = true
+		}
+	}
+
+	function handleBlur() {
+		setTimeout(() => {
+			showSuggestions = false
+		}, 150)
+	}
+
+	// -- Search filtering via DOM (enhanced: title + content) --
+
 	function filterFaq(query: string) {
 		if (!faqContainer) return
 		const normalizedQuery = query.toLowerCase().trim()
@@ -83,16 +241,24 @@
 				if (wrapper) wrapper.style.display = ''
 			})
 			categories.forEach((el) => (el.style.display = ''))
+			resultCount = -1
 			return
 		}
 
-		// Hide/show each accordion based on title match
+		let count = 0
+
+		// Hide/show each accordion based on title OR content match
 		accordions.forEach((el) => {
 			const title = el.querySelector('.title')?.textContent?.toLowerCase() || ''
-			const matches = title.includes(normalizedQuery)
+			const faqItem = faqData.find((f) => f.id === el.id)
+			const answer = faqItem?.answer.toLowerCase() || ''
+			const matches = title.includes(normalizedQuery) || answer.includes(normalizedQuery)
 			const wrapper = el.closest<HTMLElement>('div.inView') || el.parentElement
 			if (wrapper) wrapper.style.display = matches ? '' : 'none'
+			if (matches) count++
 		})
+
+		resultCount = count
 
 		// Hide categories that have no visible accordions after them
 		categories.forEach((cat) => {
@@ -133,7 +299,7 @@
 	</Fly>
 
 	<div class="faq-toolbar">
-		<div class="search-wrapper">
+		<div class="search-wrapper" class:suggestions-open={showSuggestions && suggestions.length > 0}>
 			<svg
 				class="search-icon"
 				width="18"
@@ -148,11 +314,54 @@
 			<input
 				type="search"
 				bind:value={searchQuery}
+				bind:this={searchInput}
+				on:input={handleInput}
+				on:keydown={handleKeydown}
+				on:focus={handleFocus}
+				on:blur={handleBlur}
 				placeholder="Rechercher une question..."
 				aria-label="Rechercher dans la FAQ"
+				role="combobox"
+				aria-expanded={showSuggestions && suggestions.length > 0}
+				aria-controls="faq-suggestions"
+				aria-autocomplete="list"
+				aria-activedescendant={selectedIndex >= 0 ? `faq-suggestion-${selectedIndex}` : undefined}
+				autocomplete="off"
 			/>
+
+			{#if showSuggestions && suggestions.length > 0}
+				<ul id="faq-suggestions" class="suggestions" role="listbox">
+					{#each suggestions as suggestion, i}
+						<li
+							id="faq-suggestion-{i}"
+							role="option"
+							aria-selected={i === selectedIndex}
+							class="suggestion"
+							class:selected={i === selectedIndex}
+							on:mousedown|preventDefault={() => selectSuggestion(suggestion)}
+							on:mouseenter={() => (selectedIndex = i)}
+						>
+							<span class="suggestion-category">{suggestion.item.category}</span>
+							<span class="suggestion-question">
+								{@html highlightMatch(escapeHtml(suggestion.item.question), searchQuery)}
+							</span>
+							{#if suggestion.matchType === 'content' && suggestion.snippet}
+								<span class="suggestion-snippet">
+									{@html highlightMatch(escapeHtml(suggestion.snippet), searchQuery)}
+								</span>
+							{/if}
+						</li>
+					{/each}
+				</ul>
+			{/if}
 		</div>
+
 		<div class="bulk-actions">
+			{#if resultCount >= 0}
+				<span class="result-count">
+					{resultCount} résultat{resultCount !== 1 ? 's' : ''}
+				</span>
+			{/if}
 			{#if allExpanded}
 				<button class="bulk-btn" on:click={collapseAll}>Tout replier</button>
 			{:else}
@@ -160,6 +369,12 @@
 			{/if}
 		</div>
 	</div>
+
+	{#if resultCount === 0}
+		<p class="no-results">
+			Aucun résultat pour « {searchQuery} ». Essayez avec d'autres mots-clés.
+		</p>
+	{/if}
 
 	<div class="faq-content" bind:this={faqContainer}>
 		<FAQ />
@@ -188,6 +403,7 @@
 		transform: translateY(-50%);
 		color: #999;
 		pointer-events: none;
+		z-index: 1;
 	}
 
 	.search-wrapper input {
@@ -201,6 +417,11 @@
 		transition: border-color 0.2s;
 	}
 
+	.search-wrapper.suggestions-open input {
+		border-radius: 0.625rem 0.625rem 0 0;
+		border-color: var(--brand);
+	}
+
 	.search-wrapper input:focus {
 		outline: none;
 		border-color: var(--brand);
@@ -210,8 +431,97 @@
 		color: #999;
 	}
 
+	/* -- Suggestions dropdown -- */
+
+	.suggestions {
+		position: absolute;
+		top: 100%;
+		left: 0;
+		right: 0;
+		z-index: 100;
+		background: white;
+		border: 2px solid var(--brand);
+		border-top: 1px solid #e5e7eb;
+		border-radius: 0 0 0.625rem 0.625rem;
+		max-height: 340px;
+		overflow-y: auto;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+	}
+
+	.suggestion {
+		padding: 0.6rem 1rem;
+		cursor: pointer;
+		display: flex;
+		flex-direction: column;
+		gap: 0.15rem;
+		border-bottom: 1px solid #f0f0f0;
+		transition: background-color 0.1s;
+	}
+
+	.suggestion:last-child {
+		border-bottom: none;
+	}
+
+	.suggestion:hover,
+	.suggestion.selected {
+		background: #f5f3ff;
+	}
+
+	.suggestion-category {
+		font-size: 0.7rem;
+		color: var(--brand);
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.03em;
+	}
+
+	.suggestion-question {
+		font-size: 0.92rem;
+		color: var(--text);
+		line-height: 1.3;
+	}
+
+	.suggestion-snippet {
+		font-size: 0.78rem;
+		color: #888;
+		font-style: italic;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		line-height: 1.4;
+	}
+
+	.suggestions :global(mark) {
+		background: #fef3c7;
+		color: inherit;
+		padding: 0 1px;
+		border-radius: 2px;
+		font-weight: 600;
+	}
+
+	/* -- Result count & no results -- */
+
 	.bulk-actions {
 		flex-shrink: 0;
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+	}
+
+	.result-count {
+		font-size: 0.85rem;
+		color: var(--text-secondary, #676e7a);
+		white-space: nowrap;
+	}
+
+	.no-results {
+		text-align: center;
+		color: var(--text-secondary, #676e7a);
+		padding: 2rem 1rem;
+		font-style: italic;
 	}
 
 	.bulk-btn {
