@@ -48,11 +48,16 @@
 </div>
 
 <style>
-	/* --- Mobile : titre puis pills empilées --- */
+	/* Annule le margin-bottom imposé par UnderlinedTitle dans ce contexte */
+	:global(.tabs-header h2) {
+		margin-bottom: 0;
+	}
+
+	/* --- Mobile : titre puis pills --- */
 	.tabs-header {
 		display: flex;
 		flex-direction: column;
-		gap: 1rem;
+		gap: 0.75rem;
 		margin-bottom: 1.5rem;
 	}
 
@@ -73,8 +78,8 @@
 
 	button {
 		padding: 0.6rem 1.1rem;
-		background: rgba(0, 0, 0, 0.07);
-		border: none;
+		background: rgba(0, 0, 0, 0.05);
+		border: 1.5px solid rgba(0, 0, 0, 0.12);
 		border-radius: 2rem;
 		font-family: var(--font-body);
 		font-size: 0.9rem;
@@ -84,7 +89,9 @@
 		color: var(--text);
 		transition:
 			background-color 0.15s ease,
-			color 0.15s ease;
+			color 0.15s ease,
+			border-color 0.15s ease,
+			box-shadow 0.15s ease;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -92,11 +99,14 @@
 
 	button.active {
 		background: var(--brand);
+		border-color: var(--brand);
 		color: white;
+		box-shadow: 0 2px 8px rgba(255, 148, 22, 0.35);
 	}
 
 	button:not(.active):hover {
-		background: rgba(255, 148, 22, 0.2);
+		background: rgba(255, 148, 22, 0.1);
+		border-color: rgba(255, 148, 22, 0.45);
 	}
 
 	.panel {
@@ -128,15 +138,15 @@
 	@media (min-width: 768px) {
 		.tabs-header {
 			flex-direction: row;
-			align-items: flex-start;
+			flex-wrap: wrap;
+			align-items: center;
 			justify-content: space-between;
-			gap: 2.5rem;
+			gap: 0.75rem 2rem;
 		}
 
 		ul {
 			flex-wrap: wrap;
 			width: auto;
-			flex-shrink: 0;
 			justify-content: flex-end;
 		}
 
