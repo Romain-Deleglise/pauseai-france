@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { fly } from 'svelte/transition'
-
 	export let tabs: string[]
 	export let id: string
 	export let label_id: string
@@ -21,9 +19,6 @@
 					aria-controls={`${id}-${i.toString()}`}
 					tabindex={active === tab ? 0 : -1}
 				>
-					<svg class="bullet" width="10" viewBox="0 0 2 2" xmlns="http://www.w3.org/2000/svg">
-						<circle cx="50%" cy="50%" r="1" />
-					</svg>
 					<slot {tab}></slot>
 				</button>
 			</li>
@@ -38,7 +33,6 @@
 				tabindex="0"
 				aria-labelledby={`${id}-${i.toString()}`}
 				style={`display: ${active === tab ? 'block' : 'none'}`}
-				in:fly={{ duration: 500, x: '100%', y: 0 }}
 			>
 				<h3 class="panel-title" id={`${id}-${i.toString()}`}>
 					<slot {tab}></slot>
@@ -52,76 +46,127 @@
 <style>
 	.tabs {
 		--padding-side: 1rem;
-		overflow-x: hidden;
 	}
+
+	/* Mobile : pills horizontales défilables */
 	ul {
-		padding-left: 0;
-		margin-bottom: 1rem;
-		grid-column: 1 / span 3;
+		padding: 0;
+		margin: 0 0 1.5rem;
+		list-style: none;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		overflow-x: auto;
+		scrollbar-width: none;
+		-ms-overflow-style: none;
+		gap: 0.5rem;
 		width: 100%;
-		height: fit-content;
-		border-radius: 0.625rem;
-		background-color: var(--bg-subtle);
-		display: flex;
-		flex-direction: column;
-		width: fit-content;
 	}
+
+	ul::-webkit-scrollbar {
+		display: none;
+	}
+
 	li {
-		font-weight: 700;
+		flex-shrink: 0;
 		display: flex;
 	}
-	button.active {
-		left: var(--padding-side);
-	}
+
 	button {
-		padding: 1rem calc(2 * var(--padding-side)) 1rem var(--padding-side);
-		background: none;
+		padding: 0.6rem 1.1rem;
+		background: rgba(0, 0, 0, 0.07);
 		border: none;
-		position: relative;
-		flex-grow: 1;
-		text-align: left;
+		border-radius: 2rem;
+		font-family: var(--font-body);
+		font-size: 0.9rem;
+		font-weight: 600;
+		white-space: nowrap;
 		cursor: pointer;
+		color: var(--text);
+		transition:
+			background-color 0.15s ease,
+			color 0.15s ease;
 		display: flex;
 		align-items: center;
 	}
-	.bullet {
-		fill: var(--brand);
-		display: none;
+
+	button.active {
+		background: var(--brand);
+		color: white;
 	}
-	button.active .bullet {
-		display: inline;
-		position: absolute;
-		left: 0;
+
+	button:not(.active):hover {
+		background: rgba(255, 148, 22, 0.2);
 	}
+
+	/* Animation d'entrée du panneau */
 	.panel {
-		grid-column: 4 / span 6;
+		animation: panelIn 0.2s ease;
 	}
+
+	@keyframes panelIn {
+		from {
+			opacity: 0;
+			transform: translateY(6px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.panel {
+			animation: none;
+		}
+	}
+
 	.panel-title {
 		display: none;
 	}
 
+	/* Desktop : colonne verticale + grille côte à côte */
 	@media (min-width: 768px) {
 		.tabs {
 			display: grid;
 			grid-template-columns: max-content minmax(2rem, 1fr) minmax(auto, 50rem) 3fr;
 		}
+
 		ul {
+			flex-direction: column;
+			overflow-x: visible;
+			width: fit-content;
+			gap: 0.25rem;
+			margin-bottom: 0;
 			grid-column: 1;
 		}
+
+		li {
+			flex-shrink: 1;
+		}
+
+		button {
+			padding: 0.75rem 1.5rem;
+			border-radius: 0.625rem;
+			white-space: normal;
+			text-align: left;
+			font-size: 1rem;
+			min-width: 11rem;
+		}
+
 		.panel {
 			grid-column: 3;
 		}
+
 		.panel-title {
 			display: block;
 			padding-bottom: 1rem;
 		}
 	}
+
 	@media (min-width: 1024px) {
-		.tabs {
-			--padding-side: 1.25rem;
-		}
 		button {
-			padding: 2rem calc(2 * var(--padding-side)) 2rem var(--padding-side);
+			padding: 0.9rem 2rem;
 		}
 	}
 </style>
