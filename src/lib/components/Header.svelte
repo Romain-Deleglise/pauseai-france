@@ -419,10 +419,11 @@
 
 	.big-logo {
 		display: none;
+		height: 26px;
 	}
 
 	.big-logo :global(svg) {
-		height: 26px;
+		height: 100%;
 		width: auto;
 	}
 
