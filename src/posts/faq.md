@@ -52,7 +52,7 @@ original:
 
 Pause IA est la branche française de [PauseAI Global](https://pauseai.info/). Nous sommes une [association à but non lucratif](/mentions-legales) dont l'objectif est de minimiser les [risques liés à l'IA](/dangers), y compris le [risque d'extinction](/dangers/pour-l'humanite). Nous alertons le public, dialoguons avec les décideurs et organisons des actions pour convaincre les gouvernements d'intervenir et [de mettre en pause le développement d'une IAG](/propositions) (Intelligence Artificielle Générale).
 
-Depuis sa création, l'association s'est professionnalisée : nous avons recruté une directrice exécutive, Clémence Peyrot, et sommes passés d'une structure purement bénévole à une organisation structurée. Le 31 octobre 2025, nous avons organisé une [conférence au Sénat](https://www.smartrezo.com/n31-france/tv-politiques-numeriques-pol-n-colloque-sur-les-dangers-de-l-ia-faut-il-appuyer-sur-pause.html?vod=25808) sur les dangers de l'IA, réunissant parlementaires, chercheurs et experts.
+Depuis sa création, l'association s'est professionnalisée, passant d'une structure purement bénévole à une organisation structurée. Le 31 octobre 2025, nous avons organisé une [conférence au Sénat](https://www.smartrezo.com/n31-france/tv-politiques-numeriques-pol-n-colloque-sur-les-dangers-de-l-ia-faut-il-appuyer-sur-pause.html?vod=25808) sur les dangers de l'IA, réunissant parlementaires, chercheurs et experts.
 
 Bien que nous soyons en relation avec [PauseAI Global](https://pauseai.info/), nous bénéficions d'une entière autonomie et menons nos propres projets en France. Apprenez-en plus sur nos [membres](/qui-sommes-nous). Vous pouvez consulter notre [charte des valeurs](/charte-des-valeurs) pour en savoir plus sur nos principes et engagements.
 
