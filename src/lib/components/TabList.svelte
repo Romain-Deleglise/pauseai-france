@@ -141,17 +141,21 @@
 			grid-column: 1;
 		}
 
+		/* Tous les li s'étirent à la largeur du ul (= largeur du plus large) */
 		li {
 			flex-shrink: 1;
+			width: 100%;
+			display: flex;
 		}
 
+		/* Chaque bouton remplit son li → même largeur pour tous */
 		button {
-			padding: 0.75rem 1.5rem;
+			padding: 0.6rem 1.25rem;
 			border-radius: 0.625rem;
 			white-space: normal;
 			text-align: left;
 			font-size: 1rem;
-			min-width: 11rem;
+			width: 100%;
 		}
 
 		.panel {
@@ -166,7 +170,7 @@
 
 	@media (min-width: 1024px) {
 		button {
-			padding: 0.9rem 2rem;
+			padding: 0.7rem 1.5rem;
 		}
 	}
 </style>

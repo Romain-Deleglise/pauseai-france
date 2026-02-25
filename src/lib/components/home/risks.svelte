@@ -141,12 +141,12 @@
 	section {
 		background: var(--bg-subtle);
 		border-radius: 1.5rem;
-		padding: 2rem 1.5rem;
+		padding: 1.25rem 1.25rem;
 	}
 
 	@media (min-width: 640px) {
 		section {
-			padding: 3rem 3.5rem;
+			padding: 1.75rem 2.5rem;
 		}
 	}
 </style>
