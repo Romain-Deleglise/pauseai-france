@@ -21,50 +21,50 @@
 <style>
 	h1,
 	h2 {
-		/* Increasing thickness grows the underline towards the top */
-		--underline-thickness: calc(0.75 * 1.1875rem);
-		--x-offset: calc(0.75 * 1.1375rem);
-		/* Vertical offset is calculated from bottom of the underline */
-		--y-offset: 0.17rem;
-
 		margin-top: 0;
 		margin-bottom: 2rem;
-		margin-right: var(--x-offset);
+		position: relative;
+		padding-left: 1rem;
 	}
 
+	/* Vertical accent bar on the left */
+	h1::before,
+	h2::before {
+		content: '';
+		position: absolute;
+		left: 0;
+		top: 0.1em;
+		bottom: 0.1em;
+		width: 4px;
+		background: var(--underline-color);
+		border-radius: 2px;
+	}
+
+	/* Refined text underline */
 	h1 span,
 	h2 span {
-		/* Create underline using background gradient */
-		background-image: linear-gradient(
-			transparent,
-			/* Transparent from top... */ transparent calc(100% - var(--underline-thickness)),
-			/* ...until the start of underline */ var(--underline-color)
-				calc(100% - var(--underline-thickness)),
-			/* Start of underline color */ var(--underline-color) 100%
-				/* Full underline color to bottom */
-		);
-		background-repeat: no-repeat;
-
-		background-size: calc(100% + var(--x-offset)) calc(100% + var(--y-offset));
-		background-position: var(--x-offset) calc(var(--y-offset) * -1);
-
-		/* Ensure background is applied consistently across line breaks */
-		box-decoration-break: clone;
-		-webkit-box-decoration-break: clone;
-
-		/* Extend underline past text on the right */
-		padding-right: var(--x-offset);
-		/* Shift underline vertically */
-		padding-bottom: var(--y-offset);
+		text-decoration: underline;
+		text-decoration-color: var(--underline-color);
+		text-decoration-thickness: 3px;
+		text-underline-offset: 5px;
 	}
 
 	@media (min-width: 640px) {
 		h1,
 		h2 {
-			--underline-thickness: 1.1875rem;
-			--x-offset: 1.375rem;
-			--y-offset: 0.3rem;
+			padding-left: 1.25rem;
 			margin-bottom: 4rem;
+		}
+
+		h1::before,
+		h2::before {
+			width: 5px;
+		}
+
+		h1 span,
+		h2 span {
+			text-decoration-thickness: 4px;
+			text-underline-offset: 7px;
 		}
 	}
 </style>
