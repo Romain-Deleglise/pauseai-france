@@ -248,16 +248,17 @@
 		position: sticky;
 		top: 0;
 		z-index: 100;
+		border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 		transition:
 			background-color 0.25s ease,
-			box-shadow 0.25s ease;
+			box-shadow 0.25s ease,
+			border-color 0.25s ease;
 	}
 
 	.site-header.scrolled {
 		background: white;
-		box-shadow:
-			0 1px 0 rgba(0, 0, 0, 0.07),
-			0 2px 12px rgba(0, 0, 0, 0.05);
+		border-bottom-color: rgba(0, 0, 0, 0.1);
+		box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
 	}
 
 	/* ─── Banner slide-away on scroll ───────────────────────────── */
