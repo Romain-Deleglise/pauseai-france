@@ -46,6 +46,8 @@ original:
 
 <!-- ↑↑↑ NE PAS TOUCHER ↑↑↑ -->
 
+## Pause IA et les risques
+
 ### Qui êtes-vous ?
 
 Pause IA est la branche française de [PauseAI Global](https://pauseai.info/). Nous sommes une [association à but non lucratif](/mentions-legales) dont l'objectif est de minimiser les [risques liés à l'IA](/dangers), y compris le [risque d'extinction](/dangers/pour-l'humanite). Nous alertons le public, dialoguons avec les décideurs et organisons des actions pour convaincre les gouvernements d'intervenir et [de mettre en pause le développement d'une IAG](/propositions) (Intelligence Artificielle Générale).
@@ -111,6 +113,8 @@ Le temps est compté. Agir maintenant n'est pas une précaution : c'est une néc
 
 [En savoir plus sur l'urgence de la situation.](https://pauseai.info/urgency)
 
+## Idées reçues
+
 ### Pourquoi si peu de gens s'en préoccupent ?
 
 C'est probablement la question la plus importante pour comprendre la situation actuelle. La réponse ne tient pas à un manque d'intelligence — elle tient à la psychologie humaine, qui nous affecte tous.
@@ -140,6 +144,8 @@ Non, nous ne croyons pas que les modèles actuels représentent un risque existe
 
 Le danger n'est pas qu'un modèle spécifique « nous tue », mais que la trajectoire actuelle de développement — sans solution au problème de l'alignement, dans un contexte de course effrénée entre entreprises — mène à une catastrophe. Si nous poursuivons le développement de systèmes toujours plus puissants sans résoudre ce problème fondamental, nous atteindrons un point de non-retour où l'un d'eux deviendra [une menace existentielle](/dangers/pour-l'humanite).
 
+## Moratoire et solutions
+
 ### Un moratoire ne risque-t-il pas d'aggraver les choses ?
 
 PauseAI Global a répondu à ces préoccupations [dans cet article](https://pauseai.info/mitigating-pause-failures).
@@ -159,6 +165,8 @@ Mais ce scénario repose sur une fenêtre temporelle étroite : il faudrait que 
 En pratique, les systèmes qui montrent des comportements de [scheming](https://www.apolloresearch.ai/research/scheming-reasoning-evaluations) et d'[alignment faking](https://www.anthropic.com/research/alignment-faking) sont précisément ceux qui sont les plus capables. Plus un modèle est puissant, plus il est susceptible de développer des stratégies pour préserver ses propres objectifs — un phénomène prédit par la théorie de la [convergence instrumentale](https://en.wikipedia.org/wiki/Instrumental_convergence). Utiliser un tel système pour résoudre l'alignement revient à demander à un système potentiellement adversarial de nous aider à le contrôler. De plus, même les résultats d'un système « coopératif » devraient être rigoureusement vérifiés par des chercheurs humains — or cette vérification devient de plus en plus difficile à mesure que les systèmes surpassent notre capacité de compréhension.
 
 C'est un pari qu'il est rationnel de tenter, mais il serait imprudent d'en faire notre seul plan.
+
+## Entreprises et géopolitique
 
 ### Que font OpenAI, Google et les autres entreprises d'IA ?
 
@@ -199,6 +207,8 @@ Mais **les événements depuis 2024 montrent que les incitations commerciales l'
 Notre interprétation : les entreprises d'IA _savent_ que les risques sont réels (elles emploient des chercheurs en sécurité, elles publient des études sur l'[alignment faking](https://www.anthropic.com/research/alignment-faking)), mais les incitations commerciales et la dynamique de course les poussent à continuer malgré tout. C'est précisément pourquoi une intervention gouvernementale est nécessaire : les acteurs du marché ne peuvent pas résoudre seuls un [problème de coordination](https://en.wikipedia.org/wiki/Tragedy_of_the_commons) de cette ampleur.
 
 [PauseAI Global : en savoir plus sur la charge mentale des risques existentiels](https://pauseai.info/psychology-of-x-risk)
+
+## S'engager
 
 ### Qui vous finance ?
 
