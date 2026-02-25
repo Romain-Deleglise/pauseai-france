@@ -621,8 +621,8 @@
 		}
 
 		nav.scrolled {
-			padding-top: 0.6rem;
-			padding-bottom: 0.6rem;
+			padding-top: 0.7rem;
+			padding-bottom: 0.7rem;
 		}
 	}
 
@@ -642,8 +642,8 @@
 		}
 
 		nav.scrolled {
-			padding-top: 0.6rem;
-			padding-bottom: 0.6rem;
+			padding-top: 0.7rem;
+			padding-bottom: 0.7rem;
 		}
 	}
 
