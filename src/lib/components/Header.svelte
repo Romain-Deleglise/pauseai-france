@@ -121,6 +121,12 @@
 					{#each navGroups as group}
 						<NavDropdown label={group.label} items={group.items} white={onHomepage && !scrolled} />
 					{/each}
+					<!-- Séparateur vertical -->
+					<div
+						class="nav-separator"
+						class:on-hero={onHomepage && !scrolled}
+						aria-hidden="true"
+					></div>
 					<!-- CTAs -->
 					<div class="nav-ctas">
 						<a href="/dons" class="btn-donate" class:on-hero={onHomepage && !scrolled}>Donner</a>
@@ -307,15 +313,27 @@
 		flex-wrap: wrap;
 		justify-content: center;
 		align-items: center;
-		gap: 0.25rem;
+		gap: 0.375rem;
 	}
 
-	/* CTAs group (Donner + Rejoindre) — spaced from nav dropdowns */
+	/* Séparateur vertical entre les liens nav et les boutons CTA */
+	.nav-separator {
+		width: 1px;
+		height: 1.5rem;
+		background: rgba(0, 0, 0, 0.18);
+		margin: 0 0.625rem;
+		flex-shrink: 0;
+	}
+
+	.nav-separator.on-hero {
+		background: rgba(255, 255, 255, 0.4);
+	}
+
+	/* CTAs group (Donner + Rejoindre) */
 	.nav-ctas {
 		display: flex;
 		align-items: center;
-		gap: 0.5rem;
-		margin-left: 1.25rem;
+		gap: 0.625rem;
 	}
 
 	/* ─── Nav CTA buttons ────────────────────────────────────────── */
@@ -401,6 +419,11 @@
 
 	.big-logo {
 		display: none;
+	}
+
+	.big-logo :global(svg) {
+		height: 42px;
+		width: auto;
 	}
 
 	/* ─── Sidebar ────────────────────────────────────────────────── */
