@@ -15,7 +15,6 @@
 	$: onEmploiePage = /^\/emploi-ia(?:\/|$)/.test($page.url.pathname)
 
 	let open = false
-	let expandedSection: string | null = null
 	// Workaround to trigger transitions on render
 	let mounted = false
 	onMount(() => {
@@ -24,11 +23,6 @@
 
 	function closeMenu() {
 		open = false
-		expandedSection = null
-	}
-
-	function toggleSection(section: string) {
-		expandedSection = expandedSection === section ? null : section
 	}
 
 	// Navigation groups — modify here to add/remove pages from the nav
@@ -54,11 +48,14 @@
 		{
 			id: 'campagnes',
 			label: 'Campagnes',
+			items: [{ href: '/municipales-2026', label: 'Municipales 2026' }]
+		},
+		{
+			id: 'evenements',
+			label: 'Événements',
 			items: [
-				{ href: '/campagnes', label: 'Toutes nos campagnes' },
-				{ href: '/sommet-ia-2026', label: 'Sommet IA 2026' },
-				{ href: '/municipales-2026', label: 'Municipales 2026' },
-				{ href: '/senat2025', label: 'Sénat 2025' }
+				{ href: '/senat2025', label: 'Colloque Sénat 2025' },
+				{ href: 'https://controleia.org/solutions/', label: 'Forum ControlIA', external: true }
 			]
 		},
 		{
@@ -67,9 +64,7 @@
 			items: [
 				{ href: '/qui-sommes-nous', label: 'Qui sommes-nous ?' },
 				{ href: '/propositions', label: 'Nos propositions' },
-				{ href: '/presse', label: 'Espace presse' },
-				{ href: '/newsletters', label: 'Newsletters' },
-				{ href: 'https://pauseia.substack.com/', label: 'Blog', external: true }
+				{ href: '/presse', label: 'Espace presse' }
 			]
 		}
 	]
@@ -123,28 +118,19 @@
 				<a href="/" class="logo" on:click={closeMenu}>
 					<Logo animate={onHomepage} fill_circle="white" fill_ai="white" />
 				</a>
-				<button aria-label="Close mobile menu" class="hamburger" on:click={closeMenu}>
+				<button aria-label="Close mobile menu" class="hamburger close-btn" on:click={closeMenu}>
 					<svg
-						width="24"
-						height="24"
-						viewBox="0 0 24 24"
+						width="20"
+						height="20"
+						viewBox="0 0 20 20"
 						fill="none"
 						xmlns="http://www.w3.org/2000/svg"
 					>
-						<rect
-							y="2.21387"
-							width="3.13043"
-							height="30.8142"
-							transform="rotate(-45 0 2.21387)"
-							fill="black"
-						/>
-						<rect
-							x="21.7891"
-							y="0.000244141"
-							width="3.13043"
-							height="30.8142"
-							transform="rotate(45 21.7891 0.000244141)"
-							fill="black"
+						<path
+							d="M2 2L18 18M18 2L2 18"
+							stroke="black"
+							stroke-width="2.5"
+							stroke-linecap="round"
 						/>
 					</svg>
 				</button>
@@ -153,135 +139,146 @@
 			<div class="sidebar-links">
 				{#each navGroups as group}
 					<div class="sidebar-section">
-						<!-- svelte-ignore a11y-no-static-element-interactions -->
-						<div
-							class="sidebar-section-header"
-							role="button"
-							tabindex="0"
-							aria-expanded={expandedSection === group.id}
-							on:click={() => toggleSection(group.id)}
-							on:keydown={(e) => e.key === 'Enter' && toggleSection(group.id)}
-						>
-							<h2>{group.label}</h2>
-							<svg
-								class="section-chevron"
-								class:rotated={expandedSection === group.id}
-								width="16"
-								height="16"
-								viewBox="0 0 16 16"
-								fill="none"
-								aria-hidden="true"
-							>
-								<path
-									d="M3 6L8 11L13 6"
-									stroke="currentColor"
-									stroke-width="2"
-									stroke-linecap="round"
-									stroke-linejoin="round"
-								/>
-							</svg>
+						<p class="sidebar-section-label">{group.label}</p>
+						<div class="sidebar-subsection">
+							{#each group.items as item}
+								<a
+									href={item.href}
+									on:click={closeMenu}
+									target={item.external ? '_blank' : undefined}
+									rel={item.external ? 'noopener noreferrer' : undefined}
+									class:active={!item.href.startsWith('http') &&
+										($page.url.pathname === item.href ||
+											$page.url.pathname.startsWith(item.href + '/'))}
+								>
+									{item.label}
+									{#if item.external}
+										<svg
+											class="ext-icon"
+											width="11"
+											height="11"
+											viewBox="0 0 11 11"
+											fill="none"
+											aria-hidden="true"
+										>
+											<path
+												d="M6.5 1h3.5v3.5M10 1L4.5 6.5M3 3H1.5A.5.5 0 001 3.5v6A.5.5 0 001.5 10h6a.5.5 0 00.5-.5V8"
+												stroke="currentColor"
+												stroke-width="1.5"
+												stroke-linecap="round"
+												stroke-linejoin="round"
+											/>
+										</svg>
+									{/if}
+								</a>
+							{/each}
 						</div>
-
-						{#if expandedSection === group.id}
-							<div class="sidebar-subsection">
-								{#each group.items as item}
-									<a
-										href={item.href}
-										on:click={closeMenu}
-										target={item.external ? '_blank' : undefined}
-										rel={item.external ? 'noopener noreferrer' : undefined}
-									>
-										{item.label}
-										{#if item.external}
-											<svg
-												class="ext-icon"
-												width="12"
-												height="12"
-												viewBox="0 0 12 12"
-												fill="none"
-												aria-hidden="true"
-											>
-												<path
-													d="M7 1h4v4M11 1L5.5 6.5M4 3H2a1 1 0 00-1 1v6a1 1 0 001 1h6a1 1 0 001-1V9"
-													stroke="currentColor"
-													stroke-width="1.5"
-													stroke-linecap="round"
-													stroke-linejoin="round"
-												/>
-											</svg>
-										{/if}
-									</a>
-								{/each}
-							</div>
-						{/if}
 					</div>
 				{/each}
 
-				<div class="sidebar-divider"></div>
-				<a href="/dons" class="sidebar-cta" on:click={closeMenu}>Faire un don</a>
-				<a href="/rejoindre" class="sidebar-join" on:click={closeMenu}>Nous rejoindre</a>
+				<div class="sidebar-actions">
+					<a href="/dons" class="sidebar-cta" on:click={closeMenu}>Faire un don</a>
+					<a href="/rejoindre" class="sidebar-join" on:click={closeMenu}>Nous rejoindre</a>
+				</div>
 			</div>
 		</div>
+
+		<!-- Overlay backdrop -->
+		{#if open}
+			<!-- svelte-ignore a11y-no-static-element-interactions -->
+			<div class="sidebar-backdrop" on:click={closeMenu} transition:fade={{ duration: 200 }}></div>
+		{/if}
 	</nav>
 {/if}
 
 <style>
+	/* ─── Sidebar ────────────────────────────────────────────────── */
 	.sidebar {
 		position: fixed;
 		height: 100%;
-		width: 100%;
-		background: #ff9416;
+		width: min(22rem, 100%);
+		background: #fff;
 		top: 0;
-		left: 100%;
-		transition: left 0.3s ease-in-out;
+		right: 0;
+		transform: translateX(100%);
+		transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 		z-index: 1000;
 		overflow-y: auto;
 		display: flex;
 		flex-direction: column;
+		box-shadow: -8px 0 40px rgba(0, 0, 0, 0.12);
 	}
 
-	/* Sidebar sections */
-	.sidebar-links {
-		display: flex;
-		flex-direction: column;
+	.sidebar.open {
+		transform: translateX(0);
 	}
 
-	.sidebar-section {
-		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+	.sidebar-backdrop {
+		position: fixed;
+		inset: 0;
+		background: rgba(0, 0, 0, 0.35);
+		z-index: 999;
+		backdrop-filter: blur(2px);
 	}
 
-	.sidebar-section-header {
+	.sidebar-head {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		cursor: pointer;
-		padding: 0.25rem 0;
-		user-select: none;
+		padding: 1.25rem 1.5rem;
+		border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+		position: sticky;
+		top: 0;
+		background: white;
+		z-index: 10;
 	}
 
-	.sidebar-section-header:hover {
-		opacity: 0.8;
+	.close-btn {
+		background: rgba(0, 0, 0, 0.05);
+		border-radius: 0.5rem;
+		padding: 0.5rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: background 0.15s;
 	}
 
-	.sidebar-section-header h2 {
-		margin: 0;
+	.close-btn:hover {
+		background: rgba(0, 0, 0, 0.1);
 	}
 
-	.section-chevron {
-		transition: transform 0.2s ease;
-		flex-shrink: 0;
-		opacity: 0.7;
+	/* ─── Sidebar sections ──────────────────────────────────────── */
+	.sidebar-links {
+		display: flex;
+		flex-direction: column;
+		padding: 1rem 1.5rem 2rem;
+		gap: 0;
+		flex: 1;
 	}
 
-	.section-chevron.rotated {
-		transform: rotate(180deg);
+	.sidebar-section {
+		padding: 1rem 0 0.5rem;
+		border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+	}
+
+	.sidebar-section:last-of-type {
+		border-bottom: none;
+	}
+
+	.sidebar-section-label {
+		font-family: var(--font-heading);
+		font-size: 0.7rem;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: rgba(0, 0, 0, 0.4);
+		margin: 0 0 0.5rem;
 	}
 
 	.sidebar-subsection {
 		display: flex;
 		flex-direction: column;
-		gap: 0.15rem;
-		padding: 0.25rem 0 0.75rem 1rem;
+		gap: 0.1rem;
 	}
 
 	.sidebar-subsection a {
@@ -289,41 +286,47 @@
 		align-items: center;
 		gap: 0.375rem;
 		text-decoration: none;
-		font-size: 1.1rem;
+		font-size: 1rem;
 		font-family: var(--font-heading);
-		font-weight: 500;
+		font-weight: 600;
 		color: rgba(0, 0, 0, 0.8);
-		padding: 0.35rem 0;
-		transition: color 0.15s;
+		padding: 0.45rem 0.6rem;
+		border-radius: 0.5rem;
+		transition:
+			background 0.1s,
+			color 0.1s;
 	}
 
-	.sidebar-subsection a:hover {
-		color: black;
+	.sidebar-subsection a:hover,
+	.sidebar-subsection a.active {
+		background: rgba(255, 148, 22, 0.1);
+		color: var(--brand);
 	}
 
 	.ext-icon {
-		opacity: 0.5;
+		opacity: 0.45;
 		flex-shrink: 0;
 	}
 
-	.sidebar-divider {
-		height: 1px;
-		background: rgba(0, 0, 0, 0.15);
-		margin: 1.25rem 0 1rem;
+	/* ─── Sidebar CTAs ──────────────────────────────────────────── */
+	.sidebar-actions {
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+		margin-top: 1.5rem;
 	}
 
 	.sidebar-cta {
 		display: block;
 		text-decoration: none;
 		text-align: center;
-		background: white;
-		color: black;
-		border-radius: 0.5rem;
-		padding: 0.75rem 1.5rem;
+		background: var(--brand);
+		color: white;
+		border-radius: 0.625rem;
+		padding: 0.8rem 1.5rem;
 		font-family: var(--font-heading);
 		font-weight: 700;
-		font-size: 1.25rem;
-		margin-bottom: 0.75rem;
+		font-size: 1rem;
 		transition: opacity 0.15s;
 	}
 
@@ -337,11 +340,11 @@
 		background: black;
 		color: white;
 		text-align: center;
-		padding: 0.75rem 1.5rem;
-		border-radius: 0.5rem;
+		padding: 0.8rem 1.5rem;
+		border-radius: 0.625rem;
 		font-family: var(--font-heading);
 		font-weight: 700;
-		font-size: 1.25rem;
+		font-size: 1rem;
 		transition: opacity 0.15s;
 	}
 
@@ -349,23 +352,7 @@
 		opacity: 0.85;
 	}
 
-	.sidebar-head {
-		display: flex;
-		justify-content: space-between;
-		margin-bottom: 2rem;
-	}
-
-	.sidebar-links h2 {
-		font-size: 1.5rem;
-		margin-bottom: 0;
-		margin-top: 0;
-		padding: 0.5rem 0;
-	}
-
-	.open {
-		left: 0;
-	}
-
+	/* ─── Nav ───────────────────────────────────────────────────── */
 	nav {
 		display: flex;
 		justify-content: space-between;
@@ -374,7 +361,7 @@
 	}
 
 	nav,
-	.sidebar {
+	.sidebar-head {
 		padding: 1rem;
 	}
 
@@ -396,6 +383,9 @@
 		display: flex;
 		align-items: center;
 		cursor: pointer;
+		background: none;
+		border: none;
+		padding: 0;
 	}
 
 	.logo {
@@ -425,14 +415,12 @@
 	}
 
 	@media (min-width: 640px) {
-		nav,
-		.sidebar {
+		nav {
 			padding: 2rem 2rem;
 		}
 	}
 	@media (min-width: 768px) {
-		nav,
-		.sidebar {
+		nav {
 			padding: 2rem 4rem;
 		}
 	}
@@ -448,7 +436,8 @@
 		}
 
 		.hamburger,
-		.sidebar {
+		.sidebar,
+		.sidebar-backdrop {
 			display: none;
 		}
 		nav {
