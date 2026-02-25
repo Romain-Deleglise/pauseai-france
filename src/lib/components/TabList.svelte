@@ -44,31 +44,19 @@
 </div>
 
 <style>
-	.tabs {
-		--padding-side: 1rem;
-	}
-
-	/* Mobile : pills horizontales défilables */
+	/* Pills horizontales, toujours visibles (wrap) — mobile comme desktop */
 	ul {
 		padding: 0;
 		margin: 0 0 1.5rem;
 		list-style: none;
 		display: flex;
 		flex-direction: row;
-		flex-wrap: nowrap;
-		overflow-x: auto;
-		scrollbar-width: none;
-		-ms-overflow-style: none;
+		flex-wrap: wrap;
 		gap: 0.5rem;
 		width: 100%;
 	}
 
-	ul::-webkit-scrollbar {
-		display: none;
-	}
-
 	li {
-		flex-shrink: 0;
 		display: flex;
 	}
 
@@ -121,56 +109,15 @@
 		}
 	}
 
+	/* Le titre du panel n'est pas nécessaire, l'onglet actif est déjà mis en valeur */
 	.panel-title {
 		display: none;
 	}
 
-	/* Desktop : colonne verticale + grille côte à côte */
-	@media (min-width: 768px) {
-		.tabs {
-			display: grid;
-			grid-template-columns: max-content minmax(2rem, 1fr) minmax(auto, 50rem) 3fr;
-		}
-
-		ul {
-			flex-direction: column;
-			overflow-x: visible;
-			width: fit-content;
-			gap: 0.25rem;
-			margin-bottom: 0;
-			grid-column: 1;
-		}
-
-		/* Tous les li s'étirent à la largeur du ul (= largeur du plus large) */
-		li {
-			flex-shrink: 1;
-			width: 100%;
-			display: flex;
-		}
-
-		/* Chaque bouton remplit son li → même largeur pour tous */
+	@media (min-width: 640px) {
 		button {
-			padding: 0.6rem 1.25rem;
-			border-radius: 0.625rem;
-			white-space: normal;
-			text-align: left;
 			font-size: 1rem;
-			width: 100%;
-		}
-
-		.panel {
-			grid-column: 3;
-		}
-
-		.panel-title {
-			display: block;
-			padding-bottom: 1rem;
-		}
-	}
-
-	@media (min-width: 1024px) {
-		button {
-			padding: 0.7rem 1.5rem;
+			padding: 0.65rem 1.25rem;
 		}
 	}
 </style>
