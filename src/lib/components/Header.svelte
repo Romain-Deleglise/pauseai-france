@@ -264,8 +264,6 @@
 		top: 0;
 		z-index: 100;
 		border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-		/* GPU compositing prevents flickering during height transitions */
-		will-change: transform;
 		transition:
 			background-color 0.25s ease,
 			box-shadow 0.25s ease,
