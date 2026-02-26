@@ -7,27 +7,62 @@
 	import { fade, fly } from 'svelte/transition'
 	const label_id = 'hero-title'
 
-	const photos = [
-		{ src: '/hero/tshirt-pauseai.webp', alt: 'Militant avec t-shirt Pause AI' },
-		{ src: '/hero/manif-01.webp', alt: 'Militant brandissant une pancarte' },
-		{ src: '/hero/conference-salle.webp', alt: 'Conférence Reprendre le Contrôle' },
-		{ src: '/hero/manif-08.webp', alt: 'Pancarte Contrôlons les IA' },
-		{ src: '/hero/megaphone.webp', alt: 'Militant au mégaphone' },
-		{ src: '/hero/manif-03.webp', alt: "Militant We can't steer" },
-		{ src: '/hero/stop-course.webp', alt: 'Pancarte Stop à la course' },
-		{ src: '/hero/manif-07.webp', alt: 'Prise de parole au micro' },
-		{ src: '/hero/manif-02.webp', alt: 'Militant AI Safety Summit' },
-		{ src: '/hero/panneau-pauseai.webp', alt: 'Militant avec panneau Pause AI' },
-		{ src: '/hero/manif-10.webp', alt: 'Pancarte chronologie des crises' },
-		{ src: '/hero/sans-ia-sure.webp', alt: 'Sans IA sûre pas de futur' },
-		{ src: '/hero/manif-05.webp', alt: 'Militants avec banderole' },
-		{ src: '/hero/manif-11.webp', alt: 'Militant AI Safety Summit' },
-		{ src: '/hero/discussion.webp', alt: 'Discussion avec des passants' },
-		{ src: '/hero/manif-04.webp', alt: 'Pancarte IA machine à virus' },
-		{ src: '/hero/panneau-rue.webp', alt: 'Pancarte dans la rue' },
-		{ src: '/hero/manif-09.webp', alt: 'Militant Sans IA sûre pas de futur' },
-		{ src: '/hero/manif-06.webp', alt: 'Militants tenant une banderole' },
-		{ src: '/hero/conference-speaker.webp', alt: 'Intervenant à la conférence' }
+	// 4 rows of photos, each row scrolls in its own direction
+	const row1 = [
+		'/hero/tshirt-pauseai.webp',
+		'/hero/senat-intro.webp',
+		'/hero/manif-01.webp',
+		'/hero/projection-gateau.webp',
+		'/hero/conf-full-room.webp',
+		'/hero/manif-08.webp',
+		'/hero/fost-summit.webp',
+		'/hero/senat-speaker2.webp',
+		'/hero/manif-03.webp',
+		'/hero/apidays-talk.webp',
+		'/hero/panneau-pauseai.webp',
+		'/hero/senat-audience1.webp'
+	]
+	const row2 = [
+		'/hero/megaphone.webp',
+		'/hero/senat-panel.webp',
+		'/hero/manif-07.webp',
+		'/hero/conf-audience.webp',
+		'/hero/stop-course.webp',
+		'/hero/projection-ambiance.webp',
+		'/hero/manif-02.webp',
+		'/hero/senat-talk.webp',
+		'/hero/fost-talk.webp',
+		'/hero/sans-ia-sure.webp',
+		'/hero/conf-presenter.webp',
+		'/hero/manif-05.webp'
+	]
+	const row3 = [
+		'/hero/senat-orateur.webp',
+		'/hero/manif-04.webp',
+		'/hero/projection-discussion.webp',
+		'/hero/conference-salle.webp',
+		'/hero/manif-09.webp',
+		'/hero/fost-speaker.webp',
+		'/hero/panneau-rue.webp',
+		'/hero/senat-salle.webp',
+		'/hero/conf-panel.webp',
+		'/hero/manif-11.webp',
+		'/hero/apidays-slide.webp',
+		'/hero/senat-discussion.webp'
+	]
+	const row4 = [
+		'/hero/manif-06.webp',
+		'/hero/senat-groupe.webp',
+		'/hero/discussion.webp',
+		'/hero/conf-reprise.webp',
+		'/hero/manif-10.webp',
+		'/hero/projection-conference.webp',
+		'/hero/conference-speaker.webp',
+		'/hero/senat-audience2.webp',
+		'/hero/conf-question.webp',
+		'/hero/apidays-expo.webp',
+		'/hero/conf-speaker-new.webp',
+		'/hero/senat-speaker1.webp'
 	]
 
 	// Workaround to trigger transitions on render
@@ -40,16 +75,35 @@
 {#if mounted}
 	<section class="hero" aria-labelledby={label_id}>
 		<div class="hero-bg" aria-hidden="true">
-			<div class="mosaic">
-				{#each photos as photo, i}
-					<div
-						class="mosaic-cell"
-						class:tall={i === 0 || i === 4 || i === 7 || i === 11}
-						class:wide={i === 2}
-					>
-						<img src={photo.src} alt={photo.alt} loading={i < 6 ? 'eager' : 'lazy'} />
+			<div class="marquee-container">
+				<div class="marquee-row row-left">
+					<div class="marquee-track">
+						{#each [...row1, ...row1] as src}
+							<img {src} alt="" loading="lazy" />
+						{/each}
 					</div>
-				{/each}
+				</div>
+				<div class="marquee-row row-right">
+					<div class="marquee-track">
+						{#each [...row2, ...row2] as src}
+							<img {src} alt="" loading="lazy" />
+						{/each}
+					</div>
+				</div>
+				<div class="marquee-row row-left row-slow">
+					<div class="marquee-track">
+						{#each [...row3, ...row3] as src}
+							<img {src} alt="" loading="lazy" />
+						{/each}
+					</div>
+				</div>
+				<div class="marquee-row row-right row-slow">
+					<div class="marquee-track">
+						{#each [...row4, ...row4] as src}
+							<img {src} alt="" loading="lazy" />
+						{/each}
+					</div>
+				</div>
 			</div>
 			<div class="mosaic-overlay"></div>
 		</div>
@@ -100,65 +154,101 @@
 		width: 100vw;
 		height: calc(100% - var(--hero-top-offset));
 		z-index: -1;
-		background: #1a1a1a;
+		background: #fffaf5;
 	}
 
-	/* Photo mosaic grid — fill the entire background */
-	.mosaic {
+	/* Marquee scrolling rows */
+	.marquee-container {
 		position: absolute;
 		inset: 0;
-		display: grid;
-		grid-template-columns: repeat(5, 1fr);
-		grid-auto-rows: 1fr;
-		gap: 3px;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		gap: 4px;
+		padding: 0;
 	}
 
-	.mosaic-cell {
+	.marquee-row {
 		overflow: hidden;
-		position: relative;
+		flex: 1;
+		min-height: 0;
 	}
 
-	.mosaic-cell.tall {
-		grid-row: span 2;
-	}
-
-	.mosaic-cell.wide {
-		grid-column: span 2;
-	}
-
-	.mosaic-cell img {
-		width: 100%;
+	.marquee-track {
+		display: flex;
+		gap: 4px;
 		height: 100%;
+		width: max-content;
+	}
+
+	.marquee-track img {
+		height: 100%;
+		aspect-ratio: 4/3;
 		object-fit: cover;
 		display: block;
-		filter: grayscale(30%) sepia(20%) saturate(130%) brightness(0.85);
+		border-radius: 4px;
+		filter: grayscale(20%) sepia(15%) saturate(120%);
+		flex-shrink: 0;
 	}
 
-	/* Overlay: strong left side for text + top gradient for header */
+	/* Scroll left */
+	.row-left .marquee-track {
+		animation: scroll-left 80s linear infinite;
+	}
+
+	/* Scroll right */
+	.row-right .marquee-track {
+		animation: scroll-right 80s linear infinite;
+	}
+
+	.row-slow .marquee-track {
+		animation-duration: 100s;
+	}
+
+	@keyframes scroll-left {
+		0% {
+			transform: translateX(0);
+		}
+		100% {
+			transform: translateX(-50%);
+		}
+	}
+
+	@keyframes scroll-right {
+		0% {
+			transform: translateX(-50%);
+		}
+		100% {
+			transform: translateX(0);
+		}
+	}
+
+	/* Overlay: cream gradient for text readability + top for header */
 	.mosaic-overlay {
 		position: absolute;
 		inset: 0;
 		background: linear-gradient(
-				to bottom,
-				rgba(20, 20, 20, 0.7) 0%,
-				rgba(20, 20, 20, 0.3) 12%,
-				transparent 22%
-			),
-			linear-gradient(
 				to right,
-				rgba(20, 20, 20, 0.88) 0%,
-				rgba(20, 20, 20, 0.75) 25%,
-				rgba(20, 20, 20, 0.45) 50%,
-				rgba(20, 20, 20, 0.15) 75%,
+				rgba(255, 250, 245, 0.97) 0%,
+				rgba(255, 250, 245, 0.92) 20%,
+				rgba(255, 250, 245, 0.7) 40%,
+				rgba(255, 250, 245, 0.25) 60%,
+				rgba(255, 250, 245, 0.05) 80%,
 				transparent 100%
 			),
-			linear-gradient(to top, rgba(20, 20, 20, 0.5) 0%, transparent 15%);
+			linear-gradient(
+				to top,
+				rgba(255, 250, 245, 0.7) 0%,
+				transparent 12%,
+				transparent 90%,
+				rgba(255, 250, 245, 0.7) 100%
+			);
 		pointer-events: none;
 	}
 
 	/* Text content */
 	.content {
-		color: white;
+		color: var(--black, #000);
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
@@ -167,22 +257,18 @@
 	}
 
 	.content-box {
-		max-width: 38rem;
+		max-width: 36rem;
 	}
 
 	.content h1 {
 		margin-top: 0;
 		margin-bottom: 1.5rem;
 		font-size: 1.6rem;
-		color: white;
-		text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
 	}
 
 	.description {
 		width: 0;
 		min-width: 100%;
-		color: rgba(255, 255, 255, 0.92);
-		text-shadow: 0 1px 10px rgba(0, 0, 0, 0.4);
 	}
 
 	.description p {
@@ -209,13 +295,6 @@
 		margin-top: 2rem;
 	}
 
-	/* Mobile: fewer columns */
-	@media (max-width: 639px) {
-		.mosaic {
-			grid-template-columns: repeat(3, 1fr);
-		}
-	}
-
 	@media (min-width: 480px) {
 		.buttons {
 			flex-direction: row;
@@ -236,18 +315,11 @@
 		.content h1 {
 			font-size: 2.4rem;
 		}
-		.mosaic {
-			grid-template-columns: repeat(5, 1fr);
-		}
 	}
 
 	@media (min-width: 1024px) {
 		.content h1 {
 			font-size: 3rem;
-		}
-		.mosaic {
-			grid-template-columns: repeat(6, 1fr);
-			gap: 4px;
 		}
 	}
 

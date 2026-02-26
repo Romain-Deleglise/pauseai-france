@@ -11,6 +11,9 @@
 	$: onHomepage = $page.url.pathname == '/'
 	$: onEmploiePage = /^\/emploi-ia(?:\/|$)/.test($page.url.pathname)
 
+	// Hero has a light background — header stays dark on homepage
+	$: whiteNav = false && onHomepage && !scrolled
+
 	let open = false
 	let scrolled = false
 	let mounted = false
@@ -105,11 +108,7 @@
 		<nav in:fade={{ duration: 400, delay: 100 }} class:scrolled class:homepage={onHomepage}>
 			<a href={onEmploiePage ? '/emploi-ia' : '/'} class="logo">
 				<div class="big-logo">
-					<Logo
-						animate
-						fill_pause={onHomepage && !scrolled ? 'white' : 'black'}
-						emploi_ia={onEmploiePage}
-					/>
+					<Logo animate fill_pause={whiteNav ? 'white' : 'black'} emploi_ia={onEmploiePage} />
 				</div>
 				<div class="small-logo">
 					<Logo animate only_circle />
@@ -119,20 +118,14 @@
 			<div class="nav-right">
 				<div class="nav-links">
 					{#each navGroups as group}
-						<NavDropdown label={group.label} items={group.items} white={onHomepage && !scrolled} />
+						<NavDropdown label={group.label} items={group.items} white={whiteNav} />
 					{/each}
 					<!-- Séparateur vertical -->
-					<div
-						class="nav-separator"
-						class:on-hero={onHomepage && !scrolled}
-						aria-hidden="true"
-					></div>
+					<div class="nav-separator" class:on-hero={whiteNav} aria-hidden="true"></div>
 					<!-- CTAs -->
 					<div class="nav-ctas">
-						<a href="/dons" class="btn-donate" class:on-hero={onHomepage && !scrolled}>Donner</a>
-						<a href="/rejoindre" class="btn-join" class:on-hero={onHomepage && !scrolled}
-							>Rejoindre</a
-						>
+						<a href="/dons" class="btn-donate" class:on-hero={whiteNav}>Donner</a>
+						<a href="/rejoindre" class="btn-join" class:on-hero={whiteNav}>Rejoindre</a>
 					</div>
 				</div>
 				<button aria-label="Open mobile menu" class="hamburger" on:click={() => (open = !open)}>
@@ -143,24 +136,9 @@
 						fill="none"
 						xmlns="http://www.w3.org/2000/svg"
 					>
-						<rect
-							y="0"
-							height="2.5"
-							width="24"
-							fill={onHomepage && !scrolled ? 'white' : 'black'}
-						/>
-						<rect
-							y="10.75"
-							height="2.5"
-							width="24"
-							fill={onHomepage && !scrolled ? 'white' : 'black'}
-						/>
-						<rect
-							y="21.5"
-							height="2.5"
-							width="24"
-							fill={onHomepage && !scrolled ? 'white' : 'black'}
-						/>
+						<rect y="0" height="2.5" width="24" fill={whiteNav ? 'white' : 'black'} />
+						<rect y="10.75" height="2.5" width="24" fill={whiteNav ? 'white' : 'black'} />
+						<rect y="21.5" height="2.5" width="24" fill={whiteNav ? 'white' : 'black'} />
 					</svg>
 				</button>
 			</div>
