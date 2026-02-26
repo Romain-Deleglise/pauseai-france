@@ -17,15 +17,10 @@
 {#if mounted}
 	<section class="hero" aria-labelledby={label_id}>
 		<div class="hero-bg">
-			<!-- Large arcs -->
-			<div class="arc arc-1"></div>
-			<div class="arc arc-2"></div>
-			<div class="arc arc-3"></div>
-			<!-- Small accent dots -->
-			<div class="dot dot-1"></div>
-			<div class="dot dot-2"></div>
-			<div class="dot dot-3"></div>
-			<div class="dot dot-4"></div>
+			<!-- Diagonal bands -->
+			<div class="band band-orange"></div>
+			<div class="band band-black"></div>
+			<div class="band band-orange-light"></div>
 		</div>
 		<div class="content" in:fade={{ duration: 500, delay: 200 }}>
 			<h1 id={label_id}>
@@ -63,7 +58,6 @@
 		position: relative;
 	}
 
-	/* Light background that breaks out of parent padding */
 	.hero-bg {
 		position: absolute;
 		overflow: hidden;
@@ -73,109 +67,31 @@
 		width: 100vw;
 		height: calc(100% - var(--hero-top-offset));
 		z-index: -1;
-		background: linear-gradient(160deg, #ffffff 0%, #fff8f0 40%, #fff1e0 100%);
+		background: #ffffff;
 	}
 
-	/* Geometric arc rings */
-	.arc {
+	/* Diagonal bands using clip-path */
+	.band {
 		position: absolute;
-		border-radius: 50%;
-		border-style: solid;
-		border-color: rgba(255, 148, 22, 0.15);
-		animation: drift 30s ease-in-out infinite;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
 	}
 
-	.arc-1 {
-		width: 600px;
-		height: 600px;
-		border-width: 3px;
-		top: -15%;
-		right: -10%;
-		animation-duration: 35s;
+	.band-orange {
+		background: var(--brand, #ff9416);
+		clip-path: polygon(0 0, 55% 0, 30% 50%, 0 42%);
 	}
 
-	.arc-2 {
-		width: 450px;
-		height: 450px;
-		border-width: 2px;
-		border-color: rgba(255, 148, 22, 0.12);
-		bottom: -5%;
-		left: -8%;
-		animation-delay: -12s;
-		animation-duration: 28s;
+	.band-black {
+		background: #111;
+		clip-path: polygon(100% 58%, 100% 100%, 55% 100%, 75% 55%);
 	}
 
-	.arc-3 {
-		width: 300px;
-		height: 300px;
-		border-width: 2px;
-		border-color: rgba(255, 148, 22, 0.1);
-		top: 30%;
-		right: 25%;
-		animation-delay: -20s;
-		animation-duration: 32s;
-	}
-
-	/* Accent dots */
-	.dot {
-		position: absolute;
-		border-radius: 50%;
-		background-color: rgba(255, 148, 22, 0.2);
-		animation: drift 20s ease-in-out infinite;
-	}
-
-	.dot-1 {
-		width: 12px;
-		height: 12px;
-		top: 20%;
-		right: 15%;
-		animation-duration: 22s;
-	}
-
-	.dot-2 {
-		width: 8px;
-		height: 8px;
-		top: 55%;
-		right: 35%;
-		background-color: rgba(255, 148, 22, 0.15);
-		animation-delay: -5s;
-		animation-duration: 18s;
-	}
-
-	.dot-3 {
-		width: 16px;
-		height: 16px;
-		bottom: 25%;
-		left: 20%;
-		background-color: rgba(255, 148, 22, 0.18);
-		animation-delay: -10s;
-		animation-duration: 25s;
-	}
-
-	.dot-4 {
-		width: 10px;
-		height: 10px;
-		top: 15%;
-		left: 40%;
-		background-color: rgba(255, 148, 22, 0.12);
-		animation-delay: -15s;
-		animation-duration: 20s;
-	}
-
-	@keyframes drift {
-		0%,
-		100% {
-			transform: translate(0, 0);
-		}
-		25% {
-			transform: translate(15px, -20px);
-		}
-		50% {
-			transform: translate(-10px, 10px);
-		}
-		75% {
-			transform: translate(20px, 15px);
-		}
+	.band-orange-light {
+		background: rgba(255, 148, 22, 0.1);
+		clip-path: polygon(0 42%, 30% 50%, 75% 55%, 55% 100%, 30% 100%, 0 65%);
 	}
 
 	.content {
@@ -184,7 +100,6 @@
 		flex-direction: column;
 		justify-content: center;
 		max-width: 100%;
-		/* height of the nav */
 		margin-bottom: 6.125rem;
 	}
 
@@ -193,7 +108,7 @@
 		margin-bottom: 1.5rem;
 		font-size: 1.6rem;
 	}
-	/* Ensures that the description is constrained by the width of h1 */
+
 	.description {
 		width: 0;
 		min-width: 100%;
@@ -218,11 +133,13 @@
 		gap: 2rem;
 		margin-top: 2rem;
 	}
+
 	@media (min-width: 480px) {
 		.buttons {
 			flex-direction: row;
 		}
 	}
+
 	@media (min-width: 640px) {
 		.hero {
 			--hero-top-offset: -8.125rem;
@@ -232,39 +149,19 @@
 			font-size: 2.1rem;
 		}
 	}
+
 	@media (min-width: 768px) {
 		.content h1 {
 			font-size: 2.4rem;
 		}
-		.arc-1 {
-			width: 750px;
-			height: 750px;
-		}
-		.arc-2 {
-			width: 550px;
-			height: 550px;
-		}
 	}
+
 	@media (min-width: 1024px) {
 		.content h1 {
 			font-size: 3rem;
 		}
-		.arc-1 {
-			width: 900px;
-			height: 900px;
-			border-width: 4px;
-		}
-		.arc-2 {
-			width: 650px;
-			height: 650px;
-			border-width: 3px;
-		}
-		.arc-3 {
-			width: 400px;
-			height: 400px;
-			border-width: 3px;
-		}
 	}
+
 	@media (min-width: 1280px) {
 		.content h1 {
 			font-size: 3.5rem;
