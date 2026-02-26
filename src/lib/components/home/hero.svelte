@@ -55,10 +55,9 @@
 		align-items: center;
 		z-index: 0;
 		position: relative;
-		overflow: hidden;
 	}
 
-	/* Animated gradient background */
+	/* Animated gradient background — breaks out of parent padding */
 	.gradient-bg {
 		position: absolute;
 		overflow: hidden;
@@ -70,11 +69,11 @@
 		z-index: -1;
 		background: linear-gradient(
 			135deg,
-			#0d0d1a 0%,
-			#1a1028 25%,
-			#1c1333 50%,
-			#12101e 75%,
-			#0d0d1a 100%
+			#111111 0%,
+			#1a1a1a 30%,
+			#1f1810 55%,
+			#181210 75%,
+			#0f0f0f 100%
 		);
 	}
 
@@ -90,7 +89,7 @@
 	.blob-1 {
 		width: 500px;
 		height: 500px;
-		background: radial-gradient(circle, rgba(255, 148, 22, 0.4) 0%, rgba(255, 148, 22, 0) 70%);
+		background: radial-gradient(circle, rgba(255, 148, 22, 0.35) 0%, rgba(255, 148, 22, 0) 70%);
 		top: -10%;
 		left: -10%;
 		animation-delay: 0s;
@@ -100,7 +99,7 @@
 	.blob-2 {
 		width: 400px;
 		height: 400px;
-		background: radial-gradient(circle, rgba(255, 120, 0, 0.3) 0%, rgba(255, 120, 0, 0) 70%);
+		background: radial-gradient(circle, rgba(255, 148, 22, 0.25) 0%, rgba(255, 148, 22, 0) 70%);
 		bottom: 10%;
 		right: -5%;
 		animation-delay: -7s;
@@ -110,7 +109,7 @@
 	.blob-3 {
 		width: 350px;
 		height: 350px;
-		background: radial-gradient(circle, rgba(200, 100, 255, 0.2) 0%, rgba(200, 100, 255, 0) 70%);
+		background: radial-gradient(circle, rgba(255, 169, 69, 0.15) 0%, rgba(255, 169, 69, 0) 70%);
 		top: 40%;
 		left: 30%;
 		animation-delay: -14s;
