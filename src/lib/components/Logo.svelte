@@ -27,6 +27,7 @@
 <svg
 	class="logo"
 	class:logo-animate={animate}
+	viewBox={only_circle ? `0 0 ${baseHeight} ${baseHeight}` : `0 0 ${baseWidth} ${baseHeight}`}
 	{width}
 	{height}
 	fill="none"
@@ -71,8 +72,6 @@
 <style>
 	.logo {
 		overflow: visible;
-		height: 100%;
-		width: 100%;
 	}
 	.logo-circle {
 		transition: transform 0.1s ease-in-out;
