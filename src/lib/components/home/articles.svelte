@@ -66,7 +66,7 @@
 			<ArticleCard
 				title={article.title}
 				blurb={article.description}
-				url={article.url}
+				url={article.slug ? `/newsletters/${article.slug}` : article.url}
 				category={article.type}
 			/>
 		{/each}
