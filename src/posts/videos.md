@@ -1,3 +1,8 @@
+---
+title: Vidéos
+description: Découvrez nos vidéos de présentation sur les risques de l'IA et nos actions.
+---
+
 <script>
   import YouTubeEmbed from '$components/YouTubeEmbed.svelte'
 </script>
