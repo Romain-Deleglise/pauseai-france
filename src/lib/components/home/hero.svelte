@@ -17,10 +17,9 @@
 {#if mounted}
 	<section class="hero" aria-labelledby={label_id}>
 		<div class="hero-bg">
-			<div class="blob blob-1"></div>
-			<div class="blob blob-2"></div>
-			<div class="blob blob-3"></div>
-			<div class="blob blob-4"></div>
+			<div class="mesh-layer mesh-1"></div>
+			<div class="mesh-layer mesh-2"></div>
+			<div class="mesh-layer mesh-3"></div>
 		</div>
 		<div class="content" in:fade={{ duration: 500, delay: 200 }}>
 			<h1 id={label_id}>
@@ -67,71 +66,82 @@
 		width: 100vw;
 		height: calc(100% - var(--hero-top-offset));
 		z-index: -1;
-		background: #fff8f0;
+		background: #fffaf5;
 	}
 
-	/* Organic blob shapes */
-	.blob {
+	/* Mesh gradient layers */
+	.mesh-layer {
 		position: absolute;
-		animation: drift 25s ease-in-out infinite;
+		inset: 0;
+		opacity: 0.9;
 	}
 
-	.blob-1 {
-		width: 420px;
-		height: 380px;
-		background: rgba(255, 148, 22, 0.25);
-		border-radius: 60% 40% 55% 45% / 50% 60% 40% 50%;
-		top: -5%;
-		right: 5%;
-		animation-duration: 28s;
+	.mesh-1 {
+		background: radial-gradient(
+				ellipse 80% 60% at 10% 20%,
+				rgba(255, 148, 22, 0.4) 0%,
+				transparent 70%
+			),
+			radial-gradient(ellipse 60% 80% at 85% 75%, rgba(255, 169, 69, 0.35) 0%, transparent 65%);
+		animation: mesh-drift-1 20s ease-in-out infinite;
 	}
 
-	.blob-2 {
-		width: 300px;
-		height: 280px;
-		background: rgba(255, 148, 22, 0.35);
-		border-radius: 45% 55% 40% 60% / 55% 45% 55% 45%;
-		top: 5%;
-		right: 12%;
-		animation-delay: -8s;
-		animation-duration: 24s;
+	.mesh-2 {
+		background: radial-gradient(
+				ellipse 70% 50% at 70% 15%,
+				rgba(255, 200, 120, 0.3) 0%,
+				transparent 60%
+			),
+			radial-gradient(ellipse 50% 70% at 25% 80%, rgba(255, 148, 22, 0.25) 0%, transparent 65%);
+		animation: mesh-drift-2 26s ease-in-out infinite;
 	}
 
-	.blob-3 {
-		width: 350px;
-		height: 320px;
-		background: rgba(255, 148, 22, 0.18);
-		border-radius: 55% 45% 60% 40% / 45% 55% 45% 55%;
-		bottom: 5%;
-		left: -3%;
-		animation-delay: -15s;
-		animation-duration: 30s;
+	.mesh-3 {
+		background: radial-gradient(
+				ellipse 55% 55% at 50% 50%,
+				rgba(255, 180, 80, 0.2) 0%,
+				transparent 70%
+			),
+			radial-gradient(ellipse 40% 60% at 90% 30%, rgba(255, 148, 22, 0.15) 0%, transparent 60%);
+		animation: mesh-drift-3 30s ease-in-out infinite;
 	}
 
-	.blob-4 {
-		width: 220px;
-		height: 200px;
-		background: rgba(255, 148, 22, 0.3);
-		border-radius: 50% 50% 45% 55% / 55% 45% 50% 50%;
-		bottom: 12%;
-		right: 30%;
-		animation-delay: -20s;
-		animation-duration: 22s;
-	}
-
-	@keyframes drift {
+	@keyframes mesh-drift-1 {
 		0%,
 		100% {
-			transform: translate(0, 0) rotate(0deg);
+			transform: translate(0, 0) scale(1);
+		}
+		33% {
+			transform: translate(4%, -3%) scale(1.05);
+		}
+		66% {
+			transform: translate(-3%, 4%) scale(0.97);
+		}
+	}
+
+	@keyframes mesh-drift-2 {
+		0%,
+		100% {
+			transform: translate(0, 0) scale(1) rotate(0deg);
 		}
 		25% {
-			transform: translate(20px, -15px) rotate(3deg);
+			transform: translate(-5%, 2%) scale(1.03) rotate(1deg);
 		}
 		50% {
-			transform: translate(-15px, 10px) rotate(-2deg);
+			transform: translate(3%, -4%) scale(0.98) rotate(-1deg);
 		}
 		75% {
-			transform: translate(10px, 20px) rotate(1deg);
+			transform: translate(2%, 3%) scale(1.04) rotate(0.5deg);
+		}
+	}
+
+	@keyframes mesh-drift-3 {
+		0%,
+		100% {
+			transform: translate(0, 0) scale(1);
+		}
+		50% {
+			transform: translate(-2%, -2%) scale(1.06);
 		}
 	}
 
@@ -195,39 +205,11 @@
 		.content h1 {
 			font-size: 2.4rem;
 		}
-		.blob-1 {
-			width: 520px;
-			height: 470px;
-		}
-		.blob-2 {
-			width: 380px;
-			height: 350px;
-		}
-		.blob-3 {
-			width: 430px;
-			height: 390px;
-		}
 	}
 
 	@media (min-width: 1024px) {
 		.content h1 {
 			font-size: 3rem;
-		}
-		.blob-1 {
-			width: 620px;
-			height: 560px;
-		}
-		.blob-2 {
-			width: 450px;
-			height: 410px;
-		}
-		.blob-3 {
-			width: 500px;
-			height: 460px;
-		}
-		.blob-4 {
-			width: 300px;
-			height: 270px;
 		}
 	}
 
