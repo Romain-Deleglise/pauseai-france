@@ -4,7 +4,7 @@
 	import LeftCorner from '$components/hero/LeftCorner.svelte'
 	import RightCorner from '$components/hero/RightCorner.svelte'
 	import { onMount } from 'svelte'
-	import { fade, fly, blur } from 'svelte/transition'
+	import { fade, fly } from 'svelte/transition'
 	const label_id = 'hero-title'
 
 	// Workaround to trigger transitions on render
@@ -16,16 +16,10 @@
 
 {#if mounted}
 	<section class="hero" aria-labelledby={label_id}>
-		<div class="overlay">
-			<enhanced:img
-				src="$assets/hero_bg.jpg"
-				in:blur={{ amount: 10, duration: 1500, opacity: 1 }}
-				alt="PauseAI protesters"
-				class="background"
-				sizes="min(1920px, 100vw)"
-				fetchpriority="high"
-				loading="eager"
-			/>
+		<div class="gradient-bg">
+			<div class="blob blob-1"></div>
+			<div class="blob blob-2"></div>
+			<div class="blob blob-3"></div>
 		</div>
 		<div class="content" in:fade={{ duration: 500, delay: 200 }}>
 			<h1 id={label_id}>
@@ -33,9 +27,10 @@
 			</h1>
 			<div class="description">
 				<p>
-					L’IA redéfinit déjà nos emplois, nos élections et notre vie quotidienne. 
-					Tous les mois, de nouveaux systèmes franchissent des seuils que l’on pensait lointains. 
-					D'après la plupart des experts en sécurité de l'IA, poursuivre cette course sans garde-fous fait peser un risque catastrophique sur l’humanité à court terme.
+					L'IA redéfinit déjà nos emplois, nos élections et notre vie quotidienne. Tous les mois, de
+					nouveaux systèmes franchissent des seuils que l'on pensait lointains. D'après la plupart
+					des experts en sécurité de l'IA, poursuivre cette course sans garde-fous fait peser un
+					risque catastrophique sur l'humanité à court terme.
 				</p>
 				<p>La fenêtre se referme vite : agissons maintenant.</p>
 				<div class="buttons">
@@ -60,8 +55,11 @@
 		align-items: center;
 		z-index: 0;
 		position: relative;
+		overflow: hidden;
 	}
-	.overlay {
+
+	/* Animated gradient background */
+	.gradient-bg {
 		position: absolute;
 		overflow: hidden;
 		top: var(--hero-top-offset);
@@ -69,10 +67,72 @@
 		transform: translateX(-50%);
 		width: 100vw;
 		height: calc(100% - var(--hero-top-offset));
-		align-items: center;
-		display: flex;
 		z-index: -1;
+		background: linear-gradient(
+			135deg,
+			#0d0d1a 0%,
+			#1a1028 25%,
+			#1c1333 50%,
+			#12101e 75%,
+			#0d0d1a 100%
+		);
 	}
+
+	/* Floating blurred blobs */
+	.blob {
+		position: absolute;
+		border-radius: 50%;
+		filter: blur(80px);
+		opacity: 0.5;
+		animation: float 20s ease-in-out infinite;
+	}
+
+	.blob-1 {
+		width: 500px;
+		height: 500px;
+		background: radial-gradient(circle, rgba(255, 148, 22, 0.4) 0%, rgba(255, 148, 22, 0) 70%);
+		top: -10%;
+		left: -10%;
+		animation-delay: 0s;
+		animation-duration: 22s;
+	}
+
+	.blob-2 {
+		width: 400px;
+		height: 400px;
+		background: radial-gradient(circle, rgba(255, 120, 0, 0.3) 0%, rgba(255, 120, 0, 0) 70%);
+		bottom: 10%;
+		right: -5%;
+		animation-delay: -7s;
+		animation-duration: 18s;
+	}
+
+	.blob-3 {
+		width: 350px;
+		height: 350px;
+		background: radial-gradient(circle, rgba(200, 100, 255, 0.2) 0%, rgba(200, 100, 255, 0) 70%);
+		top: 40%;
+		left: 30%;
+		animation-delay: -14s;
+		animation-duration: 25s;
+	}
+
+	@keyframes float {
+		0%,
+		100% {
+			transform: translate(0, 0) scale(1);
+		}
+		25% {
+			transform: translate(30px, -40px) scale(1.05);
+		}
+		50% {
+			transform: translate(-20px, 20px) scale(0.95);
+		}
+		75% {
+			transform: translate(40px, 30px) scale(1.02);
+		}
+	}
+
 	.content {
 		color: #fff;
 		display: flex;
@@ -93,14 +153,6 @@
 		width: 0;
 		min-width: 100%;
 	}
-	.background {
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-	}
 
 	.corners {
 		width: 100vw;
@@ -113,40 +165,7 @@
 		justify-content: space-between;
 		border-bottom: 1px solid white;
 	}
-	.overlay::after {
-		content: '';
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		--hero-gradient: /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#000000+0,000000+27,1b1b1b+49,1e1e1e+49,1d1d1d+49,232323+50,212121+51,242424+51,262626+53,282828+53,292929+56,2b2b2b+56,292929+62,272727+62,252525+66,1c1c1c+71,1c1c1c+77,1a1a1a+78,181818+82,161616+84,141414+84,151515+85,101010+86,0f0f0f+87,090909+88,030303+90,0d0d0d+91,010101+91,010101+100&0.76+0,0.76+27,0.56+49,0.55+60,0.59+71,0.48+90,0.48+100 */
-			linear-gradient(
-			to right,
-			rgba(0, 0, 0, 0.76) 0%,
-			rgba(0, 0, 0, 0.76) 27%,
-			rgba(29, 29, 29, 0.56) 49%,
-			rgba(35, 35, 35, 0.56) 50%,
-			rgba(36, 36, 36, 0.56) 51%,
-			rgba(40, 40, 40, 0.56) 53%,
-			rgba(43, 43, 43, 0.56) 56%,
-			rgba(40, 40, 40, 0.55) 60%,
-			rgba(39, 39, 39, 0.56) 62%,
-			rgba(37, 37, 37, 0.57) 66%,
-			rgba(28, 28, 28, 0.59) 71%,
-			rgba(28, 28, 28, 0.56) 77%,
-			rgba(26, 26, 26, 0.55) 78%,
-			rgba(24, 24, 24, 0.53) 82%,
-			rgba(20, 20, 20, 0.52) 84%,
-			rgba(21, 21, 21, 0.51) 85%,
-			rgba(16, 16, 16, 0.5) 86%,
-			rgba(15, 15, 15, 0.5) 87%,
-			rgba(9, 9, 9, 0.49) 88%,
-			rgba(3, 3, 3, 0.48) 90%,
-			rgba(1, 1, 1, 0.48) 91%,
-			rgba(1, 1, 1, 0.48) 100%
-		);
 
-		background: var(--hero-gradient);
-	}
 	.buttons {
 		display: flex;
 		align-items: center;
@@ -172,19 +191,30 @@
 		.content h1 {
 			font-size: 2.4rem;
 		}
+		.blob-1 {
+			width: 600px;
+			height: 600px;
+		}
+		.blob-2 {
+			width: 500px;
+			height: 500px;
+		}
 	}
 	@media (min-width: 1024px) {
 		.content h1 {
 			font-size: 3rem;
 		}
-		.overlay::after {
-			background: var(--hero-gradient),
-				radial-gradient(
-					620px 30% at top 2% right 15%,
-					rgb(0 0 0 / 40%),
-					rgb(0 0 0 / 20%) 66%,
-					rgb(0 0 0 / 0%)
-				);
+		.blob-1 {
+			width: 700px;
+			height: 700px;
+		}
+		.blob-2 {
+			width: 600px;
+			height: 600px;
+		}
+		.blob-3 {
+			width: 500px;
+			height: 500px;
 		}
 	}
 	@media (min-width: 1280px) {
