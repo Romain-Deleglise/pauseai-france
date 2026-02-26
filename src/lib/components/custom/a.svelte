@@ -20,9 +20,10 @@
 	let type = Type.Internal
 	let anchor: HTMLAnchorElement
 
-	if ((href.startsWith('http:') || href.startsWith('https:')) && !href.startsWith(siteUrl))
+	if ((href.startsWith('http:') || href.startsWith('https:')) && !href.startsWith(siteUrl)) {
 		type = Type.External
-	else if (href.startsWith('mailto:')) type = Type.Mail
+		if (!target) target = '_blank'
+	} else if (href.startsWith('mailto:')) type = Type.Mail
 
 	onMount(() => {
 		if (href.startsWith('#')) {
@@ -41,7 +42,7 @@
 	})
 </script>
 
-<a {href} {target} bind:this={anchor}>
+<a {href} {target} rel={target === '_blank' ? 'noopener noreferrer' : undefined} bind:this={anchor}>
 	<slot />{#if type != Type.Internal}
 		<span style="white-space: nowrap">
 			<div class="icon">
