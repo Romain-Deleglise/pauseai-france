@@ -8,6 +8,7 @@
 	import Header from '$components/Header.svelte'
 	// import Toc from '$components/Toc.svelte'
 	import { bannerStore } from '$lib/stores/banner'
+	import { theme } from '$lib/stores/theme'
 	import { onMount } from 'svelte'
 
 	import '@fontsource/ibm-plex-sans/200.css' // extra-light

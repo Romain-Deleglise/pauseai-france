@@ -32,6 +32,23 @@
 	--btn-alt-focus-border: #0097d8;
 }
 
+/* ─── Dark mode overrides ────────────────────────────────── */
+[data-theme='dark'] {
+	--white: #1a1a1a;
+	--black: #f0f0f0;
+	--bg: #121212;
+	--bg-subtle: #1e1a14;
+	--text: #f0f0f0;
+	--text-secondary: #a0a8b4;
+	--border: #333740;
+	--brand-light: #2a1f0a;
+
+	--btn-alt-bg: #2a2a2a;
+	--btn-alt-hover-bg: #1e1a14;
+	--btn-alt-active-bg: #2a1f0a;
+	--btn-alt-active-border: #f0f0f0;
+}
+
 html,
 body {
 	height: 100%;
@@ -39,6 +56,10 @@ body {
 
 html {
 	color-scheme: light;
+}
+
+html[data-theme='dark'] {
+	color-scheme: dark;
 }
 
 body {

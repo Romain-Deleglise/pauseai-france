@@ -1,9 +1,12 @@
 <script lang="ts">
 	import NavDropdown from '$components/NavDropdown.svelte'
 	import Logo from '$components/Logo.svelte'
+	import LangSwitcher from '$components/LangSwitcher.svelte'
 	import { page } from '$app/stores'
 	import Banner from '$components/Banner.svelte'
 	import { bannerStore } from '$lib/stores/banner'
+	import { theme } from '$lib/stores/theme'
+	import { t } from '$lib/i18n'
 
 	import { onMount } from 'svelte'
 	import { fade } from 'svelte/transition'
@@ -36,49 +39,49 @@
 		open = false
 	}
 
-	const navGroups = [
+	$: navGroups = [
 		{
 			id: 'comprendre',
-			label: 'Comprendre',
+			label: $t.nav.comprendre,
 			items: [
-				{ href: '/dangers', label: "Les dangers de l'IA" },
-				{ href: '/newsletters', label: 'Newsletter' },
-				{ href: '/propositions', label: 'Nos propositions' },
-				{ href: 'https://pauseia.substack.com/', label: 'Blog', external: true }
+				{ href: '/dangers', label: $t.nav.dangers },
+				{ href: '/newsletters', label: $t.nav.newsletter },
+				{ href: '/propositions', label: $t.nav.propositions },
+				{ href: 'https://pauseia.substack.com/', label: $t.nav.blog, external: true }
 			]
 		},
 		{
 			id: 'agir',
-			label: 'Agir',
+			label: $t.nav.agir,
 			items: [
-				{ href: '/agir', label: 'Comment agir ?' },
-				{ href: '/groupes-locaux', label: 'Groupes locaux' }
+				{ href: '/agir', label: $t.nav.comment_agir },
+				{ href: '/groupes-locaux', label: $t.nav.groupes_locaux }
 			]
 		},
 		{
 			id: 'campagnes',
-			label: 'Campagnes',
-			items: [{ href: '/municipales-2026', label: 'Municipales 2026' }]
+			label: $t.nav.campagnes,
+			items: [{ href: '/municipales-2026', label: $t.nav.municipales }]
 		},
 		{
 			id: 'evenements',
-			label: 'Événements',
+			label: $t.nav.evenements,
 			items: [
-				{ href: '/senat2025', label: 'Colloque Sénat 2025' },
+				{ href: '/senat2025', label: $t.nav.senat2025 },
 				{
 					href: 'https://controleia.org/solutions/',
-					label: 'Forum solutions 2025',
+					label: $t.nav.forum2025,
 					external: true
 				}
 			]
 		},
 		{
 			id: 'apropos',
-			label: 'À propos',
+			label: $t.nav.apropos,
 			items: [
-				{ href: '/qui-sommes-nous', label: 'Qui sommes-nous ?' },
-				{ href: '/propositions', label: 'Nos propositions' },
-				{ href: '/presse', label: 'Espace presse' }
+				{ href: '/qui-sommes-nous', label: $t.nav.qui_sommes_nous },
+				{ href: '/propositions', label: $t.nav.propositions },
+				{ href: '/presse', label: $t.nav.presse }
 			]
 		}
 	]
@@ -129,13 +132,61 @@
 					></div>
 					<!-- CTAs -->
 					<div class="nav-ctas">
-						<a href="/dons" class="btn-donate" class:on-hero={onHomepage && !scrolled}>Donner</a>
+						<LangSwitcher onHero={onHomepage && !scrolled} />
+						<button
+							class="theme-toggle"
+							class:on-hero={onHomepage && !scrolled}
+							on:click={() => theme.toggle()}
+							aria-label={$theme === 'dark' ? $t.nav.light_mode : $t.nav.dark_mode}
+							title={$theme === 'dark' ? $t.nav.mode_clair : $t.nav.mode_sombre}
+						>
+							{#if $theme === 'dark'}
+								<svg
+									width="18"
+									height="18"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									aria-hidden="true"
+								>
+									<circle cx="12" cy="12" r="5" />
+									<line x1="12" y1="1" x2="12" y2="3" />
+									<line x1="12" y1="21" x2="12" y2="23" />
+									<line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+									<line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+									<line x1="1" y1="12" x2="3" y2="12" />
+									<line x1="21" y1="12" x2="23" y2="12" />
+									<line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+									<line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+								</svg>
+							{:else}
+								<svg
+									width="18"
+									height="18"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									aria-hidden="true"
+								>
+									<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+								</svg>
+							{/if}
+						</button>
+						<a href="/dons" class="btn-donate" class:on-hero={onHomepage && !scrolled}
+							>{$t.nav.donner}</a
+						>
 						<a href="/rejoindre" class="btn-join" class:on-hero={onHomepage && !scrolled}
-							>Rejoindre</a
+							>{$t.nav.rejoindre}</a
 						>
 					</div>
 				</div>
-				<button aria-label="Open mobile menu" class="hamburger" on:click={() => (open = !open)}>
+				<button aria-label={$t.nav.open_menu} class="hamburger" on:click={() => (open = !open)}>
 					<svg
 						width="22"
 						height="22"
@@ -230,8 +281,54 @@
 					{/each}
 
 					<div class="sidebar-actions">
-						<a href="/dons" class="sidebar-cta" on:click={closeMenu}>Faire un don</a>
-						<a href="/rejoindre" class="sidebar-join" on:click={closeMenu}>Nous rejoindre</a>
+						<button
+							class="sidebar-theme-toggle"
+							on:click={() => theme.toggle()}
+							aria-label={$theme === 'dark' ? $t.nav.light_mode : $t.nav.dark_mode}
+						>
+							{#if $theme === 'dark'}
+								<svg
+									width="16"
+									height="16"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									aria-hidden="true"
+								>
+									<circle cx="12" cy="12" r="5" />
+									<line x1="12" y1="1" x2="12" y2="3" />
+									<line x1="12" y1="21" x2="12" y2="23" />
+									<line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+									<line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+									<line x1="1" y1="12" x2="3" y2="12" />
+									<line x1="21" y1="12" x2="23" y2="12" />
+									<line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+									<line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+								</svg>
+								{$t.nav.mode_clair}
+							{:else}
+								<svg
+									width="16"
+									height="16"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									aria-hidden="true"
+								>
+									<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+								</svg>
+								{$t.nav.mode_sombre}
+							{/if}
+						</button>
+						<LangSwitcher inSidebar />
+						<a href="/dons" class="sidebar-cta" on:click={closeMenu}>{$t.footer.make_donation}</a>
+						<a href="/rejoindre" class="sidebar-join" on:click={closeMenu}>{$t.nav.rejoindre}</a>
 					</div>
 				</div>
 			</div>
@@ -262,7 +359,7 @@
 	}
 
 	.site-header.scrolled {
-		background: white;
+		background: var(--bg);
 		border-bottom-color: rgba(0, 0, 0, 0.1);
 		box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
 	}
@@ -366,8 +463,8 @@
 
 	/* "Rejoindre" — black */
 	.btn-join {
-		background: black;
-		color: white;
+		background: var(--black);
+		color: var(--white);
 	}
 
 	.btn-join:hover {
@@ -394,6 +491,72 @@
 
 	.btn-join.on-hero:hover {
 		opacity: 0.88;
+	}
+
+	/* ─── Theme toggle ───────────────────────────────────────── */
+	.theme-toggle {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 2rem;
+		height: 2rem;
+		border-radius: 0.4rem;
+		border: none;
+		background: transparent;
+		color: black;
+		cursor: pointer;
+		transition:
+			background 0.15s,
+			color 0.15s;
+	}
+
+	.theme-toggle:hover {
+		background: rgba(0, 0, 0, 0.08);
+	}
+
+	.theme-toggle.on-hero {
+		color: white;
+	}
+
+	.theme-toggle.on-hero:hover {
+		background: rgba(255, 255, 255, 0.15);
+	}
+
+	/* Dark mode: flip icon colors automatically via CSS currentColor */
+	:global([data-theme='dark']) .theme-toggle {
+		color: var(--text);
+	}
+
+	.sidebar-theme-toggle {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		width: 100%;
+		padding: 0.55rem 0.6rem;
+		border: none;
+		border-radius: 0.45rem;
+		background: rgba(0, 0, 0, 0.05);
+		color: rgba(0, 0, 0, 0.78);
+		font-size: 0.95rem;
+		font-family: var(--font-heading);
+		font-weight: 600;
+		cursor: pointer;
+		transition: background 0.1s;
+	}
+
+	.sidebar-theme-toggle:hover {
+		background: rgba(255, 148, 22, 0.1);
+		color: var(--brand);
+	}
+
+	:global([data-theme='dark']) .sidebar-theme-toggle {
+		background: rgba(255, 255, 255, 0.07);
+		color: var(--text);
+	}
+
+	:global([data-theme='dark']) .sidebar-theme-toggle:hover {
+		background: rgba(255, 148, 22, 0.15);
+		color: var(--brand);
 	}
 
 	.hamburger {
@@ -431,7 +594,7 @@
 		position: fixed;
 		height: 100%;
 		width: min(22rem, 100%);
-		background: #fff;
+		background: var(--bg);
 		top: 0;
 		right: 0;
 		transform: translateX(100%);
@@ -463,7 +626,7 @@
 		border-bottom: 1px solid rgba(0, 0, 0, 0.07);
 		position: sticky;
 		top: 0;
-		background: white;
+		background: var(--bg);
 		z-index: 10;
 	}
 
@@ -655,5 +818,43 @@
 		.small-logo {
 			display: none;
 		}
+	}
+
+	/* ─── Dark mode overrides ────────────────────────────────── */
+	:global([data-theme='dark']) .site-header {
+		border-bottom-color: rgba(255, 255, 255, 0.08);
+	}
+
+	:global([data-theme='dark']) .site-header.scrolled {
+		box-shadow: 0 2px 16px rgba(0, 0, 0, 0.4);
+		border-bottom-color: rgba(255, 255, 255, 0.1);
+	}
+
+	:global([data-theme='dark']) .nav-separator {
+		background: rgba(255, 255, 255, 0.18);
+	}
+
+	:global([data-theme='dark']) .close-btn {
+		background: rgba(255, 255, 255, 0.08);
+	}
+
+	:global([data-theme='dark']) .close-btn:hover {
+		background: rgba(255, 255, 255, 0.14);
+	}
+
+	:global([data-theme='dark']) .sidebar-section {
+		border-bottom-color: rgba(255, 255, 255, 0.07);
+	}
+
+	:global([data-theme='dark']) .sidebar-section-label {
+		color: rgba(255, 255, 255, 0.38);
+	}
+
+	:global([data-theme='dark']) .sidebar-subsection a {
+		color: rgba(255, 255, 255, 0.78);
+	}
+
+	:global([data-theme='dark']) .sidebar-head {
+		border-bottom-color: rgba(255, 255, 255, 0.07);
 	}
 </style>
