@@ -7,6 +7,29 @@
 	import { fade, fly } from 'svelte/transition'
 	const label_id = 'hero-title'
 
+	const photos = [
+		{ src: '/hero/tshirt-pauseai.png', alt: 'Militant avec t-shirt Pause AI' },
+		{ src: '/hero/manif-01.jpeg', alt: 'Militant brandissant une pancarte' },
+		{ src: '/hero/conference-salle.jpg', alt: 'Conférence Reprendre le Contrôle' },
+		{ src: '/hero/manif-08.jpeg', alt: 'Pancarte Contrôlons les IA' },
+		{ src: '/hero/megaphone.png', alt: 'Militant au mégaphone' },
+		{ src: '/hero/manif-03.jpeg', alt: "Militant We can't steer" },
+		{ src: '/hero/stop-course.png', alt: 'Pancarte Stop à la course' },
+		{ src: '/hero/manif-07.jpeg', alt: 'Prise de parole au micro' },
+		{ src: '/hero/manif-02.jpeg', alt: 'Militant AI Safety Summit' },
+		{ src: '/hero/panneau-pauseai.png', alt: 'Militant avec panneau Pause AI' },
+		{ src: '/hero/manif-10.jpeg', alt: 'Pancarte chronologie des crises' },
+		{ src: '/hero/sans-ia-sure.png', alt: 'Sans IA sûre pas de futur' },
+		{ src: '/hero/manif-05.jpeg', alt: 'Militants avec banderole' },
+		{ src: '/hero/manif-11.jpeg', alt: 'Militant AI Safety Summit' },
+		{ src: '/hero/discussion.png', alt: 'Discussion avec des passants' },
+		{ src: '/hero/manif-04.jpeg', alt: 'Pancarte IA machine à virus' },
+		{ src: '/hero/panneau-rue.png', alt: 'Pancarte dans la rue' },
+		{ src: '/hero/manif-09.jpeg', alt: 'Militant Sans IA sûre pas de futur' },
+		{ src: '/hero/manif-06.jpeg', alt: 'Militants tenant une banderole' },
+		{ src: '/hero/conference-speaker.jpg', alt: 'Intervenant à la conférence' }
+	]
+
 	// Workaround to trigger transitions on render
 	let mounted = false
 	onMount(() => {
@@ -17,10 +40,18 @@
 {#if mounted}
 	<section class="hero" aria-labelledby={label_id}>
 		<div class="hero-bg" aria-hidden="true">
-			<div class="blob blob-1"></div>
-			<div class="blob blob-2"></div>
-			<div class="blob blob-3"></div>
-			<div class="blob blob-4"></div>
+			<div class="mosaic">
+				{#each photos as photo, i}
+					<div
+						class="mosaic-cell"
+						class:tall={i === 0 || i === 4 || i === 7 || i === 11}
+						class:wide={i === 2}
+					>
+						<img src={photo.src} alt={photo.alt} loading="eager" />
+					</div>
+				{/each}
+			</div>
+			<div class="mosaic-overlay"></div>
 		</div>
 		<div class="content" in:fade={{ duration: 500, delay: 200 }}>
 			<h1 id={label_id}>
@@ -28,10 +59,10 @@
 			</h1>
 			<div class="description">
 				<p>
-					L’IA redéfinit déjà nos emplois, nos élections et notre vie quotidienne. Tous les mois, de
-					nouveaux systèmes franchissent des seuils que l’on pensait lointains. D'après la plupart
+					L'IA redéfinit déjà nos emplois, nos élections et notre vie quotidienne. Tous les mois, de
+					nouveaux systèmes franchissent des seuils que l'on pensait lointains. D'après la plupart
 					des experts en sécurité de l'IA, poursuivre cette course sans garde-fous fait peser un
-					risque catastrophique sur l’humanité à court terme.
+					risque catastrophique sur l'humanité à court terme.
 				</p>
 				<p>La fenêtre se referme vite : agissons maintenant.</p>
 				<div class="buttons">
@@ -70,110 +101,58 @@
 		background: #fffaf5;
 	}
 
-	/* Floating gradient blobs */
-	.blob {
+	/* Photo mosaic grid */
+	.mosaic {
 		position: absolute;
-		border-radius: 50%;
-		filter: blur(80px);
-		opacity: 0.5;
-		will-change: transform;
+		inset: 0;
+		display: grid;
+		grid-template-columns: repeat(5, 1fr);
+		grid-auto-rows: minmax(120px, 1fr);
+		gap: 3px;
 	}
 
-	.blob-1 {
-		width: 45vw;
-		height: 45vw;
-		max-width: 600px;
-		max-height: 600px;
-		background: radial-gradient(circle, #ff9416 0%, #ffbe6b 50%, transparent 70%);
-		top: -10%;
-		right: -5%;
-		opacity: 0.35;
-		animation: drift-1 20s ease-in-out infinite;
+	.mosaic-cell {
+		overflow: hidden;
+		position: relative;
 	}
 
-	.blob-2 {
-		width: 35vw;
-		height: 35vw;
-		max-width: 450px;
-		max-height: 450px;
-		background: radial-gradient(circle, #ff6b2c 0%, #ffad70 50%, transparent 70%);
-		bottom: 5%;
-		left: -8%;
-		opacity: 0.28;
-		animation: drift-2 25s ease-in-out infinite;
+	.mosaic-cell.tall {
+		grid-row: span 2;
 	}
 
-	.blob-3 {
-		width: 28vw;
-		height: 28vw;
-		max-width: 350px;
-		max-height: 350px;
-		background: radial-gradient(circle, #ffd700 0%, #ffe680 50%, transparent 70%);
-		top: 35%;
-		right: 20%;
-		opacity: 0.22;
-		animation: drift-3 18s ease-in-out infinite;
+	.mosaic-cell.wide {
+		grid-column: span 2;
 	}
 
-	.blob-4 {
-		width: 20vw;
-		height: 20vw;
-		max-width: 260px;
-		max-height: 260px;
-		background: radial-gradient(circle, #ff4500 0%, #ff8c5a 50%, transparent 70%);
-		bottom: 25%;
-		left: 30%;
-		opacity: 0.18;
-		animation: drift-4 22s ease-in-out infinite;
+	.mosaic-cell img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
+		filter: grayscale(40%) sepia(30%) saturate(120%) brightness(0.95);
 	}
 
-	@keyframes drift-1 {
-		0%,
-		100% {
-			transform: translate(0, 0) scale(1);
-		}
-		33% {
-			transform: translate(-30px, 40px) scale(1.05);
-		}
-		66% {
-			transform: translate(20px, -20px) scale(0.95);
-		}
-	}
-
-	@keyframes drift-2 {
-		0%,
-		100% {
-			transform: translate(0, 0) scale(1);
-		}
-		33% {
-			transform: translate(40px, -30px) scale(1.08);
-		}
-		66% {
-			transform: translate(-20px, 20px) scale(0.96);
-		}
-	}
-
-	@keyframes drift-3 {
-		0%,
-		100% {
-			transform: translate(0, 0) scale(1);
-		}
-		50% {
-			transform: translate(-35px, 25px) scale(1.1);
-		}
-	}
-
-	@keyframes drift-4 {
-		0%,
-		100% {
-			transform: translate(0, 0) scale(1);
-		}
-		40% {
-			transform: translate(25px, -35px) scale(1.06);
-		}
-		70% {
-			transform: translate(-15px, 15px) scale(0.94);
-		}
+	/* Overlay: gradient from solid left to transparent right + orange tint */
+	.mosaic-overlay {
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(
+				to right,
+				#fffaf5 0%,
+				rgba(255, 250, 245, 0.97) 20%,
+				rgba(255, 250, 245, 0.85) 40%,
+				rgba(255, 248, 240, 0.5) 60%,
+				rgba(255, 245, 235, 0.25) 80%,
+				rgba(255, 240, 225, 0.15) 100%
+			),
+			linear-gradient(
+				to top,
+				rgba(255, 250, 245, 0.6) 0%,
+				transparent 15%,
+				transparent 85%,
+				rgba(255, 250, 245, 0.6) 100%
+			);
+		pointer-events: none;
 	}
 
 	.content {
@@ -216,6 +195,31 @@
 		margin-top: 2rem;
 	}
 
+	/* Mobile: fewer columns, stronger overlay */
+	@media (max-width: 639px) {
+		.mosaic {
+			grid-template-columns: repeat(3, 1fr);
+			grid-auto-rows: minmax(90px, 1fr);
+		}
+
+		.mosaic-overlay {
+			background: linear-gradient(
+					to right,
+					#fffaf5 0%,
+					rgba(255, 250, 245, 0.95) 30%,
+					rgba(255, 250, 245, 0.8) 60%,
+					rgba(255, 248, 240, 0.5) 100%
+				),
+				linear-gradient(
+					to top,
+					rgba(255, 250, 245, 0.5) 0%,
+					transparent 20%,
+					transparent 80%,
+					rgba(255, 250, 245, 0.5) 100%
+				);
+		}
+	}
+
 	@media (min-width: 480px) {
 		.buttons {
 			flex-direction: row;
@@ -236,11 +240,20 @@
 		.content h1 {
 			font-size: 2.4rem;
 		}
+		.mosaic {
+			grid-template-columns: repeat(5, 1fr);
+			grid-auto-rows: minmax(140px, 1fr);
+		}
 	}
 
 	@media (min-width: 1024px) {
 		.content h1 {
 			font-size: 3rem;
+		}
+		.mosaic {
+			grid-template-columns: repeat(6, 1fr);
+			grid-auto-rows: minmax(150px, 1fr);
+			gap: 4px;
 		}
 	}
 
