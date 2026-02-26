@@ -8,26 +8,26 @@
 	const label_id = 'hero-title'
 
 	const photos = [
-		{ src: '/hero/tshirt-pauseai.png', alt: 'Militant avec t-shirt Pause AI' },
-		{ src: '/hero/manif-01.jpeg', alt: 'Militant brandissant une pancarte' },
-		{ src: '/hero/conference-salle.jpg', alt: 'Conférence Reprendre le Contrôle' },
-		{ src: '/hero/manif-08.jpeg', alt: 'Pancarte Contrôlons les IA' },
-		{ src: '/hero/megaphone.png', alt: 'Militant au mégaphone' },
-		{ src: '/hero/manif-03.jpeg', alt: "Militant We can't steer" },
-		{ src: '/hero/stop-course.png', alt: 'Pancarte Stop à la course' },
-		{ src: '/hero/manif-07.jpeg', alt: 'Prise de parole au micro' },
-		{ src: '/hero/manif-02.jpeg', alt: 'Militant AI Safety Summit' },
-		{ src: '/hero/panneau-pauseai.png', alt: 'Militant avec panneau Pause AI' },
-		{ src: '/hero/manif-10.jpeg', alt: 'Pancarte chronologie des crises' },
-		{ src: '/hero/sans-ia-sure.png', alt: 'Sans IA sûre pas de futur' },
-		{ src: '/hero/manif-05.jpeg', alt: 'Militants avec banderole' },
-		{ src: '/hero/manif-11.jpeg', alt: 'Militant AI Safety Summit' },
-		{ src: '/hero/discussion.png', alt: 'Discussion avec des passants' },
-		{ src: '/hero/manif-04.jpeg', alt: 'Pancarte IA machine à virus' },
-		{ src: '/hero/panneau-rue.png', alt: 'Pancarte dans la rue' },
-		{ src: '/hero/manif-09.jpeg', alt: 'Militant Sans IA sûre pas de futur' },
-		{ src: '/hero/manif-06.jpeg', alt: 'Militants tenant une banderole' },
-		{ src: '/hero/conference-speaker.jpg', alt: 'Intervenant à la conférence' }
+		{ src: '/hero/tshirt-pauseai.webp', alt: 'Militant avec t-shirt Pause AI' },
+		{ src: '/hero/manif-01.webp', alt: 'Militant brandissant une pancarte' },
+		{ src: '/hero/conference-salle.webp', alt: 'Conférence Reprendre le Contrôle' },
+		{ src: '/hero/manif-08.webp', alt: 'Pancarte Contrôlons les IA' },
+		{ src: '/hero/megaphone.webp', alt: 'Militant au mégaphone' },
+		{ src: '/hero/manif-03.webp', alt: "Militant We can't steer" },
+		{ src: '/hero/stop-course.webp', alt: 'Pancarte Stop à la course' },
+		{ src: '/hero/manif-07.webp', alt: 'Prise de parole au micro' },
+		{ src: '/hero/manif-02.webp', alt: 'Militant AI Safety Summit' },
+		{ src: '/hero/panneau-pauseai.webp', alt: 'Militant avec panneau Pause AI' },
+		{ src: '/hero/manif-10.webp', alt: 'Pancarte chronologie des crises' },
+		{ src: '/hero/sans-ia-sure.webp', alt: 'Sans IA sûre pas de futur' },
+		{ src: '/hero/manif-05.webp', alt: 'Militants avec banderole' },
+		{ src: '/hero/manif-11.webp', alt: 'Militant AI Safety Summit' },
+		{ src: '/hero/discussion.webp', alt: 'Discussion avec des passants' },
+		{ src: '/hero/manif-04.webp', alt: 'Pancarte IA machine à virus' },
+		{ src: '/hero/panneau-rue.webp', alt: 'Pancarte dans la rue' },
+		{ src: '/hero/manif-09.webp', alt: 'Militant Sans IA sûre pas de futur' },
+		{ src: '/hero/manif-06.webp', alt: 'Militants tenant une banderole' },
+		{ src: '/hero/conference-speaker.webp', alt: 'Intervenant à la conférence' }
 	]
 
 	// Workaround to trigger transitions on render
@@ -47,27 +47,29 @@
 						class:tall={i === 0 || i === 4 || i === 7 || i === 11}
 						class:wide={i === 2}
 					>
-						<img src={photo.src} alt={photo.alt} loading="eager" />
+						<img src={photo.src} alt={photo.alt} loading={i < 6 ? 'eager' : 'lazy'} />
 					</div>
 				{/each}
 			</div>
 			<div class="mosaic-overlay"></div>
 		</div>
 		<div class="content" in:fade={{ duration: 500, delay: 200 }}>
-			<h1 id={label_id}>
-				Pour garder l'IA sous contrôle, <br /><Mark>agissons maintenant</Mark>
-			</h1>
-			<div class="description">
-				<p>
-					L'IA redéfinit déjà nos emplois, nos élections et notre vie quotidienne. Tous les mois, de
-					nouveaux systèmes franchissent des seuils que l'on pensait lointains. D'après la plupart
-					des experts en sécurité de l'IA, poursuivre cette course sans garde-fous fait peser un
-					risque catastrophique sur l'humanité à court terme.
-				</p>
-				<p>La fenêtre se referme vite : agissons maintenant.</p>
-				<div class="buttons">
-					<div in:fly={{ y: 20, duration: 300, delay: 700 }}>
-						<Button alt href="/rejoindre">Rejoindre</Button>
+			<div class="content-box">
+				<h1 id={label_id}>
+					Pour garder l'IA sous contrôle, <br /><Mark>agissons maintenant</Mark>
+				</h1>
+				<div class="description">
+					<p>
+						L'IA redéfinit déjà nos emplois, nos élections et notre vie quotidienne. Tous les mois,
+						de nouveaux systèmes franchissent des seuils que l'on pensait lointains. D'après la
+						plupart des experts en sécurité de l'IA, poursuivre cette course sans garde-fous fait
+						peser un risque catastrophique sur l'humanité à court terme.
+					</p>
+					<p>La fenêtre se referme vite : agissons maintenant.</p>
+					<div class="buttons">
+						<div in:fly={{ y: 20, duration: 300, delay: 700 }}>
+							<Button href="/rejoindre">Rejoindre</Button>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -98,16 +100,16 @@
 		width: 100vw;
 		height: calc(100% - var(--hero-top-offset));
 		z-index: -1;
-		background: #fffaf5;
+		background: #1a1a1a;
 	}
 
-	/* Photo mosaic grid */
+	/* Photo mosaic grid — fill the entire background */
 	.mosaic {
 		position: absolute;
 		inset: 0;
 		display: grid;
 		grid-template-columns: repeat(5, 1fr);
-		grid-auto-rows: minmax(120px, 1fr);
+		grid-auto-rows: 1fr;
 		gap: 3px;
 	}
 
@@ -129,34 +131,34 @@
 		height: 100%;
 		object-fit: cover;
 		display: block;
-		filter: grayscale(40%) sepia(30%) saturate(120%) brightness(0.95);
+		filter: grayscale(30%) sepia(20%) saturate(130%) brightness(0.85);
 	}
 
-	/* Overlay: gradient from solid left to transparent right + orange tint */
+	/* Overlay: strong left side for text + top gradient for header */
 	.mosaic-overlay {
 		position: absolute;
 		inset: 0;
 		background: linear-gradient(
-				to right,
-				#fffaf5 0%,
-				rgba(255, 250, 245, 0.97) 20%,
-				rgba(255, 250, 245, 0.85) 40%,
-				rgba(255, 248, 240, 0.5) 60%,
-				rgba(255, 245, 235, 0.25) 80%,
-				rgba(255, 240, 225, 0.15) 100%
+				to bottom,
+				rgba(20, 20, 20, 0.7) 0%,
+				rgba(20, 20, 20, 0.3) 12%,
+				transparent 22%
 			),
 			linear-gradient(
-				to top,
-				rgba(255, 250, 245, 0.6) 0%,
-				transparent 15%,
-				transparent 85%,
-				rgba(255, 250, 245, 0.6) 100%
-			);
+				to right,
+				rgba(20, 20, 20, 0.88) 0%,
+				rgba(20, 20, 20, 0.75) 25%,
+				rgba(20, 20, 20, 0.45) 50%,
+				rgba(20, 20, 20, 0.15) 75%,
+				transparent 100%
+			),
+			linear-gradient(to top, rgba(20, 20, 20, 0.5) 0%, transparent 15%);
 		pointer-events: none;
 	}
 
+	/* Text content */
 	.content {
-		color: var(--black, #000);
+		color: white;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
@@ -164,15 +166,27 @@
 		margin-bottom: 6.125rem;
 	}
 
+	.content-box {
+		max-width: 38rem;
+	}
+
 	.content h1 {
 		margin-top: 0;
 		margin-bottom: 1.5rem;
 		font-size: 1.6rem;
+		color: white;
+		text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
 	}
 
 	.description {
 		width: 0;
 		min-width: 100%;
+		color: rgba(255, 255, 255, 0.92);
+		text-shadow: 0 1px 10px rgba(0, 0, 0, 0.4);
+	}
+
+	.description p {
+		line-height: 1.7;
 	}
 
 	.corners {
@@ -195,28 +209,10 @@
 		margin-top: 2rem;
 	}
 
-	/* Mobile: fewer columns, stronger overlay */
+	/* Mobile: fewer columns */
 	@media (max-width: 639px) {
 		.mosaic {
 			grid-template-columns: repeat(3, 1fr);
-			grid-auto-rows: minmax(90px, 1fr);
-		}
-
-		.mosaic-overlay {
-			background: linear-gradient(
-					to right,
-					#fffaf5 0%,
-					rgba(255, 250, 245, 0.95) 30%,
-					rgba(255, 250, 245, 0.8) 60%,
-					rgba(255, 248, 240, 0.5) 100%
-				),
-				linear-gradient(
-					to top,
-					rgba(255, 250, 245, 0.5) 0%,
-					transparent 20%,
-					transparent 80%,
-					rgba(255, 250, 245, 0.5) 100%
-				);
 		}
 	}
 
@@ -242,7 +238,6 @@
 		}
 		.mosaic {
 			grid-template-columns: repeat(5, 1fr);
-			grid-auto-rows: minmax(140px, 1fr);
 		}
 	}
 
@@ -252,7 +247,6 @@
 		}
 		.mosaic {
 			grid-template-columns: repeat(6, 1fr);
-			grid-auto-rows: minmax(150px, 1fr);
 			gap: 4px;
 		}
 	}
