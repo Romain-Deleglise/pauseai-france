@@ -16,101 +16,20 @@
 
 {#if mounted}
 	<section class="hero" aria-labelledby={label_id}>
-		<div class="hero-bg">
-			<!-- Cluster haut-droite -->
-			<svg
-				class="topo topo-top-right"
-				viewBox="0 0 600 500"
-				fill="none"
-				xmlns="http://www.w3.org/2000/svg"
-				aria-hidden="true"
-			>
-				<path
-					d="M300,250 C320,180 400,150 430,190 C460,230 420,300 370,310 C320,320 280,290 300,250Z"
-					stroke="rgba(255,148,22,0.35)"
-					stroke-width="1.5"
-				/>
-				<path
-					d="M300,250 C330,160 420,120 470,170 C520,220 460,330 380,345 C300,360 260,310 300,250Z"
-					stroke="rgba(255,148,22,0.28)"
-					stroke-width="1.5"
-				/>
-				<path
-					d="M300,250 C340,130 450,90 510,155 C570,220 500,360 390,385 C280,410 240,320 300,250Z"
-					stroke="rgba(255,148,22,0.22)"
-					stroke-width="1.5"
-				/>
-				<path
-					d="M300,250 C350,100 480,55 550,140 C620,225 540,395 400,425 C260,455 220,340 300,250Z"
-					stroke="rgba(255,148,22,0.17)"
-					stroke-width="1.5"
-				/>
-				<path
-					d="M300,250 C360,70 510,20 590,120 C670,220 580,430 410,465 C240,500 200,360 300,250Z"
-					stroke="rgba(255,148,22,0.12)"
-					stroke-width="1.5"
-				/>
-				<path
-					d="M300,250 C370,40 540,-15 630,100 C720,215 620,460 420,500 C220,540 180,380 300,250Z"
-					stroke="rgba(255,148,22,0.08)"
-					stroke-width="1.5"
-				/>
-			</svg>
-
-			<!-- Cluster bas-gauche -->
-			<svg
-				class="topo topo-bottom-left"
-				viewBox="0 0 500 450"
-				fill="none"
-				xmlns="http://www.w3.org/2000/svg"
-				aria-hidden="true"
-			>
-				<path
-					d="M220,220 C200,170 230,130 280,140 C330,150 350,200 330,240 C310,280 240,270 220,220Z"
-					stroke="rgba(255,148,22,0.30)"
-					stroke-width="1.5"
-				/>
-				<path
-					d="M220,220 C190,150 220,95 290,110 C360,125 390,195 360,255 C330,315 250,310 220,220Z"
-					stroke="rgba(255,148,22,0.22)"
-					stroke-width="1.5"
-				/>
-				<path
-					d="M220,220 C175,120 215,55 305,75 C395,95 435,190 395,275 C355,360 265,355 220,220Z"
-					stroke="rgba(255,148,22,0.16)"
-					stroke-width="1.5"
-				/>
-				<path
-					d="M220,220 C160,90 210,10 320,40 C430,70 480,185 430,295 C380,405 280,400 220,220Z"
-					stroke="rgba(255,148,22,0.10)"
-					stroke-width="1.5"
-				/>
-			</svg>
-
-			<!-- Cluster centre-bas (petit, subtil) -->
-			<svg
-				class="topo topo-center"
-				viewBox="0 0 300 300"
-				fill="none"
-				xmlns="http://www.w3.org/2000/svg"
-				aria-hidden="true"
-			>
-				<path
-					d="M150,150 C160,120 190,110 210,130 C230,150 220,185 195,190 C170,195 140,175 150,150Z"
-					stroke="rgba(255,148,22,0.20)"
-					stroke-width="1.2"
-				/>
-				<path
-					d="M150,150 C165,100 205,85 235,115 C265,145 245,205 210,215 C175,225 130,195 150,150Z"
-					stroke="rgba(255,148,22,0.14)"
-					stroke-width="1.2"
-				/>
-				<path
-					d="M150,150 C170,80 220,60 260,100 C300,140 270,225 225,240 C180,255 120,215 150,150Z"
-					stroke="rgba(255,148,22,0.09)"
-					stroke-width="1.2"
-				/>
-			</svg>
+		<div class="hero-bg" aria-hidden="true">
+			<div class="pulse-origin">
+				<div class="ring ring-1"></div>
+				<div class="ring ring-2"></div>
+				<div class="ring ring-3"></div>
+				<div class="ring ring-4"></div>
+				<div class="ring ring-5"></div>
+				<div class="dot"></div>
+			</div>
+			<div class="pulse-origin pulse-secondary">
+				<div class="ring ring-1"></div>
+				<div class="ring ring-2"></div>
+				<div class="ring ring-3"></div>
+			</div>
 		</div>
 		<div class="content" in:fade={{ duration: 500, delay: 200 }}>
 			<h1 id={label_id}>
@@ -160,50 +79,116 @@
 		background: #fffaf5;
 	}
 
-	/* Topographic contour lines */
-	.topo {
+	/* Pulse epicenter */
+	.pulse-origin {
 		position: absolute;
-		animation: topo-breathe 25s ease-in-out infinite;
+		top: 30%;
+		right: 8%;
 	}
 
-	.topo path {
-		fill: none;
+	.pulse-secondary {
+		top: auto;
+		right: auto;
+		bottom: 15%;
+		left: 5%;
 	}
 
-	.topo-top-right {
-		width: 55%;
-		min-width: 340px;
-		top: -8%;
-		right: -8%;
-		animation-duration: 28s;
+	.dot {
+		width: 8px;
+		height: 8px;
+		background: var(--brand, #ff9416);
+		border-radius: 50%;
+		position: relative;
+		z-index: 1;
 	}
 
-	.topo-bottom-left {
-		width: 45%;
-		min-width: 280px;
-		bottom: -5%;
-		left: -8%;
-		animation-delay: -10s;
-		animation-duration: 32s;
+	.ring {
+		position: absolute;
+		border: 1.5px solid var(--brand, #ff9416);
+		border-radius: 50%;
+		top: 50%;
+		left: 50%;
+		animation: pulse-expand 8s ease-out infinite;
 	}
 
-	.topo-center {
-		width: 25%;
-		min-width: 180px;
-		bottom: 20%;
-		right: 25%;
-		animation-delay: -18s;
-		animation-duration: 24s;
-		opacity: 0.7;
+	.ring-1 {
+		width: 80px;
+		height: 80px;
+		margin-top: -40px;
+		margin-left: -40px;
+		animation-delay: 0s;
 	}
 
-	@keyframes topo-breathe {
-		0%,
-		100% {
-			transform: scale(1) rotate(0deg);
+	.ring-2 {
+		width: 200px;
+		height: 200px;
+		margin-top: -100px;
+		margin-left: -100px;
+		animation-delay: -1.6s;
+	}
+
+	.ring-3 {
+		width: 360px;
+		height: 360px;
+		margin-top: -180px;
+		margin-left: -180px;
+		animation-delay: -3.2s;
+	}
+
+	.ring-4 {
+		width: 560px;
+		height: 560px;
+		margin-top: -280px;
+		margin-left: -280px;
+		animation-delay: -4.8s;
+	}
+
+	.ring-5 {
+		width: 800px;
+		height: 800px;
+		margin-top: -400px;
+		margin-left: -400px;
+		animation-delay: -6.4s;
+	}
+
+	/* Secondary pulse has smaller rings */
+	.pulse-secondary .ring-1 {
+		width: 60px;
+		height: 60px;
+		margin-top: -30px;
+		margin-left: -30px;
+	}
+
+	.pulse-secondary .ring-2 {
+		width: 160px;
+		height: 160px;
+		margin-top: -80px;
+		margin-left: -80px;
+	}
+
+	.pulse-secondary .ring-3 {
+		width: 300px;
+		height: 300px;
+		margin-top: -150px;
+		margin-left: -150px;
+	}
+
+	.pulse-secondary .ring {
+		animation-duration: 10s;
+		border-width: 1px;
+	}
+
+	@keyframes pulse-expand {
+		0% {
+			transform: scale(0.3);
+			opacity: 0.5;
 		}
 		50% {
-			transform: scale(1.04) rotate(1.5deg);
+			opacity: 0.2;
+		}
+		100% {
+			transform: scale(1);
+			opacity: 0;
 		}
 	}
 
@@ -267,17 +252,23 @@
 		.content h1 {
 			font-size: 2.4rem;
 		}
-		.topo-top-right {
-			width: 50%;
-		}
-		.topo-bottom-left {
-			width: 40%;
-		}
 	}
 
 	@media (min-width: 1024px) {
 		.content h1 {
 			font-size: 3rem;
+		}
+		.ring-4 {
+			width: 700px;
+			height: 700px;
+			margin-top: -350px;
+			margin-left: -350px;
+		}
+		.ring-5 {
+			width: 1000px;
+			height: 1000px;
+			margin-top: -500px;
+			margin-left: -500px;
 		}
 	}
 
