@@ -16,10 +16,16 @@
 
 {#if mounted}
 	<section class="hero" aria-labelledby={label_id}>
-		<div class="gradient-bg">
-			<div class="blob blob-1"></div>
-			<div class="blob blob-2"></div>
-			<div class="blob blob-3"></div>
+		<div class="hero-bg">
+			<!-- Large arcs -->
+			<div class="arc arc-1"></div>
+			<div class="arc arc-2"></div>
+			<div class="arc arc-3"></div>
+			<!-- Small accent dots -->
+			<div class="dot dot-1"></div>
+			<div class="dot dot-2"></div>
+			<div class="dot dot-3"></div>
+			<div class="dot dot-4"></div>
 		</div>
 		<div class="content" in:fade={{ duration: 500, delay: 200 }}>
 			<h1 id={label_id}>
@@ -57,8 +63,8 @@
 		position: relative;
 	}
 
-	/* Animated gradient background — breaks out of parent padding */
-	.gradient-bg {
+	/* Light background that breaks out of parent padding */
+	.hero-bg {
 		position: absolute;
 		overflow: hidden;
 		top: var(--hero-top-offset);
@@ -67,73 +73,113 @@
 		width: 100vw;
 		height: calc(100% - var(--hero-top-offset));
 		z-index: -1;
-		background: linear-gradient(
-			135deg,
-			#111111 0%,
-			#1a1a1a 30%,
-			#1f1810 55%,
-			#181210 75%,
-			#0f0f0f 100%
-		);
+		background: linear-gradient(160deg, #ffffff 0%, #fff8f0 40%, #fff1e0 100%);
 	}
 
-	/* Floating blurred blobs */
-	.blob {
+	/* Geometric arc rings */
+	.arc {
 		position: absolute;
 		border-radius: 50%;
-		filter: blur(80px);
-		opacity: 0.5;
-		animation: float 20s ease-in-out infinite;
+		border-style: solid;
+		border-color: rgba(255, 148, 22, 0.15);
+		animation: drift 30s ease-in-out infinite;
 	}
 
-	.blob-1 {
-		width: 500px;
-		height: 500px;
-		background: radial-gradient(circle, rgba(255, 148, 22, 0.35) 0%, rgba(255, 148, 22, 0) 70%);
-		top: -10%;
-		left: -10%;
-		animation-delay: 0s;
+	.arc-1 {
+		width: 600px;
+		height: 600px;
+		border-width: 3px;
+		top: -15%;
+		right: -10%;
+		animation-duration: 35s;
+	}
+
+	.arc-2 {
+		width: 450px;
+		height: 450px;
+		border-width: 2px;
+		border-color: rgba(255, 148, 22, 0.12);
+		bottom: -5%;
+		left: -8%;
+		animation-delay: -12s;
+		animation-duration: 28s;
+	}
+
+	.arc-3 {
+		width: 300px;
+		height: 300px;
+		border-width: 2px;
+		border-color: rgba(255, 148, 22, 0.1);
+		top: 30%;
+		right: 25%;
+		animation-delay: -20s;
+		animation-duration: 32s;
+	}
+
+	/* Accent dots */
+	.dot {
+		position: absolute;
+		border-radius: 50%;
+		background-color: rgba(255, 148, 22, 0.2);
+		animation: drift 20s ease-in-out infinite;
+	}
+
+	.dot-1 {
+		width: 12px;
+		height: 12px;
+		top: 20%;
+		right: 15%;
 		animation-duration: 22s;
 	}
 
-	.blob-2 {
-		width: 400px;
-		height: 400px;
-		background: radial-gradient(circle, rgba(255, 148, 22, 0.25) 0%, rgba(255, 148, 22, 0) 70%);
-		bottom: 10%;
-		right: -5%;
-		animation-delay: -7s;
+	.dot-2 {
+		width: 8px;
+		height: 8px;
+		top: 55%;
+		right: 35%;
+		background-color: rgba(255, 148, 22, 0.15);
+		animation-delay: -5s;
 		animation-duration: 18s;
 	}
 
-	.blob-3 {
-		width: 350px;
-		height: 350px;
-		background: radial-gradient(circle, rgba(255, 169, 69, 0.15) 0%, rgba(255, 169, 69, 0) 70%);
-		top: 40%;
-		left: 30%;
-		animation-delay: -14s;
+	.dot-3 {
+		width: 16px;
+		height: 16px;
+		bottom: 25%;
+		left: 20%;
+		background-color: rgba(255, 148, 22, 0.18);
+		animation-delay: -10s;
 		animation-duration: 25s;
 	}
 
-	@keyframes float {
+	.dot-4 {
+		width: 10px;
+		height: 10px;
+		top: 15%;
+		left: 40%;
+		background-color: rgba(255, 148, 22, 0.12);
+		animation-delay: -15s;
+		animation-duration: 20s;
+	}
+
+	@keyframes drift {
 		0%,
 		100% {
-			transform: translate(0, 0) scale(1);
+			transform: translate(0, 0);
 		}
 		25% {
-			transform: translate(30px, -40px) scale(1.05);
+			transform: translate(15px, -20px);
 		}
 		50% {
-			transform: translate(-20px, 20px) scale(0.95);
+			transform: translate(-10px, 10px);
 		}
 		75% {
-			transform: translate(40px, 30px) scale(1.02);
+			transform: translate(20px, 15px);
 		}
 	}
 
 	.content {
-		color: #fff;
+		color: var(--black, #000);
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
@@ -190,30 +236,33 @@
 		.content h1 {
 			font-size: 2.4rem;
 		}
-		.blob-1 {
-			width: 600px;
-			height: 600px;
+		.arc-1 {
+			width: 750px;
+			height: 750px;
 		}
-		.blob-2 {
-			width: 500px;
-			height: 500px;
+		.arc-2 {
+			width: 550px;
+			height: 550px;
 		}
 	}
 	@media (min-width: 1024px) {
 		.content h1 {
 			font-size: 3rem;
 		}
-		.blob-1 {
-			width: 700px;
-			height: 700px;
+		.arc-1 {
+			width: 900px;
+			height: 900px;
+			border-width: 4px;
 		}
-		.blob-2 {
-			width: 600px;
-			height: 600px;
+		.arc-2 {
+			width: 650px;
+			height: 650px;
+			border-width: 3px;
 		}
-		.blob-3 {
-			width: 500px;
-			height: 500px;
+		.arc-3 {
+			width: 400px;
+			height: 400px;
+			border-width: 3px;
 		}
 	}
 	@media (min-width: 1280px) {
