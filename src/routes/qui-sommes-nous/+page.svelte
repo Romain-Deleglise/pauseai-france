@@ -1,12 +1,17 @@
 <script lang="ts">
 	import Who from '$components/home/who.svelte'
+	import type { PageData } from './$types'
 
-	const title = 'Exigeons une Pause IA'
-	const description = "Ne laissons pas l'IA nous détruire, agissons maintenant"
+	export let data: PageData
+
+	const title = 'Qui sommes-nous ? - Pause IA'
+	const description =
+		"Découvrez l'équipe de Pause IA France : direction, conseil scientifique et bénévoles engagés pour une gouvernance responsable de l'intelligence artificielle."
 </script>
 
 <svelte:head>
 	<title>{title}</title>
+	<meta name="description" content={description} />
 </svelte:head>
 
-<Who />
+<Who teamMembers={data.teamMembers} />
