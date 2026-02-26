@@ -17,19 +17,25 @@
 {#if mounted}
 	<section class="hero" aria-labelledby={label_id}>
 		<div class="hero-bg" aria-hidden="true">
-			<div class="pulse-origin">
-				<div class="ring ring-1"></div>
-				<div class="ring ring-2"></div>
-				<div class="ring ring-3"></div>
-				<div class="ring ring-4"></div>
-				<div class="ring ring-5"></div>
-				<div class="dot"></div>
+			<div class="word-wall">
+				<div class="word-track">
+					{#each Array(8) as _}
+						<div class="word-row">
+							<span>PAUSE</span><span>PAUSE</span><span>PAUSE</span><span>PAUSE</span><span
+								>PAUSE</span
+							><span>PAUSE</span><span>PAUSE</span><span>PAUSE</span>
+						</div>
+					{/each}
+					{#each Array(8) as _}
+						<div class="word-row">
+							<span>PAUSE</span><span>PAUSE</span><span>PAUSE</span><span>PAUSE</span><span
+								>PAUSE</span
+							><span>PAUSE</span><span>PAUSE</span><span>PAUSE</span>
+						</div>
+					{/each}
+				</div>
 			</div>
-			<div class="pulse-origin pulse-secondary">
-				<div class="ring ring-1"></div>
-				<div class="ring ring-2"></div>
-				<div class="ring ring-3"></div>
-			</div>
+			<div class="vignette"></div>
 		</div>
 		<div class="content" in:fade={{ duration: 500, delay: 200 }}>
 			<h1 id={label_id}>
@@ -79,116 +85,58 @@
 		background: #fffaf5;
 	}
 
-	/* Pulse epicenter */
-	.pulse-origin {
+	/* Giant word wall */
+	.word-wall {
 		position: absolute;
-		top: 30%;
-		right: 8%;
+		inset: 0;
+		overflow: hidden;
+		transform: rotate(-12deg) scale(1.3);
+		transform-origin: center center;
 	}
 
-	.pulse-secondary {
-		top: auto;
-		right: auto;
-		bottom: 15%;
-		left: 5%;
+	.word-track {
+		display: flex;
+		flex-direction: column;
+		animation: word-scroll 60s linear infinite;
 	}
 
-	.dot {
-		width: 8px;
-		height: 8px;
-		background: var(--brand, #ff9416);
-		border-radius: 50%;
-		position: relative;
-		z-index: 1;
+	.word-row {
+		display: flex;
+		white-space: nowrap;
+		line-height: 1;
+		padding: 0.15em 0;
 	}
 
-	.ring {
+	.word-row span {
+		font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+		font-size: clamp(5rem, 10vw, 10rem);
+		font-weight: 900;
+		letter-spacing: 0.08em;
+		color: var(--brand, #ff9416);
+		opacity: 0.045;
+		padding: 0 0.3em;
+		user-select: none;
+	}
+
+	/* Alternate rows offset for brick pattern */
+	.word-row:nth-child(even) {
+		transform: translateX(-2.5em);
+	}
+
+	/* Subtle vignette overlay to fade edges */
+	.vignette {
 		position: absolute;
-		border: 1.5px solid var(--brand, #ff9416);
-		border-radius: 50%;
-		top: 50%;
-		left: 50%;
-		animation: pulse-expand 8s ease-out infinite;
+		inset: 0;
+		background: radial-gradient(ellipse at center, transparent 30%, #fffaf5 75%);
+		pointer-events: none;
 	}
 
-	.ring-1 {
-		width: 80px;
-		height: 80px;
-		margin-top: -40px;
-		margin-left: -40px;
-		animation-delay: 0s;
-	}
-
-	.ring-2 {
-		width: 200px;
-		height: 200px;
-		margin-top: -100px;
-		margin-left: -100px;
-		animation-delay: -1.6s;
-	}
-
-	.ring-3 {
-		width: 360px;
-		height: 360px;
-		margin-top: -180px;
-		margin-left: -180px;
-		animation-delay: -3.2s;
-	}
-
-	.ring-4 {
-		width: 560px;
-		height: 560px;
-		margin-top: -280px;
-		margin-left: -280px;
-		animation-delay: -4.8s;
-	}
-
-	.ring-5 {
-		width: 800px;
-		height: 800px;
-		margin-top: -400px;
-		margin-left: -400px;
-		animation-delay: -6.4s;
-	}
-
-	/* Secondary pulse has smaller rings */
-	.pulse-secondary .ring-1 {
-		width: 60px;
-		height: 60px;
-		margin-top: -30px;
-		margin-left: -30px;
-	}
-
-	.pulse-secondary .ring-2 {
-		width: 160px;
-		height: 160px;
-		margin-top: -80px;
-		margin-left: -80px;
-	}
-
-	.pulse-secondary .ring-3 {
-		width: 300px;
-		height: 300px;
-		margin-top: -150px;
-		margin-left: -150px;
-	}
-
-	.pulse-secondary .ring {
-		animation-duration: 10s;
-		border-width: 1px;
-	}
-
-	@keyframes pulse-expand {
+	@keyframes word-scroll {
 		0% {
-			transform: scale(0.3);
-			opacity: 0.5;
-		}
-		50% {
-			opacity: 0.2;
+			transform: translateY(0);
 		}
 		100% {
-			transform: scale(1);
-			opacity: 0;
+			transform: translateY(-50%);
 		}
 	}
 
@@ -257,18 +205,6 @@
 	@media (min-width: 1024px) {
 		.content h1 {
 			font-size: 3rem;
-		}
-		.ring-4 {
-			width: 700px;
-			height: 700px;
-			margin-top: -350px;
-			margin-left: -350px;
-		}
-		.ring-5 {
-			width: 1000px;
-			height: 1000px;
-			margin-top: -500px;
-			margin-left: -500px;
 		}
 	}
 
