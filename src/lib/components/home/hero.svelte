@@ -17,10 +17,10 @@
 {#if mounted}
 	<section class="hero" aria-labelledby={label_id}>
 		<div class="hero-bg">
-			<!-- Diagonal bands -->
-			<div class="band band-orange"></div>
-			<div class="band band-black"></div>
-			<div class="band band-orange-light"></div>
+			<div class="blob blob-1"></div>
+			<div class="blob blob-2"></div>
+			<div class="blob blob-3"></div>
+			<div class="blob blob-4"></div>
 		</div>
 		<div class="content" in:fade={{ duration: 500, delay: 200 }}>
 			<h1 id={label_id}>
@@ -67,31 +67,72 @@
 		width: 100vw;
 		height: calc(100% - var(--hero-top-offset));
 		z-index: -1;
-		background: #ffffff;
+		background: #fff8f0;
 	}
 
-	/* Diagonal bands using clip-path */
-	.band {
+	/* Organic blob shapes */
+	.blob {
 		position: absolute;
-		width: 100%;
-		height: 100%;
-		top: 0;
-		left: 0;
+		animation: drift 25s ease-in-out infinite;
 	}
 
-	.band-orange {
-		background: var(--brand, #ff9416);
-		clip-path: polygon(0 0, 55% 0, 30% 50%, 0 42%);
+	.blob-1 {
+		width: 420px;
+		height: 380px;
+		background: rgba(255, 148, 22, 0.25);
+		border-radius: 60% 40% 55% 45% / 50% 60% 40% 50%;
+		top: -5%;
+		right: 5%;
+		animation-duration: 28s;
 	}
 
-	.band-black {
-		background: #111;
-		clip-path: polygon(100% 58%, 100% 100%, 55% 100%, 75% 55%);
+	.blob-2 {
+		width: 300px;
+		height: 280px;
+		background: rgba(255, 148, 22, 0.35);
+		border-radius: 45% 55% 40% 60% / 55% 45% 55% 45%;
+		top: 5%;
+		right: 12%;
+		animation-delay: -8s;
+		animation-duration: 24s;
 	}
 
-	.band-orange-light {
-		background: rgba(255, 148, 22, 0.1);
-		clip-path: polygon(0 42%, 30% 50%, 75% 55%, 55% 100%, 30% 100%, 0 65%);
+	.blob-3 {
+		width: 350px;
+		height: 320px;
+		background: rgba(255, 148, 22, 0.18);
+		border-radius: 55% 45% 60% 40% / 45% 55% 45% 55%;
+		bottom: 5%;
+		left: -3%;
+		animation-delay: -15s;
+		animation-duration: 30s;
+	}
+
+	.blob-4 {
+		width: 220px;
+		height: 200px;
+		background: rgba(255, 148, 22, 0.3);
+		border-radius: 50% 50% 45% 55% / 55% 45% 50% 50%;
+		bottom: 12%;
+		right: 30%;
+		animation-delay: -20s;
+		animation-duration: 22s;
+	}
+
+	@keyframes drift {
+		0%,
+		100% {
+			transform: translate(0, 0) rotate(0deg);
+		}
+		25% {
+			transform: translate(20px, -15px) rotate(3deg);
+		}
+		50% {
+			transform: translate(-15px, 10px) rotate(-2deg);
+		}
+		75% {
+			transform: translate(10px, 20px) rotate(1deg);
+		}
 	}
 
 	.content {
@@ -154,11 +195,39 @@
 		.content h1 {
 			font-size: 2.4rem;
 		}
+		.blob-1 {
+			width: 520px;
+			height: 470px;
+		}
+		.blob-2 {
+			width: 380px;
+			height: 350px;
+		}
+		.blob-3 {
+			width: 430px;
+			height: 390px;
+		}
 	}
 
 	@media (min-width: 1024px) {
 		.content h1 {
 			font-size: 3rem;
+		}
+		.blob-1 {
+			width: 620px;
+			height: 560px;
+		}
+		.blob-2 {
+			width: 450px;
+			height: 410px;
+		}
+		.blob-3 {
+			width: 500px;
+			height: 460px;
+		}
+		.blob-4 {
+			width: 300px;
+			height: 270px;
 		}
 	}
 
