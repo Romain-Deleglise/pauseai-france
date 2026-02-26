@@ -33,14 +33,15 @@
 			</h1>
 			<div class="description">
 				<p>
-					L’IA redéfinit déjà nos emplois, nos élections et notre vie quotidienne. 
-					Tous les mois, de nouveaux systèmes franchissent des seuils que l’on pensait lointains. 
-					D'après la plupart des experts en sécurité de l'IA, poursuivre cette course sans garde-fous fait peser un risque catastrophique sur l’humanité à court terme.
+					L’IA redéfinit déjà nos emplois, nos élections et notre vie quotidienne. Tous les mois, de
+					nouveaux systèmes franchissent des seuils que l’on pensait lointains. D'après la plupart
+					des experts en sécurité de l'IA, poursuivre cette course sans garde-fous fait peser un
+					risque catastrophique sur l’humanité à court terme.
 				</p>
 				<p>La fenêtre se referme vite : agissons maintenant.</p>
 				<div class="buttons">
 					<div in:fly={{ y: 20, duration: 300, delay: 700 }}>
-						<Button href="/rejoindre">Rejoindre</Button>
+						<Button alt href="/rejoindre">Rejoindre</Button>
 					</div>
 				</div>
 			</div>
