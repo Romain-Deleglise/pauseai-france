@@ -17,19 +17,28 @@
 
 	onMount(() => {
 		mounted = true
-		// Hysteresis: activate at 90px, deactivate only below 15px.
-		// This avoids the scroll-anchoring feedback loop where the banner
-		// collapsing (−40px layout shift) brings scrollY back under the
-		// threshold, causing the banner to expand again, then collapse, etc.
+		// Hysteresis: activate at 90px, deactivate only at 5px (near top).
+		// The gap (85px) exceeds the total header height change (~53px) so the
+		// scroll-anchoring feedback loop can never close.
+		// RAF batching ensures multiple scroll events per frame don't cause
+		// rapid toggling of the `scrolled` class mid-transition.
+		let rafId: ReturnType<typeof requestAnimationFrame> | null = null
 		const handleScroll = () => {
-			if (!scrolled && window.scrollY > 90) {
-				scrolled = true
-			} else if (scrolled && window.scrollY < 15) {
-				scrolled = false
-			}
+			if (rafId !== null) return
+			rafId = requestAnimationFrame(() => {
+				rafId = null
+				if (!scrolled && window.scrollY > 90) {
+					scrolled = true
+				} else if (scrolled && window.scrollY < 5) {
+					scrolled = false
+				}
+			})
 		}
 		window.addEventListener('scroll', handleScroll, { passive: true })
-		return () => window.removeEventListener('scroll', handleScroll)
+		return () => {
+			window.removeEventListener('scroll', handleScroll)
+			if (rafId !== null) cancelAnimationFrame(rafId)
+		}
 	})
 
 	function closeMenu() {
@@ -255,6 +264,8 @@
 		top: 0;
 		z-index: 100;
 		border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+		/* GPU compositing prevents flickering during height transitions */
+		will-change: transform;
 		transition:
 			background-color 0.25s ease,
 			box-shadow 0.25s ease,
@@ -292,14 +303,14 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		padding: 1rem 1rem;
+		padding: 0.65rem 1rem;
 		transition: padding 0.25s ease;
 	}
 
 	/* Compact nav when scrolled */
 	nav.scrolled {
-		padding-top: 0.5rem;
-		padding-bottom: 0.5rem;
+		padding-top: 0.35rem;
+		padding-bottom: 0.35rem;
 	}
 
 	.nav-right {
@@ -606,7 +617,7 @@
 
 	@media (min-width: 640px) {
 		nav {
-			padding: 1rem 2rem;
+			padding: 0.75rem 2rem;
 		}
 
 		nav.scrolled {
