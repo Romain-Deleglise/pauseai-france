@@ -58,17 +58,10 @@
 	}
 	.buttons {
 		display: flex;
-		flex-direction: column;
-		gap: 2rem;
+		flex-direction: row;
+		flex-wrap: wrap;
+		gap: 1rem;
 		margin-top: 2rem;
-		/* Centrer les boutons en affichage mobile */
-		align-items: center;
-	}
-
-	@media (min-width: 768px) {
-		.buttons {
-			flex-direction: row;
-			/* En desktop l'alignement est déjà bon grâce au align-items: center du parent */
-		}
+		justify-content: center;
 	}
 </style>
