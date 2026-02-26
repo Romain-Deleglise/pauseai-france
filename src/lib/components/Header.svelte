@@ -15,6 +15,19 @@
 	let scrolled = false
 	let mounted = false
 
+	// Portal action: move the node to document.body so it escapes the sticky
+	// header's containing block. position:fixed inside position:sticky is
+	// contained by the sticky ancestor in modern browsers, which breaks the
+	// sidebar layout (it renders inside the nav bar instead of full-screen).
+	function portal(node: HTMLElement): { destroy: () => void } {
+		document.body.appendChild(node)
+		return {
+			destroy() {
+				node.parentNode?.removeChild(node)
+			}
+		}
+	}
+
 	onMount(() => {
 		mounted = true
 		// Hysteresis: activate at 90px, deactivate only at 5px (near top).
@@ -174,8 +187,9 @@
 				</button>
 			</div>
 
-			<!-- Mobile/tablet sidebar -->
-			<div class="sidebar" class:open>
+			<!-- Mobile/tablet sidebar — use:portal pour l'appender à document.body
+			     et l'extraire du containing block créé par position:sticky -->
+			<div class="sidebar" class:open use:portal>
 				<div class="sidebar-head">
 					<a href="/" class="sidebar-logo" on:click={closeMenu}>
 						<Logo height={36} fill_pause="black" fill_circle="#FF9416" fill_ai="black" />
@@ -251,6 +265,7 @@
 					class="sidebar-backdrop"
 					on:click={closeMenu}
 					transition:fade={{ duration: 200 }}
+					use:portal
 				></div>
 			{/if}
 		</nav>
