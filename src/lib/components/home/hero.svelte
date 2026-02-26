@@ -164,7 +164,7 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
-		gap: 4px;
+		gap: 5px;
 		padding: 0;
 	}
 
@@ -176,7 +176,7 @@
 
 	.marquee-track {
 		display: flex;
-		gap: 4px;
+		gap: 5px;
 		height: 100%;
 		width: max-content;
 	}
@@ -186,23 +186,23 @@
 		aspect-ratio: 4/3;
 		object-fit: cover;
 		display: block;
-		border-radius: 4px;
-		filter: grayscale(20%) sepia(15%) saturate(120%);
+		border-radius: 6px;
+		filter: saturate(110%);
 		flex-shrink: 0;
 	}
 
-	/* Scroll left */
+	/* Scroll left — slow, contemplative */
 	.row-left .marquee-track {
-		animation: scroll-left 80s linear infinite;
+		animation: scroll-left 140s linear infinite;
 	}
 
 	/* Scroll right */
 	.row-right .marquee-track {
-		animation: scroll-right 80s linear infinite;
+		animation: scroll-right 140s linear infinite;
 	}
 
 	.row-slow .marquee-track {
-		animation-duration: 100s;
+		animation-duration: 180s;
 	}
 
 	@keyframes scroll-left {
@@ -220,6 +220,14 @@
 		}
 		100% {
 			transform: translateX(0);
+		}
+	}
+
+	/* Respect user preference */
+	@media (prefers-reduced-motion: reduce) {
+		.row-left .marquee-track,
+		.row-right .marquee-track {
+			animation: none;
 		}
 	}
 
@@ -295,6 +303,48 @@
 		margin-top: 2rem;
 	}
 
+	/* ─── Mobile (< 640px): 3 rows, bigger photos ─────────────── */
+	@media (max-width: 639px) {
+		.marquee-row:nth-child(4) {
+			display: none;
+		}
+
+		.marquee-container {
+			gap: 4px;
+		}
+
+		.marquee-track img {
+			border-radius: 4px;
+		}
+
+		/* Stronger overlay on mobile for text readability */
+		.mosaic-overlay {
+			background: linear-gradient(
+					to right,
+					rgba(255, 250, 245, 0.98) 0%,
+					rgba(255, 250, 245, 0.95) 25%,
+					rgba(255, 250, 245, 0.8) 45%,
+					rgba(255, 250, 245, 0.35) 70%,
+					rgba(255, 250, 245, 0.1) 90%,
+					transparent 100%
+				),
+				linear-gradient(
+					to top,
+					rgba(255, 250, 245, 0.8) 0%,
+					transparent 15%,
+					transparent 88%,
+					rgba(255, 250, 245, 0.8) 100%
+				);
+		}
+	}
+
+	/* ─── Tablet (640–767px): 3 rows ──────────────────────────── */
+	@media (min-width: 640px) and (max-width: 767px) {
+		.marquee-row:nth-child(4) {
+			display: none;
+		}
+	}
+
 	@media (min-width: 480px) {
 		.buttons {
 			flex-direction: row;
@@ -314,6 +364,15 @@
 	@media (min-width: 768px) {
 		.content h1 {
 			font-size: 2.4rem;
+		}
+		.marquee-container {
+			gap: 6px;
+		}
+		.marquee-track {
+			gap: 6px;
+		}
+		.marquee-track img {
+			border-radius: 8px;
 		}
 	}
 

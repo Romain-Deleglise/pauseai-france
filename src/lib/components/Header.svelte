@@ -94,8 +94,11 @@
   Banner slides away via max-height CSS transition once the user scrolls.
 -->
 <header class="site-header" class:scrolled>
-	<!-- Banner: hidden via CSS when scrolled, without touching its internal dismiss state -->
-	<div class="banner-wrapper" class:scrolled>
+	<!-- Banner behavior:
+		 - Homepage: hidden while hero is visible, appears when scrolled past hero
+		 - Other pages: visible at top, hidden when scrolled (original behavior)
+	-->
+	<div class="banner-wrapper" class:scrolled class:homepage={onHomepage}>
 		<Banner visible={$bannerStore.visible}>
 			{$bannerStore.message}
 			{#if $bannerStore.linkUrl}
@@ -263,6 +266,17 @@
 	.banner-wrapper.scrolled {
 		max-height: 0;
 		opacity: 0;
+	}
+
+	/* Homepage: inverted — hidden at top, visible when scrolled past hero */
+	.banner-wrapper.homepage {
+		max-height: 0;
+		opacity: 0;
+	}
+
+	.banner-wrapper.homepage.scrolled {
+		max-height: 8rem;
+		opacity: 1;
 	}
 
 	/* ─── Nav ────────────────────────────────────────────────────── */
