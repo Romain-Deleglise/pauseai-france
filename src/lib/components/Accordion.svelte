@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { slide, fade } from 'svelte/transition'
 	import { page } from '$app/stores'
+	import { faqBulkAction } from '$lib/stores/faq'
+	import { onMount } from 'svelte'
 	import Fly from './Fly.svelte'
 
 	export let open = false
@@ -8,10 +10,31 @@
 
 	const details_id = `${id}-details`
 	const title_id = `${id}-title`
-	const handleClick = () => (open = !open)
+
+	const handleClick = () => {
+		open = !open
+		// Update URL hash for deep-linking
+		if (typeof window !== 'undefined') {
+			if (open) {
+				history.replaceState(null, '', `#${id}`)
+			} else {
+				history.replaceState(null, '', window.location.pathname)
+			}
+		}
+	}
 
 	$: if ($page.url.hash === `#${id}`) {
 		open = true
+	}
+
+	// React to expand/collapse all signals
+	let lastProcessedTs = 0
+	$: {
+		if ($faqBulkAction.ts > lastProcessedTs) {
+			lastProcessedTs = $faqBulkAction.ts
+			if ($faqBulkAction.action === 'expand') open = true
+			else if ($faqBulkAction.action === 'collapse') open = false
+		}
 	}
 </script>
 
@@ -22,7 +45,17 @@
 				<slot name="head" />
 			</h3>
 
-			<span class="icon">{open ? '\u2212' : '+'}</span>
+			<span class="chevron" class:chevron-open={open}>
+				<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+					<path
+						d="M5 7.5L10 12.5L15 7.5"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					/>
+				</svg>
+			</span>
 		</button>
 		{#if open}
 			<div class="details" transition:slide id={details_id} aria-labelledby={title_id}>
@@ -55,14 +88,28 @@
 	}
 
 	.details {
-		padding: 2rem 0 1.5rem 0;
+		padding: 1rem 1.5rem 1.5rem 1.5rem;
+		margin: 0.25rem 0.5rem 1rem 0.5rem;
+		background-color: white;
+		border-radius: 0.75rem;
+		box-shadow:
+			0 1px 3px rgba(0, 0, 0, 0.08),
+			0 4px 12px rgba(0, 0, 0, 0.06);
+		text-align: justify;
 	}
 
-	.icon {
-		font-size: 3rem;
-		font-weight: 200;
-		line-height: 0;
+	.chevron {
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		margin-left: 1rem;
+		color: #666;
+		transition: transform 0.3s ease;
+		flex-shrink: 0;
+	}
+
+	.chevron-open {
+		transform: rotate(180deg);
 	}
 
 	h3 {

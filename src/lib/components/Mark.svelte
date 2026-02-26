@@ -5,16 +5,9 @@
 <style>
 	span {
 		color: var(--brand);
-		/* position: relative; */
+		text-decoration: underline;
+		text-decoration-color: var(--brand);
+		text-decoration-thickness: 0.1em;
+		text-underline-offset: 0.12em;
 	}
-
-	/* span::after {
-		content: '';
-		position: absolute;
-		left: 0;
-		bottom: 0.2em;
-		width: 100%;
-		height: 4px;
-		background-color: var(--brand);
-	} */
 </style>
