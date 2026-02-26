@@ -58,7 +58,11 @@ export function faqPlugin() {
 
 		visit(tree, 'element', (node, index, parent) => {
 			if (parent && index) {
-				if (node.tagName === 'h3') {
+				if (node.tagName === 'h2') {
+					// Category separator: add a class and reset the current accordion
+					node.properties = { ...node.properties, class: 'faq-category' }
+					currentAccordion = null
+				} else if (node.tagName === 'h3') {
 					// This is a new question, create a new Accordion
 					accordionCount++
 					currentAccordion = new Accordion(accordionCount, node)
