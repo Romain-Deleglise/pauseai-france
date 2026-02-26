@@ -17,236 +17,10 @@
 {#if mounted}
 	<section class="hero" aria-labelledby={label_id}>
 		<div class="hero-bg" aria-hidden="true">
-			<!-- Perspective grid landscape -->
-			<div class="grid-scene">
-				<div class="grid-floor">
-					<svg
-						class="grid-svg"
-						viewBox="0 0 1200 600"
-						preserveAspectRatio="none"
-						xmlns="http://www.w3.org/2000/svg"
-					>
-						<!-- Horizontal lines (receding into distance) -->
-						<line
-							x1="0"
-							y1="600"
-							x2="1200"
-							y2="600"
-							stroke="rgba(255,148,22,0.18)"
-							stroke-width="1.5"
-						/>
-						<line
-							x1="0"
-							y1="540"
-							x2="1200"
-							y2="540"
-							stroke="rgba(255,148,22,0.16)"
-							stroke-width="1.3"
-						/>
-						<line
-							x1="0"
-							y1="480"
-							x2="1200"
-							y2="480"
-							stroke="rgba(255,148,22,0.14)"
-							stroke-width="1.2"
-						/>
-						<line
-							x1="0"
-							y1="425"
-							x2="1200"
-							y2="425"
-							stroke="rgba(255,148,22,0.12)"
-							stroke-width="1.1"
-						/>
-						<line
-							x1="0"
-							y1="375"
-							x2="1200"
-							y2="375"
-							stroke="rgba(255,148,22,0.11)"
-							stroke-width="1"
-						/>
-						<line
-							x1="0"
-							y1="330"
-							x2="1200"
-							y2="330"
-							stroke="rgba(255,148,22,0.10)"
-							stroke-width="0.9"
-						/>
-						<line
-							x1="0"
-							y1="290"
-							x2="1200"
-							y2="290"
-							stroke="rgba(255,148,22,0.09)"
-							stroke-width="0.8"
-						/>
-						<line
-							x1="0"
-							y1="255"
-							x2="1200"
-							y2="255"
-							stroke="rgba(255,148,22,0.08)"
-							stroke-width="0.7"
-						/>
-						<line
-							x1="0"
-							y1="225"
-							x2="1200"
-							y2="225"
-							stroke="rgba(255,148,22,0.07)"
-							stroke-width="0.6"
-						/>
-						<line
-							x1="0"
-							y1="200"
-							x2="1200"
-							y2="200"
-							stroke="rgba(255,148,22,0.06)"
-							stroke-width="0.5"
-						/>
-						<line
-							x1="0"
-							y1="178"
-							x2="1200"
-							y2="178"
-							stroke="rgba(255,148,22,0.05)"
-							stroke-width="0.5"
-						/>
-						<line
-							x1="0"
-							y1="160"
-							x2="1200"
-							y2="160"
-							stroke="rgba(255,148,22,0.04)"
-							stroke-width="0.4"
-						/>
-
-						<!-- Vertical lines (converging to vanishing point at 600,140) -->
-						<line
-							x1="600"
-							y1="140"
-							x2="-200"
-							y2="600"
-							stroke="rgba(255,148,22,0.14)"
-							stroke-width="1"
-						/>
-						<line
-							x1="600"
-							y1="140"
-							x2="0"
-							y2="600"
-							stroke="rgba(255,148,22,0.14)"
-							stroke-width="1"
-						/>
-						<line
-							x1="600"
-							y1="140"
-							x2="150"
-							y2="600"
-							stroke="rgba(255,148,22,0.13)"
-							stroke-width="1"
-						/>
-						<line
-							x1="600"
-							y1="140"
-							x2="300"
-							y2="600"
-							stroke="rgba(255,148,22,0.12)"
-							stroke-width="1"
-						/>
-						<line
-							x1="600"
-							y1="140"
-							x2="420"
-							y2="600"
-							stroke="rgba(255,148,22,0.11)"
-							stroke-width="0.8"
-						/>
-						<line
-							x1="600"
-							y1="140"
-							x2="520"
-							y2="600"
-							stroke="rgba(255,148,22,0.10)"
-							stroke-width="0.7"
-						/>
-						<line
-							x1="600"
-							y1="140"
-							x2="600"
-							y2="600"
-							stroke="rgba(255,148,22,0.15)"
-							stroke-width="1.2"
-						/>
-						<line
-							x1="600"
-							y1="140"
-							x2="680"
-							y2="600"
-							stroke="rgba(255,148,22,0.10)"
-							stroke-width="0.7"
-						/>
-						<line
-							x1="600"
-							y1="140"
-							x2="780"
-							y2="600"
-							stroke="rgba(255,148,22,0.11)"
-							stroke-width="0.8"
-						/>
-						<line
-							x1="600"
-							y1="140"
-							x2="900"
-							y2="600"
-							stroke="rgba(255,148,22,0.12)"
-							stroke-width="1"
-						/>
-						<line
-							x1="600"
-							y1="140"
-							x2="1050"
-							y2="600"
-							stroke="rgba(255,148,22,0.13)"
-							stroke-width="1"
-						/>
-						<line
-							x1="600"
-							y1="140"
-							x2="1200"
-							y2="600"
-							stroke="rgba(255,148,22,0.14)"
-							stroke-width="1"
-						/>
-						<line
-							x1="600"
-							y1="140"
-							x2="1400"
-							y2="600"
-							stroke="rgba(255,148,22,0.14)"
-							stroke-width="1"
-						/>
-
-						<!-- Glow at vanishing point -->
-						<circle cx="600" cy="140" r="60" fill="url(#vanish-glow)" />
-						<circle cx="600" cy="140" r="3" fill="rgba(255,148,22,0.4)" />
-
-						<defs>
-							<radialGradient id="vanish-glow" cx="50%" cy="50%" r="50%">
-								<stop offset="0%" stop-color="rgba(255,148,22,0.12)" />
-								<stop offset="100%" stop-color="rgba(255,148,22,0)" />
-							</radialGradient>
-						</defs>
-					</svg>
-				</div>
-				<!-- Horizon glow line -->
-				<div class="horizon-glow"></div>
-			</div>
-			<!-- Fade overlay on left side for text readability -->
-			<div class="text-fade"></div>
+			<div class="blob blob-1"></div>
+			<div class="blob blob-2"></div>
+			<div class="blob blob-3"></div>
+			<div class="blob blob-4"></div>
 		</div>
 		<div class="content" in:fade={{ duration: 500, delay: 200 }}>
 			<h1 id={label_id}>
@@ -293,79 +67,112 @@
 		width: 100vw;
 		height: calc(100% - var(--hero-top-offset));
 		z-index: -1;
-		background: linear-gradient(to bottom, #1a0a00 0%, #2d1200 30%, #fffaf5 60%, #fffaf5 100%);
+		background: #fffaf5;
 	}
 
-	/* Grid scene container */
-	.grid-scene {
+	/* Floating gradient blobs */
+	.blob {
 		position: absolute;
-		inset: 0;
-		display: flex;
-		flex-direction: column;
-		justify-content: flex-end;
+		border-radius: 50%;
+		filter: blur(80px);
+		opacity: 0.5;
+		will-change: transform;
 	}
 
-	.grid-floor {
-		position: relative;
-		width: 100%;
-		height: 55%;
-		animation: grid-drift 4s linear infinite;
+	.blob-1 {
+		width: 45vw;
+		height: 45vw;
+		max-width: 600px;
+		max-height: 600px;
+		background: radial-gradient(circle, #ff9416 0%, #ffbe6b 50%, transparent 70%);
+		top: -10%;
+		right: -5%;
+		opacity: 0.35;
+		animation: drift-1 20s ease-in-out infinite;
 	}
 
-	.grid-svg {
-		width: 100%;
-		height: 100%;
+	.blob-2 {
+		width: 35vw;
+		height: 35vw;
+		max-width: 450px;
+		max-height: 450px;
+		background: radial-gradient(circle, #ff6b2c 0%, #ffad70 50%, transparent 70%);
+		bottom: 5%;
+		left: -8%;
+		opacity: 0.28;
+		animation: drift-2 25s ease-in-out infinite;
 	}
 
-	/* Horizon glow */
-	.horizon-glow {
-		position: absolute;
-		top: 42%;
-		left: 0;
-		right: 0;
-		height: 4px;
-		background: linear-gradient(
-			to right,
-			transparent 5%,
-			rgba(255, 148, 22, 0.3) 30%,
-			rgba(255, 148, 22, 0.5) 50%,
-			rgba(255, 148, 22, 0.3) 70%,
-			transparent 95%
-		);
-		box-shadow: 0 0 30px 10px rgba(255, 148, 22, 0.15);
-		animation: horizon-pulse 6s ease-in-out infinite;
+	.blob-3 {
+		width: 28vw;
+		height: 28vw;
+		max-width: 350px;
+		max-height: 350px;
+		background: radial-gradient(circle, #ffd700 0%, #ffe680 50%, transparent 70%);
+		top: 35%;
+		right: 20%;
+		opacity: 0.22;
+		animation: drift-3 18s ease-in-out infinite;
 	}
 
-	/* Fade overlay for text readability on left side */
-	.text-fade {
-		position: absolute;
-		inset: 0;
-		background: linear-gradient(
-			to right,
-			#fffaf5 0%,
-			rgba(255, 250, 245, 0.95) 25%,
-			rgba(255, 250, 245, 0.6) 50%,
-			transparent 70%
-		);
-		pointer-events: none;
+	.blob-4 {
+		width: 20vw;
+		height: 20vw;
+		max-width: 260px;
+		max-height: 260px;
+		background: radial-gradient(circle, #ff4500 0%, #ff8c5a 50%, transparent 70%);
+		bottom: 25%;
+		left: 30%;
+		opacity: 0.18;
+		animation: drift-4 22s ease-in-out infinite;
 	}
 
-	@keyframes grid-drift {
-		0% {
-			transform: translateY(0);
-		}
-		100% {
-			transform: translateY(12px);
-		}
-	}
-
-	@keyframes horizon-pulse {
+	@keyframes drift-1 {
 		0%,
 		100% {
-			opacity: 0.7;
+			transform: translate(0, 0) scale(1);
+		}
+		33% {
+			transform: translate(-30px, 40px) scale(1.05);
+		}
+		66% {
+			transform: translate(20px, -20px) scale(0.95);
+		}
+	}
+
+	@keyframes drift-2 {
+		0%,
+		100% {
+			transform: translate(0, 0) scale(1);
+		}
+		33% {
+			transform: translate(40px, -30px) scale(1.08);
+		}
+		66% {
+			transform: translate(-20px, 20px) scale(0.96);
+		}
+	}
+
+	@keyframes drift-3 {
+		0%,
+		100% {
+			transform: translate(0, 0) scale(1);
 		}
 		50% {
-			opacity: 1;
+			transform: translate(-35px, 25px) scale(1.1);
+		}
+	}
+
+	@keyframes drift-4 {
+		0%,
+		100% {
+			transform: translate(0, 0) scale(1);
+		}
+		40% {
+			transform: translate(25px, -35px) scale(1.06);
+		}
+		70% {
+			transform: translate(-15px, 15px) scale(0.94);
 		}
 	}
 
