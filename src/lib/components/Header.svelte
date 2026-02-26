@@ -438,7 +438,11 @@
 	/* ─── Sidebar ────────────────────────────────────────────────── */
 	.sidebar {
 		position: fixed;
-		height: 100%;
+		/* height: 100% dépend du containing block (peut être le header sticky
+		   sur Safari/iOS), ce qui réduit la sidebar à ~60px. On utilise une
+		   unité viewport absolue qui n'en dépend pas. */
+		height: 100vh;
+		height: 100dvh;
 		width: min(22rem, 100%);
 		background: #fff;
 		top: 0;
@@ -446,7 +450,7 @@
 		transform: translateX(100%);
 		transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 		z-index: 1000;
-		overflow-y: auto;
+		overflow: hidden;
 		display: flex;
 		flex-direction: column;
 		box-shadow: -8px 0 40px rgba(0, 0, 0, 0.12);
@@ -470,9 +474,8 @@
 		align-items: center;
 		padding: 1.1rem 1.5rem;
 		border-bottom: 1px solid rgba(0, 0, 0, 0.07);
-		position: sticky;
-		top: 0;
 		background: white;
+		flex-shrink: 0;
 		z-index: 10;
 	}
 
@@ -504,6 +507,8 @@
 		flex-direction: column;
 		padding: 0.75rem 1.5rem 2rem;
 		flex: 1;
+		overflow-y: auto;
+		min-height: 0;
 	}
 
 	.sidebar-section {
