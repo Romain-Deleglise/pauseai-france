@@ -65,24 +65,15 @@
 		'/hero/senat-speaker1.webp'
 	]
 
-	// Measure actual header height for accurate hero sizing
 	let mounted = false
-	let heroTopOffset = 80 // fallback in px
 
 	onMount(() => {
-		const header = document.querySelector('.site-header')
-		const main = document.querySelector('main')
-		if (header) {
-			const headerH = header.getBoundingClientRect().height
-			const mainPT = main ? parseFloat(getComputedStyle(main).paddingTop) : 0
-			heroTopOffset = headerH + mainPT
-		}
 		mounted = true
 	})
 </script>
 
 {#if mounted}
-	<section class="hero" style="--hero-top-offset: -{heroTopOffset}px" aria-labelledby={label_id}>
+	<section class="hero" aria-labelledby={label_id}>
 		<div class="hero-bg" aria-hidden="true">
 			<div class="marquee-container">
 				<div class="marquee-row row-left">
@@ -145,14 +136,8 @@
 
 <style>
 	.hero {
-		/* --hero-top-offset is set dynamically via JS (negative value = header + main padding).
-		   Negative margin pulls the section up behind the sticky header so the
-		   photo mosaic is visible through the transparent nav bar.
-		   Padding-top compensates so that the text content starts below the header. */
 		display: flex;
 		min-height: 100svh;
-		margin-top: var(--hero-top-offset, -5rem);
-		padding-top: calc(-1 * var(--hero-top-offset, -5rem));
 		align-items: center;
 		z-index: 0;
 		position: relative;

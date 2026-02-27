@@ -91,6 +91,13 @@
 		background-color: var(--bg);
 	}
 
+	/* Homepage: main overlaps the header grid row so the hero fills the
+	   full viewport (the header is invisible at that point). */
+	.layout.bgWhite main {
+		grid-row: 1 / -2;
+		padding-top: 0;
+	}
+
 	main {
 		/* padding-block: 1rem; */
 		/* margin-bottom: 5rem; */
