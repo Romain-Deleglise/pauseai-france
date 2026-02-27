@@ -83,7 +83,7 @@
 	.intro {
 		font-size: 1.25rem;
 		line-height: 1.6;
-		color: var(--text-secondary);
+		color: var(--text);
 	}
 
 	.charte-engagement {
