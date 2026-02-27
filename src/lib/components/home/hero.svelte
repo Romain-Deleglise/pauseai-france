@@ -320,7 +320,7 @@
 		.hero {
 			padding-bottom: 2rem;
 			margin-left: -0.5rem;
-			margin-right: -1.5rem;
+			margin-right: -0.5rem;
 		}
 
 		/* Sub-pixel gap insurance — extend the bg 1px above the hero box
@@ -355,6 +355,9 @@
 
 		.content {
 			margin-bottom: 0;
+			/* Force the flex item to fill the hero width instead of
+			   shrink-wrapping to its text content. */
+			width: 100%;
 			/* The hero has asymmetric padding (large top for header
 			   compensation, small bottom). This shifts the flex-centred
 			   content visually downward. Nudge it back up so it sits
