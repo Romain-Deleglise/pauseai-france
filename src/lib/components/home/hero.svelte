@@ -188,6 +188,7 @@
 		display: block;
 		border-radius: 6px;
 		flex-shrink: 0;
+		filter: contrast(1.1) brightness(1.03);
 	}
 
 	/* Scroll left — slow, contemplative */
@@ -291,7 +292,8 @@
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
-		border-bottom: 3px solid var(--brand, #ff9416);
+		border-bottom: 4px solid var(--brand, #ff9416);
+		box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
 	}
 
 	.buttons {
