@@ -315,34 +315,40 @@
 
 	/* ─── Mobile (< 640px) ────────────────────────────────────── */
 	@media (max-width: 639px) {
-		/* Reserve space at the bottom so vertical centering keeps
-		   the content above the orange corner curves. */
+		/* Small bottom padding keeps the centred content clear of the
+		   orange corner curves without inflating the hero too much. */
 		.hero {
-			padding-bottom: 3.5rem;
+			padding-bottom: 2rem;
 		}
 
-		/* Close any sub-pixel gap between the photo grid and the
-		   top edge of the hero (visible as a thin white line). */
+		/* Sub-pixel gap insurance — extend the bg 1px above the hero box
+		   so no sliver of white is visible between header and photos. */
 		.hero-bg {
 			top: -1px;
 		}
 
+		/* Extend the photo grid 5px beyond .hero-bg bounds on top/bottom
+		   so the image border-radius is clipped by overflow:hidden and
+		   no background colour peeks through at the edges. */
 		.marquee-container {
 			gap: 4px;
+			inset: -5px 0;
 		}
 
 		.marquee-track img {
 			border-radius: 4px;
 		}
 
-		/* Tighten vertical spacing so the hero fits in 100svh on small
-		   phones (content + padding-top + padding-bottom ≤ 100svh). */
+		/* Compact content so it fits in 100svh on small phones
+		   (≥ 568px).  Target total ≈ 390px including margins. */
 		.content h1 {
+			font-size: 1.4rem;
 			margin-bottom: 0.75rem;
 		}
 
 		.description p {
 			margin-bottom: 0.5rem;
+			line-height: 1.5;
 		}
 
 		.content {
