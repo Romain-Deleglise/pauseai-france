@@ -29,6 +29,8 @@
 				scrolled = true
 			} else if (scrolled && window.scrollY < 15) {
 				scrolled = false
+				// Close mobile sidebar when header hides on homepage
+				if (onHomepage) open = false
 			}
 		}
 		window.addEventListener('scroll', handleScroll, { passive: true })
@@ -239,7 +241,8 @@
 		transition:
 			background-color 0.25s ease,
 			box-shadow 0.25s ease,
-			border-color 0.25s ease;
+			border-color 0.25s ease,
+			opacity 0.3s ease;
 	}
 
 	.site-header.scrolled {
@@ -248,8 +251,10 @@
 		box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
 	}
 
-	/* On homepage before scroll, header is transparent over the hero */
+	/* On homepage before scroll, header is hidden so hero is full-screen */
 	.site-header.homepage:not(.scrolled) {
+		opacity: 0;
+		pointer-events: none;
 		border-bottom-color: transparent;
 	}
 
