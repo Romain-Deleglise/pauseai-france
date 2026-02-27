@@ -93,7 +93,7 @@
   2. The Banner lives in the same sticky context as the nav — no z-index collision.
   Banner slides away via max-height CSS transition once the user scrolls.
 -->
-<header class="site-header" class:scrolled>
+<header class="site-header" class:scrolled class:homepage={onHomepage}>
 	<!-- Banner behavior:
 		 - Homepage: hidden while hero is visible, appears when scrolled past hero
 		 - Other pages: visible at top, hidden when scrolled (original behavior)
@@ -246,6 +246,11 @@
 		background: white;
 		border-bottom-color: rgba(0, 0, 0, 0.1);
 		box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
+	}
+
+	/* On homepage before scroll, header is transparent over the hero */
+	.site-header.homepage:not(.scrolled) {
+		border-bottom-color: transparent;
 	}
 
 	/* ─── Banner slide-away on scroll ───────────────────────────── */

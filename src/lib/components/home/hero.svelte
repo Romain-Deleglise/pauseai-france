@@ -145,9 +145,14 @@
 
 <style>
 	.hero {
-		/* --hero-top-offset is set dynamically via JS (measured header height) */
+		/* --hero-top-offset is set dynamically via JS (negative value = header + main padding).
+		   Negative margin pulls the section up behind the sticky header so the
+		   photo mosaic is visible through the transparent nav bar.
+		   Padding-top compensates so that the text content starts below the header. */
 		display: flex;
-		min-height: calc(100svh + var(--hero-top-offset, -5rem));
+		min-height: 100svh;
+		margin-top: var(--hero-top-offset, -5rem);
+		padding-top: calc(-1 * var(--hero-top-offset, -5rem));
 		align-items: center;
 		z-index: 0;
 		position: relative;
@@ -156,11 +161,11 @@
 	.hero-bg {
 		position: absolute;
 		overflow: hidden;
-		top: var(--hero-top-offset);
+		top: 0;
+		bottom: 0;
 		left: 50%;
 		transform: translateX(-50%);
 		width: 100vw;
-		height: calc(100% - var(--hero-top-offset));
 		z-index: -1;
 		background: #fffaf5;
 	}
@@ -268,7 +273,7 @@
 		flex-direction: column;
 		justify-content: center;
 		max-width: 100%;
-		margin-bottom: 6.125rem;
+		margin-bottom: 2.5rem;
 	}
 
 	.content-box {
@@ -348,6 +353,10 @@
 	}
 
 	@media (min-width: 640px) {
+		.content {
+			margin-bottom: 5rem;
+		}
+
 		.content h1 {
 			margin-bottom: 2rem;
 			font-size: 2.1rem;
