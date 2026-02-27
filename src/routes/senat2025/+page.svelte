@@ -592,4 +592,14 @@
 			padding: 1.5rem 1rem;
 		}
 	}
+
+	/* ─── Dark mode ──────────────────────────────────────────── */
+	:global([data-theme='dark']) .key-point-card {
+		background: var(--bg-subtle);
+	}
+
+	:global([data-theme='dark']) .newsletter-section {
+		background: var(--bg-subtle);
+		border-color: var(--border);
+	}
 </style>

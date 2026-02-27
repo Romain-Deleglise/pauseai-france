@@ -64,7 +64,7 @@
 	<div class="brand">
 		<a href="/" class="logo">
 			<div class="logo">
-				<Logo animate fill_circle="white" fill_ai="white" />
+				<Logo animate fill_pause="currentColor" fill_circle="white" fill_ai="white" />
 			</div>
 		</a>
 		<p>{$t.footer.tagline}</p>
@@ -190,8 +190,9 @@
 	}
 
 	.footer-links :global(a) {
-		color: var(--text-2);
+		color: inherit;
 		text-decoration: none;
+		opacity: 0.85;
 	}
 
 	.footer-links :global(a:hover) {

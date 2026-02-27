@@ -722,4 +722,9 @@
 		font-family: 'Courier New', monospace;
 		font-size: 0.9rem;
 	}
+
+	:global([data-theme='dark']) .card-button:disabled {
+		background-color: var(--btn-alt-bg);
+		border-color: var(--border);
+	}
 </style>

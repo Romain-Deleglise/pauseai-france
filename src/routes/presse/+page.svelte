@@ -1487,4 +1487,22 @@
 			padding: 1.5rem 2rem;
 		}
 	}
+
+	/* ─── Dark mode ──────────────────────────────────────────── */
+	:global([data-theme='dark']) .tabs {
+		background-color: var(--btn-alt-bg);
+	}
+
+	:global([data-theme='dark']) .tab.active {
+		background-color: var(--bg);
+	}
+
+	:global([data-theme='dark']) .tab-count {
+		background-color: rgba(255, 255, 255, 0.1);
+	}
+
+	:global([data-theme='dark']) .about-card {
+		background-color: var(--bg-card);
+		border-color: var(--border);
+	}
 </style>
