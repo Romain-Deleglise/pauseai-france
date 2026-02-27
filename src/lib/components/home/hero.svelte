@@ -323,6 +323,24 @@
 			border-radius: 4px;
 		}
 
+		/* Tighten vertical spacing so the hero fits in 100svh on small
+		   phones (content + padding-top must stay ≤ 100svh). */
+		.content h1 {
+			margin-bottom: 0.75rem;
+		}
+
+		.description p {
+			margin-bottom: 0.5rem;
+		}
+
+		.content {
+			margin-bottom: 0;
+		}
+
+		.buttons {
+			margin-top: 1rem;
+		}
+
 		/* Overlay on mobile — shorter text means less coverage needed */
 		.mosaic-overlay {
 			background: linear-gradient(
