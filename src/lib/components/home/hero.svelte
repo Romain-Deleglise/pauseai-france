@@ -65,15 +65,24 @@
 		'/hero/senat-speaker1.webp'
 	]
 
-	// Workaround to trigger transitions on render
+	// Measure actual header height for accurate hero sizing
 	let mounted = false
+	let heroTopOffset = 80 // fallback in px
+
 	onMount(() => {
+		const header = document.querySelector('.site-header')
+		const main = document.querySelector('main')
+		if (header) {
+			const headerH = header.getBoundingClientRect().height
+			const mainPT = main ? parseFloat(getComputedStyle(main).paddingTop) : 0
+			heroTopOffset = headerH + mainPT
+		}
 		mounted = true
 	})
 </script>
 
 {#if mounted}
-	<section class="hero" aria-labelledby={label_id}>
+	<section class="hero" style="--hero-top-offset: -{heroTopOffset}px" aria-labelledby={label_id}>
 		<div class="hero-bg" aria-hidden="true">
 			<div class="marquee-container">
 				<div class="marquee-row row-left">
@@ -136,9 +145,9 @@
 
 <style>
 	.hero {
-		--hero-top-offset: -7.125rem;
+		/* --hero-top-offset is set dynamically via JS (measured header height) */
 		display: flex;
-		min-height: calc(100svh + var(--hero-top-offset));
+		min-height: calc(100svh + var(--hero-top-offset, -5rem));
 		align-items: center;
 		z-index: 0;
 		position: relative;
@@ -339,9 +348,6 @@
 	}
 
 	@media (min-width: 640px) {
-		.hero {
-			--hero-top-offset: -8.125rem;
-		}
 		.content h1 {
 			margin-bottom: 2rem;
 			font-size: 2.1rem;
