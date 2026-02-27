@@ -188,7 +188,7 @@
 		display: block;
 		border-radius: 6px;
 		flex-shrink: 0;
-		filter: contrast(1.1) brightness(1.03);
+		filter: contrast(1.2) saturate(1.2);
 	}
 
 	/* Scroll left — slow, contemplative */
