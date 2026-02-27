@@ -319,8 +319,8 @@
 		   text column is wider and easier to read on narrow phones. */
 		.hero {
 			padding-bottom: 2rem;
-			margin-left: -0.5rem;
-			margin-right: -0.5rem;
+			margin-left: -0.75rem;
+			margin-right: -0.75rem;
 		}
 
 		/* Sub-pixel gap insurance — extend the bg 1px above the hero box
