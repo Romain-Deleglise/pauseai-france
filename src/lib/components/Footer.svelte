@@ -3,6 +3,7 @@
 	import Logo from '$components/Logo.svelte'
 	import Socials from '$components/Socials.svelte'
 	import { t } from '$lib/i18n'
+	import { theme } from '$lib/theme'
 
 	let email = ''
 	let isSubmitting = false
@@ -64,7 +65,12 @@
 	<div class="brand">
 		<a href="/" class="logo">
 			<div class="logo">
-				<Logo animate fill_pause="currentColor" fill_circle="white" fill_ai="white" />
+				<Logo
+					animate
+					fill_pause={$theme === 'dark' ? '#f0ede8' : 'black'}
+					fill_circle="white"
+					fill_ai={$theme === 'dark' ? '#f0ede8' : 'white'}
+				/>
 			</div>
 		</a>
 		<p>{$t.footer.tagline}</p>
@@ -368,6 +374,17 @@
 	:global([data-theme='dark']) footer {
 		background-color: #1a1208;
 		color: #f0ede8;
+	}
+
+	:global([data-theme='dark']) .newsletter-form input[type='email'] {
+		border-color: rgba(255, 255, 255, 0.2);
+		background: rgba(255, 255, 255, 0.06);
+		color: #f0ede8;
+	}
+
+	:global([data-theme='dark']) .newsletter-form button {
+		background: #f0ede8;
+		color: #1a1208;
 	}
 
 	:global([data-theme='dark']) .newsletter-message.success {

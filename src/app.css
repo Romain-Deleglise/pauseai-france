@@ -17,7 +17,9 @@
 	/* Generic UI tokens */
 	--border: #e5e7eb;
 	--text-secondary: #676e7a;
+	--text-muted: #676e7a; /* alias de text-secondary */
 	--bg-card: #fafafa;
+	--bg-secondary: #f9f9f9;
 
 	/* Buttons */
 	--btn-bg: var(--brand);
@@ -45,6 +47,8 @@
 	--text: #f0f0f0;
 	--text-2: #a0a8b4;
 	--text-secondary: #a0a8b4;
+	--text-muted: #a0a8b4;
+	--bg-secondary: #303030;
 	--border: #3e4048;
 	--brand-light: #2a1f0a;
 	--brand-subtle: #ffab40; /* orange plus clair pour fond sombre */
