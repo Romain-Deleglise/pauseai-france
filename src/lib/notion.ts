@@ -264,7 +264,7 @@ function isValidPressCoverage(pc: PressCoverage): boolean {
 async function queryDatabase<T>(
 	databaseId: string,
 	mapper: (page: NotionPage) => T,
-	options?: { sortBy?: string }
+	options?: { sortBy?: string; sortDirection?: 'ascending' | 'descending' }
 ): Promise<T[]> {
 	const apiKey = env.NOTION_API_KEY
 	if (!apiKey || !databaseId) {
@@ -275,7 +275,7 @@ async function queryDatabase<T>(
 	try {
 		const body: { sorts?: Array<{ property: string; direction: string }> } = {}
 		if (options?.sortBy) {
-			body.sorts = [{ property: options.sortBy, direction: 'ascending' }]
+			body.sorts = [{ property: options.sortBy, direction: options.sortDirection ?? 'ascending' }]
 		}
 
 		const response = await fetch(`https://api.notion.com/v1/databases/${databaseId}/query`, {
@@ -358,7 +358,7 @@ export async function getArticles(): Promise<Article[]> {
 			// Validate before returning
 			return isValidArticle(article) ? article : null
 		},
-		{ sortBy: 'Ordre' }
+		{ sortBy: 'Date de publication', sortDirection: 'descending' }
 	)
 
 	return articles.filter((a): a is Article => a !== null)
@@ -680,7 +680,7 @@ export async function getPressReleases(): Promise<PressRelease[]> {
 
 			return isValidPressRelease(pr) ? pr : null
 		},
-		{ sortBy: 'Ordre' }
+		{ sortBy: 'Date', sortDirection: 'descending' }
 	)
 
 	return pressReleases.filter((pr): pr is PressRelease => pr !== null)
@@ -709,7 +709,7 @@ export async function getLocalPressReleases(): Promise<LocalPressRelease[]> {
 
 			return isValidLocalPressRelease(pr) ? pr : null
 		},
-		{ sortBy: 'Ordre' }
+		{ sortBy: 'Date', sortDirection: 'descending' }
 	)
 
 	return pressReleases.filter((pr): pr is LocalPressRelease => pr !== null)
