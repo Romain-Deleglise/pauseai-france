@@ -239,7 +239,7 @@
 		border-radius: 0.375rem;
 		font-size: 0.95rem;
 		font-family: inherit;
-		background: white;
+		background: var(--bg);
 		color: var(--text);
 		transition: border-color 0.2s;
 	}
@@ -284,11 +284,11 @@
 	}
 
 	.newsletter-message.success {
-		color: #166534;
+		color: #15803d;
 	}
 
 	.newsletter-message.error {
-		color: #991b1b;
+		color: #b91c1c;
 	}
 	@media (min-width: 480px) {
 		.footer-links {
@@ -370,10 +370,10 @@
 	}
 
 	:global([data-theme='dark']) .newsletter-message.success {
-		color: #86efac;
+		color: #4ade80;
 	}
 
 	:global([data-theme='dark']) .newsletter-message.error {
-		color: #fca5a5;
+		color: #f87171;
 	}
 </style>

@@ -10,7 +10,7 @@
 
 <style>
 	h3 {
-		color: black;
+		color: var(--text);
 	}
 
 	p {

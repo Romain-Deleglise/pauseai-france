@@ -87,7 +87,7 @@
 	}
 
 	.charte-engagement {
-		background: #fafafa;
+		background: var(--bg-subtle);
 		border-radius: 16px;
 		padding: 3rem 2rem;
 		border: 1px solid #eee;
@@ -142,7 +142,7 @@
 		position: relative;
 		max-width: 90%;
 		max-height: 90vh;
-		background: white;
+		background: var(--bg);
 		border-radius: 8px;
 		overflow: hidden;
 		box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);

@@ -63,7 +63,7 @@
 	}
 
 	.campaign-card {
-		background: #fafafa;
+		background: var(--bg-subtle);
 		border-radius: 16px;
 		padding: 2.5rem 2rem;
 		border: 1px solid #eee;

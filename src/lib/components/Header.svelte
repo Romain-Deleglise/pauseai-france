@@ -110,7 +110,7 @@
 				<div class="big-logo">
 					<Logo
 						animate
-						fill_pause={onHomepage && !scrolled ? 'white' : 'black'}
+						fill_pause={onHomepage && !scrolled ? 'white' : $theme === 'dark' ? 'white' : 'black'}
 						emploi_ia={onEmploiePage}
 					/>
 				</div>
@@ -198,19 +198,19 @@
 							y="0"
 							height="2.5"
 							width="24"
-							fill={onHomepage && !scrolled ? 'white' : 'black'}
+							fill={onHomepage && !scrolled ? 'white' : $theme === 'dark' ? 'white' : 'black'}
 						/>
 						<rect
 							y="10.75"
 							height="2.5"
 							width="24"
-							fill={onHomepage && !scrolled ? 'white' : 'black'}
+							fill={onHomepage && !scrolled ? 'white' : $theme === 'dark' ? 'white' : 'black'}
 						/>
 						<rect
 							y="21.5"
 							height="2.5"
 							width="24"
-							fill={onHomepage && !scrolled ? 'white' : 'black'}
+							fill={onHomepage && !scrolled ? 'white' : $theme === 'dark' ? 'white' : 'black'}
 						/>
 					</svg>
 				</button>
@@ -220,7 +220,12 @@
 			<div class="sidebar" class:open>
 				<div class="sidebar-head">
 					<a href="/" class="sidebar-logo" on:click={closeMenu}>
-						<Logo height={36} fill_pause="black" fill_circle="#FF9416" fill_ai="black" />
+						<Logo
+							height={36}
+							fill_pause={$theme === 'dark' ? 'white' : 'black'}
+							fill_circle="#FF9416"
+							fill_ai={$theme === 'dark' ? 'white' : 'black'}
+						/>
 					</a>
 					<button aria-label="Close mobile menu" class="close-btn" on:click={closeMenu}>
 						<svg
@@ -232,7 +237,7 @@
 						>
 							<path
 								d="M1.5 1.5L14.5 14.5M14.5 1.5L1.5 14.5"
-								stroke="black"
+								stroke={$theme === 'dark' ? 'white' : 'black'}
 								stroke-width="2.2"
 								stroke-linecap="round"
 							/>
@@ -503,7 +508,7 @@
 		border-radius: 0.4rem;
 		border: none;
 		background: transparent;
-		color: black;
+		color: var(--text);
 		cursor: pointer;
 		transition:
 			background 0.15s,
@@ -741,8 +746,8 @@
 	.sidebar-join {
 		display: block;
 		text-decoration: none;
-		background: black;
-		color: white;
+		background: var(--black);
+		color: var(--white);
 		text-align: center;
 		padding: 0.8rem 1.5rem;
 		border-radius: 0.625rem;

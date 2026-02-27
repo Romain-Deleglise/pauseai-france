@@ -91,7 +91,7 @@
 
 <style>
 	:global(body) {
-		--carousel-background: #f6ebdd;
+		--carousel-background: var(--bg-subtle);
 		--carousel-border: #d9c7b0;
 		--carousel-text: #414042;
 		--carousel-accent: #ff9416;

@@ -54,7 +54,7 @@
 		border-radius: 0.4rem;
 		border: 1.5px solid rgba(0, 0, 0, 0.2);
 		background: transparent;
-		color: black;
+		color: var(--text);
 		font-family: var(--font-heading);
 		font-weight: 700;
 		font-size: 0.8rem;

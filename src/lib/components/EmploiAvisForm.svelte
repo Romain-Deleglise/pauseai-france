@@ -62,7 +62,7 @@
 		border-radius: 8px;
 		resize: vertical;
 		width: 100%;
-		background: white;
+		background: var(--bg);
 	}
 
 	button {

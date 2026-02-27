@@ -66,7 +66,7 @@
 	.placeholder svg {
 		width: 40%;
 		height: 40%;
-		color: #999;
+		color: var(--text-secondary);
 	}
 
 	.leader-info {
