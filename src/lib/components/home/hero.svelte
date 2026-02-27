@@ -315,10 +315,12 @@
 
 	/* ─── Mobile (< 640px) ────────────────────────────────────── */
 	@media (max-width: 639px) {
-		/* Small bottom padding keeps the centred content clear of the
-		   orange corner curves without inflating the hero too much. */
+		/* Pull the hero slightly into main's horizontal padding so the
+		   text column is wider and easier to read on narrow phones. */
 		.hero {
 			padding-bottom: 2rem;
+			margin-left: -0.5rem;
+			margin-right: -0.5rem;
 		}
 
 		/* Sub-pixel gap insurance — extend the bg 1px above the hero box
@@ -353,6 +355,12 @@
 
 		.content {
 			margin-bottom: 0;
+			/* The hero has asymmetric padding (large top for header
+			   compensation, small bottom). This shifts the flex-centred
+			   content visually downward. Nudge it back up so it sits
+			   closer to the true screen centre. */
+			position: relative;
+			top: -3rem;
 		}
 
 		.buttons {
