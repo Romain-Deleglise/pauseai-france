@@ -188,7 +188,7 @@
 		display: block;
 		border-radius: 6px;
 		flex-shrink: 0;
-		filter: contrast(1.2) saturate(1.2);
+		/* No filter — natural colors, overlay handles readability */
 	}
 
 	/* Scroll left — slow, contemplative */
@@ -231,25 +231,24 @@
 		}
 	}
 
-	/* Overlay: cream gradient for text readability + top for header */
+	/* Overlay: tight gradient on left for text, photos untouched on right */
 	.mosaic-overlay {
 		position: absolute;
 		inset: 0;
 		background: linear-gradient(
 				to right,
 				rgba(255, 250, 245, 0.97) 0%,
-				rgba(255, 250, 245, 0.92) 20%,
-				rgba(255, 250, 245, 0.7) 40%,
-				rgba(255, 250, 245, 0.25) 60%,
-				rgba(255, 250, 245, 0.05) 80%,
-				transparent 100%
+				rgba(255, 250, 245, 0.92) 15%,
+				rgba(255, 250, 245, 0.6) 30%,
+				rgba(255, 250, 245, 0.15) 45%,
+				transparent 55%
 			),
 			linear-gradient(
 				to top,
-				rgba(255, 250, 245, 0.7) 0%,
-				transparent 12%,
-				transparent 90%,
-				rgba(255, 250, 245, 0.7) 100%
+				rgba(255, 250, 245, 0.5) 0%,
+				transparent 8%,
+				transparent 92%,
+				rgba(255, 250, 245, 0.5) 100%
 			);
 		pointer-events: none;
 	}
@@ -314,23 +313,22 @@
 			border-radius: 4px;
 		}
 
-		/* Stronger overlay on mobile for text readability */
+		/* Overlay on mobile — covers more since text takes more width */
 		.mosaic-overlay {
 			background: linear-gradient(
 					to right,
 					rgba(255, 250, 245, 0.98) 0%,
-					rgba(255, 250, 245, 0.95) 25%,
-					rgba(255, 250, 245, 0.8) 45%,
-					rgba(255, 250, 245, 0.35) 70%,
-					rgba(255, 250, 245, 0.1) 90%,
-					transparent 100%
+					rgba(255, 250, 245, 0.93) 20%,
+					rgba(255, 250, 245, 0.7) 40%,
+					rgba(255, 250, 245, 0.2) 60%,
+					transparent 75%
 				),
 				linear-gradient(
 					to top,
-					rgba(255, 250, 245, 0.8) 0%,
-					transparent 15%,
-					transparent 88%,
-					rgba(255, 250, 245, 0.8) 100%
+					rgba(255, 250, 245, 0.6) 0%,
+					transparent 10%,
+					transparent 90%,
+					rgba(255, 250, 245, 0.6) 100%
 				);
 		}
 	}
