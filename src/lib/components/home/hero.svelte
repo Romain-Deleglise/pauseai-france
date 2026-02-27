@@ -187,7 +187,6 @@
 		object-fit: cover;
 		display: block;
 		border-radius: 6px;
-		filter: saturate(110%);
 		flex-shrink: 0;
 	}
 
@@ -292,7 +291,7 @@
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
-		border-bottom: 1px solid white;
+		border-bottom: 3px solid var(--brand, #ff9416);
 	}
 
 	.buttons {
@@ -303,12 +302,8 @@
 		margin-top: 2rem;
 	}
 
-	/* ─── Mobile (< 640px): 3 rows, bigger photos ─────────────── */
+	/* ─── Mobile (< 640px) ────────────────────────────────────── */
 	@media (max-width: 639px) {
-		.marquee-row:nth-child(4) {
-			display: none;
-		}
-
 		.marquee-container {
 			gap: 4px;
 		}
@@ -335,13 +330,6 @@
 					transparent 88%,
 					rgba(255, 250, 245, 0.8) 100%
 				);
-		}
-	}
-
-	/* ─── Tablet (640–767px): 3 rows ──────────────────────────── */
-	@media (min-width: 640px) and (max-width: 767px) {
-		.marquee-row:nth-child(4) {
-			display: none;
 		}
 	}
 
