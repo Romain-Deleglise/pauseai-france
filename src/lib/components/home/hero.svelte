@@ -315,30 +315,32 @@
 
 	/* ─── Mobile (< 640px) ────────────────────────────────────── */
 	@media (max-width: 639px) {
-		/* On mobile the header is transparent, so the hero fills the full
-		   viewport. Override the JS-computed header offset and align
-		   content toward the top so it isn't pushed down. */
+		/* Small bottom padding keeps the centred content clear of the
+		   orange corner curves without inflating the hero too much. */
 		.hero {
-			align-items: flex-start;
-			margin-top: 0;
-			padding-top: 2.5rem;
-			/* Generous bottom clearance above the orange corner curves */
-			padding-bottom: 5rem;
+			padding-bottom: 2rem;
 		}
 
-		/* Photo grid fills from the very top (no header gap). */
+		/* Sub-pixel gap insurance — extend the bg 1px above the hero box
+		   so no sliver of white is visible between header and photos. */
 		.hero-bg {
-			top: 0;
+			top: -1px;
 		}
 
+		/* Extend the photo grid 5px beyond .hero-bg bounds on top/bottom
+		   so the image border-radius is clipped by overflow:hidden and
+		   no background colour peeks through at the edges. */
 		.marquee-container {
 			gap: 4px;
+			inset: -5px 0;
 		}
 
 		.marquee-track img {
 			border-radius: 4px;
 		}
 
+		/* Compact content so it fits in 100svh on small phones
+		   (≥ 568px).  Target total ≈ 390px including margins. */
 		.content h1 {
 			font-size: 1.4rem;
 			margin-bottom: 0.75rem;
@@ -357,7 +359,7 @@
 			margin-top: 1rem;
 		}
 
-		/* Overlay on mobile — full-height gradient since content sits at top */
+		/* Overlay on mobile — shorter text means less coverage needed */
 		.mosaic-overlay {
 			background: linear-gradient(
 					to right,
@@ -369,10 +371,10 @@
 				),
 				linear-gradient(
 					to top,
-					rgba(255, 250, 245, 0.6) 0%,
-					transparent 10%,
-					transparent 90%,
-					rgba(255, 250, 245, 0.6) 100%
+					rgba(255, 250, 245, 0.5) 0%,
+					transparent 8%,
+					transparent 92%,
+					rgba(255, 250, 245, 0.5) 100%
 				);
 		}
 	}
