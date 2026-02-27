@@ -315,6 +315,18 @@
 
 	/* ─── Mobile (< 640px) ────────────────────────────────────── */
 	@media (max-width: 639px) {
+		/* Reserve space at the bottom so vertical centering keeps
+		   the content above the orange corner curves. */
+		.hero {
+			padding-bottom: 3.5rem;
+		}
+
+		/* Close any sub-pixel gap between the photo grid and the
+		   top edge of the hero (visible as a thin white line). */
+		.hero-bg {
+			top: -1px;
+		}
+
 		.marquee-container {
 			gap: 4px;
 		}
@@ -324,7 +336,7 @@
 		}
 
 		/* Tighten vertical spacing so the hero fits in 100svh on small
-		   phones (content + padding-top must stay ≤ 100svh). */
+		   phones (content + padding-top + padding-bottom ≤ 100svh). */
 		.content h1 {
 			margin-bottom: 0.75rem;
 		}
