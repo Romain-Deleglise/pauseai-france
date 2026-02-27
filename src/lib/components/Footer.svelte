@@ -263,8 +263,8 @@
 
 	.newsletter-form button {
 		padding: 0.6rem 1.25rem;
-		background: var(--black);
-		color: var(--white);
+		background: var(--brand);
+		color: white;
 		border: none;
 		border-radius: 0.375rem;
 		font-size: 0.95rem;
@@ -372,27 +372,29 @@
 
 	/* ─── Dark mode ──────────────────────────────────────────── */
 	:global([data-theme='dark']) footer {
-		background-color: #1e1b12;
-		color: #e8e3db;
+		background-color: var(--bg);
+		border-top: 3px solid var(--brand);
+		color: var(--text);
 	}
 
 	:global([data-theme='dark']) footer h2 {
-		color: #f0ede8;
+		color: var(--text);
 	}
 
 	:global([data-theme='dark']) .footer-links a {
-		color: rgba(232, 227, 219, 0.72);
+		color: var(--text-secondary);
 		opacity: 1;
 	}
 
 	:global([data-theme='dark']) .footer-links a:hover {
 		color: var(--brand);
+		opacity: 1;
 	}
 
 	:global([data-theme='dark']) .newsletter-form input[type='email'] {
-		border-color: rgba(255, 255, 255, 0.18);
-		background: rgba(255, 255, 255, 0.06);
-		color: #f0ede8;
+		border-color: var(--border);
+		background: var(--bg-card);
+		color: var(--text);
 	}
 
 	:global([data-theme='dark']) .newsletter-message.success {
