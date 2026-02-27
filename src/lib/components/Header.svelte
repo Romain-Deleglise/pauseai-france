@@ -258,11 +258,6 @@
 		border-bottom-color: transparent;
 	}
 
-	/* Keep header in grid row 1 when main overlaps it on homepage */
-	.site-header.homepage {
-		grid-row: 1;
-	}
-
 	/* ─── Banner slide-away on scroll ───────────────────────────── */
 	.banner-wrapper {
 		overflow: hidden;

@@ -91,15 +91,6 @@
 		background-color: var(--bg);
 	}
 
-	/* Homepage: main overlaps the header grid row so the hero fills the
-	   full viewport (the header is invisible at that point).
-	   z-index: 1 ensures header (z-index: 100) paints above main. */
-	.layout.bgWhite main {
-		grid-row: 1 / -2;
-		padding-top: 0;
-		z-index: 1;
-	}
-
 	main {
 		/* padding-block: 1rem; */
 		/* margin-bottom: 5rem; */

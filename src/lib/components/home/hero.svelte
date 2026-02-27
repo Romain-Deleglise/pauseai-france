@@ -3,7 +3,7 @@
 	import Mark from '$components/Mark.svelte'
 	import LeftCorner from '$components/hero/LeftCorner.svelte'
 	import RightCorner from '$components/hero/RightCorner.svelte'
-	import { onMount } from 'svelte'
+	import { onMount, tick } from 'svelte'
 	import { fade, fly } from 'svelte/transition'
 	const label_id = 'hero-title'
 
@@ -66,14 +66,24 @@
 	]
 
 	let mounted = false
+	let heroTopOffset = 80 // fallback in px
 
-	onMount(() => {
+	onMount(async () => {
+		// Wait for pending DOM updates (Header nav rendering) before measuring
+		await tick()
+		const header = document.querySelector('.site-header')
+		const main = document.querySelector('main')
+		if (header) {
+			const headerH = header.getBoundingClientRect().height
+			const mainPT = main ? parseFloat(getComputedStyle(main).paddingTop) : 0
+			heroTopOffset = headerH + mainPT
+		}
 		mounted = true
 	})
 </script>
 
 {#if mounted}
-	<section class="hero" aria-labelledby={label_id}>
+	<section class="hero" style="--hero-top-offset: -{heroTopOffset}px" aria-labelledby={label_id}>
 		<div class="hero-bg" aria-hidden="true">
 			<div class="marquee-container">
 				<div class="marquee-row row-left">
@@ -138,6 +148,8 @@
 	.hero {
 		display: flex;
 		min-height: 100svh;
+		margin-top: var(--hero-top-offset, -5rem);
+		padding-top: calc(-1 * var(--hero-top-offset, -5rem));
 		align-items: center;
 		z-index: 0;
 		position: relative;
