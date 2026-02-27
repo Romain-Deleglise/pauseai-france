@@ -3,7 +3,7 @@
 	import Logo from '$components/Logo.svelte'
 	import Socials from '$components/Socials.svelte'
 	import { t } from '$lib/i18n'
-	import { theme } from '$lib/theme'
+	import { theme } from '$lib/stores/theme'
 
 	let email = ''
 	let isSubmitting = false
