@@ -110,16 +110,15 @@
 		<div class="content" in:fade={{ duration: 500, delay: 200 }}>
 			<div class="content-box">
 				<h1 id={label_id}>
-					Pour garder l'IA sous contrôle, <br /><Mark>agissons maintenant</Mark>
+					Gardons l'IA <br />sous <Mark>contrôle</Mark>
 				</h1>
 				<div class="description">
 					<p>
-						L'IA redéfinit déjà nos emplois, nos élections et notre vie quotidienne. Tous les mois,
-						de nouveaux systèmes franchissent des seuils que l'on pensait lointains. D'après la
-						plupart des experts en sécurité de l'IA, poursuivre cette course sans garde-fous fait
-						peser un risque catastrophique sur l'humanité à court terme.
+						Chaque mois, de nouveaux systèmes franchissent des seuils que l'on pensait lointains.
+						Les experts alertent&nbsp;: sans garde-fous, cette course fait peser un risque
+						catastrophique à court terme.
 					</p>
-					<p>La fenêtre se referme vite : agissons maintenant.</p>
+					<p>La fenêtre se referme&nbsp;— agissons maintenant.</p>
 					<div class="buttons">
 						<div in:fly={{ y: 20, duration: 300, delay: 700 }}>
 							<Button href="/rejoindre">Rejoindre</Button>
@@ -231,24 +230,24 @@
 		}
 	}
 
-	/* Overlay: tight gradient on left for text, photos untouched on right */
+	/* Overlay: narrow gradient on left for text, most of the banner shows photos */
 	.mosaic-overlay {
 		position: absolute;
 		inset: 0;
 		background: linear-gradient(
 				to right,
 				rgba(255, 250, 245, 0.97) 0%,
-				rgba(255, 250, 245, 0.92) 15%,
-				rgba(255, 250, 245, 0.6) 30%,
-				rgba(255, 250, 245, 0.15) 45%,
-				transparent 55%
+				rgba(255, 250, 245, 0.92) 12%,
+				rgba(255, 250, 245, 0.55) 25%,
+				rgba(255, 250, 245, 0.1) 38%,
+				transparent 48%
 			),
 			linear-gradient(
 				to top,
-				rgba(255, 250, 245, 0.5) 0%,
-				transparent 8%,
-				transparent 92%,
-				rgba(255, 250, 245, 0.5) 100%
+				rgba(255, 250, 245, 0.4) 0%,
+				transparent 6%,
+				transparent 94%,
+				rgba(255, 250, 245, 0.4) 100%
 			);
 		pointer-events: none;
 	}
@@ -264,7 +263,7 @@
 	}
 
 	.content-box {
-		max-width: 36rem;
+		max-width: 28rem;
 	}
 
 	.content h1 {
@@ -313,22 +312,22 @@
 			border-radius: 4px;
 		}
 
-		/* Overlay on mobile — covers more since text takes more width */
+		/* Overlay on mobile — shorter text means less coverage needed */
 		.mosaic-overlay {
 			background: linear-gradient(
 					to right,
 					rgba(255, 250, 245, 0.98) 0%,
-					rgba(255, 250, 245, 0.93) 20%,
-					rgba(255, 250, 245, 0.7) 40%,
-					rgba(255, 250, 245, 0.2) 60%,
-					transparent 75%
+					rgba(255, 250, 245, 0.93) 15%,
+					rgba(255, 250, 245, 0.65) 35%,
+					rgba(255, 250, 245, 0.15) 55%,
+					transparent 65%
 				),
 				linear-gradient(
 					to top,
-					rgba(255, 250, 245, 0.6) 0%,
-					transparent 10%,
-					transparent 90%,
-					rgba(255, 250, 245, 0.6) 100%
+					rgba(255, 250, 245, 0.5) 0%,
+					transparent 8%,
+					transparent 92%,
+					rgba(255, 250, 245, 0.5) 100%
 				);
 		}
 	}
