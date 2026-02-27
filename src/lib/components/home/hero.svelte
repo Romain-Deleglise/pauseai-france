@@ -319,7 +319,7 @@
 		   text column is wider and easier to read on narrow phones. */
 		.hero {
 			padding-bottom: 2rem;
-			margin-left: -0.75rem;
+			margin-left: -0.5rem;
 			margin-right: -0.75rem;
 		}
 
