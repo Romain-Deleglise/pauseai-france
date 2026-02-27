@@ -19,7 +19,7 @@
 		align-items: center;
 		gap: 1.5rem;
 		padding: 2.5rem 1.5rem;
-		background: linear-gradient(135deg, #fff8f0 0%, #fff0e0 100%);
+		background: var(--bg-subtle);
 		border-radius: 1rem;
 		margin: 2rem 0;
 		text-align: center;

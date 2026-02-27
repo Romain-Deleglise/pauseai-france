@@ -90,7 +90,8 @@
 	.details {
 		padding: 1rem 1.5rem 1.5rem 1.5rem;
 		margin: 0.25rem 0.5rem 1rem 0.5rem;
-		background-color: var(--bg);
+		background-color: var(--bg-subtle);
+		border: 1px solid var(--border);
 		border-radius: 0.75rem;
 		box-shadow:
 			0 1px 3px rgba(0, 0, 0, 0.08),
