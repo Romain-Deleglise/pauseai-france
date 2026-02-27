@@ -6,7 +6,7 @@
 		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
 		<!-- <link rel="alternate" type="application/atom+xml" href="/rss.xml" /> -->
 
-		<!-- Anti-FOUC: apply theme and locale before first paint -->
+		<!-- Anti-FOUC: apply theme before first paint -->
 		<script>
 			;(function () {
 				var theme = localStorage.getItem('theme')
@@ -14,9 +14,6 @@
 					theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
 				}
 				document.documentElement.setAttribute('data-theme', theme)
-
-				var locale = localStorage.getItem('locale') || 'fr'
-				document.documentElement.setAttribute('lang', locale)
 			})()
 		</script>
 		%sveltekit.head%

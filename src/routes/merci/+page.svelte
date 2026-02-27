@@ -1,34 +1,42 @@
 <script lang="ts">
 	import PostMeta from '$lib/components/PostMeta.svelte'
 	import UnderlinedTitle from '$lib/components/UnderlinedTitle.svelte'
-	import { t } from '$lib/i18n'
 </script>
 
-<PostMeta title={$t.merci.meta_title} description={$t.merci.meta_desc} />
+<PostMeta
+	title="Merci pour votre don - Pause IA"
+	description="Votre don a été reçu avec succès. Merci de soutenir Pause IA dans sa mission."
+/>
 
 <main class="container">
 	<section class="success-content">
-		<UnderlinedTitle>{$t.merci.title}</UnderlinedTitle>
+		<UnderlinedTitle>Merci pour votre générosité !</UnderlinedTitle>
 
 		<div class="success-message">
 			<div class="success-icon">✅</div>
-			<h2>{$t.merci.success_title}</h2>
-			<p>{$t.merci.success_p1}</p>
-			<p>{$t.merci.success_p2}</p>
+			<h2>Votre don a été reçu avec succès</h2>
+			<p>
+				Merci infiniment pour votre soutien à Pause IA. Votre contribution nous aide à poursuivre
+				notre mission de sensibilisation aux risques de l'intelligence artificielle.
+			</p>
+			<p>
+				Vous recevrez un reçu de don par email dans les prochaines minutes. Ce reçu vous permettra
+				de bénéficier des avantages fiscaux en vigueur.
+			</p>
 		</div>
 
 		<div class="next-steps">
-			<h3>{$t.merci.next_steps}</h3>
+			<h3>Et maintenant ?</h3>
 			<ul>
-				<li>{$t.merci.step_newsletter}</li>
-				<li>{$t.merci.step_social}</li>
-				<li>{$t.merci.step_share}</li>
-				<li>{$t.merci.step_action}</li>
+				<li>📧 Restez informé·e en vous inscrivant à notre newsletter</li>
+				<li>🤝 Rejoignez notre communauté sur les réseaux sociaux</li>
+				<li>📰 Partagez nos contenus pour sensibiliser votre entourage</li>
+				<li>🗳️ Participez à nos actions de plaidoyer</li>
 			</ul>
 		</div>
 
 		<div class="return-link">
-			<a href="/">{$t.merci.back_home}</a>
+			<a href="/">Retour à l'accueil</a>
 		</div>
 	</section>
 </main>

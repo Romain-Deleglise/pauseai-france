@@ -2,7 +2,6 @@
 	import ExternalLink from '$components/custom/a.svelte'
 	import Logo from '$components/Logo.svelte'
 	import Socials from '$components/Socials.svelte'
-	import { t } from '$lib/i18n'
 	import { theme } from '$lib/stores/theme'
 
 	let email = ''
@@ -23,7 +22,7 @@
 
 		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 		if (!email || !emailRegex.test(email)) {
-			message = $t.footer.newsletter_invalid_email
+			message = 'Adresse e-mail invalide'
 			isError = true
 			return
 		}
@@ -45,15 +44,15 @@
 			const result = (await response.json()) as ApiResponse
 
 			if (response.ok) {
-				message = $t.footer.newsletter_success
+				message = 'Inscription confirmée !'
 				isError = false
 				email = ''
 			} else {
-				message = result.error ?? $t.footer.newsletter_error
+				message = result.error ?? 'Une erreur est survenue'
 				isError = true
 			}
 		} catch {
-			message = $t.footer.newsletter_connection_error
+			message = 'Erreur de connexion'
 			isError = true
 		} finally {
 			isSubmitting = false
@@ -73,27 +72,22 @@
 				/>
 			</div>
 		</a>
-		<p>{$t.footer.tagline}</p>
+		<p>Pour une IA alignée sur l'humanité.</p>
 	</div>
 	<div id="newsletter" class="newsletter-section">
-		<h2>{$t.footer.newsletter_title}</h2>
-		<p class="newsletter-desc">{$t.footer.newsletter_desc}</p>
+		<h2>Newsletter</h2>
+		<p class="newsletter-desc">L'essentiel de l'actualité IA décrypté chaque mois</p>
 		<form on:submit={handleNewsletterSubmit} class="newsletter-form">
 			<div class="input-group">
 				<input
 					type="email"
 					bind:value={email}
-					placeholder={$t.footer.newsletter_placeholder}
+					placeholder="votre@email.com"
 					disabled={isSubmitting}
-					aria-label={$t.footer.newsletter_placeholder}
+					aria-label="Adresse e-mail"
 				/>
-				<button
-					type="submit"
-					disabled={isSubmitting}
-					style="background-color: #ff9416; color: white;"
-				>
-					{#if isSubmitting}{$t.footer.newsletter_loading}{:else}{$t.footer
-							.newsletter_subscribe}{/if}
+				<button type="submit" disabled={isSubmitting}>
+					{#if isSubmitting}...{:else}S'inscrire{/if}
 				</button>
 			</div>
 			{#if message}
@@ -104,48 +98,48 @@
 		</form>
 	</div>
 	<div class="socials">
-		<h2>{$t.footer.follow_us}</h2>
+		<h2>Suivez-nous</h2>
 		<Socials />
 	</div>
 	<div class="footer-links">
 		<div class="column">
-			<h2>{$t.footer.nav_title}</h2>
-			<a href="/faq">{$t.footer.faq}</a>
-			<a href="/dangers">{$t.footer.dangers}</a>
-			<a href="/propositions">{$t.footer.propositions}</a>
-			<a href="/newsletters">{$t.footer.newsletters}</a>
-			<a href="https://pauseia.substack.com/">{$t.footer.blog}</a>
-			<a href="/agir">{$t.footer.agir}</a>
-			<a href="/dons">{$t.footer.donner}</a>
-			<a href="/rejoindre">{$t.footer.rejoindre}</a>
-			<a href="/qui-sommes-nous">{$t.footer.qui_sommes_nous}</a>
+			<h2>Navigation</h2>
+			<a href="/faq">FAQ</a>
+			<a href="/dangers">Dangers</a>
+			<a href="/propositions">Propositions</a>
+			<a href="/newsletters">Newsletters</a>
+			<a href="https://pauseia.substack.com/">Blog</a>
+			<a href="/agir">Agir</a>
+			<a href="/dons">Donner</a>
+			<a href="/rejoindre">Nous rejoindre</a>
+			<a href="/qui-sommes-nous">Qui sommes-nous ?</a>
 		</div>
 		<div class="column">
-			<h2>{$t.footer.dangers_title}</h2>
-			<a href="/dangers/economiques-et-materiels">{$t.footer.dangers_eco}</a>
-			<a href="/dangers/pour-les-individus">{$t.footer.dangers_individus}</a>
-			<a href="/dangers/pour-la-societe">{$t.footer.dangers_societe}</a>
-			<a href="/dangers/pour-l'humanite">{$t.footer.dangers_humanite}</a>
+			<h2>Dangers</h2>
+			<a href="/dangers/economiques-et-materiels">Économiques et matériels</a>
+			<a href="/dangers/pour-les-individus">Pour les individus</a>
+			<a href="/dangers/pour-la-societe">Pour la société</a>
+			<a href="/dangers/pour-l'humanite">Pour l'humanité</a>
 		</div>
 		<div class="column">
-			<h2>{$t.footer.act_title}</h2>
-			<a href="/rejoindre">{$t.footer.join_pauseia}</a>
-			<a href="/agir">{$t.footer.how_to_help}</a>
-			<a href="/dons">{$t.footer.make_donation}</a>
+			<h2>Agir</h2>
+			<a href="/rejoindre">Rejoindre Pause IA</a>
+			<a href="/agir">Comment pouvez-vous aider ?</a>
+			<a href="/dons">Faire un don</a>
 			<ExternalLink href="https://pauseai-shop.fourthwall.com" target="_blank"
-				>{$t.footer.merchandise}</ExternalLink
+				>Marchandises</ExternalLink
 			>
-			<a href="https://pauseai.info/protests">{$t.footer.protests}</a>
-			<a href="/recrutement-emploi">{$t.footer.jobs}</a>
+			<a href="https://pauseai.info/protests">Manifestations</a>
+			<a href="/recrutement-emploi">Offres d'emploi</a>
 		</div>
 		<div class="column">
-			<h2>{$t.footer.other_title}</h2>
-			<a href="/presse">{$t.footer.press}</a>
-			<a href="/mentions-legales">{$t.footer.legal}</a>
-			<a href="/politique-de-confidentialite">{$t.footer.privacy}</a>
-			<a href="/charte-des-valeurs">{$t.footer.values}</a>
+			<h2>Autres</h2>
+			<a href="/presse">Presse</a>
+			<a href="/mentions-legales">Mentions légales</a>
+			<a href="/politique-de-confidentialite">Politique de confidentialité</a>
+			<a href="/charte-des-valeurs">Charte des valeurs</a>
 			<ExternalLink href="https://creativecommons.org/licenses/by/4.0/deed.fr" target="_blank"
-				>{$t.footer.license}</ExternalLink
+				>Licence : CC-BY 4.0</ExternalLink
 			>
 		</div>
 	</div>
@@ -250,14 +244,14 @@
 		border-radius: 0.375rem;
 		font-size: 0.95rem;
 		font-family: inherit;
-		background: var(--bg);
-		color: var(--text);
+		background: white;
+		color: black;
 		transition: border-color 0.2s;
 	}
 
 	.newsletter-form input[type='email']:focus {
 		outline: none;
-		border-color: var(--black);
+		border-color: black;
 	}
 
 	.newsletter-form input[type='email']:disabled {
@@ -267,7 +261,7 @@
 
 	.newsletter-form button {
 		padding: 0.6rem 1.25rem;
-		background: var(--brand);
+		background: black;
 		color: white;
 		border: none;
 		border-radius: 0.375rem;
@@ -295,11 +289,11 @@
 	}
 
 	.newsletter-message.success {
-		color: #15803d;
+		color: #166534;
 	}
 
 	.newsletter-message.error {
-		color: #b91c1c;
+		color: #991b1b;
 	}
 	@media (min-width: 480px) {
 		.footer-links {
@@ -379,6 +373,12 @@
 		border-color: var(--border);
 		background: var(--bg-card);
 		color: var(--text);
+	}
+
+	:global([data-theme='dark']) .newsletter-form button {
+		background: var(--bg-card);
+		color: var(--text);
+		border: 1px solid var(--border);
 	}
 
 	:global([data-theme='dark']) .newsletter-message.success {

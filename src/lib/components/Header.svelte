@@ -1,12 +1,10 @@
 <script lang="ts">
 	import NavDropdown from '$components/NavDropdown.svelte'
 	import Logo from '$components/Logo.svelte'
-	import LangSwitcher from '$components/LangSwitcher.svelte'
 	import { page } from '$app/stores'
 	import Banner from '$components/Banner.svelte'
 	import { bannerStore } from '$lib/stores/banner'
 	import { theme } from '$lib/stores/theme'
-	import { t } from '$lib/i18n'
 
 	import { onMount } from 'svelte'
 	import { fade } from 'svelte/transition'
@@ -39,49 +37,49 @@
 		open = false
 	}
 
-	$: navGroups = [
+	const navGroups = [
 		{
 			id: 'comprendre',
-			label: $t.nav.comprendre,
+			label: 'Comprendre',
 			items: [
-				{ href: '/dangers', label: $t.nav.dangers },
-				{ href: '/newsletters', label: $t.nav.newsletter },
-				{ href: '/propositions', label: $t.nav.propositions },
-				{ href: 'https://pauseia.substack.com/', label: $t.nav.blog, external: true }
+				{ href: '/dangers', label: "Les dangers de l'IA" },
+				{ href: '/newsletters', label: 'Newsletter' },
+				{ href: '/propositions', label: 'Nos propositions' },
+				{ href: 'https://pauseia.substack.com/', label: 'Blog', external: true }
 			]
 		},
 		{
 			id: 'agir',
-			label: $t.nav.agir,
+			label: 'Agir',
 			items: [
-				{ href: '/agir', label: $t.nav.comment_agir },
-				{ href: '/groupes-locaux', label: $t.nav.groupes_locaux }
+				{ href: '/agir', label: 'Comment agir ?' },
+				{ href: '/groupes-locaux', label: 'Groupes locaux' }
 			]
 		},
 		{
 			id: 'campagnes',
-			label: $t.nav.campagnes,
-			items: [{ href: '/municipales-2026', label: $t.nav.municipales }]
+			label: 'Campagnes',
+			items: [{ href: '/municipales-2026', label: 'Municipales 2026' }]
 		},
 		{
 			id: 'evenements',
-			label: $t.nav.evenements,
+			label: 'Événements',
 			items: [
-				{ href: '/senat2025', label: $t.nav.senat2025 },
+				{ href: '/senat2025', label: 'Colloque Sénat 2025' },
 				{
 					href: 'https://controleia.org/solutions/',
-					label: $t.nav.forum2025,
+					label: 'Forum solutions 2025',
 					external: true
 				}
 			]
 		},
 		{
 			id: 'apropos',
-			label: $t.nav.apropos,
+			label: 'À propos',
 			items: [
-				{ href: '/qui-sommes-nous', label: $t.nav.qui_sommes_nous },
-				{ href: '/propositions', label: $t.nav.propositions },
-				{ href: '/presse', label: $t.nav.presse }
+				{ href: '/qui-sommes-nous', label: 'Qui sommes-nous ?' },
+				{ href: '/propositions', label: 'Nos propositions' },
+				{ href: '/presse', label: 'Espace presse' }
 			]
 		}
 	]
@@ -132,13 +130,12 @@
 					></div>
 					<!-- CTAs -->
 					<div class="nav-ctas">
-						<LangSwitcher onHero={onHomepage && !scrolled} />
 						<button
 							class="theme-toggle"
 							class:on-hero={onHomepage && !scrolled}
 							on:click={() => theme.toggle()}
-							aria-label={$theme === 'dark' ? $t.nav.light_mode : $t.nav.dark_mode}
-							title={$theme === 'dark' ? $t.nav.mode_clair : $t.nav.mode_sombre}
+							aria-label={$theme === 'dark' ? 'Passer en mode clair' : 'Passer en mode sombre'}
+							title={$theme === 'dark' ? 'Mode clair' : 'Mode sombre'}
 						>
 							{#if $theme === 'dark'}
 								<svg
@@ -178,15 +175,13 @@
 								</svg>
 							{/if}
 						</button>
-						<a href="/dons" class="btn-donate" class:on-hero={onHomepage && !scrolled}
-							>{$t.nav.donner}</a
-						>
+						<a href="/dons" class="btn-donate" class:on-hero={onHomepage && !scrolled}>Donner</a>
 						<a href="/rejoindre" class="btn-join" class:on-hero={onHomepage && !scrolled}
-							>{$t.nav.rejoindre}</a
+							>Rejoindre</a
 						>
 					</div>
 				</div>
-				<button aria-label={$t.nav.open_menu} class="hamburger" on:click={() => (open = !open)}>
+				<button aria-label="Open mobile menu" class="hamburger" on:click={() => (open = !open)}>
 					<svg
 						width="22"
 						height="22"
@@ -289,7 +284,7 @@
 						<button
 							class="sidebar-theme-toggle"
 							on:click={() => theme.toggle()}
-							aria-label={$theme === 'dark' ? $t.nav.light_mode : $t.nav.dark_mode}
+							aria-label={$theme === 'dark' ? 'Passer en mode clair' : 'Passer en mode sombre'}
 						>
 							{#if $theme === 'dark'}
 								<svg
@@ -313,7 +308,7 @@
 									<line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
 									<line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
 								</svg>
-								{$t.nav.mode_clair}
+								Mode clair
 							{:else}
 								<svg
 									width="16"
@@ -328,12 +323,11 @@
 								>
 									<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
 								</svg>
-								{$t.nav.mode_sombre}
+								Mode sombre
 							{/if}
 						</button>
-						<LangSwitcher inSidebar />
-						<a href="/dons" class="sidebar-cta" on:click={closeMenu}>{$t.footer.make_donation}</a>
-						<a href="/rejoindre" class="sidebar-join" on:click={closeMenu}>{$t.nav.rejoindre}</a>
+						<a href="/dons" class="sidebar-cta" on:click={closeMenu}>Faire un don</a>
+						<a href="/rejoindre" class="sidebar-join" on:click={closeMenu}>Nous rejoindre</a>
 					</div>
 				</div>
 			</div>
