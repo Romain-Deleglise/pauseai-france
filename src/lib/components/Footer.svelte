@@ -87,7 +87,11 @@
 					disabled={isSubmitting}
 					aria-label={$t.footer.newsletter_placeholder}
 				/>
-				<button type="submit" disabled={isSubmitting}>
+				<button
+					type="submit"
+					disabled={isSubmitting}
+					style="background-color: #ff9416; color: white;"
+				>
 					{#if isSubmitting}{$t.footer.newsletter_loading}{:else}{$t.footer
 							.newsletter_subscribe}{/if}
 				</button>
@@ -370,27 +374,7 @@
 		}
 	}
 
-	/* ─── Dark mode ──────────────────────────────────────────── */
-	:global([data-theme='dark']) footer {
-		background-color: var(--bg);
-		border-top: 3px solid var(--brand);
-		color: var(--text);
-	}
-
-	:global([data-theme='dark']) footer h2 {
-		color: var(--text);
-	}
-
-	:global([data-theme='dark']) .footer-links a {
-		color: var(--text-secondary);
-		opacity: 1;
-	}
-
-	:global([data-theme='dark']) .footer-links a:hover {
-		color: var(--brand);
-		opacity: 1;
-	}
-
+	/* ─── Dark mode (input + messages uniquement, le reste est dans app.css) ── */
 	:global([data-theme='dark']) .newsletter-form input[type='email'] {
 		border-color: var(--border);
 		background: var(--bg-card);

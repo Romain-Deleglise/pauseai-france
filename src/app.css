@@ -367,3 +367,24 @@ table td:nth-child(2) {
 	background-color: #1e1e2e;
 	color: #cdd6f4;
 }
+
+/* ─── Footer dark mode (global, pas de scoping Svelte) ──────── */
+[data-theme='dark'] footer {
+	background-color: var(--bg) !important;
+	border-top: 3px solid var(--brand);
+	color: var(--text);
+}
+
+[data-theme='dark'] footer h2 {
+	color: var(--text);
+}
+
+[data-theme='dark'] footer a {
+	color: var(--text-secondary);
+	opacity: 1;
+}
+
+[data-theme='dark'] footer a:hover {
+	color: var(--brand);
+	opacity: 1;
+}
