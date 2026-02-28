@@ -1,12 +1,18 @@
 <script lang="ts">
 	import { MoveUpRight, ChevronLeft, ChevronRight, Search, X, Newspaper } from 'lucide-svelte'
 	import type { PressRelease, LocalPressRelease, PressCoverage } from '$lib/notion'
+	import { getT } from '$lib/i18n'
+	import type { PageData } from './$types'
 
-	export let data: {
+	export let data: PageData & {
 		pressReleases: PressRelease[]
 		localPressReleases: LocalPressRelease[]
 		pressCoverage: PressCoverage[]
 	}
+
+	$: lang = data.lang
+	$: t = getT(lang)
+	$: prefix = `/${lang}`
 
 	$: pressCoverage = data.pressCoverage
 
@@ -273,7 +279,7 @@
 	function formatDate(dateStr: string): string {
 		if (!dateStr) return ''
 		const date = new Date(dateStr + 'T00:00:00')
-		return date.toLocaleDateString('fr-FR', {
+		return date.toLocaleDateString(lang === 'en' ? 'en-GB' : 'fr-FR', {
 			day: 'numeric',
 			month: 'long',
 			year: 'numeric'
@@ -283,7 +289,7 @@
 	function formatDateShort(dateStr: string): string {
 		if (!dateStr) return ''
 		const date = new Date(dateStr + 'T00:00:00')
-		return date.toLocaleDateString('fr-FR', {
+		return date.toLocaleDateString(lang === 'en' ? 'en-GB' : 'fr-FR', {
 			day: 'numeric',
 			month: 'short',
 			year: 'numeric'

@@ -10,10 +10,10 @@ const PAGE_ORDER_FR = [
 ]
 
 const PAGE_ORDER_EN = [
-	'en/dangers/economic-and-material',
-	'en/dangers/for-individuals',
-	'en/dangers/for-society',
-	'en/dangers/for-humanity'
+	'dangers/economic-and-material',
+	'dangers/for-individuals',
+	'dangers/for-society',
+	'dangers/for-humanity'
 ]
 
 export const load: LayoutLoad = async ({ fetch, url, params }) => {

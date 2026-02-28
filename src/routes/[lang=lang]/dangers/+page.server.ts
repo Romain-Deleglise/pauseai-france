@@ -9,9 +9,8 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 	const response = await fetch(apiPath)
 	const posts = await response.json()
 
-	if (lang === 'en') {
-		throw redirect(307, `/en/${posts[0]?.slug ?? 'dangers/economic-and-material'}`)
-	} else {
-		throw redirect(307, `/fr/${posts[0]?.slug ?? 'dangers/economiques-et-materiels'}`)
-	}
+	throw redirect(
+		307,
+		`/${lang}/${posts[0]?.slug ?? (lang === 'en' ? 'dangers/economic-and-material' : 'dangers/economiques-et-materiels')}`
+	)
 }

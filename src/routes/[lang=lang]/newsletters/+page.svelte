@@ -5,9 +5,13 @@
 	import Button from '$components/Button.svelte'
 	import { Search, X, Mail, ChevronLeft, ChevronRight } from 'lucide-svelte'
 	import type { Article } from '$lib/notion'
+	import { getT } from '$lib/i18n'
 	import type { PageData } from './$types'
 
 	export let data: PageData
+
+	$: lang = data.lang
+	$: t = getT(lang)
 
 	// Fallback newsletters if Notion data is not available
 	const fallbackNewsletters: Article[] = [
@@ -118,7 +122,7 @@
 
 		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 		if (!email || !emailRegex.test(email)) {
-			message = 'Adresse e-mail invalide'
+			message = t.newsletters.invalid_email
 			isError = true
 			return
 		}
@@ -140,15 +144,15 @@
 			const result = (await response.json()) as ApiResponse
 
 			if (response.ok) {
-				message = 'Inscription confirmée !'
+				message = t.newsletters.subscribe_success
 				isError = false
 				email = ''
 			} else {
-				message = result.error ?? 'Une erreur est survenue'
+				message = result.error ?? t.newsletters.subscribe_error
 				isError = true
 			}
 		} catch {
-			message = 'Erreur de connexion'
+			message = t.newsletters.connection_error
 			isError = true
 		} finally {
 			isSubmitting = false
@@ -159,7 +163,8 @@
 	function formatDateShort(dateStr: string): string {
 		if (!dateStr) return ''
 		const date = new Date(dateStr + 'T00:00:00')
-		return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' })
+		const locale = lang === 'en' ? 'en-GB' : 'fr-FR'
+		return date.toLocaleDateString(locale, { day: 'numeric', month: 'short', year: 'numeric' })
 	}
 
 	function scrollToCard(id: string) {
@@ -177,19 +182,15 @@
 			select.value = ''
 		}
 	}
-
-	const title = 'Newsletters'
-	const description = 'Retrouvez toutes les newsletters de Pause IA'
 </script>
 
-<PostMeta {title} {description} />
+<PostMeta title={t.newsletters.meta_title} description={t.newsletters.meta_desc} />
 
 <div class="page">
 	<header class="page-header">
-		<UnderlinedTitle as="h1">Nos newsletters</UnderlinedTitle>
+		<UnderlinedTitle as="h1">{t.newsletters.title}</UnderlinedTitle>
 		<p class="page-subtitle">
-			Retrouvez l'ensemble de nos newsletters mensuelles. Chaque édition couvre nos actions, les
-			actualités de l'IA et les moyens d'agir.
+			{t.newsletters.subtitle}
 		</p>
 	</header>
 
@@ -202,12 +203,12 @@
 				<input
 					type="email"
 					bind:value={email}
-					placeholder="votre@email.com"
+					placeholder={t.newsletters.email_placeholder}
 					disabled={isSubmitting}
-					aria-label="Adresse e-mail"
+					aria-label={t.newsletters.email_label}
 				/>
 				<button type="submit" disabled={isSubmitting}>
-					{#if isSubmitting}...{:else}S'abonner{/if}
+					{#if isSubmitting}...{:else}{t.newsletters.subscribe_btn}{/if}
 				</button>
 			</div>
 			{#if message}
@@ -219,19 +220,19 @@
 	</div>
 
 	<div class="search-bar">
-		<label for="newsletter-search" class="search-label">Rechercher :</label>
+		<label for="newsletter-search" class="search-label">{t.newsletters.search_label}</label>
 		<div class="search-input-wrapper">
 			<span class="search-icon"><Search size="1rem" /></span>
 			<input
 				id="newsletter-search"
 				type="text"
 				bind:value={searchQuery}
-				placeholder="Titre, mots-clés, date..."
-				aria-label="Rechercher une newsletter"
+				placeholder={t.newsletters.search_placeholder}
+				aria-label={t.newsletters.search_aria}
 				autocomplete="off"
 			/>
 			{#if searchQuery}
-				<button class="clear-btn" on:click={clearSearch} aria-label="Effacer la recherche">
+				<button class="clear-btn" on:click={clearSearch} aria-label={t.newsletters.clear_search}>
 					<X size="1rem" />
 				</button>
 			{/if}
@@ -241,17 +242,19 @@
 	{#if filteredNewsletters.length > 0}
 		<p class="results-count" id="newsletters-top">
 			{filteredNewsletters.length}
-			{filteredNewsletters.length === 1 ? 'newsletter' : 'newsletters'}
+			{filteredNewsletters.length === 1
+				? t.newsletters.result_singular
+				: t.newsletters.result_plural}
 			{#if searchQuery.trim()}
-				pour «&nbsp;{searchQuery.trim()}&nbsp;»
+				{t.newsletters.result_for} «&nbsp;{searchQuery.trim()}&nbsp;»
 			{/if}
 		</p>
 
 		<!-- Mobile: dropdown quick access -->
 		<div class="mobile-nav">
-			<label class="mobile-nav-label" for="mobile-select-nl">Accès rapide</label>
+			<label class="mobile-nav-label" for="mobile-select-nl">{t.newsletters.quick_access}</label>
 			<select id="mobile-select-nl" class="mobile-select" on:change={onMobileSelect}>
-				<option value="" disabled selected>Choisir une newsletter...</option>
+				<option value="" disabled selected>{t.newsletters.choose_newsletter}</option>
 				{#each paginatedNewsletters as nl (nl.id)}
 					<option value={nl.id}>
 						{nl.title} ({formatDateShort(nl.date || '')})
@@ -263,7 +266,7 @@
 		<div class="content-layout">
 			<!-- Desktop: sidebar quick access -->
 			<nav class="sidebar">
-				<h3 class="sidebar-title">Accès rapide</h3>
+				<h3 class="sidebar-title">{t.newsletters.quick_access}</h3>
 				<ul class="sidebar-list">
 					{#each paginatedNewsletters as nl (nl.id)}
 						<li>
@@ -280,7 +283,8 @@
 				</ul>
 				{#if totalPages > 1}
 					<div class="sidebar-page-info">
-						Page {currentPage} / {totalPages}
+						{t.newsletters.page}
+						{currentPage} / {totalPages}
 					</div>
 				{/if}
 			</nav>
@@ -303,12 +307,12 @@
 				</div>
 
 				{#if totalPages > 1}
-					<nav class="pagination" aria-label="Pagination des newsletters">
+					<nav class="pagination" aria-label={t.newsletters.pagination_label}>
 						<button
 							class="pagination-btn"
 							disabled={currentPage === 1}
 							on:click={() => goToPage(currentPage - 1)}
-							aria-label="Page précédente"
+							aria-label={t.newsletters.prev_page}
 						>
 							<ChevronLeft size="1.25rem" />
 						</button>
@@ -317,7 +321,7 @@
 								class="pagination-btn"
 								class:active={page === currentPage}
 								on:click={() => goToPage(page)}
-								aria-label="Page {page}"
+								aria-label={`${t.newsletters.page} ${page}`}
 								aria-current={page === currentPage ? 'page' : undefined}
 							>
 								{page}
@@ -327,7 +331,7 @@
 							class="pagination-btn"
 							disabled={currentPage === totalPages}
 							on:click={() => goToPage(currentPage + 1)}
-							aria-label="Page suivante"
+							aria-label={t.newsletters.next_page}
 						>
 							<ChevronRight size="1.25rem" />
 						</button>
@@ -337,8 +341,8 @@
 		</div>
 	{:else}
 		<div class="empty-state">
-			<p>Aucune newsletter ne correspond à votre recherche.</p>
-			<Button on:click={clearSearch}>Effacer la recherche</Button>
+			<p>{t.newsletters.no_results}</p>
+			<Button on:click={clearSearch}>{t.newsletters.clear_search}</Button>
 		</div>
 	{/if}
 </div>
