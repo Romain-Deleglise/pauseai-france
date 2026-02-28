@@ -239,6 +239,7 @@
 			{#if open}
 				<div
 					class="sidebar-backdrop"
+					role="presentation"
 					on:click={closeMenu}
 					on:keydown={(e) => (e.key === 'Escape' || e.key === 'Enter') && closeMenu()}
 					transition:fade={{ duration: 200 }}
