@@ -120,7 +120,14 @@ export default {
 		pagination_label: 'Pagination',
 		prev_page: 'Previous page',
 		next_page: 'Next page',
-		no_results: 'No newsletter found.'
+		no_results: 'No newsletter found.',
+		all_newsletters: 'All newsletters',
+		view_original: 'View original',
+		newer: 'Newer',
+		older: 'Older',
+		back_to_newsletters: 'Back to newsletters',
+		close_fullscreen: 'Close fullscreen',
+		read_fullscreen: 'Read fullscreen'
 	},
 	presse: {
 		title: 'Press Room',

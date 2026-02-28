@@ -121,7 +121,14 @@ export default {
 		pagination_label: 'Pagination',
 		prev_page: 'Page précédente',
 		next_page: 'Page suivante',
-		no_results: 'Aucune newsletter trouvée.'
+		no_results: 'Aucune newsletter trouvée.',
+		all_newsletters: 'Toutes les newsletters',
+		view_original: "Voir l'original",
+		newer: 'Plus récente',
+		older: 'Plus ancienne',
+		back_to_newsletters: 'Retour aux newsletters',
+		close_fullscreen: 'Fermer le plein écran',
+		read_fullscreen: 'Lire en plein écran'
 	},
 	presse: {
 		title: 'Espace Presse',
