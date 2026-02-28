@@ -4,6 +4,35 @@
 	import MoveRightIcon from '$components/icons/move-right.svelte'
 	export let data
 	const index = data.posts.findIndex((post) => post.slug === data.slug)
+	$: currentPost = data.posts.find((post) => post.slug === data.slug)
+	$: breadcrumbSchema = {
+		'@context': 'https://schema.org',
+		'@type': 'BreadcrumbList',
+		itemListElement: [
+			{
+				'@type': 'ListItem',
+				position: 1,
+				name: 'Accueil',
+				item: 'https://pauseia.fr/'
+			},
+			{
+				'@type': 'ListItem',
+				position: 2,
+				name: 'Dangers',
+				item: 'https://pauseia.fr/dangers/'
+			},
+			...(currentPost
+				? [
+						{
+							'@type': 'ListItem',
+							position: 3,
+							name: currentPost.title,
+							item: `https://pauseia.fr/${currentPost.slug}`
+						}
+					]
+				: [])
+		]
+	}
 	const prev = data.posts[index - 1]
 	const next = data.posts[index + 1]
 
@@ -49,6 +78,10 @@
 		}
 	})
 </script>
+
+<svelte:head>
+	{@html `<script type="application/ld+json">${JSON.stringify(breadcrumbSchema)}</script>`}
+</svelte:head>
 
 <svelte:window bind:scrollY={y} on:scroll={handleScroll} />
 

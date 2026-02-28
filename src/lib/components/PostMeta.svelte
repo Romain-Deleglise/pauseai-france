@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/stores'
 	import { url, title as siteName } from '$config'
 	export let title: string = siteName
 	export let description: string = siteName
@@ -6,6 +7,8 @@
 	/** URL or relative path to cover / preview image */
 	export let image = '/Cover.jpg'
 	const imageUrl = image.startsWith('/') ? `${url}${image}` : image
+
+	$: canonicalUrl = `${url}${$page.url.pathname}`
 
 	const schemaOrgMarkup = {
 		'@context': 'https://schema.org/',
@@ -23,7 +26,9 @@
 <svelte:head>
 	<title>{title}</title>
 	<meta name="description" content={description} />
+	<link rel="canonical" href={canonicalUrl} />
 	<meta property="og:type" content="article" />
+	<meta property="og:url" content={canonicalUrl} />
 	<meta property="og:title" content={title} />
 	<meta property="og:description" content={description} />
 	<meta property="og:image" content={imageUrl} />
