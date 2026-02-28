@@ -1,4 +1,4 @@
-import type { Post } from '$lib/types'
+import { getPosts } from '$lib/api'
 import type { LayoutLoad } from './$types'
 
 // Update when adding new pages or changing slugs
@@ -16,11 +16,9 @@ const PAGE_ORDER_EN = [
 	'dangers/for-humanity'
 ]
 
-export const load: LayoutLoad = async ({ fetch, url, params }) => {
+export const load: LayoutLoad = ({ url, params }) => {
 	const lang = params.lang as 'fr' | 'en'
-	const apiPath = lang === 'en' ? '/api/dangers?lang=en' : '/api/dangers'
-	const response = await fetch(apiPath)
-	const posts: Post[] = await response.json()
+	const posts = getPosts('/dangers', lang)
 
 	const pageOrder = lang === 'en' ? PAGE_ORDER_EN : PAGE_ORDER_FR
 	posts.sort((a, b) => pageOrder.indexOf(a.slug) - pageOrder.indexOf(b.slug))

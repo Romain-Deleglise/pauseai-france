@@ -1,9 +1,8 @@
-import type { Post } from '$lib/types'
+import { getPosts } from '$lib/api'
 import type { PageLoad } from './$types'
 
-export const load: PageLoad = async ({ fetch, params }) => {
+export const load: PageLoad = ({ params }) => {
 	const lang = params.lang as 'fr' | 'en'
-	const response = await fetch(`/api/posts?lang=${lang}`)
-	const posts: Post[] = await response.json()
+	const posts = getPosts('', lang)
 	return { posts }
 }

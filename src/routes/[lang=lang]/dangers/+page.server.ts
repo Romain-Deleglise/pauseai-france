@@ -1,13 +1,12 @@
 import { redirect } from '@sveltejs/kit'
+import { getPosts } from '$lib/api'
 import type { PageServerLoad } from './$types'
 
 export const prerender = false
 
-export const load: PageServerLoad = async ({ fetch, params }) => {
+export const load: PageServerLoad = ({ params }) => {
 	const lang = params.lang as 'fr' | 'en'
-	const apiPath = lang === 'en' ? '/api/dangers?lang=en' : '/api/dangers'
-	const response = await fetch(apiPath)
-	const posts = await response.json()
+	const posts = getPosts('/dangers', lang)
 
 	throw redirect(
 		307,
