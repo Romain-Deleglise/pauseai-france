@@ -101,12 +101,15 @@
 		en: ['economic-and-material', 'for-individuals', 'for-society', 'for-humanity']
 	}
 
-	function getSwitchLangHref(pathname: string, currentLang: 'fr' | 'en', other: 'fr' | 'en') {
-		const dangerMatch = pathname.match(new RegExp(`^/${currentLang}/dangers/(.+)$`))
-		if (dangerMatch) {
-			const slug = dangerMatch[1]
-			const idx = DANGER_SLUGS[currentLang].indexOf(slug)
-			if (idx >= 0) return `/${other}/dangers/${DANGER_SLUGS[other][idx]}`
+	function getSwitchLangHref(pathname: string, currentLang: string, other: string) {
+		const slugsFrom = DANGER_SLUGS[currentLang as 'fr' | 'en']
+		const slugsTo = DANGER_SLUGS[other as 'fr' | 'en']
+		if (slugsFrom && slugsTo) {
+			const dangerMatch = pathname.match(new RegExp(`^/${currentLang}/dangers/(.+)$`))
+			if (dangerMatch) {
+				const idx = slugsFrom.indexOf(dangerMatch[1])
+				if (idx >= 0) return `/${other}/dangers/${slugsTo[idx]}`
+			}
 		}
 		return pathname.replace(`/${currentLang}`, `/${other}`) || `/${other}`
 	}
