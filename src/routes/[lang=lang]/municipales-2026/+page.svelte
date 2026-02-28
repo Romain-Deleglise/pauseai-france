@@ -5,7 +5,7 @@
 
 	const title = 'Élections municipales 2026'
 	const description =
-		'Les élections municipales de mars 2026 représentent une opportunité majeure de sensibilisation au niveau local. À cette occasion, Pause IA appelle les candidats à s'engager concrètement en signant notre charte.'
+		"Les élections municipales de mars 2026 représentent une opportunité majeure de sensibilisation au niveau local. À cette occasion, Pause IA appelle les candidats à s'engager concrètement en signant notre charte."
 
 	let showModal = false
 
