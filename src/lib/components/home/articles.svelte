@@ -76,7 +76,7 @@
 		{/each}
 	</div>
 	<div class="buttons-row">
-		<Button href="/newsletters"
+		<Button href={lang === 'en' ? '/en/newsletters' : '/newsletters'}
 			>{lang === 'en' ? 'View all newsletters' : 'Voir toutes les newsletters'}</Button
 		>
 	</div>
