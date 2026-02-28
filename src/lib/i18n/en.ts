@@ -94,5 +94,87 @@ export default {
 	rejoindre: {
 		meta_title: 'Join Pause AI',
 		meta_desc: 'Join our community for safe AI.'
+	},
+	newsletters: {
+		meta_title: 'Newsletters - Pause AI',
+		meta_desc: 'Browse all Pause AI newsletters.',
+		title: 'Newsletters',
+		subtitle: 'All our archived newsletters, freely accessible.',
+		email_placeholder: 'your@email.com',
+		email_label: 'Subscribe to the newsletter',
+		subscribe_btn: 'Subscribe',
+		invalid_email: 'Invalid email address',
+		subscribe_success: 'Subscription confirmed!',
+		subscribe_error: 'An error occurred',
+		connection_error: 'Connection error',
+		search_label: 'Search:',
+		search_placeholder: 'Title, date...',
+		search_aria: 'Search a newsletter',
+		clear_search: 'Clear',
+		result_singular: 'result',
+		result_plural: 'results',
+		result_for: 'for',
+		quick_access: 'Quick access',
+		choose_newsletter: 'Choose a newsletter...',
+		page: 'Page',
+		pagination_label: 'Pagination',
+		prev_page: 'Previous page',
+		next_page: 'Next page',
+		no_results: 'No newsletter found.'
+	},
+	presse: {
+		title: 'Press Room',
+		subtitle: 'Resources and information for journalists',
+		contact_title: 'Press contact',
+		contact_note: 'For journalists only',
+		email_label: 'Email:',
+		quick_access: 'Quick access',
+		read_release: 'Read the press release',
+		page: 'Page',
+		tab_national: 'National',
+		tab_local: 'By department',
+		releases_title: 'Our press releases',
+		mobile_choose: 'Choose a press release...',
+		dept_label: 'Search a department:',
+		dept_placeholder: 'Number or name of department...',
+		no_dept_release: 'No press release for department',
+		no_local_release: 'No local press release available at the moment.',
+		coverage_title: 'They talk about us',
+		about_title: 'About Pause AI',
+		about_p1:
+			'Pause AI is a volunteer association that alerts French citizens and public authorities about the grave dangers that the race towards artificial intelligence poses to human society, and encourages them to act at their level to oppose it.',
+		about_p2:
+			'Pause AI is the French branch of Pause AI Global, which calls for a moratorium on the training of general AI systems (AGI) until all safety and democratic control conditions are met.',
+		redirect_non_journalist: 'If you are not a journalist, we invite you to',
+		redirect_link: 'visit this page',
+		redirect_suffix: 'to contact us.',
+		no_dept_found: 'No department found',
+		clear_selection: 'Clear selection',
+		pagination_national: 'Pagination of national press releases',
+		pagination_local: 'Pagination of local press releases',
+		prev_page: 'Previous page',
+		next_page: 'Next page'
+	},
+	posts: {
+		meta_title: 'Articles - Pause AI'
+	},
+	sommet: {
+		title: 'AI Summit 2026',
+		description:
+			'The 2026 AI Summit in India is a crucial moment for the future of our society. You can act with Pause AI to ensure that safety and democratic control are at the heart of the discussions.',
+		sign_petition: 'Sign the petition',
+		contact_politicians: 'Contact politicians'
+	},
+	emploi_merci: {
+		title: 'Thank you for your participation!',
+		p1: 'Your testimony has been recorded and we sincerely thank you. Your answers will help us better understand the impact of AI on the world of work.',
+		p2: 'If you are not already, you can join our community to:',
+		li1: 'Connect with others concerned about AI and employment',
+		li2: 'Stay informed about the latest news and research',
+		li3: 'Take part in concrete actions',
+		li4: 'Access resources and support',
+		visit_site: 'Visit Pause AI',
+		join_discord: 'Join the Discord',
+		back_link: '← Back to the AI employment working group page'
 	}
 }

@@ -95,5 +95,87 @@ export default {
 	rejoindre: {
 		meta_title: 'Rejoindre Pause IA',
 		meta_desc: 'Rejoignez notre communauté pour une IA sûre.'
+	},
+	newsletters: {
+		meta_title: 'Newsletters - Pause IA',
+		meta_desc: 'Retrouvez toutes les newsletters de Pause IA.',
+		title: 'Newsletters',
+		subtitle: 'Toutes nos newsletters archivées, accessibles librement.',
+		email_placeholder: 'votre@email.com',
+		email_label: "S'inscrire à la newsletter",
+		subscribe_btn: "S'inscrire",
+		invalid_email: 'Adresse e-mail invalide',
+		subscribe_success: 'Inscription confirmée !',
+		subscribe_error: 'Une erreur est survenue',
+		connection_error: 'Erreur de connexion',
+		search_label: 'Rechercher :',
+		search_placeholder: 'Titre, date...',
+		search_aria: 'Rechercher une newsletter',
+		clear_search: 'Effacer',
+		result_singular: 'résultat',
+		result_plural: 'résultats',
+		result_for: 'pour',
+		quick_access: 'Accès rapide',
+		choose_newsletter: 'Choisir une newsletter...',
+		page: 'Page',
+		pagination_label: 'Pagination',
+		prev_page: 'Page précédente',
+		next_page: 'Page suivante',
+		no_results: 'Aucune newsletter trouvée.'
+	},
+	presse: {
+		title: 'Espace Presse',
+		subtitle: 'Ressources et informations pour les journalistes',
+		contact_title: 'Contact presse',
+		contact_note: 'Réservé aux journalistes',
+		email_label: 'Email :',
+		quick_access: 'Accès rapide',
+		read_release: 'Lire le communiqué',
+		page: 'Page',
+		tab_national: 'Nationaux',
+		tab_local: 'Par département',
+		releases_title: 'Nos communiqués de presse',
+		mobile_choose: 'Choisir un communiqué...',
+		dept_label: 'Rechercher un département :',
+		dept_placeholder: 'Numéro ou nom du département...',
+		no_dept_release: 'Aucun communiqué pour le département',
+		no_local_release: 'Aucun communiqué départemental disponible pour le moment.',
+		coverage_title: 'Ils parlent de nous',
+		about_title: 'À propos de Pause IA',
+		about_p1:
+			"Pause IA est une association de bénévoles qui alerte les citoyens et les pouvoirs publics français sur les graves dangers que la course à l'intelligence artificielle fait courir à la société humaine, et les incite à agir à leur niveau pour s'y opposer.",
+		about_p2:
+			"Pause IA est la représentation en France de Pause AI Global, qui demande un moratoire sur l'entraînement des systèmes d'IA générale (IAG) jusqu'à ce que toutes les conditions de sécurité et de contrôle démocratique soient réunies.",
+		redirect_non_journalist: "Si vous n'êtes pas journaliste, nous vous invitons à",
+		redirect_link: 'vous rendre sur cette page',
+		redirect_suffix: 'pour nous contacter.',
+		no_dept_found: 'Aucun département trouvé',
+		clear_selection: 'Effacer la sélection',
+		pagination_national: 'Pagination des communiqués nationaux',
+		pagination_local: 'Pagination des communiqués départementaux',
+		prev_page: 'Page précédente',
+		next_page: 'Page suivante'
+	},
+	posts: {
+		meta_title: 'Articles - Pause IA'
+	},
+	sommet: {
+		title: "Sommet de l'IA 2026",
+		description:
+			"Le Sommet de l'IA 2026 en Inde est un moment crucial pour l'avenir de notre société. Vous pouvez agir avec Pause IA pour que les enjeux de sécurité et de contrôle démocratique soient au cœur des discussions.",
+		sign_petition: 'Je signe la pétition',
+		contact_politicians: "J'interpelle les politiques"
+	},
+	emploi_merci: {
+		title: 'Merci pour votre participation !',
+		p1: "Votre témoignage a bien été enregistré et nous vous en remercions sincèrement. Vos réponses nous aideront à mieux comprendre l'impact de l'IA sur le monde du travail.",
+		p2: "Si vous n'y êtes pas déjà, vous pouvez rejoindre notre communauté pour :",
+		li1: "Échanger avec d'autres personnes concernées par l'IA et l'emploi",
+		li2: 'Vous informer sur les dernières actualités et recherches',
+		li3: 'Participer à des actions concrètes',
+		li4: 'Accéder à des ressources et du soutien',
+		visit_site: 'Visiter Pause IA.fr',
+		join_discord: 'Rejoindre le Discord',
+		back_link: '← Retour à la page du groupe de travail emploi IA'
 	}
 }

@@ -314,26 +314,23 @@
 </script>
 
 <svelte:head>
-	<title>Espace Presse - Pause IA</title>
-	<meta
-		name="description"
-		content="Espace presse de Pause IA : communiqués de presse, contact médias et ressources pour les journalistes."
-	/>
+	<title>{t.presse.title} - Pause IA</title>
+	<meta name="description" content={t.presse.subtitle} />
 </svelte:head>
 
 <div class="press-page">
 	<header class="press-header">
-		<h1>Espace Presse</h1>
-		<p class="subtitle">Ressources et informations pour les journalistes</p>
+		<h1>{t.presse.title}</h1>
+		<p class="subtitle">{t.presse.subtitle}</p>
 	</header>
 
 	<section class="contact-section">
 		<div class="contact-card">
-			<h2>Contact presse</h2>
-			<p class="contact-note">Réservé aux journalistes</p>
+			<h2>{t.presse.contact_title}</h2>
+			<p class="contact-note">{t.presse.contact_note}</p>
 			<div class="contact-info">
 				<div class="contact-email-main">
-					<strong>Email :</strong>
+					<strong>{t.presse.email_label}</strong>
 					<a href="mailto:presse@pauseia.fr">presse@pauseia.fr</a>
 				</div>
 				<div class="contact-persons">
@@ -356,14 +353,15 @@
 				</div>
 			</div>
 			<p class="redirect">
-				Si vous n'êtes pas journaliste, nous vous invitons à
-				<a href="/qui-sommes-nous">vous rendre sur cette page</a> pour nous contacter.
+				{t.presse.redirect_non_journalist}
+				<a href="{prefix}/qui-sommes-nous">{t.presse.redirect_link}</a>
+				{t.presse.redirect_suffix}
 			</p>
 		</div>
 	</section>
 
 	<section class="press-releases-section">
-		<h2 id="press-releases-top">Nos communiqués de presse</h2>
+		<h2 id="press-releases-top">{t.presse.releases_title}</h2>
 
 		<!-- Tabs -->
 		<div class="tabs" role="tablist">
@@ -374,7 +372,7 @@
 				role="tab"
 				aria-selected={activeTab === 'national'}
 			>
-				<span class="tab-label">Nationaux</span>
+				<span class="tab-label">{t.presse.tab_national}</span>
 				{#if pressReleases.length > 0}
 					<span class="tab-count">{pressReleases.length}</span>
 				{/if}
@@ -386,7 +384,7 @@
 				role="tab"
 				aria-selected={activeTab === 'local'}
 			>
-				<span class="tab-label">Par département</span>
+				<span class="tab-label">{t.presse.tab_local}</span>
 				{#if localPressReleases.length > 0}
 					<span class="tab-count">{localPressReleases.length}</span>
 				{/if}
@@ -397,9 +395,9 @@
 		{#if activeTab === 'national'}
 			<!-- Mobile: dropdown navigation -->
 			<div class="mobile-nav">
-				<label class="mobile-nav-label" for="mobile-select-national">Accès rapide</label>
+				<label class="mobile-nav-label" for="mobile-select-national">{t.presse.quick_access}</label>
 				<select id="mobile-select-national" class="mobile-select" on:change={onMobileSelect}>
-					<option value="" disabled selected>Choisir un communiqué...</option>
+					<option value="" disabled selected>{t.presse.mobile_choose}</option>
 					{#each paginatedReleases as pr (pr.id)}
 						<option value={pr.id}>
 							{pr.title} ({formatDateShort(pr.date)})
@@ -411,7 +409,7 @@
 			<div class="press-layout">
 				<!-- Desktop: sidebar navigation -->
 				<nav class="press-sidebar">
-					<h3 class="sidebar-title">Accès rapide</h3>
+					<h3 class="sidebar-title">{t.presse.quick_access}</h3>
 					<ul class="sidebar-list">
 						{#each paginatedReleases as pr (pr.id)}
 							<li>
@@ -428,7 +426,8 @@
 					</ul>
 					{#if totalPages > 1}
 						<div class="sidebar-page-info">
-							Page {currentPage} / {totalPages}
+							{t.presse.page}
+							{currentPage} / {totalPages}
 						</div>
 					{/if}
 				</nav>
@@ -454,7 +453,7 @@
 									<time datetime={pr.date}>{formatDate(pr.date)}</time>
 								{/if}
 								<span class="read-link">
-									Lire le communiqué
+									{t.presse.read_release}
 									<span class="link-icon"><MoveUpRight size="1.25rem" /></span>
 								</span>
 							</div>
@@ -462,12 +461,12 @@
 					{/each}
 
 					{#if totalPages > 1}
-						<nav class="pagination" aria-label="Pagination des communiqués nationaux">
+						<nav class="pagination" aria-label={t.presse.pagination_national}>
 							<button
 								class="pagination-btn"
 								disabled={currentPage === 1}
 								on:click={() => goToPage(currentPage - 1)}
-								aria-label="Page précédente"
+								aria-label={t.presse.prev_page}
 							>
 								<ChevronLeft size="1.25rem" />
 							</button>
@@ -477,7 +476,7 @@
 									class="pagination-num"
 									class:active={currentPage === i + 1}
 									on:click={() => goToPage(i + 1)}
-									aria-label="Page {i + 1}"
+									aria-label="{t.presse.page} {i + 1}"
 									aria-current={currentPage === i + 1 ? 'page' : undefined}
 								>
 									{i + 1}
@@ -488,7 +487,7 @@
 								class="pagination-btn"
 								disabled={currentPage === totalPages}
 								on:click={() => goToPage(currentPage + 1)}
-								aria-label="Page suivante"
+								aria-label={t.presse.next_page}
 							>
 								<ChevronRight size="1.25rem" />
 							</button>
@@ -502,7 +501,7 @@
 		{#if activeTab === 'local'}
 			<!-- Department search combobox -->
 			<div class="department-filter">
-				<label for="dept-search" class="dept-label">Rechercher un département :</label>
+				<label for="dept-search" class="dept-label">{t.presse.dept_label}</label>
 				<div
 					class="dept-combobox"
 					role="combobox"
@@ -516,7 +515,7 @@
 							id="dept-search"
 							type="text"
 							class="dept-input"
-							placeholder="Numéro ou nom du département..."
+							placeholder={t.presse.dept_placeholder}
 							bind:value={deptSearchQuery}
 							bind:this={deptInputEl}
 							on:focus={onDeptInputFocus}
@@ -530,7 +529,7 @@
 							<button
 								class="dept-clear-btn"
 								on:mousedown|preventDefault={clearDepartment}
-								aria-label="Effacer la sélection"
+								aria-label={t.presse.clear_selection}
 							>
 								<X size="1rem" />
 							</button>
@@ -553,7 +552,7 @@
 						</ul>
 					{/if}
 					{#if deptDropdownOpen && filteredDepartments.length === 0 && deptSearchQuery}
-						<div class="dept-dropdown dept-no-result">Aucun département trouvé</div>
+						<div class="dept-dropdown dept-no-result">{t.presse.no_dept_found}</div>
 					{/if}
 				</div>
 			</div>
@@ -562,18 +561,18 @@
 				<div class="empty-state">
 					<p>
 						{#if selectedDepartment}
-							Aucun communiqué pour le département {getDeptLabel(selectedDepartment)}.
+							{t.presse.no_dept_release} {getDeptLabel(selectedDepartment)}.
 						{:else}
-							Aucun communiqué départemental disponible pour le moment.
+							{t.presse.no_local_release}
 						{/if}
 					</p>
 				</div>
 			{:else}
 				<!-- Mobile: dropdown navigation -->
 				<div class="mobile-nav">
-					<label class="mobile-nav-label" for="mobile-select-local">Accès rapide</label>
+					<label class="mobile-nav-label" for="mobile-select-local">{t.presse.quick_access}</label>
 					<select id="mobile-select-local" class="mobile-select" on:change={onMobileSelect}>
-						<option value="" disabled selected>Choisir un communiqué...</option>
+						<option value="" disabled selected>{t.presse.mobile_choose}</option>
 						{#each paginatedLocalReleases as pr (pr.id)}
 							<option value={pr.id}>
 								[{pr.department}] {pr.title} ({formatDateShort(pr.date)})
@@ -585,7 +584,7 @@
 				<div class="press-layout">
 					<!-- Desktop: sidebar navigation -->
 					<nav class="press-sidebar">
-						<h3 class="sidebar-title">Accès rapide</h3>
+						<h3 class="sidebar-title">{t.presse.quick_access}</h3>
 						<ul class="sidebar-list">
 							{#each paginatedLocalReleases as pr (pr.id)}
 								<li>
@@ -603,7 +602,8 @@
 						</ul>
 						{#if localTotalPages > 1}
 							<div class="sidebar-page-info">
-								Page {localCurrentPage} / {localTotalPages}
+								{t.presse.page}
+								{localCurrentPage} / {localTotalPages}
 							</div>
 						{/if}
 					</nav>
@@ -630,7 +630,7 @@
 										<time datetime={pr.date}>{formatDate(pr.date)}</time>
 									{/if}
 									<span class="read-link">
-										Lire le communiqué
+										{t.presse.read_release}
 										<span class="link-icon"><MoveUpRight size="1.25rem" /></span>
 									</span>
 								</div>
@@ -638,12 +638,12 @@
 						{/each}
 
 						{#if localTotalPages > 1}
-							<nav class="pagination" aria-label="Pagination des communiqués départementaux">
+							<nav class="pagination" aria-label={t.presse.pagination_local}>
 								<button
 									class="pagination-btn"
 									disabled={localCurrentPage === 1}
 									on:click={() => goToLocalPage(localCurrentPage - 1)}
-									aria-label="Page précédente"
+									aria-label={t.presse.prev_page}
 								>
 									<ChevronLeft size="1.25rem" />
 								</button>
@@ -653,7 +653,7 @@
 										class="pagination-num"
 										class:active={localCurrentPage === i + 1}
 										on:click={() => goToLocalPage(i + 1)}
-										aria-label="Page {i + 1}"
+										aria-label="{t.presse.page} {i + 1}"
 										aria-current={localCurrentPage === i + 1 ? 'page' : undefined}
 									>
 										{i + 1}
@@ -664,7 +664,7 @@
 									class="pagination-btn"
 									disabled={localCurrentPage === localTotalPages}
 									on:click={() => goToLocalPage(localCurrentPage + 1)}
-									aria-label="Page suivante"
+									aria-label={t.presse.next_page}
 								>
 									<ChevronRight size="1.25rem" />
 								</button>
@@ -683,7 +683,7 @@
 					size="1.25rem"
 					style="display:inline;vertical-align:-0.15em;margin-right:0.375rem"
 				/>
-				Ils parlent de nous
+				{t.presse.coverage_title}
 			</h2>
 			<div class="coverage-grid">
 				{#each pressCoverage as item (item.id)}
@@ -701,17 +701,9 @@
 
 	<section class="about-section">
 		<div class="about-card">
-			<h2>À propos de Pause IA</h2>
-			<p>
-				Pause IA est une association de bénévoles qui alerte les citoyens et les pouvoirs publics
-				français sur les graves dangers que la course à l'intelligence artificielle fait courir à la
-				société humaine, et les incite à agir à leur niveau pour s'y opposer.
-			</p>
-			<p>
-				Pause IA est la représentation en France de Pause AI Global, qui demande un moratoire sur
-				l'entraînement des systèmes d'IA générale (IAG) jusqu'à ce que toutes les conditions de
-				sécurité et de contrôle démocratique soient réunies.
-			</p>
+			<h2>{t.presse.about_title}</h2>
+			<p>{t.presse.about_p1}</p>
+			<p>{t.presse.about_p2}</p>
 		</div>
 	</section>
 </div>
