@@ -16,32 +16,24 @@
 		'/hero/projection-gateau.webp',
 		'/hero/event-01.webp',
 		'/hero/conf-full-room.webp',
-		'/hero/event-13.webp',
 		'/hero/manif-08.webp',
 		'/hero/pauseia-08.webp',
 		'/hero/fost-summit.webp',
 		'/hero/event-14.webp',
 		'/hero/senat-speaker2.webp',
 		'/hero/event-02.webp',
-		'/hero/projection-01.webp',
 		'/hero/manif-03.webp',
 		'/hero/apidays-talk.webp',
-		'/hero/event-15.webp',
 		'/hero/pauseia-15.webp',
 		'/hero/panneau-pauseai.webp',
-		'/hero/event-10.webp',
 		'/hero/senat-audience1.webp',
-		'/hero/event-03.webp',
 		'/hero/pauseia-09.webp'
 	]
 	const row2 = [
 		'/hero/megaphone.webp',
-		'/hero/pauseia-02.webp',
-		'/hero/event-16.webp',
 		'/hero/senat-panel.webp',
 		'/hero/manif-07.webp',
 		'/hero/event-04.webp',
-		'/hero/projection-02.webp',
 		'/hero/conf-audience.webp',
 		'/hero/stop-course.webp',
 		'/hero/event-17.webp',
@@ -52,7 +44,6 @@
 		'/hero/event-11.webp',
 		'/hero/senat-talk.webp',
 		'/hero/fost-talk.webp',
-		'/hero/event-18.webp',
 		'/hero/pauseia-16.webp',
 		'/hero/sans-ia-sure.webp',
 		'/hero/conf-presenter.webp',
@@ -63,10 +54,8 @@
 	const row3 = [
 		'/hero/senat-orateur.webp',
 		'/hero/pauseia-03.webp',
-		'/hero/event-19.webp',
 		'/hero/manif-04.webp',
 		'/hero/event-07.webp',
-		'/hero/projection-03.webp',
 		'/hero/projection-discussion.webp',
 		'/hero/conference-salle.webp',
 		'/hero/event-20.webp',
@@ -77,7 +66,6 @@
 		'/hero/event-21.webp',
 		'/hero/panneau-rue.webp',
 		'/hero/senat-salle.webp',
-		'/hero/event-12.webp',
 		'/hero/pauseia-17.webp',
 		'/hero/conf-panel.webp',
 		'/hero/manif-11.webp',
@@ -92,7 +80,6 @@
 		'/hero/event-22.webp',
 		'/hero/senat-groupe.webp',
 		'/hero/discussion.webp',
-		'/hero/projection-04.webp',
 		'/hero/pauseia-14.webp',
 		'/hero/conf-reprise.webp',
 		'/hero/event-23.webp',
@@ -106,10 +93,8 @@
 		'/hero/senat-audience2.webp',
 		'/hero/conf-question.webp',
 		'/hero/event-26.webp',
-		'/hero/pauseia-06.webp',
 		'/hero/apidays-expo.webp',
 		'/hero/conf-speaker-new.webp',
-		'/hero/pauseia-07.webp',
 		'/hero/senat-speaker1.webp'
 	]
 
@@ -251,16 +236,16 @@
 
 	/* Scroll left — slow, contemplative */
 	.row-left .marquee-track {
-		animation: scroll-left 140s linear infinite;
+		animation: scroll-left 235s linear infinite;
 	}
 
 	/* Scroll right */
 	.row-right .marquee-track {
-		animation: scroll-right 140s linear infinite;
+		animation: scroll-right 235s linear infinite;
 	}
 
 	.row-slow .marquee-track {
-		animation-duration: 180s;
+		animation-duration: 300s;
 	}
 
 	@keyframes scroll-left {
