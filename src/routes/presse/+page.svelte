@@ -1,6 +1,11 @@
 <script lang="ts">
 	import { MoveUpRight, ChevronLeft, ChevronRight, Search, X, Newspaper } from 'lucide-svelte'
 	import type { PressRelease, LocalPressRelease, PressCoverage } from '$lib/notion'
+	import PostMeta from '$components/PostMeta.svelte'
+
+	const title = 'Espace Presse - Pause IA'
+	const description =
+		'Espace presse de Pause IA : communiqués de presse, contact médias et ressources pour les journalistes.'
 
 	export let data: {
 		pressReleases: PressRelease[]
@@ -307,13 +312,7 @@
 	}
 </script>
 
-<svelte:head>
-	<title>Espace Presse - Pause IA</title>
-	<meta
-		name="description"
-		content="Espace presse de Pause IA : communiqués de presse, contact médias et ressources pour les journalistes."
-	/>
-</svelte:head>
+<PostMeta {title} {description} />
 
 <div class="press-page">
 	<header class="press-header">
