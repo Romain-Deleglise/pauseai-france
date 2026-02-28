@@ -5,7 +5,7 @@
 
 	const title = 'Nos Campagnes'
 	const description =
-		'Découvrez les campagnes menées par notre association pour sensibiliser et agir face aux risques de l'IA.'
+		"Découvrez les campagnes menées par notre association pour sensibiliser et agir face aux risques de l'IA."
 </script>
 
 <PostMeta {title} {description} />

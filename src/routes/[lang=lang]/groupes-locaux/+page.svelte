@@ -6,7 +6,7 @@
 
 	const title = 'Groupes locaux | Pause IA'
 	const description =
-		'Trouvez un groupe local Pause IA près de chez vous ou créez-en un pour agir concrètement en faveur d'une pause sur l'intelligence artificielle.'
+		"Trouvez un groupe local Pause IA près de chez vous ou créez-en un pour agir concrètement en faveur d'une pause sur l'intelligence artificielle."
 </script>
 
 <PostMeta {title} {description} />
