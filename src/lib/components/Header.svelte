@@ -94,7 +94,24 @@
 
 	// Language switcher: swap /fr/ <-> /en/ in current pathname
 	$: otherLang = lang === 'fr' ? 'en' : 'fr'
-	$: switchLangHref = $page.url.pathname.replace(`/${lang}`, `/${otherLang}`) || `/${otherLang}`
+
+	// Danger page slugs differ between languages — map them explicitly
+	const DANGER_SLUGS: Record<'fr' | 'en', string[]> = {
+		fr: ['economiques-et-materiels', 'pour-les-individus', 'pour-la-societe', "pour-l'humanite"],
+		en: ['economic-and-material', 'for-individuals', 'for-society', 'for-humanity']
+	}
+
+	function getSwitchLangHref(pathname: string, currentLang: 'fr' | 'en', other: 'fr' | 'en') {
+		const dangerMatch = pathname.match(new RegExp(`^/${currentLang}/dangers/(.+)$`))
+		if (dangerMatch) {
+			const slug = dangerMatch[1]
+			const idx = DANGER_SLUGS[currentLang].indexOf(slug)
+			if (idx >= 0) return `/${other}/dangers/${DANGER_SLUGS[other][idx]}`
+		}
+		return pathname.replace(`/${currentLang}`, `/${other}`) || `/${other}`
+	}
+
+	$: switchLangHref = getSwitchLangHref($page.url.pathname, lang, otherLang)
 </script>
 
 <!--
