@@ -31,11 +31,11 @@
 
 <Risks {lang} />
 
-<Videos videos={data.videos} />
+<Videos videos={data.videos} {lang} />
 
-<Inserts reports={data.reports} />
+<Inserts reports={data.reports} {lang} />
 
-<Articles articles={data.articles} />
+<Articles articles={data.articles} {lang} />
 
 <NewsletterCta {lang} />
 
