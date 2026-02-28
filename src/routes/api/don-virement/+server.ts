@@ -222,10 +222,10 @@ export const POST: RequestHandler = async ({ request }) => {
 		await callApi4('Contribution', 'create', {
 			values: {
 				contact_id: contactId,
-				'financial_type_id:label': 'Donation',
+				'financial_type_id:label': 'Don',
 				total_amount: data.montant,
 				'contribution_status_id:name': 'Pending',
-				'payment_instrument_id:label': 'EFT',
+				'payment_instrument_id:label': 'Virement bancaire',
 				source: 'Virement bancaire - Site web',
 				trxn_id: reference
 			}
