@@ -2,10 +2,17 @@
 	import PostMeta from '$components/PostMeta.svelte'
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
 	import Button from '$lib/components/Button.svelte'
+	import type { PageData } from './$types'
 
-	const title = 'Élections municipales 2026'
-	const description =
-		"Les élections municipales de mars 2026 représentent une opportunité majeure de sensibilisation au niveau local. À cette occasion, Pause IA appelle les candidats à s'engager concrètement en signant notre charte."
+	export let data: PageData
+
+	$: lang = data.lang
+	$: isEn = lang === 'en'
+
+	$: title = isEn ? 'Municipal elections 2026 | Pause AI' : 'Élections municipales 2026 | Pause IA'
+	$: description = isEn
+		? 'The March 2026 municipal elections represent a major opportunity for local awareness. Pause AI is calling on candidates to make a concrete commitment by signing our charter.'
+		: "Les élections municipales de mars 2026 représentent une opportunité majeure de sensibilisation au niveau local. À cette occasion, Pause IA appelle les candidats à s'engager concrètement en signant notre charte."
 
 	let showModal = false
 
@@ -29,26 +36,38 @@
 
 <article>
 	<section class="hero">
-		<UnderlinedTitle as="h1">Élections municipales 2026</UnderlinedTitle>
+		<UnderlinedTitle as="h1">
+			{isEn ? 'Municipal elections 2026' : 'Élections municipales 2026'}
+		</UnderlinedTitle>
 
-		<p class="intro">
-			{description}
-		</p>
+		<p class="intro">{description}</p>
 	</section>
 
 	<section class="charte-engagement">
 		<div class="charte-header">
-			<h2>Demander à vos candidats de s'engager sur la charte de Pause IA</h2>
-			<p>
-				Vous pouvez agir localement en interpellant les candidats de votre ville. Invitez-les à
-				découvrir et à signer la charte de Pause IA. L'ensemble des signataires sera prochainement
-				affiché sur cette page.
-			</p>
+			{#if isEn}
+				<h2>Ask your candidates to commit to the Pause AI charter</h2>
+				<p>
+					You can act locally by challenging the candidates in your city. Invite them to discover
+					and sign the Pause AI charter. All signatories will soon be displayed on this page.
+				</p>
+			{:else}
+				<h2>Demander à vos candidats de s'engager sur la charte de Pause IA</h2>
+				<p>
+					Vous pouvez agir localement en interpellant les candidats de votre ville. Invitez-les à
+					découvrir et à signer la charte de Pause IA. L'ensemble des signataires sera prochainement
+					affiché sur cette page.
+				</p>
+			{/if}
 		</div>
 
 		<div class="cta-container">
-			<Button on:click={() => (showModal = true)}>Je découvre la charte</Button>
-			<Button on:click={openActivoice}>J'interpelle les candidats de ma ville</Button>
+			<Button on:click={() => (showModal = true)}>
+				{isEn ? 'Discover the charter' : 'Je découvre la charte'}
+			</Button>
+			<Button on:click={openActivoice}>
+				{isEn ? 'Challenge my city candidates' : "J'interpelle les candidats de ma ville"}
+			</Button>
 		</div>
 
 		<activoice-embed id="activoice-embed-1d572d9b_9638_4731_84c0_ce7fd867cccb" />
@@ -59,10 +78,19 @@
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<div class="modal-overlay" on:click={() => (showModal = false)}>
 		<div class="modal-content" on:click|stopPropagation>
-			<button class="close-button" on:click={() => (showModal = false)} aria-label="Fermer">
+			<button
+				class="close-button"
+				on:click={() => (showModal = false)}
+				aria-label={isEn ? 'Close' : 'Fermer'}
+			>
 				&times;
 			</button>
-			<img src="/charte-municipales-2026.png" alt="La charte Pause IA pour les municipales" />
+			<img
+				src="/charte-municipales-2026.png"
+				alt={isEn
+					? 'The Pause AI charter for municipal elections'
+					: 'La charte Pause IA pour les municipales'}
+			/>
 		</div>
 	</div>
 {/if}

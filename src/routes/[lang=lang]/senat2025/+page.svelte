@@ -1,5 +1,11 @@
 <script lang="ts">
 	import Button from '$lib/components/Button.svelte'
+	import type { PageData } from './$types'
+
+	export let data: PageData
+
+	$: lang = data.lang
+	$: isEn = lang === 'en'
 
 	let firstName = ''
 	let lastName = ''
@@ -19,14 +25,15 @@
 		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 		if (!email || !emailRegex.test(email)) {
 			isError = true
-			message = 'Veuillez saisir une adresse e-mail valide'
+			message = isEn
+				? 'Please enter a valid email address'
+				: 'Veuillez saisir une adresse e-mail valide'
 			return
 		}
 
-		// Require at least one subscription option
 		if (!subscribeNewsletter && !subscribeSubstack && !subscribePolicyProposals) {
 			isError = true
-			message = 'Sélectionnez au moins une option'
+			message = isEn ? 'Select at least one option' : 'Sélectionnez au moins une option'
 			return
 		}
 
@@ -47,18 +54,19 @@
 			})
 			const json = await res.json()
 			if (res.ok && json.success) {
-				message = json.message || 'Merci, inscription enregistrée.'
+				message =
+					json.message ||
+					(isEn ? 'Thank you, registration confirmed.' : 'Merci, inscription enregistrée.')
 				firstName = ''
 				lastName = ''
 				email = ''
-				// Keep defaults for toggles for faster multiple entries
 			} else {
 				isError = true
-				message = json.error || 'Une erreur est survenue.'
+				message = json.error || (isEn ? 'An error occurred.' : 'Une erreur est survenue.')
 			}
 		} catch (e) {
 			isError = true
-			message = 'Erreur réseau, réessayez.'
+			message = isEn ? 'Network error, please try again.' : 'Erreur réseau, réessayez.'
 		} finally {
 			isSubmitting = false
 		}
@@ -66,11 +74,19 @@
 </script>
 
 <svelte:head>
-	<meta
-		name="description"
-		content="Compte-rendu du colloque au Sénat du 31 octobre 2025 : points clés, résumé exécutif et recommandations pour maîtriser l'intelligence artificielle."
-	/>
-	<title>Colloque Sénat — Compte-rendu & recommandations | Pause IA</title>
+	{#if isEn}
+		<meta
+			name="description"
+			content="Report from the Senate colloquium on October 31, 2025: key points, executive summary and recommendations for controlling artificial intelligence."
+		/>
+		<title>Senate Colloquium — Report & Recommendations | Pause AI</title>
+	{:else}
+		<meta
+			name="description"
+			content="Compte-rendu du colloque au Sénat du 31 octobre 2025 : points clés, résumé exécutif et recommandations pour maîtriser l'intelligence artificielle."
+		/>
+		<title>Colloque Sénat — Compte-rendu & recommandations | Pause IA</title>
+	{/if}
 </svelte:head>
 
 <section class="wrap">
@@ -78,14 +94,18 @@
 	<div class="hero">
 		<img
 			src="/senat-2025-colloque.png"
-			alt="Colloque Sénat — Intelligence Artificielle : Sécuriser les pratiques, contenir les risques"
+			alt={isEn
+				? 'Senate Colloquium — Artificial Intelligence: Securing Practices, Containing Risks'
+				: 'Colloque Sénat — Intelligence Artificielle : Sécuriser les pratiques, contenir les risques'}
 		/>
 		<div class="hero-text">
-			<h1>COLLOQUE SÉNAT — 31 OCTOBRE 2025</h1>
+			<h1>{isEn ? 'SENATE COLLOQUIUM — OCTOBER 31, 2025' : 'COLLOQUE SÉNAT — 31 OCTOBRE 2025'}</h1>
 			<p class="subtitle">
-				Intelligence Artificielle : Sécuriser les Pratiques, Contenir les Risques
+				{isEn
+					? 'Artificial Intelligence: Securing Practices, Containing Risks'
+					: 'Intelligence Artificielle : Sécuriser les Pratiques, Contenir les Risques'}
 			</p>
-			<p class="cta">Compte-rendu disponible</p>
+			<p class="cta">{isEn ? 'Report available' : 'Compte-rendu disponible'}</p>
 		</div>
 	</div>
 
@@ -93,238 +113,408 @@
 		<!-- CTA Download Button -->
 		<div class="download-cta">
 			<Button href="/pdfs/compte-rendu-senat-2025.pdf" target="_blank" rel="noopener noreferrer">
-				📥 Télécharger le compte-rendu complet (PDF)
+				{isEn
+					? '📥 Download the full report (PDF)'
+					: '📥 Télécharger le compte-rendu complet (PDF)'}
 			</Button>
 		</div>
 
-		<!-- Points Clés Section -->
+		<!-- Key Points Section -->
 		<section class="key-points">
-			<h2>Points clés</h2>
-			<div class="key-point-card">
-				<p>
-					<strong>Les capacités de l'IA doublent tous les 4 à 7 mois.</strong> Nos cycles réglementaires
-					restent constants. Cette progression exponentielle crée un fossé croissant entre avancée technologique
-					et capacité collective à la maîtriser.
-				</p>
-			</div>
-
-			<div class="key-point-card">
-				<p>
-					<strong>Les risques ne sont pas hypothétiques, ils se matérialisent déjà</strong> dans
-					tous les domaines : enfance et développement cognitif, démocratie et débat public, emploi
-					et concentration du pouvoir, cybersécurité et sécurité nationale.
-					<em>(Voir sections 3 à 7 pour le détail des risques)</em>
-				</p>
-			</div>
-
-			<div class="key-point-card">
-				<p>
-					<strong>La cause profonde : nous déployons des systèmes "boîtes noires"</strong> dont nous
-					ne maîtrisons ni le fonctionnement interne, ni tous les comportements. Les techniques actuelles
-					d'alignement sont insuffisantes et ne fournissent aucune garantie fiable.
-				</p>
-			</div>
-
-			<div class="key-point-card">
-				<p>
-					<strong>Des leviers d'action concrets existent</strong> : régulation proactive,
-					responsabilité juridique, évaluations obligatoires, investissement dans la sécurité de
-					l'IA, protection de l'EU AI Act, transparence des algorithmes, lignes rouges
-					internationales. <em>(Voir section 8 pour les recommandations détaillées)</em>
-				</p>
-			</div>
+			<h2>{isEn ? 'Key points' : 'Points clés'}</h2>
+			{#if isEn}
+				<div class="key-point-card">
+					<p>
+						<strong>AI capabilities double every 4 to 7 months.</strong> Our regulatory cycles remain
+						constant. This exponential progression creates a growing gap between technological advancement
+						and our collective ability to manage it.
+					</p>
+				</div>
+				<div class="key-point-card">
+					<p>
+						<strong>The risks are not hypothetical, they are already materializing</strong> across
+						all domains: childhood and cognitive development, democracy and public debate,
+						employment and concentration of power, cybersecurity and national security.
+						<em>(See sections 3 to 7 for details on risks)</em>
+					</p>
+				</div>
+				<div class="key-point-card">
+					<p>
+						<strong>The root cause: we are deploying "black box" systems</strong> whose internal workings
+						and all behaviors we cannot control. Current alignment techniques are insufficient and provide
+						no reliable guarantees.
+					</p>
+				</div>
+				<div class="key-point-card">
+					<p>
+						<strong>Concrete levers for action exist</strong>: proactive regulation, legal
+						liability, mandatory evaluations, investment in AI safety, protection of the EU AI Act,
+						algorithm transparency, international red lines.
+						<em>(See section 8 for detailed recommendations)</em>
+					</p>
+				</div>
+			{:else}
+				<div class="key-point-card">
+					<p>
+						<strong>Les capacités de l'IA doublent tous les 4 à 7 mois.</strong> Nos cycles réglementaires
+						restent constants. Cette progression exponentielle crée un fossé croissant entre avancée
+						technologique et capacité collective à la maîtriser.
+					</p>
+				</div>
+				<div class="key-point-card">
+					<p>
+						<strong>Les risques ne sont pas hypothétiques, ils se matérialisent déjà</strong> dans
+						tous les domaines : enfance et développement cognitif, démocratie et débat public,
+						emploi et concentration du pouvoir, cybersécurité et sécurité nationale.
+						<em>(Voir sections 3 à 7 pour le détail des risques)</em>
+					</p>
+				</div>
+				<div class="key-point-card">
+					<p>
+						<strong>La cause profonde : nous déployons des systèmes "boîtes noires"</strong> dont nous
+						ne maîtrisons ni le fonctionnement interne, ni tous les comportements. Les techniques actuelles
+						d'alignement sont insuffisantes et ne fournissent aucune garantie fiable.
+					</p>
+				</div>
+				<div class="key-point-card">
+					<p>
+						<strong>Des leviers d'action concrets existent</strong> : régulation proactive,
+						responsabilité juridique, évaluations obligatoires, investissement dans la sécurité de
+						l'IA, protection de l'EU AI Act, transparence des algorithmes, lignes rouges
+						internationales. <em>(Voir section 8 pour les recommandations détaillées)</em>
+					</p>
+				</div>
+			{/if}
 		</section>
 
 		<!-- Executive Summary Section -->
 		<section class="executive-summary">
-			<h2>Résumé exécutif</h2>
+			<h2>{isEn ? 'Executive Summary' : 'Résumé exécutif'}</h2>
 
-			<p>
-				<strong
-					>Aujourd'hui, les systèmes d'intelligence artificielle peuvent effectuer de manière
-					autonome des tâches demandant environ 2 heures à un humain</strong
-				>. <strong>Cette durée d'autonomie double tous les 4 à 7 mois.</strong> La progression exponentielle
-				des capacités, au prix d'une croissance phénoménale de la consommation énergétique et des investissements
-				(500 milliards de dollars annoncés par les États-Unis), creuse à une vitesse vertigineuse le
-				fossé entre l'avancée technologique et notre capacité collective à en maîtriser les conséquences.
-			</p>
-
-			<p>
-				Le colloque du 31 octobre 2025 au Sénat, organisé par l'association Pause IA avec le soutien
-				de la sénatrice Ghislaine Senée et du sénateur Thomas Dossus, a réuni experts, société
-				civile et parlementaires autour d'un double constat :
-			</p>
-
-			<p>
-				<strong
-					>1. Les risques de l'IA ne relèvent pas de la science-fiction, ils se matérialisent déjà.</strong
-				> Chatbots encourageant des adolescents au suicide, cyberattaques paralysant des hôpitaux, algorithmes
-				de recommandation fragmentant notre réalité commune, utilisation de ressources et concentration
-				du pouvoir économique sans précédent : les impacts concrets touchent tous les pans de notre société.
-				Et ces risques s'amplifient au rythme de la progression des capacités.
-			</p>
-
-			<p>
-				<strong
-					>2. La régulation n'est pas un frein à l'innovation, elle en est la condition.</strong
-				> L'aviation et l'industrie pharmaceutique le démontrent : c'est un cadre réglementaire sécurisant
-				qui bâtit la confiance et permet un déploiement bénéfique de la technologie. Face à une course
-				effrénée menée par une poignée d'acteurs privés, la puissance publique doit reprendre la main
-				pour garantir que l'IA serve l'intérêt général.
-			</p>
-
-			<h3>Les dangers identifiés sont graves et nombreux</h3>
-
-			<p>
-				<strong>Enfance et développement cognitif.</strong> 64% des enfants de 9 à 17 ans utilisent déjà
-				l'IA. Or, ces systèmes ne sont pas conçus pour des cerveaux en développement. Ils créent des
-				risques de dépendance, d'atrophie cognitive et de manipulation émotionnelle via des "relations
-				parasociales" avec des machines qui simulent l'empathie sans la ressentir.
-			</p>
-
-			<p>
-				<strong>Démocratie et débat public.</strong> Les algorithmes de recommandation des médias sociaux
-				sont opaques et optimisés pour l'engagement plutôt que la vérité. Ils polarisent nos sociétés
-				et sapent les fondations du débat démocratique. Ceux de YouTube contrôlaient déjà 700 millions
-				d'heures par jour en 2018, soit l'équivalent de l'enseignement de 25 000 professeurs sur leur
-				carrière entière. Les IA génératives ne pourront qu'amplifier massivement ce phénomène.
-			</p>
-
-			<p>
-				<strong>Économie et emploi.</strong> L'automatisation des tâches cognitives menace des pans entiers
-				de l'emploi qualifié. Entre 17% et 30% du travail actuel pourrait être automatisée. Sans anticipation
-				politique, ce choc entraînera une précarisation massive et une concentration du pouvoir économique
-				entre les mains d'acteurs technologiques majoritairement non-européens, rendant toute redistribution
-				des richesses quasi-impossible.
-			</p>
-
-			<p>
-				<strong>Cybersécurité et biorisques.</strong> L'IA abaisse drastiquement le seuil de compétence
-				nécessaire pour mener des cyberattaques sophistiquées ou concevoir de nouvelles armes biologiques.
-				Nos infrastructures critiques sont en première ligne. Les modélisations montrent que les dommages
-				économiques des cyberattaques pourraient être multipliés par 4 à 8 dans les prochaines années.
-			</p>
-
-			<h3>Les systèmes d'IA actuels sont incontrôlables par nature</h3>
-
-			<p>
-				Le problème fondamental est que se déploient à grande échelle des systèmes "boîtes noires"
-				dont personne ne maîtrrise ni le fonctionnement interne, ni tous les comportements. Personne
-				n'a programmé ChatGPT pour encourager des adolescents au suicide, pourtant cela arrive. Les
-				techniques actuelles d'alignement sont insuffisantes et ne fournissent aucune garantie
-				fiable. La communauté scientifique, incluant des prix Nobel et Turing, tire la sonnette
-				d'alarme : continuer sur cette trajectoire, c'est accepter une perte de contrôle
-				progressive.
-			</p>
-
-			<h3>Les leviers d'action</h3>
-
-			<p>
-				La France et l'Europe peuvent devenir leaders, non dans la course à la puissance, mais dans
-				la maîtrise de l'IA. Cela exige des actions politiques fortes :
-			</p>
-
-			<ol class="action-list">
-				<li>
-					<strong>Adopter une réglementation proactive</strong> qui légifère pour les technologies de
-					demain, pas celles d'hier, en anticipant les évolutions futures et en intégrant des principes
-					de précaution stricts.
-				</li>
-				<li>
-					<strong>Établir une responsabilité juridique claire</strong> : les développeurs d'IA et les
-					entreprises qui en déploient les applications doivent être tenus responsables des dommages
-					causés. La nature "boîte noire" ne peut être une excuse.
-				</li>
-				<li>
-					<strong>Exiger des évaluations de risques obligatoires et indépendantes</strong> avant tout
-					déploiement d'IA à haut risque, sur le modèle de l'aviation ou du médicament.
-				</li>
-				<li>
+			{#if isEn}
+				<p>
 					<strong
-						>Investir massivement dans une filière française et européenne de la sécurité de l'IA</strong
-					>
-					: soutenir la recherche sur la robustesse, la transparence et le contrôle des IA. Renforcer
-					les moyens de l'INESIA et créer une filière d'excellence.
-				</li>
-				<li>
-					<strong>Protéger la régulation européenne</strong> : l'EU AI Act est sous pression intense
-					des <em>lobbies</em> (le numérique investit plus en lobbying que l'automobile, la pharmacie
-					et l'aéronautique réunis). Défendre et renforcer ce cadre réglementaire est crucial.
-				</li>
-				<li>
-					<strong>Imposer la transparence des algorithmes de recommandation</strong> et explorer des
-					modèles de gouvernance démocratique pour protéger le débat public de la manipulation.
-				</li>
-				<li>
-					<strong>Porter au niveau international l'établissement de "lignes rouges"</strong> sur les
-					capacités autonomes dangereuses et les usages inacceptables de l'IA.
-				</li>
-			</ol>
+						>Today, AI systems can autonomously perform tasks that would take a human approximately
+						2 hours</strong
+					>. <strong>This autonomous capability doubles every 4 to 7 months.</strong> The exponential
+					progression of capabilities, at the cost of phenomenal growth in energy consumption and investments
+					($500 billion announced by the United States), is widening at a dizzying speed the gap between
+					technological advancement and our collective ability to manage its consequences.
+				</p>
 
-			<p>
-				Ces mesures ne visent pas à freiner l'écosystème français, mais à encadrer la course à haut
-				risque vers l'Intelligence Artificielle Générale menée par une poignée de laboratoires
-				internationaux.
-			</p>
+				<p>
+					The October 31, 2025 colloquium at the Senate, organized by the Pause AI association with
+					the support of Senator Ghislaine Senée and Senator Thomas Dossus, brought together
+					experts, civil society and parliamentarians around a dual observation:
+				</p>
 
-			<h3>Pour aller plus loin</h3>
+				<p>
+					<strong
+						>1. The risks of AI are not science fiction, they are already materializing.</strong
+					> Chatbots encouraging teenagers to commit suicide, cyberattacks paralyzing hospitals, recommendation
+					algorithms fragmenting our shared reality, unprecedented use of resources and concentration
+					of economic power: the concrete impacts affect every aspect of our society. And these risks
+					are amplifying at the pace of capability progression.
+				</p>
 
-			<p>
-				Ce colloque a ouvert un dialogue essentiel. L'association Pause IA et les experts mobilisés
-				se tiennent à l'entière disposition des parlementaires pour approfondir ces sujets,
-				organiser des auditions et contribuer à des groupes de travail visant à traduire ces leviers
-				en propositions législatives concrètes.
-			</p>
+				<p>
+					<strong>2. Regulation is not a brake on innovation, it is its condition.</strong> Aviation
+					and the pharmaceutical industry demonstrate this: it is a reassuring regulatory framework that
+					builds trust and allows for beneficial deployment of technology. Faced with a frantic race
+					led by a handful of private actors, public authorities must take back control to ensure that
+					AI serves the public interest.
+				</p>
+
+				<h3>The identified dangers are serious and numerous</h3>
+
+				<p>
+					<strong>Childhood and cognitive development.</strong> 64% of children aged 9 to 17 already
+					use AI. Yet these systems were not designed for developing brains. They create risks of addiction,
+					cognitive atrophy and emotional manipulation through "parasocial relationships" with machines
+					that simulate empathy without feeling it.
+				</p>
+
+				<p>
+					<strong>Democracy and public debate.</strong> Social media recommendation algorithms are opaque
+					and optimized for engagement rather than truth. They polarize our societies and undermine the
+					foundations of democratic debate. YouTube's algorithms already controlled 700 million hours
+					per day in 2018, equivalent to the teaching of 25,000 teachers over their entire careers. Generative
+					AI can only massively amplify this phenomenon.
+				</p>
+
+				<p>
+					<strong>Economy and employment.</strong> The automation of cognitive tasks threatens entire
+					swaths of skilled employment. Between 17% and 30% of current work could be automated. Without
+					political anticipation, this shock will lead to massive precariousness and a concentration
+					of economic power in the hands of predominantly non-European technology actors, making any
+					redistribution of wealth nearly impossible.
+				</p>
+
+				<p>
+					<strong>Cybersecurity and biorisks.</strong> AI drastically lowers the skill threshold needed
+					to carry out sophisticated cyberattacks or design new biological weapons. Our critical infrastructure
+					is on the front line. Models show that the economic damage from cyberattacks could multiply
+					by 4 to 8 in the coming years.
+				</p>
+
+				<h3>Current AI systems are inherently uncontrollable</h3>
+
+				<p>
+					The fundamental problem is that "black box" systems are being deployed at scale whose
+					internal workings and all behaviors no one controls. No one programmed ChatGPT to
+					encourage teenagers to commit suicide, yet it happens. Current alignment techniques are
+					insufficient and provide no reliable guarantees. The scientific community, including Nobel
+					and Turing Prize winners, is sounding the alarm: continuing on this trajectory means
+					accepting a progressive loss of control.
+				</p>
+
+				<h3>Levers for action</h3>
+
+				<p>
+					France and Europe can become leaders, not in the race for power, but in the mastery of AI.
+					This requires strong political actions:
+				</p>
+
+				<ol class="action-list">
+					<li>
+						<strong>Adopt proactive regulation</strong> that legislates for tomorrow's technologies,
+						not yesterday's, anticipating future developments and integrating strict precautionary principles.
+					</li>
+					<li>
+						<strong>Establish clear legal liability</strong>: AI developers and companies that
+						deploy their applications must be held responsible for damages caused. The "black box"
+						nature cannot be an excuse.
+					</li>
+					<li>
+						<strong>Require mandatory and independent risk assessments</strong> before any high-risk
+						AI deployment, modeled on aviation or pharmaceuticals.
+					</li>
+					<li>
+						<strong>Massively invest in a French and European AI safety sector</strong>: support
+						research on AI robustness, transparency and control. Strengthen INESIA's resources and
+						create a center of excellence.
+					</li>
+					<li>
+						<strong>Protect European regulation</strong>: the EU AI Act is under intense lobbying
+						pressure (tech invests more in lobbying than automotive, pharma and aeronautics
+						combined). Defending and strengthening this regulatory framework is crucial.
+					</li>
+					<li>
+						<strong>Impose transparency on recommendation algorithms</strong> and explore models of democratic
+						governance to protect public debate from manipulation.
+					</li>
+					<li>
+						<strong>Bring to the international level the establishment of "red lines"</strong> on dangerous
+						autonomous capabilities and unacceptable uses of AI.
+					</li>
+				</ol>
+
+				<p>
+					These measures are not aimed at slowing down the French ecosystem, but at framing the
+					high-risk race toward Artificial General Intelligence led by a handful of international
+					laboratories.
+				</p>
+
+				<h3>Going further</h3>
+
+				<p>
+					This colloquium opened an essential dialogue. The Pause AI association and the mobilized
+					experts are fully available to parliamentarians to deepen these subjects, organize
+					hearings and contribute to working groups aimed at translating these levers into concrete
+					legislative proposals.
+				</p>
+			{:else}
+				<p>
+					<strong
+						>Aujourd'hui, les systèmes d'intelligence artificielle peuvent effectuer de manière
+						autonome des tâches demandant environ 2 heures à un humain</strong
+					>. <strong>Cette durée d'autonomie double tous les 4 à 7 mois.</strong> La progression exponentielle
+					des capacités, au prix d'une croissance phénoménale de la consommation énergétique et des investissements
+					(500 milliards de dollars annoncés par les États-Unis), creuse à une vitesse vertigineuse le
+					fossé entre l'avancée technologique et notre capacité collective à en maîtriser les conséquences.
+				</p>
+
+				<p>
+					Le colloque du 31 octobre 2025 au Sénat, organisé par l'association Pause IA avec le
+					soutien de la sénatrice Ghislaine Senée et du sénateur Thomas Dossus, a réuni experts,
+					société civile et parlementaires autour d'un double constat :
+				</p>
+
+				<p>
+					<strong
+						>1. Les risques de l'IA ne relèvent pas de la science-fiction, ils se matérialisent
+						déjà.</strong
+					> Chatbots encourageant des adolescents au suicide, cyberattaques paralysant des hôpitaux,
+					algorithmes de recommandation fragmentant notre réalité commune, utilisation de ressources
+					et concentration du pouvoir économique sans précédent : les impacts concrets touchent tous
+					les pans de notre société. Et ces risques s'amplifient au rythme de la progression des capacités.
+				</p>
+
+				<p>
+					<strong
+						>2. La régulation n'est pas un frein à l'innovation, elle en est la condition.</strong
+					> L'aviation et l'industrie pharmaceutique le démontrent : c'est un cadre réglementaire sécurisant
+					qui bâtit la confiance et permet un déploiement bénéfique de la technologie. Face à une course
+					effrénée menée par une poignée d'acteurs privés, la puissance publique doit reprendre la main
+					pour garantir que l'IA serve l'intérêt général.
+				</p>
+
+				<h3>Les dangers identifiés sont graves et nombreux</h3>
+
+				<p>
+					<strong>Enfance et développement cognitif.</strong> 64% des enfants de 9 à 17 ans utilisent
+					déjà l'IA. Or, ces systèmes ne sont pas conçus pour des cerveaux en développement. Ils créent
+					des risques de dépendance, d'atrophie cognitive et de manipulation émotionnelle via des "relations
+					parasociales" avec des machines qui simulent l'empathie sans la ressentir.
+				</p>
+
+				<p>
+					<strong>Démocratie et débat public.</strong> Les algorithmes de recommandation des médias sociaux
+					sont opaques et optimisés pour l'engagement plutôt que la vérité. Ils polarisent nos sociétés
+					et sapent les fondations du débat démocratique. Ceux de YouTube contrôlaient déjà 700 millions
+					d'heures par jour en 2018, soit l'équivalent de l'enseignement de 25 000 professeurs sur leur
+					carrière entière. Les IA génératives ne pourront qu'amplifier massivement ce phénomène.
+				</p>
+
+				<p>
+					<strong>Économie et emploi.</strong> L'automatisation des tâches cognitives menace des pans
+					entiers de l'emploi qualifié. Entre 17% et 30% du travail actuel pourrait être automatisée.
+					Sans anticipation politique, ce choc entraînera une précarisation massive et une concentration
+					du pouvoir économique entre les mains d'acteurs technologiques majoritairement non-européens,
+					rendant toute redistribution des richesses quasi-impossible.
+				</p>
+
+				<p>
+					<strong>Cybersécurité et biorisques.</strong> L'IA abaisse drastiquement le seuil de compétence
+					nécessaire pour mener des cyberattaques sophistiquées ou concevoir de nouvelles armes biologiques.
+					Nos infrastructures critiques sont en première ligne. Les modélisations montrent que les dommages
+					économiques des cyberattaques pourraient être multipliés par 4 à 8 dans les prochaines années.
+				</p>
+
+				<h3>Les systèmes d'IA actuels sont incontrôlables par nature</h3>
+
+				<p>
+					Le problème fondamental est que se déploient à grande échelle des systèmes "boîtes noires"
+					dont personne ne maîtrrise ni le fonctionnement interne, ni tous les comportements.
+					Personne n'a programmé ChatGPT pour encourager des adolescents au suicide, pourtant cela
+					arrive. Les techniques actuelles d'alignement sont insuffisantes et ne fournissent aucune
+					garantie fiable. La communauté scientifique, incluant des prix Nobel et Turing, tire la
+					sonnette d'alarme : continuer sur cette trajectoire, c'est accepter une perte de contrôle
+					progressive.
+				</p>
+
+				<h3>Les leviers d'action</h3>
+
+				<p>
+					La France et l'Europe peuvent devenir leaders, non dans la course à la puissance, mais
+					dans la maîtrise de l'IA. Cela exige des actions politiques fortes :
+				</p>
+
+				<ol class="action-list">
+					<li>
+						<strong>Adopter une réglementation proactive</strong> qui légifère pour les technologies
+						de demain, pas celles d'hier, en anticipant les évolutions futures et en intégrant des principes
+						de précaution stricts.
+					</li>
+					<li>
+						<strong>Établir une responsabilité juridique claire</strong> : les développeurs d'IA et les
+						entreprises qui en déploient les applications doivent être tenus responsables des dommages
+						causés. La nature "boîte noire" ne peut être une excuse.
+					</li>
+					<li>
+						<strong>Exiger des évaluations de risques obligatoires et indépendantes</strong> avant tout
+						déploiement d'IA à haut risque, sur le modèle de l'aviation ou du médicament.
+					</li>
+					<li>
+						<strong
+							>Investir massivement dans une filière française et européenne de la sécurité de l'IA</strong
+						>
+						: soutenir la recherche sur la robustesse, la transparence et le contrôle des IA. Renforcer
+						les moyens de l'INESIA et créer une filière d'excellence.
+					</li>
+					<li>
+						<strong>Protéger la régulation européenne</strong> : l'EU AI Act est sous pression
+						intense des <em>lobbies</em> (le numérique investit plus en lobbying que l'automobile, la
+						pharmacie et l'aéronautique réunis). Défendre et renforcer ce cadre réglementaire est crucial.
+					</li>
+					<li>
+						<strong>Imposer la transparence des algorithmes de recommandation</strong> et explorer des
+						modèles de gouvernance démocratique pour protéger le débat public de la manipulation.
+					</li>
+					<li>
+						<strong>Porter au niveau international l'établissement de "lignes rouges"</strong> sur les
+						capacités autonomes dangereuses et les usages inacceptables de l'IA.
+					</li>
+				</ol>
+
+				<p>
+					Ces mesures ne visent pas à freiner l'écosystème français, mais à encadrer la course à
+					haut risque vers l'Intelligence Artificielle Générale menée par une poignée de
+					laboratoires internationaux.
+				</p>
+
+				<h3>Pour aller plus loin</h3>
+
+				<p>
+					Ce colloque a ouvert un dialogue essentiel. L'association Pause IA et les experts
+					mobilisés se tiennent à l'entière disposition des parlementaires pour approfondir ces
+					sujets, organiser des auditions et contribuer à des groupes de travail visant à traduire
+					ces leviers en propositions législatives concrètes.
+				</p>
+			{/if}
 
 			<div class="download-cta-bottom">
 				<Button href="/pdfs/compte-rendu-senat-2025.pdf" target="_blank" rel="noopener noreferrer">
-					📥 Télécharger le compte-rendu complet (PDF)
+					{isEn
+						? '📥 Download the full report (PDF)'
+						: '📥 Télécharger le compte-rendu complet (PDF)'}
 				</Button>
 			</div>
 		</section>
 
 		<!-- Newsletter Section -->
 		<section class="newsletter-section">
-			<h2>Restez informé·e</h2>
+			<h2>{isEn ? 'Stay informed' : 'Restez informé·e'}</h2>
 			<p class="newsletter-intro">
-				Inscrivez-vous pour recevoir le compte-rendu complet, nos propositions législatives et nos
-				prochaines actions.
+				{isEn
+					? 'Sign up to receive the full report, our legislative proposals and our upcoming actions.'
+					: 'Inscrivez-vous pour recevoir le compte-rendu complet, nos propositions législatives et nos prochaines actions.'}
 			</p>
 
 			<form on:submit|preventDefault={submitForm} class="form">
 				<div class="grid">
 					<label>
-						<span>Prénom</span>
+						<span>{isEn ? 'First name' : 'Prénom'}</span>
 						<input type="text" bind:value={firstName} autocomplete="given-name" />
 					</label>
 					<label>
-						<span>Nom</span>
+						<span>{isEn ? 'Last name' : 'Nom'}</span>
 						<input type="text" bind:value={lastName} autocomplete="family-name" />
 					</label>
 				</div>
 
 				<label>
-					<span>Adresse e-mail</span>
+					<span>{isEn ? 'Email address' : 'Adresse e-mail'}</span>
 					<input type="email" bind:value={email} required autocomplete="email" />
 				</label>
 
 				<fieldset class="choices">
-					<legend>Choix d'abonnement</legend>
+					<legend>{isEn ? 'Subscription choices' : "Choix d'abonnement"}</legend>
 					<label class="check">
 						<input
 							type="checkbox"
 							bind:checked={subscribePolicyProposals}
 							disabled={isSubmitting}
 						/>
-						<span>Nos propositions législatives</span>
+						<span>{isEn ? 'Our legislative proposals' : 'Nos propositions législatives'}</span>
 					</label>
 					<label class="check">
 						<input type="checkbox" bind:checked={subscribeNewsletter} disabled={isSubmitting} />
-						<span>Newsletter Pause IA</span>
+						<span>Pause {isEn ? 'AI' : 'IA'} Newsletter</span>
 					</label>
 					<label class="check">
 						<input type="checkbox" bind:checked={subscribeSubstack} disabled={isSubmitting} />
-						<span>Blog Substack Pause IA</span>
+						<span>Pause {isEn ? 'AI' : 'IA'} Substack Blog</span>
 					</label>
 				</fieldset>
 
@@ -332,7 +522,7 @@
 					<div class:msg-error={isError} class="msg">{message}</div>
 				{/if}
 
-				<button type="submit" disabled={isSubmitting}>Envoyer</button>
+				<button type="submit" disabled={isSubmitting}>{isEn ? 'Submit' : 'Envoyer'}</button>
 			</form>
 		</section>
 	</div>

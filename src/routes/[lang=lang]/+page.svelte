@@ -27,9 +27,9 @@
 
 <Hero {lang} />
 
-<Lead />
+<Lead {lang} />
 
-<Risks />
+<Risks {lang} />
 
 <Videos videos={data.videos} />
 
@@ -37,6 +37,6 @@
 
 <Articles articles={data.articles} />
 
-<NewsletterCta />
+<NewsletterCta {lang} />
 
-<Faq />
+<Faq {lang} />

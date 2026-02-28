@@ -3,51 +3,77 @@
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
 	import Button from '$components/Button.svelte'
 	import { MessageSquare, PlusCircle } from 'lucide-svelte'
+	import type { PageData } from './$types'
 
-	const title = 'Groupes locaux | Pause IA'
-	const description =
-		"Trouvez un groupe local Pause IA près de chez vous ou créez-en un pour agir concrètement en faveur d'une pause sur l'intelligence artificielle."
+	export let data: PageData
+
+	$: lang = data.lang
+	$: isEn = lang === 'en'
+
+	$: title = isEn ? 'Local groups | Pause AI' : 'Groupes locaux | Pause IA'
+	$: description = isEn
+		? 'Find a local Pause AI group near you or create one to take concrete action for a pause on artificial intelligence.'
+		: "Trouvez un groupe local Pause IA près de chez vous ou créez-en un pour agir concrètement en faveur d'une pause sur l'intelligence artificielle."
 </script>
 
 <PostMeta {title} {description} />
 
 <article>
 	<section class="hero">
-		<UnderlinedTitle as="h1">Groupes locaux</UnderlinedTitle>
+		<UnderlinedTitle as="h1">{isEn ? 'Local groups' : 'Groupes locaux'}</UnderlinedTitle>
 		<p class="hero-description">
-			L'action locale est essentielle pour sensibiliser le public, interpeller les élus et
-			construire un mouvement citoyen fort. En groupe, nous pouvons organiser des rencontres,
-			distribuer des tracts, et créer un impact visible sur le terrain. Rejoignez une équipe près de
-			chez vous ou lancez la dynamique dans votre ville !
+			{#if isEn}
+				Local action is essential for raising public awareness, engaging elected officials and
+				building a strong citizen movement. As a group, we can organize meetings, hand out leaflets,
+				and create a visible impact on the ground. Join a team near you or start the momentum in
+				your city!
+			{:else}
+				L'action locale est essentielle pour sensibiliser le public, interpeller les élus et
+				construire un mouvement citoyen fort. En groupe, nous pouvons organiser des rencontres,
+				distribuer des tracts, et créer un impact visible sur le terrain. Rejoignez une équipe près
+				de chez vous ou lancez la dynamique dans votre ville !
+			{/if}
 		</p>
 	</section>
 
 	<section class="cta-section">
 		<div class="cta-card join">
 			<MessageSquare size="2.5em" />
-			<h2>Je m'inscris pour rejoindre un groupe</h2>
+			<h2>{isEn ? 'I sign up to join a group' : "Je m'inscris pour rejoindre un groupe"}</h2>
 			<p>
-				Remplissez le formulaire d'inscription pour contribuer concrètement à l'action de Pause IA
-				au niveau local en participant à des actions collectives de sensibilisation et de
-				mobilisation citoyenne, et en faisant vivre une communauté engagée autour des enjeux liés à
-				l'intelligence artificielle.
+				{#if isEn}
+					Fill in the registration form to contribute concretely to Pause AI's local action by
+					participating in collective awareness and citizen mobilization actions, and by nurturing
+					an engaged community around the challenges linked to artificial intelligence.
+				{:else}
+					Remplissez le formulaire d'inscription pour contribuer concrètement à l'action de Pause IA
+					au niveau local en participant à des actions collectives de sensibilisation et de
+					mobilisation citoyenne, et en faisant vivre une communauté engagée autour des enjeux liés
+					à l'intelligence artificielle.
+				{/if}
 			</p>
-			<Button href="https://pauseia.notion.site/2e128fc94b7780fd94b6d35c35b2f0ac"
-				>Rejoindre un groupe</Button
-			>
+			<Button href="https://pauseia.notion.site/2e128fc94b7780fd94b6d35c35b2f0ac">
+				{isEn ? 'Join a group' : 'Rejoindre un groupe'}
+			</Button>
 		</div>
 
 		<div class="cta-card create">
 			<PlusCircle size="2.5em" />
-			<h2>Je lance un nouveau groupe</h2>
+			<h2>{isEn ? 'I launch a new group' : 'Je lance un nouveau groupe'}</h2>
 			<p>
-				Faites vivre et grandir Pause IA localement en animant une communauté de bénévoles engagés,
-				en coordonnant des actions de sensibilisation et de mobilisation, et en assurant le lien
-				entre le terrain et l'équipe nationale.
+				{#if isEn}
+					Help Pause AI grow locally by leading a community of engaged volunteers, coordinating
+					awareness and mobilization actions, and ensuring the link between the field and the
+					national team.
+				{:else}
+					Faites vivre et grandir Pause IA localement en animant une communauté de bénévoles
+					engagés, en coordonnant des actions de sensibilisation et de mobilisation, et en assurant
+					le lien entre le terrain et l'équipe nationale.
+				{/if}
 			</p>
-			<Button alt href="https://pauseia.notion.site/2e128fc94b7780fd94b6d35c35b2f0ac"
-				>Lancer un groupe</Button
-			>
+			<Button alt href="https://pauseia.notion.site/2e128fc94b7780fd94b6d35c35b2f0ac">
+				{isEn ? 'Start a group' : 'Lancer un groupe'}
+			</Button>
 		</div>
 	</section>
 </article>
