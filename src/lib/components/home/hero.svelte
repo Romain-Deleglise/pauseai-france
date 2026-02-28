@@ -46,8 +46,7 @@
 		'/hero/sans-ia-sure.webp',
 		'/hero/conf-presenter.webp',
 		'/hero/event-06.webp',
-		'/hero/manif-05.webp',
-		'/hero/pauseia-11.webp'
+		'/hero/manif-05.webp'
 	]
 	const row3 = [
 		'/hero/senat-orateur.webp',
@@ -83,7 +82,6 @@
 		'/hero/projection-conference.webp',
 		'/hero/conference-speaker.webp',
 		'/hero/event-25.webp',
-		'/hero/pauseia-18.webp',
 		'/hero/senat-audience2.webp',
 		'/hero/conf-question.webp',
 		'/hero/event-26.webp',
