@@ -151,20 +151,6 @@
 		color: white;
 	}
 
-	/* Active underline dot indicator */
-	.trigger.active::after {
-		content: '';
-		display: block;
-		position: absolute;
-		bottom: 0.1rem;
-		left: 50%;
-		transform: translateX(-50%);
-		width: 4px;
-		height: 4px;
-		border-radius: 50%;
-		background: var(--brand);
-	}
-
 	.trigger {
 		position: relative;
 	}
