@@ -18,23 +18,43 @@
 	let scrolled = false
 	let mounted = false
 
-	onMount(() => {
-		mounted = true
-		// Hysteresis: activate at 90px, deactivate only below 15px.
-		// This avoids the scroll-anchoring feedback loop where the banner
-		// collapsing (−40px layout shift) brings scrollY back under the
-		// threshold, causing the banner to expand again, then collapse, etc.
-		const handleScroll = () => {
-			if (!scrolled && window.scrollY > 90) {
-				scrolled = true
-			} else if (scrolled && window.scrollY < 15) {
-				scrolled = false
-				// Close mobile sidebar when header hides on homepage
-				if (onHomepage) open = false
+	// Portal action: move the node to document.body so it escapes the sticky
+	// header's containing block. position:fixed inside position:sticky is
+	// contained by the sticky ancestor in modern browsers, which breaks the
+	// sidebar layout (it renders inside the nav bar instead of full-screen).
+	function portal(node: HTMLElement): { destroy: () => void } {
+		document.body.appendChild(node)
+		return {
+			destroy() {
+				node.parentNode?.removeChild(node)
 			}
 		}
+	}
+
+	onMount(() => {
+		mounted = true
+		// Hysteresis: activate at 90px, deactivate only at 5px (near top).
+		// The gap (85px) exceeds the total header height change (~53px) so the
+		// scroll-anchoring feedback loop can never close.
+		// RAF batching ensures multiple scroll events per frame don't cause
+		// rapid toggling of the `scrolled` class mid-transition.
+		let rafId: ReturnType<typeof requestAnimationFrame> | null = null
+		const handleScroll = () => {
+			if (rafId !== null) return
+			rafId = requestAnimationFrame(() => {
+				rafId = null
+				if (!scrolled && window.scrollY > 90) {
+					scrolled = true
+				} else if (scrolled && window.scrollY < 5) {
+					scrolled = false
+				}
+			})
+		}
 		window.addEventListener('scroll', handleScroll, { passive: true })
-		return () => window.removeEventListener('scroll', handleScroll)
+		return () => {
+			window.removeEventListener('scroll', handleScroll)
+			if (rafId !== null) cancelAnimationFrame(rafId)
+		}
 	})
 
 	function closeMenu() {
@@ -148,8 +168,9 @@
 				</button>
 			</div>
 
-			<!-- Mobile/tablet sidebar -->
-			<div class="sidebar" class:open>
+			<!-- Mobile/tablet sidebar — use:portal pour l'appender à document.body
+			     et l'extraire du containing block créé par position:sticky -->
+			<div class="sidebar" class:open use:portal>
 				<div class="sidebar-head">
 					<a href="/" class="sidebar-logo" on:click={closeMenu}>
 						<Logo height={36} fill_pause="black" fill_circle="#FF9416" fill_ai="black" />
@@ -225,6 +246,7 @@
 					class="sidebar-backdrop"
 					on:click={closeMenu}
 					transition:fade={{ duration: 200 }}
+					use:portal
 				></div>
 			{/if}
 		</nav>
@@ -294,14 +316,14 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		padding: 1rem 1rem;
+		padding: 0.65rem 1rem;
 		transition: padding 0.25s ease;
 	}
 
 	/* Compact nav when scrolled */
 	nav.scrolled {
-		padding-top: 0.5rem;
-		padding-bottom: 0.5rem;
+		padding-top: 0.35rem;
+		padding-bottom: 0.35rem;
 	}
 
 	.nav-right {
@@ -431,7 +453,11 @@
 	/* ─── Sidebar ────────────────────────────────────────────────── */
 	.sidebar {
 		position: fixed;
-		height: 100%;
+		/* height: 100% dépend du containing block (peut être le header sticky
+		   sur Safari/iOS), ce qui réduit la sidebar à ~60px. On utilise une
+		   unité viewport absolue qui n'en dépend pas. */
+		height: 100vh;
+		height: 100dvh;
 		width: min(22rem, 100%);
 		background: #fff;
 		top: 0;
@@ -439,7 +465,7 @@
 		transform: translateX(100%);
 		transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 		z-index: 1000;
-		overflow-y: auto;
+		overflow: hidden;
 		display: flex;
 		flex-direction: column;
 		box-shadow: -8px 0 40px rgba(0, 0, 0, 0.12);
@@ -463,9 +489,8 @@
 		align-items: center;
 		padding: 1.1rem 1.5rem;
 		border-bottom: 1px solid rgba(0, 0, 0, 0.07);
-		position: sticky;
-		top: 0;
 		background: white;
+		flex-shrink: 0;
 		z-index: 10;
 	}
 
@@ -497,6 +522,8 @@
 		flex-direction: column;
 		padding: 0.75rem 1.5rem 2rem;
 		flex: 1;
+		overflow-y: auto;
+		min-height: 0;
 	}
 
 	.sidebar-section {
@@ -608,7 +635,7 @@
 
 	@media (min-width: 640px) {
 		nav {
-			padding: 1rem 2rem;
+			padding: 0.75rem 2rem;
 		}
 
 		nav.scrolled {
