@@ -42,7 +42,6 @@
 		'/hero/event-05.webp',
 		'/hero/senat-talk.webp',
 		'/hero/fost-talk.webp',
-		'/hero/pauseia-16.webp',
 		'/hero/sans-ia-sure.webp',
 		'/hero/conf-presenter.webp',
 		'/hero/event-06.webp',
@@ -64,8 +63,7 @@
 		'/hero/manif-11.webp',
 		'/hero/event-09.webp',
 		'/hero/apidays-slide.webp',
-		'/hero/senat-discussion.webp',
-		'/hero/pauseia-13.webp'
+		'/hero/senat-discussion.webp'
 	]
 	const row4 = [
 		'/hero/manif-06.webp',
@@ -83,7 +81,6 @@
 		'/hero/conference-speaker.webp',
 		'/hero/event-25.webp',
 		'/hero/senat-audience2.webp',
-		'/hero/conf-question.webp',
 		'/hero/event-26.webp',
 		'/hero/apidays-expo.webp',
 		'/hero/conf-speaker-new.webp',
