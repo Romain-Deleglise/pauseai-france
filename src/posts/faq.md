@@ -136,7 +136,9 @@ C'est précisément pour cette raison que la prise de conscience des risques exi
 
 ### Voulez-vous interdire toute forme d'IA ?
 
-Non. Nous voulons uniquement interdire le développement des plus gros systèmes d'IA à usage général souvent appelés « modèles de pointe ». La quasi-totalité des modèles existants, ainsi que la plupart des futurs modèles d'IA, resteraient [légaux selon notre proposition](/propositions). Nous demandons l'interdiction des Intelligences Artificielles Générales (IAG), jusqu'à ce que nous puissions exercer un contrôle démocratique sur ces modèles et que nous soyons en mesure de les créer en toute sécurité.
+Non. Nous sommes favorables au développement de l'IA en France et en Europe. Les milliers d'applications de l'IA dans la santé, l'éducation, la recherche scientifique, l'industrie et les services publics peuvent et doivent continuer à progresser. La [quasi-totalité des modèles existants](/propositions), ainsi que la plupart des futurs modèles d'IA, resteraient légaux selon notre proposition.
+
+Ce que nous demandons, c'est l'**arrêt du développement des modèles de pointe à usage général** — ceux qui, par leur puissance et leur généralité, sont les seuls à pouvoir déclencher une dynamique d'[auto-amélioration récursive](/dangers/pour-l'humanite) incontrôlable. Ce sont ces modèles, et uniquement ceux-là, qui posent un [risque existentiel](/dangers/pour-l'humanite). Tant que le [problème de l'alignement](#accordion2) n'est pas résolu, poursuivre leur développement revient à foncer à l'aveugle. Notre position est alignée avec celle de [Yoshua Bengio](https://fr.wikipedia.org/wiki/Yoshua_Bengio) et du [Rapport international de sécurité IA 2025](https://internationalaisafetyreport.org/publication/international-ai-safety-report-2025) : ne pas confondre prudence sur les modèles les plus dangereux et renoncement à l'innovation.
 
 ### Croyez-vous que ChatGPT va tous nous tuer ?
 
