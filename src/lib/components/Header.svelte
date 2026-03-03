@@ -11,6 +11,9 @@
 	$: onHomepage = $page.url.pathname == '/'
 	$: onEmploiePage = /^\/emploi-ia(?:\/|$)/.test($page.url.pathname)
 
+	// Hero has a light background — header stays dark on homepage
+	$: whiteNav = false && onHomepage && !scrolled
+
 	let open = false
 	let scrolled = false
 	let mounted = false
@@ -113,9 +116,12 @@
   2. The Banner lives in the same sticky context as the nav — no z-index collision.
   Banner slides away via max-height CSS transition once the user scrolls.
 -->
-<header class="site-header" class:scrolled>
-	<!-- Banner: hidden via CSS when scrolled, without touching its internal dismiss state -->
-	<div class="banner-wrapper" class:scrolled>
+<header class="site-header" class:scrolled class:homepage={onHomepage}>
+	<!-- Banner behavior:
+		 - Homepage: hidden while hero is visible, appears when scrolled past hero
+		 - Other pages: visible at top, hidden when scrolled (original behavior)
+	-->
+	<div class="banner-wrapper" class:scrolled class:homepage={onHomepage}>
 		<Banner visible={$bannerStore.visible}>
 			{$bannerStore.message}
 			{#if $bannerStore.linkUrl}
@@ -128,11 +134,7 @@
 		<nav in:fade={{ duration: 400, delay: 100 }} class:scrolled class:homepage={onHomepage}>
 			<a href="/" class="logo">
 				<div class="big-logo">
-					<Logo
-						animate
-						fill_pause={onHomepage && !scrolled ? 'white' : 'black'}
-						emploi_ia={onEmploiePage}
-					/>
+					<Logo animate fill_pause={whiteNav ? 'white' : 'black'} emploi_ia={onEmploiePage} />
 				</div>
 				<div class="small-logo">
 					<Logo animate only_circle />
@@ -142,20 +144,14 @@
 			<div class="nav-right">
 				<div class="nav-links">
 					{#each navGroups as group}
-						<NavDropdown label={group.label} items={group.items} white={onHomepage && !scrolled} />
+						<NavDropdown label={group.label} items={group.items} white={whiteNav} />
 					{/each}
 					<!-- Séparateur vertical -->
-					<div
-						class="nav-separator"
-						class:on-hero={onHomepage && !scrolled}
-						aria-hidden="true"
-					></div>
+					<div class="nav-separator" class:on-hero={whiteNav} aria-hidden="true"></div>
 					<!-- CTAs -->
 					<div class="nav-ctas">
-						<a href="/dons" class="btn-donate" class:on-hero={onHomepage && !scrolled}>Donner</a>
-						<a href="/rejoindre" class="btn-join" class:on-hero={onHomepage && !scrolled}
-							>Rejoindre</a
-						>
+						<a href="/dons" class="btn-donate" class:on-hero={whiteNav}>Donner</a>
+						<a href="/rejoindre" class="btn-join" class:on-hero={whiteNav}>Rejoindre</a>
 					</div>
 				</div>
 				<button aria-label="Open mobile menu" class="hamburger" on:click={() => (open = !open)}>
@@ -166,24 +162,9 @@
 						fill="none"
 						xmlns="http://www.w3.org/2000/svg"
 					>
-						<rect
-							y="0"
-							height="2.5"
-							width="24"
-							fill={onHomepage && !scrolled ? 'white' : 'black'}
-						/>
-						<rect
-							y="10.75"
-							height="2.5"
-							width="24"
-							fill={onHomepage && !scrolled ? 'white' : 'black'}
-						/>
-						<rect
-							y="21.5"
-							height="2.5"
-							width="24"
-							fill={onHomepage && !scrolled ? 'white' : 'black'}
-						/>
+						<rect y="0" height="2.5" width="24" fill={whiteNav ? 'white' : 'black'} />
+						<rect y="10.75" height="2.5" width="24" fill={whiteNav ? 'white' : 'black'} />
+						<rect y="21.5" height="2.5" width="24" fill={whiteNav ? 'white' : 'black'} />
 					</svg>
 				</button>
 			</div>
@@ -261,10 +242,11 @@
 			</div>
 
 			{#if open}
-				<!-- svelte-ignore a11y-no-static-element-interactions -->
 				<div
 					class="sidebar-backdrop"
+					role="presentation"
 					on:click={closeMenu}
+					on:keydown={(e) => (e.key === 'Escape' || e.key === 'Enter') && closeMenu()}
 					transition:fade={{ duration: 200 }}
 					use:portal
 				></div>
@@ -283,13 +265,21 @@
 		transition:
 			background-color 0.25s ease,
 			box-shadow 0.25s ease,
-			border-color 0.25s ease;
+			border-color 0.25s ease,
+			opacity 0.3s ease;
 	}
 
 	.site-header.scrolled {
 		background: white;
 		border-bottom-color: rgba(0, 0, 0, 0.1);
 		box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
+	}
+
+	/* On homepage before scroll, header is hidden so hero is full-screen */
+	.site-header.homepage:not(.scrolled) {
+		opacity: 0;
+		pointer-events: none;
+		border-bottom-color: transparent;
 	}
 
 	/* ─── Banner slide-away on scroll ───────────────────────────── */
@@ -310,6 +300,17 @@
 	.banner-wrapper.scrolled {
 		max-height: 0;
 		opacity: 0;
+	}
+
+	/* Homepage: inverted — hidden at top, visible when scrolled past hero */
+	.banner-wrapper.homepage {
+		max-height: 0;
+		opacity: 0;
+	}
+
+	.banner-wrapper.homepage.scrolled {
+		max-height: 8rem;
+		opacity: 1;
 	}
 
 	/* ─── Nav ────────────────────────────────────────────────────── */

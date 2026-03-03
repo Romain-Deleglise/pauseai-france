@@ -7,7 +7,7 @@
 <article class="member-card">
 	<div class="member-image">
 		{#if image}
-			<img src={image} alt={name} loading="lazy" width="144" height="144" />
+			<img src={image} alt={name} loading="lazy" decoding="async" width="144" height="144" />
 		{:else}
 			<div class="placeholder">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
