@@ -11,10 +11,10 @@
 	import { onMount } from 'svelte'
 	import type { Lang } from '$lib/i18n'
 
-	import '@fontsource/ibm-plex-sans/200.css' // extra-light
-	import '@fontsource/ibm-plex-sans/400.css' // regular
-	import '@fontsource/ibm-plex-sans/500.css' // medium
-	import '@fontsource/ibm-plex-sans/700.css' // bold
+	import '@fontsource/ibm-plex-sans/latin-200.css' // extra-light, latin subset only
+	import '@fontsource/ibm-plex-sans/latin-400.css' // regular, latin subset only
+	import '@fontsource/ibm-plex-sans/latin-500.css' // medium, latin subset only
+	import '@fontsource/ibm-plex-sans/latin-700.css' // bold, latin subset only
 
 	import '../reset.css'
 	import '../app.css'
@@ -40,6 +40,28 @@
 		}
 	})
 </script>
+
+<svelte:head>
+	{@html `<script type="application/ld+json">
+		${JSON.stringify({
+			'@context': 'https://schema.org',
+			'@type': ['Organization', 'NGO'],
+			name: 'PauseAI France',
+			url: 'https://pauseia.fr',
+			logo: 'https://pauseia.fr/favicon.png',
+			sameAs: [
+				'https://www.facebook.com/Pause.IA/',
+				'https://twitter.com/pause_ia',
+				'https://www.linkedin.com/company/pause-ia/',
+				'https://www.instagram.com/pause_ia/',
+				'https://www.youtube.com/@Pause_IA',
+				'https://www.tiktok.com/@pause_ia',
+				'https://pauseia.substack.com/',
+				'https://www.threads.net/@pause_ia'
+			]
+		})}
+	</script>`}
+</svelte:head>
 
 <h2 style="width: 0; height: 0; margin: 0; padding: 0; visibility: hidden;">(Top)</h2>
 

@@ -13,7 +13,8 @@
 		"lint": "prettier --check . && eslint .",
 		"format": "prettier --write .",
 		"prepare": "svelte-kit sync && husky",
-		"test": "vitest --run"
+		"test": "vitest --run",
+		"optimize-images": "node scripts/optimize-images.js"
 	},
 	"devDependencies": {
 		"@netlify/functions": "^4.2.1",
