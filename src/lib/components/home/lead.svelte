@@ -34,14 +34,14 @@
 				<p>
 					According to <a href="https://www.safe.ai/work/statement-on-ai-risk#open-letter"
 						>AI safety and ethics experts</a
-					>, unchecked development also promises an assortment of calamities: large-scale
-					disinformation, mass manipulation, devastating cyberattacks, engineered pandemics, and
-					loss of control over autonomous systems — up to threatening the very survival of humanity.
+					>, unchecked development also entails major risks: large-scale disinformation, mass
+					manipulation, devastating cyberattacks, engineered pandemics, and loss of control over
+					autonomous systems — up to threatening the very survival of humanity.
 				</p>
 				<p>
-					Pause AI, a voice for AI safety researchers, promotes responsible development of this
-					rapidly evolving technology. We call for a moratorium on training more dangerous systems,
-					to avoid a global catastrophe.
+					Pause AI, in line with the warnings of AI safety researchers, promotes responsible
+					development of this rapidly evolving technology. We call for a moratorium on training more
+					dangerous systems, to avoid a global catastrophe.
 				</p>
 				<p>
 					The dangers are real, but hope exists. By acting together, we can shape a future where AI

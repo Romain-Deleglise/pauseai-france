@@ -34,7 +34,7 @@
 				{#if lang === 'en'}
 					{#if tab === 'Economic & material'}
 						<p>
-							<i>Mom, when I grow up, I'll be… useless?</i> AI labs are planning to automate
+							AI labs are planning to automate
 							<a href="https://www.palladiummag.com/2024/05/17/my-last-five-years-of-work/"
 								>all human work within 4 years</a
 							>. Whether they fully achieve this goal or not, it's clear we're heading toward a
@@ -118,10 +118,11 @@
 							wars."
 						</p>
 						<p>
-							AI safety researchers <a
-								href="https://aiimpacts.org/wp-content/uploads/2023/04/Thousands_of_AI_authors_on_the_future_of_AI.pdf"
-								>estimate a 30% probability</a
-							> of human extinction caused by AI.
+							According to the <a
+								href="https://wiki.aiimpacts.org/ai_timelines/predictions_of_human-level_ai_timelines/ai_timeline_surveys/2023_expert_survey_on_progress_in_ai"
+								>2023 AI Impacts survey</a
+							> of 2,778 AI researchers, the median estimated probability of human extinction is 5%,
+							and more than a third of respondents place it above 10%.
 						</p>
 						<p>
 							Never before has humanity faced such an imminent and potentially catastrophic threat.
