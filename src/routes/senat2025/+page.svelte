@@ -1,5 +1,10 @@
 <script lang="ts">
 	import Button from '$lib/components/Button.svelte'
+	import PostMeta from '$components/PostMeta.svelte'
+
+	const title = 'Colloque Sénat — Compte-rendu & recommandations | Pause IA'
+	const description =
+		"Compte-rendu du colloque au Sénat du 31 octobre 2025 : points clés, résumé exécutif et recommandations pour maîtriser l'intelligence artificielle."
 
 	let firstName = ''
 	let lastName = ''
@@ -65,13 +70,7 @@
 	}
 </script>
 
-<svelte:head>
-	<meta
-		name="description"
-		content="Compte-rendu du colloque au Sénat du 31 octobre 2025 : points clés, résumé exécutif et recommandations pour maîtriser l'intelligence artificielle."
-	/>
-	<title>Colloque Sénat — Compte-rendu & recommandations | Pause IA</title>
-</svelte:head>
+<PostMeta {title} {description} />
 
 <section class="wrap">
 	<!-- Hero Section -->

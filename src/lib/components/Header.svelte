@@ -12,6 +12,9 @@
 	$: onHomepage = $page.url.pathname == '/'
 	$: onEmploiePage = /^\/emploi-ia(?:\/|$)/.test($page.url.pathname)
 
+	// Hero has a light background — header stays dark on homepage
+	$: whiteNav = false && onHomepage && !scrolled
+
 	let open = false
 	let scrolled = false
 	let mounted = false
@@ -65,6 +68,7 @@
 			label: 'Comprendre',
 			items: [
 				{ href: '/dangers', label: "Les dangers de l'IA" },
+				{ href: '/emploi-ia', label: 'Emploi et IA' },
 				{ href: '/newsletters', label: 'Newsletter' },
 				{ href: '/propositions', label: 'Nos propositions' },
 				{ href: 'https://pauseia.substack.com/', label: 'Blog', external: true }
@@ -113,9 +117,12 @@
   2. The Banner lives in the same sticky context as the nav — no z-index collision.
   Banner slides away via max-height CSS transition once the user scrolls.
 -->
-<header class="site-header" class:scrolled>
-	<!-- Banner: hidden via CSS when scrolled, without touching its internal dismiss state -->
-	<div class="banner-wrapper" class:scrolled>
+<header class="site-header" class:scrolled class:homepage={onHomepage}>
+	<!-- Banner behavior:
+		 - Homepage: hidden while hero is visible, appears when scrolled past hero
+		 - Other pages: visible at top, hidden when scrolled (original behavior)
+	-->
+	<div class="banner-wrapper" class:scrolled class:homepage={onHomepage}>
 		<Banner visible={$bannerStore.visible}>
 			{$bannerStore.message}
 			{#if $bannerStore.linkUrl}
@@ -126,11 +133,11 @@
 
 	{#if mounted || !onHomepage}
 		<nav in:fade={{ duration: 400, delay: 100 }} class:scrolled class:homepage={onHomepage}>
-			<a href={onEmploiePage ? '/emploi-ia' : '/'} class="logo">
+			<a href="/" class="logo">
 				<div class="big-logo">
 					<Logo
 						animate
-						fill_pause={onHomepage && !scrolled ? 'white' : $theme === 'dark' ? 'white' : 'black'}
+						fill_pause={whiteNav ? 'white' : $theme === 'dark' ? 'white' : 'black'}
 						emploi_ia={onEmploiePage}
 					/>
 				</div>
@@ -142,19 +149,15 @@
 			<div class="nav-right">
 				<div class="nav-links">
 					{#each navGroups as group}
-						<NavDropdown label={group.label} items={group.items} white={onHomepage && !scrolled} />
+						<NavDropdown label={group.label} items={group.items} white={whiteNav} />
 					{/each}
 					<!-- Séparateur vertical -->
-					<div
-						class="nav-separator"
-						class:on-hero={onHomepage && !scrolled}
-						aria-hidden="true"
-					></div>
+					<div class="nav-separator" class:on-hero={whiteNav} aria-hidden="true"></div>
 					<!-- CTAs -->
 					<div class="nav-ctas">
 						<button
 							class="theme-toggle"
-							class:on-hero={onHomepage && !scrolled}
+							class:on-hero={whiteNav}
 							on:click={() => theme.toggle()}
 							aria-label={$theme === 'dark' ? 'Passer en mode clair' : 'Passer en mode sombre'}
 							title={$theme === 'dark' ? 'Mode clair' : 'Mode sombre'}
@@ -197,10 +200,8 @@
 								</svg>
 							{/if}
 						</button>
-						<a href="/dons" class="btn-donate" class:on-hero={onHomepage && !scrolled}>Donner</a>
-						<a href="/rejoindre" class="btn-join" class:on-hero={onHomepage && !scrolled}
-							>Rejoindre</a
-						>
+						<a href="/dons" class="btn-donate" class:on-hero={whiteNav}>Donner</a>
+						<a href="/rejoindre" class="btn-join" class:on-hero={whiteNav}>Rejoindre</a>
 					</div>
 				</div>
 				<button aria-label="Open mobile menu" class="hamburger" on:click={() => (open = !open)}>
@@ -215,19 +216,19 @@
 							y="0"
 							height="2.5"
 							width="24"
-							fill={onHomepage && !scrolled ? 'white' : $theme === 'dark' ? 'white' : 'black'}
+							fill={whiteNav ? 'white' : $theme === 'dark' ? 'white' : 'black'}
 						/>
 						<rect
 							y="10.75"
 							height="2.5"
 							width="24"
-							fill={onHomepage && !scrolled ? 'white' : $theme === 'dark' ? 'white' : 'black'}
+							fill={whiteNav ? 'white' : $theme === 'dark' ? 'white' : 'black'}
 						/>
 						<rect
 							y="21.5"
 							height="2.5"
 							width="24"
-							fill={onHomepage && !scrolled ? 'white' : $theme === 'dark' ? 'white' : 'black'}
+							fill={whiteNav ? 'white' : $theme === 'dark' ? 'white' : 'black'}
 						/>
 					</svg>
 				</button>
@@ -356,10 +357,11 @@
 			</div>
 
 			{#if open}
-				<!-- svelte-ignore a11y-no-static-element-interactions -->
 				<div
 					class="sidebar-backdrop"
+					role="presentation"
 					on:click={closeMenu}
+					on:keydown={(e) => (e.key === 'Escape' || e.key === 'Enter') && closeMenu()}
 					transition:fade={{ duration: 200 }}
 					use:portal
 				></div>
@@ -378,13 +380,21 @@
 		transition:
 			background-color 0.25s ease,
 			box-shadow 0.25s ease,
-			border-color 0.25s ease;
+			border-color 0.25s ease,
+			opacity 0.3s ease;
 	}
 
 	.site-header.scrolled {
 		background: var(--bg);
 		border-bottom-color: var(--border);
 		box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
+	}
+
+	/* On homepage before scroll, header is hidden so hero is full-screen */
+	.site-header.homepage:not(.scrolled) {
+		opacity: 0;
+		pointer-events: none;
+		border-bottom-color: transparent;
 	}
 
 	/* ─── Banner slide-away on scroll ───────────────────────────── */
@@ -405,6 +415,17 @@
 	.banner-wrapper.scrolled {
 		max-height: 0;
 		opacity: 0;
+	}
+
+	/* Homepage: inverted — hidden at top, visible when scrolled past hero */
+	.banner-wrapper.homepage {
+		max-height: 0;
+		opacity: 0;
+	}
+
+	.banner-wrapper.homepage.scrolled {
+		max-height: 8rem;
+		opacity: 1;
 	}
 
 	/* ─── Nav ────────────────────────────────────────────────────── */

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import PostMeta from '$components/PostMeta.svelte'
 	import Callout from '$components/Callout.svelte'
 	import { base } from '$app/paths'
 
@@ -9,13 +10,10 @@
 	/* eslint-enable @typescript-eslint/ban-ts-comment */
 </script>
 
-<svelte:head>
-	<title>Devenez recruteur pour Pause IA - Centre de Ressources</title>
-	<meta
-		name="description"
-		content="Découvrez comment amplifier l'impact de Pause IA grâce au recrutement relationnel. Guides, PDFs et ressources pour devenir un recruteur efficace."
-	/>
-</svelte:head>
+<PostMeta
+	title="Devenez recruteur pour Pause IA - Centre de Ressources"
+	description="Découvrez comment amplifier l'impact de Pause IA grâce au recrutement relationnel. Guides, PDFs et ressources pour devenir un recruteur efficace."
+/>
 
 <article class="recruitment-landing">
 	<!-- Hero Section -->
@@ -121,6 +119,7 @@
 						src={infographic}
 						alt="L'effet exponentiel du recrutement peer-to-peer : de 1 personne à plus de 4000 en un an"
 						class="infographic"
+						loading="lazy"
 					/>
 				</div>
 

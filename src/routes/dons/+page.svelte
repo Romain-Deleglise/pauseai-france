@@ -55,7 +55,6 @@
 			// Redirect to Stripe Checkout
 			window.location.href = url
 		} catch (error) {
-			console.error('Checkout Session creation error:', error)
 			paymentError =
 				error instanceof Error
 					? error.message
