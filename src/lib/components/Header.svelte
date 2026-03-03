@@ -42,6 +42,7 @@
 			label: 'Comprendre',
 			items: [
 				{ href: '/dangers', label: "Les dangers de l'IA" },
+				{ href: '/emploi-ia', label: 'Emploi et IA' },
 				{ href: '/newsletters', label: 'Newsletter' },
 				{ href: '/propositions', label: 'Nos propositions' },
 				{ href: 'https://pauseia.substack.com/', label: 'Blog', external: true }
@@ -103,7 +104,7 @@
 
 	{#if mounted || !onHomepage}
 		<nav in:fade={{ duration: 400, delay: 100 }} class:scrolled class:homepage={onHomepage}>
-			<a href={onEmploiePage ? '/emploi-ia' : '/'} class="logo">
+			<a href="/" class="logo">
 				<div class="big-logo">
 					<Logo
 						animate
