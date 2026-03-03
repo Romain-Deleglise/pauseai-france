@@ -241,10 +241,11 @@
 			</div>
 
 			{#if open}
-				<!-- svelte-ignore a11y-no-static-element-interactions -->
 				<div
 					class="sidebar-backdrop"
+					role="presentation"
 					on:click={closeMenu}
+					on:keydown={(e) => (e.key === 'Escape' || e.key === 'Enter') && closeMenu()}
 					transition:fade={{ duration: 200 }}
 					use:portal
 				></div>

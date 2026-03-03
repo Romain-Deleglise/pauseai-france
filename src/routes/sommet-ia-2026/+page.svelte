@@ -61,11 +61,6 @@
 		margin-bottom: 4rem;
 	}
 
-	.hero {
-		text-align: left;
-		margin-bottom: 4rem;
-	}
-
 	.campaign-content {
 		background: #fafafa;
 		border-radius: 16px;
@@ -74,11 +69,6 @@
 		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
 		text-align: center;
 		margin-bottom: 5rem;
-	}
-
-	.content-header {
-		max-width: 45rem;
-		margin: 0 auto 2rem;
 	}
 
 	.content-header {
