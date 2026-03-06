@@ -170,19 +170,13 @@ export default {
 	campagnes: {
 		meta_title: 'Our campaigns - Pause AI',
 		meta_desc:
-			'Find all ongoing Pause AI campaigns. This page is updated over time to reflect the current actions of the association.',
+			'Find all ongoing and past Pause AI campaigns. This page is updated regularly to reflect the current actions of the association.',
 		title: 'Our campaigns',
 		subtitle:
 			'This page lists all campaigns run by Pause AI. It is updated regularly — one link, always relevant.',
-		active_badge: 'Active',
-		municipales_title: 'Municipal elections 2026',
-		municipales_desc:
-			'The March 2026 municipal elections are an opportunity to act locally. Challenge candidates in your city and invite them to sign the Pause AI charter.',
-		municipales_cta: 'Join the campaign',
-		sommet_title: 'AI Summit 2026',
-		sommet_desc:
-			'The 2026 AI Summit in India is a crucial moment for the future of our society. Sign the petition and contact decision-makers.',
-		sommet_cta: 'Join the campaign'
+		badge_active: 'Active',
+		badge_ended: 'Ended',
+		see_archive: 'See page'
 	},
 	sommet: {
 		title: 'AI Summit 2026',

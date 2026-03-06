@@ -171,19 +171,13 @@ export default {
 	campagnes: {
 		meta_title: 'Nos campagnes - Pause IA',
 		meta_desc:
-			"Retrouvez toutes les campagnes en cours de Pause IA. Cette page est mise à jour au fil du temps pour refléter les actions actuelles de l'association.",
+			"Retrouvez toutes les campagnes en cours et passées de Pause IA. Cette page est mise à jour régulièrement pour refléter les actions actuelles de l'association.",
 		title: 'Nos campagnes',
 		subtitle:
 			'Cette page regroupe toutes les campagnes menées par Pause IA. Elle est mise à jour régulièrement : un même lien, toujours pertinent.',
-		active_badge: 'En cours',
-		municipales_title: 'Élections municipales 2026',
-		municipales_desc:
-			"Les élections municipales de mars 2026 sont une opportunité d'agir localement. Interpellez les candidats de votre ville et invitez-les à signer la charte Pause IA.",
-		municipales_cta: 'Participer à la campagne',
-		sommet_title: "Sommet de l'IA 2026",
-		sommet_desc:
-			"Le Sommet de l'IA 2026 en Inde est un moment crucial pour l'avenir de notre société. Signez la pétition et interpellez les décideurs politiques.",
-		sommet_cta: 'Participer à la campagne'
+		badge_active: 'En cours',
+		badge_ended: 'Terminée',
+		see_archive: 'Voir la page'
 	},
 	sommet: {
 		title: "Sommet de l'IA 2026",

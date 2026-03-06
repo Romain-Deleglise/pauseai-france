@@ -3,12 +3,15 @@
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
 	import Button from '$lib/components/Button.svelte'
 	import { getT } from '$lib/i18n'
+	import { getSortedCampaigns } from '$lib/campaigns'
 	import type { PageData } from './$types'
 
 	export let data: PageData
 
 	$: t = getT(data.lang)
-	$: prefix = data.lang === 'fr' ? '/fr' : '/en'
+	$: isEn = data.lang === 'en'
+	$: prefix = isEn ? '/en' : '/fr'
+	$: sortedCampaigns = getSortedCampaigns()
 </script>
 
 <PostMeta title={t.campagnes.meta_title} description={t.campagnes.meta_desc} />
@@ -20,19 +23,21 @@
 	</section>
 
 	<section class="campaigns-list">
-		<div class="campaign-card">
-			<div class="card-badge">{t.campagnes.active_badge}</div>
-			<h2>{t.campagnes.municipales_title}</h2>
-			<p>{t.campagnes.municipales_desc}</p>
-			<Button href="{prefix}/municipales-2026">{t.campagnes.municipales_cta}</Button>
-		</div>
-
-		<div class="campaign-card">
-			<div class="card-badge">{t.campagnes.active_badge}</div>
-			<h2>{t.campagnes.sommet_title}</h2>
-			<p>{t.campagnes.sommet_desc}</p>
-			<Button href="{prefix}/sommet-ia-2026">{t.campagnes.sommet_cta}</Button>
-		</div>
+		{#each sortedCampaigns as campaign}
+			{@const content = isEn ? campaign.en : campaign.fr}
+			<div class="campaign-card" class:ended={campaign.status === 'ended'}>
+				<div class="card-badge" class:badge-ended={campaign.status === 'ended'}>
+					{campaign.status === 'active' ? t.campagnes.badge_active : t.campagnes.badge_ended}
+				</div>
+				<h2>{content.title}</h2>
+				<p>{content.description}</p>
+				{#if campaign.status === 'active'}
+					<Button href="{prefix}/{campaign.slug}">{content.cta}</Button>
+				{:else}
+					<a class="archive-link" href="{prefix}/{campaign.slug}">{t.campagnes.see_archive} →</a>
+				{/if}
+			</div>
+		{/each}
 	</section>
 </article>
 
@@ -58,7 +63,7 @@
 	.campaigns-list {
 		display: flex;
 		flex-direction: column;
-		gap: 2rem;
+		gap: 1.5rem;
 		margin-bottom: 5rem;
 	}
 
@@ -71,6 +76,10 @@
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
+	}
+
+	.campaign-card.ended {
+		opacity: 0.65;
 	}
 
 	.card-badge {
@@ -86,6 +95,11 @@
 		margin-bottom: 1rem;
 	}
 
+	.card-badge.badge-ended {
+		background: #f5f5f5;
+		color: #888;
+	}
+
 	h2 {
 		font-size: 1.75rem;
 		margin-top: 0;
@@ -98,6 +112,17 @@
 		line-height: 1.7;
 		color: var(--text-muted, #444);
 		margin-bottom: 1.5rem;
+	}
+
+	.archive-link {
+		font-size: 0.95rem;
+		color: #888;
+		text-decoration: underline;
+		text-underline-offset: 3px;
+	}
+
+	.archive-link:hover {
+		color: #555;
 	}
 
 	@media (max-width: 600px) {
