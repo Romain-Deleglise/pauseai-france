@@ -345,6 +345,14 @@
 					{/each}
 
 					<div class="sidebar-actions">
+						<a
+							href={switchLangHref}
+							class="sidebar-lang-toggle"
+							on:click={closeMenu}
+							aria-label={otherLang === 'fr' ? 'Passer en français' : 'Switch to English'}
+						>
+							{otherLang === 'fr' ? '🇫🇷 Français' : '🇬🇧 English'}
+						</a>
 						<button
 							class="sidebar-theme-toggle"
 							on:click={() => theme.toggle()}
@@ -646,6 +654,35 @@
 		background: rgba(255, 255, 255, 0.08);
 	}
 
+	.sidebar-lang-toggle {
+		display: block;
+		text-align: center;
+		text-decoration: none;
+		padding: 0.55rem 0.6rem;
+		border-radius: 0.45rem;
+		background: rgba(0, 0, 0, 0.05);
+		color: var(--text-secondary);
+		font-size: 0.95rem;
+		font-family: var(--font-heading);
+		font-weight: 600;
+		transition: background 0.1s;
+	}
+
+	.sidebar-lang-toggle:hover {
+		background: rgba(255, 148, 22, 0.1);
+		color: var(--brand);
+	}
+
+	:global([data-theme='dark']) .sidebar-lang-toggle {
+		background: rgba(255, 255, 255, 0.07);
+		color: var(--text);
+	}
+
+	:global([data-theme='dark']) .sidebar-lang-toggle:hover {
+		background: rgba(255, 148, 22, 0.15);
+		color: var(--brand);
+	}
+
 	.sidebar-theme-toggle {
 		display: flex;
 		align-items: center;
@@ -881,7 +918,7 @@
 	}
 
 	/* ─── Responsive ─────────────────────────────────────────────── */
-	@media (min-width: 480px) {
+	@media (min-width: 640px) {
 		.big-logo {
 			display: block;
 		}
@@ -889,9 +926,7 @@
 		.small-logo {
 			display: none;
 		}
-	}
 
-	@media (min-width: 640px) {
 		nav {
 			padding: 0.55rem 2rem;
 		}
