@@ -96,29 +96,32 @@
 	let mounted = false
 	let heroTopOffset = 80 // fallback in px
 
-	onMount(async () => {
+	onMount(() => {
+		let ro: ResizeObserver | undefined
+
 		// Wait for pending DOM updates (Header nav rendering) before measuring
-		await tick()
-		const header = document.querySelector('.site-header')
-		const main = document.querySelector('main')
+		tick().then(() => {
+			const header = document.querySelector('.site-header')
+			const main = document.querySelector('main')
 
-		const measure = () => {
-			if (header) {
-				const headerH = header.getBoundingClientRect().height
-				const mainPT = main ? parseFloat(getComputedStyle(main).paddingTop) : 0
-				heroTopOffset = headerH + mainPT
+			const measure = () => {
+				if (header) {
+					const headerH = header.getBoundingClientRect().height
+					const mainPT = main ? parseFloat(getComputedStyle(main).paddingTop) : 0
+					heroTopOffset = headerH + mainPT
+				}
 			}
-		}
 
-		measure()
-		mounted = true
+			measure()
+			mounted = true
 
-		// Keep heroTopOffset in sync whenever the header resizes (e.g. scrolled
-		// state collapses padding after SvelteKit navigation restores scroll=0)
-		const ro = new ResizeObserver(measure)
-		if (header) ro.observe(header)
+			// Keep heroTopOffset in sync whenever the header resizes (e.g. scrolled
+			// state collapses padding after SvelteKit navigation restores scroll=0)
+			ro = new ResizeObserver(measure)
+			if (header) ro.observe(header)
+		})
 
-		return () => ro.disconnect()
+		return () => ro?.disconnect()
 	})
 </script>
 
