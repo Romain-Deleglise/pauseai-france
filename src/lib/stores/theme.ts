@@ -5,8 +5,7 @@ type Theme = 'light' | 'dark'
 
 function createThemeStore() {
 	const stored = browser ? (localStorage.getItem('theme') as Theme | null) : null
-	const prefersDark = browser && window.matchMedia('(prefers-color-scheme: dark)').matches
-	const initial: Theme = stored ?? (prefersDark ? 'dark' : 'light')
+	const initial: Theme = stored ?? 'light'
 
 	const { subscribe, set, update } = writable<Theme>(initial)
 
