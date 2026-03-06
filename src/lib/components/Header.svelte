@@ -4,6 +4,7 @@
 	import { page } from '$app/stores'
 	import Banner from '$components/Banner.svelte'
 	import { bannerStore } from '$lib/stores/banner'
+	import { theme } from '$lib/stores/theme'
 	import { getT } from '$lib/i18n'
 	import type { Lang } from '$lib/i18n'
 
@@ -167,7 +168,11 @@
 		<nav in:fade={{ duration: 400, delay: 100 }} class:scrolled class:homepage={onHomepage}>
 			<a href={onEmploiePage ? `${prefix}/emploi-ia` : `${prefix}`} class="logo">
 				<div class="big-logo">
-					<Logo animate fill_pause={whiteNav ? 'white' : 'black'} emploi_ia={onEmploiePage} />
+					<Logo
+						animate
+						fill_pause={whiteNav ? 'white' : $theme === 'dark' ? 'white' : 'black'}
+						emploi_ia={onEmploiePage}
+					/>
 				</div>
 				<div class="small-logo">
 					<Logo animate only_circle />
@@ -183,13 +188,53 @@
 					<div class="nav-separator" class:on-hero={whiteNav} aria-hidden="true"></div>
 					<!-- CTAs -->
 					<div class="nav-ctas">
-						<a href="{prefix}/dons" class="btn-donate" class:on-hero={whiteNav}>{t.nav.donner}</a>
-						<a href="{prefix}/rejoindre" class="btn-join" class:on-hero={whiteNav}
-							>{t.nav.rejoindre}</a
+						<button
+							class="theme-toggle"
+							class:on-hero={whiteNav}
+							on:click={() => theme.toggle()}
+							aria-label={$theme === 'dark' ? 'Passer en mode clair' : 'Passer en mode sombre'}
+							title={$theme === 'dark' ? 'Mode clair' : 'Mode sombre'}
 						>
-						<a href={switchLangHref} class="btn-lang" class:on-hero={whiteNav}
-							>{t.footer.switch_lang}</a
-						>
+							{#if $theme === 'dark'}
+								<svg
+									width="18"
+									height="18"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									aria-hidden="true"
+								>
+									<circle cx="12" cy="12" r="5" />
+									<line x1="12" y1="1" x2="12" y2="3" />
+									<line x1="12" y1="21" x2="12" y2="23" />
+									<line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+									<line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+									<line x1="1" y1="12" x2="3" y2="12" />
+									<line x1="21" y1="12" x2="23" y2="12" />
+									<line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+									<line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+								</svg>
+							{:else}
+								<svg
+									width="18"
+									height="18"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									aria-hidden="true"
+								>
+									<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+								</svg>
+							{/if}
+						</button>
+						<a href="/dons" class="btn-donate" class:on-hero={whiteNav}>Donner</a>
+						<a href="/rejoindre" class="btn-join" class:on-hero={whiteNav}>Rejoindre</a>
 					</div>
 				</div>
 				<button aria-label="Open mobile menu" class="hamburger" on:click={() => (open = !open)}>
@@ -200,9 +245,24 @@
 						fill="none"
 						xmlns="http://www.w3.org/2000/svg"
 					>
-						<rect y="0" height="2.5" width="24" fill={whiteNav ? 'white' : 'black'} />
-						<rect y="10.75" height="2.5" width="24" fill={whiteNav ? 'white' : 'black'} />
-						<rect y="21.5" height="2.5" width="24" fill={whiteNav ? 'white' : 'black'} />
+						<rect
+							y="0"
+							height="2.5"
+							width="24"
+							fill={whiteNav ? 'white' : $theme === 'dark' ? 'white' : 'black'}
+						/>
+						<rect
+							y="10.75"
+							height="2.5"
+							width="24"
+							fill={whiteNav ? 'white' : $theme === 'dark' ? 'white' : 'black'}
+						/>
+						<rect
+							y="21.5"
+							height="2.5"
+							width="24"
+							fill={whiteNav ? 'white' : $theme === 'dark' ? 'white' : 'black'}
+						/>
 					</svg>
 				</button>
 			</div>
@@ -211,8 +271,13 @@
 			     et l'extraire du containing block créé par position:sticky -->
 			<div class="sidebar" class:open use:portal>
 				<div class="sidebar-head">
-					<a href={prefix} class="sidebar-logo" on:click={closeMenu}>
-						<Logo height={36} fill_pause="black" fill_circle="#FF9416" fill_ai="black" />
+					<a href="/" class="sidebar-logo" on:click={closeMenu}>
+						<Logo
+							height={36}
+							fill_pause={$theme === 'dark' ? 'white' : 'black'}
+							fill_circle="#FF9416"
+							fill_ai={$theme === 'dark' ? 'white' : 'black'}
+						/>
 					</a>
 					<button aria-label="Close mobile menu" class="close-btn" on:click={closeMenu}>
 						<svg
@@ -224,7 +289,7 @@
 						>
 							<path
 								d="M1.5 1.5L14.5 14.5M14.5 1.5L1.5 14.5"
-								stroke="black"
+								stroke={$theme === 'dark' ? 'white' : 'black'}
 								stroke-width="2.2"
 								stroke-linecap="round"
 							/>
@@ -273,14 +338,53 @@
 					{/each}
 
 					<div class="sidebar-actions">
-						<a href="{prefix}/dons" class="sidebar-cta" on:click={closeMenu}>{t.nav.faire_un_don}</a
+						<button
+							class="sidebar-theme-toggle"
+							on:click={() => theme.toggle()}
+							aria-label={$theme === 'dark' ? 'Passer en mode clair' : 'Passer en mode sombre'}
 						>
-						<a href="{prefix}/rejoindre" class="sidebar-join" on:click={closeMenu}
-							>{t.nav.nous_rejoindre}</a
-						>
-						<a href={switchLangHref} class="sidebar-lang" on:click={closeMenu}
-							>{t.footer.switch_lang}</a
-						>
+							{#if $theme === 'dark'}
+								<svg
+									width="16"
+									height="16"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									aria-hidden="true"
+								>
+									<circle cx="12" cy="12" r="5" />
+									<line x1="12" y1="1" x2="12" y2="3" />
+									<line x1="12" y1="21" x2="12" y2="23" />
+									<line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+									<line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+									<line x1="1" y1="12" x2="3" y2="12" />
+									<line x1="21" y1="12" x2="23" y2="12" />
+									<line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+									<line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+								</svg>
+								Mode clair
+							{:else}
+								<svg
+									width="16"
+									height="16"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									aria-hidden="true"
+								>
+									<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+								</svg>
+								Mode sombre
+							{/if}
+						</button>
+						<a href="/dons" class="sidebar-cta" on:click={closeMenu}>Faire un don</a>
+						<a href="/rejoindre" class="sidebar-join" on:click={closeMenu}>Nous rejoindre</a>
 					</div>
 				</div>
 			</div>
@@ -305,7 +409,7 @@
 		position: sticky;
 		top: 0;
 		z-index: 100;
-		border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+		border-bottom: 1px solid var(--border);
 		transition:
 			background-color 0.25s ease,
 			box-shadow 0.25s ease,
@@ -314,8 +418,8 @@
 	}
 
 	.site-header.scrolled {
-		background: white;
-		border-bottom-color: rgba(0, 0, 0, 0.1);
+		background: var(--bg);
+		border-bottom-color: var(--border);
 		box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
 	}
 
@@ -390,7 +494,7 @@
 	.nav-separator {
 		width: 1px;
 		height: 1.5rem;
-		background: rgba(0, 0, 0, 0.18);
+		background: var(--border);
 		margin: 0 0.625rem;
 		flex-shrink: 0;
 	}
@@ -436,8 +540,8 @@
 
 	/* "Rejoindre" — black */
 	.btn-join {
-		background: black;
-		color: white;
+		background: var(--black);
+		color: var(--white);
 	}
 
 	.btn-join:hover {
@@ -466,51 +570,70 @@
 		opacity: 0.88;
 	}
 
-	/* Language switcher button */
-	.btn-lang {
-		display: inline-flex;
+	/* ─── Theme toggle ───────────────────────────────────────── */
+	.theme-toggle {
+		display: flex;
 		align-items: center;
 		justify-content: center;
-		text-decoration: none;
-		font-family: var(--font-heading);
-		font-weight: 600;
-		font-size: 0.8rem;
+		width: 2rem;
+		height: 2rem;
 		border-radius: 0.4rem;
-		padding: 0.35rem 0.75rem;
-		white-space: nowrap;
-		transition:
-			opacity 0.15s,
-			background 0.15s;
+		border: none;
 		background: transparent;
-		color: black;
-		border: 1px solid rgba(0, 0, 0, 0.2);
+		color: var(--text);
+		cursor: pointer;
+		transition:
+			background 0.15s,
+			color 0.15s;
 	}
 
-	.btn-lang:hover {
-		opacity: 0.7;
+	.theme-toggle:hover {
+		background: rgba(0, 0, 0, 0.08);
 	}
 
-	.btn-lang.on-hero {
+	.theme-toggle.on-hero {
 		color: white;
-		border-color: rgba(255, 255, 255, 0.4);
 	}
 
-	.sidebar-lang {
-		display: block;
-		text-decoration: none;
-		background: rgba(0, 0, 0, 0.06);
-		color: rgba(0, 0, 0, 0.7);
-		text-align: center;
-		padding: 0.6rem 1.5rem;
-		border-radius: 0.625rem;
+	.theme-toggle.on-hero:hover {
+		background: rgba(255, 255, 255, 0.15);
+	}
+
+	/* Dark mode: flip icon colors automatically via CSS currentColor */
+	:global([data-theme='dark']) .theme-toggle {
+		color: var(--text);
+	}
+
+	.sidebar-theme-toggle {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		width: 100%;
+		padding: 0.55rem 0.6rem;
+		border: none;
+		border-radius: 0.45rem;
+		background: rgba(0, 0, 0, 0.05);
+		color: var(--text-secondary);
+		font-size: 0.95rem;
 		font-family: var(--font-heading);
 		font-weight: 600;
-		font-size: 0.9rem;
-		transition: opacity 0.15s;
+		cursor: pointer;
+		transition: background 0.1s;
 	}
 
-	.sidebar-lang:hover {
-		opacity: 0.7;
+	.sidebar-theme-toggle:hover {
+		background: rgba(255, 148, 22, 0.1);
+		color: var(--brand);
+	}
+
+	:global([data-theme='dark']) .sidebar-theme-toggle {
+		background: rgba(255, 255, 255, 0.07);
+		color: var(--text);
+	}
+
+	:global([data-theme='dark']) .sidebar-theme-toggle:hover {
+		background: rgba(255, 148, 22, 0.15);
+		color: var(--brand);
 	}
 
 	.hamburger {
@@ -552,7 +675,7 @@
 		height: 100vh;
 		height: 100dvh;
 		width: min(22rem, 100%);
-		background: #fff;
+		background: var(--bg);
 		top: 0;
 		right: 0;
 		transform: translateX(100%);
@@ -593,7 +716,7 @@
 	}
 
 	.close-btn {
-		background: rgba(0, 0, 0, 0.06);
+		background: var(--btn-alt-bg);
 		border: none;
 		border-radius: 0.45rem;
 		padding: 0.5rem;
@@ -606,7 +729,7 @@
 	}
 
 	.close-btn:hover {
-		background: rgba(0, 0, 0, 0.1);
+		background: var(--btn-alt-hover-bg);
 	}
 
 	/* ─── Sidebar sections ──────────────────────────────────────── */
@@ -621,7 +744,7 @@
 
 	.sidebar-section {
 		padding: 0.875rem 0 0.5rem;
-		border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+		border-bottom: 1px solid var(--border);
 	}
 
 	.sidebar-section:last-of-type {
@@ -634,7 +757,7 @@
 		font-weight: 700;
 		letter-spacing: 0.09em;
 		text-transform: uppercase;
-		color: rgba(0, 0, 0, 0.38);
+		color: var(--text-secondary);
 		margin: 0 0 0.4rem;
 	}
 
@@ -652,7 +775,7 @@
 		font-size: 0.95rem;
 		font-family: var(--font-heading);
 		font-weight: 600;
-		color: rgba(0, 0, 0, 0.78);
+		color: var(--text);
 		padding: 0.4rem 0.6rem;
 		border-radius: 0.45rem;
 		transition:
@@ -700,8 +823,8 @@
 	.sidebar-join {
 		display: block;
 		text-decoration: none;
-		background: black;
-		color: white;
+		background: var(--black);
+		color: var(--white);
 		text-align: center;
 		padding: 0.8rem 1.5rem;
 		border-radius: 0.625rem;
@@ -777,5 +900,19 @@
 		.small-logo {
 			display: none;
 		}
+	}
+
+	/* ─── Dark mode overrides ────────────────────────────────── */
+	:global([data-theme='dark']) .site-header.scrolled {
+		box-shadow: 0 2px 16px rgba(0, 0, 0, 0.4);
+	}
+
+	:global([data-theme='dark']) .sidebar-theme-toggle {
+		background: rgba(255, 255, 255, 0.07);
+		color: var(--text);
+	}
+
+	:global([data-theme='dark']) .theme-toggle:hover {
+		background: rgba(255, 255, 255, 0.08);
 	}
 </style>

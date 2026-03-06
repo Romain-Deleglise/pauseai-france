@@ -140,6 +140,11 @@
 		color: var(--text);
 	}
 
+	:global([data-theme='dark']) .trigger:hover,
+	:global([data-theme='dark']) .trigger.active {
+		background: rgba(255, 255, 255, 0.07);
+	}
+
 	.trigger.white:hover,
 	.trigger.white.active {
 		background: rgba(255, 255, 255, 0.15);

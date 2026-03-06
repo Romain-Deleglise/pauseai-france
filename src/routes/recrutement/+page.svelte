@@ -431,7 +431,7 @@
 	}
 
 	.resource-card {
-		background: white;
+		background: var(--bg);
 		border: 2px solid #e5e7eb;
 		border-radius: 0.5rem;
 		padding: 2rem;
@@ -462,7 +462,7 @@
 	}
 
 	.resource-card p {
-		color: #6b7280;
+		color: var(--text-secondary);
 		margin-bottom: 1.5rem;
 		font-size: 0.95rem;
 	}
@@ -489,7 +489,7 @@
 	}
 
 	.card-button.secondary {
-		background-color: white;
+		background-color: var(--bg);
 		color: var(--brand);
 		border: 2px solid var(--brand);
 	}
@@ -501,7 +501,7 @@
 
 	.card-button:disabled {
 		background-color: #f3f4f6;
-		color: #9ca3af;
+		color: var(--text-secondary);
 		border-color: #e5e7eb;
 		cursor: not-allowed;
 	}
@@ -562,7 +562,7 @@
 
 	.reference {
 		font-size: 0.95rem;
-		color: #666;
+		color: var(--text-secondary);
 		font-style: italic;
 	}
 
@@ -720,5 +720,10 @@
 		border-radius: 0.2rem;
 		font-family: 'Courier New', monospace;
 		font-size: 0.9rem;
+	}
+
+	:global([data-theme='dark']) .card-button:disabled {
+		background-color: var(--btn-alt-bg);
+		border-color: var(--border);
 	}
 </style>

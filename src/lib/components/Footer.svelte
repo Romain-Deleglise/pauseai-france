@@ -4,6 +4,7 @@
 	import Socials from '$components/Socials.svelte'
 	import { getT } from '$lib/i18n'
 	import type { Lang } from '$lib/i18n'
+	import { theme } from '$lib/stores/theme'
 
 	export let lang: Lang = 'fr'
 
@@ -70,7 +71,12 @@
 	<div class="brand">
 		<a href={prefix} class="logo">
 			<div class="logo">
-				<Logo animate fill_circle="white" fill_ai="white" />
+				<Logo
+					animate
+					fill_pause={$theme === 'dark' ? '#f0ede8' : 'black'}
+					fill_circle="white"
+					fill_ai={$theme === 'dark' ? '#f0ede8' : 'white'}
+				/>
 			</div>
 		</a>
 		<p>{t.footer.tagline}</p>
@@ -195,8 +201,9 @@
 	}
 
 	.footer-links :global(a) {
-		color: var(--text-2);
+		color: inherit;
 		text-decoration: none;
+		opacity: 0.85;
 	}
 
 	.footer-links :global(a:hover) {
@@ -245,13 +252,13 @@
 		font-size: 0.95rem;
 		font-family: inherit;
 		background: white;
-		color: var(--text);
+		color: black;
 		transition: border-color 0.2s;
 	}
 
 	.newsletter-form input[type='email']:focus {
 		outline: none;
-		border-color: var(--black);
+		border-color: black;
 	}
 
 	.newsletter-form input[type='email']:disabled {
@@ -261,7 +268,7 @@
 
 	.newsletter-form button {
 		padding: 0.6rem 1.25rem;
-		background: var(--black);
+		background: black;
 		color: white;
 		border: none;
 		border-radius: 0.375rem;
@@ -366,5 +373,26 @@
 			grid-column: 1 / -1;
 			grid-row: 2;
 		}
+	}
+
+	/* ─── Dark mode (input + messages uniquement, le reste est dans app.css) ── */
+	:global([data-theme='dark']) .newsletter-form input[type='email'] {
+		border-color: var(--border);
+		background: var(--bg-card);
+		color: var(--text);
+	}
+
+	:global([data-theme='dark']) .newsletter-form button {
+		background: var(--bg-card);
+		color: var(--text);
+		border: 1px solid var(--border);
+	}
+
+	:global([data-theme='dark']) .newsletter-message.success {
+		color: #4ade80;
+	}
+
+	:global([data-theme='dark']) .newsletter-message.error {
+		color: #f87171;
 	}
 </style>

@@ -332,7 +332,7 @@
 		padding: 0.75rem 1rem;
 		border-radius: 0.5rem;
 		border: 1px solid var(--border, #e5e7eb);
-		background: var(--bg-secondary, #f9f9f9);
+		background: var(--bg-card, #f9f9f9);
 		transition:
 			background 0.2s,
 			border-color 0.2s,

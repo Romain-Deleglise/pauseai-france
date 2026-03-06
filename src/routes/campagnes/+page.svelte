@@ -52,7 +52,7 @@
 	.intro {
 		font-size: 1.25rem;
 		line-height: 1.6;
-		color: var(--text-muted, #444);
+		color: var(--text-secondary);
 	}
 
 	.campaigns-grid {
@@ -63,10 +63,10 @@
 	}
 
 	.campaign-card {
-		background: #fafafa;
+		background: var(--bg-subtle);
 		border-radius: 16px;
 		padding: 2.5rem 2rem;
-		border: 1px solid #eee;
+		border: 1px solid var(--border);
 		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
 		display: flex;
 		flex-direction: column;
@@ -78,14 +78,14 @@
 		font-size: 1.75rem;
 		margin-top: 0;
 		margin-bottom: 1rem;
-		color: var(--text-heading, #222);
+		color: var(--text);
 	}
 
 	.campaign-card p {
 		font-size: 1.1rem;
 		line-height: 1.6;
 		margin-bottom: 2rem;
-		color: var(--text-muted, #444);
+		color: var(--text-secondary);
 	}
 
 	@media (max-width: 600px) {
