@@ -733,7 +733,8 @@
 	}
 
 	.small-logo :global(svg) {
-		width: 3rem;
+		width: auto;
+		height: 36px;
 	}
 
 	.big-logo {
