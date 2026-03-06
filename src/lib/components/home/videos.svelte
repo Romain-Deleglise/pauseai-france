@@ -3,8 +3,10 @@
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
 	import YouTubeEmbed from '$components/YouTubeEmbed.svelte'
 	import type { Video } from '$lib/notion'
+	import type { Lang } from '$lib/i18n'
 
 	export let videos: Video[] = []
+	export let lang: Lang = 'fr'
 
 	const label_id = 'videos-title'
 
@@ -32,14 +34,16 @@
 </script>
 
 <section aria-labelledby={label_id}>
-	<UnderlinedTitle id={label_id}>Nos vidéos</UnderlinedTitle>
+	<UnderlinedTitle id={label_id}>{lang === 'en' ? 'Our videos' : 'Nos vidéos'}</UnderlinedTitle>
 	<div class="video-grid">
 		{#each displayVideos as video (video.id)}
 			<YouTubeEmbed id={video.youtubeId} title={video.title} />
 		{/each}
 	</div>
 	<div class="button-container">
-		<Button href="https://www.youtube.com/@Pause_IA">Voir plus de vidéos</Button>
+		<Button href="https://www.youtube.com/@Pause_IA"
+			>{lang === 'en' ? 'Watch more videos' : 'Voir plus de vidéos'}</Button
+		>
 	</div>
 </section>
 

@@ -32,18 +32,32 @@ const hardCodedPages: Post[] = [
 // 	}
 // }
 
-export function getPosts(subpath = '') {
+export function getPosts(subpath = '', lang: 'fr' | 'en' = 'fr') {
 	let posts: Post[] = []
 
 	const paths = import.meta.glob('/src/posts/**/*.md', { eager: true })
 
 	for (const path in paths) {
 		const file = paths[path]
-		const slug = path.match(`^/src/posts(${subpath}/.*).md$`)?.[1].slice(1)
-		if (file && typeof file === 'object' && 'metadata' in file && slug) {
-			const metadata = file.metadata as Omit<Post, 'slug'>
-			const post = { ...metadata, slug } satisfies Post
-			posts.push(post)
+
+		if (lang === 'en') {
+			// English posts live in /src/posts/en/
+			const slug = path.match(`^/src/posts/en(${subpath}/.*).md$`)?.[1].slice(1)
+			if (file && typeof file === 'object' && 'metadata' in file && slug) {
+				const metadata = file.metadata as Omit<Post, 'slug'>
+				// Use slug without 'en/' prefix since the lang prefix is handled by the URL structure
+				const post = { ...metadata, slug } satisfies Post
+				posts.push(post)
+			}
+		} else {
+			// French posts - exclude the /en/ directory
+			if (path.includes('/src/posts/en/')) continue
+			const slug = path.match(`^/src/posts(${subpath}/.*).md$`)?.[1].slice(1)
+			if (file && typeof file === 'object' && 'metadata' in file && slug) {
+				const metadata = file.metadata as Omit<Post, 'slug'>
+				const post = { ...metadata, slug } satisfies Post
+				posts.push(post)
+			}
 		}
 	}
 

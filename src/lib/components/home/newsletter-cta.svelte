@@ -1,15 +1,25 @@
 <script lang="ts">
 	import Button from '$components/Button.svelte'
+	import type { Lang } from '$lib/i18n'
+
+	export let lang: Lang = 'fr'
 </script>
 
 <section class="newsletter-cta">
 	<div class="content">
-		<p class="tagline">Restez informé·e des enjeux de l'IA</p>
-		<p class="description">
-			Recevez notre décryptage mensuel de l'actualité IA directement dans votre boîte mail.
-		</p>
+		{#if lang === 'en'}
+			<p class="tagline">Stay informed about AI challenges</p>
+			<p class="description">Receive our monthly AI news digest directly in your inbox.</p>
+		{:else}
+			<p class="tagline">Restez informé·e des enjeux de l'IA</p>
+			<p class="description">
+				Recevez notre décryptage mensuel de l'actualité IA directement dans votre boîte mail.
+			</p>
+		{/if}
 	</div>
-	<Button href="#newsletter">S'inscrire à la newsletter</Button>
+	<Button href="#newsletter"
+		>{lang === 'en' ? 'Subscribe to our newsletter' : "S'inscrire à la newsletter"}</Button
+	>
 </section>
 
 <style>

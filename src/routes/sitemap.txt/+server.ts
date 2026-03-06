@@ -1,12 +1,11 @@
 import { url } from '$config'
-import type { Post } from '$lib/types'
+import { getPosts } from '$lib/api'
 import { getStaticRoutes } from '$lib/routes'
 
 export const prerender = true
 
-export async function GET({ fetch }) {
-	const response = await fetch('api/posts')
-	const posts: Post[] = await response.json()
+export async function GET() {
+	const posts = getPosts('', 'fr')
 	const website = url
 
 	const staticRoutes = getStaticRoutes()
