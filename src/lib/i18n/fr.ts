@@ -11,7 +11,9 @@ export default {
 		blog: 'Blog',
 		comment_agir: 'Comment agir ?',
 		groupes_locaux: 'Groupes locaux',
+		toutes_campagnes: 'Toutes nos campagnes',
 		municipales: 'Municipales 2026',
+		sommet: "Sommet de l'IA 2026",
 		senat2025: 'Colloque Sénat 2025',
 		forum2025: 'Forum solutions 2025',
 		qui_sommes_nous: 'Qui sommes-nous ?',
@@ -165,6 +167,22 @@ export default {
 	},
 	posts: {
 		meta_title: 'Articles - Pause IA'
+	},
+	campagnes: {
+		meta_title: 'Nos campagnes - Pause IA',
+		meta_desc:
+			"Retrouvez toutes les campagnes en cours et passées de Pause IA. Cette page est mise à jour régulièrement pour refléter les actions actuelles de l'association.",
+		title: 'Nos campagnes',
+		subtitle:
+			"Retrouvez ici les campagnes menées par Pause IA pour alerter les citoyens et les décideurs sur les risques de l'IA.",
+		badge_active: 'En cours',
+		badge_ended: 'Terminée',
+		see_archive: 'Voir la page',
+		active_count_singular: 'campagne en cours',
+		active_count_plural: 'campagnes en cours',
+		since: 'Depuis',
+		period: 'de',
+		to: 'à'
 	},
 	sommet: {
 		title: "Sommet de l'IA 2026",

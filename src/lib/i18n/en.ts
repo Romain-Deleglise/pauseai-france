@@ -11,7 +11,9 @@ export default {
 		blog: 'Blog',
 		comment_agir: 'How to act?',
 		groupes_locaux: 'Local groups',
+		toutes_campagnes: 'All our campaigns',
 		municipales: 'Municipal 2026',
+		sommet: 'AI Summit 2026',
 		senat2025: 'Senate Colloquium 2025',
 		forum2025: 'Solutions Forum 2025',
 		qui_sommes_nous: 'Who are we?',
@@ -164,6 +166,22 @@ export default {
 	},
 	posts: {
 		meta_title: 'Articles - Pause AI'
+	},
+	campagnes: {
+		meta_title: 'Our campaigns - Pause AI',
+		meta_desc:
+			'Find all ongoing and past Pause AI campaigns. This page is updated regularly to reflect the current actions of the association.',
+		title: 'Our campaigns',
+		subtitle:
+			'All campaigns run by Pause AI to raise awareness among citizens and decision-makers about AI risks.',
+		badge_active: 'Active',
+		badge_ended: 'Ended',
+		see_archive: 'See page',
+		active_count_singular: 'active campaign',
+		active_count_plural: 'active campaigns',
+		since: 'Since',
+		period: 'from',
+		to: 'to'
 	},
 	sommet: {
 		title: 'AI Summit 2026',
