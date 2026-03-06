@@ -195,6 +195,13 @@
 					<div class="nav-separator" class:on-hero={whiteNav} aria-hidden="true"></div>
 					<!-- CTAs -->
 					<div class="nav-ctas">
+						<a
+							href={switchLangHref}
+							class="lang-toggle"
+							class:on-hero={whiteNav}
+							aria-label={otherLang === 'fr' ? 'Passer en français' : 'Switch to English'}
+							title={otherLang === 'fr' ? 'Français' : 'English'}>{otherLang.toUpperCase()}</a
+						>
 						<button
 							class="theme-toggle"
 							class:on-hero={whiteNav}
@@ -345,6 +352,14 @@
 					{/each}
 
 					<div class="sidebar-actions">
+						<a
+							href={switchLangHref}
+							class="sidebar-lang-toggle"
+							on:click={closeMenu}
+							aria-label={otherLang === 'fr' ? 'Passer en français' : 'Switch to English'}
+						>
+							{otherLang === 'fr' ? '🇫🇷 Français' : '🇬🇧 English'}
+						</a>
 						<button
 							class="sidebar-theme-toggle"
 							on:click={() => theme.toggle()}
@@ -473,14 +488,14 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		padding: 0.65rem 1rem;
+		padding: 0.4rem 1rem;
 		transition: padding 0.25s ease;
 	}
 
 	/* Compact nav when scrolled */
 	nav.scrolled {
-		padding-top: 0.35rem;
-		padding-bottom: 0.35rem;
+		padding-top: 0.25rem;
+		padding-bottom: 0.25rem;
 	}
 
 	.nav-right {
@@ -611,6 +626,70 @@
 		color: var(--text);
 	}
 
+	/* ─── Language toggle ─────────────────────────────────────── */
+	.lang-toggle {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 2rem;
+		height: 2rem;
+		border-radius: 0.4rem;
+		background: transparent;
+		color: var(--text);
+		font-family: var(--font-heading);
+		font-weight: 700;
+		font-size: 0.75rem;
+		text-decoration: none;
+		transition:
+			background 0.15s,
+			color 0.15s;
+	}
+
+	.lang-toggle:hover {
+		background: rgba(0, 0, 0, 0.08);
+	}
+
+	.lang-toggle.on-hero {
+		color: white;
+	}
+
+	.lang-toggle.on-hero:hover {
+		background: rgba(255, 255, 255, 0.15);
+	}
+
+	:global([data-theme='dark']) .lang-toggle:hover {
+		background: rgba(255, 255, 255, 0.08);
+	}
+
+	.sidebar-lang-toggle {
+		display: block;
+		text-align: center;
+		text-decoration: none;
+		padding: 0.55rem 0.6rem;
+		border-radius: 0.45rem;
+		background: rgba(0, 0, 0, 0.05);
+		color: var(--text-secondary);
+		font-size: 0.95rem;
+		font-family: var(--font-heading);
+		font-weight: 600;
+		transition: background 0.1s;
+	}
+
+	.sidebar-lang-toggle:hover {
+		background: rgba(255, 148, 22, 0.1);
+		color: var(--brand);
+	}
+
+	:global([data-theme='dark']) .sidebar-lang-toggle {
+		background: rgba(255, 255, 255, 0.07);
+		color: var(--text);
+	}
+
+	:global([data-theme='dark']) .sidebar-lang-toggle:hover {
+		background: rgba(255, 148, 22, 0.15);
+		color: var(--brand);
+	}
+
 	.sidebar-theme-toggle {
 		display: flex;
 		align-items: center;
@@ -661,7 +740,8 @@
 	}
 
 	.small-logo :global(svg) {
-		width: 3rem;
+		width: auto;
+		height: 36px;
 	}
 
 	.big-logo {
@@ -846,7 +926,7 @@
 	}
 
 	/* ─── Responsive ─────────────────────────────────────────────── */
-	@media (min-width: 480px) {
+	@media (min-width: 640px) {
 		.big-logo {
 			display: block;
 		}
@@ -854,16 +934,14 @@
 		.small-logo {
 			display: none;
 		}
-	}
 
-	@media (min-width: 640px) {
 		nav {
-			padding: 0.75rem 2rem;
+			padding: 0.55rem 2rem;
 		}
 
 		nav.scrolled {
-			padding-top: 0.5rem;
-			padding-bottom: 0.5rem;
+			padding-top: 0.35rem;
+			padding-bottom: 0.35rem;
 		}
 	}
 
