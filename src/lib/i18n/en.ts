@@ -11,7 +11,9 @@ export default {
 		blog: 'Blog',
 		comment_agir: 'How to act?',
 		groupes_locaux: 'Local groups',
+		toutes_campagnes: 'All our campaigns',
 		municipales: 'Municipal 2026',
+		sommet: 'AI Summit 2026',
 		senat2025: 'Senate Colloquium 2025',
 		forum2025: 'Solutions Forum 2025',
 		qui_sommes_nous: 'Who are we?',
@@ -164,6 +166,23 @@ export default {
 	},
 	posts: {
 		meta_title: 'Articles - Pause AI'
+	},
+	campagnes: {
+		meta_title: 'Our campaigns - Pause AI',
+		meta_desc:
+			'Find all ongoing Pause AI campaigns. This page is updated over time to reflect the current actions of the association.',
+		title: 'Our campaigns',
+		subtitle:
+			'This page lists all campaigns run by Pause AI. It is updated regularly — one link, always relevant.',
+		active_badge: 'Active',
+		municipales_title: 'Municipal elections 2026',
+		municipales_desc:
+			'The March 2026 municipal elections are an opportunity to act locally. Challenge candidates in your city and invite them to sign the Pause AI charter.',
+		municipales_cta: 'Join the campaign',
+		sommet_title: 'AI Summit 2026',
+		sommet_desc:
+			'The 2026 AI Summit in India is a crucial moment for the future of our society. Sign the petition and contact decision-makers.',
+		sommet_cta: 'Join the campaign'
 	},
 	sommet: {
 		title: 'AI Summit 2026',

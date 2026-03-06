@@ -2,36 +2,36 @@
 	import PostMeta from '$components/PostMeta.svelte'
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
 	import Button from '$lib/components/Button.svelte'
+	import { getT } from '$lib/i18n'
+	import type { PageData } from './$types'
 
-	const title = 'Nos Campagnes'
-	const description =
-		"Découvrez les campagnes menées par notre association pour sensibiliser et agir face aux risques de l'IA."
+	export let data: PageData
+
+	$: t = getT(data.lang)
+	$: prefix = data.lang === 'fr' ? '/fr' : '/en'
 </script>
 
-<PostMeta {title} {description} />
+<PostMeta title={t.campagnes.meta_title} description={t.campagnes.meta_desc} />
 
 <article>
 	<section class="hero">
-		<UnderlinedTitle as="h1">Nos Campagnes</UnderlinedTitle>
-		<p class="intro">
-			{description}
-		</p>
+		<UnderlinedTitle as="h1">{t.campagnes.title}</UnderlinedTitle>
+		<p class="intro">{t.campagnes.subtitle}</p>
 	</section>
 
-	<section class="campaigns-grid">
+	<section class="campaigns-list">
 		<div class="campaign-card">
-			<h2>Élections municipales 2026</h2>
-			<p>Sensibilisons nos futurs élus locaux et demandons-leur de signer la charte Pause IA.</p>
-			<Button href="/municipales-2026">Voir la campagne</Button>
+			<div class="card-badge">{t.campagnes.active_badge}</div>
+			<h2>{t.campagnes.municipales_title}</h2>
+			<p>{t.campagnes.municipales_desc}</p>
+			<Button href="{prefix}/municipales-2026">{t.campagnes.municipales_cta}</Button>
 		</div>
 
 		<div class="campaign-card">
-			<h2>Sommet de l'IA 2026</h2>
-			<p>
-				Mobilisons-nous pour que le Sommet international de l'IA en Inde place la sécurité au
-				premier plan.
-			</p>
-			<Button href="/sommet-ia-2026">Voir la campagne</Button>
+			<div class="card-badge">{t.campagnes.active_badge}</div>
+			<h2>{t.campagnes.sommet_title}</h2>
+			<p>{t.campagnes.sommet_desc}</p>
+			<Button href="{prefix}/sommet-ia-2026">{t.campagnes.sommet_cta}</Button>
 		</div>
 	</section>
 </article>
@@ -55,9 +55,9 @@
 		color: var(--text-muted, #444);
 	}
 
-	.campaigns-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+	.campaigns-list {
+		display: flex;
+		flex-direction: column;
 		gap: 2rem;
 		margin-bottom: 5rem;
 	}
@@ -70,8 +70,20 @@
 		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
 		display: flex;
 		flex-direction: column;
-		justify-content: space-between;
 		align-items: flex-start;
+	}
+
+	.card-badge {
+		display: inline-block;
+		background: #e8f5e9;
+		color: #2e7d32;
+		font-size: 0.75rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		padding: 0.2rem 0.6rem;
+		border-radius: 999px;
+		margin-bottom: 1rem;
 	}
 
 	h2 {
@@ -82,13 +94,17 @@
 	}
 
 	.campaign-card p {
-		font-size: 1.1rem;
-		line-height: 1.6;
-		margin-bottom: 2rem;
+		font-size: 1.05rem;
+		line-height: 1.7;
 		color: var(--text-muted, #444);
+		margin-bottom: 1.5rem;
 	}
 
 	@media (max-width: 600px) {
+		h2 {
+			font-size: 1.4rem;
+		}
+
 		.campaign-card {
 			padding: 1.5rem;
 		}

@@ -93,7 +93,11 @@
 		{
 			id: 'campagnes',
 			label: t.nav.campagnes,
-			items: [{ href: `${prefix}/municipales-2026`, label: t.nav.municipales }]
+			items: [
+				{ href: `${prefix}/campagnes`, label: t.nav.toutes_campagnes },
+				{ href: `${prefix}/municipales-2026`, label: t.nav.municipales },
+				{ href: `${prefix}/sommet-ia-2026`, label: t.nav.sommet }
+			]
 		},
 		{
 			id: 'evenements',
