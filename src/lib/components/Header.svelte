@@ -5,6 +5,8 @@
 	import Banner from '$components/Banner.svelte'
 	import { bannerStore } from '$lib/stores/banner'
 	import { theme } from '$lib/stores/theme'
+	import { getT } from '$lib/i18n'
+	import type { Lang } from '$lib/i18n'
 
 	import { onMount } from 'svelte'
 	import { fade } from 'svelte/transition'

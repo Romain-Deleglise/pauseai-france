@@ -4,6 +4,7 @@
 	import Socials from '$components/Socials.svelte'
 	import { getT } from '$lib/i18n'
 	import type { Lang } from '$lib/i18n'
+	import { theme } from '$lib/stores/theme'
 
 	export let lang: Lang = 'fr'
 
