@@ -9,6 +9,7 @@
 	// import Toc from '$components/Toc.svelte'
 	import { bannerStore } from '$lib/stores/banner'
 	import { onMount } from 'svelte'
+	import type { Lang } from '$lib/i18n'
 
 	import '@fontsource/ibm-plex-sans/latin-200.css' // extra-light, latin subset only
 	import '@fontsource/ibm-plex-sans/latin-400.css' // regular, latin subset only
@@ -18,9 +19,11 @@
 	import '../reset.css'
 	import '../app.css'
 
-	// export let data
-
-	$: bgWhite = $page.url.pathname == '/'
+	$: lang = ($page.data.lang as Lang | undefined) ?? 'fr'
+	$: bgWhite =
+		$page.url.pathname == '/' ||
+		$page.url.pathname === `/${lang}` ||
+		$page.url.pathname === `/${lang}/`
 
 	// Fetch banner from Notion API on all pages
 	onMount(async () => {
@@ -63,7 +66,7 @@
 <h2 style="width: 0; height: 0; margin: 0; padding: 0; visibility: hidden;">(Top)</h2>
 
 <div class="layout" class:bgWhite>
-	<Header />
+	<Header {lang} />
 
 	{#key $page.url.pathname}
 		<main in:fade>
@@ -71,7 +74,7 @@
 		</main>
 	{/key}
 
-	<Footer />
+	<Footer {lang} />
 </div>
 
 <Toaster

@@ -4,11 +4,20 @@
 	import { page } from '$app/stores'
 	import Banner from '$components/Banner.svelte'
 	import { bannerStore } from '$lib/stores/banner'
+	import { getT } from '$lib/i18n'
+	import type { Lang } from '$lib/i18n'
 
 	import { onMount } from 'svelte'
 	import { fade } from 'svelte/transition'
 
-	$: onHomepage = $page.url.pathname == '/'
+	export let lang: Lang = 'fr'
+
+	$: t = getT(lang)
+	$: prefix = lang === 'fr' ? '/fr' : '/en'
+	$: onHomepage =
+		$page.url.pathname == '/' ||
+		$page.url.pathname == `/${lang}` ||
+		$page.url.pathname == `/${lang}/`
 	$: onEmploiePage = /^\/emploi-ia(?:\/|$)/.test($page.url.pathname)
 
 	// Hero has a light background — header stays dark on homepage
@@ -61,53 +70,77 @@
 		open = false
 	}
 
-	const navGroups = [
+	$: navGroups = [
 		{
 			id: 'comprendre',
-			label: 'Comprendre',
+			label: t.nav.comprendre,
 			items: [
-				{ href: '/dangers', label: "Les dangers de l'IA" },
-				{ href: '/emploi-ia', label: 'Emploi et IA' },
-				{ href: '/newsletters', label: 'Newsletter' },
-				{ href: '/propositions', label: 'Nos propositions' },
-				{ href: 'https://pauseia.substack.com/', label: 'Blog', external: true }
+				{ href: `${prefix}/dangers`, label: t.nav.dangers },
+				{ href: `${prefix}/emploi-ia`, label: 'Emploi et IA' },
+				{ href: `${prefix}/newsletters`, label: t.nav.newsletter },
+				{ href: `${prefix}/propositions`, label: t.nav.propositions },
+				{ href: 'https://pauseia.substack.com/', label: t.nav.blog, external: true }
 			]
 		},
 		{
 			id: 'agir',
-			label: 'Agir',
+			label: t.nav.agir,
 			items: [
-				{ href: '/agir', label: 'Comment agir ?' },
-				{ href: '/groupes-locaux', label: 'Groupes locaux' }
+				{ href: `${prefix}/agir`, label: t.nav.comment_agir },
+				{ href: `${prefix}/groupes-locaux`, label: t.nav.groupes_locaux }
 			]
 		},
 		{
 			id: 'campagnes',
-			label: 'Campagnes',
-			items: [{ href: '/municipales-2026', label: 'Municipales 2026' }]
+			label: t.nav.campagnes,
+			items: [{ href: `${prefix}/municipales-2026`, label: t.nav.municipales }]
 		},
 		{
 			id: 'evenements',
-			label: 'Événements',
+			label: t.nav.evenements,
 			items: [
-				{ href: '/senat2025', label: 'Colloque Sénat 2025' },
+				{ href: `${prefix}/senat2025`, label: t.nav.senat2025 },
 				{
 					href: 'https://controleia.org/solutions/',
-					label: 'Forum solutions 2025',
+					label: t.nav.forum2025,
 					external: true
 				}
 			]
 		},
 		{
 			id: 'apropos',
-			label: 'À propos',
+			label: t.nav.apropos,
 			items: [
-				{ href: '/qui-sommes-nous', label: 'Qui sommes-nous ?' },
-				{ href: '/propositions', label: 'Nos propositions' },
-				{ href: '/presse', label: 'Espace presse' }
+				{ href: `${prefix}/qui-sommes-nous`, label: t.nav.qui_sommes_nous },
+				{ href: `${prefix}/propositions`, label: t.nav.propositions },
+				{ href: `${prefix}/presse`, label: t.nav.presse }
 			]
 		}
 	]
+
+	// Language switcher: swap /fr/ <-> /en/ in current pathname
+	$: otherLang = lang === 'fr' ? 'en' : 'fr'
+
+	// Danger page slugs differ between languages — map them explicitly
+	const DANGER_SLUGS: Record<'fr' | 'en', string[]> = {
+		fr: ['economiques-et-materiels', 'pour-les-individus', 'pour-la-societe', "pour-l'humanite"],
+		en: ['economic-and-material', 'for-individuals', 'for-society', 'for-humanity']
+	}
+
+	function getSwitchLangHref(pathname: string, currentLang: string, other: string) {
+		const slugsFrom = DANGER_SLUGS[currentLang as 'fr' | 'en']
+		const slugsTo = DANGER_SLUGS[other as 'fr' | 'en']
+		if (slugsFrom && slugsTo) {
+			const dangerMatch = pathname.match(new RegExp(`^/${currentLang}/dangers/(.+)$`))
+			if (dangerMatch) {
+				const idx = slugsFrom.indexOf(dangerMatch[1])
+				if (idx >= 0) return `/${other}/dangers/${slugsTo[idx]}`
+			}
+		}
+		return pathname.replace(`/${currentLang}`, `/${other}`) || `/${other}`
+	}
+
+	$: switchLangHref = getSwitchLangHref($page.url.pathname, lang, otherLang)
 </script>
 
 <!--
@@ -132,7 +165,7 @@
 
 	{#if mounted || !onHomepage}
 		<nav in:fade={{ duration: 400, delay: 100 }} class:scrolled class:homepage={onHomepage}>
-			<a href="/" class="logo">
+			<a href={onEmploiePage ? `${prefix}/emploi-ia` : `${prefix}`} class="logo">
 				<div class="big-logo">
 					<Logo animate fill_pause={whiteNav ? 'white' : 'black'} emploi_ia={onEmploiePage} />
 				</div>
@@ -150,8 +183,13 @@
 					<div class="nav-separator" class:on-hero={whiteNav} aria-hidden="true"></div>
 					<!-- CTAs -->
 					<div class="nav-ctas">
-						<a href="/dons" class="btn-donate" class:on-hero={whiteNav}>Donner</a>
-						<a href="/rejoindre" class="btn-join" class:on-hero={whiteNav}>Rejoindre</a>
+						<a href="{prefix}/dons" class="btn-donate" class:on-hero={whiteNav}>{t.nav.donner}</a>
+						<a href="{prefix}/rejoindre" class="btn-join" class:on-hero={whiteNav}
+							>{t.nav.rejoindre}</a
+						>
+						<a href={switchLangHref} class="btn-lang" class:on-hero={whiteNav}
+							>{t.footer.switch_lang}</a
+						>
 					</div>
 				</div>
 				<button aria-label="Open mobile menu" class="hamburger" on:click={() => (open = !open)}>
@@ -173,7 +211,7 @@
 			     et l'extraire du containing block créé par position:sticky -->
 			<div class="sidebar" class:open use:portal>
 				<div class="sidebar-head">
-					<a href="/" class="sidebar-logo" on:click={closeMenu}>
+					<a href={prefix} class="sidebar-logo" on:click={closeMenu}>
 						<Logo height={36} fill_pause="black" fill_circle="#FF9416" fill_ai="black" />
 					</a>
 					<button aria-label="Close mobile menu" class="close-btn" on:click={closeMenu}>
@@ -235,8 +273,14 @@
 					{/each}
 
 					<div class="sidebar-actions">
-						<a href="/dons" class="sidebar-cta" on:click={closeMenu}>Faire un don</a>
-						<a href="/rejoindre" class="sidebar-join" on:click={closeMenu}>Nous rejoindre</a>
+						<a href="{prefix}/dons" class="sidebar-cta" on:click={closeMenu}>{t.nav.faire_un_don}</a
+						>
+						<a href="{prefix}/rejoindre" class="sidebar-join" on:click={closeMenu}
+							>{t.nav.nous_rejoindre}</a
+						>
+						<a href={switchLangHref} class="sidebar-lang" on:click={closeMenu}
+							>{t.footer.switch_lang}</a
+						>
 					</div>
 				</div>
 			</div>
@@ -420,6 +464,53 @@
 
 	.btn-join.on-hero:hover {
 		opacity: 0.88;
+	}
+
+	/* Language switcher button */
+	.btn-lang {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		text-decoration: none;
+		font-family: var(--font-heading);
+		font-weight: 600;
+		font-size: 0.8rem;
+		border-radius: 0.4rem;
+		padding: 0.35rem 0.75rem;
+		white-space: nowrap;
+		transition:
+			opacity 0.15s,
+			background 0.15s;
+		background: transparent;
+		color: black;
+		border: 1px solid rgba(0, 0, 0, 0.2);
+	}
+
+	.btn-lang:hover {
+		opacity: 0.7;
+	}
+
+	.btn-lang.on-hero {
+		color: white;
+		border-color: rgba(255, 255, 255, 0.4);
+	}
+
+	.sidebar-lang {
+		display: block;
+		text-decoration: none;
+		background: rgba(0, 0, 0, 0.06);
+		color: rgba(0, 0, 0, 0.7);
+		text-align: center;
+		padding: 0.6rem 1.5rem;
+		border-radius: 0.625rem;
+		font-family: var(--font-heading);
+		font-weight: 600;
+		font-size: 0.9rem;
+		transition: opacity 0.15s;
+	}
+
+	.sidebar-lang:hover {
+		opacity: 0.7;
 	}
 
 	.hamburger {

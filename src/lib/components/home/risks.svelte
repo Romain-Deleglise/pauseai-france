@@ -3,29 +3,137 @@
 	import TabList from '$components/TabList.svelte'
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
 	import Fly from '$components/Fly.svelte'
+	import type { Lang } from '$lib/i18n'
+
+	export let lang: Lang = 'fr'
+
+	$: prefix = lang === 'en' ? '/en' : ''
+	$: tabs =
+		lang === 'en'
+			? ['Economic & material', 'For individuals', 'For society', 'For humanity']
+			: [
+					'Économiques et matériels',
+					'Pour les individus',
+					'Pour la société',
+					'Pour l\u2019humanité'
+				]
 
 	const label_id = 'risks-title'
 </script>
 
 <section aria-labelledby={label_id}>
 	<Fly>
-		<TabList
-			tabs={[
-				'Économiques et matériels',
-				'Pour les individus',
-				'Pour la société',
-				'Pour l\u2019humanité'
-			]}
-			id="risks-tabs"
-			let:tab
-			{label_id}
-		>
+		<TabList {tabs} id="risks-tabs" let:tab {label_id}>
 			<svelte:fragment slot="header">
-				<UnderlinedTitle id={label_id}>Les dangers</UnderlinedTitle>
+				<UnderlinedTitle id={label_id}
+					>{lang === 'en' ? 'The dangers' : 'Les dangers'}</UnderlinedTitle
+				>
 			</svelte:fragment>
 			{tab}
 			<svelte:fragment slot="panel" let:tab>
-				{#if tab === 'Économiques et matériels'}
+				{#if lang === 'en'}
+					{#if tab === 'Economic & material'}
+						<p>
+							AI labs are planning to automate
+							<a href="https://www.palladiummag.com/2024/05/17/my-last-five-years-of-work/"
+								>all human work within 4 years</a
+							>. Whether they fully achieve this goal or not, it's clear we're heading toward a
+							major upheaval in the labor market. We must prepare for an unprecedented economic
+							shock.
+						</p>
+						<p>
+							<a
+								href="https://www.crowdstrike.com/cybersecurity-101/cyberattacks/ai-powered-cyberattacks/"
+								>Economic and material dangers</a
+							> linked to AI directly threaten our infrastructure, businesses and resources. This technology
+							introduces unprecedented vulnerabilities and possibilities for catastrophic failures. Imagine
+							devastating AI-facilitated attacks, or the collapse of entire sectors facing these disruptive
+							technologies. These dangers, though less visible than those directly threatening human
+							lives, can have equally massive consequences.
+						</p>
+						<p>
+							We must exercise heightened vigilance and put rigorous regulations in place to protect
+							ourselves.
+						</p>
+						<p>
+							To learn more about AI risks in the labor market, visit our <a
+								href="{prefix}/emploi-ia">AI Employment working group</a
+							>.
+						</p>
+						<Button href="{prefix}/dangers/economic-and-material">Learn more</Button>
+					{:else if tab === 'For individuals'}
+						<p>
+							Imagine yourself on a dating app, exchanging messages with what seems like the perfect
+							person. But are you really talking to a human being? Today, the answer may seem
+							obvious, but this reality is about to change radically. The technology to create
+							conversations
+							<a href="https://techxplore.com/news/2024-02-secrets-social-bots-ai-role.html"
+								>indistinguishable from human interactions already exists</a
+							>. It will soon be deployed and make it impossible to distinguish between a human and
+							an AI.
+						</p>
+						<p>
+							This rapid evolution reveals how deeply AI is infiltrating our daily lives,
+							threatening our privacy, security and wellbeing. Every day, we risk seeing our private
+							life violated and our <a href="https://arxiv.org/pdf/2403.14380"
+								>opinions manipulated by disinformation</a
+							>: the consequences would be devastating.
+						</p>
+						<Button href="{prefix}/dangers/for-individuals">Learn more</Button>
+					{:else if tab === 'For society'}
+						<p>
+							According to the majority of experts, AI will be capable of designing and synthesizing
+							viruses more deadly than anything we know today in the very near future.
+							<a href="https://arxiv.org/abs/2306.03809">AI-assisted bioterrorism</a> is just one
+							example among a multitude of emerging threats. The risk of
+							<a
+								href="https://blog.checkpoint.com/2023/03/15/check-point-research-conducts-initial-security-analysis-of-chatgpt4-highlighting-potential-scenarios-for-accelerated-cybercrime/"
+								>devastating cyberattacks</a
+							>, orchestrated or amplified by sophisticated AI, looms over our critical
+							infrastructure and communication systems.
+						</p>
+						<p>
+							These scenarios are just the visible part of a much larger danger: AI threatens the
+							very heart of our society. It touches social cohesion and the foundations of our
+							democracy. Our democratic processes are weakened by polarization and disinformation.
+							Racial biases are exacerbated, <a href="{prefix}/emploi-ia">job automation looms</a>,
+							and the shadow of new forms of war and terrorism hangs over us.
+						</p>
+						<Button href="{prefix}/dangers/for-society">Learn more</Button>
+					{:else if tab === 'For humanity'}
+						<p>
+							OpenAI, DeepMind, Anthropic and other tech giants are investing billions of dollars in
+							creating AI with superhuman capabilities. Their leaders claim they could succeed
+							within the next four years. They admit they don't know how to control their creation
+							and publicly acknowledge that <a
+								href="https://www.cnn.com/2023/10/31/tech/sam-altman-ai-risk-taker/index.html"
+								>humanity could go extinct</a
+							> because of it.
+						</p>
+						<p>
+							The world's most eminent AI experts have signed an <a
+								href="https://futureoflife.org/open-letter/pause-giant-ai-experiments/"
+								>open letter</a
+							> warning that "AI poses an existential risk to humanity, on par with pandemics and nuclear
+							wars."
+						</p>
+						<p>
+							According to the <a
+								href="https://wiki.aiimpacts.org/ai_timelines/predictions_of_human-level_ai_timelines/ai_timeline_surveys/2023_expert_survey_on_progress_in_ai"
+								>2023 AI Impacts survey</a
+							> of 2,778 AI researchers, the median estimated probability of human extinction is 5%,
+							and more than a third of respondents place it above 10%.
+						</p>
+						<p>
+							Never before has humanity faced such an imminent and potentially catastrophic threat.
+							Unlike other challenges, the AI crisis is distinguished by its extreme urgency and its
+							potential for radical transformation in the very short term, sparking an unprecedented
+							mobilization of the greatest minds of our era.
+						</p>
+						<p>Are we going to wait for a global catastrophe to react?</p>
+						<Button href="{prefix}/dangers/for-humanity">Learn more</Button>
+					{/if}
+				{:else if tab === 'Économiques et matériels'}
 					<p>
 						Les laboratoires d'IA ont pour projet d'automatiser
 						<a href="https://www.palladiummag.com/2024/05/17/my-last-five-years-of-work/"

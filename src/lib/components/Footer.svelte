@@ -2,6 +2,13 @@
 	import ExternalLink from '$components/custom/a.svelte'
 	import Logo from '$components/Logo.svelte'
 	import Socials from '$components/Socials.svelte'
+	import { getT } from '$lib/i18n'
+	import type { Lang } from '$lib/i18n'
+
+	export let lang: Lang = 'fr'
+
+	$: t = getT(lang)
+	$: prefix = lang === 'fr' ? '/fr' : '/en'
 
 	let email = ''
 	let isSubmitting = false
@@ -21,7 +28,7 @@
 
 		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 		if (!email || !emailRegex.test(email)) {
-			message = 'Adresse e-mail invalide'
+			message = t.footer.newsletter_invalid_email
 			isError = true
 			return
 		}
@@ -43,15 +50,15 @@
 			const result = (await response.json()) as ApiResponse
 
 			if (response.ok) {
-				message = 'Inscription confirmée !'
+				message = t.footer.newsletter_success
 				isError = false
 				email = ''
 			} else {
-				message = result.error ?? 'Une erreur est survenue'
+				message = result.error ?? t.footer.newsletter_error
 				isError = true
 			}
 		} catch {
-			message = 'Erreur de connexion'
+			message = t.footer.newsletter_connection_error
 			isError = true
 		} finally {
 			isSubmitting = false
@@ -61,27 +68,27 @@
 
 <footer>
 	<div class="brand">
-		<a href="/" class="logo">
+		<a href={prefix} class="logo">
 			<div class="logo">
 				<Logo animate fill_circle="white" fill_ai="white" />
 			</div>
 		</a>
-		<p>Pour une IA alignée sur l'humanité.</p>
+		<p>{t.footer.tagline}</p>
 	</div>
 	<div id="newsletter" class="newsletter-section">
-		<h2>Newsletter</h2>
-		<p class="newsletter-desc">L'essentiel de l'actualité IA décrypté chaque mois</p>
+		<h2>{t.footer.newsletter_title}</h2>
+		<p class="newsletter-desc">{t.footer.newsletter_desc}</p>
 		<form on:submit={handleNewsletterSubmit} class="newsletter-form">
 			<div class="input-group">
 				<input
 					type="email"
 					bind:value={email}
-					placeholder="votre@email.com"
+					placeholder={t.footer.newsletter_placeholder}
 					disabled={isSubmitting}
-					aria-label="Adresse e-mail"
+					aria-label={t.footer.newsletter_placeholder}
 				/>
 				<button type="submit" disabled={isSubmitting}>
-					{#if isSubmitting}...{:else}S'inscrire{/if}
+					{#if isSubmitting}{t.footer.newsletter_loading}{:else}{t.footer.newsletter_subscribe}{/if}
 				</button>
 			</div>
 			{#if message}
@@ -92,48 +99,48 @@
 		</form>
 	</div>
 	<div class="socials">
-		<h2>Suivez-nous</h2>
+		<h2>{t.footer.follow_us}</h2>
 		<Socials />
 	</div>
 	<div class="footer-links">
 		<div class="column">
-			<h2>Navigation</h2>
-			<a href="/faq">FAQ</a>
-			<a href="/dangers">Dangers</a>
-			<a href="/propositions">Propositions</a>
-			<a href="/newsletters">Newsletters</a>
-			<a href="https://pauseia.substack.com/">Blog</a>
-			<a href="/agir">Agir</a>
-			<a href="/dons">Donner</a>
-			<a href="/rejoindre">Nous rejoindre</a>
-			<a href="/qui-sommes-nous">Qui sommes-nous ?</a>
+			<h2>{t.footer.nav_title}</h2>
+			<a href="{prefix}/faq">{t.footer.faq}</a>
+			<a href="{prefix}/dangers">{t.footer.dangers}</a>
+			<a href="{prefix}/propositions">{t.footer.propositions}</a>
+			<a href="{prefix}/newsletters">{t.footer.newsletters}</a>
+			<a href="https://pauseia.substack.com/">{t.footer.blog}</a>
+			<a href="{prefix}/agir">{t.footer.agir}</a>
+			<a href="{prefix}/dons">{t.footer.donner}</a>
+			<a href="{prefix}/rejoindre">{t.footer.rejoindre}</a>
+			<a href="{prefix}/qui-sommes-nous">{t.footer.qui_sommes_nous}</a>
 		</div>
 		<div class="column">
-			<h2>Dangers</h2>
-			<a href="/dangers/economiques-et-materiels">Économiques et matériels</a>
-			<a href="/dangers/pour-les-individus">Pour les individus</a>
-			<a href="/dangers/pour-la-societe">Pour la société</a>
-			<a href="/dangers/pour-l'humanite">Pour l'humanité</a>
+			<h2>{t.footer.dangers_title}</h2>
+			<a href="{prefix}/dangers/economiques-et-materiels">{t.footer.dangers_eco}</a>
+			<a href="{prefix}/dangers/pour-les-individus">{t.footer.dangers_individus}</a>
+			<a href="{prefix}/dangers/pour-la-societe">{t.footer.dangers_societe}</a>
+			<a href="{prefix}/dangers/pour-l'humanite">{t.footer.dangers_humanite}</a>
 		</div>
 		<div class="column">
-			<h2>Agir</h2>
-			<a href="/rejoindre">Rejoindre Pause IA</a>
-			<a href="/agir">Comment pouvez-vous aider ?</a>
-			<a href="/dons">Faire un don</a>
+			<h2>{t.footer.act_title}</h2>
+			<a href="{prefix}/rejoindre">{t.footer.join_pauseia}</a>
+			<a href="{prefix}/agir">{t.footer.how_to_help}</a>
+			<a href="{prefix}/dons">{t.footer.make_donation}</a>
 			<ExternalLink href="https://pauseai-shop.fourthwall.com" target="_blank"
-				>Marchandises</ExternalLink
+				>{t.footer.merchandise}</ExternalLink
 			>
-			<a href="https://pauseai.info/protests">Manifestations</a>
-			<a href="/recrutement-emploi">Offres d'emploi</a>
+			<a href="https://pauseai.info/protests">{t.footer.protests}</a>
+			<a href="{prefix}/recrutement-emploi">{t.footer.jobs}</a>
 		</div>
 		<div class="column">
-			<h2>Autres</h2>
-			<a href="/presse">Presse</a>
-			<a href="/mentions-legales">Mentions légales</a>
-			<a href="/politique-de-confidentialite">Politique de confidentialité</a>
-			<a href="/charte-des-valeurs">Charte des valeurs</a>
+			<h2>{t.footer.other_title}</h2>
+			<a href="{prefix}/presse">{t.footer.press}</a>
+			<a href="{prefix}/mentions-legales">{t.footer.legal}</a>
+			<a href="{prefix}/politique-de-confidentialite">{t.footer.privacy}</a>
+			<a href="{prefix}/charte-des-valeurs">{t.footer.values}</a>
 			<ExternalLink href="https://creativecommons.org/licenses/by/4.0/deed.fr" target="_blank"
-				>Licence: CC-BY 4.0</ExternalLink
+				>{t.footer.license}</ExternalLink
 			>
 		</div>
 	</div>

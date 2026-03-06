@@ -3,9 +3,15 @@
 	import Mark from '$components/Mark.svelte'
 	import LeftCorner from '$components/hero/LeftCorner.svelte'
 	import RightCorner from '$components/hero/RightCorner.svelte'
+	import { getT } from '$lib/i18n'
+	import type { Lang } from '$lib/i18n'
 	import { onMount, tick } from 'svelte'
 	import { fade, fly } from 'svelte/transition'
 	const label_id = 'hero-title'
+
+	export let lang: Lang = 'fr'
+	$: t = getT(lang)
+	$: prefix = lang === 'fr' ? '/fr' : '/en'
 
 	// 4 rows of photos, each row scrolls in its own direction
 	const row1 = [
@@ -142,18 +148,27 @@
 		<div class="content" in:fade={{ duration: 500, delay: 200 }}>
 			<div class="content-box">
 				<h1 id={label_id}>
-					Gardons l'IA <br />sous <Mark>contrôle</Mark>
+					{t.home.hero_title}
+					<br /><Mark>{t.home.hero_highlight}</Mark>
 				</h1>
 				<div class="description">
-					<p>
-						Chaque mois, de nouveaux systèmes franchissent des seuils que l'on pensait lointains.
-						Les experts alertent&nbsp;: sans garde-fous, cette course fait peser un risque
-						catastrophique à court terme.
-					</p>
-					<p>La fenêtre se referme&nbsp;— agissons maintenant.</p>
+					{#if lang === 'en'}
+						<p>
+							Every month, new AI systems cross thresholds we thought were far away. Experts warn:
+							without guardrails, this race poses a catastrophic risk in the near term.
+						</p>
+						<p>The window is closing fast — let's act now.</p>
+					{:else}
+						<p>
+							Chaque mois, de nouveaux systèmes franchissent des seuils que l'on pensait lointains.
+							Les experts alertent&nbsp;: sans garde-fous, cette course fait peser un risque
+							catastrophique à court terme.
+						</p>
+						<p>La fenêtre se referme&nbsp;— agissons maintenant.</p>
+					{/if}
 					<div class="buttons">
 						<div in:fly={{ y: 20, duration: 300, delay: 700 }}>
-							<Button href="/rejoindre">Rejoindre</Button>
+							<Button href="{prefix}/rejoindre">{t.home.hero_cta}</Button>
 						</div>
 					</div>
 				</div>

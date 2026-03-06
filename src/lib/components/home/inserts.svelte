@@ -2,8 +2,10 @@
 	import ArticleCard from '$components/ArticleCard.svelte'
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
 	import type { Report } from '$lib/notion'
+	import type { Lang } from '$lib/i18n'
 
 	export let reports: Report[] = []
+	export let lang: Lang = 'fr'
 
 	const label_id = 'inserts-title'
 
@@ -34,15 +36,17 @@
 </script>
 
 <section aria-labelledby={label_id}>
-	<UnderlinedTitle id={label_id}>Rapports et Solutions</UnderlinedTitle>
+	<UnderlinedTitle id={label_id}
+		>{lang === 'en' ? 'Reports and Solutions' : 'Rapports et Solutions'}</UnderlinedTitle
+	>
 	<div class="inserts-grid">
 		{#each displayReports as report (report.id)}
 			<ArticleCard
 				title={report.title}
 				blurb={report.description}
 				url={report.url}
-				linkText="Voir le site"
-				category="Rapport"
+				linkText={lang === 'en' ? 'View website' : 'Voir le site'}
+				category={lang === 'en' ? 'Report' : 'Rapport'}
 			/>
 		{/each}
 	</div>
