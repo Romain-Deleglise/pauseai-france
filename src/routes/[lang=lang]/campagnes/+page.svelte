@@ -138,7 +138,7 @@
 	}
 
 	.campaign-card.ended {
-		opacity: 0.55;
+		opacity: 0.75;
 		cursor: default;
 	}
 
