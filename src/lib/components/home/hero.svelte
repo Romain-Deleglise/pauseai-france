@@ -101,12 +101,24 @@
 		await tick()
 		const header = document.querySelector('.site-header')
 		const main = document.querySelector('main')
-		if (header) {
-			const headerH = header.getBoundingClientRect().height
-			const mainPT = main ? parseFloat(getComputedStyle(main).paddingTop) : 0
-			heroTopOffset = headerH + mainPT
+
+		const measure = () => {
+			if (header) {
+				const headerH = header.getBoundingClientRect().height
+				const mainPT = main ? parseFloat(getComputedStyle(main).paddingTop) : 0
+				heroTopOffset = headerH + mainPT
+			}
 		}
+
+		measure()
 		mounted = true
+
+		// Keep heroTopOffset in sync whenever the header resizes (e.g. scrolled
+		// state collapses padding after SvelteKit navigation restores scroll=0)
+		const ro = new ResizeObserver(measure)
+		if (header) ro.observe(header)
+
+		return () => ro.disconnect()
 	})
 </script>
 

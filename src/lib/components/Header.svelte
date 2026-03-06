@@ -473,14 +473,14 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		padding: 0.65rem 1rem;
+		padding: 0.4rem 1rem;
 		transition: padding 0.25s ease;
 	}
 
 	/* Compact nav when scrolled */
 	nav.scrolled {
-		padding-top: 0.35rem;
-		padding-bottom: 0.35rem;
+		padding-top: 0.25rem;
+		padding-bottom: 0.25rem;
 	}
 
 	.nav-right {
@@ -893,12 +893,12 @@
 
 	@media (min-width: 640px) {
 		nav {
-			padding: 0.75rem 2rem;
+			padding: 0.55rem 2rem;
 		}
 
 		nav.scrolled {
-			padding-top: 0.5rem;
-			padding-bottom: 0.5rem;
+			padding-top: 0.35rem;
+			padding-bottom: 0.35rem;
 		}
 	}
 
