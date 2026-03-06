@@ -20,4 +20,4 @@
 	<meta name="description" content={description} />
 </svelte:head>
 
-<Who teamMembers={data.teamMembers} />
+<Who teamMembers={data.teamMembers} {lang} />

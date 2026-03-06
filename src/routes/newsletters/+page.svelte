@@ -408,7 +408,7 @@
 		border-radius: 0.375rem;
 		font-size: 0.9rem;
 		font-family: inherit;
-		background: white;
+		background: var(--bg);
 		color: var(--text);
 		transition: border-color 0.2s;
 	}
@@ -453,11 +453,11 @@
 	}
 
 	.subscribe-message.success {
-		color: #166534;
+		color: #15803d;
 	}
 
 	.subscribe-message.error {
-		color: #991b1b;
+		color: #b91c1c;
 	}
 
 	/* Search bar — matches press page combobox style */
@@ -483,7 +483,7 @@
 		align-items: center;
 		border: 1px solid var(--border, #e5e7eb);
 		border-radius: 0.5rem;
-		background-color: white;
+		background-color: var(--bg);
 		transition:
 			border-color 0.15s ease,
 			box-shadow 0.15s ease;
@@ -574,7 +574,7 @@
 		font-family: var(--font-body, inherit);
 		border: 1px solid var(--border, #e5e7eb);
 		border-radius: 0.375rem;
-		background-color: white;
+		background-color: var(--bg);
 		color: var(--text, black);
 		appearance: none;
 		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23676e7a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
@@ -719,7 +719,7 @@
 		height: 2.25rem;
 		border: 1px solid var(--border, #e5e7eb);
 		border-radius: 0.375rem;
-		background: white;
+		background: var(--bg);
 		color: var(--text, black);
 		font-size: 0.875rem;
 		font-weight: 600;

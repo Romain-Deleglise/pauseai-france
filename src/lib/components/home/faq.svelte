@@ -409,7 +409,7 @@
 		left: 0.85rem;
 		top: 50%;
 		transform: translateY(-50%);
-		color: #999;
+		color: var(--text-secondary);
 		pointer-events: none;
 		z-index: 1;
 	}
@@ -417,11 +417,12 @@
 	.search-wrapper input {
 		width: 100%;
 		padding: 0.7rem 0.85rem 0.7rem 2.75rem;
-		border: 2px solid #e5e7eb;
+		border: 2px solid var(--border);
 		border-radius: 0.625rem;
 		font-size: 1rem;
 		font-family: inherit;
-		background: white;
+		background: var(--bg);
+		color: var(--text);
 		transition: border-color 0.2s;
 	}
 
@@ -436,7 +437,7 @@
 	}
 
 	.search-wrapper input::placeholder {
-		color: #999;
+		color: var(--text-secondary);
 	}
 
 	/* -- Suggestions dropdown -- */
@@ -447,9 +448,9 @@
 		left: 0;
 		right: 0;
 		z-index: 100;
-		background: white;
+		background: var(--bg);
 		border: 2px solid var(--brand);
-		border-top: 1px solid #e5e7eb;
+		border-top: 1px solid var(--border);
 		border-radius: 0 0 0.625rem 0.625rem;
 		max-height: 340px;
 		overflow-y: auto;
@@ -465,7 +466,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: 0.15rem;
-		border-bottom: 1px solid #f0f0f0;
+		border-bottom: 1px solid var(--border);
 		transition: background-color 0.1s;
 	}
 
@@ -475,7 +476,7 @@
 
 	.suggestion:hover,
 	.suggestion.selected {
-		background: #f5f3ff;
+		background: rgba(255, 148, 22, 0.08);
 	}
 
 	.suggestion-category {
@@ -494,7 +495,7 @@
 
 	.suggestion-snippet {
 		font-size: 0.78rem;
-		color: #888;
+		color: var(--text-secondary);
 		font-style: italic;
 		white-space: nowrap;
 		overflow: hidden;
@@ -503,7 +504,7 @@
 	}
 
 	.suggestions :global(mark) {
-		background: #fef3c7;
+		background: rgba(255, 200, 60, 0.25);
 		color: inherit;
 		padding: 0 1px;
 		border-radius: 2px;
@@ -534,9 +535,9 @@
 
 	.bulk-btn {
 		padding: 0.7rem 1.25rem;
-		border: 2px solid #e5e7eb;
+		border: 2px solid var(--border);
 		border-radius: 0.625rem;
-		background: white;
+		background: var(--bg);
 		font-size: 0.9rem;
 		font-family: inherit;
 		cursor: pointer;

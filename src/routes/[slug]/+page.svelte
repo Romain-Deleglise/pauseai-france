@@ -39,7 +39,7 @@
 		margin-top: 3rem;
 	}
 	footer {
-		color: #535353;
+		color: var(--text-secondary);
 		font-size: 0.8rem;
 		margin-top: 4rem;
 	}

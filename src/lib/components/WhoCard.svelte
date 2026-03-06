@@ -59,7 +59,7 @@
 		width: 100%;
 		height: 100%;
 		border-radius: 50%;
-		background: linear-gradient(135deg, #e8e8e8 0%, #d0d0d0 100%);
+		background: linear-gradient(135deg, var(--border) 0%, var(--bg-subtle) 100%);
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -69,7 +69,7 @@
 	.placeholder svg {
 		width: 40%;
 		height: 40%;
-		color: #999;
+		color: var(--text-secondary);
 	}
 
 	.info {
