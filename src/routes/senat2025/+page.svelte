@@ -424,7 +424,7 @@
 	.executive-summary {
 		margin: 3rem 0;
 		padding: 2rem;
-		background: #fafafa;
+		background: var(--bg-subtle);
 		border-radius: 12px;
 	}
 
@@ -517,7 +517,7 @@
 		border: 1px solid #e5e5e5;
 		border-radius: 8px;
 		padding: 0.75rem 1rem;
-		background: white;
+		background: var(--bg);
 	}
 
 	fieldset.choices legend {
@@ -590,5 +590,15 @@
 		.newsletter-section {
 			padding: 1.5rem 1rem;
 		}
+	}
+
+	/* ─── Dark mode ──────────────────────────────────────────── */
+	:global([data-theme='dark']) .key-point-card {
+		background: var(--bg-subtle);
+	}
+
+	:global([data-theme='dark']) .newsletter-section {
+		background: var(--bg-subtle);
+		border-color: var(--border);
 	}
 </style>

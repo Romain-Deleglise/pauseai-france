@@ -81,14 +81,14 @@
 	.intro {
 		font-size: 1.25rem;
 		line-height: 1.6;
-		color: var(--text-muted, #444);
+		color: var(--text);
 	}
 
 	.charte-engagement {
-		background: #fafafa;
+		background: var(--bg-subtle);
 		border-radius: 16px;
 		padding: 3rem 2rem;
-		border: 1px solid #eee;
+		border: 1px solid var(--border);
 		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
 		text-align: center;
 		margin-bottom: 5rem;
@@ -103,7 +103,7 @@
 		font-size: 2rem;
 		margin-top: 0;
 		margin-bottom: 1.5rem;
-		color: var(--text-heading, #222);
+		color: var(--text);
 	}
 
 	.charte-engagement p {
@@ -138,7 +138,7 @@
 		transform: translate(-50%, -50%);
 		max-width: min(90%, 90vw);
 		max-height: 90vh;
-		background: white;
+		background: var(--bg);
 		border-radius: 8px;
 		overflow: hidden;
 		box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
