@@ -188,6 +188,13 @@
 					<div class="nav-separator" class:on-hero={whiteNav} aria-hidden="true"></div>
 					<!-- CTAs -->
 					<div class="nav-ctas">
+						<a
+							href={switchLangHref}
+							class="lang-toggle"
+							class:on-hero={whiteNav}
+							aria-label={otherLang === 'fr' ? 'Passer en français' : 'Switch to English'}
+							title={otherLang === 'fr' ? 'Français' : 'English'}>{otherLang.toUpperCase()}</a
+						>
 						<button
 							class="theme-toggle"
 							class:on-hero={whiteNav}
@@ -602,6 +609,41 @@
 	/* Dark mode: flip icon colors automatically via CSS currentColor */
 	:global([data-theme='dark']) .theme-toggle {
 		color: var(--text);
+	}
+
+	/* ─── Language toggle ─────────────────────────────────────── */
+	.lang-toggle {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 2rem;
+		height: 2rem;
+		border-radius: 0.4rem;
+		background: transparent;
+		color: var(--text);
+		font-family: var(--font-heading);
+		font-weight: 700;
+		font-size: 0.75rem;
+		text-decoration: none;
+		transition:
+			background 0.15s,
+			color 0.15s;
+	}
+
+	.lang-toggle:hover {
+		background: rgba(0, 0, 0, 0.08);
+	}
+
+	.lang-toggle.on-hero {
+		color: white;
+	}
+
+	.lang-toggle.on-hero:hover {
+		background: rgba(255, 255, 255, 0.15);
+	}
+
+	:global([data-theme='dark']) .lang-toggle:hover {
+		background: rgba(255, 255, 255, 0.08);
 	}
 
 	.sidebar-theme-toggle {
