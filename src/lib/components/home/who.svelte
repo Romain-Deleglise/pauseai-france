@@ -5,9 +5,12 @@
 	import Button from '$components/Button.svelte'
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
 	import FAQ from '$posts/qui-sommes-nous.md'
+	import FAQEn from '$posts/en/qui-sommes-nous.md'
 	import type { TeamMember } from '$lib/notion'
+	import type { Lang } from '$lib/i18n'
 
 	export let teamMembers: TeamMember[] = []
+	export let lang: Lang = 'fr'
 
 	const label_id = 'who-title'
 
@@ -149,20 +152,32 @@
 </script>
 
 <section aria-labelledby={label_id}>
-	<UnderlinedTitle id={label_id}>Qui sommes-nous ?</UnderlinedTitle>
+	<UnderlinedTitle id={label_id}
+		>{lang === 'en' ? 'Who are we?' : 'Qui sommes-nous ?'}</UnderlinedTitle
+	>
 
 	<div class="intro">
-		<FAQ />
+		{#if lang === 'en'}
+			<FAQEn />
+		{:else}
+			<FAQ />
+		{/if}
 		<div class="contact-cta">
-			<Button href="mailto:contact@pauseia.fr">Nous contacter</Button>
+			<Button href="mailto:contact@pauseia.fr"
+				>{lang === 'en' ? 'Contact us' : 'Nous contacter'}</Button
+			>
 		</div>
 	</div>
 
 	<div class="team-section">
-		<h2 class="section-title">Direction</h2>
+		<h2 class="section-title">{lang === 'en' ? 'Leadership' : 'Direction'}</h2>
 		<p class="section-description">
-			Les membres du bureau et du conseil d'administration qui pilotent la stratégie et les
-			opérations de l'association.
+			{#if lang === 'en'}
+				The board members who lead the association's strategy and operations.
+			{:else}
+				Les membres du bureau et du conseil d'administration qui pilotent la stratégie et les
+				opérations de l'association.
+			{/if}
 		</p>
 		<div class="cards-grid cards-centered">
 			{#each leadership as leader}
@@ -173,10 +188,17 @@
 
 	{#if scientificCouncil.length > 0}
 		<div class="team-section">
-			<h2 class="section-title">Conseil scientifique</h2>
+			<h2 class="section-title">
+				{lang === 'en' ? 'Scientific Council' : 'Conseil scientifique'}
+			</h2>
 			<p class="section-description">
-				Nos experts qui éclairent nos positions sur les enjeux techniques et scientifiques de
-				l'intelligence artificielle.
+				{#if lang === 'en'}
+					Our experts who inform our positions on the technical and scientific issues of artificial
+					intelligence.
+				{:else}
+					Nos experts qui éclairent nos positions sur les enjeux techniques et scientifiques de
+					l'intelligence artificielle.
+				{/if}
 			</p>
 			<div class="cards-grid cards-centered">
 				{#each scientificCouncil as scientist}
@@ -192,10 +214,17 @@
 
 	{#if members.length > 0}
 		<div class="team-section">
-			<h2 class="section-title">Membres et bénévoles</h2>
+			<h2 class="section-title">
+				{lang === 'en' ? 'Members & Volunteers' : 'Membres et bénévoles'}
+			</h2>
 			<p class="section-description">
-				Les bénévoles qui font vivre l'association au quotidien à travers leurs compétences et leur
-				engagement.
+				{#if lang === 'en'}
+					The volunteers who bring the association to life every day through their skills and
+					commitment.
+				{:else}
+					Les bénévoles qui font vivre l'association au quotidien à travers leurs compétences et
+					leur engagement.
+				{/if}
 			</p>
 			<div class="cards-grid cards-centered">
 				{#each members as member}
@@ -205,7 +234,11 @@
 		</div>
 	{/if}
 
-	<p class="member-count">+ une centaine de membres et bénévoles</p>
+	<p class="member-count">
+		{lang === 'en'
+			? '+ a hundred members and volunteers'
+			: '+ une centaine de membres et bénévoles'}
+	</p>
 </section>
 
 <style>
