@@ -30,25 +30,6 @@ export interface Campaign {
  */
 export const campaigns: Campaign[] = [
 	{
-		slug: 'senat2025',
-		status: 'ended',
-		startDate: '2025-10',
-		endDate: '2025-10',
-		url: '/senat2025',
-		fr: {
-			title: 'Colloque Sénat 2025',
-			description:
-				"Compte-rendu du colloque au Sénat du 31 octobre 2025 : points clés, résumé exécutif et recommandations pour maîtriser l'intelligence artificielle.",
-			cta: 'Voir le compte-rendu'
-		},
-		en: {
-			title: 'Senate Conference 2025',
-			description:
-				'Report from the Senate conference of October 31, 2025: key points, executive summary and recommendations for controlling artificial intelligence.',
-			cta: 'See the report'
-		}
-	},
-	{
 		slug: 'sommet-ia-2026',
 		status: 'ended',
 		startDate: '2026-01',
