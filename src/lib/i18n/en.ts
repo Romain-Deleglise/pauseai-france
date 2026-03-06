@@ -176,7 +176,12 @@ export default {
 			'This page lists all campaigns run by Pause AI. It is updated regularly — one link, always relevant.',
 		badge_active: 'Active',
 		badge_ended: 'Ended',
-		see_archive: 'See page'
+		see_archive: 'See page',
+		active_count_singular: 'active campaign',
+		active_count_plural: 'active campaigns',
+		since: 'Since',
+		period: 'from',
+		to: 'to'
 	},
 	sommet: {
 		title: 'AI Summit 2026',

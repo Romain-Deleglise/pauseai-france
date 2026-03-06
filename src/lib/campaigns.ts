@@ -4,8 +4,10 @@ export interface Campaign {
 	/** URL slug, e.g. 'municipales-2026' → /fr/municipales-2026 */
 	slug: string
 	status: CampaignStatus
-	/** Approximate start date (YYYY-MM) for ordering */
+	/** Start date (YYYY-MM) — used for ordering and display */
 	startDate: string
+	/** End date (YYYY-MM) — set when campaign ends */
+	endDate?: string
 	fr: {
 		title: string
 		description: string
@@ -29,6 +31,7 @@ export const campaigns: Campaign[] = [
 		slug: 'sommet-ia-2026',
 		status: 'ended',
 		startDate: '2026-01',
+		endDate: '2026-02',
 		fr: {
 			title: "Sommet de l'IA 2026",
 			description:
@@ -45,7 +48,7 @@ export const campaigns: Campaign[] = [
 	{
 		slug: 'municipales-2026',
 		status: 'active',
-		startDate: '2025-11',
+		startDate: '2026-03',
 		fr: {
 			title: 'Élections municipales 2026',
 			description:

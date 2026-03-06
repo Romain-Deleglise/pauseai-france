@@ -12,6 +12,43 @@
 	$: isEn = data.lang === 'en'
 	$: prefix = isEn ? '/en' : '/fr'
 	$: sortedCampaigns = getSortedCampaigns()
+	$: activeCount = sortedCampaigns.filter((c) => c.status === 'active').length
+
+	const MONTHS_FR = [
+		'jan.',
+		'fév.',
+		'mars',
+		'avr.',
+		'mai',
+		'juin',
+		'juil.',
+		'août',
+		'sept.',
+		'oct.',
+		'nov.',
+		'déc.'
+	]
+	const MONTHS_EN = [
+		'Jan',
+		'Feb',
+		'Mar',
+		'Apr',
+		'May',
+		'Jun',
+		'Jul',
+		'Aug',
+		'Sep',
+		'Oct',
+		'Nov',
+		'Dec'
+	]
+
+	function formatDate(yyyymm: string): string {
+		const [year, month] = yyyymm.split('-')
+		const m = parseInt(month, 10) - 1
+		const months = isEn ? MONTHS_EN : MONTHS_FR
+		return `${months[m]} ${year}`
+	}
 </script>
 
 <PostMeta title={t.campagnes.meta_title} description={t.campagnes.meta_desc} />
@@ -20,14 +57,27 @@
 	<section class="hero">
 		<UnderlinedTitle as="h1">{t.campagnes.title}</UnderlinedTitle>
 		<p class="intro">{t.campagnes.subtitle}</p>
+		<p class="active-count">
+			{activeCount}
+			{activeCount === 1 ? t.campagnes.active_count_singular : t.campagnes.active_count_plural}
+		</p>
 	</section>
 
 	<section class="campaigns-list">
 		{#each sortedCampaigns as campaign}
 			{@const content = isEn ? campaign.en : campaign.fr}
 			<div class="campaign-card" class:ended={campaign.status === 'ended'}>
-				<div class="card-badge" class:badge-ended={campaign.status === 'ended'}>
-					{campaign.status === 'active' ? t.campagnes.badge_active : t.campagnes.badge_ended}
+				<div class="card-top">
+					<div class="card-badge" class:badge-ended={campaign.status === 'ended'}>
+						{campaign.status === 'active' ? t.campagnes.badge_active : t.campagnes.badge_ended}
+					</div>
+					<span class="card-date">
+						{#if campaign.endDate}
+							{formatDate(campaign.startDate)} – {formatDate(campaign.endDate)}
+						{:else}
+							{t.campagnes.since} {formatDate(campaign.startDate)}
+						{/if}
+					</span>
 				</div>
 				<h2>{content.title}</h2>
 				<p>{content.description}</p>
@@ -82,6 +132,29 @@
 		opacity: 0.65;
 	}
 
+	.active-count {
+		font-size: 1rem;
+		font-weight: 600;
+		color: #2e7d32;
+		background: #e8f5e9;
+		display: inline-block;
+		padding: 0.3rem 0.8rem;
+		border-radius: 999px;
+		margin-top: 0.5rem;
+	}
+
+	.card-top {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+		margin-bottom: 1rem;
+	}
+
+	.card-date {
+		font-size: 0.85rem;
+		color: #999;
+	}
+
 	.card-badge {
 		display: inline-block;
 		background: #e8f5e9;
@@ -92,7 +165,6 @@
 		letter-spacing: 0.06em;
 		padding: 0.2rem 0.6rem;
 		border-radius: 999px;
-		margin-bottom: 1rem;
 	}
 
 	.card-badge.badge-ended {

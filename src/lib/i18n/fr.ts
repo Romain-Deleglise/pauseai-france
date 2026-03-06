@@ -177,7 +177,12 @@ export default {
 			'Cette page regroupe toutes les campagnes menées par Pause IA. Elle est mise à jour régulièrement : un même lien, toujours pertinent.',
 		badge_active: 'En cours',
 		badge_ended: 'Terminée',
-		see_archive: 'Voir la page'
+		see_archive: 'Voir la page',
+		active_count_singular: 'campagne en cours',
+		active_count_plural: 'campagnes en cours',
+		since: 'Depuis',
+		period: 'de',
+		to: 'à'
 	},
 	sommet: {
 		title: "Sommet de l'IA 2026",
