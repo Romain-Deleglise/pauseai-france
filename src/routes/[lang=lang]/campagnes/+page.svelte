@@ -66,6 +66,7 @@
 	<section class="campaigns-list">
 		{#each sortedCampaigns as campaign}
 			{@const content = isEn ? campaign.en : campaign.fr}
+			{@const href = campaign.url ?? `${prefix}/${campaign.slug}`}
 			<div class="campaign-card" class:ended={campaign.status === 'ended'}>
 				<div class="card-top">
 					<div class="card-badge" class:badge-ended={campaign.status === 'ended'}>
@@ -82,9 +83,9 @@
 				<h2>{content.title}</h2>
 				<p>{content.description}</p>
 				{#if campaign.status === 'active'}
-					<Button href="{prefix}/{campaign.slug}">{content.cta}</Button>
+					<Button {href}>{content.cta}</Button>
 				{:else}
-					<a class="archive-link" href="{prefix}/{campaign.slug}">{t.campagnes.see_archive} →</a>
+					<a class="archive-link" {href}>{t.campagnes.see_archive} →</a>
 				{/if}
 			</div>
 		{/each}
@@ -101,7 +102,7 @@
 
 	.hero {
 		text-align: left;
-		margin-bottom: 4rem;
+		margin-bottom: 2rem;
 	}
 
 	.intro {
@@ -126,10 +127,24 @@
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
+		transition:
+			transform 0.2s ease,
+			box-shadow 0.2s ease,
+			border-color 0.2s ease;
+	}
+
+	.campaign-card:hover {
+		transform: translateY(-3px);
+		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+		border-color: #d0d0d0;
 	}
 
 	.campaign-card.ended {
 		opacity: 0.65;
+	}
+
+	.campaign-card.ended:hover {
+		opacity: 0.8;
 	}
 
 	.active-count {
