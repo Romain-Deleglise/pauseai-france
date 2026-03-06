@@ -71,6 +71,9 @@
 		open = false
 	}
 
+	type NavItem = { href: string; label: string; external?: boolean; muted?: boolean }
+	type NavGroup = { id: string; label: string; items: NavItem[] }
+	let navGroups: NavGroup[]
 	$: navGroups = [
 		{
 			id: 'comprendre',
@@ -96,8 +99,7 @@
 			label: t.nav.campagnes,
 			items: [
 				{ href: `${prefix}/campagnes`, label: t.nav.toutes_campagnes },
-				{ href: `${prefix}/municipales-2026`, label: t.nav.municipales },
-				{ href: `${prefix}/sommet-ia-2026`, label: t.nav.sommet }
+				{ href: `${prefix}/municipales-2026`, label: t.nav.municipales }
 			]
 		},
 		{

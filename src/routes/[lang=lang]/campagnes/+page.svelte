@@ -84,8 +84,6 @@
 				<p>{content.description}</p>
 				{#if campaign.status === 'active'}
 					<Button {href}>{content.cta}</Button>
-				{:else}
-					<a class="archive-link" {href}>{t.campagnes.see_archive} →</a>
 				{/if}
 			</div>
 		{/each}
@@ -140,11 +138,14 @@
 	}
 
 	.campaign-card.ended {
-		opacity: 0.65;
+		opacity: 0.75;
+		cursor: default;
 	}
 
 	.campaign-card.ended:hover {
-		opacity: 0.8;
+		transform: none;
+		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+		border-color: #eee;
 	}
 
 	.active-count {
@@ -199,17 +200,6 @@
 		line-height: 1.7;
 		color: var(--text-muted, #444);
 		margin-bottom: 1.5rem;
-	}
-
-	.archive-link {
-		font-size: 0.95rem;
-		color: #888;
-		text-decoration: underline;
-		text-underline-offset: 3px;
-	}
-
-	.archive-link:hover {
-		color: #555;
 	}
 
 	@media (max-width: 600px) {
