@@ -24,14 +24,19 @@
 			<p>Sensibilisons nos futurs élus locaux et demandons-leur de signer la charte Pause IA.</p>
 			<Button href="/municipales-2026">Voir la campagne</Button>
 		</div>
+	</section>
 
-		<div class="campaign-card">
-			<h2>Sommet de l'IA 2026</h2>
-			<p>
-				Mobilisons-nous pour que le Sommet international de l'IA en Inde place la sécurité au
-				premier plan.
-			</p>
-			<Button href="/sommet-ia-2026">Voir la campagne</Button>
+	<section class="past-campaigns">
+		<h2 class="past-title">Campagnes terminées</h2>
+		<div class="campaigns-grid">
+			<div class="campaign-card ended">
+				<div class="ended-badge">Terminée</div>
+				<h3>Sommet de l'IA 2026</h3>
+				<p>
+					Mobilisation pour que le Sommet international de l'IA en Inde place la sécurité au premier
+					plan.
+				</p>
+			</div>
 		</div>
 	</section>
 </article>
@@ -74,8 +79,33 @@
 		align-items: flex-start;
 	}
 
+	.campaign-card.ended {
+		opacity: 0.55;
+		position: relative;
+	}
+
+	.ended-badge {
+		display: inline-block;
+		font-size: 0.72rem;
+		font-weight: 700;
+		letter-spacing: 0.07em;
+		text-transform: uppercase;
+		background: rgba(0, 0, 0, 0.08);
+		color: rgba(0, 0, 0, 0.5);
+		padding: 0.2rem 0.6rem;
+		border-radius: 999px;
+		margin-bottom: 1rem;
+	}
+
 	h2 {
 		font-size: 1.75rem;
+		margin-top: 0;
+		margin-bottom: 1rem;
+		color: var(--text-heading, #222);
+	}
+
+	h3 {
+		font-size: 1.5rem;
 		margin-top: 0;
 		margin-bottom: 1rem;
 		color: var(--text-heading, #222);
@@ -84,8 +114,21 @@
 	.campaign-card p {
 		font-size: 1.1rem;
 		line-height: 1.6;
-		margin-bottom: 2rem;
+		margin-bottom: 0;
 		color: var(--text-muted, #444);
+	}
+
+	.past-campaigns {
+		margin-bottom: 5rem;
+	}
+
+	.past-title {
+		font-size: 1.1rem;
+		font-weight: 700;
+		letter-spacing: 0.05em;
+		text-transform: uppercase;
+		color: rgba(0, 0, 0, 0.4);
+		margin-bottom: 1.5rem;
 	}
 
 	@media (max-width: 600px) {

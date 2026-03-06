@@ -70,6 +70,9 @@
 		open = false
 	}
 
+	type NavItem = { href: string; label: string; external?: boolean; muted?: boolean }
+	type NavGroup = { id: string; label: string; items: NavItem[] }
+	let navGroups: NavGroup[]
 	$: navGroups = [
 		{
 			id: 'comprendre',
