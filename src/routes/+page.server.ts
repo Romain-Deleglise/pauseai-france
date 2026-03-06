@@ -3,8 +3,14 @@ import type { PageServerLoad } from './$types'
 
 export const prerender = false
 
-export const load: PageServerLoad = ({ request }) => {
+export const load: PageServerLoad = ({ request, cookies }) => {
+	const cookieLang = cookies.get('lang')
+	if (cookieLang === 'fr' || cookieLang === 'en') {
+		redirect(302, `/${cookieLang}`)
+	}
 	const acceptLang = request.headers.get('accept-language') ?? ''
-	const lang = acceptLang.toLowerCase().startsWith('fr') ? 'fr' : 'en'
+	// FR and EN browsers → /fr ; other languages (de, zh, es…) → /en
+	const a = acceptLang.toLowerCase()
+	const lang = a.startsWith('fr') || a.startsWith('en') ? 'fr' : 'en'
 	redirect(302, `/${lang}`)
 }
