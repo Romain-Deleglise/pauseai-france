@@ -173,7 +173,7 @@ export default {
 			'Find all ongoing and past Pause AI campaigns. This page is updated regularly to reflect the current actions of the association.',
 		title: 'Our campaigns',
 		subtitle:
-			'This page lists all campaigns run by Pause AI. It is updated regularly — one link, always relevant.',
+			'All campaigns run by Pause AI to raise awareness among citizens and decision-makers about AI risks.',
 		badge_active: 'Active',
 		badge_ended: 'Ended',
 		see_archive: 'See page',

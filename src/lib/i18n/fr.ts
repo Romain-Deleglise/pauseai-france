@@ -174,7 +174,7 @@ export default {
 			"Retrouvez toutes les campagnes en cours et passées de Pause IA. Cette page est mise à jour régulièrement pour refléter les actions actuelles de l'association.",
 		title: 'Nos campagnes',
 		subtitle:
-			'Cette page regroupe toutes les campagnes menées par Pause IA. Elle est mise à jour régulièrement : un même lien, toujours pertinent.',
+			"Retrouvez ici les campagnes menées par Pause IA pour alerter les citoyens et les décideurs sur les risques de l'IA.",
 		badge_active: 'En cours',
 		badge_ended: 'Terminée',
 		see_archive: 'Voir la page',
