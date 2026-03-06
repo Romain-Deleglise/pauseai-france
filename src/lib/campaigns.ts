@@ -27,7 +27,7 @@ export interface Campaign {
 export const campaigns: Campaign[] = [
 	{
 		slug: 'sommet-ia-2026',
-		status: 'active',
+		status: 'ended',
 		startDate: '2026-01',
 		fr: {
 			title: "Sommet de l'IA 2026",
