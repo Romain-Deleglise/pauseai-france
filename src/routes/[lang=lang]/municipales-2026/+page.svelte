@@ -30,7 +30,7 @@
 			name: 'Stéphane Baly',
 			city: 'Lille',
 			commitments: '14/14',
-			charterFile: '/chartes-municipales-2026/stephane-baly-lille.pdf',
+			charterFile: '/chartes-municipales-2026/Baly.pdf',
 			charterType: 'pdf'
 		},
 		{
@@ -38,7 +38,7 @@
 			name: 'Jean-Marc Governatori',
 			city: 'Nice',
 			commitments: '14/14',
-			charterFile: '/chartes-municipales-2026/jean-marc-governatori-nice.pdf',
+			charterFile: '/chartes-municipales-2026/Governatori.pdf',
 			charterType: 'pdf'
 		},
 		{
@@ -46,7 +46,7 @@
 			name: 'Sébastien Muscat',
 			city: 'Brest',
 			commitments: '14/14',
-			charterFile: '/chartes-municipales-2026/sebastien-muscat-brest.pdf',
+			charterFile: '/chartes-municipales-2026/Muscat.pdf',
 			charterType: 'pdf'
 		},
 		{
@@ -54,7 +54,7 @@
 			name: 'Johanna Rolland',
 			city: 'Nantes',
 			commitments: '13/14',
-			charterFile: '/chartes-municipales-2026/johanna-rolland-nantes.pdf',
+			charterFile: '/chartes-municipales-2026/Rolland.pdf',
 			charterType: 'pdf'
 		},
 		{
@@ -62,15 +62,15 @@
 			name: 'Jérémy Roques',
 			city: 'Metz',
 			commitments: '12/14',
-			charterFile: '/chartes-municipales-2026/jeremy-roques-metz.pdf',
-			charterType: 'pdf'
+			charterFile: '/chartes-municipales-2026/Roques.webp',
+			charterType: 'image'
 		},
 		{
 			id: 'mariane-maximi-clermont-ferrand',
 			name: 'Mariane Maximi',
 			city: 'Clermont-Ferrand',
 			commitments: '6/14',
-			charterFile: '/chartes-municipales-2026/mariane-maximi-clermont-ferrand.pdf',
+			charterFile: '/chartes-municipales-2026/Maximi.pdf',
 			charterType: 'pdf'
 		},
 		{
@@ -78,8 +78,8 @@
 			name: 'Vincent Belloteau',
 			city: 'Périgueux',
 			commitments: '14/14',
-			charterFile: '/chartes-municipales-2026/vincent-belloteau-perigueux.pdf',
-			charterType: 'pdf'
+			charterFile: '/chartes-municipales-2026/Belloteau.webp',
+			charterType: 'image'
 		}
 	]
 
