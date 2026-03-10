@@ -27,52 +27,58 @@
 	}
 </script>
 
-<PostMeta title={data.newsletter.title} description={data.newsletter.description} />
+<PostMeta title={data.pressRelease.title} description={data.pressRelease.description} />
 
 <div class="page">
 	<nav class="breadcrumb">
-		<a href="/newsletters" class="back-link">
+		<a href="/presse" class="back-link">
 			<ArrowLeft size="1rem" />
-			Toutes les newsletters
+			Espace Presse
 		</a>
 	</nav>
 
-	<header class="newsletter-header">
-		<h1>{data.newsletter.title}</h1>
-		<div class="newsletter-meta">
-			{#if data.newsletter.date}
+	<header class="pr-header">
+		<div class="dept-badge">{data.pressRelease.department}</div>
+		<h1>{data.pressRelease.title}</h1>
+		<div class="pr-meta">
+			{#if data.pressRelease.date}
 				<span class="date">
 					<Calendar size="1rem" />
-					{formatDate(data.newsletter.date)}
+					{formatDate(data.pressRelease.date)}
 				</span>
 			{/if}
-			<a href={data.newsletter.url} target="_blank" rel="noopener noreferrer" class="original-link">
+			<a
+				href={data.pressRelease.url}
+				target="_blank"
+				rel="noopener noreferrer"
+				class="original-link"
+			>
 				<ExternalLink size="0.875rem" />
 				Voir l'original
 			</a>
 		</div>
 	</header>
 
-	<article class="newsletter-content">
+	<article class="pr-content">
 		{#if data.hasContent}
 			{@html data.content}
 		{:else}
 			<iframe
-				src={data.newsletter.url}
-				title={data.newsletter.title}
-				class="newsletter-iframe"
+				src={data.pressRelease.url}
+				title={data.pressRelease.title}
+				class="pr-iframe"
 				sandbox="allow-same-origin"
 			/>
 		{/if}
 	</article>
 
-	<nav class="newsletter-nav">
+	<nav class="pr-nav">
 		<div class="nav-link-wrapper">
 			{#if data.prev}
-				<a href="/newsletters/{data.prev.slug}" class="nav-link nav-prev">
+				<a href="/presse/local/{data.prev.slug}" class="nav-link nav-prev">
 					<ArrowLeft size="1.25rem" />
 					<span class="nav-label">
-						<span class="nav-direction">Plus récente</span>
+						<span class="nav-direction">Précédent</span>
 						<span class="nav-title">{data.prev.title}</span>
 					</span>
 				</a>
@@ -80,9 +86,9 @@
 		</div>
 		<div class="nav-link-wrapper nav-link-right">
 			{#if data.next}
-				<a href="/newsletters/{data.next.slug}" class="nav-link nav-next">
+				<a href="/presse/local/{data.next.slug}" class="nav-link nav-next">
 					<span class="nav-label">
-						<span class="nav-direction">Plus ancienne</span>
+						<span class="nav-direction">Suivant</span>
 						<span class="nav-title">{data.next.title}</span>
 					</span>
 					<ArrowRight size="1.25rem" />
@@ -91,19 +97,18 @@
 		</div>
 	</nav>
 
-	<footer class="newsletter-footer">
-		<a href="/newsletters" class="back-link">
+	<footer class="pr-footer">
+		<a href="/presse" class="back-link">
 			<ArrowLeft size="1rem" />
-			Retour aux newsletters
+			Retour à l'espace presse
 		</a>
 	</footer>
 </div>
 
-<!-- Fullscreen overlay -->
 {#if fullscreen}
 	<div class="fullscreen-overlay">
 		<div class="fullscreen-header">
-			<span class="fullscreen-title">{data.newsletter.title}</span>
+			<span class="fullscreen-title">{data.pressRelease.title}</span>
 			<button
 				class="fullscreen-close"
 				on:click={toggleFullscreen}
@@ -114,14 +119,14 @@
 		</div>
 		<div class="fullscreen-body">
 			{#if data.hasContent}
-				<div class="newsletter-content">
+				<div class="pr-content">
 					{@html data.content}
 				</div>
 			{:else}
 				<iframe
-					src={data.newsletter.url}
-					title={data.newsletter.title}
-					class="newsletter-iframe fullscreen-iframe"
+					src={data.pressRelease.url}
+					title={data.pressRelease.title}
+					class="pr-iframe fullscreen-iframe"
 					sandbox="allow-same-origin"
 				/>
 			{/if}
@@ -129,7 +134,6 @@
 	</div>
 {/if}
 
-<!-- Floating fullscreen button (mobile only) -->
 <button class="fullscreen-btn" on:click={toggleFullscreen} aria-label="Lire en plein écran">
 	<Maximize2 size="1.25rem" />
 </button>
@@ -159,20 +163,32 @@
 		color: var(--brand, #ff9416);
 	}
 
-	.newsletter-header {
+	.pr-header {
 		margin-bottom: 2.5rem;
 		padding-bottom: 1.5rem;
 		border-bottom: 2px solid var(--border, #e5e7eb);
 	}
 
-	.newsletter-header h1 {
+	.dept-badge {
+		display: inline-block;
+		padding: 0.25rem 0.625rem;
+		margin-bottom: 0.75rem;
+		font-size: 0.8rem;
+		font-weight: 700;
+		color: var(--brand, #ff9416);
+		background-color: rgba(255, 148, 22, 0.1);
+		border: 1px solid var(--brand, #ff9416);
+		border-radius: 0.25rem;
+	}
+
+	.pr-header h1 {
 		font-size: 2rem;
 		font-weight: 800;
 		line-height: 1.3;
 		margin: 0 0 1rem;
 	}
 
-	.newsletter-meta {
+	.pr-meta {
 		display: flex;
 		align-items: center;
 		gap: 1.5rem;
@@ -201,51 +217,49 @@
 		color: var(--brand, #ff9416);
 	}
 
-	/* Newsletter content container */
-	.newsletter-content {
+	.pr-content {
 		overflow: hidden;
 	}
 
 	/* Responsive: constrain widths without destroying layout */
-	.newsletter-content :global(table) {
+	.pr-content :global(table) {
 		max-width: 100% !important;
 	}
 
-	.newsletter-content :global(td),
-	.newsletter-content :global(th) {
+	.pr-content :global(td),
+	.pr-content :global(th) {
 		max-width: 100%;
 		word-wrap: break-word;
 		overflow-wrap: break-word;
 	}
 
-	.newsletter-content :global(img) {
+	.pr-content :global(img) {
 		max-width: 100%;
 		height: auto !important;
 	}
 
-	.newsletter-content :global(div),
-	.newsletter-content :global(span) {
+	.pr-content :global(div),
+	.pr-content :global(span) {
 		max-width: 100% !important;
 	}
 
 	/* Links */
-	.newsletter-content :global(a) {
+	.pr-content :global(a) {
 		color: var(--brand, #ff9416);
 	}
 
-	.newsletter-content :global(a:hover) {
+	.pr-content :global(a:hover) {
 		opacity: 0.8;
 	}
 
-	.newsletter-iframe {
+	.pr-iframe {
 		width: 100%;
 		min-height: 80vh;
 		border: 1px solid var(--border, #e5e7eb);
 		border-radius: 0.5rem;
 	}
 
-	/* Prev/Next navigation */
-	.newsletter-nav {
+	.pr-nav {
 		display: flex;
 		gap: 1rem;
 		margin-top: 3rem;
@@ -271,7 +285,7 @@
 		padding: 0.75rem 1rem;
 		border-radius: 0.5rem;
 		border: 1px solid var(--border, #e5e7eb);
-		background: var(--bg-card, #f9f9f9);
+		background: var(--bg-secondary, #f9f9f9);
 		transition:
 			background 0.2s,
 			border-color 0.2s,
@@ -316,13 +330,12 @@
 		-webkit-box-orient: vertical;
 	}
 
-	.newsletter-footer {
+	.pr-footer {
 		margin-top: 1.5rem;
 		padding-top: 1.5rem;
 		border-top: 1px solid var(--border, #e5e7eb);
 	}
 
-	/* Floating fullscreen button */
 	.fullscreen-btn {
 		position: fixed;
 		bottom: 1.5rem;
@@ -349,7 +362,6 @@
 		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 	}
 
-	/* Fullscreen overlay */
 	.fullscreen-overlay {
 		position: fixed;
 		inset: 0;
@@ -424,7 +436,7 @@
 			padding: 3rem 2rem 6rem;
 		}
 
-		.newsletter-header h1 {
+		.pr-header h1 {
 			font-size: 2.5rem;
 		}
 	}
