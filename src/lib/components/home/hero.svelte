@@ -98,17 +98,14 @@
 	let heroBgEl: HTMLElement | null = null
 	let contentBoxEl: HTMLElement | null = null
 	let frostColTop = 'calc(50% - 17rem)' // CSS fallback before measurement
-	let frostColHeight = '80%' // CSS fallback before measurement
 
 	function measureFrostCol() {
 		if (!heroBgEl || !contentBoxEl) return
 		const bgRect = heroBgEl.getBoundingClientRect()
 		const boxRect = contentBoxEl.getBoundingClientRect()
-		// Column starts at content-box top, extends to hero-bg bottom
+		// Column top = content-box top; bottom:0 handles the rest (no overflow:hidden parent)
 		const topOffset = Math.max(0, boxRect.top - bgRect.top)
-		const colHeight = bgRect.height - topOffset
 		frostColTop = `${topOffset}px`
-		frostColHeight = `${Math.max(0, colHeight)}px`
 	}
 
 	onMount(() => {
@@ -154,7 +151,7 @@
 {#if mounted}
 	<section
 		class="hero"
-		style="--hero-top-offset: -{heroTopOffset}px; --frost-col-top: {frostColTop}; --frost-col-height: {frostColHeight}"
+		style="--hero-top-offset: -{heroTopOffset}px; --frost-col-top: {frostColTop}"
 		aria-labelledby={label_id}
 	>
 		<div class="hero-bg" bind:this={heroBgEl} aria-hidden="true">
@@ -190,6 +187,7 @@
 			</div>
 			<div class="mosaic-overlay"></div>
 		</div>
+		<div class="frost-col" aria-hidden="true"></div>
 		<div class="content" in:fade={{ duration: 500, delay: 200 }}>
 			<div class="content-box" bind:this={contentBoxEl}>
 				<h1 id={label_id}>
@@ -378,6 +376,10 @@
 		line-height: 1.7;
 	}
 
+	.frost-col {
+		display: none; /* only visible on desktop via the 1024px media query */
+	}
+
 	.corners {
 		width: 100vw;
 		bottom: -1px;
@@ -516,19 +518,15 @@
 			font-size: 3rem;
 		}
 
-		/* Frosted glass column anchored at the text, extending to the hero bottom.
-		   hero-bg has overflow:hidden → naturally clipped at the hero boundary.
-		   z-index:-1 on hero-bg means .content (in hero flow) renders on top.
-		   Formula: 50% (flex centre) − half_item_height ≈ 50% − 17rem, which
-		   JS measures the exact content-box top and sets --frost-col-top. */
-		.hero-bg::after {
-			content: '';
+		/* Frosted glass column: sits directly in .hero (no overflow:hidden parent)
+		   so bottom:0 reliably reaches the hero's bottom edge.
+		   JS measures the exact content-box top → --frost-col-top.
+		   z-index keeps it above hero-bg (-1) but below .content (auto/later in DOM). */
+		.frost-col {
+			display: block;
 			position: absolute;
 			top: var(--frost-col-top, calc(50% - 17rem));
-			/* Height measured by JS from content-box top to hero-bg bottom,
-			   avoiding any browser quirk with bottom:0 on a pseudo-element
-			   inside an overflow:hidden abs-positioned container. */
-			height: var(--frost-col-height, 70%);
+			bottom: 0;
 			left: 6rem; /* matches main padding-left at 1024px+ */
 			width: calc(28rem + 3rem); /* content-box max-width + 2 × 1.5rem padding */
 			background: rgba(255, 250, 245, 0.82);
@@ -536,6 +534,7 @@
 			-webkit-backdrop-filter: blur(14px);
 			border-radius: 16px 16px 0 0;
 			pointer-events: none;
+			z-index: 0;
 		}
 
 		/* Content-box: the visual background is now the column behind it.
