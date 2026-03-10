@@ -1,4 +1,4 @@
-import { getPressReleases, fetchPressReleaseContent } from '$lib/notion'
+import { getPressReleases } from '$lib/notion'
 import { redirect } from '@sveltejs/kit'
 import type { PageServerLoad } from './$types'
 
@@ -19,16 +19,6 @@ export const load: PageServerLoad = async ({ params }) => {
 		throw redirect(307, pressRelease.url)
 	}
 
-	const content = await fetchPressReleaseContent(pressRelease.url)
-
-	// If we couldn't fetch the content, redirect to the original URL
-	if (!content) {
-		throw redirect(307, pressRelease.url)
-	}
-
-	const textOnly = content.replace(/<[^>]*>/g, '').trim()
-	const hasContent = textOnly.length > 100
-
 	const prev =
 		index > 0 ? { slug: releases[index - 1].slug, title: releases[index - 1].title } : null
 	const next =
@@ -38,8 +28,8 @@ export const load: PageServerLoad = async ({ params }) => {
 
 	return {
 		pressRelease,
-		content,
-		hasContent,
+		content: null,
+		hasContent: false,
 		prev,
 		next
 	}
