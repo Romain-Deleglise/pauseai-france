@@ -77,7 +77,7 @@
 		{
 			id: 'sarah-hamza-reguig-paris11',
 			name: 'Sarah Hamza Reguig',
-			city: 'Paris 11e (Équinoxe)',
+			city: 'Paris 11e',
 			commitments: '14/14',
 			charterFile: '/chartes-municipales-2026/Charte Pause IA-Equinoxe.jpg',
 			charterType: 'image'
@@ -93,14 +93,23 @@
 	}
 
 	const pressArticles: PressArticle[] = [
-		// Ajoutez ici les articles de presse sur la campagne municipales 2026
-		// Exemple :
-		// {
-		//   source: 'Le Monde',
-		//   title: 'Des candidats aux municipales signent la charte Pause IA',
-		//   url: 'https://lemonde.fr/...',
-		//   date: '2026-02-15'
-		// }
+		{
+			source: 'Le Dauphiné Libéré',
+			title: "Isère / Grenoble : l'association Pause IA appelle les candidats à s'engager sur sa charte",
+			url: 'https://www.ledauphine.com/elections/2026/03/06/isere-grenoble-l-association-pause-ia-appelle-les-candidats-a-s-engager-sur-sa-charte',
+			date: '2026-03-06'
+		},
+		{
+			source: "Place Gre'net",
+			title: "Municipales 2026 : Pause IA interpelle les candidats sur les dangers de l'intelligence artificielle",
+			url: 'https://www.placegrenet.fr/2026/03/08/municipales-2026-pause-ia-interpelle-les-candidats-sur-les-dangers-de-lintelligence-artificielle/673506',
+			date: '2026-03-08'
+		},
+		{
+			source: "L'Opinion",
+			title: "Risques IA : l'association interpelle les candidats aux municipales de Toulouse",
+			url: 'https://lopinion.com/amp/articles/actualite/32757_risques-ia-association-candidats-municipales-toulouse'
+		}
 	]
 
 	// --- Modal ---
@@ -504,6 +513,7 @@
 		left: 50%;
 		transform: translate(-50%, -50%);
 		width: min(90vw, 56rem);
+		height: 90vh;
 		max-height: 90vh;
 		background: var(--bg, #fff);
 		border-radius: 12px;
