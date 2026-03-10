@@ -527,14 +527,18 @@
 			position: absolute;
 			top: var(--frost-col-top, calc(50% - 17rem));
 			bottom: 0;
-			left: 6rem; /* matches main padding-left at 1024px+ */
+			/* left:0 = hero's left edge, which is already at main's padding-left (6rem
+			   from viewport). Adding 6rem here would double the offset. */
+			left: 0;
 			width: calc(28rem + 3rem); /* content-box max-width + 2 × 1.5rem padding */
 			background: rgba(255, 250, 245, 0.82);
 			backdrop-filter: blur(14px);
 			-webkit-backdrop-filter: blur(14px);
 			border-radius: 16px 16px 0 0;
 			pointer-events: none;
-			z-index: 0;
+			/* z-index:-1 puts frost-col at paint step 2 (negative stacking contexts),
+			   while .content (in-flow flex item) is painted at step 3 → text on top. */
+			z-index: -1;
 		}
 
 		/* Content-box: the visual background is now the column behind it.
