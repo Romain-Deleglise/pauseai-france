@@ -7,13 +7,12 @@
 	const description =
 		"Les élections municipales de mars 2026 représentent une opportunité majeure de sensibilisation au niveau local. À cette occasion, Pause IA appelle les candidats à s'engager concrètement en signant notre charte."
 
-	// --- Candidats signataires ---
 	interface Candidate {
 		id: string
 		name: string
 		city: string
-		commitments: string // ex: "14/14" ou "13/14"
-		charterFile: string // chemin dans /static/chartes-municipales-2026/
+		commitments: string
+		charterFile: string
 		charterType: 'image' | 'pdf'
 	}
 
@@ -84,7 +83,6 @@
 		}
 	]
 
-	// --- Articles de presse sur la campagne municipales ---
 	interface PressArticle {
 		source: string
 		title: string
@@ -108,14 +106,13 @@
 		{
 			source: "L'Opinion",
 			title: "Risques IA : l'association interpelle les candidats aux municipales de Toulouse",
-			url: 'https://lopinion.com/amp/articles/actualite/32757_risques-ia-association-candidats-municipales-toulouse'
+			url: 'https://lopinion.com/amp/articles/actualite/32757_risques-ia-association-candidats-municipales-toulouse',
+			date: '2026-03-10'
 		}
 	]
 
-	// --- Modal ---
 	let showCharterModal = false
 	let selectedCandidate: Candidate | null = null
-
 	let showGeneralModal = false
 
 	function openCandidate(candidate: Candidate) {
@@ -147,7 +144,8 @@
 
 	function getCommitmentLabel(c: string): string {
 		if (c === '14/14') return 'Charte complète'
-		return `${c} engagements`
+		const num = parseInt(c.split('/')[0])
+		return `${num}/14 engagements`
 	}
 
 	function getCommitmentClass(c: string): string {
@@ -166,74 +164,94 @@
 <PostMeta {title} {description} />
 
 <article>
+	<!-- ── Hero ── -->
 	<section class="hero">
 		<UnderlinedTitle as="h1">Élections municipales 2026</UnderlinedTitle>
-
-		<p class="intro">
-			{description}
-		</p>
+		<p class="intro">{description}</p>
 	</section>
 
-	<!-- Section : Candidats engagés -->
+	<!-- ── 1. Agir ── -->
+	<section class="action-section">
+		<div class="action-inner">
+			<h2>Agir pour votre ville</h2>
+			<p>
+				Interpellez les candidats de votre ville et invitez-les à découvrir et signer la charte de
+				Pause IA sur les risques de l'IA. Les signataires sont affichés ci-dessous.
+			</p>
+			<div class="cta-container">
+				<Button on:click={() => (showGeneralModal = true)}>Je découvre la charte</Button>
+				<Button alt on:click={openActivoice}>J'interpelle les candidats de ma ville</Button>
+			</div>
+		</div>
+		<activoice-embed id="activoice-embed-1d572d9b_9638_4731_84c0_ce7fd867cccb" />
+	</section>
+
+	<!-- ── 2. Candidats signataires ── -->
 	<section class="signatories-section">
-		<h2>Les candidat·es engagé·es</h2>
+		<div class="section-header">
+			<h2>Les candidat·es engagé·es</h2>
+			<span class="count-pill">{candidates.length} signataires</span>
+		</div>
 		<p class="section-intro">
 			Ces candidat·es ont signé la charte de Pause IA sur les risques de l'intelligence
-			artificielle. Cliquez sur une carte pour découvrir leur engagement.
+			artificielle. Cliquez sur une carte pour consulter leur charte signée.
 		</p>
 
 		<div class="candidates-grid">
 			{#each candidates as candidate}
 				<button class="candidate-card" on:click={() => openCandidate(candidate)}>
-					<div class="candidate-info">
-						<span class="candidate-name">{candidate.name}</span>
-						<span class="candidate-city">{candidate.city}</span>
+					<div class="card-top">
+						<div class="candidate-info">
+							<span class="candidate-name">{candidate.name}</span>
+							<span class="candidate-city">
+								<svg width="11" height="14" viewBox="0 0 11 14" fill="none" aria-hidden="true">
+									<path
+										d="M5.5 0C2.46 0 0 2.46 0 5.5c0 3.85 5.5 8.5 5.5 8.5S11 9.35 11 5.5C11 2.46 8.54 0 5.5 0zm0 7.5a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"
+										fill="currentColor"
+									/>
+								</svg>
+								{candidate.city}
+							</span>
+						</div>
+						<span class="commitment-badge {getCommitmentClass(candidate.commitments)}">
+							{getCommitmentLabel(candidate.commitments)}
+						</span>
 					</div>
-					<span class="commitment-badge {getCommitmentClass(candidate.commitments)}">
-						{getCommitmentLabel(candidate.commitments)}
+					<span class="view-charter">
+						Voir la charte
+						<svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+							<path
+								d="M5 12h14M13 6l6 6-6 6"
+								stroke="currentColor"
+								stroke-width="2"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+							/>
+						</svg>
 					</span>
-					<span class="view-charter">Voir la charte →</span>
 				</button>
 			{/each}
 		</div>
 	</section>
 
-	<!-- Section : Campagne en cours -->
-	<section class="charte-engagement">
-		<div class="charte-header">
-			<h2>Demander à vos candidats de s'engager sur la charte de Pause IA</h2>
-			<p>
-				Vous pouvez agir localement en interpellant les candidats de votre ville. Invitez-les à
-				découvrir et à signer la charte de Pause IA. L'ensemble des signataires sera prochainement
-				affiché sur cette page.
-			</p>
-		</div>
-
-		<div class="cta-container">
-			<Button on:click={() => (showGeneralModal = true)}>Je découvre la charte</Button>
-			<Button on:click={openActivoice}>J'interpelle les candidats de ma ville</Button>
-		</div>
-
-		<activoice-embed id="activoice-embed-1d572d9b_9638_4731_84c0_ce7fd867cccb" />
-	</section>
-
-	<!-- Section : Presse -->
+	<!-- ── 3. Revue de presse ── -->
 	{#if pressArticles.length > 0}
 		<section class="press-section">
-			<h2>Ils en parlent</h2>
-			<div class="press-grid">
+			<div class="section-header">
+				<h2>Revue de presse de la campagne</h2>
+				<span class="count-pill">{pressArticles.length} articles</span>
+			</div>
+			<div class="press-list">
 				{#each pressArticles as article}
-					<a
-						class="press-card"
-						href={article.url}
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						<span class="press-source">{article.source}</span>
+					<a class="press-card" href={article.url} target="_blank" rel="noopener noreferrer">
+						<div class="press-meta">
+							<span class="press-source">{article.source}</span>
+							{#if article.date}
+								<time class="press-date" datetime={article.date}>{formatDate(article.date)}</time>
+							{/if}
+						</div>
 						<span class="press-title">{article.title}</span>
-						{#if article.date}
-							<time class="press-date" datetime={article.date}>{formatDate(article.date)}</time>
-						{/if}
+						<span class="press-link-icon" aria-hidden="true">↗</span>
 					</a>
 				{/each}
 			</div>
@@ -244,11 +262,19 @@
 <!-- Modal : Charte d'un candidat -->
 {#if showCharterModal && selectedCandidate}
 	<button class="modal-overlay" aria-label="Fermer" on:click={closeModal}></button>
-	<div class="modal-content" role="dialog" aria-modal="true" aria-label="Charte de {selectedCandidate.name}">
+	<div
+		class="modal-content"
+		role="dialog"
+		aria-modal="true"
+		aria-label="Charte de {selectedCandidate.name}"
+	>
 		<div class="modal-header">
-			<div>
-				<strong>{selectedCandidate.name}</strong> — {selectedCandidate.city}
-				<span class="modal-badge commitment-badge {getCommitmentClass(selectedCandidate.commitments)}">
+			<div class="modal-title">
+				<strong>{selectedCandidate.name}</strong>
+				<span class="modal-city">— {selectedCandidate.city}</span>
+				<span
+					class="commitment-badge modal-badge {getCommitmentClass(selectedCandidate.commitments)}"
+				>
 					{getCommitmentLabel(selectedCandidate.commitments)}
 				</span>
 			</div>
@@ -256,16 +282,18 @@
 		</div>
 		{#if selectedCandidate.charterType === 'pdf'}
 			<iframe
-				src="{selectedCandidate.charterFile}"
+				src={selectedCandidate.charterFile}
 				title="Charte signée par {selectedCandidate.name}"
 				class="charter-iframe"
 			></iframe>
 		{:else}
-			<img
-				src="{selectedCandidate.charterFile}"
-				alt="Charte signée par {selectedCandidate.name}"
-				class="charter-img"
-			/>
+			<div class="charter-img-wrapper">
+				<img
+					src={selectedCandidate.charterFile}
+					alt="Charte signée par {selectedCandidate.name}"
+					class="charter-img"
+				/>
+			</div>
 		{/if}
 	</div>
 {/if}
@@ -273,7 +301,12 @@
 <!-- Modal : Charte générale -->
 {#if showGeneralModal}
 	<button class="modal-overlay" aria-label="Fermer" on:click={closeModal}></button>
-	<div class="modal-content" role="dialog" aria-modal="true" aria-label="Charte Pause IA">
+	<div
+		class="modal-content modal-content--img"
+		role="dialog"
+		aria-modal="true"
+		aria-label="Charte Pause IA"
+	>
 		<button class="close-button close-button--top" on:click={closeModal} aria-label="Fermer">
 			&times;
 		</button>
@@ -283,95 +316,164 @@
 
 <style>
 	article {
-		max-inline-size: 60rem;
+		max-inline-size: 62rem;
 		margin-inline: auto;
 		margin-top: 3rem;
-		padding: 0 2rem;
+		padding: 0 2rem 4rem;
 	}
 
+	/* ── Hero ── */
 	.hero {
-		text-align: left;
-		margin-bottom: 4rem;
+		margin-bottom: 3rem;
 	}
 
 	.intro {
-		font-size: 1.25rem;
-		line-height: 1.6;
-		color: var(--text);
+		font-size: 1.2rem;
+		line-height: 1.7;
+		color: var(--text-muted, #555);
+		max-width: 52rem;
 	}
 
-	/* ── Signatories section ── */
+	/* ── Section header pattern ── */
+	.section-header {
+		display: flex;
+		align-items: center;
+		gap: 0.875rem;
+		margin-bottom: 0.75rem;
+	}
+
+	.section-header h2 {
+		margin: 0;
+		font-size: 1.75rem;
+		color: var(--text-heading, #111);
+	}
+
+	.count-pill {
+		background: var(--brand, #ff9416);
+		color: #fff;
+		font-size: 0.75rem;
+		font-weight: 700;
+		padding: 0.2rem 0.65rem;
+		border-radius: 999px;
+		white-space: nowrap;
+		flex-shrink: 0;
+	}
+
+	.section-intro {
+		font-size: 1rem;
+		line-height: 1.65;
+		color: var(--text-muted, #555);
+		margin: 0 0 1.75rem;
+		max-width: 52rem;
+	}
+
+	h2 {
+		font-size: 1.75rem;
+		margin-top: 0;
+		margin-bottom: 1rem;
+		color: var(--text-heading, #111);
+	}
+
+	/* ── 1. Action section ── */
+	.action-section {
+		background: linear-gradient(135deg, #fff8f0 0%, #fff3e0 100%);
+		border: 1px solid rgba(255, 148, 22, 0.25);
+		border-radius: 20px;
+		padding: 2.5rem 2.5rem 2rem;
+		margin-bottom: 4rem;
+		box-shadow: 0 2px 16px rgba(255, 148, 22, 0.08);
+	}
+
+	.action-inner h2 {
+		font-size: 1.6rem;
+		margin-bottom: 0.75rem;
+	}
+
+	.action-inner p {
+		font-size: 1.05rem;
+		line-height: 1.65;
+		color: var(--text-muted, #555);
+		margin: 0 0 1.75rem;
+		max-width: 48rem;
+	}
+
+	.cta-container {
+		display: flex;
+		gap: 0.875rem;
+		flex-wrap: wrap;
+	}
+
+	/* ── 2. Signatories ── */
 	.signatories-section {
 		margin-bottom: 4rem;
 	}
 
-	.signatories-section h2 {
-		font-size: 2rem;
-		margin-top: 0;
-		margin-bottom: 0.75rem;
-		color: var(--text);
-	}
-
-	.section-intro {
-		font-size: 1.05rem;
-		line-height: 1.6;
-		color: var(--text);
-		margin-bottom: 2rem;
-	}
-
 	.candidates-grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
-		gap: 1.25rem;
+		grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+		gap: 1rem;
 	}
 
 	.candidate-card {
 		display: flex;
 		flex-direction: column;
-		gap: 0.75rem;
-		padding: 1.25rem 1.5rem;
-		background: var(--bg-subtle, #fafafa);
-		border: 1px solid var(--border, #eee);
-		border-radius: 12px;
+		gap: 1rem;
+		padding: 1.25rem 1.375rem;
+		background: #fff;
+		border: 1.5px solid #e8e8e8;
+		border-left: 4px solid var(--brand, #ff9416);
+		border-radius: 10px;
 		cursor: pointer;
 		text-align: left;
 		transition:
-			transform 0.2s ease,
-			box-shadow 0.2s ease,
-			border-color 0.2s ease;
+			transform 0.18s ease,
+			box-shadow 0.18s ease,
+			border-color 0.18s ease;
 		font-family: var(--font-body);
 	}
 
 	.candidate-card:hover {
 		transform: translateY(-3px);
-		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+		box-shadow: 0 8px 28px rgba(0, 0, 0, 0.1);
 		border-color: var(--brand, #ff9416);
+		border-left-color: var(--brand, #ff9416);
+	}
+
+	.card-top {
+		display: flex;
+		flex-direction: column;
+		gap: 0.625rem;
 	}
 
 	.candidate-info {
 		display: flex;
 		flex-direction: column;
-		gap: 0.25rem;
+		gap: 0.2rem;
 	}
 
 	.candidate-name {
-		font-size: 1.05rem;
+		font-size: 1rem;
 		font-weight: 700;
-		color: var(--text);
+		color: var(--text-heading, #111);
+		line-height: 1.3;
 	}
 
 	.candidate-city {
-		font-size: 0.9rem;
-		color: var(--text-secondary, #666);
+		display: flex;
+		align-items: center;
+		gap: 0.3rem;
+		font-size: 0.85rem;
+		color: var(--text-secondary, #777);
 	}
 
 	.commitment-badge {
 		display: inline-block;
-		padding: 0.2rem 0.6rem;
+		padding: 0.18rem 0.55rem;
 		border-radius: 999px;
-		font-size: 0.75rem;
+		font-size: 0.72rem;
 		font-weight: 700;
 		width: fit-content;
+		letter-spacing: 0.01em;
 	}
 
 	.badge-full {
@@ -395,116 +497,100 @@
 	}
 
 	.view-charter {
-		font-size: 0.85rem;
+		display: flex;
+		align-items: center;
+		gap: 0.35rem;
+		font-size: 0.82rem;
 		font-weight: 600;
 		color: var(--brand, #ff9416);
 		margin-top: auto;
 	}
 
-	/* ── Engagement section ── */
-	.charte-engagement {
-		background: var(--bg-subtle, #fafafa);
-		border-radius: 16px;
-		padding: 3rem 2rem;
-		border: 1px solid var(--border, #eee);
-		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-		text-align: center;
-		margin-bottom: 4rem;
-	}
-
-	.charte-header {
-		max-width: 45rem;
-		margin: 0 auto 2rem;
-	}
-
-	h2 {
-		font-size: 2rem;
-		margin-top: 0;
-		margin-bottom: 1.5rem;
-		color: var(--text);
-	}
-
-	.charte-engagement p {
-		font-size: 1.1rem;
-		line-height: 1.7;
-		margin-bottom: 0;
-	}
-
-	.cta-container {
-		display: flex;
-		gap: 1rem;
-		flex-wrap: wrap;
-		justify-content: center;
-		margin-top: 2rem;
-	}
-
-	/* ── Press section ── */
+	/* ── 3. Press section ── */
 	.press-section {
-		margin-bottom: 4rem;
+		margin-bottom: 2rem;
 	}
 
-	.press-section h2 {
-		font-size: 1.75rem;
-		margin-bottom: 1.25rem;
-	}
-
-	.press-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
-		gap: 1rem;
+	.press-list {
+		display: flex;
+		flex-direction: column;
+		gap: 0.625rem;
 	}
 
 	.press-card {
-		display: flex;
-		flex-direction: column;
-		gap: 0.375rem;
-		padding: 1.125rem 1.25rem;
-		background: var(--bg-subtle, #fff);
-		border: 1px solid var(--border, #eee);
+		display: grid;
+		grid-template-columns: auto 1fr auto;
+		align-items: center;
+		gap: 1.25rem;
+		padding: 1rem 1.25rem;
+		background: #fff;
+		border: 1px solid #e8e8e8;
 		border-radius: 10px;
 		text-decoration: none;
-		color: var(--text);
+		color: var(--text-heading, #111);
 		transition:
-			transform 0.2s ease,
-			box-shadow 0.2s ease,
-			border-color 0.2s ease;
+			transform 0.18s ease,
+			box-shadow 0.18s ease,
+			border-color 0.18s ease;
 	}
 
 	.press-card:hover {
-		transform: translateY(-2px);
-		box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+		transform: translateX(3px);
+		box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 		border-color: var(--brand, #ff9416);
-		color: var(--text);
+		color: var(--text-heading, #111);
+	}
+
+	.press-meta {
+		display: flex;
+		flex-direction: column;
+		gap: 0.2rem;
+		min-width: 9rem;
 	}
 
 	.press-source {
-		font-size: 0.75rem;
+		font-size: 0.8rem;
 		font-weight: 700;
 		text-transform: uppercase;
-		letter-spacing: 0.04em;
+		letter-spacing: 0.05em;
 		color: var(--brand, #ff9416);
+		white-space: nowrap;
+	}
+
+	.press-date {
+		font-size: 0.78rem;
+		color: var(--text-secondary, #888);
+		white-space: nowrap;
 	}
 
 	.press-title {
 		font-size: 0.925rem;
-		font-weight: 600;
+		font-weight: 500;
 		line-height: 1.4;
+		color: var(--text-heading, #111);
 	}
 
-	.press-date {
-		font-size: 0.8rem;
-		color: var(--text-secondary, #666);
+	.press-link-icon {
+		font-size: 1.1rem;
+		color: var(--text-secondary, #aaa);
+		flex-shrink: 0;
+		transition: color 0.18s;
+	}
+
+	.press-card:hover .press-link-icon {
+		color: var(--brand, #ff9416);
 	}
 
 	/* ── Modal ── */
 	.modal-overlay {
 		position: fixed;
 		inset: 0;
-		background: rgba(0, 0, 0, 0.8);
+		background: rgba(0, 0, 0, 0.75);
 		z-index: 2000;
 		cursor: pointer;
 		border: none;
 		padding: 0;
+		backdrop-filter: blur(3px);
 	}
 
 	.modal-content {
@@ -512,16 +598,21 @@
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);
-		width: min(90vw, 56rem);
+		width: min(92vw, 58rem);
 		height: 90vh;
 		max-height: 90vh;
-		background: var(--bg, #fff);
-		border-radius: 12px;
+		background: #fff;
+		border-radius: 14px;
 		overflow: hidden;
-		box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+		box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
 		z-index: 2001;
 		display: flex;
 		flex-direction: column;
+	}
+
+	.modal-content--img {
+		width: auto;
+		height: auto;
 	}
 
 	.modal-header {
@@ -529,21 +620,32 @@
 		align-items: center;
 		justify-content: space-between;
 		gap: 1rem;
-		padding: 1rem 1.25rem;
-		border-bottom: 1px solid var(--border, #eee);
-		font-size: 0.95rem;
+		padding: 0.875rem 1.25rem;
+		border-bottom: 1px solid #eee;
+		background: #fafafa;
 		flex-shrink: 0;
 	}
 
+	.modal-title {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 0.375rem;
+		font-size: 0.9rem;
+	}
+
+	.modal-city {
+		color: var(--text-secondary, #777);
+	}
+
 	.modal-badge {
-		margin-left: 0.5rem;
-		vertical-align: middle;
+		font-size: 0.7rem;
 	}
 
 	.close-button {
-		background: rgba(0, 0, 0, 0.1);
-		color: var(--text);
-		border: none;
+		background: transparent;
+		color: #555;
+		border: 1px solid #ddd;
 		border-radius: 50%;
 		width: 2rem;
 		height: 2rem;
@@ -554,11 +656,15 @@
 		justify-content: center;
 		align-items: center;
 		flex-shrink: 0;
-		transition: background 0.2s;
+		transition:
+			background 0.15s,
+			color 0.15s;
 	}
 
 	.close-button:hover {
-		background: rgba(0, 0, 0, 0.2);
+		background: #111;
+		color: #fff;
+		border-color: #111;
 	}
 
 	.close-button--top {
@@ -567,6 +673,7 @@
 		right: 1rem;
 		background: rgba(0, 0, 0, 0.5);
 		color: white;
+		border: none;
 		width: 2.5rem;
 		height: 2.5rem;
 		font-size: 1.5rem;
@@ -574,7 +681,8 @@
 	}
 
 	.close-button--top:hover {
-		background: rgba(0, 0, 0, 0.8);
+		background: rgba(0, 0, 0, 0.85);
+		color: white;
 	}
 
 	.charter-iframe {
@@ -582,24 +690,42 @@
 		flex: 1;
 		min-height: 0;
 		border: none;
-		height: calc(90vh - 4rem);
 	}
 
-	.charter-img,
+	.charter-img-wrapper {
+		flex: 1;
+		min-height: 0;
+		overflow: auto;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: #f5f5f5;
+		padding: 1rem;
+	}
+
+	.charter-img {
+		max-width: 100%;
+		max-height: 100%;
+		object-fit: contain;
+		border-radius: 4px;
+	}
+
 	.modal-content > img {
 		display: block;
 		max-width: 100%;
-		max-height: calc(90vh - 4rem);
+		max-height: calc(90vh - 2rem);
 		object-fit: contain;
 	}
 
-	@media (max-width: 600px) {
+	/* ── Responsive ── */
+	@media (max-width: 640px) {
+		.section-header h2,
 		h2 {
-			font-size: 1.5rem;
+			font-size: 1.4rem;
 		}
 
-		.charte-engagement {
-			padding: 1.5rem;
+		.action-section {
+			padding: 1.75rem 1.25rem 1.5rem;
 		}
 
 		.cta-container {
@@ -608,6 +734,27 @@
 
 		.candidates-grid {
 			grid-template-columns: 1fr;
+		}
+
+		.press-card {
+			grid-template-columns: 1fr auto;
+			grid-template-rows: auto auto;
+		}
+
+		.press-meta {
+			grid-column: 1;
+			grid-row: 1;
+			min-width: unset;
+		}
+
+		.press-title {
+			grid-column: 1 / -1;
+			grid-row: 2;
+		}
+
+		.press-link-icon {
+			grid-column: 2;
+			grid-row: 1;
 		}
 	}
 </style>
