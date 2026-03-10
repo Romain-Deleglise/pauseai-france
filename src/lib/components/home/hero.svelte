@@ -199,8 +199,7 @@
 <style>
 	.hero {
 		display: flex;
-		height: 100svh;
-		overflow: hidden;
+		min-height: 100svh;
 		margin-top: var(--hero-top-offset, -5rem);
 		padding-top: calc(-1 * var(--hero-top-offset, -5rem));
 		align-items: center;
@@ -458,7 +457,7 @@
 
 	@media (min-width: 640px) {
 		.content {
-			margin-bottom: 5rem;
+			margin-bottom: 2rem;
 		}
 
 		.content h1 {
