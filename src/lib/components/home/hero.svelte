@@ -199,7 +199,8 @@
 <style>
 	.hero {
 		display: flex;
-		min-height: 100svh;
+		height: 100svh;
+		overflow: hidden;
 		margin-top: var(--hero-top-offset, -5rem);
 		padding-top: calc(-1 * var(--hero-top-offset, -5rem));
 		align-items: center;
@@ -445,7 +446,7 @@
 		}
 
 		.content-box {
-			padding: 1.25rem 1.25rem;
+			padding: 0.75rem 1rem;
 		}
 	}
 
