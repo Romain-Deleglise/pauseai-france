@@ -293,17 +293,16 @@
 		}
 	}
 
-	/* Overlay: narrow gradient on left for text, most of the banner shows photos */
+	/* Overlay: subtle gradient, readability handled by content-box backdrop */
 	.mosaic-overlay {
 		position: absolute;
 		inset: 0;
 		background: linear-gradient(
 				to right,
-				rgba(255, 250, 245, 0.97) 0%,
-				rgba(255, 250, 245, 0.92) 12%,
-				rgba(255, 250, 245, 0.55) 25%,
-				rgba(255, 250, 245, 0.1) 38%,
-				transparent 48%
+				rgba(255, 250, 245, 0.6) 0%,
+				rgba(255, 250, 245, 0.35) 20%,
+				rgba(255, 250, 245, 0.1) 40%,
+				transparent 55%
 			),
 			linear-gradient(
 				to top,
@@ -327,6 +326,11 @@
 
 	.content-box {
 		max-width: 28rem;
+		background: rgba(255, 250, 245, 0.82);
+		backdrop-filter: blur(14px);
+		-webkit-backdrop-filter: blur(14px);
+		border-radius: 16px;
+		padding: 1.75rem 2rem;
 	}
 
 	.content h1 {
@@ -423,14 +427,12 @@
 			margin-top: 1rem;
 		}
 
-		/* Overlay on mobile — shorter text means less coverage needed */
+		/* Overlay on mobile — readability handled by content-box backdrop */
 		.mosaic-overlay {
 			background: linear-gradient(
 					to right,
-					rgba(255, 250, 245, 0.98) 0%,
-					rgba(255, 250, 245, 0.93) 15%,
-					rgba(255, 250, 245, 0.65) 35%,
-					rgba(255, 250, 245, 0.15) 55%,
+					rgba(255, 250, 245, 0.5) 0%,
+					rgba(255, 250, 245, 0.2) 40%,
 					transparent 65%
 				),
 				linear-gradient(
@@ -440,6 +442,10 @@
 					transparent 92%,
 					rgba(255, 250, 245, 0.5) 100%
 				);
+		}
+
+		.content-box {
+			padding: 1.25rem 1.25rem;
 		}
 	}
 
