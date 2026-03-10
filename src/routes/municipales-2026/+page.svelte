@@ -108,6 +108,11 @@
 			title: "Risques IA : l'association interpelle les candidats aux municipales de Toulouse",
 			url: 'https://lopinion.com/amp/articles/actualite/32757_risques-ia-association-candidats-municipales-toulouse',
 			date: '2026-03-10'
+		},
+		{
+			source: 'Presse Agence',
+			title: "Nice : Jean-Marc Governatori s'engage sur la charte de Pause IA pour les municipales",
+			url: 'https://presseagence.fr/nice-jean-marc-governatori-sengage-sur-la-charte-de-pause-ia-pour-les-municipales/'
 		}
 	]
 
