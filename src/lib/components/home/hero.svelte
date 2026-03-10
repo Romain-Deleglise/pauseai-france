@@ -95,27 +95,21 @@
 
 	let mounted = false
 	let heroTopOffset = 80 // fallback in px
-	let heroEl: HTMLElement | null = null
 	let heroBgEl: HTMLElement | null = null
 	let contentBoxEl: HTMLElement | null = null
 	let frostColTop = 'calc(50% - 17rem)' // CSS fallback before measurement
-	let frostColHeight = '70%' // CSS fallback before measurement
 
 	function measureFrostCol() {
-		if (!heroEl || !contentBoxEl) return
-		const heroRect = heroEl.getBoundingClientRect()
+		if (!heroBgEl || !contentBoxEl) return
+		const bgRect = heroBgEl.getBoundingClientRect()
 		const boxRect = contentBoxEl.getBoundingClientRect()
-		// Use the hero's actual rendered height (avoids bottom:0 unreliability
-		// with min-height on the containing block).
-		const topOffset = Math.max(0, boxRect.top - heroRect.top)
+		const topOffset = Math.max(0, boxRect.top - bgRect.top)
 		frostColTop = `${topOffset}px`
-		frostColHeight = `${Math.max(0, heroRect.height - topOffset)}px`
 	}
 
 	onMount(() => {
 		let roHeader: ResizeObserver | undefined
 		let roContent: ResizeObserver | undefined
-		let roHero: ResizeObserver | undefined
 
 		// Wait for pending DOM updates (Header nav rendering) before measuring
 		tick().then(async () => {
@@ -144,14 +138,11 @@
 			measureFrostCol()
 			roContent = new ResizeObserver(measureFrostCol)
 			if (contentBoxEl) roContent.observe(contentBoxEl)
-			roHero = new ResizeObserver(measureFrostCol)
-			if (heroEl) roHero.observe(heroEl)
 		})
 
 		return () => {
 			roHeader?.disconnect()
 			roContent?.disconnect()
-			roHero?.disconnect()
 		}
 	})
 </script>
@@ -159,8 +150,7 @@
 {#if mounted}
 	<section
 		class="hero"
-		bind:this={heroEl}
-		style="--hero-top-offset: -{heroTopOffset}px; --frost-col-top: {frostColTop}; --frost-col-height: {frostColHeight}"
+		style="--hero-top-offset: -{heroTopOffset}px; --frost-col-top: {frostColTop}"
 		aria-labelledby={label_id}
 	>
 		<div class="hero-bg" bind:this={heroBgEl} aria-hidden="true">
@@ -236,7 +226,8 @@
 <style>
 	.hero {
 		display: flex;
-		min-height: 100svh;
+		height: 100svh; /* definite height → abs-pos children can use bottom:0 / height:% */
+		min-height: 100svh; /* still grows if content is taller */
 		margin-top: var(--hero-top-offset, -5rem);
 		padding-top: calc(-1 * var(--hero-top-offset, -5rem));
 		align-items: center;
@@ -535,7 +526,7 @@
 			display: block;
 			position: absolute;
 			top: var(--frost-col-top, calc(50% - 17rem));
-			height: var(--frost-col-height, 70%);
+			bottom: 0;
 			/* left:0 = hero's left edge, which is already at main's padding-left (6rem
 			   from viewport). Adding 6rem here would double the offset. */
 			left: 0;
