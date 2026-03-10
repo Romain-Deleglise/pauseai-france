@@ -720,7 +720,7 @@ export async function getPressCoverage(): Promise<PressCoverage[]> {
 
 			return isValidPressCoverage(pc) ? pc : null
 		},
-		{ sortBy: 'Ordre' }
+		{ sortBy: 'Date', sortDirection: 'descending' }
 	)
 
 	return items.filter((pc): pc is PressCoverage => pc !== null)
