@@ -488,11 +488,13 @@
 
 		/* Frosted glass column anchored at the text, extending to the hero bottom.
 		   hero-bg has overflow:hidden → naturally clipped at the hero boundary.
-		   z-index:-1 on hero-bg means .content (in hero flow) renders on top. */
+		   z-index:-1 on hero-bg means .content (in hero flow) renders on top.
+		   Formula: 50% (flex centre) − half_item_height ≈ 50% − 17rem, which
+		   places the column top ~1rem above the text on any svh. */
 		.hero-bg::after {
 			content: '';
 			position: absolute;
-			top: 30%; /* ≈ vertical centre of the text on typical desktop viewports */
+			top: calc(50% - 17rem);
 			bottom: 0;
 			left: 6rem; /* matches main padding-left at 1024px+ */
 			width: calc(28rem + 3rem); /* content-box max-width + 2 × 1.5rem padding */
@@ -501,12 +503,12 @@
 			-webkit-backdrop-filter: blur(14px);
 			border-radius: 16px 16px 0 0;
 			/* Soft fade-in at the top so the column emerges naturally */
-			mask-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.7) 1.5rem, black 3.5rem);
+			mask-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.8) 1rem, black 2.5rem);
 			-webkit-mask-image: linear-gradient(
 				to bottom,
 				transparent,
-				rgba(0, 0, 0, 0.7) 1.5rem,
-				black 3.5rem
+				rgba(0, 0, 0, 0.8) 1rem,
+				black 2.5rem
 			);
 			pointer-events: none;
 		}
