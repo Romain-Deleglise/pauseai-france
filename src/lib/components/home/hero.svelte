@@ -486,25 +486,48 @@
 			font-size: 3rem;
 		}
 
-		/* On desktop the gradient is wide enough to ensure readability —
-		   remove the frosted-glass box so all 4 photo rows stay visible. */
+		/* Frosted glass column anchored at the text, extending to the hero bottom.
+		   hero-bg has overflow:hidden → naturally clipped at the hero boundary.
+		   z-index:-1 on hero-bg means .content (in hero flow) renders on top. */
+		.hero-bg::after {
+			content: '';
+			position: absolute;
+			top: 30%; /* ≈ vertical centre of the text on typical desktop viewports */
+			bottom: 0;
+			left: 6rem; /* matches main padding-left at 1024px+ */
+			width: calc(28rem + 3rem); /* content-box max-width + 2 × 1.5rem padding */
+			background: rgba(255, 250, 245, 0.82);
+			backdrop-filter: blur(14px);
+			-webkit-backdrop-filter: blur(14px);
+			border-radius: 16px 16px 0 0;
+			/* Soft fade-in at the top so the column emerges naturally */
+			mask-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.7) 1.5rem, black 3.5rem);
+			-webkit-mask-image: linear-gradient(
+				to bottom,
+				transparent,
+				rgba(0, 0, 0, 0.7) 1.5rem,
+				black 3.5rem
+			);
+			pointer-events: none;
+		}
+
+		/* Content-box: the visual background is now the column behind it.
+		   Keep padding for text spacing, strip own backdrop/bg. */
 		.content-box {
 			background: none;
 			backdrop-filter: none;
 			-webkit-backdrop-filter: none;
 			border-radius: 0;
-			padding: 0;
+			padding: 1rem 1.5rem;
 		}
 
-		/* Restore stronger gradient for desktop where there's no backdrop box */
+		/* Lighter gradient: frosted column ensures readability on the left */
 		.mosaic-overlay {
 			background: linear-gradient(
 					to right,
-					rgba(255, 250, 245, 0.97) 0%,
-					rgba(255, 250, 245, 0.92) 12%,
-					rgba(255, 250, 245, 0.6) 26%,
-					rgba(255, 250, 245, 0.15) 40%,
-					transparent 52%
+					rgba(255, 250, 245, 0.5) 0%,
+					rgba(255, 250, 245, 0.2) 22%,
+					transparent 46%
 				),
 				linear-gradient(
 					to top,
