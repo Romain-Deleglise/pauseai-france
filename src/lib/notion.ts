@@ -499,40 +499,34 @@ function cleanContent(html: string): string {
 	)
 
 	// --- Remove CiviCRM mailing footer ---
-	// Cut everything from the org signature/footer block onwards.
-	// Typical patterns: "Gérer mes préférences", org address, "Se désinscrire"
-	// Look for the footer starting with the org name + address pattern
-	const footerPatterns = [
-		// "Gérer mes préférences" and everything after
-		/[\s\S]*?G[ée]rer\s+mes\s+pr[ée]f[ée]rences[\s\S]*/i,
-		// Organization address block and everything after
-		/[\s\S]*?32\s+boulevard\s+de\s+Strasbourg[\s\S]*/i,
-		// "Se désinscrire" link and everything after
-		/[\s\S]*?[Ss]e\s+d[ée]sinscrire[\s\S]*/i
+	// Only cut at footer markers that appear in the last 30% of the content,
+	// to avoid accidentally truncating press releases that mention these terms in their body.
+	const contentLength = cleaned.length
+	const footerSearchStart = Math.floor(contentLength * 0.7)
+
+	const footerMarkers = [
+		/G[ée]rer\s+mes\s+pr[ée]f[ée]rences/i,
+		/32\s+boulevard\s+de\s+Strasbourg/i,
+		/[Ss]e\s+d[ée]sinscrire/i
 	]
 
-	for (const pattern of footerPatterns) {
-		const match = cleaned.match(pattern)
-		if (match) {
-			// Find the position of the footer text and cut from a reasonable point before it
-			const footerText =
-				match[0].match(
-					/G[ée]rer\s+mes\s+pr[ée]f[ée]rences|32\s+boulevard\s+de\s+Strasbourg|[Ss]e\s+d[ée]sinscrire/i
-				)?.[0] || ''
-			const idx = cleaned.indexOf(footerText)
-			if (idx > 0) {
-				// Walk back to find the nearest table/div opening tag to cut cleanly
-				const before = cleaned.substring(0, idx)
-				// Find the last "Soutenir Pause IA" or similar section header before footer
-				const soutenirIdx = before.lastIndexOf('Soutenir Pause IA')
-				if (soutenirIdx > 0) {
-					cleaned = cleaned.substring(0, soutenirIdx)
-				} else {
-					// Just cut at the footer text position
-					cleaned = before
-				}
-				break
+	for (const marker of footerMarkers) {
+		// Only search in the last 30% of the document
+		const tail = cleaned.substring(footerSearchStart)
+		const match = tail.match(marker)
+		if (match && match.index !== undefined) {
+			const idx = footerSearchStart + match.index
+			// Cut at the footer marker position
+			const before = cleaned.substring(0, idx)
+			// Optionally cut earlier at "Soutenir Pause IA" if it appears nearby (within last 15%)
+			const nearFooterStart = Math.floor(contentLength * 0.85)
+			const soutenirIdx = before.lastIndexOf('Soutenir Pause IA')
+			if (soutenirIdx > nearFooterStart) {
+				cleaned = cleaned.substring(0, soutenirIdx)
+			} else {
+				cleaned = before
 			}
+			break
 		}
 	}
 
@@ -557,25 +551,30 @@ function cleanContent(html: string): string {
 		}
 	)
 
-	// --- Clean up spacing ---
-	// Strip inline height attributes from table elements (spacer rows)
-	cleaned = cleaned.replace(/(<(?:tr|td|th|table|div)[^>]*)\s+height="[^"]*"/gi, '$1')
+	// --- Clean up spacing (conservative) ---
+	// Only strip very large height attributes (pure spacer rows > 50px)
+	cleaned = cleaned.replace(
+		/(<(?:tr|td|th)[^>]*)\s+height="(\d+)"/gi,
+		(_match, tag: string, val: string) => {
+			return parseInt(val) > 50 ? tag : _match
+		}
+	)
 
-	// Strip inline style padding/margin/height that create excessive spacing
+	// Only strip inline styles that create truly excessive spacing (> 50px)
 	cleaned = cleaned.replace(/style="([^"]*)"/gi, (_match, styles: string) => {
 		const filtered = styles
 			.split(';')
 			.filter((s: string) => {
 				const prop = s.trim().toLowerCase()
-				// Remove excessive spacing properties
+				// Remove only very large padding/margin (> 50px)
 				if (/^(padding|margin)(-top|-bottom)?\s*:/i.test(prop)) {
-					// Keep small values (less than 15px), remove large ones
 					const valueMatch = prop.match(/:\s*(\d+)/)
-					if (valueMatch && parseInt(valueMatch[1]) > 15) return false
+					if (valueMatch && parseInt(valueMatch[1]) > 50) return false
 				}
-				if (/^(height|min-height|line-height)\s*:/i.test(prop)) {
+				// Remove only very large explicit heights (> 80px, likely spacers)
+				if (/^height\s*:/i.test(prop)) {
 					const valueMatch = prop.match(/:\s*(\d+)/)
-					if (valueMatch && parseInt(valueMatch[1]) > 30) return false
+					if (valueMatch && parseInt(valueMatch[1]) > 80) return false
 				}
 				return true
 			})
@@ -583,17 +582,14 @@ function cleanContent(html: string): string {
 		return filtered.trim() ? `style="${filtered}"` : ''
 	})
 
-	// Remove empty spacer elements (td/div/p with only &nbsp; or whitespace)
-	cleaned = cleaned.replace(/<(td|div|p|span)[^>]*>(\s|&nbsp;|&#160;|\u00a0)*<\/\1>/gi, '')
-
-	// Remove empty table rows
+	// Only remove empty table rows (not empty td/div/p which may provide structure)
 	cleaned = cleaned.replace(/<tr[^>]*>\s*<\/tr>/gi, '')
 
-	// Remove <br> chains (more than 1 consecutive)
-	cleaned = cleaned.replace(/(<br\s*\/?\s*>\s*){2,}/gi, '<br>')
+	// Remove chains of 4+ consecutive br tags (keep pairs for paragraph spacing)
+	cleaned = cleaned.replace(/(<br\s*\/?\s*>\s*){4,}/gi, '<br><br>')
 
-	// Collapse multiple &nbsp;
-	cleaned = cleaned.replace(/(&nbsp;\s*){3,}/gi, ' ')
+	// Collapse runs of 5+ &nbsp;
+	cleaned = cleaned.replace(/(&nbsp;\s*){5,}/gi, ' ')
 
 	return cleaned.trim()
 }
