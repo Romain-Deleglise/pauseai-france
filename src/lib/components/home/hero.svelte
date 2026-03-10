@@ -95,12 +95,25 @@
 
 	let mounted = false
 	let heroTopOffset = 80 // fallback in px
+	let heroBgEl: HTMLElement | null = null
+	let contentBoxEl: HTMLElement | null = null
+	let frostColTop = 'calc(50% - 17rem)' // CSS fallback before measurement
+
+	function measureFrostCol() {
+		if (!heroBgEl || !contentBoxEl) return
+		const bgRect = heroBgEl.getBoundingClientRect()
+		const boxRect = contentBoxEl.getBoundingClientRect()
+		// Align column top with content-box top (minus a small breathing gap)
+		const offset = Math.max(0, boxRect.top - bgRect.top - 8)
+		frostColTop = `${offset}px`
+	}
 
 	onMount(() => {
-		let ro: ResizeObserver | undefined
+		let roHeader: ResizeObserver | undefined
+		let roContent: ResizeObserver | undefined
 
 		// Wait for pending DOM updates (Header nav rendering) before measuring
-		tick().then(() => {
+		tick().then(async () => {
 			const header = document.querySelector('.site-header')
 			const main = document.querySelector('main')
 
@@ -117,17 +130,31 @@
 
 			// Keep heroTopOffset in sync whenever the header resizes (e.g. scrolled
 			// state collapses padding after SvelteKit navigation restores scroll=0)
-			ro = new ResizeObserver(measure)
-			if (header) ro.observe(header)
+			roHeader = new ResizeObserver(measure)
+			if (header) roHeader.observe(header)
+
+			// After hero renders (next tick), measure content-box position for the
+			// frost column so it starts exactly at the top of the text block.
+			await tick()
+			measureFrostCol()
+			roContent = new ResizeObserver(measureFrostCol)
+			if (contentBoxEl) roContent.observe(contentBoxEl)
 		})
 
-		return () => ro?.disconnect()
+		return () => {
+			roHeader?.disconnect()
+			roContent?.disconnect()
+		}
 	})
 </script>
 
 {#if mounted}
-	<section class="hero" style="--hero-top-offset: -{heroTopOffset}px" aria-labelledby={label_id}>
-		<div class="hero-bg" aria-hidden="true">
+	<section
+		class="hero"
+		style="--hero-top-offset: -{heroTopOffset}px; --frost-col-top: {frostColTop}"
+		aria-labelledby={label_id}
+	>
+		<div class="hero-bg" bind:this={heroBgEl} aria-hidden="true">
 			<div class="marquee-container">
 				<div class="marquee-row row-left">
 					<div class="marquee-track">
@@ -161,7 +188,7 @@
 			<div class="mosaic-overlay"></div>
 		</div>
 		<div class="content" in:fade={{ duration: 500, delay: 200 }}>
-			<div class="content-box">
+			<div class="content-box" bind:this={contentBoxEl}>
 				<h1 id={label_id}>
 					{t.home.hero_title}
 					<br /><Mark>{t.home.hero_highlight}</Mark>
@@ -490,11 +517,11 @@
 		   hero-bg has overflow:hidden → naturally clipped at the hero boundary.
 		   z-index:-1 on hero-bg means .content (in hero flow) renders on top.
 		   Formula: 50% (flex centre) − half_item_height ≈ 50% − 17rem, which
-		   places the column top ~1rem above the text on any svh. */
+		   JS measures the exact content-box top and sets --frost-col-top. */
 		.hero-bg::after {
 			content: '';
 			position: absolute;
-			top: calc(50% - 17rem);
+			top: var(--frost-col-top, calc(50% - 17rem));
 			bottom: 0;
 			left: 6rem; /* matches main padding-left at 1024px+ */
 			width: calc(28rem + 3rem); /* content-box max-width + 2 × 1.5rem padding */
