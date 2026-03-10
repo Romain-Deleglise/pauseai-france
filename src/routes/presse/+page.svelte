@@ -13,7 +13,12 @@
 		pressCoverage: PressCoverage[]
 	}
 
-	$: pressCoverage = data.pressCoverage
+	$: pressCoverage = [...data.pressCoverage].sort((a, b) => {
+		if (!a.date && !b.date) return 0
+		if (!a.date) return 1
+		if (!b.date) return -1
+		return new Date(b.date).getTime() - new Date(a.date).getTime()
+	})
 
 	const PER_PAGE = 15
 
