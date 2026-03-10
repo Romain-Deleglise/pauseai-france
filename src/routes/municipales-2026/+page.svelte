@@ -719,42 +719,73 @@
 
 	/* ── Responsive ── */
 	@media (max-width: 640px) {
+		article {
+			padding: 0 1rem 3rem;
+		}
+
 		.section-header h2,
 		h2 {
-			font-size: 1.4rem;
+			font-size: 1.3rem;
+		}
+
+		.intro {
+			font-size: 1rem;
 		}
 
 		.action-section {
-			padding: 1.75rem 1.25rem 1.5rem;
+			padding: 1.5rem 1.25rem 1.5rem;
+			border-radius: 14px;
+			margin-bottom: 2.5rem;
+		}
+
+		.action-inner h2 {
+			font-size: 1.3rem;
+		}
+
+		.action-inner p {
+			font-size: 0.95rem;
+			margin-bottom: 1.25rem;
 		}
 
 		.cta-container {
 			flex-direction: column;
+			align-items: stretch;
+		}
+
+		/* Make buttons fill the full width on mobile */
+		.cta-container :global(a),
+		.cta-container :global(button) {
+			width: 100%;
+			max-width: 100%;
+			text-align: center;
+			justify-content: center;
 		}
 
 		.candidates-grid {
 			grid-template-columns: 1fr;
 		}
 
+		.signatories-section {
+			margin-bottom: 2.5rem;
+		}
+
+		/* Press: stack vertically on mobile */
 		.press-card {
-			grid-template-columns: 1fr auto;
-			grid-template-rows: auto auto;
+			display: flex;
+			flex-direction: column;
+			gap: 0.375rem;
+			padding: 0.875rem 1rem;
 		}
 
 		.press-meta {
-			grid-column: 1;
-			grid-row: 1;
+			flex-direction: row;
+			align-items: center;
+			gap: 0.75rem;
 			min-width: unset;
 		}
 
-		.press-title {
-			grid-column: 1 / -1;
-			grid-row: 2;
-		}
-
 		.press-link-icon {
-			grid-column: 2;
-			grid-row: 1;
+			align-self: flex-end;
 		}
 	}
 </style>
