@@ -89,6 +89,7 @@ export interface Banner {
 export interface PressRelease {
 	id: string
 	title: string
+	slug: string
 	date: string
 	url: string
 	description: string
@@ -99,6 +100,7 @@ export interface PressRelease {
 export interface LocalPressRelease {
 	id: string
 	title: string
+	slug: string
 	date: string
 	url: string
 	description: string
@@ -668,9 +670,11 @@ export async function getPressReleases(): Promise<PressRelease[]> {
 			const visible = getCheckbox(page.properties['Visible'])
 			if (!visible) return null
 
+			const title = getText(page.properties['Titre'])
 			const pr: PressRelease = {
 				id: page.id,
-				title: getText(page.properties['Titre']),
+				title,
+				slug: generateSlug(title),
 				date: getDate(page.properties['Date']),
 				url: getUrl(page.properties['URL']),
 				description: getText(page.properties['Description']),
@@ -686,6 +690,11 @@ export async function getPressReleases(): Promise<PressRelease[]> {
 	return pressReleases.filter((pr): pr is PressRelease => pr !== null)
 }
 
+export async function getPressReleaseBySlug(slug: string): Promise<PressRelease | null> {
+	const releases = await getPressReleases()
+	return releases.find((pr) => pr.slug === slug) || null
+}
+
 export async function getLocalPressReleases(): Promise<LocalPressRelease[]> {
 	const databaseId = env.NOTION_LOCAL_PRESS_DATABASE_ID
 	if (!databaseId) return []
@@ -696,9 +705,11 @@ export async function getLocalPressReleases(): Promise<LocalPressRelease[]> {
 			const visible = getCheckbox(page.properties['Visible'])
 			if (!visible) return null
 
+			const title = getText(page.properties['Titre'])
 			const pr: LocalPressRelease = {
 				id: page.id,
-				title: getText(page.properties['Titre']),
+				title,
+				slug: generateSlug(title),
 				date: getDate(page.properties['Date']),
 				url: getUrl(page.properties['URL']),
 				description: getText(page.properties['Description']),
@@ -713,6 +724,24 @@ export async function getLocalPressReleases(): Promise<LocalPressRelease[]> {
 	)
 
 	return pressReleases.filter((pr): pr is LocalPressRelease => pr !== null)
+}
+
+export async function getLocalPressReleaseBySlug(slug: string): Promise<LocalPressRelease | null> {
+	const releases = await getLocalPressReleases()
+	return releases.find((pr) => pr.slug === slug) || null
+}
+
+/**
+ * Fetches press release HTML content from a CiviCRM URL and extracts the body.
+ * Reuses the same extraction logic as newsletters since both use CiviCRM mailings.
+ * Returns null for PDF URLs (which should be handled differently).
+ */
+export async function fetchPressReleaseContent(url: string): Promise<string | null> {
+	// PDF URLs should not be fetched as HTML
+	if (url.toLowerCase().endsWith('.pdf')) {
+		return null
+	}
+	return fetchNewsletterContent(url)
 }
 
 export async function getPressCoverage(): Promise<PressCoverage[]> {
