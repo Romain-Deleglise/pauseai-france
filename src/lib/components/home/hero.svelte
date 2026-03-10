@@ -373,7 +373,9 @@
 	}
 
 	.description p {
-		line-height: 1.7;
+		line-height: 1.5;
+		margin-top: 0;
+		margin-bottom: 0.6rem;
 	}
 
 	.frost-col {
@@ -398,7 +400,7 @@
 		align-items: center;
 		flex-direction: column;
 		gap: 2rem;
-		margin-top: 2rem;
+		margin-top: 1rem;
 	}
 
 	/* ─── Mobile (< 640px) ────────────────────────────────────── */
@@ -489,18 +491,18 @@
 
 	@media (min-width: 640px) {
 		.content {
-			margin-bottom: 5rem;
+			margin-bottom: 2.5rem;
 		}
 
 		.content h1 {
-			margin-bottom: 2rem;
-			font-size: 2.1rem;
+			margin-bottom: 1.25rem;
+			font-size: 1.9rem;
 		}
 	}
 
 	@media (min-width: 768px) {
 		.content h1 {
-			font-size: 2.4rem;
+			font-size: 2.1rem;
 		}
 		.marquee-container {
 			gap: 6px;
@@ -515,7 +517,11 @@
 
 	@media (min-width: 1024px) {
 		.content h1 {
-			font-size: 3rem;
+			font-size: 2.2rem;
+		}
+
+		.description p {
+			font-size: 0.95rem;
 		}
 
 		/* Frosted glass column: sits directly in .hero (no overflow:hidden parent)
@@ -525,12 +531,12 @@
 		.frost-col {
 			display: block;
 			position: absolute;
-			top: var(--frost-col-top, calc(50% - 17rem));
+			top: var(--frost-col-top, calc(50% - 14rem));
 			bottom: 0;
 			/* left:0 = hero's left edge, which is already at main's padding-left (6rem
 			   from viewport). Adding 6rem here would double the offset. */
 			left: 0;
-			width: calc(28rem + 3rem); /* content-box max-width + 2 × 1.5rem padding */
+			width: calc(32rem + 3rem); /* content-box max-width + 2 × 1.5rem padding */
 			background: rgba(255, 250, 245, 0.82);
 			backdrop-filter: blur(14px);
 			-webkit-backdrop-filter: blur(14px);
@@ -549,6 +555,7 @@
 			-webkit-backdrop-filter: none;
 			border-radius: 0;
 			padding: 1rem 1.5rem;
+			max-width: 32rem; /* wider to fill the column */
 		}
 
 		/* Lighter gradient: frosted column ensures readability on the left */
@@ -571,7 +578,7 @@
 
 	@media (min-width: 1280px) {
 		.content h1 {
-			font-size: 3.5rem;
+			font-size: 2.6rem;
 		}
 	}
 </style>
