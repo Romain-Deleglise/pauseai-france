@@ -7,6 +7,7 @@
 		href: string
 		label: string
 		external?: boolean
+		muted?: boolean
 	}>
 
 	let open = false
@@ -72,6 +73,7 @@
 						($page.url.pathname === item.href ||
 							$page.url.pathname.startsWith(item.href + '/') ||
 							($page.url.pathname.startsWith('/dangers') && item.href === '/dangers'))}
+					class:muted={item.muted}
 					target={item.external ? '_blank' : undefined}
 					rel={item.external ? 'noopener noreferrer' : undefined}
 					role="menuitem"
@@ -140,24 +142,15 @@
 		color: var(--text);
 	}
 
+	:global([data-theme='dark']) .trigger:hover,
+	:global([data-theme='dark']) .trigger.active {
+		background: rgba(255, 255, 255, 0.07);
+	}
+
 	.trigger.white:hover,
 	.trigger.white.active {
 		background: rgba(255, 255, 255, 0.15);
 		color: white;
-	}
-
-	/* Active underline dot indicator */
-	.trigger.active::after {
-		content: '';
-		display: block;
-		position: absolute;
-		bottom: 0.1rem;
-		left: 50%;
-		transform: translateX(-50%);
-		width: 4px;
-		height: 4px;
-		border-radius: 50%;
-		background: var(--brand);
 	}
 
 	.trigger {
@@ -245,6 +238,17 @@
 	.menu a.active {
 		background-color: rgba(255, 148, 22, 0.18);
 		color: #ff9416;
+	}
+
+	.menu a.muted {
+		color: rgba(255, 255, 255, 0.35);
+		font-size: 0.8rem;
+		font-style: italic;
+	}
+
+	.menu a.muted:hover {
+		background-color: rgba(255, 255, 255, 0.04);
+		color: rgba(255, 255, 255, 0.5);
 	}
 
 	.ext-icon {

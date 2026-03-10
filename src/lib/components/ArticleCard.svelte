@@ -6,6 +6,17 @@
 	export let category: string = ''
 	export let url: string
 	export let linkText: string = "Lire l'article"
+	export let date: string = ''
+
+	function formatDate(dateStr: string): string {
+		if (!dateStr) return ''
+		try {
+			const d = new Date(dateStr + 'T00:00:00')
+			return d.toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' })
+		} catch {
+			return dateStr
+		}
+	}
 </script>
 
 <a class="article-link" href={url}>
@@ -16,6 +27,9 @@
 		</div>
 		<div class="footer">
 			<span class="category">{category}</span>
+			{#if date}
+				<time class="date" datetime={date}>{formatDate(date)}</time>
+			{/if}
 			<span class="read-more">
 				{linkText}
 				<span class="link-icon"><MoveUpRight size="1.25rem" /></span>
@@ -92,7 +106,7 @@
 		align-items: center;
 		margin-top: 1rem;
 		padding-top: 1rem;
-		border-top: 1px solid rgba(0, 0, 0, 0.08);
+		border-top: 1px solid var(--border);
 	}
 
 	.category {
@@ -108,6 +122,11 @@
 
 	.category:empty {
 		display: none;
+	}
+
+	.date {
+		font-size: 0.75rem;
+		color: var(--text-2);
 	}
 
 	.read-more {

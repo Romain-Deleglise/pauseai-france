@@ -157,7 +157,7 @@
 		height: 36px;
 		border-radius: 50%;
 		border: 1px solid var(--carousel-border, #d9c7b0);
-		background: #fff7ed;
+		background: var(--brand-light);
 		color: var(--carousel-accent, #ff9416);
 		font-size: 1.45rem;
 		line-height: 1;
@@ -187,7 +187,7 @@
 		height: 10px;
 		border-radius: 50%;
 		border: none;
-		background: #d0c6bc;
+		background: var(--border);
 		cursor: pointer;
 		padding: 0;
 		transition:
@@ -203,7 +203,7 @@
 	}
 
 	.dots__ellipsis {
-		color: #6b6b6b;
+		color: var(--text-secondary);
 		font-size: 1.2rem;
 		line-height: 1;
 		margin: 0 0.2rem;

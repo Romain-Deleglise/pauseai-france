@@ -1,14 +1,16 @@
 <script lang="ts">
 	// import { formatDate } from '$lib/utils'
-	import { title } from '$config'
+	import PostMeta from '$components/PostMeta.svelte'
+
+	const title = 'Articles'
+	const description =
+		"Tous les articles et actualités de Pause IA sur l'intelligence artificielle et sa sécurité."
 
 	export let data
 	const { posts } = data
 </script>
 
-<svelte:head>
-	<title>{title}</title>
-</svelte:head>
+<PostMeta {title} {description} />
 
 <section>
 	<ul class="posts">

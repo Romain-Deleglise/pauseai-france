@@ -21,7 +21,7 @@
 <style>
 	.banner {
 		background: linear-gradient(135deg, var(--brand) 0%, #ffb347 100%);
-		color: var(--black);
+		color: black;
 		font-family: var(--font-heading);
 		display: flex;
 		align-items: center;
@@ -65,7 +65,7 @@
 	:global(.banner a) {
 		font-weight: 700;
 		text-decoration: none;
-		color: var(--black);
+		color: black;
 		background-color: rgba(255, 255, 255, 0.35);
 		padding: 0.25rem 0.5rem;
 		border-radius: 4px;
@@ -80,7 +80,7 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		color: var(--black);
+		color: black;
 		cursor: pointer;
 		border-radius: 50%;
 		transition: background-color 0.2s ease;

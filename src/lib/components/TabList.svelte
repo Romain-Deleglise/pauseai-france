@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { fly } from 'svelte/transition'
-
 	export let tabs: string[]
 	export let id: string
 	export let label_id: string
@@ -9,26 +7,27 @@
 </script>
 
 <div class="tabs" {id}>
-	<ul role="tablist" aria-labelledby={label_id}>
-		{#each tabs as tab, i}
-			<li role="presentation">
-				<button
-					type="button"
-					role="tab"
-					class:active={active === tab}
-					on:click={() => (active = tab)}
-					aria-selected={active === tab}
-					aria-controls={`${id}-${i.toString()}`}
-					tabindex={active === tab ? 0 : -1}
-				>
-					<svg class="bullet" width="10" viewBox="0 0 2 2" xmlns="http://www.w3.org/2000/svg">
-						<circle cx="50%" cy="50%" r="1" />
-					</svg>
-					<slot {tab}></slot>
-				</button>
-			</li>
-		{/each}
-	</ul>
+	<!-- Ligne titre + pills (côte à côte sur desktop, empilés sur mobile) -->
+	<div class="tabs-header">
+		<slot name="header" />
+		<ul role="tablist" aria-labelledby={label_id}>
+			{#each tabs as tab, i}
+				<li role="presentation">
+					<button
+						type="button"
+						role="tab"
+						class:active={active === tab}
+						on:click={() => (active = tab)}
+						aria-selected={active === tab}
+						aria-controls={`${id}-${i.toString()}`}
+						tabindex={active === tab ? 0 : -1}
+					>
+						<slot {tab}></slot>
+					</button>
+				</li>
+			{/each}
+		</ul>
+	</div>
 
 	{#each tabs as tab, i}
 		{#key active}
@@ -38,7 +37,6 @@
 				tabindex="0"
 				aria-labelledby={`${id}-${i.toString()}`}
 				style={`display: ${active === tab ? 'block' : 'none'}`}
-				in:fly={{ duration: 500, x: '100%', y: 0 }}
 			>
 				<h3 class="panel-title" id={`${id}-${i.toString()}`}>
 					<slot {tab}></slot>
@@ -50,78 +48,111 @@
 </div>
 
 <style>
-	.tabs {
-		--padding-side: 1rem;
-		overflow-x: hidden;
+	/* Annule le margin-bottom imposé par UnderlinedTitle dans ce contexte */
+	:global(.tabs-header h2) {
+		margin-bottom: 0;
 	}
-	ul {
-		padding-left: 0;
-		margin-bottom: 1rem;
-		grid-column: 1 / span 3;
-		width: 100%;
-		height: fit-content;
-		border-radius: 0.625rem;
-		background-color: var(--bg-subtle);
+
+	/* --- Mobile : titre puis pills --- */
+	.tabs-header {
 		display: flex;
 		flex-direction: column;
-		width: fit-content;
+		gap: 0.75rem;
+		margin-bottom: 1.5rem;
 	}
+
+	ul {
+		padding: 0;
+		margin: 0;
+		list-style: none;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		width: 100%;
+	}
+
 	li {
-		font-weight: 700;
 		display: flex;
 	}
-	button.active {
-		left: var(--padding-side);
-	}
+
 	button {
-		padding: 1rem calc(2 * var(--padding-side)) 1rem var(--padding-side);
-		background: none;
-		border: none;
-		position: relative;
-		flex-grow: 1;
-		text-align: left;
+		padding: 0.6rem 1.1rem;
+		background: var(--btn-alt-bg);
+		border: 1.5px solid var(--border);
+		border-radius: 2rem;
+		font-family: var(--font-body);
+		font-size: 0.9rem;
+		font-weight: 600;
+		white-space: nowrap;
 		cursor: pointer;
+		color: var(--text);
+		transition:
+			background-color 0.15s ease,
+			color 0.15s ease,
+			border-color 0.15s ease,
+			box-shadow 0.15s ease;
 		display: flex;
 		align-items: center;
+		justify-content: center;
 	}
-	.bullet {
-		fill: var(--brand);
-		display: none;
+
+	button.active {
+		background: var(--brand);
+		border-color: var(--brand);
+		color: white;
+		box-shadow: 0 2px 8px rgba(255, 148, 22, 0.35);
 	}
-	button.active .bullet {
-		display: inline;
-		position: absolute;
-		left: 0;
+
+	button:not(.active):hover {
+		background: rgba(255, 148, 22, 0.1);
+		border-color: rgba(255, 148, 22, 0.45);
 	}
+
 	.panel {
-		grid-column: 4 / span 6;
+		animation: panelIn 0.2s ease;
 	}
+
+	@keyframes panelIn {
+		from {
+			opacity: 0;
+			transform: translateY(6px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.panel {
+			animation: none;
+		}
+	}
+
 	.panel-title {
 		display: none;
 	}
 
+	/* --- Desktop : titre à gauche, pills en ligne à droite --- */
 	@media (min-width: 768px) {
-		.tabs {
-			display: grid;
-			grid-template-columns: max-content minmax(2rem, 1fr) minmax(auto, 50rem) 3fr;
+		.tabs-header {
+			flex-direction: row;
+			flex-wrap: wrap;
+			align-items: center;
+			justify-content: space-between;
+			gap: 0.75rem 2rem;
 		}
+
 		ul {
-			grid-column: 1;
+			flex-wrap: wrap;
+			width: auto;
+			justify-content: flex-end;
 		}
-		.panel {
-			grid-column: 3;
-		}
-		.panel-title {
-			display: block;
-			padding-bottom: 1rem;
-		}
-	}
-	@media (min-width: 1024px) {
-		.tabs {
-			--padding-side: 1.25rem;
-		}
+
 		button {
-			padding: 2rem calc(2 * var(--padding-side)) 2rem var(--padding-side);
+			font-size: 0.95rem;
+			padding: 0.65rem 1.25rem;
 		}
 	}
 </style>

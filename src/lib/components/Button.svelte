@@ -23,7 +23,7 @@
 		background-color: var(--btn-bg);
 		color: var(--text) !important;
 		border: none;
-		border-radius: 0.3125rem;
+		border-radius: 0.625rem;
 		padding: 0.5rem 1rem;
 		font-family: var(--font-body);
 		cursor: pointer;
@@ -37,37 +37,55 @@
 		justify-content: center;
 		text-decoration: none;
 		max-width: fit-content;
+		transition:
+			background-color 0.15s ease,
+			transform 0.15s ease,
+			box-shadow 0.15s ease;
+		box-shadow: 0 2px 8px rgba(255, 148, 22, 0.3);
 	}
 
 	button.alt,
 	a.alt {
 		background-color: var(--btn-alt-bg);
+		box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 	}
+
+	button:not(.alt):hover,
+	a:not(.alt):hover {
+		background-color: var(--btn-hover-bg);
+		transform: translateY(-1px);
+		box-shadow: 0 5px 16px rgba(255, 148, 22, 0.42);
+	}
+
 	button.alt:hover,
 	a.alt:hover {
 		background-color: var(--btn-alt-hover-bg);
+		transform: translateY(-1px);
+		box-shadow: 0 5px 12px rgba(0, 0, 0, 0.14);
 	}
-	button:hover,
-	a:hover {
-		background-color: var(--btn-hover-bg);
-	}
+
 	button:active,
 	a:active {
 		background-color: var(--btn-active-bg);
 		/* using box-shadow instead of border prevents layout shifts */
 		box-shadow: inset 0 0 0 0.125rem var(--btn-active-border);
+		transform: translateY(0);
 	}
+
 	button.alt:active,
 	a.alt:active {
 		background-color: var(--btn-alt-active-bg);
 		box-shadow: inset 0 0 0 0.125rem var(--btn-alt-active-border);
+		transform: translateY(0);
 	}
+
 	button:focus-visible,
 	a:focus-visible {
 		background-color: var(--btn-focus-bg);
 		outline: var(--btn-focus-border) solid 0.25rem;
 		outline-offset: 0;
 	}
+
 	button.alt:focus-visible,
 	a.alt:focus-visible {
 		background-color: var(--btn-alt-focus-bg);
@@ -81,5 +99,7 @@
 		background-color: var(--bg-subtle);
 		cursor: not-allowed;
 		opacity: 0.7;
+		box-shadow: none;
+		transform: none;
 	}
 </style>

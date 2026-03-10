@@ -266,7 +266,7 @@ function isValidPressCoverage(pc: PressCoverage): boolean {
 async function queryDatabase<T>(
 	databaseId: string,
 	mapper: (page: NotionPage) => T,
-	options?: { sortBy?: string }
+	options?: { sortBy?: string; sortDirection?: 'ascending' | 'descending' }
 ): Promise<T[]> {
 	const apiKey = env.NOTION_API_KEY
 	if (!apiKey || !databaseId) {
@@ -277,7 +277,7 @@ async function queryDatabase<T>(
 	try {
 		const body: { sorts?: Array<{ property: string; direction: string }> } = {}
 		if (options?.sortBy) {
-			body.sorts = [{ property: options.sortBy, direction: 'ascending' }]
+			body.sorts = [{ property: options.sortBy, direction: options.sortDirection ?? 'ascending' }]
 		}
 
 		const response = await fetch(`https://api.notion.com/v1/databases/${databaseId}/query`, {
@@ -360,7 +360,7 @@ export async function getArticles(): Promise<Article[]> {
 			// Validate before returning
 			return isValidArticle(article) ? article : null
 		},
-		{ sortBy: 'Ordre' }
+		{ sortBy: 'Date de publication', sortDirection: 'descending' }
 	)
 
 	return articles.filter((a): a is Article => a !== null)
@@ -396,15 +396,11 @@ export async function fetchNewsletterContent(url: string): Promise<string | null
 		}
 
 		const html = await response.text()
-		console.log(`[Newsletter] Fetched ${html.length} chars from ${url}`)
 
 		const content = extractMailingContent(html)
 
 		// Check if extracted content has meaningful text (strip tags and check length)
 		const textOnly = content.replace(/<[^>]*>/g, '').trim()
-		console.log(
-			`[Newsletter] Extracted content: ${content.length} chars HTML, ${textOnly.length} chars text`
-		)
 
 		if (textOnly.length < 100) {
 			console.warn(
@@ -444,9 +440,6 @@ function extractMailingContent(html: string): string {
 			const cleaned = cleanContent(match[1])
 			const textOnly = cleaned.replace(/<[^>]*>/g, '').trim()
 			if (textOnly.length > 100) {
-				console.log(
-					`[Newsletter] Extraction strategy 1 matched (pattern), text length: ${textOnly.length}`
-				)
 				return cleaned
 			}
 		}
@@ -455,13 +448,11 @@ function extractMailingContent(html: string): string {
 	// Strategy 2: Extract full <body> content and clean it
 	const bodyMatch = html.match(/<body[^>]*>([\s\S]*)<\/body>/i)
 	if (bodyMatch && bodyMatch[1]) {
-		console.log(`[Newsletter] Extraction strategy 2: full body (${bodyMatch[1].length} chars)`)
 		return cleanContent(bodyMatch[1])
 	}
 
 	// Strategy 3: If no body tag, the response might already be the content
 	if (html.length > 200 && !html.includes('<!DOCTYPE')) {
-		console.log(`[Newsletter] Extraction strategy 3: raw content`)
 		return cleanContent(html)
 	}
 
@@ -684,7 +675,7 @@ export async function getPressReleases(): Promise<PressRelease[]> {
 
 			return isValidPressRelease(pr) ? pr : null
 		},
-		{ sortBy: 'Ordre' }
+		{ sortBy: 'Date', sortDirection: 'descending' }
 	)
 
 	return pressReleases.filter((pr): pr is PressRelease => pr !== null)
@@ -720,7 +711,7 @@ export async function getLocalPressReleases(): Promise<LocalPressRelease[]> {
 
 			return isValidLocalPressRelease(pr) ? pr : null
 		},
-		{ sortBy: 'Ordre' }
+		{ sortBy: 'Date', sortDirection: 'descending' }
 	)
 
 	return pressReleases.filter((pr): pr is LocalPressRelease => pr !== null)

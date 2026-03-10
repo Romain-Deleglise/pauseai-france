@@ -3,8 +3,10 @@
 	import Button from '$components/Button.svelte'
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
 	import type { Article } from '$lib/notion'
+	import type { Lang } from '$lib/i18n'
 
 	export let articles: Article[] = []
+	export let lang: Lang = 'fr'
 
 	const label_id = 'articles-title'
 
@@ -60,7 +62,9 @@
 </script>
 
 <section aria-labelledby={label_id}>
-	<UnderlinedTitle id={label_id}>Nos newsletters</UnderlinedTitle>
+	<UnderlinedTitle id={label_id}
+		>{lang === 'en' ? 'Our newsletters' : 'Nos newsletters'}</UnderlinedTitle
+	>
 	<div class="articles-grid">
 		{#each displayArticles as article (article.id)}
 			<ArticleCard
@@ -68,11 +72,14 @@
 				blurb={article.description}
 				url={article.slug ? `/newsletters/${article.slug}` : article.url}
 				category={article.type}
+				date={article.date || ""}
 			/>
 		{/each}
 	</div>
 	<div class="buttons-row">
-		<Button href="/newsletters">Voir toutes les newsletters</Button>
+		<Button href={lang === 'en' ? '/en/newsletters' : '/newsletters'}
+			>{lang === 'en' ? 'View all newsletters' : 'Voir toutes les newsletters'}</Button
+		>
 	</div>
 </section>
 

@@ -56,14 +56,12 @@
 </article>
 
 {#if showModal}
-	<!-- svelte-ignore a11y-click-events-have-key-events -->
-	<div class="modal-overlay" on:click={() => (showModal = false)}>
-		<div class="modal-content" on:click|stopPropagation>
-			<button class="close-button" on:click={() => (showModal = false)} aria-label="Fermer">
-				&times;
-			</button>
-			<img src="/charte-municipales-2026.png" alt="La charte Pause IA pour les municipales" />
-		</div>
+	<button class="modal-overlay" aria-label="Fermer" on:click={() => (showModal = false)}></button>
+	<div class="modal-content" role="dialog" aria-modal="true" aria-label="Charte Pause IA">
+		<button class="close-button" on:click={() => (showModal = false)} aria-label="Fermer">
+			&times;
+		</button>
+		<img src="/charte-municipales-2026.png" alt="La charte Pause IA pour les municipales" />
 	</div>
 {/if}
 
@@ -83,14 +81,14 @@
 	.intro {
 		font-size: 1.25rem;
 		line-height: 1.6;
-		color: var(--text-muted, #444);
+		color: var(--text);
 	}
 
 	.charte-engagement {
-		background: #fafafa;
+		background: var(--bg-subtle);
 		border-radius: 16px;
 		padding: 3rem 2rem;
-		border: 1px solid #eee;
+		border: 1px solid var(--border);
 		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
 		text-align: center;
 		margin-bottom: 5rem;
@@ -105,7 +103,7 @@
 		font-size: 2rem;
 		margin-top: 0;
 		margin-bottom: 1.5rem;
-		color: var(--text-heading, #222);
+		color: var(--text);
 	}
 
 	.charte-engagement p {
@@ -125,28 +123,26 @@
 	/* Modal Styles */
 	.modal-overlay {
 		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
+		inset: 0;
 		background: rgba(0, 0, 0, 0.8);
-		display: flex;
-		justify-content: center;
-		align-items: center;
 		z-index: 2000;
 		cursor: pointer;
-		padding: 2rem;
+		border: none;
+		padding: 0;
 	}
 
 	.modal-content {
-		position: relative;
-		max-width: 90%;
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		max-width: min(90%, 90vw);
 		max-height: 90vh;
-		background: white;
+		background: var(--bg);
 		border-radius: 8px;
 		overflow: hidden;
 		box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-		cursor: default;
+		z-index: 2001;
 	}
 
 	.close-button {
