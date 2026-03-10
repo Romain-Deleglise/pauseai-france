@@ -22,6 +22,7 @@
 		{
 			id: '1',
 			title: 'Forum des solutions pour une IA compatible avec l\u2019humanit\u00e9',
+			slug: 'forum-des-solutions-pour-une-ia-compatible-avec-lhumanite',
 			date: '2024-11-21',
 			url: '/pdfs/communique_de_presse_forum_des_solutions.pdf',
 			description:
@@ -438,9 +439,9 @@
 						<a
 							id="pr-{pr.id}"
 							class="press-release-card"
-							href={pr.url}
-							target="_blank"
-							rel="noopener noreferrer"
+							href={pr.slug ? `${prefix}/presse/national/${pr.slug}` : pr.url}
+							target={pr.slug ? undefined : '_blank'}
+							rel={pr.slug ? undefined : 'noopener noreferrer'}
 						>
 							<div class="pr-content">
 								<h3>{pr.title}</h3>
@@ -614,9 +615,9 @@
 							<a
 								id="pr-{pr.id}"
 								class="press-release-card"
-								href={pr.url}
-								target="_blank"
-								rel="noopener noreferrer"
+								href={pr.slug ? `${prefix}/presse/local/${pr.slug}` : pr.url}
+								target={pr.slug ? undefined : '_blank'}
+								rel={pr.slug ? undefined : 'noopener noreferrer'}
 							>
 								<div class="pr-content">
 									<div class="pr-dept-badge">{getDeptLabel(pr.department)}</div>
