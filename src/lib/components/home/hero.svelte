@@ -485,6 +485,35 @@
 		.content h1 {
 			font-size: 3rem;
 		}
+
+		/* On desktop the gradient is wide enough to ensure readability —
+		   remove the frosted-glass box so all 4 photo rows stay visible. */
+		.content-box {
+			background: none;
+			backdrop-filter: none;
+			-webkit-backdrop-filter: none;
+			border-radius: 0;
+			padding: 0;
+		}
+
+		/* Restore stronger gradient for desktop where there's no backdrop box */
+		.mosaic-overlay {
+			background: linear-gradient(
+					to right,
+					rgba(255, 250, 245, 0.97) 0%,
+					rgba(255, 250, 245, 0.92) 12%,
+					rgba(255, 250, 245, 0.6) 26%,
+					rgba(255, 250, 245, 0.15) 40%,
+					transparent 52%
+				),
+				linear-gradient(
+					to top,
+					rgba(255, 250, 245, 0.4) 0%,
+					transparent 6%,
+					transparent 94%,
+					rgba(255, 250, 245, 0.4) 100%
+				);
+		}
 	}
 
 	@media (min-width: 1280px) {
