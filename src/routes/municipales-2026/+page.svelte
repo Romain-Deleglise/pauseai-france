@@ -115,7 +115,12 @@
 			url: 'https://presseagence.fr/nice-jean-marc-governatori-sengage-sur-la-charte-de-pause-ia-pour-les-municipales/',
 			date: '2026-02-06'
 		}
-	]
+	].sort((a, b) => {
+		if (!a.date && !b.date) return 0
+		if (!a.date) return 1
+		if (!b.date) return -1
+		return new Date(b.date).getTime() - new Date(a.date).getTime()
+	})
 
 	let showCharterModal = false
 	let selectedCandidate: Candidate | null = null
