@@ -98,14 +98,17 @@
 	let heroBgEl: HTMLElement | null = null
 	let contentBoxEl: HTMLElement | null = null
 	let frostColTop = 'calc(50% - 17rem)' // CSS fallback before measurement
+	let frostColHeight = '80%' // CSS fallback before measurement
 
 	function measureFrostCol() {
 		if (!heroBgEl || !contentBoxEl) return
 		const bgRect = heroBgEl.getBoundingClientRect()
 		const boxRect = contentBoxEl.getBoundingClientRect()
-		// Align column top with content-box top (minus a small breathing gap)
-		const offset = Math.max(0, boxRect.top - bgRect.top - 8)
-		frostColTop = `${offset}px`
+		// Column starts at content-box top, extends to hero-bg bottom
+		const topOffset = Math.max(0, boxRect.top - bgRect.top)
+		const colHeight = bgRect.height - topOffset
+		frostColTop = `${topOffset}px`
+		frostColHeight = `${Math.max(0, colHeight)}px`
 	}
 
 	onMount(() => {
@@ -151,7 +154,7 @@
 {#if mounted}
 	<section
 		class="hero"
-		style="--hero-top-offset: -{heroTopOffset}px; --frost-col-top: {frostColTop}"
+		style="--hero-top-offset: -{heroTopOffset}px; --frost-col-top: {frostColTop}; --frost-col-height: {frostColHeight}"
 		aria-labelledby={label_id}
 	>
 		<div class="hero-bg" bind:this={heroBgEl} aria-hidden="true">
@@ -522,21 +525,16 @@
 			content: '';
 			position: absolute;
 			top: var(--frost-col-top, calc(50% - 17rem));
-			bottom: 0;
+			/* Height measured by JS from content-box top to hero-bg bottom,
+			   avoiding any browser quirk with bottom:0 on a pseudo-element
+			   inside an overflow:hidden abs-positioned container. */
+			height: var(--frost-col-height, 70%);
 			left: 6rem; /* matches main padding-left at 1024px+ */
 			width: calc(28rem + 3rem); /* content-box max-width + 2 × 1.5rem padding */
 			background: rgba(255, 250, 245, 0.82);
 			backdrop-filter: blur(14px);
 			-webkit-backdrop-filter: blur(14px);
 			border-radius: 16px 16px 0 0;
-			/* Soft fade-in at the top so the column emerges naturally */
-			mask-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.8) 1rem, black 2.5rem);
-			-webkit-mask-image: linear-gradient(
-				to bottom,
-				transparent,
-				rgba(0, 0, 0, 0.8) 1rem,
-				black 2.5rem
-			);
 			pointer-events: none;
 		}
 
