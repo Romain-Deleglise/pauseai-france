@@ -104,8 +104,8 @@
 		const bgRect = heroBgEl.getBoundingClientRect()
 		const boxRect = contentBoxEl.getBoundingClientRect()
 		const topOffset = Math.max(0, boxRect.top - bgRect.top)
-		// Start the column 28px above the content-box for visual breathing room
-		frostColTop = `${Math.max(0, topOffset - 28)}px`
+		// Start the column above the content-box for visual breathing room
+		frostColTop = `${Math.max(0, topOffset - 52)}px`
 	}
 
 	onMount(() => {
@@ -522,7 +522,7 @@
 		}
 
 		.description p {
-			font-size: 1.05rem;
+			font-size: 1.18rem;
 		}
 
 		/* Frosted glass column: sits directly in .hero (no overflow:hidden parent)
@@ -537,7 +537,7 @@
 			/* left:0 = hero's left edge, which is already at main's padding-left (6rem
 			   from viewport). Adding 6rem here would double the offset. */
 			left: 0;
-			width: calc(30rem + 3rem); /* content-box max-width + 2 × 1.5rem padding */
+			width: calc(27rem + 3rem); /* content-box max-width + 2 × 1.5rem padding */
 			background: rgba(255, 250, 245, 0.82);
 			backdrop-filter: blur(14px);
 			-webkit-backdrop-filter: blur(14px);
@@ -556,7 +556,7 @@
 			-webkit-backdrop-filter: none;
 			border-radius: 0;
 			padding: 1rem 1.5rem;
-			max-width: 30rem; /* fill the column */
+			max-width: 27rem; /* fill the column */
 		}
 
 		/* Lighter gradient: frosted column ensures readability on the left */
