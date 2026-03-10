@@ -1,0 +1,492 @@
+<script lang="ts">
+	import PostMeta from '$components/PostMeta.svelte'
+	import { ArrowLeft, ArrowRight, ExternalLink, Calendar, Maximize2, X } from 'lucide-svelte'
+	import { getT } from '$lib/i18n'
+	import type { PageData } from './$types'
+
+	export let data: PageData
+
+	$: lang = data.lang
+	$: t = getT(lang)
+	$: prefix = `/${lang}`
+
+	let fullscreen = false
+
+	function formatDate(dateStr: string): string {
+		if (!dateStr) return ''
+		try {
+			const d = new Date(dateStr)
+			const locale = lang === 'en' ? 'en-GB' : 'fr-FR'
+			return d.toLocaleDateString(locale, { year: 'numeric', month: 'long', day: 'numeric' })
+		} catch {
+			return dateStr
+		}
+	}
+
+	function toggleFullscreen() {
+		fullscreen = !fullscreen
+		if (fullscreen) {
+			document.body.style.overflow = 'hidden'
+		} else {
+			document.body.style.overflow = ''
+		}
+	}
+</script>
+
+<PostMeta title={data.pressRelease.title} description={data.pressRelease.description} />
+
+<div class="page">
+	<nav class="breadcrumb">
+		<a href="{prefix}/presse" class="back-link">
+			<ArrowLeft size="1rem" />
+			{lang === 'en' ? 'Press Room' : 'Espace Presse'}
+		</a>
+	</nav>
+
+	<header class="pr-header">
+		<h1>{data.pressRelease.title}</h1>
+		<div class="pr-meta">
+			{#if data.pressRelease.date}
+				<span class="date">
+					<Calendar size="1rem" />
+					{formatDate(data.pressRelease.date)}
+				</span>
+			{/if}
+			<a
+				href={data.pressRelease.url}
+				target="_blank"
+				rel="noopener noreferrer"
+				class="original-link"
+			>
+				<ExternalLink size="0.875rem" />
+				{lang === 'en' ? 'View original' : "Voir l'original"}
+			</a>
+		</div>
+	</header>
+
+	<article class="pr-content">
+		{#if data.hasContent}
+			{@html data.content}
+		{:else}
+			<iframe
+				src={data.pressRelease.url}
+				title={data.pressRelease.title}
+				class="pr-iframe"
+				sandbox="allow-same-origin"
+			/>
+		{/if}
+	</article>
+
+	<nav class="pr-nav">
+		<div class="nav-link-wrapper">
+			{#if data.prev}
+				<a href="{prefix}/presse/national/{data.prev.slug}" class="nav-link nav-prev">
+					<ArrowLeft size="1.25rem" />
+					<span class="nav-label">
+						<span class="nav-direction">{lang === 'en' ? 'Previous' : 'Précédent'}</span>
+						<span class="nav-title">{data.prev.title}</span>
+					</span>
+				</a>
+			{/if}
+		</div>
+		<div class="nav-link-wrapper nav-link-right">
+			{#if data.next}
+				<a href="{prefix}/presse/national/{data.next.slug}" class="nav-link nav-next">
+					<span class="nav-label">
+						<span class="nav-direction">{lang === 'en' ? 'Next' : 'Suivant'}</span>
+						<span class="nav-title">{data.next.title}</span>
+					</span>
+					<ArrowRight size="1.25rem" />
+				</a>
+			{/if}
+		</div>
+	</nav>
+
+	<footer class="pr-footer">
+		<a href="{prefix}/presse" class="back-link">
+			<ArrowLeft size="1rem" />
+			{lang === 'en' ? 'Back to press room' : "Retour à l'espace presse"}
+		</a>
+	</footer>
+</div>
+
+{#if fullscreen}
+	<div class="fullscreen-overlay">
+		<div class="fullscreen-header">
+			<span class="fullscreen-title">{data.pressRelease.title}</span>
+			<button
+				class="fullscreen-close"
+				on:click={toggleFullscreen}
+				aria-label={lang === 'en' ? 'Close fullscreen' : 'Fermer le plein écran'}
+			>
+				<X size="1.25rem" />
+			</button>
+		</div>
+		<div class="fullscreen-body">
+			{#if data.hasContent}
+				<div class="pr-content">
+					{@html data.content}
+				</div>
+			{:else}
+				<iframe
+					src={data.pressRelease.url}
+					title={data.pressRelease.title}
+					class="pr-iframe fullscreen-iframe"
+					sandbox="allow-same-origin"
+				/>
+			{/if}
+		</div>
+	</div>
+{/if}
+
+<button
+	class="fullscreen-btn"
+	on:click={toggleFullscreen}
+	aria-label={lang === 'en' ? 'Read fullscreen' : 'Lire en plein écran'}
+>
+	<Maximize2 size="1.25rem" />
+</button>
+
+<style>
+	.page {
+		max-width: 52rem;
+		margin: 0 auto;
+		padding: 1.5rem 0.5rem 3rem;
+	}
+
+	.breadcrumb {
+		margin-bottom: 2rem;
+	}
+
+	.back-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.375rem;
+		color: var(--text-secondary, #676e7a);
+		text-decoration: none;
+		font-size: 0.9375rem;
+		transition: color 0.2s;
+	}
+
+	.back-link:hover {
+		color: var(--brand, #ff9416);
+	}
+
+	.pr-header {
+		margin-bottom: 2.5rem;
+		padding-bottom: 1.5rem;
+		border-bottom: 2px solid var(--border, #e5e7eb);
+	}
+
+	.pr-header h1 {
+		font-size: 2rem;
+		font-weight: 800;
+		line-height: 1.3;
+		margin: 0 0 1rem;
+	}
+
+	.pr-meta {
+		display: flex;
+		align-items: center;
+		gap: 1.5rem;
+		flex-wrap: wrap;
+	}
+
+	.date {
+		display: flex;
+		align-items: center;
+		gap: 0.375rem;
+		color: var(--text-secondary, #676e7a);
+		font-size: 0.9375rem;
+	}
+
+	.original-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.375rem;
+		color: var(--text-secondary, #676e7a);
+		text-decoration: none;
+		font-size: 0.875rem;
+		transition: color 0.2s;
+	}
+
+	.original-link:hover {
+		color: var(--brand, #ff9416);
+	}
+
+	.pr-content {
+		overflow: hidden;
+		line-height: 1.7;
+	}
+
+	.pr-content :global(table) {
+		max-width: 100% !important;
+		width: 100% !important;
+		height: auto !important;
+		border-spacing: 0 !important;
+		border-collapse: collapse !important;
+	}
+
+	.pr-content :global(td),
+	.pr-content :global(th) {
+		max-width: 100%;
+		word-wrap: break-word;
+		overflow-wrap: break-word;
+		height: auto !important;
+		padding-top: 2px !important;
+		padding-bottom: 2px !important;
+	}
+
+	.pr-content :global(td:empty),
+	.pr-content :global(td:blank) {
+		display: none;
+	}
+
+	.pr-content :global(img) {
+		max-width: 100%;
+		height: auto !important;
+		display: block;
+	}
+
+	.pr-content :global(p) {
+		margin: 0.5em 0;
+	}
+
+	.pr-content :global(h1),
+	.pr-content :global(h2),
+	.pr-content :global(h3),
+	.pr-content :global(h4) {
+		margin: 1em 0 0.5em;
+		line-height: 1.3;
+	}
+
+	.pr-content :global(ul),
+	.pr-content :global(ol) {
+		margin: 0.5em 0;
+		padding-left: 1.5em;
+	}
+
+	.pr-content :global(li) {
+		margin: 0.25em 0;
+	}
+
+	.pr-content :global(a) {
+		color: var(--brand, #ff9416);
+		text-decoration: underline;
+	}
+
+	.pr-content :global(a:hover) {
+		opacity: 0.8;
+	}
+
+	.pr-content :global(blockquote) {
+		border-left: 3px solid var(--brand, #ff9416);
+		margin: 1em 0;
+		padding: 0.5em 1em;
+		color: var(--text-secondary, #676e7a);
+		font-style: italic;
+	}
+
+	.pr-content :global(td > img:only-child),
+	.pr-content :global(p > img:only-child) {
+		margin: 0.5em auto;
+	}
+
+	.pr-content :global(div),
+	.pr-content :global(span) {
+		max-width: 100% !important;
+	}
+
+	.pr-content :global(br + br) {
+		display: none;
+	}
+
+	.pr-iframe {
+		width: 100%;
+		min-height: 80vh;
+		border: 1px solid var(--border, #e5e7eb);
+		border-radius: 0.5rem;
+	}
+
+	.pr-nav {
+		display: flex;
+		gap: 1rem;
+		margin-top: 3rem;
+		padding-top: 2rem;
+		border-top: 2px solid var(--border, #e5e7eb);
+	}
+
+	.nav-link-wrapper {
+		flex: 1;
+		min-width: 0;
+	}
+
+	.nav-link-right {
+		text-align: right;
+	}
+
+	.nav-link {
+		display: inline-flex;
+		align-items: flex-start;
+		gap: 0.5rem;
+		text-decoration: none;
+		color: var(--text, #1a1a1a);
+		padding: 0.75rem 1rem;
+		border-radius: 0.5rem;
+		border: 1px solid var(--border, #e5e7eb);
+		background: var(--bg-card, #f9f9f9);
+		transition:
+			background 0.2s,
+			border-color 0.2s,
+			box-shadow 0.2s;
+		max-width: 100%;
+	}
+
+	.nav-link:hover {
+		background: var(--bg, #fff);
+		border-color: var(--brand, #ff9416);
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+	}
+
+	.nav-next {
+		flex-direction: row;
+		justify-content: flex-end;
+	}
+
+	.nav-label {
+		display: flex;
+		flex-direction: column;
+		gap: 0.125rem;
+		min-width: 0;
+	}
+
+	.nav-direction {
+		font-size: 0.8125rem;
+		color: var(--text-secondary, #676e7a);
+		text-transform: uppercase;
+		letter-spacing: 0.03em;
+		font-weight: 600;
+	}
+
+	.nav-title {
+		font-size: 0.9375rem;
+		font-weight: 500;
+		line-height: 1.3;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+	}
+
+	.pr-footer {
+		margin-top: 1.5rem;
+		padding-top: 1.5rem;
+		border-top: 1px solid var(--border, #e5e7eb);
+	}
+
+	.fullscreen-btn {
+		position: fixed;
+		bottom: 1.5rem;
+		right: 1.5rem;
+		width: 3rem;
+		height: 3rem;
+		border-radius: 50%;
+		border: none;
+		background: var(--brand, #ff9416);
+		color: white;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+		cursor: pointer;
+		z-index: 50;
+		transition:
+			transform 0.2s,
+			box-shadow 0.2s;
+	}
+
+	.fullscreen-btn:hover {
+		transform: scale(1.1);
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+	}
+
+	.fullscreen-overlay {
+		position: fixed;
+		inset: 0;
+		z-index: 100;
+		background: var(--bg, #fff);
+		display: flex;
+		flex-direction: column;
+		overflow: hidden;
+	}
+
+	.fullscreen-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.75rem;
+		padding: 0.75rem 1rem;
+		border-bottom: 1px solid var(--border, #e5e7eb);
+		flex-shrink: 0;
+	}
+
+	.fullscreen-title {
+		font-weight: 700;
+		font-size: 0.9375rem;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		min-width: 0;
+	}
+
+	.fullscreen-close {
+		flex-shrink: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 2.25rem;
+		height: 2.25rem;
+		border-radius: 50%;
+		border: none;
+		background: transparent;
+		color: var(--text-secondary, #676e7a);
+		cursor: pointer;
+		transition: background 0.2s;
+	}
+
+	.fullscreen-close:hover {
+		background: var(--border, #e5e7eb);
+	}
+
+	.fullscreen-body {
+		flex: 1;
+		min-height: 0;
+		overflow-y: auto;
+		-webkit-overflow-scrolling: touch;
+		padding: 1rem;
+		line-height: 1.7;
+	}
+
+	.fullscreen-iframe {
+		height: 100%;
+		min-height: 0;
+		border: none;
+	}
+
+	@media (min-width: 480px) {
+		.page {
+			padding: 2rem 1rem 4rem;
+		}
+	}
+
+	@media (min-width: 640px) {
+		.page {
+			padding: 3rem 2rem 6rem;
+		}
+
+		.pr-header h1 {
+			font-size: 2.5rem;
+		}
+	}
+</style>
