@@ -119,7 +119,8 @@
 		{
 			source: 'Presse Agence',
 			title: "Nice : Jean-Marc Governatori s'engage sur la charte de Pause IA pour les municipales",
-			url: 'https://presseagence.fr/nice-jean-marc-governatori-sengage-sur-la-charte-de-pause-ia-pour-les-municipales/'
+			url: 'https://presseagence.fr/nice-jean-marc-governatori-sengage-sur-la-charte-de-pause-ia-pour-les-municipales/',
+			date: '2026-02-06'
 		}
 	]
 
