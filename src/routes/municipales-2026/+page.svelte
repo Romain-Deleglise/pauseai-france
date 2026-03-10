@@ -73,6 +73,14 @@
 			commitments: '14/14',
 			charterFile: '/chartes-municipales-2026/Belloteau.webp',
 			charterType: 'image'
+		},
+		{
+			id: 'sarah-hamza-reguig-paris11',
+			name: 'Sarah Hamza Reguig',
+			city: 'Paris 11e (Équinoxe)',
+			commitments: '14/14',
+			charterFile: '/chartes-municipales-2026/Charte Pause IA-Equinoxe.jpg',
+			charterType: 'image'
 		}
 	]
 
