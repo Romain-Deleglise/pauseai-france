@@ -330,7 +330,7 @@
 		backdrop-filter: blur(14px);
 		-webkit-backdrop-filter: blur(14px);
 		border-radius: 16px;
-		padding: 1.75rem 2rem;
+		padding: 1rem 1.5rem;
 	}
 
 	.content h1 {
@@ -457,7 +457,7 @@
 
 	@media (min-width: 640px) {
 		.content {
-			margin-bottom: 2rem;
+			margin-bottom: 5rem;
 		}
 
 		.content h1 {
