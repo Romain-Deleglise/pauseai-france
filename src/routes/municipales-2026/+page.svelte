@@ -80,6 +80,22 @@
 			commitments: '14/14',
 			charterFile: '/chartes-municipales-2026/Charte Pause IA-Equinoxe.jpg',
 			charterType: 'image'
+		},
+		{
+			id: 'thomas-simon-grenoble',
+			name: 'Thomas Simon',
+			city: 'Grenoble',
+			commitments: '14/14',
+			charterFile: '/chartes-municipales-2026/Thomas_Simon.pdf',
+			charterType: 'pdf'
+		},
+		{
+			id: 'antoine-mikolajczak-paris5',
+			name: 'Antoine Mikolajczak',
+			city: 'Paris 5e',
+			commitments: '10/14',
+			charterFile: '/chartes-municipales-2026/Antoine_Mikolajczak.pdf',
+			charterType: 'pdf'
 		}
 	]
 
@@ -114,6 +130,12 @@
 			title: "Nice : Jean-Marc Governatori s'engage sur la charte de Pause IA pour les municipales",
 			url: 'https://presseagence.fr/nice-jean-marc-governatori-sengage-sur-la-charte-de-pause-ia-pour-les-municipales/',
 			date: '2026-02-06'
+		},
+		{
+			source: 'Contexte',
+			title: "Pause IA s'incruste dans les municipales",
+			url: 'https://www.contexte.com/fr/actualite/tech/pause-ia-sincruste-dans-les-municipales_257807',
+			date: '2026-03-11'
 		}
 	].sort((a, b) => {
 		if (!a.date && !b.date) return 0
