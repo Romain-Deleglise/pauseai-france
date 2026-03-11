@@ -491,10 +491,10 @@
 		transition: padding 0.25s ease;
 	}
 
-	/* Compact nav when scrolled */
+	/* Compact nav when scrolled (mobile) */
 	nav.scrolled {
-		padding-top: 0.25rem;
-		padding-bottom: 0.25rem;
+		padding-top: 0.55rem;
+		padding-bottom: 0.55rem;
 	}
 
 	.nav-right {
@@ -935,12 +935,12 @@
 		}
 
 		nav {
-			padding: 0.55rem 2rem;
+			padding: 0.85rem 2rem;
 		}
 
 		nav.scrolled {
-			padding-top: 0.35rem;
-			padding-bottom: 0.35rem;
+			padding-top: 0.6rem;
+			padding-bottom: 0.6rem;
 		}
 	}
 
