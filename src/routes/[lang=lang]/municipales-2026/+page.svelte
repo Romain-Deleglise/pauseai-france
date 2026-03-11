@@ -87,6 +87,22 @@
 			commitments: '14/14',
 			charterFile: '/chartes-municipales-2026/Charte Pause IA-Equinoxe.jpg',
 			charterType: 'image'
+		},
+		{
+			id: 'thomas-simon-grenoble',
+			name: 'Thomas Simon',
+			city: 'Grenoble',
+			commitments: '14/14',
+			charterFile: '/chartes-municipales-2026/Thomas_Simon.pdf',
+			charterType: 'pdf'
+		},
+		{
+			id: 'antoine-mikolajczak-paris5',
+			name: 'Antoine Mikolajczak',
+			city: 'Paris 5e',
+			commitments: '10/14',
+			charterFile: '/chartes-municipales-2026/Antoine_Mikolajczak.pdf',
+			charterType: 'pdf'
 		}
 	]
 
@@ -100,13 +116,15 @@
 	const pressArticles: PressArticle[] = [
 		{
 			source: 'Le Dauphiné Libéré',
-			title: "Isère / Grenoble : l'association Pause IA appelle les candidats à s'engager sur sa charte",
+			title:
+				"Isère / Grenoble : l'association Pause IA appelle les candidats à s'engager sur sa charte",
 			url: 'https://www.ledauphine.com/elections/2026/03/06/isere-grenoble-l-association-pause-ia-appelle-les-candidats-a-s-engager-sur-sa-charte',
 			date: '2026-03-06'
 		},
 		{
 			source: "Place Gre'net",
-			title: "Municipales 2026 : Pause IA interpelle les candidats sur les dangers de l'intelligence artificielle",
+			title:
+				"Municipales 2026 : Pause IA interpelle les candidats sur les dangers de l'intelligence artificielle",
 			url: 'https://www.placegrenet.fr/2026/03/08/municipales-2026-pause-ia-interpelle-les-candidats-sur-les-dangers-de-lintelligence-artificielle/673506',
 			date: '2026-03-08'
 		},
@@ -121,6 +139,12 @@
 			title: "Nice : Jean-Marc Governatori s'engage sur la charte de Pause IA pour les municipales",
 			url: 'https://presseagence.fr/nice-jean-marc-governatori-sengage-sur-la-charte-de-pause-ia-pour-les-municipales/',
 			date: '2026-02-06'
+		},
+		{
+			source: 'Contexte',
+			title: "Pause IA s'incruste dans les municipales",
+			url: 'https://www.contexte.com/fr/actualite/tech/pause-ia-sincruste-dans-les-municipales_257807',
+			date: '2026-03-11'
 		}
 	].sort((a, b) => {
 		if (!a.date && !b.date) return 0
