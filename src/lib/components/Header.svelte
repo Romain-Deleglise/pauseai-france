@@ -250,7 +250,12 @@
 						<a href="/rejoindre" class="btn-join" class:on-hero={whiteNav}>Rejoindre</a>
 					</div>
 				</div>
-				<button aria-label="Open mobile menu" class="hamburger" on:click={() => (open = !open)}>
+				<button
+					aria-label="Open mobile menu"
+					class="hamburger"
+					class:open
+					on:click={() => (open = !open)}
+				>
 					<svg
 						width="22"
 						height="22"
@@ -259,18 +264,21 @@
 						xmlns="http://www.w3.org/2000/svg"
 					>
 						<rect
+							class="bar bar-top"
 							y="0"
 							height="2.5"
 							width="24"
 							fill={whiteNav ? 'white' : $theme === 'dark' ? 'white' : 'black'}
 						/>
 						<rect
+							class="bar bar-mid"
 							y="10.75"
 							height="2.5"
 							width="24"
 							fill={whiteNav ? 'white' : $theme === 'dark' ? 'white' : 'black'}
 						/>
 						<rect
+							class="bar bar-bot"
 							y="21.5"
 							height="2.5"
 							width="24"
@@ -730,6 +738,31 @@
 		padding: 0;
 	}
 
+	/* ─── Hamburger → croix (morph) ──────────────────────────── */
+	.hamburger .bar {
+		transform-box: fill-box;
+		transform-origin: center;
+		transition:
+			transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+			opacity 0.25s ease;
+	}
+
+	/* barre du haut : descend + tourne 45° */
+	.hamburger.open .bar-top {
+		transform: translateY(10.75px) rotate(45deg);
+	}
+
+	/* barre du milieu : disparaît */
+	.hamburger.open .bar-mid {
+		opacity: 0;
+		transform: scaleX(0);
+	}
+
+	/* barre du bas : monte + tourne -45° */
+	.hamburger.open .bar-bot {
+		transform: translateY(-10.75px) rotate(-45deg);
+	}
+
 	.logo {
 		line-height: 0;
 	}
@@ -810,12 +843,15 @@
 		align-items: center;
 		justify-content: center;
 		cursor: pointer;
-		transition: background 0.15s;
+		transition:
+			background 0.15s,
+			transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 		flex-shrink: 0;
 	}
 
 	.close-btn:hover {
 		background: var(--btn-alt-hover-bg);
+		transform: rotate(90deg);
 	}
 
 	/* ─── Sidebar sections ──────────────────────────────────────── */
