@@ -340,6 +340,10 @@
 						<p class="contact-name">Clémence Peyrot</p>
 						<p class="contact-role">Directrice exécutive de Pause IA</p>
 						<p>
+							<strong>Email :</strong>
+							<a href="mailto:clemence@pauseia.fr">clemence@pauseia.fr</a>
+						</p>
+						<p>
 							<strong>Tél. :</strong>
 							<a href="tel:+33645513415">06 45 51 34 15</a>
 						</p>
