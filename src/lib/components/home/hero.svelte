@@ -95,12 +95,25 @@
 
 	let mounted = false
 	let heroTopOffset = 80 // fallback in px
+	let heroBgEl: HTMLElement | null = null
+	let contentBoxEl: HTMLElement | null = null
+	let frostColTop = 'calc(50% - 17rem)' // CSS fallback before measurement
+
+	function measureFrostCol() {
+		if (!heroBgEl || !contentBoxEl) return
+		const bgRect = heroBgEl.getBoundingClientRect()
+		const boxRect = contentBoxEl.getBoundingClientRect()
+		const topOffset = Math.max(0, boxRect.top - bgRect.top)
+		// Start the column above the content-box for visual breathing room
+		frostColTop = `${Math.max(0, topOffset - 52)}px`
+	}
 
 	onMount(() => {
-		let ro: ResizeObserver | undefined
+		let roHeader: ResizeObserver | undefined
+		let roContent: ResizeObserver | undefined
 
 		// Wait for pending DOM updates (Header nav rendering) before measuring
-		tick().then(() => {
+		tick().then(async () => {
 			const header = document.querySelector('.site-header')
 			const main = document.querySelector('main')
 
@@ -117,17 +130,31 @@
 
 			// Keep heroTopOffset in sync whenever the header resizes (e.g. scrolled
 			// state collapses padding after SvelteKit navigation restores scroll=0)
-			ro = new ResizeObserver(measure)
-			if (header) ro.observe(header)
+			roHeader = new ResizeObserver(measure)
+			if (header) roHeader.observe(header)
+
+			// After hero renders (next tick), measure content-box position for the
+			// frost column so it starts exactly at the top of the text block.
+			await tick()
+			measureFrostCol()
+			roContent = new ResizeObserver(measureFrostCol)
+			if (contentBoxEl) roContent.observe(contentBoxEl)
 		})
 
-		return () => ro?.disconnect()
+		return () => {
+			roHeader?.disconnect()
+			roContent?.disconnect()
+		}
 	})
 </script>
 
 {#if mounted}
-	<section class="hero" style="--hero-top-offset: -{heroTopOffset}px" aria-labelledby={label_id}>
-		<div class="hero-bg" aria-hidden="true">
+	<section
+		class="hero"
+		style="--hero-top-offset: -{heroTopOffset}px; --frost-col-top: {frostColTop}"
+		aria-labelledby={label_id}
+	>
+		<div class="hero-bg" bind:this={heroBgEl} aria-hidden="true">
 			<div class="marquee-container">
 				<div class="marquee-row row-left">
 					<div class="marquee-track">
@@ -160,8 +187,9 @@
 			</div>
 			<div class="mosaic-overlay"></div>
 		</div>
+		<div class="frost-col" aria-hidden="true"></div>
 		<div class="content" in:fade={{ duration: 500, delay: 200 }}>
-			<div class="content-box">
+			<div class="content-box" bind:this={contentBoxEl}>
 				<h1 id={label_id}>
 					{t.home.hero_title}
 					<br /><Mark>{t.home.hero_highlight}</Mark>
@@ -199,7 +227,8 @@
 <style>
 	.hero {
 		display: flex;
-		min-height: 100svh;
+		height: 100svh; /* definite height → abs-pos children can use bottom:0 / height:% */
+		min-height: 100svh; /* still grows if content is taller */
 		margin-top: var(--hero-top-offset, -5rem);
 		padding-top: calc(-1 * var(--hero-top-offset, -5rem));
 		align-items: center;
@@ -293,17 +322,16 @@
 		}
 	}
 
-	/* Overlay: narrow gradient on left for text, most of the banner shows photos */
+	/* Overlay: subtle gradient, readability handled by content-box backdrop */
 	.mosaic-overlay {
 		position: absolute;
 		inset: 0;
 		background: linear-gradient(
 				to right,
-				rgba(255, 250, 245, 0.97) 0%,
-				rgba(255, 250, 245, 0.92) 12%,
-				rgba(255, 250, 245, 0.55) 25%,
-				rgba(255, 250, 245, 0.1) 38%,
-				transparent 48%
+				rgba(255, 250, 245, 0.6) 0%,
+				rgba(255, 250, 245, 0.35) 20%,
+				rgba(255, 250, 245, 0.1) 40%,
+				transparent 55%
 			),
 			linear-gradient(
 				to top,
@@ -327,6 +355,11 @@
 
 	.content-box {
 		max-width: 28rem;
+		background: rgba(255, 250, 245, 0.82);
+		backdrop-filter: blur(14px);
+		-webkit-backdrop-filter: blur(14px);
+		border-radius: 16px;
+		padding: 1rem 1.5rem;
 	}
 
 	.content h1 {
@@ -341,7 +374,13 @@
 	}
 
 	.description p {
-		line-height: 1.7;
+		line-height: 1.5;
+		margin-top: 0;
+		margin-bottom: 0.6rem;
+	}
+
+	.frost-col {
+		display: none; /* only visible on desktop via the 1024px media query */
 	}
 
 	.corners {
@@ -362,7 +401,7 @@
 		align-items: center;
 		flex-direction: column;
 		gap: 2rem;
-		margin-top: 2rem;
+		margin-top: 1rem;
 	}
 
 	/* ─── Mobile (< 640px) ────────────────────────────────────── */
@@ -423,14 +462,12 @@
 			margin-top: 1rem;
 		}
 
-		/* Overlay on mobile — shorter text means less coverage needed */
+		/* Overlay on mobile — readability handled by content-box backdrop */
 		.mosaic-overlay {
 			background: linear-gradient(
 					to right,
-					rgba(255, 250, 245, 0.98) 0%,
-					rgba(255, 250, 245, 0.93) 15%,
-					rgba(255, 250, 245, 0.65) 35%,
-					rgba(255, 250, 245, 0.15) 55%,
+					rgba(255, 250, 245, 0.5) 0%,
+					rgba(255, 250, 245, 0.2) 40%,
 					transparent 65%
 				),
 				linear-gradient(
@@ -440,6 +477,10 @@
 					transparent 92%,
 					rgba(255, 250, 245, 0.5) 100%
 				);
+		}
+
+		.content-box {
+			padding: 0.75rem 1rem;
 		}
 	}
 
@@ -451,18 +492,18 @@
 
 	@media (min-width: 640px) {
 		.content {
-			margin-bottom: 5rem;
+			margin-bottom: 2.5rem;
 		}
 
 		.content h1 {
-			margin-bottom: 2rem;
-			font-size: 2.1rem;
+			margin-bottom: 1.25rem;
+			font-size: 1.9rem;
 		}
 	}
 
 	@media (min-width: 768px) {
 		.content h1 {
-			font-size: 2.4rem;
+			font-size: 2.1rem;
 		}
 		.marquee-container {
 			gap: 6px;
@@ -477,13 +518,68 @@
 
 	@media (min-width: 1024px) {
 		.content h1 {
-			font-size: 3rem;
+			font-size: 2.2rem;
+		}
+
+		.description p {
+			font-size: 1.18rem;
+		}
+
+		/* Frosted glass column: sits directly in .hero (no overflow:hidden parent)
+		   so bottom:0 reliably reaches the hero's bottom edge.
+		   JS measures the exact content-box top → --frost-col-top.
+		   z-index keeps it above hero-bg (-1) but below .content (auto/later in DOM). */
+		.frost-col {
+			display: block;
+			position: absolute;
+			top: var(--frost-col-top, calc(50% - 14rem));
+			bottom: 0;
+			/* left:0 = hero's left edge, which is already at main's padding-left (6rem
+			   from viewport). Adding 6rem here would double the offset. */
+			left: 0;
+			width: calc(27rem + 3rem); /* content-box max-width + 2 × 1.5rem padding */
+			background: rgba(255, 250, 245, 0.82);
+			backdrop-filter: blur(14px);
+			-webkit-backdrop-filter: blur(14px);
+			border-radius: 16px 16px 0 0;
+			pointer-events: none;
+			/* z-index:-1 puts frost-col at paint step 2 (negative stacking contexts),
+			   while .content (in-flow flex item) is painted at step 3 → text on top. */
+			z-index: -1;
+		}
+
+		/* Content-box: the visual background is now the column behind it.
+		   Keep padding for text spacing, strip own backdrop/bg. */
+		.content-box {
+			background: none;
+			backdrop-filter: none;
+			-webkit-backdrop-filter: none;
+			border-radius: 0;
+			padding: 1rem 1.5rem;
+			max-width: 27rem; /* fill the column */
+		}
+
+		/* Lighter gradient: frosted column ensures readability on the left */
+		.mosaic-overlay {
+			background: linear-gradient(
+					to right,
+					rgba(255, 250, 245, 0.5) 0%,
+					rgba(255, 250, 245, 0.2) 22%,
+					transparent 46%
+				),
+				linear-gradient(
+					to top,
+					rgba(255, 250, 245, 0.4) 0%,
+					transparent 6%,
+					transparent 94%,
+					rgba(255, 250, 245, 0.4) 100%
+				);
 		}
 	}
 
 	@media (min-width: 1280px) {
 		.content h1 {
-			font-size: 3.5rem;
+			font-size: 2.6rem;
 		}
 	}
 </style>
