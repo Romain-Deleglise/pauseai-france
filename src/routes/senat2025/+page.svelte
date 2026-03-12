@@ -1,5 +1,10 @@
 <script lang="ts">
 	import Button from '$lib/components/Button.svelte'
+	import PostMeta from '$components/PostMeta.svelte'
+
+	const title = 'Colloque Sénat — Compte-rendu & recommandations | Pause IA'
+	const description =
+		"Compte-rendu du colloque au Sénat du 31 octobre 2025 : points clés, résumé exécutif et recommandations pour maîtriser l'intelligence artificielle."
 
 	let firstName = ''
 	let lastName = ''
@@ -65,13 +70,7 @@
 	}
 </script>
 
-<svelte:head>
-	<meta
-		name="description"
-		content="Compte-rendu du colloque au Sénat du 31 octobre 2025 : points clés, résumé exécutif et recommandations pour maîtriser l'intelligence artificielle."
-	/>
-	<title>Colloque Sénat — Compte-rendu & recommandations | Pause IA</title>
-</svelte:head>
+<PostMeta {title} {description} />
 
 <section class="wrap">
 	<!-- Hero Section -->
@@ -103,18 +102,17 @@
 			<div class="key-point-card">
 				<p>
 					<strong>Les capacités de l'IA doublent tous les 4 à 7 mois.</strong> Nos cycles réglementaires
-					restent constants. Cette progression exponentielle crée un fossé croissant entre avancée
-					technologique et capacité collective à la maîtriser.
+					restent constants. Cette progression exponentielle crée un fossé croissant entre avancée technologique
+					et capacité collective à la maîtriser.
 				</p>
 			</div>
 
 			<div class="key-point-card">
 				<p>
-					<strong>Les risques ne sont pas hypothétiques, ils se matérialisent déjà</strong> dans tous
-					les domaines : enfance et développement cognitif, démocratie et débat public, emploi et concentration
-					du pouvoir, cybersécurité et sécurité nationale. <em
-						>(Voir sections 3 à 7 pour le détail des risques)</em
-					>
+					<strong>Les risques ne sont pas hypothétiques, ils se matérialisent déjà</strong> dans
+					tous les domaines : enfance et développement cognitif, démocratie et débat public, emploi
+					et concentration du pouvoir, cybersécurité et sécurité nationale.
+					<em>(Voir sections 3 à 7 pour le détail des risques)</em>
 				</p>
 			</div>
 
@@ -129,10 +127,9 @@
 			<div class="key-point-card">
 				<p>
 					<strong>Des leviers d'action concrets existent</strong> : régulation proactive,
-					responsabilité juridique, évaluations obligatoires, investissement dans la sécurité de l'IA,
-					protection de l'EU AI Act, transparence des algorithmes, lignes rouges internationales. <em
-						>(Voir section 8 pour les recommandations détaillées)</em
-					>
+					responsabilité juridique, évaluations obligatoires, investissement dans la sécurité de
+					l'IA, protection de l'EU AI Act, transparence des algorithmes, lignes rouges
+					internationales. <em>(Voir section 8 pour les recommandations détaillées)</em>
 				</p>
 			</div>
 		</section>
@@ -143,25 +140,23 @@
 
 			<p>
 				<strong
-					>Aujourd'hui, les systèmes d'intelligence artificielle peuvent effectuer de manière autonome
-					des tâches demandant environ 2 heures à un humain</strong
-				>. <strong>Cette durée d'autonomie double tous les 4 à 7 mois.</strong> La progression
-				exponentielle des capacités, au prix d'une croissance phénoménale de la consommation
-				énergétique et des investissements (500 milliards de dollars annoncés par les États-Unis),
-				creuse à une vitesse vertigineuse le fossé entre l'avancée technologique et notre capacité
-				collective à en maîtriser les conséquences.
+					>Aujourd'hui, les systèmes d'intelligence artificielle peuvent effectuer de manière
+					autonome des tâches demandant environ 2 heures à un humain</strong
+				>. <strong>Cette durée d'autonomie double tous les 4 à 7 mois.</strong> La progression exponentielle
+				des capacités, au prix d'une croissance phénoménale de la consommation énergétique et des investissements
+				(500 milliards de dollars annoncés par les États-Unis), creuse à une vitesse vertigineuse le
+				fossé entre l'avancée technologique et notre capacité collective à en maîtriser les conséquences.
 			</p>
 
 			<p>
-				Le colloque du 31 octobre 2025 au Sénat, organisé par l'association Pause IA avec le
-				soutien de la sénatrice Ghislaine Senée et du sénateur Thomas Dossus, a réuni experts,
-				société civile et parlementaires autour d'un double constat :
+				Le colloque du 31 octobre 2025 au Sénat, organisé par l'association Pause IA avec le soutien
+				de la sénatrice Ghislaine Senée et du sénateur Thomas Dossus, a réuni experts, société
+				civile et parlementaires autour d'un double constat :
 			</p>
 
 			<p>
 				<strong
-					>1. Les risques de l'IA ne relèvent pas de la science-fiction, ils se matérialisent
-					déjà.</strong
+					>1. Les risques de l'IA ne relèvent pas de la science-fiction, ils se matérialisent déjà.</strong
 				> Chatbots encourageant des adolescents au suicide, cyberattaques paralysant des hôpitaux, algorithmes
 				de recommandation fragmentant notre réalité commune, utilisation de ressources et concentration
 				du pouvoir économique sans précédent : les impacts concrets touchent tous les pans de notre société.
@@ -231,8 +226,8 @@
 			<ol class="action-list">
 				<li>
 					<strong>Adopter une réglementation proactive</strong> qui légifère pour les technologies de
-					demain, pas celles d'hier, en anticipant les évolutions futures et en intégrant des
-					principes de précaution stricts.
+					demain, pas celles d'hier, en anticipant les évolutions futures et en intégrant des principes
+					de précaution stricts.
 				</li>
 				<li>
 					<strong>Établir une responsabilité juridique claire</strong> : les développeurs d'IA et les
@@ -244,7 +239,9 @@
 					déploiement d'IA à haut risque, sur le modèle de l'aviation ou du médicament.
 				</li>
 				<li>
-					<strong>Investir massivement dans une filière française et européenne de la sécurité de l'IA</strong>
+					<strong
+						>Investir massivement dans une filière française et européenne de la sécurité de l'IA</strong
+					>
 					: soutenir la recherche sur la robustesse, la transparence et le contrôle des IA. Renforcer
 					les moyens de l'INESIA et créer une filière d'excellence.
 				</li>
@@ -254,12 +251,12 @@
 					et l'aéronautique réunis). Défendre et renforcer ce cadre réglementaire est crucial.
 				</li>
 				<li>
-					<strong>Imposer la transparence des algorithmes de recommandation</strong> et explorer des modèles
-					de gouvernance démocratique pour protéger le débat public de la manipulation.
+					<strong>Imposer la transparence des algorithmes de recommandation</strong> et explorer des
+					modèles de gouvernance démocratique pour protéger le débat public de la manipulation.
 				</li>
 				<li>
-					<strong>Porter au niveau international l'établissement de "lignes rouges"</strong> sur les capacités
-					autonomes dangereuses et les usages inacceptables de l'IA.
+					<strong>Porter au niveau international l'établissement de "lignes rouges"</strong> sur les
+					capacités autonomes dangereuses et les usages inacceptables de l'IA.
 				</li>
 			</ol>
 
@@ -313,7 +310,11 @@
 				<fieldset class="choices">
 					<legend>Choix d'abonnement</legend>
 					<label class="check">
-						<input type="checkbox" bind:checked={subscribePolicyProposals} disabled={isSubmitting} />
+						<input
+							type="checkbox"
+							bind:checked={subscribePolicyProposals}
+							disabled={isSubmitting}
+						/>
 						<span>Nos propositions législatives</span>
 					</label>
 					<label class="check">
@@ -423,7 +424,7 @@
 	.executive-summary {
 		margin: 3rem 0;
 		padding: 2rem;
-		background: #fafafa;
+		background: var(--bg-subtle);
 		border-radius: 12px;
 	}
 
@@ -516,7 +517,7 @@
 		border: 1px solid #e5e5e5;
 		border-radius: 8px;
 		padding: 0.75rem 1rem;
-		background: white;
+		background: var(--bg);
 	}
 
 	fieldset.choices legend {
@@ -552,7 +553,9 @@
 		border-radius: 8px;
 		font-weight: 700;
 		cursor: pointer;
-		transition: transform 0.2s ease, box-shadow 0.2s ease;
+		transition:
+			transform 0.2s ease,
+			box-shadow 0.2s ease;
 	}
 
 	button:hover:not(:disabled) {
@@ -587,5 +590,15 @@
 		.newsletter-section {
 			padding: 1.5rem 1rem;
 		}
+	}
+
+	/* ─── Dark mode ──────────────────────────────────────────── */
+	:global([data-theme='dark']) .key-point-card {
+		background: var(--bg-subtle);
+	}
+
+	:global([data-theme='dark']) .newsletter-section {
+		background: var(--bg-subtle);
+		border-color: var(--border);
 	}
 </style>

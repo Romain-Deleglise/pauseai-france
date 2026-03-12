@@ -2,56 +2,103 @@
 	import ArticleCard from '$components/ArticleCard.svelte'
 	import Button from '$components/Button.svelte'
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
+	import type { Article } from '$lib/notion'
+	import type { Lang } from '$lib/i18n'
+
+	export let articles: Article[] = []
+	export let lang: Lang = 'fr'
+
 	const label_id = 'articles-title'
+
+	// Fallback articles if Notion data is not available
+	const fallbackArticles: Article[] = [
+		{
+			id: '1',
+			title: 'Newsletter Pause IA - Janvier 2025',
+			slug: 'newsletter-pause-ia---janvier-2025',
+			description:
+				"Pourquoi l'IA est notre priorité absolue ; Action au sommet pour l'action sur l'IA ; Nouvelles du front ; Les actus du mois.",
+			url: 'https://civicrm.pauseia.fr/civicrm/mailing/view?id=88&reset=1',
+			type: 'Newsletter',
+			order: 1,
+			visible: true
+		},
+		{
+			id: '2',
+			title: 'Newsletter Pause IA - Décembre 2024',
+			slug: 'newsletter-pause-ia---decembre-2024',
+			description:
+				'Retour sur le colloque au Sénat ; Notre roadmap pour 2025 ; Nouvelles du front ; Les actus du mois.',
+			url: 'https://civicrm.pauseia.fr/civicrm/mailing/view?id=85&reset=1',
+			type: 'Newsletter',
+			order: 2,
+			visible: true
+		},
+		{
+			id: '3',
+			title: 'Newsletter Pause IA - Novembre 2024',
+			slug: 'newsletter-pause-ia---novembre-2024',
+			description:
+				'Colloque au Sénat - programme et inscription ; Nouvelles du front ; Les actus du mois.',
+			url: 'https://civicrm.pauseia.fr/civicrm/mailing/view?id=82&reset=1',
+			type: 'Newsletter',
+			order: 3,
+			visible: true
+		},
+		{
+			id: '4',
+			title: 'Newsletter Pause IA - Octobre 2024',
+			slug: 'newsletter-pause-ia---octobre-2024',
+			description:
+				'Retour sur nos actions de rentrée ; Annonce du colloque au Sénat ; Nouvelles du front ; Les actus du mois.',
+			url: 'https://civicrm.pauseia.fr/civicrm/mailing/view?id=78&reset=1',
+			type: 'Newsletter',
+			order: 4,
+			visible: true
+		}
+	]
+
+	$: displayArticles = (articles.length > 0 ? articles : fallbackArticles).slice(0, 4)
 </script>
 
 <section aria-labelledby={label_id}>
-	<UnderlinedTitle id={label_id}>Nos articles mis en avant</UnderlinedTitle>
+	<UnderlinedTitle id={label_id}
+		>{lang === 'en' ? 'Our newsletters' : 'Nos newsletters'}</UnderlinedTitle
+	>
 	<div class="articles-grid">
-		<ArticleCard
-			title="WaitButWhy et l'IA, 10 ans après"
-			blurb="En 2015, WaitButWhy écrivait sur les dangers de l'IA. Nous avons traduit la série originelle, et donné une perspective 10 ans après."
-			url="https://pauseia.substack.com/p/la-revolution-de-lia-dix-ans-apres"
-		/>
-		<ArticleCard
-			title="L’IA et la Cybersécurité"
-			blurb="Les systèmes d'IA peuvent déjà analyser et écrire du code, identifier des vulnérabilités et les exploiter."
-			url="https://pauseia.substack.com/p/lia-et-la-cybersecurite"
-		/>
-		<ArticleCard
-			title="Quatre niveaux de réglementation de l’IA"
-			blurb="Clarifier et mesurer l'efficacité des réglementations aux différentes étapes du processus de création d'un modèle."
-			url="https://pauseia.substack.com/p/quatre-niveaux-de-reglementation"
-		/>
-		<ArticleCard
-			title="Classement p(doom) des scientifiques"
-			blurb="L'estimation du potentiel de destruction de l'IA par les scientifiques du secteur de l'IA"
-			url="https://pauseia.substack.com/p/classement-pdoom-des-scientifiques"
-		/>
-		<ArticleCard
-			title="Les risques existentiels liés à une superintelligence artificielle"
-			blurb="Monteriez-vous dans un prototype d’avion dont les ingénieurs aéronautiques estiment qu’il a 14{'\u202F'}% de chances de s’écraser{'\u202F'}?"
-			url="https://pauseia.substack.com/p/les-risques-existentiels-lies-a-une"
-		/>
-		<ArticleCard
-			title="Les modèles d’IA face aux humains"
-			blurb="Où en sont les modèles les plus récents par rapport à l'intelligence humaine{'\u202F'}?"
-			url="https://pauseia.substack.com/p/les-modeles-dia-face-aux-humains"
-		/>
-		<ArticleCard
-			title="Pourquoi une superintelligence pourrait apparaître plus tôt que prévu"
-			blurb="L'accélération exponentielle des progrès en IA et ses implications alarmantes"
-			url="https://pauseia.substack.com/p/pourquoi-une-superintelligence-pourrait"
-		/>
+		{#each displayArticles as article (article.id)}
+			<ArticleCard
+				title={article.title}
+				blurb={article.description}
+				url={article.slug ? `/newsletters/${article.slug}` : article.url}
+				category={article.type}
+				date={article.date || ""}
+			/>
+		{/each}
 	</div>
-	<Button href="https://pauseia.substack.com/">Voir tous les articles</Button>
+	<div class="buttons-row">
+		<Button href={lang === 'en' ? '/en/newsletters' : '/newsletters'}
+			>{lang === 'en' ? 'View all newsletters' : 'Voir toutes les newsletters'}</Button
+		>
+	</div>
 </section>
 
 <style>
+	section {
+		margin-bottom: 1rem;
+	}
+
 	.articles-grid {
 		display: grid;
-		gap: 1rem;
+		gap: 1.5rem;
 		margin-bottom: 2rem;
+	}
+
+	.buttons-row {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1rem;
+		justify-content: center;
 	}
 
 	@media (min-width: 640px) {
@@ -60,9 +107,9 @@
 		}
 	}
 
-	@media (min-width: 1024px) {
+	@media (min-width: 640px) {
 		.articles-grid {
-			grid-template-columns: 1fr 1fr 1fr;
+			grid-template-columns: repeat(2, 1fr);
 		}
 	}
 </style>

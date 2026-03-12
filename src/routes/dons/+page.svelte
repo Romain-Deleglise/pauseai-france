@@ -55,7 +55,6 @@
 			// Redirect to Stripe Checkout
 			window.location.href = url
 		} catch (error) {
-			console.error('Checkout Session creation error:', error)
 			paymentError =
 				error instanceof Error
 					? error.message
@@ -270,12 +269,12 @@
 
 	.hero-description {
 		font-size: 1.1rem;
-		color: #666;
+		color: var(--text-secondary);
 		margin-bottom: 1.5rem;
 	}
 
 	.tax-benefit {
-		background: #e8f5e8;
+		background: rgba(76, 175, 80, 0.12);
 		border: 2px solid #4caf50;
 		border-radius: 8px;
 		padding: 1rem;
@@ -284,7 +283,7 @@
 	}
 
 	.tax-benefit strong {
-		color: #2e7d32;
+		color: #15803d;
 		font-size: 1.1rem;
 	}
 
@@ -350,7 +349,7 @@
 	}
 
 	.donation-card p {
-		color: #666;
+		color: var(--text-secondary);
 		margin-bottom: 1.5rem;
 		flex-grow: 1;
 	}
@@ -383,7 +382,7 @@
 		align-items: center;
 		gap: 0.4em;
 		margin-top: 1rem;
-		color: #666;
+		color: var(--text-secondary);
 		font-size: 0.9rem;
 		text-align: left;
 	}
@@ -461,7 +460,7 @@
 	}
 
 	.euro-symbol {
-		color: #6b7280;
+		color: var(--text-secondary);
 		font-weight: 600;
 		font-size: 1.25rem;
 		transition: all 0.3s ease;
@@ -505,7 +504,7 @@
 	.bank-transfer-info {
 		margin: 1.5rem 0;
 		padding: 1.5rem;
-		background: #f8fafc;
+		background: var(--bg-subtle);
 		border-radius: 8px;
 		border: 1px solid #e5e7eb;
 		text-align: center;
@@ -516,7 +515,7 @@
 		display: inline-flex;
 		align-items: center;
 		gap: 0.4em;
-		color: #6b7280;
+		color: var(--text-secondary);
 		font-size: 0.95rem;
 	}
 

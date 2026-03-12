@@ -1,4 +1,4 @@
-import type { Post } from '$lib/types'
+import { getPosts } from '$lib/api'
 
 // Update when adding new pages or changing slugs
 const PAGE_ORDER = [
@@ -8,9 +8,8 @@ const PAGE_ORDER = [
 	"dangers/pour-l'humanite"
 ]
 
-export async function load({ fetch, url }) {
-	const response = await fetch('/api/dangers')
-	const posts: Post[] = await response.json()
+export async function load({ url }) {
+	const posts = getPosts('/dangers', 'fr')
 	posts.sort((a, b) => PAGE_ORDER.indexOf(a.slug) - PAGE_ORDER.indexOf(b.slug))
 	const slug = url.pathname.slice(1)
 	return { posts, slug }

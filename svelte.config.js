@@ -40,7 +40,22 @@ const config = {
 			edge: false
 		}),
 		prerender: {
-			entries: process.env.PUBLIC_UNDER_CONSTRUCTION === 'true' ? [] : ['*']
+			entries:
+				process.env.PUBLIC_UNDER_CONSTRUCTION === 'true'
+					? []
+					: [
+							'*',
+							'/fr/campagnes',
+							'/en/campagnes',
+							'/fr/merci',
+							'/en/merci',
+							'/fr/posts',
+							'/en/posts',
+							'/fr/sommet-ia-2026',
+							'/en/sommet-ia-2026',
+							'/fr/emploi-ia/merci',
+							'/en/emploi-ia/merci'
+						]
 		},
 		alias: {
 			$assets: './src/assets',

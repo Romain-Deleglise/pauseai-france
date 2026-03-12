@@ -1,0 +1,791 @@
+<script lang="ts">
+	import PostMeta from '$components/PostMeta.svelte'
+	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
+	import NewsletterCard from '$components/NewsletterCard.svelte'
+	import Button from '$components/Button.svelte'
+	import { Search, X, Mail, ChevronLeft, ChevronRight } from 'lucide-svelte'
+	import type { Article } from '$lib/notion'
+	import type { PageData } from './$types'
+
+	export let data: PageData
+
+	// Fallback newsletters if Notion data is not available
+	const fallbackNewsletters: Article[] = [
+		{
+			id: '1',
+			title: 'Newsletter Pause IA - Janvier 2025',
+			slug: 'newsletter-pause-ia---janvier-2025',
+			description:
+				"Pourquoi l'IA est notre priorité absolue ; Action au sommet pour l'action sur l'IA ; Nouvelles du front ; Les actus du mois.",
+			url: 'https://civicrm.pauseia.fr/civicrm/mailing/view?id=88&reset=1',
+			type: 'Newsletter' as const,
+			order: 1,
+			visible: true,
+			date: '2025-01-15'
+		},
+		{
+			id: '2',
+			title: 'Newsletter Pause IA - Décembre 2024',
+			slug: 'newsletter-pause-ia---decembre-2024',
+			description:
+				'Retour sur le colloque au Sénat ; Notre roadmap pour 2025 ; Nouvelles du front ; Les actus du mois.',
+			url: 'https://civicrm.pauseia.fr/civicrm/mailing/view?id=85&reset=1',
+			type: 'Newsletter' as const,
+			order: 2,
+			visible: true,
+			date: '2024-12-15'
+		},
+		{
+			id: '3',
+			title: 'Newsletter Pause IA - Novembre 2024',
+			slug: 'newsletter-pause-ia---novembre-2024',
+			description:
+				'Colloque au Sénat - programme et inscription ; Nouvelles du front ; Les actus du mois.',
+			url: 'https://civicrm.pauseia.fr/civicrm/mailing/view?id=82&reset=1',
+			type: 'Newsletter' as const,
+			order: 3,
+			visible: true,
+			date: '2024-11-15'
+		},
+		{
+			id: '4',
+			title: 'Newsletter Pause IA - Octobre 2024',
+			slug: 'newsletter-pause-ia---octobre-2024',
+			description:
+				'Retour sur nos actions de rentrée ; Annonce du colloque au Sénat ; Nouvelles du front ; Les actus du mois.',
+			url: 'https://civicrm.pauseia.fr/civicrm/mailing/view?id=78&reset=1',
+			type: 'Newsletter' as const,
+			order: 4,
+			visible: true,
+			date: '2024-10-15'
+		}
+	]
+
+	$: newsletters = data.newsletters.length > 0 ? data.newsletters : fallbackNewsletters
+
+	// Search
+	let searchQuery = ''
+
+	$: filteredNewsletters = searchQuery.trim()
+		? newsletters.filter((n) => {
+				const query = searchQuery.toLowerCase()
+				return (
+					n.title.toLowerCase().includes(query) ||
+					n.description.toLowerCase().includes(query) ||
+					(n.date && n.date.includes(query))
+				)
+			})
+		: newsletters
+
+	// Pagination
+	const PAGE_SIZE = 12
+	let currentPage = 1
+
+	// Reset to page 1 when search changes
+	$: if (searchQuery !== undefined) currentPage = 1
+
+	$: totalPages = Math.max(1, Math.ceil(filteredNewsletters.length / PAGE_SIZE))
+	$: paginatedNewsletters = filteredNewsletters.slice(
+		(currentPage - 1) * PAGE_SIZE,
+		currentPage * PAGE_SIZE
+	)
+
+	function goToPage(page: number) {
+		currentPage = page
+		window.scrollTo({ top: 0, behavior: 'smooth' })
+	}
+
+	function clearSearch() {
+		searchQuery = ''
+	}
+
+	// Newsletter subscription form
+	let email = ''
+	let isSubmitting = false
+	let message = ''
+	let isError = false
+
+	interface ApiResponse {
+		success?: boolean
+		message?: string
+		error?: string
+	}
+
+	async function handleSubscribe(event: Event) {
+		event.preventDefault()
+		message = ''
+		isError = false
+
+		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+		if (!email || !emailRegex.test(email)) {
+			message = 'Adresse e-mail invalide'
+			isError = true
+			return
+		}
+
+		isSubmitting = true
+
+		try {
+			const response = await fetch('/api/subscribe', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					email,
+					subscribeNewsletter: true,
+					subscribeSubstack: false,
+					source: 'newsletters-page'
+				})
+			})
+
+			const result = (await response.json()) as ApiResponse
+
+			if (response.ok) {
+				message = 'Inscription confirmée !'
+				isError = false
+				email = ''
+			} else {
+				message = result.error ?? 'Une erreur est survenue'
+				isError = true
+			}
+		} catch {
+			message = 'Erreur de connexion'
+			isError = true
+		} finally {
+			isSubmitting = false
+		}
+	}
+
+	// Quick access helpers
+	function formatDateShort(dateStr: string): string {
+		if (!dateStr) return ''
+		const date = new Date(dateStr + 'T00:00:00')
+		return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' })
+	}
+
+	function scrollToCard(id: string) {
+		const el = document.getElementById(`nl-${id}`)
+		if (el) {
+			el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+		}
+	}
+
+	function onMobileSelect(event: Event) {
+		const select = event.target as HTMLSelectElement
+		const id = select.value
+		if (id) {
+			scrollToCard(id)
+			select.value = ''
+		}
+	}
+
+	const title = 'Newsletters'
+	const description = 'Retrouvez toutes les newsletters de Pause IA'
+</script>
+
+<PostMeta {title} {description} />
+
+<div class="page">
+	<header class="page-header">
+		<UnderlinedTitle as="h1">Nos newsletters</UnderlinedTitle>
+		<p class="page-subtitle">
+			Retrouvez l'ensemble de nos newsletters mensuelles. Chaque édition couvre nos actions, les
+			actualités de l'IA et les moyens d'agir.
+		</p>
+	</header>
+
+	<div class="subscribe-bar">
+		<div class="subscribe-icon">
+			<Mail size="1.25rem" />
+		</div>
+		<form on:submit={handleSubscribe} class="subscribe-form">
+			<div class="subscribe-input-group">
+				<input
+					type="email"
+					bind:value={email}
+					placeholder="votre@email.com"
+					disabled={isSubmitting}
+					aria-label="Adresse e-mail"
+				/>
+				<button type="submit" disabled={isSubmitting}>
+					{#if isSubmitting}...{:else}S'abonner{/if}
+				</button>
+			</div>
+			{#if message}
+				<p class="subscribe-message" class:error={isError} class:success={!isError}>
+					{message}
+				</p>
+			{/if}
+		</form>
+	</div>
+
+	<div class="search-bar">
+		<label for="newsletter-search" class="search-label">Rechercher :</label>
+		<div class="search-input-wrapper">
+			<span class="search-icon"><Search size="1rem" /></span>
+			<input
+				id="newsletter-search"
+				type="text"
+				bind:value={searchQuery}
+				placeholder="Titre, mots-clés, date..."
+				aria-label="Rechercher une newsletter"
+				autocomplete="off"
+			/>
+			{#if searchQuery}
+				<button class="clear-btn" on:click={clearSearch} aria-label="Effacer la recherche">
+					<X size="1rem" />
+				</button>
+			{/if}
+		</div>
+	</div>
+
+	{#if filteredNewsletters.length > 0}
+		<p class="results-count" id="newsletters-top">
+			{filteredNewsletters.length}
+			{filteredNewsletters.length === 1 ? 'newsletter' : 'newsletters'}
+			{#if searchQuery.trim()}
+				pour «&nbsp;{searchQuery.trim()}&nbsp;»
+			{/if}
+		</p>
+
+		<!-- Mobile: dropdown quick access -->
+		<div class="mobile-nav">
+			<label class="mobile-nav-label" for="mobile-select-nl">Accès rapide</label>
+			<select id="mobile-select-nl" class="mobile-select" on:change={onMobileSelect}>
+				<option value="" disabled selected>Choisir une newsletter...</option>
+				{#each paginatedNewsletters as nl (nl.id)}
+					<option value={nl.id}>
+						{nl.title} ({formatDateShort(nl.date || '')})
+					</option>
+				{/each}
+			</select>
+		</div>
+
+		<div class="content-layout">
+			<!-- Desktop: sidebar quick access -->
+			<nav class="sidebar">
+				<h3 class="sidebar-title">Accès rapide</h3>
+				<ul class="sidebar-list">
+					{#each paginatedNewsletters as nl (nl.id)}
+						<li>
+							<button class="sidebar-item" on:click={() => scrollToCard(nl.id)}>
+								<span class="sidebar-item-title">{nl.title}</span>
+								{#if nl.date}
+									<time class="sidebar-item-date" datetime={nl.date}
+										>{formatDateShort(nl.date)}</time
+									>
+								{/if}
+							</button>
+						</li>
+					{/each}
+				</ul>
+				{#if totalPages > 1}
+					<div class="sidebar-page-info">
+						Page {currentPage} / {totalPages}
+					</div>
+				{/if}
+			</nav>
+
+			<!-- Newsletter cards -->
+			<div class="newsletter-list">
+				<div class="newsletter-grid">
+					{#each paginatedNewsletters as newsletter (newsletter.id)}
+						<div id="nl-{newsletter.id}">
+							<NewsletterCard
+								title={newsletter.title}
+								description={newsletter.description}
+								url={newsletter.url}
+								slug={newsletter.slug}
+								date={newsletter.date || ''}
+								image={newsletter.image || ''}
+							/>
+						</div>
+					{/each}
+				</div>
+
+				{#if totalPages > 1}
+					<nav class="pagination" aria-label="Pagination des newsletters">
+						<button
+							class="pagination-btn"
+							disabled={currentPage === 1}
+							on:click={() => goToPage(currentPage - 1)}
+							aria-label="Page précédente"
+						>
+							<ChevronLeft size="1.25rem" />
+						</button>
+						{#each Array.from({ length: totalPages }, (_, i) => i + 1) as page}
+							<button
+								class="pagination-btn"
+								class:active={page === currentPage}
+								on:click={() => goToPage(page)}
+								aria-label="Page {page}"
+								aria-current={page === currentPage ? 'page' : undefined}
+							>
+								{page}
+							</button>
+						{/each}
+						<button
+							class="pagination-btn"
+							disabled={currentPage === totalPages}
+							on:click={() => goToPage(currentPage + 1)}
+							aria-label="Page suivante"
+						>
+							<ChevronRight size="1.25rem" />
+						</button>
+					</nav>
+				{/if}
+			</div>
+		</div>
+	{:else}
+		<div class="empty-state">
+			<p>Aucune newsletter ne correspond à votre recherche.</p>
+			<Button on:click={clearSearch}>Effacer la recherche</Button>
+		</div>
+	{/if}
+</div>
+
+<style>
+	.page {
+		max-width: 72rem;
+		margin: 0 auto;
+		padding: 2rem 1rem 4rem;
+	}
+
+	.page-header {
+		text-align: center;
+		margin-bottom: 2rem;
+	}
+
+	.page-header :global(h1) {
+		display: inline-block;
+	}
+
+	.page-subtitle {
+		max-width: 40rem;
+		margin: 0 auto;
+		color: var(--text-secondary, #676e7a);
+		font-size: 1.125rem;
+		line-height: 1.6;
+	}
+
+	/* Subscribe bar */
+	.subscribe-bar {
+		display: flex;
+		align-items: flex-start;
+		gap: 0.75rem;
+		max-width: 36rem;
+		margin: 0 auto 2rem;
+		padding: 1rem 1.25rem;
+		background: linear-gradient(135deg, #fff8f0 0%, #fff0e0 100%);
+		border: 1px solid rgba(255, 148, 22, 0.2);
+		border-radius: 0.75rem;
+	}
+
+	.subscribe-icon {
+		color: var(--brand, #ff9416);
+		flex-shrink: 0;
+		margin-top: 0.5rem;
+	}
+
+	.subscribe-form {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		gap: 0.375rem;
+	}
+
+	.subscribe-input-group {
+		display: flex;
+		gap: 0.5rem;
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+
+	.subscribe-form input[type='email'] {
+		flex: 1;
+		min-width: 160px;
+		padding: 0.5rem 0.75rem;
+		border: 1.5px solid rgba(0, 0, 0, 0.12);
+		border-radius: 0.375rem;
+		font-size: 0.9rem;
+		font-family: inherit;
+		background: var(--bg);
+		color: var(--text);
+		transition: border-color 0.2s;
+	}
+
+	.subscribe-form input[type='email']:focus {
+		outline: none;
+		border-color: var(--brand, #ff9416);
+	}
+
+	.subscribe-form input[type='email']:disabled {
+		opacity: 0.6;
+		cursor: not-allowed;
+	}
+
+	.subscribe-form button {
+		padding: 0.5rem 1rem;
+		background: var(--brand, #ff9416);
+		color: white;
+		border: none;
+		border-radius: 0.375rem;
+		font-size: 0.9rem;
+		font-weight: 600;
+		font-family: inherit;
+		cursor: pointer;
+		transition: opacity 0.2s;
+		white-space: nowrap;
+	}
+
+	.subscribe-form button:hover:not(:disabled) {
+		opacity: 0.85;
+	}
+
+	.subscribe-form button:disabled {
+		opacity: 0.6;
+		cursor: not-allowed;
+	}
+
+	.subscribe-message {
+		margin: 0;
+		font-size: 0.8125rem;
+		font-weight: 500;
+	}
+
+	.subscribe-message.success {
+		color: #15803d;
+	}
+
+	.subscribe-message.error {
+		color: #b91c1c;
+	}
+
+	/* Search bar — matches press page combobox style */
+	.search-bar {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+		max-width: 36rem;
+		margin: 0 auto 2rem;
+		flex-wrap: wrap;
+	}
+
+	.search-label {
+		font-size: 0.9rem;
+		font-weight: 600;
+		color: var(--text, black);
+		white-space: nowrap;
+	}
+
+	.search-input-wrapper {
+		flex: 1;
+		display: flex;
+		align-items: center;
+		border: 1px solid var(--border, #e5e7eb);
+		border-radius: 0.5rem;
+		background-color: var(--bg);
+		transition:
+			border-color 0.15s ease,
+			box-shadow 0.15s ease;
+	}
+
+	.search-input-wrapper:focus-within {
+		border-color: var(--brand, #ff9416);
+		box-shadow: 0 0 0 3px rgba(255, 148, 22, 0.1);
+	}
+
+	.search-icon {
+		display: flex;
+		align-items: center;
+		padding-left: 0.75rem;
+		color: var(--text-secondary, #676e7a);
+		flex-shrink: 0;
+	}
+
+	.search-input-wrapper input {
+		flex: 1;
+		padding: 0.5rem 0.5rem;
+		font-size: 0.9rem;
+		font-family: var(--font-body, inherit);
+		border: none;
+		background: transparent;
+		color: var(--text, black);
+		outline: none;
+		min-width: 0;
+	}
+
+	.search-input-wrapper input::placeholder {
+		color: var(--text-secondary, #676e7a);
+		opacity: 0.7;
+	}
+
+	.clear-btn {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0.375rem;
+		margin-right: 0.375rem;
+		border: none;
+		background: transparent;
+		color: var(--text-secondary, #676e7a);
+		cursor: pointer;
+		border-radius: 0.25rem;
+		transition:
+			color 0.15s ease,
+			background-color 0.15s ease;
+	}
+
+	.clear-btn:hover {
+		color: var(--text, black);
+		background-color: rgba(0, 0, 0, 0.06);
+	}
+
+	/* Results count */
+	.results-count {
+		font-size: 0.875rem;
+		color: var(--text-secondary, #676e7a);
+		margin-bottom: 1.5rem;
+	}
+
+	/* Mobile dropdown quick access — hidden on desktop */
+	.mobile-nav {
+		display: none;
+		margin-bottom: 1.5rem;
+		background-color: var(--bg-subtle, #fafafa);
+		border: 1px solid var(--border, #e5e7eb);
+		border-radius: 0.75rem;
+		padding: 0.75rem 1rem;
+	}
+
+	.mobile-nav-label {
+		display: block;
+		font-size: 0.75rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--brand, #ff9416);
+		margin-bottom: 0.5rem;
+	}
+
+	.mobile-select {
+		width: 100%;
+		padding: 0.625rem 2.5rem 0.625rem 0.75rem;
+		font-size: 0.875rem;
+		font-family: var(--font-body, inherit);
+		border: 1px solid var(--border, #e5e7eb);
+		border-radius: 0.375rem;
+		background-color: var(--bg);
+		color: var(--text, black);
+		appearance: none;
+		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23676e7a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+		background-repeat: no-repeat;
+		background-position: right 0.625rem center;
+		cursor: pointer;
+		line-height: 1.4;
+	}
+
+	.mobile-select:focus {
+		outline: 2px solid var(--brand, #ff9416);
+		outline-offset: 2px;
+	}
+
+	/* Layout with sidebar */
+	.content-layout {
+		display: flex;
+		gap: 2rem;
+		align-items: flex-start;
+	}
+
+	/* Sidebar — hidden on mobile */
+	.sidebar {
+		position: sticky;
+		top: 1rem;
+		flex-shrink: 0;
+		width: 16rem;
+		max-height: calc(100vh - 2rem);
+		overflow-y: auto;
+		background-color: var(--bg-subtle, #fafafa);
+		border: 1px solid var(--border, #e5e7eb);
+		border-radius: 0.75rem;
+		padding: 1.25rem;
+	}
+
+	.sidebar-title {
+		margin: 0 0 0.75rem;
+		font-size: 0.85rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--brand, #ff9416);
+	}
+
+	.sidebar-list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+	}
+
+	.sidebar-list li {
+		padding: 0;
+		margin: 0;
+	}
+
+	.sidebar-item {
+		display: flex;
+		flex-direction: column;
+		gap: 0.125rem;
+		width: 100%;
+		padding: 0.5rem 0.625rem;
+		border: none;
+		background: transparent;
+		border-radius: 0.375rem;
+		cursor: pointer;
+		text-align: left;
+		transition: background-color 0.15s ease;
+	}
+
+	.sidebar-item:hover {
+		background-color: rgba(0, 0, 0, 0.05);
+	}
+
+	.sidebar-item-title {
+		font-size: 0.8rem;
+		font-weight: 600;
+		color: var(--text, black);
+		line-height: 1.3;
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+	}
+
+	.sidebar-item-date {
+		font-size: 0.7rem;
+		color: var(--text-secondary, #676e7a);
+	}
+
+	.sidebar-page-info {
+		margin-top: 0.75rem;
+		padding-top: 0.75rem;
+		border-top: 1px solid var(--border, #e5e7eb);
+		font-size: 0.75rem;
+		color: var(--text-secondary, #676e7a);
+		text-align: center;
+	}
+
+	/* Newsletter list (right side) */
+	.newsletter-list {
+		flex-grow: 1;
+		min-width: 0;
+	}
+
+	/* Newsletter grid */
+	.newsletter-grid {
+		display: grid;
+		gap: 1.5rem;
+		grid-template-columns: 1fr;
+	}
+
+	/* Empty state */
+	.empty-state {
+		text-align: center;
+		padding: 4rem 1rem;
+		color: var(--text-secondary, #676e7a);
+	}
+
+	.empty-state p {
+		font-size: 1.125rem;
+		margin-bottom: 1.5rem;
+	}
+
+	/* Pagination */
+	.pagination {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 0.375rem;
+		margin-top: 1.5rem;
+		padding-top: 1.5rem;
+	}
+
+	.pagination-btn {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 2.25rem;
+		height: 2.25rem;
+		border: 1px solid var(--border, #e5e7eb);
+		border-radius: 0.375rem;
+		background: var(--bg);
+		color: var(--text, black);
+		font-size: 0.875rem;
+		font-weight: 600;
+		font-family: inherit;
+		cursor: pointer;
+		transition:
+			background-color 0.15s ease,
+			border-color 0.15s ease;
+	}
+
+	.pagination-btn:hover:not(:disabled):not(.active) {
+		background-color: var(--bg-subtle, #fafafa);
+		border-color: var(--brand, #ff9416);
+	}
+
+	.pagination-btn.active {
+		background-color: var(--brand, #ff9416);
+		border-color: var(--brand, #ff9416);
+		color: white;
+	}
+
+	.pagination-btn:disabled {
+		opacity: 0.35;
+		cursor: not-allowed;
+	}
+
+	/* Mobile */
+	@media (max-width: 768px) {
+		.mobile-nav {
+			display: block;
+		}
+
+		.content-layout {
+			flex-direction: column;
+		}
+
+		.sidebar {
+			display: none;
+		}
+	}
+
+	@media (min-width: 640px) {
+		.page {
+			padding: 3rem 2rem 6rem;
+		}
+
+		.page-header {
+			margin-bottom: 3rem;
+		}
+
+		.newsletter-grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+
+		.search-bar {
+			margin-bottom: 2.5rem;
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.page {
+			padding: 4rem 2rem 8rem;
+		}
+
+		.newsletter-grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+</style>

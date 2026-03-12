@@ -91,14 +91,18 @@
 
 <style>
 	:global(body) {
-		--carousel-background: #f6ebdd;
+		--carousel-background: var(--bg-subtle);
 		--carousel-border: #d9c7b0;
-		--carousel-text: #414042;
+		--carousel-text: var(--text);
 		--carousel-accent: #ff9416;
 	}
 
+	:global([data-theme='dark']) {
+		--carousel-border: var(--border);
+	}
+
 	.slide {
-		background: var(--white);
+		background: var(--bg);
 		border-radius: 18px;
 		border: 1px solid var(--carousel-border, #d9c7b0);
 		padding: 2rem 2.4rem;

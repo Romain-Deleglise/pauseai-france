@@ -1,3 +1,7 @@
 /senat-2025  /senat2025  301!
+/campagnes  /fr/campagnes  301!
 /discord https://discord.gg/vyXGd7AeGc
 /nous-rejoindre /rejoindre 301!
+/directeur-france /recrutement-emploi 301!
+/publications /newsletters 301!
+/publications/* /newsletters/:splat 301!

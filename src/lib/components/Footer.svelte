@@ -2,59 +2,151 @@
 	import ExternalLink from '$components/custom/a.svelte'
 	import Logo from '$components/Logo.svelte'
 	import Socials from '$components/Socials.svelte'
+	import { getT } from '$lib/i18n'
+	import type { Lang } from '$lib/i18n'
+	import { theme } from '$lib/stores/theme'
+
+	export let lang: Lang = 'fr'
+
+	$: t = getT(lang)
+	$: prefix = lang === 'fr' ? '/fr' : '/en'
+
+	let email = ''
+	let isSubmitting = false
+	let message = ''
+	let isError = false
+
+	interface ApiResponse {
+		success?: boolean
+		message?: string
+		error?: string
+	}
+
+	async function handleNewsletterSubmit(event: Event) {
+		event.preventDefault()
+		message = ''
+		isError = false
+
+		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+		if (!email || !emailRegex.test(email)) {
+			message = t.footer.newsletter_invalid_email
+			isError = true
+			return
+		}
+
+		isSubmitting = true
+
+		try {
+			const response = await fetch('/api/subscribe', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					email,
+					subscribeNewsletter: true,
+					subscribeSubstack: false,
+					source: 'footer'
+				})
+			})
+
+			const result = (await response.json()) as ApiResponse
+
+			if (response.ok) {
+				message = t.footer.newsletter_success
+				isError = false
+				email = ''
+			} else {
+				message = result.error ?? t.footer.newsletter_error
+				isError = true
+			}
+		} catch {
+			message = t.footer.newsletter_connection_error
+			isError = true
+		} finally {
+			isSubmitting = false
+		}
+	}
 </script>
 
 <footer>
 	<div class="brand">
-		<a href="/" class="logo">
+		<a href={prefix} class="logo">
 			<div class="logo">
-				<Logo animate fill_circle="white" fill_ai="white" />
+				<Logo
+					animate
+					fill_pause={$theme === 'dark' ? '#f0ede8' : 'black'}
+					fill_circle="white"
+					fill_ai={$theme === 'dark' ? '#f0ede8' : 'white'}
+				/>
 			</div>
 		</a>
-		<p>Pour une IA alignée sur l’humanité.</p>
+		<p>{t.footer.tagline}</p>
+	</div>
+	<div id="newsletter" class="newsletter-section">
+		<h2>{t.footer.newsletter_title}</h2>
+		<p class="newsletter-desc">{t.footer.newsletter_desc}</p>
+		<form on:submit={handleNewsletterSubmit} class="newsletter-form">
+			<div class="input-group">
+				<input
+					type="email"
+					bind:value={email}
+					placeholder={t.footer.newsletter_placeholder}
+					disabled={isSubmitting}
+					aria-label={t.footer.newsletter_placeholder}
+				/>
+				<button type="submit" disabled={isSubmitting}>
+					{#if isSubmitting}{t.footer.newsletter_loading}{:else}{t.footer.newsletter_subscribe}{/if}
+				</button>
+			</div>
+			{#if message}
+				<p class="newsletter-message" class:error={isError} class:success={!isError}>
+					{message}
+				</p>
+			{/if}
+		</form>
 	</div>
 	<div class="socials">
-		<h2>Suivez-nous</h2>
+		<h2>{t.footer.follow_us}</h2>
 		<Socials />
 	</div>
 	<div class="footer-links">
 		<div class="column">
-			<h2>Navigation</h2>
-			<a href="/faq">FAQ</a>
-			<a href="/dangers">Dangers</a>
-			<a href="/propositions">Propositions</a>
-			<a href="https://pauseia.substack.com/">Blog</a>
-			<a href="/agir">Agir</a>
-			<a href="/dons">Donner</a>
-			<a href="/rejoindre">Nous rejoindre</a>
-			<a href="/qui-sommes-nous">Qui sommes-nous ?</a>
+			<h2>{t.footer.nav_title}</h2>
+			<a href="{prefix}/faq">{t.footer.faq}</a>
+			<a href="{prefix}/dangers">{t.footer.dangers}</a>
+			<a href="{prefix}/propositions">{t.footer.propositions}</a>
+			<a href="{prefix}/newsletters">{t.footer.newsletters}</a>
+			<a href="https://pauseia.substack.com/">{t.footer.blog}</a>
+			<a href="{prefix}/agir">{t.footer.agir}</a>
+			<a href="{prefix}/dons">{t.footer.donner}</a>
+			<a href="{prefix}/rejoindre">{t.footer.rejoindre}</a>
+			<a href="{prefix}/qui-sommes-nous">{t.footer.qui_sommes_nous}</a>
 		</div>
 		<div class="column">
-			<h2>Dangers</h2>
-			<a href="/dangers/economiques-et-materiels">Économiques et matériels</a>
-			<a href="/dangers/pour-les-individus">Pour les individus</a>
-			<a href="/dangers/pour-la-societe">Pour la société</a>
-			<a href="/dangers/pour-l'humanite">Pour l'humanité</a>
+			<h2>{t.footer.dangers_title}</h2>
+			<a href="{prefix}/dangers/economiques-et-materiels">{t.footer.dangers_eco}</a>
+			<a href="{prefix}/dangers/pour-les-individus">{t.footer.dangers_individus}</a>
+			<a href="{prefix}/dangers/pour-la-societe">{t.footer.dangers_societe}</a>
+			<a href="{prefix}/dangers/pour-l'humanite">{t.footer.dangers_humanite}</a>
 		</div>
 		<div class="column">
-			<h2>Agir</h2>
-			<a href="/rejoindre">Rejoindre Pause IA</a>
-			<a href="/agir">Comment pouvez-vous aider ?</a>
-			<a href="/dons">Faire un don</a>
+			<h2>{t.footer.act_title}</h2>
+			<a href="{prefix}/rejoindre">{t.footer.join_pauseia}</a>
+			<a href="{prefix}/agir">{t.footer.how_to_help}</a>
+			<a href="{prefix}/dons">{t.footer.make_donation}</a>
 			<ExternalLink href="https://pauseai-shop.fourthwall.com" target="_blank"
-				>Marchandises</ExternalLink
+				>{t.footer.merchandise}</ExternalLink
 			>
-			<a href="https://pauseai.info/protests">Manifestations</a>
-			<a href="/directeur-france">Offres d'emploi</a>
+			<a href="https://pauseai.info/protests">{t.footer.protests}</a>
+			<a href="{prefix}/recrutement-emploi">{t.footer.jobs}</a>
 		</div>
 		<div class="column">
-			<h2>Autres</h2>
-			<a href="/presse">Presse</a>
-			<a href="/mentions-legales">Mentions légales</a>
-			<a href="/politique-de-confidentialite">Politique de confidentialité</a>
-			<a href="/charte-des-valeurs">Charte des valeurs</a>
+			<h2>{t.footer.other_title}</h2>
+			<a href="{prefix}/presse">{t.footer.press}</a>
+			<a href="{prefix}/mentions-legales">{t.footer.legal}</a>
+			<a href="{prefix}/politique-de-confidentialite">{t.footer.privacy}</a>
+			<a href="{prefix}/charte-des-valeurs">{t.footer.values}</a>
 			<ExternalLink href="https://creativecommons.org/licenses/by/4.0/deed.fr" target="_blank"
-				>Licence: CC-BY 4.0</ExternalLink
+				>{t.footer.license}</ExternalLink
 			>
 		</div>
 	</div>
@@ -109,8 +201,9 @@
 	}
 
 	.footer-links :global(a) {
-		color: var(--text-2);
+		color: inherit;
 		text-decoration: none;
+		opacity: 0.85;
 	}
 
 	.footer-links :global(a:hover) {
@@ -122,6 +215,92 @@
 		margin-bottom: 0;
 		text-align: left;
 		font-style: italic;
+	}
+
+	/* Newsletter section styles */
+	.newsletter-section {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	.newsletter-desc {
+		margin: 0;
+		font-size: 0.95rem;
+		opacity: 0.9;
+	}
+
+	.newsletter-form {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		margin-top: 0.5rem;
+	}
+
+	.input-group {
+		display: flex;
+		gap: 0.5rem;
+		flex-wrap: wrap;
+	}
+
+	.newsletter-form input[type='email'] {
+		flex: 1;
+		min-width: 180px;
+		padding: 0.6rem 0.75rem;
+		border: 2px solid rgba(0, 0, 0, 0.15);
+		border-radius: 0.375rem;
+		font-size: 0.95rem;
+		font-family: inherit;
+		background: white;
+		color: black;
+		transition: border-color 0.2s;
+	}
+
+	.newsletter-form input[type='email']:focus {
+		outline: none;
+		border-color: black;
+	}
+
+	.newsletter-form input[type='email']:disabled {
+		opacity: 0.6;
+		cursor: not-allowed;
+	}
+
+	.newsletter-form button {
+		padding: 0.6rem 1.25rem;
+		background: black;
+		color: white;
+		border: none;
+		border-radius: 0.375rem;
+		font-size: 0.95rem;
+		font-weight: 600;
+		font-family: inherit;
+		cursor: pointer;
+		transition: opacity 0.2s;
+		white-space: nowrap;
+	}
+
+	.newsletter-form button:hover:not(:disabled) {
+		opacity: 0.85;
+	}
+
+	.newsletter-form button:disabled {
+		opacity: 0.6;
+		cursor: not-allowed;
+	}
+
+	.newsletter-message {
+		margin: 0;
+		font-size: 0.875rem;
+		font-weight: 500;
+	}
+
+	.newsletter-message.success {
+		color: #166534;
+	}
+
+	.newsletter-message.error {
+		color: #991b1b;
 	}
 	@media (min-width: 480px) {
 		.footer-links {
@@ -135,7 +314,8 @@
 			padding: 4rem 6rem;
 			display: grid;
 			gap: 3rem;
-			grid-template-columns: minmax(1rem, auto) 1fr;
+			grid-template-columns: 1fr 1fr;
+			grid-template-rows: auto auto auto;
 		}
 
 		.brand {
@@ -147,31 +327,72 @@
 			height: fit-content;
 		}
 
-		.socials {
+		.newsletter-section {
 			grid-column: 2;
 			grid-row: 1;
-			align-items: center;
+		}
+
+		.socials {
+			grid-column: 1;
+			grid-row: 2;
+			align-items: start;
 		}
 
 		.footer-links {
 			display: flex;
 			grid-column: 1 / -1;
-			grid-row: 2;
+			grid-row: 3;
 			flex-direction: row;
 		}
 	}
 	@media (min-width: 1280px) {
 		footer {
 			padding: 6rem;
-			grid-template-columns: minmax(1rem, auto) repeat(2, 1fr);
-			grid-template-rows: 1fr;
+			grid-template-columns: minmax(1rem, auto) 1fr 1fr;
+			grid-template-rows: auto auto;
 			gap: 3rem;
 		}
-		.brand,
-		.socials,
-		.footer-links {
-			grid-column: auto;
-			grid-row: unset;
+
+		.brand {
+			grid-column: 1;
+			grid-row: 1;
 		}
+
+		.newsletter-section {
+			grid-column: 2;
+			grid-row: 1;
+		}
+
+		.socials {
+			grid-column: 3;
+			grid-row: 1;
+			align-items: center;
+		}
+
+		.footer-links {
+			grid-column: 1 / -1;
+			grid-row: 2;
+		}
+	}
+
+	/* ─── Dark mode (input + messages uniquement, le reste est dans app.css) ── */
+	:global([data-theme='dark']) .newsletter-form input[type='email'] {
+		border-color: var(--border);
+		background: var(--bg-card);
+		color: var(--text);
+	}
+
+	:global([data-theme='dark']) .newsletter-form button {
+		background: var(--bg-card);
+		color: var(--text);
+		border: 1px solid var(--border);
+	}
+
+	:global([data-theme='dark']) .newsletter-message.success {
+		color: #4ade80;
+	}
+
+	:global([data-theme='dark']) .newsletter-message.error {
+		color: #f87171;
 	}
 </style>

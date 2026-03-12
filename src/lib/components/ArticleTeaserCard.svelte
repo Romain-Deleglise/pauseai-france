@@ -72,7 +72,7 @@
 	}
 
 	.category {
-		background: #fff7ed;
+		background: var(--brand-light);
 		color: var(--carousel-accent, #ff9416);
 		padding: 0.3rem 0.7rem;
 		border-radius: 999px;
@@ -96,7 +96,7 @@
 		font-weight: 600;
 		line-height: 1.35;
 		margin: 0;
-		color: #353535;
+		color: var(--text);
 		display: -webkit-box;
 		-webkit-box-orient: vertical;
 		-webkit-line-clamp: 2;
@@ -109,7 +109,7 @@
 		margin: 0;
 		font-size: 0.9rem;
 		line-height: 1.5;
-		color: #545454;
+		color: var(--text-secondary);
 		display: -webkit-box;
 		-webkit-box-orient: vertical;
 		-webkit-line-clamp: 3;
