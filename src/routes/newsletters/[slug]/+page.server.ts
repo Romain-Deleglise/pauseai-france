@@ -1,4 +1,4 @@
-import { getNewsletters, fetchNewsletterContent } from '$lib/notion'
+import { getNewsletters } from '$lib/notion'
 import { redirect } from '@sveltejs/kit'
 import type { PageServerLoad } from './$types'
 
@@ -13,16 +13,6 @@ export const load: PageServerLoad = async ({ params }) => {
 	}
 
 	const newsletter = newsletters[index]
-	const content = await fetchNewsletterContent(newsletter.url)
-
-	// If we couldn't fetch the content, redirect to the original URL
-	if (!content) {
-		throw redirect(307, newsletter.url)
-	}
-
-	// Check if extracted content has enough meaningful text
-	const textOnly = content.replace(/<[^>]*>/g, '').trim()
-	const hasContent = textOnly.length > 100
 
 	// Previous = newer (lower index), Next = older (higher index)
 	const prev =
@@ -34,8 +24,8 @@ export const load: PageServerLoad = async ({ params }) => {
 
 	return {
 		newsletter,
-		content,
-		hasContent,
+		content: null,
+		hasContent: false,
 		prev,
 		next
 	}
