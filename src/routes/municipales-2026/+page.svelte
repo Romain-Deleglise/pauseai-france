@@ -109,13 +109,15 @@
 	const pressArticles: PressArticle[] = [
 		{
 			source: 'Le Dauphiné Libéré',
-			title: "Isère / Grenoble : l'association Pause IA appelle les candidats à s'engager sur sa charte",
+			title:
+				"Isère / Grenoble : l'association Pause IA appelle les candidats à s'engager sur sa charte",
 			url: 'https://www.ledauphine.com/elections/2026/03/06/isere-grenoble-l-association-pause-ia-appelle-les-candidats-a-s-engager-sur-sa-charte',
 			date: '2026-03-06'
 		},
 		{
 			source: "Place Gre'net",
-			title: "Municipales 2026 : Pause IA interpelle les candidats sur les dangers de l'intelligence artificielle",
+			title:
+				"Municipales 2026 : Pause IA interpelle les candidats sur les dangers de l'intelligence artificielle",
 			url: 'https://www.placegrenet.fr/2026/03/08/municipales-2026-pause-ia-interpelle-les-candidats-sur-les-dangers-de-lintelligence-artificielle/673506',
 			date: '2026-03-08'
 		},
@@ -136,6 +138,12 @@
 			title: "Pause IA s'incruste dans les municipales",
 			url: 'https://www.contexte.com/fr/actualite/tech/pause-ia-sincruste-dans-les-municipales_257807',
 			date: '2026-03-11'
+		},
+		{
+			source: 'ODS Radio',
+			title: "Annecy : une association interpelle les candidats sur l'intelligence artificielle",
+			url: 'https://www.odsradio.com/news/locales/108150/annecy-une-association-interpelle-les-candidats-sur-l-intelligence-artificielle',
+			date: '2026-03-12'
 		}
 	].sort((a, b) => {
 		if (!a.date && !b.date) return 0
