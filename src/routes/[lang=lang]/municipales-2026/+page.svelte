@@ -145,6 +145,12 @@
 			title: "Pause IA s'incruste dans les municipales",
 			url: 'https://www.contexte.com/fr/actualite/tech/pause-ia-sincruste-dans-les-municipales_257807',
 			date: '2026-03-11'
+		},
+		{
+			source: 'ODS Radio',
+			title: "Annecy : une association interpelle les candidats sur l'intelligence artificielle",
+			url: 'https://www.odsradio.com/news/locales/108150/annecy-une-association-interpelle-les-candidats-sur-l-intelligence-artificielle',
+			date: '2026-03-12'
 		}
 	].sort((a, b) => {
 		if (!a.date && !b.date) return 0
