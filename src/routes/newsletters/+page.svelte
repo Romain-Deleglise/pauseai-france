@@ -184,6 +184,15 @@
 
 <PostMeta {title} {description} />
 
+<svelte:head>
+	<link
+		rel="alternate"
+		type="application/rss+xml"
+		title="Pause IA - Newsletters"
+		href="/rss/newsletters.xml"
+	/>
+</svelte:head>
+
 <div class="page">
 	<header class="page-header">
 		<UnderlinedTitle as="h1">Nos newsletters</UnderlinedTitle>
