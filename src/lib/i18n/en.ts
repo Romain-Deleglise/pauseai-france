@@ -262,7 +262,7 @@ export default {
 			q42: 'Q4.2 For what type(s) of tasks do you use AI?',
 			label_autre_tache: 'Specify what other tasks:',
 			q43: 'Q4.3 For what reason(s) do you use AI at work?',
-			label_autre_reason: 'Specify other reasons:',
+			label_autre_raison: 'Specify other reasons:',
 			q44: 'Q4.4 Are you satisfied with this use?'
 		},
 		nav: {
