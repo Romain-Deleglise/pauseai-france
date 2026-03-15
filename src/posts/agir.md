@@ -8,7 +8,7 @@ original:
 
 <script lang="ts">
   import { page } from '$app/stores'
-  $: lang = $page.params.lang
+  $: lang = $page.params.lang ?? 'fr'
 </script>
 
 Le nombre de personnes conscientes des risques liés à l'IA est encore restreint.

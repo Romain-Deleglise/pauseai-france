@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Button from '$lib/components/Button.svelte'
 	import { page } from '$app/stores'
-	$: lang = $page.params.lang
+	$: lang = $page.params.lang ?? 'fr'
 </script>
 
 <svelte:head>

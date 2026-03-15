@@ -5,7 +5,7 @@ description: Les dangers économiques et matériels de l'IA incluent des impacts
 
 <script lang="ts">
   import { page } from '$app/stores'
-  $: lang = $page.params.lang
+  $: lang = $page.params.lang ?? 'fr'
 </script>
 
 Les dangers économiques et matériels liés à l’intelligence artificielle concernent principalement les impacts directs sur les infrastructures, les entreprises, et la gestion des ressources. L’IA promet des avancées significatives dans l’optimisation et l’automatisation de nombreux processus mais elle introduit également de nouvelles vulnérabilités et risques de dysfonctionnements. Parmi ces menaces, on compte la facilitation d’attaques à l’aide de l’IA, les défaillances techniques et l’impact économique des technologies de rupture.

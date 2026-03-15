@@ -4,7 +4,7 @@
 	import toast from 'svelte-french-toast'
 
 	import { page } from '$app/stores'
-	$: lang = $page.params.lang
+	$: lang = $page.params.lang ?? 'fr'
 
 	let formData = {
 		// Section 1: Informations personnelles
