@@ -145,12 +145,7 @@
 			}
 		}
 
-		let newPath = pathname.replace(`/${currentLang}`, `/${other}`)
-		if (newPath === pathname) {
-			if (newPath === '/') return `/${other}`
-			return `/${other}${pathname}`
-		}
-		return newPath || `/${other}`
+		return pathname.replace(`/${currentLang}`, `/${other}`) || `/${other}`
 	}
 
 	$: switchLangHref = getSwitchLangHref($page.url.pathname, lang, otherLang)

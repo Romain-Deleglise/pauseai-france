@@ -3,6 +3,9 @@
 	import { goto } from '$app/navigation'
 	import toast from 'svelte-french-toast'
 
+	import { page } from '$app/stores'
+	$: lang = $page.params.lang
+
 	let formData = {
 		// Section 1: Informations personnelles
 		sexe: '',
@@ -142,7 +145,7 @@
 
 			if (response.ok) {
 				toast.success('Merci pour votre participation !')
-				await goto('/emploi-ia/merci')
+				await goto(`/${lang}/emploi-ia/merci`)
 			} else {
 				toast.error('Une erreur est survenue. Veuillez réessayer.')
 			}
