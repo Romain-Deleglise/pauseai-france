@@ -21,6 +21,8 @@ WISE_API_TOKEN="${WISE_API_TOKEN:-}"
 WISE_API_BASE="https://api.wise.com"
 # Balance ID EUR du compte Pause IA (visible dans l'URL https://wise.com/balances/93596206)
 WISE_BALANCE_ID="93596206"
+# Clé privée SCA pour signer les requêtes protégées
+WISE_SCA_KEY="/opt/scripts/wise-sca-private.pem"
 
 # ─── Compteurs ────────────────────────────────────────────────────────
 CREDITS_TOTAL=0
@@ -49,14 +51,86 @@ if [[ -z "$WISE_API_TOKEN" ]]; then
     exit 1
 fi
 
+if [[ ! -f "$WISE_SCA_KEY" ]]; then
+    log_error "Clé SCA non trouvée: $WISE_SCA_KEY"
+    exit 1
+fi
+
 # ─── Fonctions API Wise ──────────────────────────────────────────────
+
+# Appel API Wise avec gestion SCA automatique
+# Usage: wise_api_call <URL>
+# Retourne le body de la réponse (JSON)
+wise_api_call() {
+    local url="$1"
+    local tmp_headers
+    tmp_headers=$(mktemp)
+
+    # 1ère requête — peut retourner 403 + OTT si SCA requis
+    local response http_code
+    response=$(curl -s --max-time 60 --connect-timeout 10 \
+        -D "$tmp_headers" \
+        -H "Authorization: Bearer $WISE_API_TOKEN" \
+        "$url" 2>/dev/null)
+    http_code=$(grep -oP 'HTTP/[0-9.]+ \K[0-9]+' "$tmp_headers" | tail -1)
+
+    if [[ "$http_code" == "200" ]]; then
+        rm -f "$tmp_headers"
+        echo "$response"
+        return 0
+    fi
+
+    if [[ "$http_code" == "403" ]]; then
+        # Extraire le one-time token (OTT) du header x-2fa-approval
+        local ott
+        ott=$(grep -i '^x-2fa-approval:' "$tmp_headers" | sed 's/^[^:]*: *//' | tr -d '[:space:]')
+
+        if [[ -z "$ott" ]]; then
+            log_error "403 sans OTT — vérifier les permissions du token Wise"
+            rm -f "$tmp_headers"
+            return 1
+        fi
+
+        # Signer l'OTT avec la clé privée SCA
+        local signature
+        signature=$(printf '%s' "$ott" | openssl dgst -sha256 -sign "$WISE_SCA_KEY" | openssl base64 -A)
+
+        if [[ -z "$signature" ]]; then
+            log_error "Impossible de signer l'OTT avec la clé SCA"
+            rm -f "$tmp_headers"
+            return 1
+        fi
+
+        # 2ème requête avec le header X-Signature et le même OTT
+        response=$(curl -s --max-time 60 --connect-timeout 10 \
+            -D "$tmp_headers" \
+            -H "Authorization: Bearer $WISE_API_TOKEN" \
+            -H "X-2FA-Approval: $ott" \
+            -H "X-Signature: $signature" \
+            "$url" 2>/dev/null)
+        http_code=$(grep -oP 'HTTP/[0-9.]+ \K[0-9]+' "$tmp_headers" | tail -1)
+
+        rm -f "$tmp_headers"
+
+        if [[ "$http_code" == "200" ]]; then
+            echo "$response"
+            return 0
+        fi
+
+        log_error "SCA échouée (HTTP $http_code) — vérifier que la clé publique est bien enregistrée sur Wise"
+        return 1
+    fi
+
+    # Autre erreur HTTP
+    log_error "API Wise HTTP $http_code: $response"
+    rm -f "$tmp_headers"
+    return 1
+}
 
 # Récupérer le profile ID business
 get_profile_id() {
     local response
-    response=$(curl -s --max-time 30 --connect-timeout 10 \
-        -H "Authorization: Bearer $WISE_API_TOKEN" \
-        "$WISE_API_BASE/v2/profiles" 2>/dev/null)
+    response=$(wise_api_call "$WISE_API_BASE/v2/profiles")
 
     if [[ $? -ne 0 ]] || [[ -z "$response" ]]; then
         log_error "Impossible de contacter l'API Wise /v2/profiles"
@@ -86,9 +160,7 @@ get_recent_statement() {
     log "Période: $from_date → $to_date"
 
     local response
-    response=$(curl -s --max-time 60 --connect-timeout 10 \
-        -H "Authorization: Bearer $WISE_API_TOKEN" \
-        "$WISE_API_BASE/v1/profiles/$profile_id/balance-statements/$WISE_BALANCE_ID/statement.json?currency=EUR&intervalStart=$from_date&intervalEnd=$to_date&type=COMPACT" 2>/dev/null)
+    response=$(wise_api_call "$WISE_API_BASE/v1/profiles/$profile_id/balance-statements/$WISE_BALANCE_ID/statement.json?currency=EUR&intervalStart=$from_date&intervalEnd=$to_date&type=COMPACT")
 
     if [[ $? -ne 0 ]] || [[ -z "$response" ]]; then
         log_error "Impossible de récupérer le relevé Wise"
