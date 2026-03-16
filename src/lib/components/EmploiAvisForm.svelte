@@ -58,11 +58,12 @@
 	textarea {
 		padding: 0.5rem;
 		font-size: 1rem;
-		border: 1px solid #ccc;
+		border: 1px solid var(--border);
 		border-radius: 8px;
 		resize: vertical;
 		width: 100%;
-		background: white;
+		background: var(--bg);
+		color: var(--text);
 	}
 
 	button {

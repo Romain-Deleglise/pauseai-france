@@ -80,7 +80,7 @@
 		display: flex;
 		flex-direction: column;
 		height: 100%;
-		background: white;
+		background: var(--bg);
 		border: 1px solid var(--border, #e5e7eb);
 		border-radius: 1rem;
 		overflow: hidden;

@@ -1,5 +1,10 @@
 <script lang="ts">
 	import Button from '$lib/components/Button.svelte'
+	import PostMeta from '$components/PostMeta.svelte'
+
+	const title = 'Colloque Sénat — Compte-rendu & recommandations | Pause IA'
+	const description =
+		"Compte-rendu du colloque au Sénat du 31 octobre 2025 : points clés, résumé exécutif et recommandations pour maîtriser l'intelligence artificielle."
 
 	let firstName = ''
 	let lastName = ''
@@ -65,13 +70,7 @@
 	}
 </script>
 
-<svelte:head>
-	<meta
-		name="description"
-		content="Compte-rendu du colloque au Sénat du 31 octobre 2025 : points clés, résumé exécutif et recommandations pour maîtriser l'intelligence artificielle."
-	/>
-	<title>Colloque Sénat — Compte-rendu & recommandations | Pause IA</title>
-</svelte:head>
+<PostMeta {title} {description} />
 
 <section class="wrap">
 	<!-- Hero Section -->
@@ -425,7 +424,7 @@
 	.executive-summary {
 		margin: 3rem 0;
 		padding: 2rem;
-		background: #fafafa;
+		background: var(--bg-subtle);
 		border-radius: 12px;
 	}
 
@@ -518,7 +517,7 @@
 		border: 1px solid #e5e5e5;
 		border-radius: 8px;
 		padding: 0.75rem 1rem;
-		background: white;
+		background: var(--bg);
 	}
 
 	fieldset.choices legend {
@@ -591,5 +590,15 @@
 		.newsletter-section {
 			padding: 1.5rem 1rem;
 		}
+	}
+
+	/* ─── Dark mode ──────────────────────────────────────────── */
+	:global([data-theme='dark']) .key-point-card {
+		background: var(--bg-subtle);
+	}
+
+	:global([data-theme='dark']) .newsletter-section {
+		background: var(--bg-subtle);
+		border-color: var(--border);
 	}
 </style>

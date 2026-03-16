@@ -1,6 +1,11 @@
 <script lang="ts">
 	import { MoveUpRight, ChevronLeft, ChevronRight, Search, X, Newspaper } from 'lucide-svelte'
 	import type { PressRelease, LocalPressRelease, PressCoverage } from '$lib/notion'
+	import PostMeta from '$components/PostMeta.svelte'
+
+	const title = 'Espace Presse - Pause IA'
+	const description =
+		'Espace presse de Pause IA : communiqués de presse, contact médias et ressources pour les journalistes.'
 
 	export let data: {
 		pressReleases: PressRelease[]
@@ -8,7 +13,12 @@
 		pressCoverage: PressCoverage[]
 	}
 
-	$: pressCoverage = data.pressCoverage
+	$: pressCoverage = [...data.pressCoverage].sort((a, b) => {
+		if (!a.date && !b.date) return 0
+		if (!a.date) return 1
+		if (!b.date) return -1
+		return new Date(b.date).getTime() - new Date(a.date).getTime()
+	})
 
 	const PER_PAGE = 15
 
@@ -16,6 +26,7 @@
 		{
 			id: '1',
 			title: 'Forum des solutions pour une IA compatible avec l\u2019humanit\u00e9',
+			slug: 'forum-des-solutions-pour-une-ia-compatible-avec-lhumanite',
 			date: '2024-11-21',
 			url: '/pdfs/communique_de_presse_forum_des_solutions.pdf',
 			description:
@@ -307,13 +318,7 @@
 	}
 </script>
 
-<svelte:head>
-	<title>Espace Presse - Pause IA</title>
-	<meta
-		name="description"
-		content="Espace presse de Pause IA : communiqués de presse, contact médias et ressources pour les journalistes."
-	/>
-</svelte:head>
+<PostMeta {title} {description} />
 
 <div class="press-page">
 	<header class="press-header">
@@ -334,6 +339,10 @@
 					<div class="contact-person">
 						<p class="contact-name">Clémence Peyrot</p>
 						<p class="contact-role">Directrice exécutive de Pause IA</p>
+						<p>
+							<strong>Email :</strong>
+							<a href="mailto:clemence@pauseia.fr">clemence@pauseia.fr</a>
+						</p>
 						<p>
 							<strong>Tél. :</strong>
 							<a href="tel:+33645513415">06 45 51 34 15</a>
@@ -433,9 +442,9 @@
 						<a
 							id="pr-{pr.id}"
 							class="press-release-card"
-							href={pr.url}
-							target="_blank"
-							rel="noopener noreferrer"
+							href={pr.slug ? `/presse/national/${pr.slug}` : pr.url}
+							target={pr.slug ? undefined : '_blank'}
+							rel={pr.slug ? undefined : 'noopener noreferrer'}
 						>
 							<div class="pr-content">
 								<h3>{pr.title}</h3>
@@ -608,9 +617,9 @@
 							<a
 								id="pr-{pr.id}"
 								class="press-release-card"
-								href={pr.url}
-								target="_blank"
-								rel="noopener noreferrer"
+								href={pr.slug ? `/presse/local/${pr.slug}` : pr.url}
+								target={pr.slug ? undefined : '_blank'}
+								rel={pr.slug ? undefined : 'noopener noreferrer'}
 							>
 								<div class="pr-content">
 									<div class="pr-dept-badge">{getDeptLabel(pr.department)}</div>
@@ -1486,5 +1495,23 @@
 		.contact-card {
 			padding: 1.5rem 2rem;
 		}
+	}
+
+	/* ─── Dark mode ──────────────────────────────────────────── */
+	:global([data-theme='dark']) .tabs {
+		background-color: var(--btn-alt-bg);
+	}
+
+	:global([data-theme='dark']) .tab.active {
+		background-color: var(--bg);
+	}
+
+	:global([data-theme='dark']) .tab-count {
+		background-color: rgba(255, 255, 255, 0.1);
+	}
+
+	:global([data-theme='dark']) .about-card {
+		background-color: var(--bg-card);
+		border-color: var(--border);
 	}
 </style>

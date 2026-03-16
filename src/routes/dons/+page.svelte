@@ -153,12 +153,12 @@
 
 	.hero-description {
 		font-size: 1.1rem;
-		color: #666;
+		color: var(--text-secondary);
 		margin-bottom: 1.5rem;
 	}
 
 	.tax-benefit {
-		background: #e8f5e8;
+		background: rgba(76, 175, 80, 0.12);
 		border: 2px solid #4caf50;
 		border-radius: 8px;
 		padding: 1rem;
@@ -167,7 +167,7 @@
 	}
 
 	.tax-benefit strong {
-		color: #2e7d32;
+		color: #15803d;
 		font-size: 1.1rem;
 	}
 
@@ -229,7 +229,7 @@
 	}
 
 	.donation-card p {
-		color: #666;
+		color: var(--text-secondary);
 		margin-bottom: 1.5rem;
 		flex-grow: 1;
 	}
@@ -262,7 +262,7 @@
 		align-items: center;
 		gap: 0.4em;
 		margin-top: 1rem;
-		color: #666;
+		color: var(--text-secondary);
 		font-size: 0.9rem;
 		text-align: left;
 	}

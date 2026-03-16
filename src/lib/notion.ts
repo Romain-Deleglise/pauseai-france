@@ -89,6 +89,7 @@ export interface Banner {
 export interface PressRelease {
 	id: string
 	title: string
+	slug: string
 	date: string
 	url: string
 	description: string
@@ -99,6 +100,7 @@ export interface PressRelease {
 export interface LocalPressRelease {
 	id: string
 	title: string
+	slug: string
 	date: string
 	url: string
 	description: string
@@ -264,7 +266,7 @@ function isValidPressCoverage(pc: PressCoverage): boolean {
 async function queryDatabase<T>(
 	databaseId: string,
 	mapper: (page: NotionPage) => T,
-	options?: { sortBy?: string }
+	options?: { sortBy?: string; sortDirection?: 'ascending' | 'descending' }
 ): Promise<T[]> {
 	const apiKey = env.NOTION_API_KEY
 	if (!apiKey || !databaseId) {
@@ -275,7 +277,7 @@ async function queryDatabase<T>(
 	try {
 		const body: { sorts?: Array<{ property: string; direction: string }> } = {}
 		if (options?.sortBy) {
-			body.sorts = [{ property: options.sortBy, direction: 'ascending' }]
+			body.sorts = [{ property: options.sortBy, direction: options.sortDirection ?? 'ascending' }]
 		}
 
 		const response = await fetch(`https://api.notion.com/v1/databases/${databaseId}/query`, {
@@ -358,7 +360,7 @@ export async function getArticles(): Promise<Article[]> {
 			// Validate before returning
 			return isValidArticle(article) ? article : null
 		},
-		{ sortBy: 'Ordre' }
+		{ sortBy: 'Date de publication', sortDirection: 'descending' }
 	)
 
 	return articles.filter((a): a is Article => a !== null)
@@ -394,15 +396,11 @@ export async function fetchNewsletterContent(url: string): Promise<string | null
 		}
 
 		const html = await response.text()
-		console.log(`[Newsletter] Fetched ${html.length} chars from ${url}`)
 
 		const content = extractMailingContent(html)
 
 		// Check if extracted content has meaningful text (strip tags and check length)
 		const textOnly = content.replace(/<[^>]*>/g, '').trim()
-		console.log(
-			`[Newsletter] Extracted content: ${content.length} chars HTML, ${textOnly.length} chars text`
-		)
 
 		if (textOnly.length < 100) {
 			console.warn(
@@ -442,9 +440,6 @@ function extractMailingContent(html: string): string {
 			const cleaned = cleanContent(match[1])
 			const textOnly = cleaned.replace(/<[^>]*>/g, '').trim()
 			if (textOnly.length > 100) {
-				console.log(
-					`[Newsletter] Extraction strategy 1 matched (pattern), text length: ${textOnly.length}`
-				)
 				return cleaned
 			}
 		}
@@ -453,13 +448,11 @@ function extractMailingContent(html: string): string {
 	// Strategy 2: Extract full <body> content and clean it
 	const bodyMatch = html.match(/<body[^>]*>([\s\S]*)<\/body>/i)
 	if (bodyMatch && bodyMatch[1]) {
-		console.log(`[Newsletter] Extraction strategy 2: full body (${bodyMatch[1].length} chars)`)
 		return cleanContent(bodyMatch[1])
 	}
 
 	// Strategy 3: If no body tag, the response might already be the content
 	if (html.length > 200 && !html.includes('<!DOCTYPE')) {
-		console.log(`[Newsletter] Extraction strategy 3: raw content`)
 		return cleanContent(html)
 	}
 
@@ -470,6 +463,7 @@ function extractMailingContent(html: string): string {
 /**
  * Cleans extracted HTML content by removing CiviCRM chrome,
  * scripts, and fixing relative URLs.
+ * IMPORTANT: Inline styles are preserved to maintain email layout integrity.
  */
 function cleanContent(html: string): string {
 	let cleaned = html
@@ -477,7 +471,7 @@ function cleanContent(html: string): string {
 	// Remove script tags
 	cleaned = cleaned.replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
 
-	// Remove style tags
+	// Remove style tags (global CSS, not inline styles)
 	cleaned = cleaned.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
 
 	// Remove HTML comments
@@ -506,50 +500,43 @@ function cleanContent(html: string): string {
 	)
 
 	// --- Remove CiviCRM mailing footer ---
-	// Cut everything from the org signature/footer block onwards.
-	// Typical patterns: "Gérer mes préférences", org address, "Se désinscrire"
-	// Look for the footer starting with the org name + address pattern
-	const footerPatterns = [
-		// "Gérer mes préférences" and everything after
-		/[\s\S]*?G[ée]rer\s+mes\s+pr[ée]f[ée]rences[\s\S]*/i,
-		// Organization address block and everything after
-		/[\s\S]*?32\s+boulevard\s+de\s+Strasbourg[\s\S]*/i,
-		// "Se désinscrire" link and everything after
-		/[\s\S]*?[Ss]e\s+d[ée]sinscrire[\s\S]*/i
+	// Strategy: find the LAST occurrence of known footer markers and cut there.
+	// Use indexOf on the plain text to find positions, then cut the HTML.
+	const footerCandidates = [
+		{ text: 'Gérer mes préférences', minPosition: 0.5 },
+		{ text: 'G\u00e9rer mes pr\u00e9f\u00e9rences', minPosition: 0.5 },
+		{ text: '32 boulevard de Strasbourg', minPosition: 0.5 },
+		{ text: 'Pause IA — 32', minPosition: 0.5 }
 	]
 
-	for (const pattern of footerPatterns) {
-		const match = cleaned.match(pattern)
-		if (match) {
-			// Find the position of the footer text and cut from a reasonable point before it
-			const footerText =
-				match[0].match(
-					/G[ée]rer\s+mes\s+pr[ée]f[ée]rences|32\s+boulevard\s+de\s+Strasbourg|[Ss]e\s+d[ée]sinscrire/i
-				)?.[0] || ''
-			const idx = cleaned.indexOf(footerText)
-			if (idx > 0) {
-				// Walk back to find the nearest table/div opening tag to cut cleanly
-				const before = cleaned.substring(0, idx)
-				// Find the last "Soutenir Pause IA" or similar section header before footer
-				const soutenirIdx = before.lastIndexOf('Soutenir Pause IA')
-				if (soutenirIdx > 0) {
-					cleaned = cleaned.substring(0, soutenirIdx)
-				} else {
-					// Just cut at the footer text position
-					cleaned = before
-				}
-				break
-			}
+	// Find the earliest footer marker that appears after minPosition
+	let footerCutIndex = -1
+	for (const candidate of footerCandidates) {
+		const minIdx = Math.floor(cleaned.length * candidate.minPosition)
+		const idx = cleaned.indexOf(candidate.text, minIdx)
+		if (idx > 0 && (footerCutIndex === -1 || idx < footerCutIndex)) {
+			footerCutIndex = idx
 		}
 	}
 
-	// Remove "View in browser" / "Lire dans le navigateur" text and links
+	if (footerCutIndex > 0) {
+		// Walk back to find a clean cut point (opening tag boundary)
+		const before = cleaned.substring(0, footerCutIndex)
+		// Look for "Soutenir Pause IA" section that typically precedes the footer
+		const soutenirIdx = before.lastIndexOf('Soutenir Pause IA')
+		// Only use this cut point if it's reasonably close to the footer (within 2000 chars)
+		if (soutenirIdx > 0 && footerCutIndex - soutenirIdx < 2000) {
+			cleaned = cleaned.substring(0, soutenirIdx)
+		} else {
+			cleaned = before
+		}
+	}
+
+	// Remove specific standalone links (unsubscribe, view in browser) without truncating
 	cleaned = cleaned.replace(
 		/<a[^>]*>[^<]{0,100}(?:voir[^<]{0,30}navigateur|view[^<]{0,30}browser|lire[^<]{0,30}navigateur)[^<]{0,50}<\/a>/gi,
 		''
 	)
-
-	// Remove unsubscribe / "Se désinscrire" links (in case any remain)
 	cleaned = cleaned.replace(
 		/<a[^>]*>[^<]{0,100}(?:d[eé]sinscri|unsubscribe|opt.?out)[^<]{0,50}<\/a>/gi,
 		''
@@ -564,43 +551,12 @@ function cleanContent(html: string): string {
 		}
 	)
 
-	// --- Clean up spacing ---
-	// Strip inline height attributes from table elements (spacer rows)
-	cleaned = cleaned.replace(/(<(?:tr|td|th|table|div)[^>]*)\s+height="[^"]*"/gi, '$1')
-
-	// Strip inline style padding/margin/height that create excessive spacing
-	cleaned = cleaned.replace(/style="([^"]*)"/gi, (_match, styles: string) => {
-		const filtered = styles
-			.split(';')
-			.filter((s: string) => {
-				const prop = s.trim().toLowerCase()
-				// Remove excessive spacing properties
-				if (/^(padding|margin)(-top|-bottom)?\s*:/i.test(prop)) {
-					// Keep small values (less than 15px), remove large ones
-					const valueMatch = prop.match(/:\s*(\d+)/)
-					if (valueMatch && parseInt(valueMatch[1]) > 15) return false
-				}
-				if (/^(height|min-height|line-height)\s*:/i.test(prop)) {
-					const valueMatch = prop.match(/:\s*(\d+)/)
-					if (valueMatch && parseInt(valueMatch[1]) > 30) return false
-				}
-				return true
-			})
-			.join(';')
-		return filtered.trim() ? `style="${filtered}"` : ''
-	})
-
-	// Remove empty spacer elements (td/div/p with only &nbsp; or whitespace)
-	cleaned = cleaned.replace(/<(td|div|p|span)[^>]*>(\s|&nbsp;|&#160;|\u00a0)*<\/\1>/gi, '')
-
-	// Remove empty table rows
+	// --- Minimal spacing cleanup ---
+	// Only remove completely empty table rows
 	cleaned = cleaned.replace(/<tr[^>]*>\s*<\/tr>/gi, '')
 
-	// Remove <br> chains (more than 1 consecutive)
-	cleaned = cleaned.replace(/(<br\s*\/?\s*>\s*){2,}/gi, '<br>')
-
-	// Collapse multiple &nbsp;
-	cleaned = cleaned.replace(/(&nbsp;\s*){3,}/gi, ' ')
+	// Remove chains of 4+ consecutive br tags
+	cleaned = cleaned.replace(/(<br\s*\/?\s*>\s*){4,}/gi, '<br><br>')
 
 	return cleaned.trim()
 }
@@ -668,9 +624,11 @@ export async function getPressReleases(): Promise<PressRelease[]> {
 			const visible = getCheckbox(page.properties['Visible'])
 			if (!visible) return null
 
+			const title = getText(page.properties['Titre'])
 			const pr: PressRelease = {
 				id: page.id,
-				title: getText(page.properties['Titre']),
+				title,
+				slug: generateSlug(title),
 				date: getDate(page.properties['Date']),
 				url: getUrl(page.properties['URL']),
 				description: getText(page.properties['Description']),
@@ -680,10 +638,15 @@ export async function getPressReleases(): Promise<PressRelease[]> {
 
 			return isValidPressRelease(pr) ? pr : null
 		},
-		{ sortBy: 'Ordre' }
+		{ sortBy: 'Date', sortDirection: 'descending' }
 	)
 
 	return pressReleases.filter((pr): pr is PressRelease => pr !== null)
+}
+
+export async function getPressReleaseBySlug(slug: string): Promise<PressRelease | null> {
+	const releases = await getPressReleases()
+	return releases.find((pr) => pr.slug === slug) || null
 }
 
 export async function getLocalPressReleases(): Promise<LocalPressRelease[]> {
@@ -696,9 +659,11 @@ export async function getLocalPressReleases(): Promise<LocalPressRelease[]> {
 			const visible = getCheckbox(page.properties['Visible'])
 			if (!visible) return null
 
+			const title = getText(page.properties['Titre'])
 			const pr: LocalPressRelease = {
 				id: page.id,
-				title: getText(page.properties['Titre']),
+				title,
+				slug: generateSlug(title),
 				date: getDate(page.properties['Date']),
 				url: getUrl(page.properties['URL']),
 				description: getText(page.properties['Description']),
@@ -709,10 +674,28 @@ export async function getLocalPressReleases(): Promise<LocalPressRelease[]> {
 
 			return isValidLocalPressRelease(pr) ? pr : null
 		},
-		{ sortBy: 'Ordre' }
+		{ sortBy: 'Date', sortDirection: 'descending' }
 	)
 
 	return pressReleases.filter((pr): pr is LocalPressRelease => pr !== null)
+}
+
+export async function getLocalPressReleaseBySlug(slug: string): Promise<LocalPressRelease | null> {
+	const releases = await getLocalPressReleases()
+	return releases.find((pr) => pr.slug === slug) || null
+}
+
+/**
+ * Fetches press release HTML content from a CiviCRM URL and extracts the body.
+ * Reuses the same extraction logic as newsletters since both use CiviCRM mailings.
+ * Returns null for PDF URLs (which should be handled differently).
+ */
+export async function fetchPressReleaseContent(url: string): Promise<string | null> {
+	// PDF URLs should not be fetched as HTML
+	if (url.toLowerCase().endsWith('.pdf')) {
+		return null
+	}
+	return fetchNewsletterContent(url)
 }
 
 export async function getPressCoverage(): Promise<PressCoverage[]> {
@@ -737,7 +720,7 @@ export async function getPressCoverage(): Promise<PressCoverage[]> {
 
 			return isValidPressCoverage(pc) ? pc : null
 		},
-		{ sortBy: 'Ordre' }
+		{ sortBy: 'Date', sortDirection: 'descending' }
 	)
 
 	return items.filter((pc): pc is PressCoverage => pc !== null)

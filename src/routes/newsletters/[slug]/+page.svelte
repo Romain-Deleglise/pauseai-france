@@ -204,16 +204,11 @@
 	/* Newsletter content container */
 	.newsletter-content {
 		overflow: hidden;
-		line-height: 1.7;
 	}
 
-	/* Override CiviCRM table-based layout to be responsive */
+	/* Responsive: constrain widths without destroying layout */
 	.newsletter-content :global(table) {
 		max-width: 100% !important;
-		width: 100% !important;
-		height: auto !important;
-		border-spacing: 0 !important;
-		border-collapse: collapse !important;
 	}
 
 	.newsletter-content :global(td),
@@ -221,81 +216,25 @@
 		max-width: 100%;
 		word-wrap: break-word;
 		overflow-wrap: break-word;
-		height: auto !important;
-		padding-top: 2px !important;
-		padding-bottom: 2px !important;
-	}
-
-	/* Remove spacer cells that only contain non-breaking spaces */
-	.newsletter-content :global(td:empty),
-	.newsletter-content :global(td:blank) {
-		display: none;
 	}
 
 	.newsletter-content :global(img) {
 		max-width: 100%;
 		height: auto !important;
-		display: block;
 	}
 
-	/* Tighten paragraph spacing */
-	.newsletter-content :global(p) {
-		margin: 0.5em 0;
-	}
-
-	.newsletter-content :global(h1),
-	.newsletter-content :global(h2),
-	.newsletter-content :global(h3),
-	.newsletter-content :global(h4) {
-		margin: 1em 0 0.5em;
-		line-height: 1.3;
-	}
-
-	/* Tighten list spacing */
-	.newsletter-content :global(ul),
-	.newsletter-content :global(ol) {
-		margin: 0.5em 0;
-		padding-left: 1.5em;
-	}
-
-	.newsletter-content :global(li) {
-		margin: 0.25em 0;
-	}
-
-	/* Ensure links in newsletter content are visible */
-	.newsletter-content :global(a) {
-		color: var(--brand, #ff9416);
-		text-decoration: underline;
-	}
-
-	.newsletter-content :global(a:hover) {
-		opacity: 0.8;
-	}
-
-	/* Style blockquotes / citations */
-	.newsletter-content :global(blockquote) {
-		border-left: 3px solid var(--brand, #ff9416);
-		margin: 1em 0;
-		padding: 0.5em 1em;
-		color: var(--text-secondary, #676e7a);
-		font-style: italic;
-	}
-
-	/* Center images that are alone in a cell/paragraph */
-	.newsletter-content :global(td > img:only-child),
-	.newsletter-content :global(p > img:only-child) {
-		margin: 0.5em auto;
-	}
-
-	/* Remove any remaining inline width constraints */
 	.newsletter-content :global(div),
 	.newsletter-content :global(span) {
 		max-width: 100% !important;
 	}
 
-	/* Collapse <br> tags that create extra spacing */
-	.newsletter-content :global(br + br) {
-		display: none;
+	/* Links */
+	.newsletter-content :global(a) {
+		color: var(--brand, #ff9416);
+	}
+
+	.newsletter-content :global(a:hover) {
+		opacity: 0.8;
 	}
 
 	.newsletter-iframe {
@@ -332,7 +271,7 @@
 		padding: 0.75rem 1rem;
 		border-radius: 0.5rem;
 		border: 1px solid var(--border, #e5e7eb);
-		background: var(--bg-secondary, #f9f9f9);
+		background: var(--bg-card, #f9f9f9);
 		transition:
 			background 0.2s,
 			border-color 0.2s,

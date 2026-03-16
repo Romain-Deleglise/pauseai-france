@@ -3,7 +3,7 @@
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
 	import NewsletterCard from '$components/NewsletterCard.svelte'
 	import Button from '$components/Button.svelte'
-	import { Search, X, Mail, ChevronLeft, ChevronRight } from 'lucide-svelte'
+	import { Search, X, Mail, ChevronLeft, ChevronRight, Rss } from 'lucide-svelte'
 	import type { Article } from '$lib/notion'
 	import type { PageData } from './$types'
 
@@ -184,6 +184,15 @@
 
 <PostMeta {title} {description} />
 
+<svelte:head>
+	<link
+		rel="alternate"
+		type="application/rss+xml"
+		title="Pause IA - Newsletters"
+		href="/rss/newsletters.xml"
+	/>
+</svelte:head>
+
 <div class="page">
 	<header class="page-header">
 		<UnderlinedTitle as="h1">Nos newsletters</UnderlinedTitle>
@@ -216,6 +225,13 @@
 				</p>
 			{/if}
 		</form>
+	</div>
+
+	<div class="rss-bar">
+		<a href="/rss/newsletters.xml" class="rss-link" target="_blank" rel="noopener noreferrer">
+			<Rss size="1rem" />
+			Flux RSS
+		</a>
 	</div>
 
 	<div class="search-bar">
@@ -368,6 +384,34 @@
 	}
 
 	/* Subscribe bar */
+	.rss-bar {
+		max-width: 36rem;
+		margin: 0 auto 2rem;
+		text-align: right;
+	}
+
+	.rss-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.375rem;
+		color: var(--text-secondary, #676e7a);
+		text-decoration: none;
+		font-size: 0.875rem;
+		padding: 0.375rem 0.75rem;
+		border: 1px solid var(--border, #e5e7eb);
+		border-radius: 0.375rem;
+		transition:
+			color 0.2s,
+			border-color 0.2s,
+			background 0.2s;
+	}
+
+	.rss-link:hover {
+		color: #f26522;
+		border-color: #f26522;
+		background: #fff8f0;
+	}
+
 	.subscribe-bar {
 		display: flex;
 		align-items: flex-start;
@@ -408,7 +452,7 @@
 		border-radius: 0.375rem;
 		font-size: 0.9rem;
 		font-family: inherit;
-		background: white;
+		background: var(--bg);
 		color: var(--text);
 		transition: border-color 0.2s;
 	}
@@ -453,11 +497,11 @@
 	}
 
 	.subscribe-message.success {
-		color: #166534;
+		color: #15803d;
 	}
 
 	.subscribe-message.error {
-		color: #991b1b;
+		color: #b91c1c;
 	}
 
 	/* Search bar — matches press page combobox style */
@@ -483,7 +527,7 @@
 		align-items: center;
 		border: 1px solid var(--border, #e5e7eb);
 		border-radius: 0.5rem;
-		background-color: white;
+		background-color: var(--bg);
 		transition:
 			border-color 0.15s ease,
 			box-shadow 0.15s ease;
@@ -574,7 +618,7 @@
 		font-family: var(--font-body, inherit);
 		border: 1px solid var(--border, #e5e7eb);
 		border-radius: 0.375rem;
-		background-color: white;
+		background-color: var(--bg);
 		color: var(--text, black);
 		appearance: none;
 		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23676e7a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
@@ -719,7 +763,7 @@
 		height: 2.25rem;
 		border: 1px solid var(--border, #e5e7eb);
 		border-radius: 0.375rem;
-		background: white;
+		background: var(--bg);
 		color: var(--text, black);
 		font-size: 0.875rem;
 		font-weight: 600;

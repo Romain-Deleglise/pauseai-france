@@ -1,7 +1,6 @@
-import type { Post } from '$lib/types'
+import { getPosts } from '$lib/api'
 
-export async function load({ fetch }) {
-	const response = await fetch('api/posts')
-	const posts: Post[] = await response.json()
+export function load() {
+	const posts = getPosts('', 'fr')
 	return { posts }
 }

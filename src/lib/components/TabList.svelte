@@ -78,8 +78,8 @@
 
 	button {
 		padding: 0.6rem 1.1rem;
-		background: rgba(0, 0, 0, 0.05);
-		border: 1.5px solid rgba(0, 0, 0, 0.12);
+		background: var(--btn-alt-bg);
+		border: 1.5px solid var(--border);
 		border-radius: 2rem;
 		font-family: var(--font-body);
 		font-size: 0.9rem;
