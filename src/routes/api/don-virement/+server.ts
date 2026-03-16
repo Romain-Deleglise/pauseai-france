@@ -68,7 +68,9 @@ async function callApi4<T = Record<string, unknown>>(
 			// ignore
 		}
 		const snippet = bodyText ? `\nBody: ${bodyText.substring(0, 500)}` : ''
-		throw new Error(`HTTP ${response.status.toString()}: ${response.statusText}${snippet}`)
+		throw new Error(
+			`${entity}.${action} HTTP ${response.status.toString()}: ${response.statusText}${snippet}`
+		)
 	}
 
 	const data = (await response.json()) as Api4Result<T>
