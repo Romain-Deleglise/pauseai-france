@@ -83,7 +83,7 @@ wise_api_call() {
     if [[ "$http_code" == "403" ]]; then
         # Extraire le one-time token (OTT) du header x-2fa-approval
         local ott
-        ott=$(grep -i '^x-2fa-approval:' "$tmp_headers" | sed 's/^[^:]*: *//' | tr -d '[:space:]')
+        ott=$(grep -i '^x-2fa-approval:' "$tmp_headers" | sed 's/^[^:]*: *//' | tr -d '\r\n ')
 
         if [[ -z "$ott" ]]; then
             log_error "403 sans OTT — vérifier les permissions du token Wise"
@@ -91,9 +91,9 @@ wise_api_call() {
             return 1
         fi
 
-        # Signer l'OTT avec la clé privée SCA
+        # Signer l'OTT avec la clé privée SCA (syntaxe exacte doc Wise)
         local signature
-        signature=$(printf '%s' "$ott" | openssl dgst -sha256 -sign "$WISE_SCA_KEY" | openssl base64 -A)
+        signature=$(printf "$ott" | openssl sha256 -sign "$WISE_SCA_KEY" | base64 -w 0)
 
         if [[ -z "$signature" ]]; then
             log_error "Impossible de signer l'OTT avec la clé SCA"
@@ -105,7 +105,7 @@ wise_api_call() {
         response=$(curl -s --max-time 60 --connect-timeout 10 \
             -D "$tmp_headers" \
             -H "Authorization: Bearer $WISE_API_TOKEN" \
-            -H "X-2FA-Approval: $ott" \
+            -H "x-2fa-approval: $ott" \
             -H "X-Signature: $signature" \
             "$url" 2>/dev/null)
         http_code=$(grep -oP 'HTTP/[0-9.]+ \K[0-9]+' "$tmp_headers" | tail -1)
