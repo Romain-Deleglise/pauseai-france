@@ -151,6 +151,12 @@
 			title: "Annecy : une association interpelle les candidats sur l'intelligence artificielle",
 			url: 'https://www.odsradio.com/news/locales/108150/annecy-une-association-interpelle-les-candidats-sur-l-intelligence-artificielle',
 			date: '2026-03-12'
+		},
+		{
+			source: 'France Culture',
+			title: 'Journal de 18h du vendredi 13 mars 2026 (15:30 – 17:22)',
+			url: 'https://www.radiofrance.fr/franceculture/podcasts/journal-de-18h/journal-de-18h-emission-du-vendredi-13-mars-2026-9405796',
+			date: '2026-03-13'
 		}
 	].sort((a, b) => {
 		if (!a.date && !b.date) return 0
