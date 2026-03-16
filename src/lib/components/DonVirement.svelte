@@ -19,8 +19,7 @@
 	let errorMessage = ''
 	let reference = ''
 
-	let copiedIban = false
-	let copiedRef = false
+	let copiedField: string | null = null
 
 	let dialogEl: HTMLElement
 	let firstFocusEl: HTMLElement
@@ -34,8 +33,7 @@
 		selectedPreset = 50
 		errorMessage = ''
 		reference = ''
-		copiedIban = false
-		copiedRef = false
+		copiedField = null
 	}
 
 	$: if (show && firstFocusEl) {
@@ -114,16 +112,11 @@
 		}
 	}
 
-	async function copyToClipboard(text: string, type: 'iban' | 'ref') {
+	async function copyToClipboard(text: string, field: string) {
 		try {
 			await navigator.clipboard.writeText(text)
-			if (type === 'iban') {
-				copiedIban = true
-				setTimeout(() => (copiedIban = false), 2000)
-			} else {
-				copiedRef = true
-				setTimeout(() => (copiedRef = false), 2000)
-			}
+			copiedField = field
+			setTimeout(() => (copiedField = null), 2000)
 		} catch {
 			// Clipboard not available — silently fail
 		}
@@ -229,36 +222,57 @@
 					<div class="rib-row">
 						<span class="rib-label">Titulaire</span>
 						<span class="rib-value">{TITULAIRE}</span>
+						<button
+							type="button"
+							class="copy-inline"
+							on:click={() => copyToClipboard(TITULAIRE, 'titulaire')}
+							aria-label="Copier le titulaire"
+						>
+							{copiedField === 'titulaire' ? '✓' : '📋'}
+						</button>
 					</div>
 					<div class="rib-row">
 						<span class="rib-label">IBAN</span>
 						<span class="rib-value mono">{IBAN}</span>
+						<button
+							type="button"
+							class="copy-inline"
+							on:click={() => copyToClipboard(IBAN.replace(/\s/g, ''), 'iban')}
+							aria-label="Copier l'IBAN"
+						>
+							{copiedField === 'iban' ? '✓' : '📋'}
+						</button>
 					</div>
 					<div class="rib-row">
 						<span class="rib-label">BIC</span>
 						<span class="rib-value mono">{BIC}</span>
+						<button
+							type="button"
+							class="copy-inline"
+							on:click={() => copyToClipboard(BIC, 'bic')}
+							aria-label="Copier le BIC"
+						>
+							{copiedField === 'bic' ? '✓' : '📋'}
+						</button>
 					</div>
 				</div>
 
 				<div class="reference-box">
 					<p class="reference-label">Référence à indiquer dans le libellé du virement</p>
-					<p class="reference-value">{reference}</p>
+					<div class="reference-row">
+						<p class="reference-value">{reference}</p>
+						<button
+							type="button"
+							class="copy-inline copy-ref"
+							on:click={() => copyToClipboard(reference, 'ref')}
+							aria-label="Copier la référence"
+						>
+							{copiedField === 'ref' ? '✓' : '📋'}
+						</button>
+					</div>
 					<p class="reference-note">
 						⚠️ Sans cette référence, votre don ne pourra pas être identifié.
 					</p>
-				</div>
-
-				<div class="copy-buttons">
-					<button
-						type="button"
-						class="copy-btn"
-						on:click={() => copyToClipboard(IBAN.replace(/\s/g, ''), 'iban')}
-					>
-						{copiedIban ? '✓ Copié !' : "Copier l'IBAN"}
-					</button>
-					<button type="button" class="copy-btn" on:click={() => copyToClipboard(reference, 'ref')}>
-						{copiedRef ? '✓ Copié !' : 'Copier la référence'}
-					</button>
 				</div>
 
 				<button type="button" class="close-link" on:click={close}>Fermer</button>
@@ -551,31 +565,40 @@
 		margin: 0;
 	}
 
-	/* Copy buttons */
-	.copy-buttons {
-		display: flex;
-		gap: 0.75rem;
-		flex-wrap: wrap;
-		justify-content: center;
-	}
-
-	.copy-btn {
-		padding: 0.6rem 1.2rem;
-		border: 2px solid var(--brand);
-		border-radius: 8px;
-		background: transparent;
-		color: var(--brand);
-		font-weight: 600;
-		font-size: 0.95rem;
+	/* Inline copy buttons */
+	.copy-inline {
+		background: none;
+		border: 1px solid var(--border, #e5e7eb);
+		border-radius: 6px;
 		cursor: pointer;
+		font-size: 1rem;
+		padding: 0.25rem 0.5rem;
+		line-height: 1;
+		color: var(--text-secondary, #676e7a);
 		transition:
 			background 0.15s,
-			color 0.15s;
+			border-color 0.15s;
+		flex-shrink: 0;
 	}
 
-	.copy-btn:hover {
-		background: var(--brand);
-		color: white;
+	.copy-inline:hover {
+		background: var(--brand-light, #fff5e8);
+		border-color: var(--brand);
+	}
+
+	.reference-row {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5rem;
+	}
+
+	.reference-row .reference-value {
+		margin: 0;
+	}
+
+	.copy-ref {
+		font-size: 1.2rem;
 	}
 
 	.close-link {
