@@ -3,7 +3,7 @@
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
 	import NewsletterCard from '$components/NewsletterCard.svelte'
 	import Button from '$components/Button.svelte'
-	import { Search, X, Mail, ChevronLeft, ChevronRight } from 'lucide-svelte'
+	import { Search, X, Mail, ChevronLeft, ChevronRight, Rss } from 'lucide-svelte'
 	import type { Article } from '$lib/notion'
 	import type { PageData } from './$types'
 
@@ -184,6 +184,15 @@
 
 <PostMeta {title} {description} />
 
+<svelte:head>
+	<link
+		rel="alternate"
+		type="application/rss+xml"
+		title="Pause IA - Newsletters"
+		href="/rss/newsletters.xml"
+	/>
+</svelte:head>
+
 <div class="page">
 	<header class="page-header">
 		<UnderlinedTitle as="h1">Nos newsletters</UnderlinedTitle>
@@ -216,6 +225,13 @@
 				</p>
 			{/if}
 		</form>
+	</div>
+
+	<div class="rss-bar">
+		<a href="/rss/newsletters.xml" class="rss-link" target="_blank" rel="noopener noreferrer">
+			<Rss size="1rem" />
+			Flux RSS
+		</a>
 	</div>
 
 	<div class="search-bar">
@@ -368,6 +384,34 @@
 	}
 
 	/* Subscribe bar */
+	.rss-bar {
+		max-width: 36rem;
+		margin: 0 auto 2rem;
+		text-align: right;
+	}
+
+	.rss-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.375rem;
+		color: var(--text-secondary, #676e7a);
+		text-decoration: none;
+		font-size: 0.875rem;
+		padding: 0.375rem 0.75rem;
+		border: 1px solid var(--border, #e5e7eb);
+		border-radius: 0.375rem;
+		transition:
+			color 0.2s,
+			border-color 0.2s,
+			background 0.2s;
+	}
+
+	.rss-link:hover {
+		color: #f26522;
+		border-color: #f26522;
+		background: #fff8f0;
+	}
+
 	.subscribe-bar {
 		display: flex;
 		align-items: flex-start;
