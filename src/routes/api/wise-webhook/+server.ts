@@ -130,6 +130,8 @@ export const POST: RequestHandler = async ({ request }) => {
 	console.log(
 		`[wise-webhook] Crédit reçu: ${event.data.amount}€ via ${event.data.channel_name ?? 'N/A'} - transfer_reference="${event.data.transfer_reference ?? ''}"`
 	)
+	console.log('[wise-webhook] Payload complet data:', JSON.stringify(event.data, null, 2))
+	console.log('[wise-webhook] Payload complet root:', JSON.stringify(event, null, 2))
 
 	// 4. Chercher la référence DON-XXXXXX dans transfer_reference
 	const transferRef = event.data?.transfer_reference ?? ''
