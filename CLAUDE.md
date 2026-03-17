@@ -97,14 +97,15 @@ This is a SvelteKit-based website with Markdown-powered content. Content files l
 
 #### API Endpoints
 
-| Endpoint         | Method | Purpose                             | Key Details                       |
-| ---------------- | ------ | ----------------------------------- | --------------------------------- |
-| `/api/posts`     | GET    | Returns all blog posts              | Uses `getPosts()` from `$lib/api` |
-| `/api/dangers`   | GET    | Returns all danger articles         | Uses `getPosts('/dangers')`       |
-| `/api/subscribe` | POST   | Newsletter subscription via CiviCRM | See CiviCRM Integration below     |
-| `/api/checkout`  | POST   | Create Stripe payment session       | See Stripe Integration below      |
-| `/sitemap.xml`   | GET    | XML sitemap for SEO                 | Prerendered, includes all posts   |
-| `/sitemap.txt`   | GET    | Text sitemap                        | Alternative format                |
+| Endpoint            | Method | Purpose                                     | Key Details                        |
+| ------------------- | ------ | ------------------------------------------- | ---------------------------------- |
+| `/api/posts`        | GET    | Returns all blog posts                      | Uses `getPosts()` from `$lib/api`  |
+| `/api/dangers`      | GET    | Returns all danger articles                 | Uses `getPosts('/dangers')`        |
+| `/api/subscribe`    | POST   | Newsletter subscription via CiviCRM         | See CiviCRM Integration below      |
+| `/api/checkout`     | POST   | Create Stripe payment session               | See Stripe Integration below       |
+| `/api/wise-webhook` | POST   | Wise webhook for bank transfer confirmation | See Wise Webhook Integration below |
+| `/sitemap.xml`      | GET    | XML sitemap for SEO                         | Prerendered, includes all posts    |
+| `/sitemap.txt`      | GET    | Text sitemap                                | Alternative format                 |
 
 ### External Integrations
 
@@ -150,6 +151,28 @@ Handles newsletter and mailing list subscriptions with full contact management.
 - `CIVICRM_CONFERENCE_GROUP_ID`
 - `CIVICRM_POLICY_GROUP_ID`
 - `CIVICRM_NEWSLETTER_API_CONTACT_ID`
+
+#### Wise Webhook Integration (`/api/wise-webhook`)
+
+Receives Wise balance credit notifications to automatically confirm bank transfer donations.
+
+**Flow:**
+
+1. Donor submits the donation form (`/api/don-virement`) → CiviCRM contribution created as **Pending** with `trxn_id = DON-XXXXXX`
+2. Donor sends bank transfer with reference `DON-XXXXXX` in the payment description
+3. Wise receives the transfer → sends a `balances#update` webhook to `https://pauseia.fr/api/wise-webhook`
+4. Webhook finds the Pending contribution in CiviCRM by `trxn_id` and marks it **Completed**
+
+**Signature Verification:**
+Each request is signed by Wise using RSA-SHA256. The signature is in the `X-Signature-SHA256` header. Wise's production public key is hardcoded in the endpoint. If Wise rotates their key, update `WISE_PUBLIC_KEY` in `src/routes/api/wise-webhook/+server.ts`.
+
+**Reference Field:**
+The payment reference (`DON-XXXXXX`) is read from `data.transfer_reference` in the webhook payload. Note: for SEPA incoming transfers, verify this field actually carries the remittance information by checking the Netlify function logs after the first real donation.
+
+**Setup (one-time):**
+Run `scripts/create-wise-webhook.sh <profile_id>` on the Hetzner server to register the webhook subscription with Wise. This endpoint does **not** require SCA — it bypasses the SCA issue with the old polling approach.
+
+**No new environment variables required** — uses existing CiviCRM credentials.
 
 #### Stripe Integration (`/api/checkout`)
 
