@@ -81,6 +81,11 @@ async function callApi4<T = Record<string, unknown>>(
 	return data
 }
 
+// Wise effectue une requête GET pour valider l'URL lors de la création du webhook
+export const GET: RequestHandler = async () => {
+	return json({ ok: true })
+}
+
 export const POST: RequestHandler = async ({ request }) => {
 	// Lire le body brut — nécessaire pour vérifier la signature RSA
 	const rawBody = await request.text()
