@@ -15,25 +15,6 @@ Oj3Vos0VdBIs/gAyJ/4yyQFCXYte64I7ssrlbGRaco4nKF3HmaNhxwyKyJafz19e
 HwIDAQAB
 -----END PUBLIC KEY-----`
 
-interface WiseBalanceEvent {
-	event_type: string
-	subscription_id: string
-	schema_version: string
-	sent_at: string
-	data: {
-		resource: { id: number; profile_id: number; type: string }
-		amount: number
-		balance_id: number
-		currency: string
-		transaction_type: string
-		// Référence du virement — peut contenir la référence DON-XXXXXX du donateur
-		// Champ disponible selon le schéma v3 de Wise pour les virements entrants SEPA
-		transfer_reference?: string
-		occurred_at: string
-		channel_name?: string
-	}
-}
-
 interface Api4Result<T = Record<string, unknown>> {
 	count?: number
 	values?: T[]
@@ -110,40 +91,42 @@ export const POST: RequestHandler = async ({ request }) => {
 		return json({ error: 'Signature verification failed' }, { status: 401 })
 	}
 
-	// 2. Parser le payload
-	let event: WiseBalanceEvent
+	// 2. Parser le payload — logger le tout pour identifier le champ du motif
+	let event: Record<string, unknown>
 	try {
-		event = JSON.parse(rawBody) as WiseBalanceEvent
+		event = JSON.parse(rawBody) as Record<string, unknown>
 	} catch {
 		return json({ error: 'Invalid JSON' }, { status: 400 })
 	}
 
-	// 3. Ne traiter que les crédits EUR (balances#update ou balances#credit selon l'abonnement)
-	if (event.event_type !== 'balances#update' && event.event_type !== 'balances#credit') {
+	console.log('[wise-webhook] Payload complet:', JSON.stringify(event, null, 2))
+
+	const eventType = event.event_type as string | undefined
+	const data = event.data as Record<string, unknown> | undefined
+
+	// 3. Ne traiter que les crédits EUR
+	if (eventType !== 'balances#update' && eventType !== 'balances#credit') {
 		return json({ ok: true })
 	}
-	if (event.data?.transaction_type !== 'credit' || event.data?.currency !== 'EUR') {
+	if (data?.transaction_type !== 'credit' || data?.currency !== 'EUR') {
 		return json({ ok: true })
 	}
 
-	// Log complet pour déboguer la structure réelle du payload lors des premiers virements
 	console.log(
-		`[wise-webhook] Crédit reçu: ${event.data.amount}€ via ${event.data.channel_name ?? 'N/A'} - transfer_reference="${event.data.transfer_reference ?? ''}"`
+		`[wise-webhook] Crédit reçu: ${data.amount}€ via ${data.channel_name ?? 'N/A'}, transfer_reference="${data.transfer_reference ?? ''}"`
 	)
 
-	// 4. Chercher la référence DON-XXXXXX dans transfer_reference
-	const transferRef = event.data?.transfer_reference ?? ''
-	const reference = transferRef.match(/DON-[A-Z0-9]{6}/)?.[0]
+	// 4. Chercher DON-XXXXXX dans tous les champs texte du payload
+	const reference = rawBody.match(/DON-[A-Z0-9]{6}/)?.[0] ?? null
 
 	if (!reference) {
 		console.log(
-			`[wise-webhook] Virement sans référence DON (${event.data.amount}€, ref="${transferRef}") — aucune action`
+			`[wise-webhook] Virement sans référence DON (${data.amount}€) — aucune action CiviCRM`
 		)
-		// Retourner 200 pour que Wise ne réessaie pas
 		return json({ ok: true })
 	}
 
-	console.log(`[wise-webhook] Référence trouvée: ${reference} (${event.data.amount}€)`)
+	console.log(`[wise-webhook] Référence trouvée: ${reference} (${data.amount}€)`)
 
 	// 5. Trouver et mettre à jour la contribution CiviCRM
 	try {
@@ -164,12 +147,12 @@ export const POST: RequestHandler = async ({ request }) => {
 		}
 
 		const contrib = findResult.values[0]
-		const receiveDate =
-			event.data.occurred_at?.split('T')[0] ?? new Date().toISOString().split('T')[0]
+		const occurredAt = data.occurred_at as string | undefined
+		const receiveDate = occurredAt?.split('T')[0] ?? new Date().toISOString().split('T')[0]
 
-		if (event.data.amount !== contrib.total_amount) {
+		if (data.amount !== contrib.total_amount) {
 			console.warn(
-				`[wise-webhook] Montant différent pour ${reference}: reçu=${event.data.amount}€ attendu=${contrib.total_amount}€ (frais ?)`
+				`[wise-webhook] Montant différent pour ${reference}: reçu=${data.amount}€ attendu=${contrib.total_amount}€ (frais ?)`
 			)
 		}
 
@@ -184,7 +167,6 @@ export const POST: RequestHandler = async ({ request }) => {
 		console.log(`[wise-webhook] ✓ Contribution ${contrib.id} (${reference}) → Completed`)
 	} catch (e) {
 		console.error('[wise-webhook] Erreur CiviCRM:', e)
-		// Retourner 500 pour que Wise réessaie le webhook
 		return json({ error: 'CiviCRM error' }, { status: 500 })
 	}
 
