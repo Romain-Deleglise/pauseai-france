@@ -1,5 +1,5 @@
 import { json, type RequestHandler } from '@sveltejs/kit'
-import { createVerify } from 'crypto'
+import { createSign, createVerify } from 'crypto'
 
 import { env as privateEnv } from '$env/dynamic/private'
 
@@ -26,12 +26,26 @@ interface WiseBalanceEvent {
 		balance_id: number
 		currency: string
 		transaction_type: string
-		// Référence du virement — peut contenir la référence DON-XXXXXX du donateur
-		// Champ disponible selon le schéma v3 de Wise pour les virements entrants SEPA
 		transfer_reference?: string
 		occurred_at: string
 		channel_name?: string
 	}
+}
+
+interface WiseTransaction {
+	type: string
+	date: string
+	amount: { value: number; currency: string }
+	details: {
+		description?: string
+		paymentReference?: string
+		senderName?: string
+	}
+	referenceNumber?: string
+}
+
+interface WiseStatement {
+	transactions: WiseTransaction[]
 }
 
 interface Api4Result<T = Record<string, unknown>> {
@@ -43,6 +57,77 @@ interface Api4Result<T = Record<string, unknown>> {
 interface ContributionRecord {
 	id: number
 	total_amount: number
+}
+
+// Appel API Wise avec gestion SCA automatique (même logique que wise-bank-transfer-sync.sh)
+async function wiseApiGet(url: string): Promise<unknown> {
+	const token = privateEnv.WISE_API_TOKEN
+	if (!token) throw new Error('WISE_API_TOKEN non configuré')
+
+	// 1ère requête
+	const res1 = await fetch(url, { headers: { Authorization: `Bearer ${token}` } })
+
+	if (res1.ok) return res1.json()
+
+	if (res1.status === 403) {
+		// SCA : signer l'OTT avec la clé privée
+		const ott = res1.headers.get('x-2fa-approval')
+		if (!ott) throw new Error('403 Wise sans OTT — vérifier les permissions du token')
+
+		const scaKey = privateEnv.WISE_SCA_PRIVATE_KEY
+		if (!scaKey) throw new Error('WISE_SCA_PRIVATE_KEY non configuré')
+
+		const signature = createSign('SHA256').update(ott).sign(scaKey, 'base64')
+
+		const res2 = await fetch(url, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+				'x-2fa-approval': ott,
+				'X-Signature': signature
+			}
+		})
+
+		if (res2.ok) return res2.json()
+		const body = await res2.text()
+		throw new Error(`Wise API SCA HTTP ${res2.status}: ${body.substring(0, 200)}`)
+	}
+
+	const body = await res1.text()
+	throw new Error(`Wise API HTTP ${res1.status}: ${body.substring(0, 200)}`)
+}
+
+// Récupère les transactions Wise autour d'une date donnée et cherche DON-XXXXXX
+async function findDonReference(
+	profileId: number,
+	balanceId: number,
+	occurredAt: string
+): Promise<string | null> {
+	const t = new Date(occurredAt)
+	const from = new Date(t.getTime() - 10 * 60 * 1000).toISOString() // -10 min
+	const to = new Date(t.getTime() + 2 * 60 * 1000).toISOString() // +2 min
+
+	const url = `https://api.wise.com/v1/profiles/${profileId}/balance-statements/${balanceId}/statement.json?currency=EUR&intervalStart=${encodeURIComponent(from)}&intervalEnd=${encodeURIComponent(to)}&type=COMPACT`
+
+	const statement = (await wiseApiGet(url)) as WiseStatement
+	const transactions = statement?.transactions ?? []
+
+	console.log(`[wise-webhook] ${transactions.length} transaction(s) dans la fenêtre ±10min`)
+
+	for (const tx of transactions) {
+		if (tx.type !== 'CREDIT') continue
+		const combined = [
+			tx.details?.description ?? '',
+			tx.details?.paymentReference ?? '',
+			tx.referenceNumber ?? ''
+		].join(' ')
+		console.log(
+			`[wise-webhook] tx CREDIT: description="${tx.details?.description}" paymentRef="${tx.details?.paymentReference}" refNumber="${tx.referenceNumber}"`
+		)
+		const match = combined.match(/DON-[A-Z0-9]{6}/)
+		if (match) return match[0]
+	}
+
+	return null
 }
 
 async function callApi4<T = Record<string, unknown>>(
@@ -118,7 +203,7 @@ export const POST: RequestHandler = async ({ request }) => {
 		return json({ error: 'Invalid JSON' }, { status: 400 })
 	}
 
-	// 3. Ne traiter que les crédits EUR (balances#update ou balances#credit selon l'abonnement)
+	// 3. Ne traiter que les crédits EUR
 	if (event.event_type !== 'balances#update' && event.event_type !== 'balances#credit') {
 		return json({ ok: true })
 	}
@@ -126,22 +211,28 @@ export const POST: RequestHandler = async ({ request }) => {
 		return json({ ok: true })
 	}
 
-	// Log complet pour déboguer la structure réelle du payload lors des premiers virements
 	console.log(
-		`[wise-webhook] Crédit reçu: ${event.data.amount}€ via ${event.data.channel_name ?? 'N/A'} - transfer_reference="${event.data.transfer_reference ?? ''}"`
+		`[wise-webhook] Crédit reçu: ${event.data.amount}€ via ${event.data.channel_name ?? 'N/A'}`
 	)
-	console.log('[wise-webhook] Payload complet data:', JSON.stringify(event.data, null, 2))
-	console.log('[wise-webhook] Payload complet root:', JSON.stringify(event, null, 2))
 
-	// 4. Chercher la référence DON-XXXXXX dans transfer_reference
-	const transferRef = event.data?.transfer_reference ?? ''
-	const reference = transferRef.match(/DON-[A-Z0-9]{6}/)?.[0]
+	// 4. Chercher la référence DON-XXXXXX via l'API Wise balance-statements
+	let reference: string | null = null
+	try {
+		reference = await findDonReference(
+			event.data.resource.profile_id,
+			event.data.balance_id,
+			event.data.occurred_at
+		)
+	} catch (e) {
+		console.error('[wise-webhook] Erreur appel API Wise statements:', e)
+		// Ne pas bloquer — retourner 500 pour que Wise réessaie
+		return json({ error: 'Wise API error' }, { status: 500 })
+	}
 
 	if (!reference) {
 		console.log(
-			`[wise-webhook] Virement sans référence DON (${event.data.amount}€, ref="${transferRef}") — aucune action`
+			`[wise-webhook] Virement sans référence DON (${event.data.amount}€) — aucune action`
 		)
-		// Retourner 200 pour que Wise ne réessaie pas
 		return json({ ok: true })
 	}
 
@@ -186,7 +277,6 @@ export const POST: RequestHandler = async ({ request }) => {
 		console.log(`[wise-webhook] ✓ Contribution ${contrib.id} (${reference}) → Completed`)
 	} catch (e) {
 		console.error('[wise-webhook] Erreur CiviCRM:', e)
-		// Retourner 500 pour que Wise réessaie le webhook
 		return json({ error: 'CiviCRM error' }, { status: 500 })
 	}
 
