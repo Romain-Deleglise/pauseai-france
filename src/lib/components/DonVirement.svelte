@@ -682,22 +682,29 @@
 		}
 
 		.confirmation {
-			gap: 0.65rem;
+			gap: 0.5rem;
 		}
 
 		.success-icon {
-			font-size: 2rem;
-			margin-bottom: 0;
+			display: none;
 		}
 
 		.modal-title {
-			margin-bottom: 0.5rem;
-			font-size: 1.2rem;
+			margin-bottom: 0.25rem;
+			font-size: 1.15rem;
+		}
+
+		.confirm-text {
+			font-size: 0.9rem;
 		}
 
 		.rib-card,
 		.reference-box {
-			padding: 0.85rem 1rem;
+			padding: 0.7rem 0.9rem;
+		}
+
+		.rib-row {
+			padding: 0.35rem 0;
 		}
 
 		.reference-value {
@@ -705,7 +712,11 @@
 		}
 
 		.rib-value.mono {
-			font-size: 0.85rem;
+			font-size: 0.82rem;
+		}
+
+		.close-link {
+			display: none;
 		}
 	}
 </style>
