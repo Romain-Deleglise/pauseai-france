@@ -166,10 +166,29 @@
 				<div class="field">
 					<label for="dv-email">Email <span aria-hidden="true">*</span></label>
 					<input id="dv-email" type="email" bind:value={email} autocomplete="email" required />
+					<small class="field-hint"
+						>Nous utiliserons cette adresse pour vous envoyer votre reçu fiscal.</small
+					>
 				</div>
 
 				<fieldset class="amount-fieldset">
 					<legend>Montant du don</legend>
+					<div class="main-amount">
+						<label for="dv-montant" class="sr-only">Montant en euros</label>
+						<div class="main-amount-wrap">
+							<input
+								id="dv-montant"
+								type="number"
+								min="1"
+								step="1"
+								value={montant}
+								on:input={handleCustomInput}
+								on:focus={() => (selectedPreset = null)}
+							/>
+							<span class="main-euro">€</span>
+						</div>
+					</div>
+					<p class="presets-label">Montants suggérés :</p>
 					<div class="presets">
 						{#each PRESETS as preset}
 							<button
@@ -181,21 +200,6 @@
 								{preset}€
 							</button>
 						{/each}
-					</div>
-					<div class="custom-amount">
-						<label for="dv-montant">Autre montant</label>
-						<div class="amount-input-wrap">
-							<input
-								id="dv-montant"
-								type="number"
-								min="1"
-								step="1"
-								value={montant}
-								on:input={handleCustomInput}
-								on:focus={() => (selectedPreset = null)}
-							/>
-							<span class="euro">€</span>
-						</div>
 					</div>
 				</fieldset>
 
@@ -214,8 +218,8 @@
 				<div class="success-icon" aria-hidden="true">✅</div>
 				<h2 id="modal-title" class="modal-title">Merci, {prenom}&nbsp;!</h2>
 				<p class="confirm-text">
-					Votre don de <strong>{montant}€</strong> a bien été enregistré. Effectuez votre virement bancaire
-					avec les coordonnées ci-dessous.
+					Votre don a bien été enregistré. Effectuez maintenant un virement bancaire de
+					<strong>{montant}&nbsp;€ exactement</strong> vers le compte ci-dessous.
 				</p>
 
 				<div class="rib-card">
@@ -382,6 +386,37 @@
 		margin-bottom: 0.75rem;
 	}
 
+	/* Big free amount input */
+	.main-amount {
+		margin-bottom: 1rem;
+	}
+
+	.main-amount-wrap {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+
+	.main-amount-wrap input {
+		width: 9rem;
+		font-size: 2rem;
+		font-weight: 700;
+		padding: 0.5rem 0.75rem;
+		text-align: right;
+	}
+
+	.main-euro {
+		font-size: 2rem;
+		font-weight: 700;
+		color: var(--text);
+	}
+
+	.presets-label {
+		font-size: 0.85rem;
+		color: var(--text-secondary, #676e7a);
+		margin: 0 0 0.5rem;
+	}
+
 	.presets {
 		display: flex;
 		gap: 0.5rem;
@@ -390,13 +425,13 @@
 	}
 
 	.preset-btn {
-		padding: 0.5rem 1.1rem;
+		padding: 0.4rem 0.9rem;
 		border-radius: 20px;
 		border: 2px solid var(--brand);
 		background: transparent;
 		color: var(--brand);
 		font-weight: 600;
-		font-size: 1rem;
+		font-size: 0.95rem;
 		cursor: pointer;
 		transition:
 			background 0.15s,
@@ -409,33 +444,24 @@
 		color: white;
 	}
 
-	.custom-amount {
-		display: flex;
-		align-items: center;
-		gap: 0.75rem;
+	/* Field hint */
+	.field-hint {
+		font-size: 0.82rem;
+		color: var(--text-secondary, #676e7a);
+		margin-top: 0.2rem;
 	}
 
-	.custom-amount label {
-		font-weight: 400;
-		font-size: 0.9rem;
+	/* Screen-reader only */
+	.sr-only {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
 		white-space: nowrap;
-		color: var(--text-secondary, #676e7a);
-	}
-
-	.amount-input-wrap {
-		display: flex;
-		align-items: center;
-		gap: 0.4rem;
-	}
-
-	.amount-input-wrap input {
-		width: 90px;
-		margin-bottom: 0;
-	}
-
-	.euro {
-		font-weight: 600;
-		color: var(--text-secondary, #676e7a);
+		border: 0;
 	}
 
 	/* Error */
