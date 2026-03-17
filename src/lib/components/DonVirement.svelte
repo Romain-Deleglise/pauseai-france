@@ -681,6 +681,36 @@
 			border-radius: 16px 16px 0 0;
 		}
 
+		/* Form step */
+		.field {
+			margin-bottom: 0.6rem;
+		}
+
+		.amount-fieldset {
+			margin-bottom: 0.75rem;
+		}
+
+		.amount-fieldset legend {
+			margin-bottom: 0.5rem;
+		}
+
+		.main-amount {
+			margin-bottom: 0.5rem;
+		}
+
+		.main-amount-wrap input {
+			font-size: 1.5rem;
+			width: 7rem;
+		}
+
+		.main-euro {
+			font-size: 1.5rem;
+		}
+
+		.presets-label {
+			margin-bottom: 0.35rem;
+		}
+
 		.confirmation {
 			gap: 0.5rem;
 		}
