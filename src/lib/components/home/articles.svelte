@@ -72,7 +72,7 @@
 				blurb={article.description}
 				url={article.slug ? `/newsletters/${article.slug}` : article.url}
 				category={article.type}
-				date={article.date || ""}
+				date={article.date || ''}
 			/>
 		{/each}
 	</div>
