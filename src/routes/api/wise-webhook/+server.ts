@@ -113,8 +113,8 @@ export const POST: RequestHandler = async ({ request }) => {
 		return json({ error: 'Invalid JSON' }, { status: 400 })
 	}
 
-	// 3. Ne traiter que les crédits EUR sur balances#update
-	if (event.event_type !== 'balances#update') {
+	// 3. Ne traiter que les crédits EUR (balances#update ou balances#credit selon l'abonnement)
+	if (event.event_type !== 'balances#update' && event.event_type !== 'balances#credit') {
 		return json({ ok: true })
 	}
 	if (event.data?.transaction_type !== 'credit' || event.data?.currency !== 'EUR') {
