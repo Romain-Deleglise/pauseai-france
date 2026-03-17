@@ -218,9 +218,27 @@
 				<div class="success-icon" aria-hidden="true">✅</div>
 				<h2 id="modal-title" class="modal-title">Merci, {prenom}&nbsp;!</h2>
 				<p class="confirm-text">
-					Votre don a bien été enregistré. Effectuez maintenant un virement bancaire de
-					<strong>{montant}&nbsp;€ exactement</strong> vers le compte ci-dessous.
+					Pour finaliser votre don de <strong>{montant}&nbsp;€</strong>, effectuez un virement
+					bancaire avec les coordonnées ci-dessous.
 				</p>
+
+				<div class="reference-box">
+					<p class="reference-label">Référence à indiquer dans le libellé du virement</p>
+					<div class="reference-row">
+						<p class="reference-value">{reference}</p>
+						<button
+							type="button"
+							class="copy-inline copy-ref"
+							on:click={() => copyToClipboard(reference, 'ref')}
+							aria-label="Copier la référence"
+						>
+							{copiedField === 'ref' ? '✓' : '📋'}
+						</button>
+					</div>
+					<p class="reference-note">
+						⚠️ Sans cette référence, votre don ne pourra pas être identifié.
+					</p>
+				</div>
 
 				<div class="rib-card">
 					<div class="rib-row">
@@ -261,24 +279,9 @@
 					</div>
 				</div>
 
-				<div class="reference-box">
-					<p class="reference-label">Référence à indiquer dans le libellé du virement</p>
-					<div class="reference-row">
-						<p class="reference-value">{reference}</p>
-						<button
-							type="button"
-							class="copy-inline copy-ref"
-							on:click={() => copyToClipboard(reference, 'ref')}
-							aria-label="Copier la référence"
-						>
-							{copiedField === 'ref' ? '✓' : '📋'}
-						</button>
-					</div>
-					<p class="reference-note">
-						⚠️ Sans cette référence, votre don ne pourra pas être identifié.
-					</p>
-				</div>
-
+				<button type="button" class="done-btn" on:click={close}>
+					C'est fait, j'ai viré {montant}&nbsp;€
+				</button>
 				<button type="button" class="close-link" on:click={close}>Fermer</button>
 			</div>
 		{/if}
@@ -625,6 +628,26 @@
 
 	.copy-ref {
 		font-size: 1.2rem;
+	}
+
+	.done-btn {
+		width: 100%;
+		padding: 0.85rem;
+		background: var(--brand);
+		color: white;
+		border: none;
+		border-radius: 8px;
+		font-size: 1.05rem;
+		font-weight: 600;
+		cursor: pointer;
+		transition:
+			background 0.15s,
+			transform 0.15s;
+	}
+
+	.done-btn:hover {
+		background: #ffa945;
+		transform: translateY(-1px);
 	}
 
 	.close-link {
