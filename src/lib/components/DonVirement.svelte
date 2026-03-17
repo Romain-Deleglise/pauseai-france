@@ -34,9 +34,22 @@
 		errorMessage = ''
 		reference = ''
 		copiedField = null
-		document.body.style.overflow = 'hidden'
-	} else {
-		document.body.style.overflow = ''
+	}
+
+	$: if (typeof document !== 'undefined') {
+		if (show) {
+			const scrollY = window.scrollY
+			document.body.style.position = 'fixed'
+			document.body.style.top = `-${scrollY}px`
+			document.body.style.width = '100%'
+			document.body.dataset.scrollY = String(scrollY)
+		} else {
+			const scrollY = parseInt(document.body.dataset.scrollY ?? '0')
+			document.body.style.position = ''
+			document.body.style.top = ''
+			document.body.style.width = ''
+			if (scrollY) window.scrollTo(0, scrollY)
+		}
 	}
 
 	$: if (show && firstFocusEl) {
