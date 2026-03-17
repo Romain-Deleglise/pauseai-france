@@ -670,7 +670,38 @@
 		}
 
 		.modal {
-			padding: 1.5rem;
+			padding: 1.25rem 1rem;
+			top: auto;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			transform: none;
+			width: 100%;
+			max-height: 92dvh;
+			border-radius: 16px 16px 0 0;
+		}
+
+		.confirmation {
+			gap: 0.65rem;
+		}
+
+		.success-icon {
+			font-size: 2rem;
+			margin-bottom: 0;
+		}
+
+		.modal-title {
+			margin-bottom: 0.5rem;
+			font-size: 1.2rem;
+		}
+
+		.rib-card,
+		.reference-box {
+			padding: 0.85rem 1rem;
+		}
+
+		.reference-value {
+			font-size: 1.3rem;
 		}
 
 		.rib-value.mono {
