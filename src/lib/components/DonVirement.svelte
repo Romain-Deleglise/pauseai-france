@@ -34,6 +34,9 @@
 		errorMessage = ''
 		reference = ''
 		copiedField = null
+		document.body.style.overflow = 'hidden'
+	} else {
+		document.body.style.overflow = ''
 	}
 
 	$: if (show && firstFocusEl) {
