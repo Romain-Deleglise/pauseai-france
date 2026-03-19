@@ -19,8 +19,9 @@
 		name: string
 		city: string
 		commitments: string
-		charterFile: string
-		charterType: 'image' | 'pdf'
+		charterFile?: string
+		charterType?: 'image' | 'pdf'
+		engagements?: string[]
 	}
 
 	const candidates: Candidate[] = [
@@ -103,6 +104,23 @@
 			commitments: '10/14',
 			charterFile: '/chartes-municipales-2026/Antoine_Mikolajczak.pdf',
 			charterType: 'pdf'
+		},
+		{
+			id: 'romain-laveau-angers',
+			name: 'Romain Laveau',
+			city: 'Angers',
+			commitments: '9/14',
+			engagements: [
+				"mettre à disposition dans les bibliothèques 5 livres de référence sur l'IA",
+				'adopter un vœu municipal appelant le gouvernement à une pause du développement des modèles les plus avancés',
+				'signer et relayer publiquement une tribune nationale portée par Pause IA appelant à une pause',
+				"publier une prise de position officielle du maire sur les risques de l'IA et la nécessité d'une pause",
+				'interpeller les parlementaires via un courrier',
+				'afficher le soutien de la commune sur les supports institutionnels',
+				"relayer la démarche auprès des associations d'élu·es",
+				'soutenir les associations locales sur les enjeux numériques et démocratiques',
+				"encourager les établissements scolaires et préscolaires à aborder l'IA sous un angle critique"
+			]
 		}
 	]
 
@@ -157,6 +175,25 @@
 			title: 'Journal de 18h du vendredi 13 mars 2026 (15:30 – 17:22)',
 			url: 'https://www.radiofrance.fr/franceculture/podcasts/journal-de-18h/journal-de-18h-emission-du-vendredi-13-mars-2026-9405796',
 			date: '2026-03-13'
+		},
+		{
+			source: 'Next',
+			title: "Quand l'IA s'invite dans les municipales",
+			url: 'https://next.ink/229085/quand-lia-sinvite-dans-les-municipales/',
+			date: '2026-03-17'
+		},
+		{
+			source: 'Presse Agence',
+			title: 'Avignon : Clémence Peyrot : « Les candidats aux municipales doivent se positionner »',
+			url: 'https://presseagence.fr/avignon-clemence-peyrot-les-candidats-aux-municipales-doivent-se-positionner/',
+			date: '2026-03-13'
+		},
+		{
+			source: 'Presse Agence',
+			title:
+				'Nice : Maxime Fournes : « Les candidats aux municipales doivent se positionner clairement »',
+			url: 'https://presseagence.fr/nice-maxime-fournes-les-candidats-aux-municipales-doivent-se-positionner-clairement/',
+			date: '2026-03-10'
 		}
 	].sort((a, b) => {
 		if (!a.date && !b.date) return 0
@@ -300,7 +337,13 @@
 						</span>
 					</div>
 					<span class="view-charter">
-						{isEn ? 'View charter' : 'Voir la charte'}
+						{candidate.engagements
+							? isEn
+								? 'View commitments'
+								: 'Voir les engagements'
+							: isEn
+								? 'View charter'
+								: 'Voir la charte'}
 						<svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
 							<path
 								d="M5 12h14M13 6l6 6-6 6"
@@ -368,7 +411,20 @@
 					&times;
 				</button>
 			</div>
-			{#if selectedCandidate.charterType === 'pdf'}
+			{#if selectedCandidate.engagements}
+				<div class="charter-engagements">
+					<p class="engagements-intro">
+						{isEn
+							? `${selectedCandidate.name} commits, once elected, to carry out the following actions:`
+							: `${selectedCandidate.name} s'engage, une fois élu·e, à réaliser les actions suivantes :`}
+					</p>
+					<ul class="engagements-list">
+						{#each selectedCandidate.engagements as engagement}
+							<li>{engagement}</li>
+						{/each}
+					</ul>
+				</div>
+			{:else if selectedCandidate.charterType === 'pdf'}
 				<iframe
 					src={selectedCandidate.charterFile}
 					title={isEn
@@ -787,6 +843,49 @@
 	.close-button--top:hover {
 		background: rgba(0, 0, 0, 0.85);
 		color: white;
+	}
+
+	.charter-engagements {
+		flex: 1;
+		min-height: 0;
+		overflow-y: auto;
+		padding: 1.5rem 2rem;
+	}
+
+	.engagements-intro {
+		font-size: 0.95rem;
+		color: var(--text-secondary, #555);
+		margin-bottom: 1.25rem;
+		font-style: italic;
+	}
+
+	.engagements-list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+	}
+
+	.engagements-list li {
+		display: flex;
+		align-items: flex-start;
+		gap: 0.75rem;
+		font-size: 0.975rem;
+		line-height: 1.55;
+		padding: 0.75rem 1rem;
+		background: #fafafa;
+		border-left: 3px solid var(--brand, #ff9416);
+		border-radius: 0 6px 6px 0;
+	}
+
+	.engagements-list li::before {
+		content: '✓';
+		color: var(--brand, #ff9416);
+		font-weight: 700;
+		flex-shrink: 0;
+		margin-top: 0.05em;
 	}
 
 	.charter-iframe {
