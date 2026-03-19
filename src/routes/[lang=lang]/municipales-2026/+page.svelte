@@ -106,6 +106,14 @@
 			charterType: 'pdf'
 		},
 		{
+			id: 'cecile-baudouin-brest',
+			name: 'Cécile Baudouin',
+			city: 'Brest',
+			commitments: '14/14',
+			charterFile: '/chartes-municipales-2026/Cecile_Baudouin.pdf',
+			charterType: 'pdf'
+		},
+		{
 			id: 'romain-laveau-angers',
 			name: 'Romain Laveau',
 			city: 'Angers',
