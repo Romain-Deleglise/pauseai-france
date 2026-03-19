@@ -17,7 +17,6 @@
 	let selectedPreset: number | null = 50
 	let isLoading = false
 	let errorMessage = ''
-	let reference = ''
 
 	let copiedField: string | null = null
 
@@ -32,7 +31,6 @@
 		montant = 50
 		selectedPreset = 50
 		errorMessage = ''
-		reference = ''
 		copiedField = null
 	}
 
@@ -114,9 +112,8 @@
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ prenom: prenom.trim(), nom: nom.trim(), email, montant })
 			})
-			const data = (await res.json()) as { success: boolean; reference?: string; error?: string }
-			if (data.success && data.reference) {
-				reference = data.reference
+			const data = (await res.json()) as { success: boolean; error?: string }
+			if (data.success) {
 				step = 2
 			} else {
 				errorMessage = data.error ?? 'Une erreur est survenue.'
@@ -237,24 +234,6 @@
 					Pour finaliser votre don de <strong>{montant}&nbsp;€</strong>, effectuez un virement
 					bancaire avec les coordonnées ci-dessous.
 				</p>
-
-				<div class="reference-box">
-					<p class="reference-label">Référence à indiquer dans le libellé du virement</p>
-					<div class="reference-row">
-						<p class="reference-value">{reference}</p>
-						<button
-							type="button"
-							class="copy-inline copy-ref"
-							on:click={() => copyToClipboard(reference, 'ref')}
-							aria-label="Copier la référence"
-						>
-							{copiedField === 'ref' ? '✓' : '📋'}
-						</button>
-					</div>
-					<p class="reference-note">
-						⚠️ Sans cette référence, votre don ne pourra pas être identifié.
-					</p>
-				</div>
 
 				<div class="rib-card">
 					<div class="rib-row">
@@ -578,38 +557,6 @@
 		letter-spacing: 0.04em;
 	}
 
-	/* Reference box */
-	.reference-box {
-		width: 100%;
-		background: var(--brand-light, #fff5e8);
-		border: 2px solid var(--brand);
-		border-radius: 10px;
-		padding: 1.25rem 1.5rem;
-		text-align: center;
-	}
-
-	.reference-label {
-		font-weight: 600;
-		font-size: 0.9rem;
-		color: var(--text);
-		margin: 0 0 0.5rem;
-	}
-
-	.reference-value {
-		font-size: 1.6rem;
-		font-weight: 700;
-		color: var(--brand);
-		font-family: 'IBM Plex Mono', 'Courier New', monospace;
-		letter-spacing: 0.1em;
-		margin: 0 0 0.5rem;
-	}
-
-	.reference-note {
-		font-size: 0.85rem;
-		color: #555;
-		margin: 0;
-	}
-
 	/* Inline copy buttons */
 	.copy-inline {
 		background: none;
@@ -629,21 +576,6 @@
 	.copy-inline:hover {
 		background: var(--brand-light, #fff5e8);
 		border-color: var(--brand);
-	}
-
-	.reference-row {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		gap: 0.5rem;
-	}
-
-	.reference-row .reference-value {
-		margin: 0;
-	}
-
-	.copy-ref {
-		font-size: 1.2rem;
 	}
 
 	.done-btn {
@@ -744,8 +676,7 @@
 			font-size: 0.9rem;
 		}
 
-		.rib-card,
-		.reference-box {
+		.rib-card {
 			padding: 0.7rem 0.9rem;
 		}
 

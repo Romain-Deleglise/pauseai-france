@@ -233,7 +233,7 @@ export const POST: RequestHandler = async ({ request }) => {
 			}
 		})
 
-		return json({ success: true, reference })
+		return json({ success: true })
 	} catch (error) {
 		console.error('[don-virement] error:', error)
 		return json(
