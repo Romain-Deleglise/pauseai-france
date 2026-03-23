@@ -19,19 +19,19 @@
 	</section>
 
 	<section class="campaigns-grid">
-		<div class="campaign-card">
+		<div class="campaign-card ended">
+			<span class="badge badge-ended">Terminée</span>
 			<h2>Élections municipales 2026</h2>
 			<p>Sensibilisons nos futurs élus locaux et demandons-leur de signer la charte Pause IA.</p>
-			<Button href="/municipales-2026">Voir la campagne</Button>
 		</div>
 
-		<div class="campaign-card">
+		<div class="campaign-card ended">
+			<span class="badge badge-ended">Terminée</span>
 			<h2>Sommet de l'IA 2026</h2>
 			<p>
 				Mobilisons-nous pour que le Sommet international de l'IA en Inde place la sécurité au
 				premier plan.
 			</p>
-			<Button href="/sommet-ia-2026">Voir la campagne</Button>
 		</div>
 	</section>
 </article>
@@ -72,6 +72,26 @@
 		flex-direction: column;
 		justify-content: space-between;
 		align-items: flex-start;
+	}
+
+	.campaign-card.ended {
+		opacity: 0.75;
+	}
+
+	.badge {
+		display: inline-block;
+		font-size: 0.75rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		padding: 0.2rem 0.6rem;
+		border-radius: 999px;
+		margin-bottom: 1rem;
+	}
+
+	.badge-ended {
+		background: #f5f5f5;
+		color: #888;
 	}
 
 	h2 {

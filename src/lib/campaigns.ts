@@ -49,8 +49,9 @@ export const campaigns: Campaign[] = [
 	},
 	{
 		slug: 'municipales-2026',
-		status: 'active',
+		status: 'ended',
 		startDate: '2026-03',
+		endDate: '2026-03',
 		fr: {
 			title: 'Élections municipales 2026',
 			description:
@@ -66,9 +67,11 @@ export const campaigns: Campaign[] = [
 	}
 ]
 
-/** Active campaigns first, then ended ones — each group sorted newest first. */
+const byStartDateDesc = (a: Campaign, b: Campaign) => b.startDate.localeCompare(a.startDate)
+
+/** Active campaigns first (newest first), then ended ones (newest first). */
 export function getSortedCampaigns(): Campaign[] {
-	const active = campaigns.filter((c) => c.status === 'active')
-	const ended = campaigns.filter((c) => c.status === 'ended')
+	const active = campaigns.filter((c) => c.status === 'active').sort(byStartDateDesc)
+	const ended = campaigns.filter((c) => c.status === 'ended').sort(byStartDateDesc)
 	return [...active, ...ended]
 }
