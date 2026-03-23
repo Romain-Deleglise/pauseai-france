@@ -49,8 +49,9 @@ export const campaigns: Campaign[] = [
 	},
 	{
 		slug: 'municipales-2026',
-		status: 'active',
+		status: 'ended',
 		startDate: '2026-03',
+		endDate: '2026-03',
 		fr: {
 			title: 'Élections municipales 2026',
 			description:
