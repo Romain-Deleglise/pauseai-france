@@ -707,9 +707,12 @@
 				{t.presse.coverage_title}
 				<span class="coverage-count">{pressCoverage.length}</span>
 			</h2>
-			{#each coverageYears as year}
-				<div class="coverage-year-group">
-					<h3 class="coverage-year">{year}</h3>
+			{#each coverageYears as year, i}
+				<details class="coverage-year-group" open={i === 0}>
+					<summary class="coverage-year">
+						{year}
+						<span class="coverage-year-count">{coverageByYear[year].length}</span>
+					</summary>
 					<ul class="coverage-list">
 						{#each coverageByYear[year] as item (item.id)}
 							<li>
@@ -729,7 +732,7 @@
 							</li>
 						{/each}
 					</ul>
-				</div>
+				</details>
 			{/each}
 		</section>
 	{/if}
@@ -1398,18 +1401,52 @@
 	}
 
 	.coverage-year-group {
-		margin-bottom: 2rem;
+		margin-bottom: 0.5rem;
+		border-bottom: 1px solid var(--border);
+	}
+
+	.coverage-year-group:last-child {
+		border-bottom: none;
 	}
 
 	.coverage-year {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		list-style: none;
 		font-size: 0.8rem;
 		font-weight: 700;
 		text-transform: uppercase;
 		letter-spacing: 0.08em;
 		color: var(--text-secondary);
-		margin: 0 0 0.75rem;
-		padding-bottom: 0.5rem;
-		border-bottom: 1px solid var(--border);
+		padding: 0.6rem 0.25rem;
+		cursor: pointer;
+		user-select: none;
+	}
+
+	.coverage-year::-webkit-details-marker {
+		display: none;
+	}
+
+	.coverage-year::before {
+		content: '▶';
+		font-size: 0.55rem;
+		transition: transform 0.15s ease;
+		opacity: 0.5;
+	}
+
+	details[open] > .coverage-year::before {
+		transform: rotate(90deg);
+	}
+
+	.coverage-year-count {
+		font-size: 0.7rem;
+		font-weight: 600;
+		background: var(--bg-subtle);
+		border: 1px solid var(--border);
+		color: var(--text-secondary);
+		padding: 0.05rem 0.4rem;
+		border-radius: 999px;
 	}
 
 	.coverage-list {
