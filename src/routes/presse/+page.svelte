@@ -31,6 +31,26 @@
 	)
 	$: coverageYears = Object.keys(coverageByYear).sort((a, b) => b.localeCompare(a))
 
+	// Controlled open/close state for year groups
+	let openYears = new Set<string>()
+	let coverageInitialized = false
+	$: if (coverageYears.length > 0 && !coverageInitialized) {
+		openYears = new Set([coverageYears[0]])
+		coverageInitialized = true
+	}
+	$: allOpen = coverageYears.length > 0 && coverageYears.every((y) => openYears.has(y))
+
+	function toggleYear(year: string, e: Event) {
+		const el = e.currentTarget as HTMLDetailsElement
+		if (el.open) openYears.add(year)
+		else openYears.delete(year)
+		openYears = openYears
+	}
+
+	function toggleAll() {
+		openYears = allOpen ? new Set() : new Set(coverageYears)
+	}
+
 	const PER_PAGE = 15
 
 	const fallbackPressReleases: PressRelease[] = [
@@ -692,17 +712,24 @@
 
 	{#if pressCoverage.length > 0}
 		<section class="coverage-section">
-			<h2>
-				<Newspaper
-					size="1.25rem"
-					style="display:inline;vertical-align:-0.15em;margin-right:0.375rem"
-				/>
-				Ils parlent de nous
-				<span class="coverage-count">{pressCoverage.length}</span>
-			</h2>
-			{#each coverageYears as year, i}
-				<details class="coverage-year-group" open={i === 0}>
+			<div class="coverage-header">
+				<h2>
+					<Newspaper size="1.1rem" style="display:inline;vertical-align:-0.1em" />
+					Ils parlent de nous
+					<span class="coverage-count">{pressCoverage.length}</span>
+				</h2>
+				<button class="toggle-all-btn" on:click={toggleAll}>
+					{allOpen ? 'Tout replier' : 'Tout déplier'}
+				</button>
+			</div>
+			{#each coverageYears as year}
+				<details
+					class="coverage-year-group"
+					open={openYears.has(year)}
+					on:toggle={(e) => toggleYear(year, e)}
+				>
 					<summary class="coverage-year">
+						<span class="coverage-year-chevron">▶</span>
 						{year}
 						<span class="coverage-year-count">{coverageByYear[year].length}</span>
 					</summary>
@@ -716,11 +743,9 @@
 											<time class="coverage-date" datetime={item.date}>{formatDate(item.date)}</time
 											>
 										{/if}
+										<MoveUpRight size="0.75rem" class="coverage-external-icon" />
 									</div>
-									<span class="coverage-title">
-										{item.title}
-										<MoveUpRight size="0.85rem" class="coverage-external-icon" />
-									</span>
+									<span class="coverage-title">{item.title}</span>
 								</a>
 							</li>
 						{/each}
@@ -1377,14 +1402,21 @@
 		color: var(--white);
 	}
 
-	/* Press coverage section */
+	/* ── Press coverage section ──────────────────────────────────── */
 	.coverage-section {
 		margin-top: 3rem;
 	}
 
-	.coverage-section h2 {
-		margin-top: 0;
-		margin-bottom: 1.5rem;
+	.coverage-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		margin-bottom: 0.75rem;
+		gap: 1rem;
+	}
+
+	.coverage-header h2 {
+		margin: 0;
 		font-size: 1.4rem;
 		display: flex;
 		align-items: center;
@@ -1392,7 +1424,7 @@
 	}
 
 	.coverage-count {
-		font-size: 0.8rem;
+		font-size: 0.78rem;
 		font-weight: 600;
 		background: var(--bg-subtle);
 		border: 1px solid var(--border);
@@ -1401,8 +1433,28 @@
 		border-radius: 999px;
 	}
 
+	.toggle-all-btn {
+		font-size: 0.78rem;
+		font-weight: 500;
+		color: var(--text-secondary);
+		background: none;
+		border: 1px solid var(--border);
+		border-radius: 0.375rem;
+		padding: 0.25rem 0.625rem;
+		cursor: pointer;
+		white-space: nowrap;
+		transition:
+			border-color 0.15s,
+			color 0.15s;
+	}
+
+	.toggle-all-btn:hover {
+		border-color: var(--brand);
+		color: var(--text);
+	}
+
+	/* Year groups */
 	.coverage-year-group {
-		margin-bottom: 0.5rem;
 		border-bottom: 1px solid var(--border);
 	}
 
@@ -1415,12 +1467,12 @@
 		align-items: center;
 		gap: 0.5rem;
 		list-style: none;
-		font-size: 0.8rem;
+		font-size: 0.75rem;
 		font-weight: 700;
 		text-transform: uppercase;
 		letter-spacing: 0.08em;
 		color: var(--text-secondary);
-		padding: 0.6rem 0.25rem;
+		padding: 0.55rem 0.25rem;
 		cursor: pointer;
 		user-select: none;
 	}
@@ -1429,19 +1481,19 @@
 		display: none;
 	}
 
-	.coverage-year::before {
-		content: '▶';
-		font-size: 0.55rem;
+	.coverage-year-chevron {
+		font-size: 0.5rem;
+		opacity: 0.45;
 		transition: transform 0.15s ease;
-		opacity: 0.5;
+		display: inline-block;
 	}
 
-	details[open] > .coverage-year::before {
+	details[open] > .coverage-year .coverage-year-chevron {
 		transform: rotate(90deg);
 	}
 
 	.coverage-year-count {
-		font-size: 0.7rem;
+		font-size: 0.68rem;
 		font-weight: 600;
 		background: var(--bg-subtle);
 		border: 1px solid var(--border);
@@ -1450,75 +1502,72 @@
 		border-radius: 999px;
 	}
 
+	/* Article list */
 	.coverage-list {
 		list-style: none;
-		margin: 0;
+		margin: 0 0 0.5rem;
 		padding: 0;
-		display: flex;
-		flex-direction: column;
-		gap: 0.25rem;
 	}
 
 	.coverage-item {
 		display: flex;
 		flex-direction: column;
-		gap: 0.2rem;
-		padding: 0.625rem 0.75rem;
-		border-radius: 0.5rem;
+		gap: 0.15rem;
+		padding: 0.5rem 0.75rem;
+		border-radius: 0.375rem;
+		border-left: 2px solid transparent;
 		text-decoration: none;
 		color: var(--text);
-		transition: background-color 0.15s ease;
+		transition:
+			background-color 0.15s,
+			border-color 0.15s;
 	}
 
 	.coverage-item:hover {
 		background-color: var(--bg-subtle);
+		border-left-color: var(--brand);
 		color: var(--text);
 	}
 
 	.coverage-item-meta {
 		display: flex;
 		align-items: center;
-		gap: 0.5rem;
+		gap: 0.4rem;
 	}
 
 	.coverage-source {
-		font-size: 0.72rem;
+		font-size: 0.7rem;
 		font-weight: 700;
 		text-transform: uppercase;
 		letter-spacing: 0.04em;
 		color: var(--brand);
+		background: color-mix(in srgb, var(--brand) 10%, transparent);
+		padding: 0.1rem 0.4rem;
+		border-radius: 0.25rem;
 	}
 
 	.coverage-date {
-		font-size: 0.75rem;
+		font-size: 0.72rem;
 		color: var(--text-secondary);
-	}
-
-	.coverage-date::before {
-		content: '·';
-		margin-right: 0.5rem;
-		opacity: 0.4;
-	}
-
-	.coverage-title {
-		font-size: 0.9rem;
-		font-weight: 500;
-		line-height: 1.45;
-		color: var(--text);
-		display: flex;
-		align-items: baseline;
-		gap: 0.3rem;
 	}
 
 	:global(.coverage-external-icon) {
 		flex-shrink: 0;
-		opacity: 0;
-		transition: opacity 0.15s ease;
+		opacity: 0.2;
+		transition: opacity 0.15s;
 		color: var(--text-secondary);
+		margin-left: auto;
 	}
 
 	.coverage-item:hover :global(.coverage-external-icon) {
-		opacity: 1;
+		opacity: 0.7;
+	}
+
+	.coverage-title {
+		font-size: 0.88rem;
+		font-weight: 500;
+		line-height: 1.45;
+		color: var(--text);
 	}
 
 	/* About section */
