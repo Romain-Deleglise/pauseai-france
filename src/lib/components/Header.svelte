@@ -765,16 +765,22 @@
 		top: 0;
 		right: 0;
 		transform: translateX(100%);
-		transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		transition:
+			transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+			box-shadow 0.3s ease;
 		z-index: 1000;
 		overflow: hidden;
 		display: flex;
 		flex-direction: column;
-		box-shadow: -8px 0 40px rgba(0, 0, 0, 0.12);
+		/* Shadow is hidden while sidebar is off-screen to avoid a visible
+		   gray glow leaking onto the right/bottom edge of the viewport on
+		   mobile. It fades in as the sidebar slides open. */
+		box-shadow: none;
 	}
 
 	.sidebar.open {
 		transform: translateX(0);
+		box-shadow: -8px 0 40px rgba(0, 0, 0, 0.12);
 	}
 
 	.sidebar-backdrop {
