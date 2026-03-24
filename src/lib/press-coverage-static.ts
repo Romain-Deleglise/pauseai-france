@@ -126,7 +126,7 @@ export const staticPressCoverage: PressCoverage[] = [
 		title:
 			"À Paris et dans le monde, les inquiets de l'intelligence artificielle appellent à une pause",
 		source: 'La Tribune',
-		date: '2025-02-11', // approx. — autour du Sommet IA Paris
+		date: '2024-05-14',
 		url: 'https://www.latribune.fr/technos-medias/informatique/a-paris-et-dans-le-monde-les-inquiets-de-l-intelligence-artificielle-appellent-a-une-pause-997475.html',
 		order: 0,
 		visible: true
@@ -155,16 +155,16 @@ export const staticPressCoverage: PressCoverage[] = [
 		title:
 			'Pas de futur sans IA sûre : des technophiles alertent sur les dérapages des IA génératives',
 		source: "L'ADN",
-		date: '2024-03-01', // approx.
+		date: '2024-05-15',
 		url: 'https://www.ladn.eu/tech-a-suivre/pas-de-futur-sans-ia-sure-des-technophiles-alertent-sur-les-derapages-des-ia-generatives/',
 		order: 0,
 		visible: true
 	},
 	{
-		id: 'static-nextink-launch-2023',
+		id: 'static-nextink-launch-2024-09-12',
 		title: "Des militants de la sécurité de l'intelligence artificielle lancent Pause IA en France",
 		source: 'Next.ink',
-		date: '2023-11-01', // approx. — création de l'association
+		date: '2024-09-12',
 		url: 'https://next.ink/149818/des-militants-de-la-securite-de-lintelligence-artificielle-lancent-pause-ia-en-france/',
 		order: 0,
 		visible: true

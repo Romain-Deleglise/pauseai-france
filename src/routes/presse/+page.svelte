@@ -20,6 +20,17 @@
 		return new Date(b.date).getTime() - new Date(a.date).getTime()
 	})
 
+	$: coverageByYear = pressCoverage.reduce(
+		(acc, item) => {
+			const year = item.date ? item.date.slice(0, 4) : '?'
+			if (!acc[year]) acc[year] = []
+			acc[year].push(item)
+			return acc
+		},
+		{} as Record<string, PressCoverage[]>
+	)
+	$: coverageYears = Object.keys(coverageByYear).sort((a, b) => b.localeCompare(a))
+
 	const PER_PAGE = 15
 
 	const fallbackPressReleases: PressRelease[] = [
@@ -687,18 +698,32 @@
 					style="display:inline;vertical-align:-0.15em;margin-right:0.375rem"
 				/>
 				Ils parlent de nous
+				<span class="coverage-count">{pressCoverage.length}</span>
 			</h2>
-			<div class="coverage-grid">
-				{#each pressCoverage as item (item.id)}
-					<a class="coverage-card" href={item.url} target="_blank" rel="noopener noreferrer">
-						<span class="coverage-source">{item.source}</span>
-						<span class="coverage-title">{item.title}</span>
-						{#if item.date}
-							<time class="coverage-date" datetime={item.date}>{formatDate(item.date)}</time>
-						{/if}
-					</a>
-				{/each}
-			</div>
+			{#each coverageYears as year}
+				<div class="coverage-year-group">
+					<h3 class="coverage-year">{year}</h3>
+					<ul class="coverage-list">
+						{#each coverageByYear[year] as item (item.id)}
+							<li>
+								<a class="coverage-item" href={item.url} target="_blank" rel="noopener noreferrer">
+									<div class="coverage-item-meta">
+										<span class="coverage-source">{item.source}</span>
+										{#if item.date}
+											<time class="coverage-date" datetime={item.date}>{formatDate(item.date)}</time
+											>
+										{/if}
+									</div>
+									<span class="coverage-title">
+										{item.title}
+										<MoveUpRight size="0.85rem" class="coverage-external-icon" />
+									</span>
+								</a>
+							</li>
+						{/each}
+					</ul>
+				</div>
+			{/each}
 		</section>
 	{/if}
 
@@ -1356,57 +1381,107 @@
 
 	.coverage-section h2 {
 		margin-top: 0;
-		margin-bottom: 1.25rem;
+		margin-bottom: 1.5rem;
 		font-size: 1.4rem;
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
 	}
 
-	.coverage-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
-		gap: 1rem;
+	.coverage-count {
+		font-size: 0.8rem;
+		font-weight: 600;
+		background: var(--bg-subtle);
+		border: 1px solid var(--border);
+		color: var(--text-secondary);
+		padding: 0.1rem 0.5rem;
+		border-radius: 999px;
 	}
 
-	.coverage-card {
+	.coverage-year-group {
+		margin-bottom: 2rem;
+	}
+
+	.coverage-year {
+		font-size: 0.8rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: var(--text-secondary);
+		margin: 0 0 0.75rem;
+		padding-bottom: 0.5rem;
+		border-bottom: 1px solid var(--border);
+	}
+
+	.coverage-list {
+		list-style: none;
+		margin: 0;
+		padding: 0;
 		display: flex;
 		flex-direction: column;
-		gap: 0.375rem;
-		padding: 1.125rem 1.25rem;
-		background-color: var(--white);
-		border: 1px solid var(--border);
-		border-radius: 0.625rem;
-		text-decoration: none;
-		color: var(--text);
-		transition:
-			transform 0.2s ease,
-			box-shadow 0.2s ease,
-			border-color 0.2s ease;
+		gap: 0.25rem;
 	}
 
-	.coverage-card:hover {
-		transform: translateY(-2px);
-		box-shadow: 0 6px 16px -4px rgba(0, 0, 0, 0.1);
-		border-color: var(--brand);
+	.coverage-item {
+		display: flex;
+		flex-direction: column;
+		gap: 0.2rem;
+		padding: 0.625rem 0.75rem;
+		border-radius: 0.5rem;
+		text-decoration: none;
 		color: var(--text);
+		transition: background-color 0.15s ease;
+	}
+
+	.coverage-item:hover {
+		background-color: var(--bg-subtle);
+		color: var(--text);
+	}
+
+	.coverage-item-meta {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
 	}
 
 	.coverage-source {
-		font-size: 0.75rem;
+		font-size: 0.72rem;
 		font-weight: 700;
 		text-transform: uppercase;
 		letter-spacing: 0.04em;
 		color: var(--brand);
 	}
 
-	.coverage-title {
-		font-size: 0.925rem;
-		font-weight: 600;
-		line-height: 1.4;
-		color: var(--text);
+	.coverage-date {
+		font-size: 0.75rem;
+		color: var(--text-secondary);
 	}
 
-	.coverage-date {
-		font-size: 0.8rem;
+	.coverage-date::before {
+		content: '·';
+		margin-right: 0.5rem;
+		opacity: 0.4;
+	}
+
+	.coverage-title {
+		font-size: 0.9rem;
+		font-weight: 500;
+		line-height: 1.45;
+		color: var(--text);
+		display: flex;
+		align-items: baseline;
+		gap: 0.3rem;
+	}
+
+	:global(.coverage-external-icon) {
+		flex-shrink: 0;
+		opacity: 0;
+		transition: opacity 0.15s ease;
 		color: var(--text-secondary);
+	}
+
+	.coverage-item:hover :global(.coverage-external-icon) {
+		opacity: 1;
 	}
 
 	/* About section */
