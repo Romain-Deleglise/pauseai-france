@@ -2,17 +2,71 @@ import type { PressCoverage } from '$lib/notion'
 
 /**
  * Static press coverage — source de vérité dans le dépôt Git.
- * Ces articles sont fusionnés avec ceux venant de Notion dans les +page.server.ts.
- * Dates marquées "approx." : à corriger si la date exacte est connue.
+ * Ajouter ici tout nouvel article mentionnant l'association.
  */
 export const staticPressCoverage: PressCoverage[] = [
 	// ── Campagne élections municipales 2026 ─────────────────────────────────
 	{
+		id: 'static-next-municipales-2026-03-17',
+		title: "Quand l'IA s'invite dans les municipales",
+		source: 'Next',
+		date: '2026-03-17',
+		url: 'https://next.ink/229085/quand-lia-sinvite-dans-les-municipales/',
+		order: 0,
+		visible: true
+	},
+	{
 		id: 'static-france-culture-2026-03-13',
-		title: 'Journal de 18h – émission du vendredi 13 mars 2026',
+		title: 'Journal de 18h du vendredi 13 mars 2026 (15:30 – 17:22)',
 		source: 'France Culture',
 		date: '2026-03-13',
 		url: 'https://www.radiofrance.fr/franceculture/podcasts/journal-de-18h/journal-de-18h-emission-du-vendredi-13-mars-2026-9405796',
+		order: 0,
+		visible: true
+	},
+	{
+		id: 'static-presseagence-avignon-2026-03-13',
+		title: 'Avignon : Clémence Peyrot : « Les candidats aux municipales doivent se positionner »',
+		source: 'Presse Agence',
+		date: '2026-03-13',
+		url: 'https://presseagence.fr/avignon-clemence-peyrot-les-candidats-aux-municipales-doivent-se-positionner/',
+		order: 0,
+		visible: true
+	},
+	{
+		id: 'static-odsradio-annecy-2026-03-12',
+		title: "Annecy : une association interpelle les candidats sur l'intelligence artificielle",
+		source: 'ODS Radio',
+		date: '2026-03-12',
+		url: 'https://www.odsradio.com/news/locales/108150/annecy-une-association-interpelle-les-candidats-sur-l-intelligence-artificielle',
+		order: 0,
+		visible: true
+	},
+	{
+		id: 'static-contexte-municipales-2026-03-11',
+		title: "Pause IA s'incruste dans les municipales",
+		source: 'Contexte',
+		date: '2026-03-11',
+		url: 'https://www.contexte.com/fr/actualite/tech/pause-ia-sincruste-dans-les-municipales_257807',
+		order: 0,
+		visible: true
+	},
+	{
+		id: 'static-lopinion-municipales-2026-03-10',
+		title: "Risques IA : l'association interpelle les candidats aux municipales de Toulouse",
+		source: "L'Opinion",
+		date: '2026-03-10',
+		url: 'https://lopinion.com/amp/articles/actualite/32757_risques-ia-association-candidats-municipales-toulouse',
+		order: 0,
+		visible: true
+	},
+	{
+		id: 'static-presseagence-nice-fournes-2026-03-10',
+		title:
+			'Nice : Maxime Fournes : « Les candidats aux municipales doivent se positionner clairement »',
+		source: 'Presse Agence',
+		date: '2026-03-10',
+		url: 'https://presseagence.fr/nice-maxime-fournes-les-candidats-aux-municipales-doivent-se-positionner-clairement/',
 		order: 0,
 		visible: true
 	},
@@ -29,7 +83,7 @@ export const staticPressCoverage: PressCoverage[] = [
 	{
 		id: 'static-dauphinelibere-2026-03-06',
 		title:
-			"Isère - Grenoble : l'association Pause IA appelle les candidats à s'engager sur sa charte",
+			"Isère / Grenoble : l'association Pause IA appelle les candidats à s'engager sur sa charte",
 		source: 'Le Dauphiné Libéré',
 		date: '2026-03-06',
 		url: 'https://www.ledauphine.com/elections/2026/03/06/isere-grenoble-l-association-pause-ia-appelle-les-candidats-a-s-engager-sur-sa-charte',
@@ -37,67 +91,11 @@ export const staticPressCoverage: PressCoverage[] = [
 		visible: true
 	},
 	{
-		id: 'static-next-municipales-2026-03',
-		title: "Quand l'IA s'invite dans les municipales",
-		source: 'Next',
-		date: '2026-03-01', // approx.
-		url: 'https://next.ink/229085/quand-lia-sinvite-dans-les-municipales/',
-		order: 0,
-		visible: true
-	},
-	{
-		id: 'static-contexte-municipales-2026-03',
-		title: "Pause IA s'incruste dans les municipales",
-		source: 'Contexte',
-		date: '2026-03-01', // approx.
-		url: 'https://www.contexte.com/fr/actualite/tech/pause-ia-sincruste-dans-les-municipales_257807',
-		order: 0,
-		visible: true
-	},
-	{
-		id: 'static-lopinion-municipales-2026-03',
-		title: "Risques de l'IA : une association interpelle les candidats aux municipales à Toulouse",
-		source: "L'Opinion",
-		date: '2026-03-01', // approx.
-		url: 'https://lopinion.com/amp/articles/actualite/32757_risques-ia-association-candidats-municipales-toulouse',
-		order: 0,
-		visible: true
-	},
-	{
-		id: 'static-presseagence-nice-governatori-2026-03',
+		id: 'static-presseagence-nice-governatori-2026-02-06',
 		title: "Nice : Jean-Marc Governatori s'engage sur la charte de Pause IA pour les municipales",
 		source: 'Presse Agence',
-		date: '2026-03-01', // approx.
+		date: '2026-02-06',
 		url: 'https://presseagence.fr/nice-jean-marc-governatori-sengage-sur-la-charte-de-pause-ia-pour-les-municipales/',
-		order: 0,
-		visible: true
-	},
-	{
-		id: 'static-odsradio-annecy-2026-03',
-		title: "Annecy : une association interpelle les candidats sur l'intelligence artificielle",
-		source: 'ODS Radio',
-		date: '2026-03-01', // approx.
-		url: 'https://www.odsradio.com/news/locales/108150/annecy-une-association-interpelle-les-candidats-sur-l-intelligence-artificielle',
-		order: 0,
-		visible: true
-	},
-	{
-		id: 'static-presseagence-avignon-2026-03',
-		title:
-			"Avignon : Clémence Peyrot — les candidats aux municipales doivent se positionner sur l'IA",
-		source: 'Presse Agence',
-		date: '2026-03-01', // approx.
-		url: 'https://presseagence.fr/avignon-clemence-peyrot-les-candidats-aux-municipales-doivent-se-positionner/',
-		order: 0,
-		visible: true
-	},
-	{
-		id: 'static-presseagence-nice-fournes-2026-03',
-		title:
-			"Nice : Maxime Fournes — les candidats aux municipales doivent se positionner clairement sur l'IA",
-		source: 'Presse Agence',
-		date: '2026-03-01', // approx.
-		url: 'https://presseagence.fr/nice-maxime-fournes-les-candidats-aux-municipales-doivent-se-positionner-clairement/',
 		order: 0,
 		visible: true
 	},
