@@ -640,4 +640,19 @@
 				);
 		}
 	}
+
+	/* Dark mode: content box (mobile/tablet) needs a dark background.
+	   Light text (--text = #f0f0f0) on the default cream rgba(255,250,245,0.82)
+	   is almost invisible. At ≥1024px the frost-col provides the backdrop instead. */
+	@media (max-width: 1023px) {
+		:global([data-theme='dark']) .content-box {
+			background: rgba(30, 30, 30, 0.9);
+		}
+	}
+
+	@media (min-width: 1024px) {
+		:global([data-theme='dark']) .frost-col {
+			background: rgba(30, 30, 30, 0.9);
+		}
+	}
 </style>
