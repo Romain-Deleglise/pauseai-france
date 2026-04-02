@@ -92,23 +92,17 @@
 		display: flex;
 		flex-direction: column;
 		gap: 1.5rem;
-		padding: 2rem 2rem;
-		background: var(--brand);
-		border-radius: 1rem;
+		padding: 2rem 1.75rem;
+		background: color-mix(in srgb, var(--brand) 12%, var(--bg));
+		border: 1px solid color-mix(in srgb, var(--brand) 35%, transparent);
+		border-radius: 1.25rem;
 		margin: 2rem 0;
-		width: 100vw;
-		margin-left: calc(50% - 50vw);
-		margin-right: calc(50% - 50vw);
-		border-radius: 0;
 	}
 
 	.text {
 		display: flex;
 		flex-direction: column;
 		gap: 0.375rem;
-		max-width: 52rem;
-		margin: 0 auto;
-		width: 100%;
 	}
 
 	.title {
@@ -116,20 +110,17 @@
 		font-size: 1.4rem;
 		font-weight: 700;
 		margin: 0;
-		color: var(--black);
+		color: var(--text);
 	}
 
 	.desc {
 		margin: 0;
 		font-size: 1rem;
-		color: var(--black);
-		opacity: 0.85;
+		color: var(--text-2);
 		line-height: 1.5;
 	}
 
 	.form {
-		max-width: 52rem;
-		margin: 0 auto;
 		width: 100%;
 	}
 
@@ -141,18 +132,19 @@
 	input[type='email'] {
 		flex: 1;
 		padding: 0.65rem 1rem;
-		border: 2px solid rgba(0, 0, 0, 0.15);
+		border: 1.5px solid color-mix(in srgb, var(--brand) 40%, transparent);
 		border-radius: 0.5rem;
 		font-family: var(--font-body);
 		font-size: 1rem;
-		background: white;
-		color: var(--black);
+		background: var(--bg);
+		color: var(--text);
 		min-width: 0;
 	}
 
 	input[type='email']:focus {
 		outline: none;
-		border-color: var(--black);
+		border-color: var(--brand);
+		box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand) 20%, transparent);
 	}
 
 	input[type='email']:disabled {
@@ -162,8 +154,8 @@
 
 	button[type='submit'] {
 		padding: 0.65rem 1.5rem;
-		background: var(--black);
-		color: var(--white);
+		background: var(--brand);
+		color: white;
 		border: none;
 		border-radius: 0.5rem;
 		font-family: var(--font-heading);
@@ -175,7 +167,7 @@
 	}
 
 	button[type='submit']:hover:not(:disabled) {
-		opacity: 0.8;
+		opacity: 0.85;
 	}
 
 	button[type='submit']:disabled {
@@ -189,12 +181,12 @@
 	}
 
 	.feedback.error {
-		color: #7a0000;
+		color: color-mix(in srgb, red 70%, var(--text));
 	}
 
 	@media (min-width: 640px) {
 		.newsletter-cta {
-			padding: 2.5rem 2rem;
+			padding: 2.25rem 2.5rem;
 		}
 
 		.title {
@@ -206,15 +198,8 @@
 		.newsletter-cta {
 			flex-direction: row;
 			align-items: center;
-			justify-content: center;
 			gap: 3rem;
-			padding: 2.5rem 6rem;
-		}
-
-		.text,
-		.form {
-			max-width: none;
-			margin: 0;
+			padding: 2.5rem 3rem;
 		}
 
 		.text {
