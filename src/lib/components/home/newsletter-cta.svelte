@@ -52,15 +52,13 @@
 <section class="newsletter-cta">
 	<div class="text">
 		<p class="title">
-			{lang === 'en' ? 'Stay informed' : 'Restez informé·e'}
+			{lang === 'en' ? 'Stay informed' : 'Restez informée'}
 		</p>
 		<p class="desc">
 			{#if lang === 'en'}
-				Subscribe to our newsletter to follow our work, discover how to get involved, and receive a
-				monthly roundup of the latest AI news.
+				Follow our work, get involved, and receive a monthly roundup of the latest AI news.
 			{:else}
-				Inscrivez-vous à notre newsletter pour suivre nos actions, découvrir comment vous impliquer
-				et recevoir chaque mois un résumé de l'actualité IA.
+				Suivez nos actions, impliquez-vous et recevez chaque mois l'essentiel de l'actualité IA.
 			{/if}
 		</p>
 	</div>
@@ -96,7 +94,7 @@
 		background: color-mix(in srgb, var(--brand) 12%, var(--bg));
 		border: 1px solid color-mix(in srgb, var(--brand) 35%, transparent);
 		border-radius: 1.25rem;
-		margin: 2rem 0;
+		margin: 0 0 2rem;
 	}
 
 	.text {
