@@ -52,7 +52,7 @@
 <section class="newsletter-cta">
 	<div class="text">
 		<p class="title">
-			{lang === 'en' ? 'Stay informed' : 'Restez informée'}
+			{lang === 'en' ? 'Stay informed' : 'Restez informé'}
 		</p>
 		<p class="desc">
 			{#if lang === 'en'}
