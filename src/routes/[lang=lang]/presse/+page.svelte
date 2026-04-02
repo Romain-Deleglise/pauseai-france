@@ -14,7 +14,43 @@
 	$: t = getT(lang)
 	$: prefix = `/${lang}`
 
-	$: pressCoverage = data.pressCoverage
+	$: pressCoverage = [...data.pressCoverage].sort((a, b) => {
+		if (!a.date && !b.date) return 0
+		if (!a.date) return 1
+		if (!b.date) return -1
+		return new Date(b.date).getTime() - new Date(a.date).getTime()
+	})
+
+	$: coverageByYear = pressCoverage.reduce(
+		(acc, item) => {
+			const year = item.date ? item.date.slice(0, 4) : '?'
+			if (!acc[year]) acc[year] = []
+			acc[year].push(item)
+			return acc
+		},
+		{} as Record<string, PressCoverage[]>
+	)
+	$: coverageYears = Object.keys(coverageByYear).sort((a, b) => b.localeCompare(a))
+
+	// Controlled open/close state for year groups
+	let openYears = new Set<string>()
+	let coverageInitialized = false
+	$: if (coverageYears.length > 0 && !coverageInitialized) {
+		openYears = new Set([coverageYears[0]])
+		coverageInitialized = true
+	}
+	$: allOpen = coverageYears.length > 0 && coverageYears.every((y) => openYears.has(y))
+
+	function toggleYear(year: string, e: Event) {
+		const el = e.currentTarget as HTMLDetailsElement
+		if (el.open) openYears.add(year)
+		else openYears.delete(year)
+		openYears = openYears
+	}
+
+	function toggleAll() {
+		openYears = allOpen ? new Set() : new Set(coverageYears)
+	}
 
 	const PER_PAGE = 15
 
@@ -22,6 +58,7 @@
 		{
 			id: '1',
 			title: 'Forum des solutions pour une IA compatible avec l\u2019humanit\u00e9',
+			slug: 'forum-des-solutions-pour-une-ia-compatible-avec-lhumanite',
 			date: '2024-11-21',
 			url: '/pdfs/communique_de_presse_forum_des_solutions.pdf',
 			description:
@@ -338,6 +375,10 @@
 						<p class="contact-name">Clémence Peyrot</p>
 						<p class="contact-role">Directrice exécutive de Pause IA</p>
 						<p>
+							<strong>Email :</strong>
+							<a href="mailto:clemence@pauseia.fr">clemence@pauseia.fr</a>
+						</p>
+						<p>
 							<strong>Tél. :</strong>
 							<a href="tel:+33645513415">06 45 51 34 15</a>
 						</p>
@@ -438,9 +479,9 @@
 						<a
 							id="pr-{pr.id}"
 							class="press-release-card"
-							href={pr.url}
-							target="_blank"
-							rel="noopener noreferrer"
+							href={pr.slug ? `${prefix}/presse/national/${pr.slug}` : pr.url}
+							target={pr.slug ? undefined : '_blank'}
+							rel={pr.slug ? undefined : 'noopener noreferrer'}
 						>
 							<div class="pr-content">
 								<h3>{pr.title}</h3>
@@ -614,9 +655,9 @@
 							<a
 								id="pr-{pr.id}"
 								class="press-release-card"
-								href={pr.url}
-								target="_blank"
-								rel="noopener noreferrer"
+								href={pr.slug ? `${prefix}/presse/local/${pr.slug}` : pr.url}
+								target={pr.slug ? undefined : '_blank'}
+								rel={pr.slug ? undefined : 'noopener noreferrer'}
 							>
 								<div class="pr-content">
 									<div class="pr-dept-badge">{getDeptLabel(pr.department)}</div>
@@ -678,24 +719,52 @@
 
 	{#if pressCoverage.length > 0}
 		<section class="coverage-section">
-			<h2>
-				<Newspaper
-					size="1.25rem"
-					style="display:inline;vertical-align:-0.15em;margin-right:0.375rem"
-				/>
-				{t.presse.coverage_title}
-			</h2>
-			<div class="coverage-grid">
-				{#each pressCoverage as item (item.id)}
-					<a class="coverage-card" href={item.url} target="_blank" rel="noopener noreferrer">
-						<span class="coverage-source">{item.source}</span>
-						<span class="coverage-title">{item.title}</span>
-						{#if item.date}
-							<time class="coverage-date" datetime={item.date}>{formatDate(item.date)}</time>
-						{/if}
-					</a>
-				{/each}
+			<div class="coverage-header">
+				<h2>
+					<Newspaper size="1.1rem" style="display:inline;vertical-align:-0.1em" />
+					{t.presse.coverage_title}
+					<span class="coverage-count">{pressCoverage.length}</span>
+				</h2>
+				<button class="toggle-all-btn" on:click={toggleAll}>
+					{allOpen
+						? lang === 'en'
+							? 'Collapse all'
+							: 'Tout replier'
+						: lang === 'en'
+							? 'Expand all'
+							: 'Tout déplier'}
+				</button>
 			</div>
+			{#each coverageYears as year}
+				<details
+					class="coverage-year-group"
+					open={openYears.has(year)}
+					on:toggle={(e) => toggleYear(year, e)}
+				>
+					<summary class="coverage-year">
+						<span class="coverage-year-chevron">▶</span>
+						{year}
+						<span class="coverage-year-count">{coverageByYear[year].length}</span>
+					</summary>
+					<ul class="coverage-list">
+						{#each coverageByYear[year] as item (item.id)}
+							<li>
+								<a class="coverage-item" href={item.url} target="_blank" rel="noopener noreferrer">
+									<div class="coverage-item-meta">
+										<span class="coverage-source">{item.source}</span>
+										{#if item.date}
+											<time class="coverage-date" datetime={item.date}>{formatDate(item.date)}</time
+											>
+										{/if}
+										<MoveUpRight size="0.75rem" class="coverage-external-icon" />
+									</div>
+									<span class="coverage-title">{item.title}</span>
+								</a>
+							</li>
+						{/each}
+					</ul>
+				</details>
+			{/each}
 		</section>
 	{/if}
 
@@ -1338,64 +1407,170 @@
 		color: var(--white);
 	}
 
-	/* Press coverage section */
+	/* ── Press coverage section ──────────────────────────────────── */
 	.coverage-section {
 		margin-top: 3rem;
 	}
 
-	.coverage-section h2 {
-		margin-top: 0;
-		margin-bottom: 1.25rem;
-		font-size: 1.4rem;
-	}
-
-	.coverage-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+	.coverage-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		margin-bottom: 0.75rem;
 		gap: 1rem;
 	}
 
-	.coverage-card {
+	.coverage-header h2 {
+		margin: 0;
+		font-size: 1.4rem;
 		display: flex;
-		flex-direction: column;
-		gap: 0.375rem;
-		padding: 1.125rem 1.25rem;
-		background-color: var(--white);
-		border: 1px solid var(--border);
-		border-radius: 0.625rem;
-		text-decoration: none;
-		color: var(--text);
-		transition:
-			transform 0.2s ease,
-			box-shadow 0.2s ease,
-			border-color 0.2s ease;
+		align-items: center;
+		gap: 0.5rem;
 	}
 
-	.coverage-card:hover {
-		transform: translateY(-2px);
-		box-shadow: 0 6px 16px -4px rgba(0, 0, 0, 0.1);
+	.coverage-count {
+		font-size: 0.78rem;
+		font-weight: 600;
+		background: var(--bg-subtle);
+		border: 1px solid var(--border);
+		color: var(--text-secondary);
+		padding: 0.1rem 0.5rem;
+		border-radius: 999px;
+	}
+
+	.toggle-all-btn {
+		font-size: 0.78rem;
+		font-weight: 500;
+		color: var(--text-secondary);
+		background: none;
+		border: 1px solid var(--border);
+		border-radius: 0.375rem;
+		padding: 0.25rem 0.625rem;
+		cursor: pointer;
+		white-space: nowrap;
+		transition:
+			border-color 0.15s,
+			color 0.15s;
+	}
+
+	.toggle-all-btn:hover {
 		border-color: var(--brand);
 		color: var(--text);
 	}
 
+	.coverage-year-group {
+		border-bottom: 1px solid var(--border);
+	}
+
+	.coverage-year-group:last-child {
+		border-bottom: none;
+	}
+
+	.coverage-year {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		list-style: none;
+		font-size: 0.8rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: var(--text-secondary);
+		padding: 0.6rem 0.25rem;
+		cursor: pointer;
+		user-select: none;
+	}
+
+	.coverage-year::-webkit-details-marker {
+		display: none;
+	}
+
+	.coverage-year-chevron {
+		font-size: 0.5rem;
+		opacity: 0.45;
+		transition: transform 0.15s ease;
+		display: inline-block;
+	}
+
+	details[open] > .coverage-year .coverage-year-chevron {
+		transform: rotate(90deg);
+	}
+
+	.coverage-year-count {
+		font-size: 0.68rem;
+		font-weight: 600;
+		background: var(--bg-subtle);
+		border: 1px solid var(--border);
+		color: var(--text-secondary);
+		padding: 0.05rem 0.4rem;
+		border-radius: 999px;
+	}
+
+	.coverage-list {
+		list-style: none;
+		margin: 0 0 0.5rem;
+		padding: 0;
+	}
+
+	.coverage-item {
+		display: flex;
+		flex-direction: column;
+		gap: 0.15rem;
+		padding: 0.5rem 0.75rem;
+		border-radius: 0.375rem;
+		border-left: 2px solid transparent;
+		text-decoration: none;
+		color: var(--text);
+		transition:
+			background-color 0.15s,
+			border-color 0.15s;
+	}
+
+	.coverage-item:hover {
+		background-color: var(--bg-subtle);
+		border-left-color: var(--brand);
+		color: var(--text);
+	}
+
+	.coverage-item-meta {
+		display: flex;
+		align-items: center;
+		gap: 0.4rem;
+	}
+
 	.coverage-source {
-		font-size: 0.75rem;
+		font-size: 0.7rem;
 		font-weight: 700;
 		text-transform: uppercase;
 		letter-spacing: 0.04em;
 		color: var(--brand);
-	}
-
-	.coverage-title {
-		font-size: 0.925rem;
-		font-weight: 600;
-		line-height: 1.4;
-		color: var(--text);
+		background: color-mix(in srgb, var(--brand) 10%, transparent);
+		padding: 0.1rem 0.4rem;
+		border-radius: 0.25rem;
 	}
 
 	.coverage-date {
-		font-size: 0.8rem;
+		font-size: 0.72rem;
 		color: var(--text-secondary);
+	}
+
+	:global(.coverage-external-icon) {
+		flex-shrink: 0;
+		opacity: 0.2;
+		transition: opacity 0.15s;
+		color: var(--text-secondary);
+		margin-left: auto;
+	}
+
+	.coverage-item:hover :global(.coverage-external-icon) {
+		opacity: 0.7;
+	}
+
+	.coverage-title {
+		font-size: 0.88rem;
+		font-weight: 500;
+		line-height: 1.45;
+		color: var(--text);
 	}
 
 	/* About section */

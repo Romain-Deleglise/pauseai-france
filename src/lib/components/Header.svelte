@@ -19,7 +19,7 @@
 		$page.url.pathname == '/' ||
 		$page.url.pathname == `/${lang}` ||
 		$page.url.pathname == `/${lang}/`
-	$: onEmploiePage = /^\/emploi-ia(?:\/|$)/.test($page.url.pathname)
+	$: onEmploiePage = $page.url.pathname.includes('/emploi-ia')
 
 	// Hero has a light background — header stays dark on homepage
 	$: whiteNav = false && onHomepage && !scrolled
@@ -71,6 +71,9 @@
 		open = false
 	}
 
+	type NavItem = { href: string; label: string; external?: boolean; muted?: boolean }
+	type NavGroup = { id: string; label: string; items: NavItem[] }
+	let navGroups: NavGroup[]
 	$: navGroups = [
 		{
 			id: 'comprendre',
@@ -94,7 +97,7 @@
 		{
 			id: 'campagnes',
 			label: t.nav.campagnes,
-			items: [{ href: `${prefix}/municipales-2026`, label: t.nav.municipales }]
+			items: [{ href: `${prefix}/campagnes`, label: t.nav.toutes_campagnes }]
 		},
 		{
 			id: 'evenements',
@@ -138,6 +141,7 @@
 				if (idx >= 0) return `/${other}/dangers/${slugsTo[idx]}`
 			}
 		}
+
 		return pathname.replace(`/${currentLang}`, `/${other}`) || `/${other}`
 	}
 
@@ -244,7 +248,12 @@
 						<a href="/rejoindre" class="btn-join" class:on-hero={whiteNav}>Rejoindre</a>
 					</div>
 				</div>
-				<button aria-label="Open mobile menu" class="hamburger" on:click={() => (open = !open)}>
+				<button
+					aria-label="Open mobile menu"
+					class="hamburger"
+					class:open
+					on:click={() => (open = !open)}
+				>
 					<svg
 						width="22"
 						height="22"
@@ -253,18 +262,21 @@
 						xmlns="http://www.w3.org/2000/svg"
 					>
 						<rect
+							class="bar bar-top"
 							y="0"
 							height="2.5"
 							width="24"
 							fill={whiteNav ? 'white' : $theme === 'dark' ? 'white' : 'black'}
 						/>
 						<rect
+							class="bar bar-mid"
 							y="10.75"
 							height="2.5"
 							width="24"
 							fill={whiteNav ? 'white' : $theme === 'dark' ? 'white' : 'black'}
 						/>
 						<rect
+							class="bar bar-bot"
 							y="21.5"
 							height="2.5"
 							width="24"
@@ -481,14 +493,14 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		padding: 0.4rem 1rem;
+		padding: 0.85rem 1rem;
 		transition: padding 0.25s ease;
 	}
 
-	/* Compact nav when scrolled */
+	/* Compact nav when scrolled (mobile) */
 	nav.scrolled {
-		padding-top: 0.25rem;
-		padding-bottom: 0.25rem;
+		padding-top: 0.55rem;
+		padding-bottom: 0.55rem;
 	}
 
 	.nav-right {
@@ -724,6 +736,31 @@
 		padding: 0;
 	}
 
+	/* ─── Hamburger → croix (morph) ──────────────────────────── */
+	.hamburger .bar {
+		transform-box: fill-box;
+		transform-origin: center;
+		transition:
+			transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+			opacity 0.25s ease;
+	}
+
+	/* barre du haut : descend + tourne 45° */
+	.hamburger.open .bar-top {
+		transform: translateY(10.75px) rotate(45deg);
+	}
+
+	/* barre du milieu : disparaît */
+	.hamburger.open .bar-mid {
+		opacity: 0;
+		transform: scaleX(0);
+	}
+
+	/* barre du bas : monte + tourne -45° */
+	.hamburger.open .bar-bot {
+		transform: translateY(-10.75px) rotate(-45deg);
+	}
+
 	.logo {
 		line-height: 0;
 	}
@@ -804,12 +841,15 @@
 		align-items: center;
 		justify-content: center;
 		cursor: pointer;
-		transition: background 0.15s;
+		transition:
+			background 0.15s,
+			transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 		flex-shrink: 0;
 	}
 
 	.close-btn:hover {
 		background: var(--btn-alt-hover-bg);
+		transform: rotate(90deg);
 	}
 
 	/* ─── Sidebar sections ──────────────────────────────────────── */
@@ -929,12 +969,12 @@
 		}
 
 		nav {
-			padding: 0.55rem 2rem;
+			padding: 0.85rem 2rem;
 		}
 
 		nav.scrolled {
-			padding-top: 0.35rem;
-			padding-bottom: 0.35rem;
+			padding-top: 0.6rem;
+			padding-bottom: 0.6rem;
 		}
 	}
 

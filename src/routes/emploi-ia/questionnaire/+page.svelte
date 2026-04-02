@@ -2,7 +2,9 @@
 	import Button from '$lib/components/Button.svelte'
 	import { goto } from '$app/navigation'
 	import toast from 'svelte-french-toast'
-	import ThanksMessage from '$components/thanksMessage.svelte'
+
+	import { page } from '$app/stores'
+	$: lang = $page.params.lang ?? 'fr'
 
 	let formData = {
 		// Section 1: Informations personnelles
@@ -143,7 +145,7 @@
 
 			if (response.ok) {
 				toast.success('Merci pour votre participation !')
-				await goto('/emploi-ia/merci')
+				await goto(`/${lang}/emploi-ia/merci`)
 			} else {
 				toast.error('Une erreur est survenue. Veuillez réessayer.')
 			}
@@ -574,10 +576,6 @@
 						<option value="Non">Non</option>
 					</select>
 				</div>
-
-				{#if formData.veutPlusQuestions === 'Non'}
-					<ThanksMessage />
-				{/if}
 			</section>
 		{/if}
 
@@ -790,7 +788,6 @@
 						<option value="Oui cela décuple mes capacités">Oui, cela décuple mes capacités</option>
 					</select>
 				</div>
-				<ThanksMessage />
 			</section>
 		{/if}
 
