@@ -31,12 +31,12 @@
 
 <Risks {lang} />
 
-<NewsletterCta {lang} />
-
 <Videos videos={data.videos} {lang} />
 
 <Inserts reports={data.reports} {lang} />
 
 <Articles articles={data.articles} {lang} />
+
+<NewsletterCta {lang} />
 
 <Faq {lang} />
