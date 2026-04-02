@@ -32,7 +32,7 @@
 				message =
 					lang === 'en'
 						? (result.message ?? 'Subscribed!')
-						: (result.message ?? 'Inscription réussie\u00a0!')
+						: 'Inscription confirmée, à bientôt\u00a0!'
 				isError = false
 				email = ''
 			} else {
