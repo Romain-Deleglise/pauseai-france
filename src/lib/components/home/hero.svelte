@@ -191,20 +191,20 @@
 		</div>
 		<div class="frost-col" aria-hidden="true"></div>
 		<div class="content" in:fade={{ duration: 500, delay: 200 }}>
-    <div class="content-box" bind:this={contentBoxEl}>
-        <div class="hero-logo">
-            <Logo
-                height={48}
-                fill_pause={$theme === 'dark' ? 'white' : 'black'}
-                fill_circle="#FF9416"
-                fill_ai={$theme === 'dark' ? 'white' : '#FF9416'}
-            />
-        </div>
-        <h1 id={label_id}>
-            {t.home.hero_title}
-            <br /><Mark>{t.home.hero_highlight}</Mark>
-        </h1>
-        <div class="description">
+			<div class="content-box" bind:this={contentBoxEl}>
+				<div class="hero-logo">
+					<Logo
+						height={48}
+						fill_pause={$theme === 'dark' ? 'white' : 'black'}
+						fill_circle="#FF9416"
+						fill_ai={$theme === 'dark' ? 'white' : '#FF9416'}
+					/>
+				</div>
+				<h1 id={label_id}>
+					{t.home.hero_title}
+					<br /><Mark>{t.home.hero_highlight}</Mark>
+				</h1>
+				<div class="description">
 					{#if lang === 'en'}
 						<p>
 							Every month, new AI systems cross thresholds we thought were far away. Experts warn:
@@ -217,7 +217,7 @@
 							Les experts alertent&nbsp;: sans garde-fous, cette course fait peser un risque
 							catastrophique à court terme.
 						</p>
-						<p>La fenêtre se referme&nbsp;— agissons maintenant.</p>
+						<p>La fenêtre se referme, agissons maintenant.</p>
 					{/if}
 					<div class="buttons">
 						<div in:fly={{ y: 20, duration: 300, delay: 700 }}>
