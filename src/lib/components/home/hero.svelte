@@ -1,10 +1,12 @@
 <script lang="ts">
 	import Button from '$components/Button.svelte'
 	import Mark from '$components/Mark.svelte'
+	import Logo from '$components/Logo.svelte'
 	import LeftCorner from '$components/hero/LeftCorner.svelte'
 	import RightCorner from '$components/hero/RightCorner.svelte'
 	import { getT } from '$lib/i18n'
 	import type { Lang } from '$lib/i18n'
+	import { theme } from '$lib/stores/theme'
 	import { onMount, tick } from 'svelte'
 	import { fade, fly } from 'svelte/transition'
 	const label_id = 'hero-title'
@@ -190,6 +192,14 @@
 		<div class="frost-col" aria-hidden="true"></div>
 		<div class="content" in:fade={{ duration: 500, delay: 200 }}>
 			<div class="content-box" bind:this={contentBoxEl}>
+				<div class="hero-logo">
+					<Logo
+						height={48}
+						fill_pause={$theme === 'dark' ? 'white' : 'black'}
+						fill_circle="#FF9416"
+						fill_ai={$theme === 'dark' ? 'white' : '#FF9416'}
+					/>
+				</div>
 				<h1 id={label_id}>
 					{t.home.hero_title}
 					<br /><Mark>{t.home.hero_highlight}</Mark>
@@ -207,7 +217,7 @@
 							Les experts alertent&nbsp;: sans garde-fous, cette course fait peser un risque
 							catastrophique à court terme.
 						</p>
-						<p>La fenêtre se referme&nbsp;— agissons maintenant.</p>
+						<p>La fenêtre se referme, agissons maintenant.</p>
 					{/if}
 					<div class="buttons">
 						<div in:fly={{ y: 20, duration: 300, delay: 700 }}>
@@ -246,6 +256,10 @@
 		width: 100vw;
 		z-index: -1;
 		background: #fffaf5;
+	}
+
+	:global([data-theme='dark']) .hero-bg {
+		background: #1a1a1a;
 	}
 
 	/* Marquee scrolling rows */
@@ -345,7 +359,7 @@
 
 	/* Text content */
 	.content {
-		color: var(--black, #000);
+		color: var(--text);
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
@@ -580,6 +594,65 @@
 	@media (min-width: 1280px) {
 		.content h1 {
 			font-size: 2.6rem;
+		}
+	}
+
+	/* ─── Logo dans le hero ──────────────────────────────────── */
+	.hero-logo {
+		margin-bottom: 1.5rem;
+	}
+
+	/* ─── Dark mode ──────────────────────────────────────────── */
+	:global([data-theme='dark']) .mosaic-overlay {
+		background: linear-gradient(
+				to right,
+				rgba(26, 26, 26, 0.97) 0%,
+				rgba(26, 26, 26, 0.92) 12%,
+				rgba(26, 26, 26, 0.55) 25%,
+				rgba(26, 26, 26, 0.1) 38%,
+				transparent 48%
+			),
+			linear-gradient(
+				to top,
+				rgba(26, 26, 26, 0.4) 0%,
+				transparent 6%,
+				transparent 94%,
+				rgba(26, 26, 26, 0.4) 100%
+			);
+	}
+
+	@media (max-width: 639px) {
+		:global([data-theme='dark']) .mosaic-overlay {
+			background: linear-gradient(
+					to right,
+					rgba(26, 26, 26, 0.98) 0%,
+					rgba(26, 26, 26, 0.93) 15%,
+					rgba(26, 26, 26, 0.65) 35%,
+					rgba(26, 26, 26, 0.15) 55%,
+					transparent 65%
+				),
+				linear-gradient(
+					to top,
+					rgba(26, 26, 26, 0.5) 0%,
+					transparent 8%,
+					transparent 92%,
+					rgba(26, 26, 26, 0.5) 100%
+				);
+		}
+	}
+
+	/* Dark mode: content box (mobile/tablet) needs a dark background.
+	   Light text (--text = #f0f0f0) on the default cream rgba(255,250,245,0.82)
+	   is almost invisible. At ≥1024px the frost-col provides the backdrop instead. */
+	@media (max-width: 1023px) {
+		:global([data-theme='dark']) .content-box {
+			background: rgba(30, 30, 30, 0.9);
+		}
+	}
+
+	@media (min-width: 1024px) {
+		:global([data-theme='dark']) .frost-col {
+			background: rgba(30, 30, 30, 0.9);
 		}
 	}
 </style>
