@@ -32,6 +32,8 @@ export async function load() {
 			data_source_id: process.env.ARTICLE_SHOWCASE_ID as string
 		})
 
+		console.log(articleShowcase_datasource.results)
+
 		const testimonials = testimonials_datasource.results
 			.filter(isPageWithProperties)
 			.filter(
@@ -58,7 +60,8 @@ export async function load() {
 				date: getDateStart(item.properties.Date),
 				url: getUrl(item.properties.URL),
 				category: getSelectName(item.properties.Catégorie),
-				image: getUrl(item.properties.Image)
+				image: getUrl(item.properties.Image),
+				langue: getSelectName(item.properties.Langue)
 			}))
 
 		return {

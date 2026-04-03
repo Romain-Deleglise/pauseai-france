@@ -30,4 +30,5 @@ export interface ArticleShowcaseItem {
 	date?: string
 	category?: string
 	image?: string
+	langue?: string
 }
