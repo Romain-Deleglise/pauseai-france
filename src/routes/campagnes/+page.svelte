@@ -105,6 +105,17 @@
 					{/each}
 				</div>
 			{/if}
+
+			{#if selectedCampaign.summary.fr.link}
+				<a
+					href={selectedCampaign.summary.fr.link.url}
+					target="_blank"
+					rel="noopener noreferrer"
+					class="modal-link"
+				>
+					{selectedCampaign.summary.fr.link.label} ↗
+				</a>
+			{/if}
 		</div>
 	</div>
 {/if}
@@ -301,6 +312,19 @@
 		color: var(--text-secondary);
 		text-transform: uppercase;
 		letter-spacing: 0.04em;
+	}
+
+	.modal-link {
+		display: inline-block;
+		margin-top: 1.25rem;
+		font-size: 0.95rem;
+		font-weight: 600;
+		color: var(--brand-subtle);
+		text-decoration: none;
+	}
+
+	.modal-link:hover {
+		text-decoration: underline;
 	}
 
 	@media (max-width: 600px) {
