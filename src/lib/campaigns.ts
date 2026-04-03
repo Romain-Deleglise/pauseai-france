@@ -1,5 +1,28 @@
 export type CampaignStatus = 'active' | 'ended'
 
+export interface CampaignResult {
+	label: string
+	value: string
+}
+
+export interface CampaignLink {
+	label: string
+	url: string
+}
+
+export interface CampaignSummary {
+	fr: {
+		text: string
+		results: CampaignResult[]
+		links?: CampaignLink[]
+	}
+	en: {
+		text: string
+		results: CampaignResult[]
+		links?: CampaignLink[]
+	}
+}
+
 export interface Campaign {
 	/** URL slug, e.g. 'municipales-2026' → /fr/municipales-2026 */
 	slug: string
@@ -10,6 +33,8 @@ export interface Campaign {
 	endDate?: string
 	/** Override URL (absolute path). If omitted, defaults to /{lang}/{slug} */
 	url?: string
+	/** Summary shown in a popup when the ended campaign card is clicked */
+	summary?: CampaignSummary
 	fr: {
 		title: string
 		description: string
@@ -34,6 +59,36 @@ export const campaigns: Campaign[] = [
 		status: 'ended',
 		startDate: '2026-01',
 		endDate: '2026-02',
+		summary: {
+			fr: {
+				text: "Pause IA a mobilisé pour que le Sommet de l'IA en Inde remette la sécurité au cœur de l'agenda international. Plus de 4 000 personnes ont signé la pétition et plus de 2 000 mails ont été envoyés aux délégués dans 14 pays. Une tribune a également été publiée dans Le Nouvel Obs.",
+				results: [
+					{ label: 'Signatures pétition', value: '+4 000' },
+					{ label: 'Mails aux délégués', value: '+2 000 (14 pays)' },
+					{ label: 'Tribune', value: 'Le Nouvel Obs' }
+				],
+				links: [
+					{
+						label: 'Lire la tribune (Le Nouvel Obs)',
+						url: 'https://www.nouvelobs.com/opinions/20260216.OBS112421/sommet-de-l-ia-face-aux-risques-remettre-la-securite-en-haut-de-l-agenda-international.html'
+					}
+				]
+			},
+			en: {
+				text: 'Pause AI France mobilized to put safety back at the heart of the international AI agenda at the India AI Summit. Over 4,000 people signed the petition and over 2,000 emails were sent to delegates across 14 countries. An op-ed was also published in Le Nouvel Obs.',
+				results: [
+					{ label: 'Petition signatures', value: '4,000+' },
+					{ label: 'Emails to delegates', value: '2,000+ (14 countries)' },
+					{ label: 'Op-ed', value: 'Le Nouvel Obs' }
+				],
+				links: [
+					{
+						label: 'Read the op-ed (Le Nouvel Obs)',
+						url: 'https://www.nouvelobs.com/opinions/20260216.OBS112421/sommet-de-l-ia-face-aux-risques-remettre-la-securite-en-haut-de-l-agenda-international.html'
+					}
+				]
+			}
+		},
 		fr: {
 			title: "Sommet de l'IA 2026",
 			description:
@@ -49,8 +104,31 @@ export const campaigns: Campaign[] = [
 	},
 	{
 		slug: 'municipales-2026',
-		status: 'active',
+		status: 'ended',
 		startDate: '2026-03',
+		endDate: '2026-03',
+		summary: {
+			fr: {
+				text: "Pause IA a interpellé les candidats aux élections municipales de mars 2026 pour les inviter à signer une charte en 14 engagements sur les risques liés à l'IA. La campagne a mobilisé dans toute la France et généré une couverture médiatique nationale.",
+				results: [
+					{ label: 'Signataires', value: '12 candidats' },
+					{ label: 'Villes', value: '11 villes' },
+					{ label: 'Chartes complètes', value: '7 signataires (14/14)' },
+					{ label: 'Presse', value: '10 articles + 1 émission (France Culture)' }
+				],
+				links: [{ label: 'Voir la couverture presse', url: '/fr/presse' }]
+			},
+			en: {
+				text: 'Pause AI challenged candidates in the March 2026 municipal elections to sign a charter with 14 commitments on AI risks. The campaign mobilized across France and received national media coverage.',
+				results: [
+					{ label: 'Signatories', value: '12 candidates' },
+					{ label: 'Cities', value: '11 cities' },
+					{ label: 'Full charters', value: '7 signatories (14/14)' },
+					{ label: 'Press', value: '10 articles + 1 broadcast (France Culture)' }
+				],
+				links: [{ label: 'See press coverage', url: '/en/presse' }]
+			}
+		},
 		fr: {
 			title: 'Élections municipales 2026',
 			description:
@@ -66,9 +144,11 @@ export const campaigns: Campaign[] = [
 	}
 ]
 
-/** Active campaigns first, then ended ones — each group sorted newest first. */
+const byStartDateDesc = (a: Campaign, b: Campaign) => b.startDate.localeCompare(a.startDate)
+
+/** Active campaigns first (newest first), then ended ones (newest first). */
 export function getSortedCampaigns(): Campaign[] {
-	const active = campaigns.filter((c) => c.status === 'active')
-	const ended = campaigns.filter((c) => c.status === 'ended')
+	const active = campaigns.filter((c) => c.status === 'active').sort(byStartDateDesc)
+	const ended = campaigns.filter((c) => c.status === 'ended').sort(byStartDateDesc)
 	return [...active, ...ended]
 }
