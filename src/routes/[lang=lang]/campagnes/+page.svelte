@@ -170,7 +170,12 @@
 			{/if}
 
 			{#if summary.link}
-				<a href={summary.link.url} target="_blank" rel="noopener noreferrer" class="modal-link">
+				<a
+					href={summary.link.url}
+					target={summary.link.url.startsWith('http') ? '_blank' : undefined}
+					rel="noopener noreferrer"
+					class="modal-link-btn"
+				>
 					{summary.link.label} ↗
 				</a>
 			{/if}
@@ -401,17 +406,27 @@
 		letter-spacing: 0.04em;
 	}
 
-	.modal-link {
-		display: inline-block;
-		margin-top: 1.25rem;
-		font-size: 0.95rem;
+	.modal-link-btn {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.25rem;
+		margin-top: 1.5rem;
+		padding: 0.55rem 1.1rem;
+		border-radius: 999px;
+		font-size: 0.9rem;
 		font-weight: 600;
-		color: var(--brand-subtle, #c96900);
 		text-decoration: none;
+		background: color-mix(in srgb, var(--brand) 12%, var(--bg, #fff));
+		color: var(--brand);
+		border: 1.5px solid color-mix(in srgb, var(--brand) 35%, transparent);
+		transition:
+			background 0.15s,
+			border-color 0.15s;
 	}
 
-	.modal-link:hover {
-		text-decoration: underline;
+	.modal-link-btn:hover {
+		background: color-mix(in srgb, var(--brand) 20%, var(--bg, #fff));
+		border-color: color-mix(in srgb, var(--brand) 55%, transparent);
 	}
 
 	@media (max-width: 600px) {

@@ -105,8 +105,9 @@ export const campaigns: Campaign[] = [
 					{ label: 'Signataires', value: '12 candidats' },
 					{ label: 'Villes', value: '11 villes' },
 					{ label: 'Chartes complètes', value: '7 signataires (14/14)' },
-					{ label: 'Presse', value: '10 articles (dont France Culture)' }
-				]
+					{ label: 'Presse', value: '10 articles + 1 émission (France Culture)' }
+				],
+				link: { label: 'Voir la couverture presse', url: '/fr/presse' }
 			},
 			en: {
 				text: 'Pause AI challenged candidates in the March 2026 municipal elections to sign a charter with 14 commitments on AI risks. The campaign mobilized across France and received national media coverage.',
@@ -114,8 +115,9 @@ export const campaigns: Campaign[] = [
 					{ label: 'Signatories', value: '12 candidates' },
 					{ label: 'Cities', value: '11 cities' },
 					{ label: 'Full charters', value: '7 signatories (14/14)' },
-					{ label: 'Press', value: '10 articles (incl. France Culture)' }
-				]
+					{ label: 'Press', value: '10 articles + 1 broadcast (France Culture)' }
+				],
+				link: { label: 'See press coverage', url: '/en/presse' }
 			}
 		},
 		fr: {
