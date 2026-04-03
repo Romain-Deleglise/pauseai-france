@@ -56,7 +56,7 @@ export const campaigns: Campaign[] = [
 		endDate: '2026-02',
 		summary: {
 			fr: {
-				text: "Pause IA a mobilisé pour que le Sommet de l'IA en Inde remette la sécurité au cœur de l'agenda international. Plus de 4 000 personnes ont signé la pétition et plus de 2 000 mails ont été envoyés aux délégués dans 14 pays. Une tribune a également été publiée dans Le Nouvel Obs.",
+				text: "À l'occasion du Sommet de l'IA en Inde, Pause IA s'est mobilisée pour remettre la sécurité au cœur de l'agenda international. Plus de 4 000 personnes ont signé la pétition et plus de 2 000 mails ont été envoyés aux délégués dans 14 pays. Une tribune a également été publiée dans Le Nouvel Obs.",
 				results: [
 					{ label: 'Signatures pétition', value: '+4 000' },
 					{ label: 'Mails aux délégués', value: '+2 000 (14 pays)' },
