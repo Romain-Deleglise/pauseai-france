@@ -4,6 +4,8 @@
 	import Button from '$lib/components/Button.svelte'
 	import { getT } from '$lib/i18n'
 	import { getSortedCampaigns } from '$lib/campaigns'
+	import type { Campaign } from '$lib/campaigns'
+	import { fade } from 'svelte/transition'
 	import type { PageData } from './$types'
 
 	export let data: PageData
@@ -49,7 +51,25 @@
 		const months = isEn ? MONTHS_EN : MONTHS_FR
 		return `${months[m]} ${year}`
 	}
+
+	let selectedCampaign: Campaign | null = null
+
+	function openSummary(campaign: Campaign) {
+		if (campaign.status === 'ended' && campaign.summary) {
+			selectedCampaign = campaign
+		}
+	}
+
+	function closeSummary() {
+		selectedCampaign = null
+	}
+
+	function handleKeydown(e: KeyboardEvent) {
+		if (e.key === 'Escape') closeSummary()
+	}
 </script>
+
+<svelte:window on:keydown={handleKeydown} />
 
 <PostMeta title={t.campagnes.meta_title} description={t.campagnes.meta_desc} />
 
@@ -67,7 +87,16 @@
 		{#each sortedCampaigns as campaign}
 			{@const content = isEn ? campaign.en : campaign.fr}
 			{@const href = campaign.url ?? `${prefix}/${campaign.slug}`}
-			<div class="campaign-card" class:ended={campaign.status === 'ended'}>
+			{@const hasSummary = campaign.status === 'ended' && campaign.summary}
+			<div
+				class="campaign-card"
+				class:ended={campaign.status === 'ended'}
+				class:clickable={hasSummary}
+				role={hasSummary ? 'button' : undefined}
+				tabindex={hasSummary ? 0 : undefined}
+				on:click={() => hasSummary && openSummary(campaign)}
+				on:keydown={(e) => e.key === 'Enter' && hasSummary && openSummary(campaign)}
+			>
 				<div class="card-top">
 					<div class="card-badge" class:badge-ended={campaign.status === 'ended'}>
 						{campaign.status === 'active' ? t.campagnes.badge_active : t.campagnes.badge_ended}
@@ -84,11 +113,70 @@
 				<p>{content.description}</p>
 				{#if campaign.status === 'active'}
 					<Button {href}>{content.cta}</Button>
+				{:else if hasSummary}
+					<span class="see-results">{isEn ? 'View results' : 'Voir le bilan'} →</span>
 				{/if}
 			</div>
 		{/each}
 	</section>
 </article>
+
+{#if selectedCampaign?.summary}
+	{@const summary = isEn ? selectedCampaign.summary.en : selectedCampaign.summary.fr}
+	{@const content = isEn ? selectedCampaign.en : selectedCampaign.fr}
+	<div
+		class="modal-overlay"
+		role="presentation"
+		on:click={closeSummary}
+		transition:fade={{ duration: 150 }}
+	>
+		<div
+			class="modal"
+			role="dialog"
+			aria-modal="true"
+			aria-label={isEn ? 'Campaign results' : 'Bilan de la campagne'}
+			on:click|stopPropagation
+		>
+			<button class="modal-close" on:click={closeSummary} aria-label={isEn ? 'Close' : 'Fermer'}
+				>&times;</button
+			>
+
+			<div class="modal-header">
+				<div class="card-badge badge-ended">
+					{t.campagnes.badge_ended}
+				</div>
+				<h2>{content.title}</h2>
+				{#if selectedCampaign.startDate}
+					<p class="modal-dates">
+						{formatDate(
+							selectedCampaign.startDate
+						)}{#if selectedCampaign.endDate && selectedCampaign.endDate !== selectedCampaign.startDate}
+							– {formatDate(selectedCampaign.endDate)}{/if}
+					</p>
+				{/if}
+			</div>
+
+			<p class="modal-text">{summary.text}</p>
+
+			{#if summary.results.length > 0}
+				<div class="results-grid">
+					{#each summary.results as result}
+						<div class="result-card">
+							<span class="result-value">{result.value}</span>
+							<span class="result-label">{result.label}</span>
+						</div>
+					{/each}
+				</div>
+			{/if}
+
+			{#if summary.link}
+				<a href={summary.link.url} target="_blank" rel="noopener noreferrer" class="modal-link">
+					{summary.link.label} ↗
+				</a>
+			{/if}
+		</div>
+	</div>
+{/if}
 
 <style>
 	article {
@@ -148,6 +236,17 @@
 		border-color: #eee;
 	}
 
+	.campaign-card.clickable {
+		cursor: pointer;
+	}
+
+	.campaign-card.clickable:hover {
+		opacity: 1;
+		transform: translateY(-2px);
+		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+		border-color: color-mix(in srgb, var(--brand) 30%, transparent);
+	}
+
 	.active-count {
 		font-size: 1rem;
 		font-weight: 600;
@@ -202,6 +301,119 @@
 		margin-bottom: 1.5rem;
 	}
 
+	.see-results {
+		font-size: 0.9rem;
+		font-weight: 600;
+		color: var(--brand);
+		margin-top: auto;
+	}
+
+	/* Modal */
+	.modal-overlay {
+		position: fixed;
+		inset: 0;
+		background: rgba(0, 0, 0, 0.5);
+		z-index: 2000;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 1rem;
+		backdrop-filter: blur(3px);
+	}
+
+	.modal {
+		background: var(--bg, #fff);
+		border-radius: 1rem;
+		padding: 2.5rem;
+		max-width: 36rem;
+		width: 100%;
+		max-height: 90dvh;
+		overflow-y: auto;
+		position: relative;
+		box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2);
+	}
+
+	.modal-close {
+		position: absolute;
+		top: 1rem;
+		right: 1rem;
+		font-size: 1.75rem;
+		line-height: 1;
+		color: var(--text-secondary, #666);
+		cursor: pointer;
+		padding: 0.25rem 0.5rem;
+		border-radius: 0.5rem;
+		transition: background 0.15s;
+	}
+
+	.modal-close:hover {
+		background: var(--bg-subtle, #f5f5f5);
+	}
+
+	.modal-header {
+		margin-bottom: 1.5rem;
+	}
+
+	.modal-header h2 {
+		font-size: 1.5rem;
+		margin-top: 0.75rem;
+		margin-bottom: 0.25rem;
+	}
+
+	.modal-dates {
+		font-size: 0.9rem;
+		color: #999;
+		margin: 0;
+	}
+
+	.modal-text {
+		font-size: 1rem;
+		line-height: 1.6;
+		margin-bottom: 1.5rem;
+		color: var(--text, #222);
+	}
+
+	.results-grid {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 0.75rem;
+	}
+
+	.result-card {
+		background: var(--bg-subtle, #f5f5f5);
+		border-radius: 0.75rem;
+		padding: 1rem;
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+	}
+
+	.result-value {
+		font-weight: 700;
+		font-size: 1rem;
+		color: var(--text, #222);
+	}
+
+	.result-label {
+		font-size: 0.8rem;
+		color: var(--text-secondary, #666);
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+	}
+
+	.modal-link {
+		display: inline-block;
+		margin-top: 1.25rem;
+		font-size: 0.95rem;
+		font-weight: 600;
+		color: var(--brand-subtle, #c96900);
+		text-decoration: none;
+	}
+
+	.modal-link:hover {
+		text-decoration: underline;
+	}
+
 	@media (max-width: 600px) {
 		h2 {
 			font-size: 1.4rem;
@@ -209,6 +421,22 @@
 
 		.campaign-card {
 			padding: 1.5rem;
+		}
+
+		.modal {
+			padding: 1.5rem;
+			border-radius: 1rem 1rem 0 0;
+			max-height: 85dvh;
+			align-self: flex-end;
+		}
+
+		.modal-overlay {
+			align-items: flex-end;
+			padding: 0;
+		}
+
+		.results-grid {
+			grid-template-columns: 1fr;
 		}
 	}
 </style>
