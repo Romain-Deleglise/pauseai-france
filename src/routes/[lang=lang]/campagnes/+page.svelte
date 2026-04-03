@@ -438,20 +438,41 @@
 			padding: 1.5rem;
 		}
 
-		.modal {
-			padding: 1.5rem;
-			border-radius: 1rem 1rem 0 0;
-			max-height: 85dvh;
-			align-self: flex-end;
-		}
-
 		.modal-overlay {
 			align-items: flex-end;
 			padding: 0;
 		}
 
+		.modal {
+			width: 100%;
+			max-width: 100%;
+			max-height: 88dvh;
+			border-radius: 1.25rem 1.25rem 0 0;
+			padding: 1.25rem 1.25rem calc(1.25rem + env(safe-area-inset-bottom));
+		}
+
+		.modal::before {
+			content: '';
+			display: block;
+			width: 2.5rem;
+			height: 0.25rem;
+			background: #ccc;
+			border-radius: 999px;
+			margin: 0 auto 1.25rem;
+		}
+
+		.modal-close {
+			top: 0.75rem;
+			right: 0.75rem;
+		}
+
 		.results-grid {
-			grid-template-columns: 1fr;
+			grid-template-columns: 1fr 1fr;
+		}
+
+		.modal-link-btn {
+			width: 100%;
+			justify-content: center;
 		}
 	}
 </style>
