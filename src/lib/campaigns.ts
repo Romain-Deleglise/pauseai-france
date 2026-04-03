@@ -56,12 +56,11 @@ export const campaigns: Campaign[] = [
 		endDate: '2026-02',
 		summary: {
 			fr: {
-				text: "Pause IA a mobilisé pour que le Sommet de l'IA en Inde remette la sécurité au cœur de l'agenda international. Plus de 2 200 personnes ont signé la pétition et plus de 2 000 mails ont été envoyés aux délégués de 14 pays différents. Une tribune a été publiée dans Le Nouvel Obs, soutenue par des personnalités académiques, politiques et associatives.",
+				text: "Pause IA a mobilisé pour que le Sommet de l'IA en Inde remette la sécurité au cœur de l'agenda international. Plus de 4 000 personnes ont signé la pétition et plus de 2 000 mails ont été envoyés aux délégués dans 14 pays. Une tribune a également été publiée dans Le Nouvel Obs.",
 				results: [
-					{ label: 'Pétition', value: '4 057 signatures vérifiées' },
-					{ label: 'Mails aux délégués', value: '2 000+ (14 pays)' },
-					{ label: 'Tribune', value: 'Le Nouvel Obs — 16 fév. 2026' },
-					{ label: 'Signataires tribune', value: 'Personnalités académiques & politiques' }
+					{ label: 'Signatures pétition', value: '+4 000' },
+					{ label: 'Mails aux délégués', value: '+2 000 (14 pays)' },
+					{ label: 'Tribune', value: 'Le Nouvel Obs' }
 				],
 				link: {
 					label: 'Lire la tribune dans Le Nouvel Obs',
@@ -69,12 +68,11 @@ export const campaigns: Campaign[] = [
 				}
 			},
 			en: {
-				text: 'Pause AI France mobilized to put safety back at the heart of the international AI agenda at the India AI Summit. Over 2,200 people signed the petition and over 2,000 emails were sent to delegates from 14 different countries. An op-ed was published in Le Nouvel Obs, supported by academic, political and civic figures.',
+				text: 'Pause AI France mobilized to put safety back at the heart of the international AI agenda at the India AI Summit. Over 4,000 people signed the petition and over 2,000 emails were sent to delegates across 14 countries. An op-ed was also published in Le Nouvel Obs.',
 				results: [
-					{ label: 'Petition', value: '4,057 verified signatures' },
+					{ label: 'Petition signatures', value: '4,000+' },
 					{ label: 'Emails to delegates', value: '2,000+ (14 countries)' },
-					{ label: 'Op-ed', value: 'Le Nouvel Obs — 16 Feb. 2026' },
-					{ label: 'Op-ed signatories', value: 'Academic & political figures' }
+					{ label: 'Op-ed', value: 'Le Nouvel Obs' }
 				],
 				link: {
 					label: 'Read the op-ed in Le Nouvel Obs',
