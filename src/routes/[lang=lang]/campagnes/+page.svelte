@@ -169,6 +169,27 @@
 				</div>
 			{/if}
 
+			{#if summary.articles?.length}
+				<div class="articles-section">
+					<h3 class="articles-title">{isEn ? 'Press coverage' : 'Couverture presse'}</h3>
+					<ul class="articles-list">
+						{#each summary.articles as article}
+							<li>
+								<a
+									href={article.url}
+									target="_blank"
+									rel="noopener noreferrer"
+									class="article-link"
+								>
+									<span class="article-source">{article.source}</span>
+									<span class="article-title">{article.title}</span>
+								</a>
+							</li>
+						{/each}
+					</ul>
+				</div>
+			{/if}
+
 			{#if summary.link}
 				<a
 					href={summary.link.url}
@@ -404,6 +425,58 @@
 		color: var(--text-secondary, #666);
 		text-transform: uppercase;
 		letter-spacing: 0.04em;
+	}
+
+	.articles-section {
+		margin-top: 1.5rem;
+	}
+
+	.articles-title {
+		font-size: 0.8rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		color: var(--text-secondary, #666);
+		margin: 0 0 0.75rem;
+	}
+
+	.articles-list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 0.4rem;
+	}
+
+	.article-link {
+		display: flex;
+		align-items: baseline;
+		gap: 0.6rem;
+		padding: 0.45rem 0.6rem;
+		border-radius: 0.5rem;
+		text-decoration: none;
+		transition: background 0.15s;
+	}
+
+	.article-link:hover {
+		background: var(--bg-subtle, #f5f5f5);
+	}
+
+	.article-source {
+		flex-shrink: 0;
+		font-size: 0.75rem;
+		font-weight: 700;
+		color: var(--brand);
+		background: color-mix(in srgb, var(--brand) 10%, var(--bg, #fff));
+		padding: 0.1rem 0.45rem;
+		border-radius: 999px;
+	}
+
+	.article-title {
+		font-size: 0.9rem;
+		color: var(--text, #222);
+		line-height: 1.4;
 	}
 
 	.modal-link-btn {
