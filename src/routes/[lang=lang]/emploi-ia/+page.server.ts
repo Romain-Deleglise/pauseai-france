@@ -59,7 +59,7 @@ export async function load() {
 				url: getUrl(item.properties.URL),
 				category: getSelectName(item.properties.Catégorie),
 				image: getUrl(item.properties.Image),
-				langue: getSelectName(item.properties.langue)
+				langue: getSelectName(item.properties.Langue)
 			}))
 
 		return {

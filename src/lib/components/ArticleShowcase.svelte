@@ -132,7 +132,7 @@
 	<div class="header">
 		<!-- Compact segmented control for language -->
 		<div class="lang-filter" role="group" aria-label={t.emploi_ia.articles_lang_label}>
-			<span class="label">{t.emploi_ia.articles_lang_label}</span>
+			<span class="lang-label">{t.emploi_ia.articles_lang_label}</span>
 			<div class="segmented">
 				{#each languages as language, i}
 					<button
@@ -181,6 +181,7 @@
 						title={article.title}
 						summary={article.summary}
 						url={article.url}
+						langue={article.langue}
 					/>
 				</div>
 			{/each}
@@ -285,12 +286,6 @@
 	}
 
 	/* ---- Category tabs ---- */
-	.cat-filter {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		gap: 1rem;
-	}
 
 	.label {
 		font-weight: 600;
