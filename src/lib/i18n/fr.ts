@@ -477,7 +477,7 @@ export default {
 		evolution_section_text_2:
 			" suit les licenciements dans lesquels l’intelligence artificielle ou l’automatisation est citée comme facteur important. Les données proviennent d'annonces d'entreprises et de reportages de médias fiables.",
 		evolution_section_text_3:
-			'Le graphique ci-dessous permet d’observer l’évolution des pertes d’emploi attribuées à l’IA au fil du temps et d’identifier les secteurs les plus touchés par l’automatisation.',
+			'Le graphique de ce site permet d’observer l’évolution des pertes d’emploi attribuées à l’IA au fil du temps et d’identifier les secteurs les plus touchés par l’automatisation.',
 		evolution_link: 'Voir le graphique interactif sur jobloss.ai',
 		press_section_title: 'Revue de presse : je reste informé !',
 		press_section_text:
@@ -505,6 +505,10 @@ export default {
 		articles_nav_aria: "Navigation parmi les pages d'articles",
 		articles_prev: 'Page précédente',
 		articles_next: 'Page suivante',
-		articles_go_to: 'Aller à la page'
+		articles_go_to: 'Aller à la page',
+		articles_lang_label: 'Langue :',
+		articles_lang_all: 'Toutes',
+		articles_lang_fr: 'Français',
+		articles_lang_en: 'Anglais'
 	}
 }

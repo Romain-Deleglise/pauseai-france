@@ -473,7 +473,7 @@ export default {
 		evolution_section_text_2:
 			' tracks layoffs in which artificial intelligence or automation is cited as an important factor. The data comes from company announcements and reliable media reports.',
 		evolution_section_text_3:
-			'The interactive chart below allows you to observe the evolution of job losses attributed to AI over time and identify the sectors most affected by automation.',
+			'The interactive chart of this site allows you to observe the evolution of job losses attributed to AI over time and identify the sectors most affected by automation.',
 		evolution_link: 'See the interactive chart on jobloss.ai',
 		press_section_title: 'Press review: I stay informed!',
 		press_section_text:
@@ -501,6 +501,10 @@ export default {
 		articles_nav_aria: 'Navigation among article pages',
 		articles_prev: 'Previous page',
 		articles_next: 'Next page',
-		articles_go_to: 'Go to page'
+		articles_go_to: 'Go to page',
+		articles_lang_label: 'Language:',
+		articles_lang_all: 'All',
+		articles_lang_fr: 'French',
+		articles_lang_en: 'English'
 	}
 }

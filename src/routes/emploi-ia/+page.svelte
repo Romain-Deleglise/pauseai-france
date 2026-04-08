@@ -149,7 +149,7 @@
 			</p>
 
 			<p>
-				Le graphique ci-dessous permet d’observer l’évolution des pertes d’emploi attribuées à l’IA
+				Le graphique de ce site permet d’observer l’évolution des pertes d’emploi attribuées à l’IA
 				au fil du temps et d’identifier les secteurs les plus touchés par l’automatisation.
 			</p>
 

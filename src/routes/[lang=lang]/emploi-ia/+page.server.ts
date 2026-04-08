@@ -58,7 +58,8 @@ export async function load() {
 				date: getDateStart(item.properties.Date),
 				url: getUrl(item.properties.URL),
 				category: getSelectName(item.properties.Catégorie),
-				image: getUrl(item.properties.Image)
+				image: getUrl(item.properties.Image),
+				langue: getSelectName(item.properties.Langue)
 			}))
 
 		return {

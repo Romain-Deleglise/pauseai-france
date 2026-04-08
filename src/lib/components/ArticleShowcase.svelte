@@ -11,8 +11,10 @@
 
 	$: t = getT(lang)
 	$: ALL_CATEGORY = t.emploi_ia.articles_all_category
+	$: ALL_LANG = t.emploi_ia.articles_lang_all
 
 	let activeCategory: string = 'Toutes'
+	let activeLanguage: string = 'Toutes'
 	let currentPage = 0
 	let categories: string[] = []
 	let tabs: string[] = []
@@ -78,6 +80,11 @@
 		currentPage = 0
 	}
 
+	const switchLanguage = (langId: string) => {
+		activeLanguage = langId
+		currentPage = 0
+	}
+
 	$: categories = Array.from(
 		new Set<string>(
 			articles.map((article) => article.category).filter((cat): cat is string => !!cat)
@@ -85,15 +92,27 @@
 	)
 	$: tabs = [ALL_CATEGORY, ...categories]
 
-	// Reset active category if it's the old 'Toutes' and we switched lang, or just keep it synced with the current language's 'All'
+	// Reset active category/lang if it's the old 'Toutes' and we switched lang, or just keep it synced with the current language's 'All'
 	$: if (activeCategory === 'Toutes' || activeCategory === 'All') {
 		activeCategory = ALL_CATEGORY
 	}
+	$: if (activeLanguage === 'Toutes' || activeLanguage === 'All') {
+		activeLanguage = ALL_LANG
+	}
 
-	$: filteredArticles =
-		activeCategory === ALL_CATEGORY
-			? articles
-			: articles.filter((article) => article.category === activeCategory)
+	$: languages = [
+		{ id: ALL_LANG, label: ALL_LANG },
+		{ id: 'FR', label: t.emploi_ia.articles_lang_fr },
+		{ id: 'EN', label: t.emploi_ia.articles_lang_en }
+	]
+
+	$: filteredArticles = articles.filter((article) => {
+		const matchesCategory = activeCategory === ALL_CATEGORY || article.category === activeCategory
+		const matchesLanguage =
+			activeLanguage === ALL_LANG ||
+			(article.langue && article.langue.toUpperCase() === activeLanguage.toUpperCase())
+		return matchesCategory && matchesLanguage
+	})
 	$: totalPages = filteredArticles.length ? Math.ceil(filteredArticles.length / itemsPerPage) : 1
 	$: {
 		if (currentPage > totalPages - 1) {
@@ -111,21 +130,43 @@
 
 <section id="showcase">
 	<div class="header">
-		<span class="label">{t.emploi_ia.articles_label}</span>
-		<div class="tabs" role="tablist" aria-label={t.emploi_ia.articles_tabs_aria}>
-			{#each tabs as tab}
-				<button
-					type="button"
-					role="tab"
-					class:tab--active={tab === activeCategory}
-					aria-selected={tab === activeCategory}
-					on:click={() => {
-						switchCategory(tab)
-					}}
-				>
-					{tab}
-				</button>
-			{/each}
+		<!-- Compact segmented control for language -->
+		<div class="lang-filter" role="group" aria-label={t.emploi_ia.articles_lang_label}>
+			<span class="lang-label">{t.emploi_ia.articles_lang_label}</span>
+			<div class="segmented">
+				{#each languages as language, i}
+					<button
+						type="button"
+						class="seg-btn"
+						class:seg-btn--active={language.id === activeLanguage}
+						class:seg-btn--first={i === 0}
+						class:seg-btn--last={i === languages.length - 1}
+						aria-pressed={language.id === activeLanguage}
+						on:click={() => switchLanguage(language.id)}
+					>
+						{language.label}
+					</button>
+				{/each}
+			</div>
+		</div>
+
+		<div class="filter-group">
+			<span class="label">{t.emploi_ia.articles_label}</span>
+			<div class="tabs" role="tablist" aria-label={t.emploi_ia.articles_tabs_aria}>
+				{#each tabs as tab}
+					<button
+						type="button"
+						role="tab"
+						class:tab--active={tab === activeCategory}
+						aria-selected={tab === activeCategory}
+						on:click={() => {
+							switchCategory(tab)
+						}}
+					>
+						{tab}
+					</button>
+				{/each}
+			</div>
 		</div>
 	</div>
 
@@ -140,6 +181,7 @@
 						title={article.title}
 						summary={article.summary}
 						url={article.url}
+						langue={article.langue}
 					/>
 				</div>
 			{/each}
@@ -178,13 +220,72 @@
 		padding-top: 2rem;
 	}
 
+	/* ---- Header: lang toggle + category tabs on one row, wrapping gracefully ---- */
 	.header {
 		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		gap: 1rem;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 1.5rem;
 		margin-bottom: 2rem;
 	}
+
+	/* ---- Language segmented control ---- */
+	.lang-filter {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+	}
+
+	.lang-label {
+		font-size: 0.8rem;
+		font-weight: 600;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		color: var(--carousel-text, #414042);
+		white-space: nowrap;
+	}
+
+	.segmented {
+		display: flex;
+		border: 1px solid var(--carousel-border, #d9c7b0);
+		border-radius: 8px;
+		overflow: hidden;
+	}
+
+	.seg-btn {
+		background: var(--white);
+		border: none;
+		border-left: 1px solid var(--carousel-border, #d9c7b0);
+		padding: 0.3rem 0.75rem;
+		color: var(--carousel-text, #414042);
+		cursor: pointer;
+		transition:
+			background 150ms ease,
+			color 150ms ease;
+		line-height: 1.4;
+		white-space: nowrap;
+	}
+
+	.seg-btn--first {
+		border-left: none;
+	}
+
+	.seg-btn:hover,
+	.seg-btn:focus-visible {
+		background: var(--brand-light, #fff7ed);
+		outline: none;
+	}
+
+	.seg-btn--active {
+		background: var(--carousel-accent, var(--brand));
+		color: var(--white);
+	}
+
+	.seg-btn--active:hover {
+		background: var(--carousel-accent, var(--brand));
+	}
+
+	/* ---- Category tabs ---- */
 
 	.label {
 		font-weight: 600;
