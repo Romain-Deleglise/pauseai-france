@@ -107,10 +107,10 @@
 				humanity.
 			</p>
 			<p>
-				Despite this, no regulatory framework — in France or internationally — governs the
-				development of these systems based on their actual capabilities. No independent safety
-				evaluation before deployment. No thresholds beyond which a system would be deemed too
-				dangerous. Companies self-assess and decide for themselves what is acceptable.
+				Despite this, no regulatory framework, in France or internationally, governs the development
+				of these systems based on their actual capabilities. No independent safety evaluation before
+				deployment. No thresholds beyond which a system would be deemed too dangerous. Companies
+				self-assess and decide for themselves what is acceptable.
 			</p>
 			<p>
 				Elected officials who shape the law need to know this issue concerns real constituents in
@@ -159,7 +159,7 @@
 				{#if isEn}
 					<p>
 						Use these links to find your MP (deputy) and senator(s) for your area. Note that each
-						department has at least one senator — some have several.
+						department has at least one senator, sometimes several.
 					</p>
 				{:else}
 					<p>
@@ -261,10 +261,10 @@
 							</li>
 							<li>
 								<strong>No need to be an expert.</strong> You don't have to explain the technical details
-								— what matters is signalling that real citizens care about this.
+								what matters is signalling that real citizens care about this.
 							</li>
 							<li>
-								<strong>BCC us.</strong> Add <code>contact@pauseia.fr</code> in BCC when you send — this
+								<strong>BCC us.</strong> Add <code>campagne@pauseia.fr</code> in BCC when you send. This
 								helps us count the letters sent.
 							</li>
 						</ul>
@@ -288,7 +288,7 @@
 							</li>
 							<li>
 								<strong>Mettez-nous en copie cachée.</strong> Ajoutez
-								<code>contact@pauseia.fr</code>
+								<code>campagne@pauseia.fr</code>
 								en CCI lors de l'envoi. Cela nous aide à comptabiliser les lettres envoyées.
 							</li>
 						</ul>
