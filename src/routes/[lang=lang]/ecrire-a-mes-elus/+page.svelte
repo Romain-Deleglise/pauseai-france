@@ -54,16 +54,16 @@
 </script>
 
 <PostMeta
-	title={isEn ? 'Write to your representatives | Pause AI' : 'Écrivez à vos élu·es | Pause IA'}
+	title={isEn ? 'Write to your representatives | Pause AI' : 'Écrivez à vos élus | Pause IA'}
 	description={isEn
 		? 'Take 5 minutes to write to your MP and senator about the risks of advanced AI systems. Use our email template to get started.'
-		: "Prenez 5 minutes pour écrire à votre député·e et à votre sénateur·rice sur les risques des systèmes d'IA avancés."}
+		: "Prenez 5 minutes pour écrire à votre député et à votre sénateur sur les risques des systèmes d'IA avancés."}
 />
 
 <article>
 	<section class="hero">
 		<UnderlinedTitle as="h1">
-			{isEn ? 'Write to your representatives' : 'Écrivez à vos élu·es'}
+			{isEn ? 'Write to your representatives' : 'Écrivez à vos élus'}
 		</UnderlinedTitle>
 		<p class="hero-subtitle">
 			{#if isEn}
@@ -94,8 +94,8 @@
 				trop dangereux pour être déployé.
 			</p>
 			<p>
-				Un email personnel à votre député·e ou sénateur·rice reste l'un des moyens les plus
-				efficaces pour inscrire ce sujet à leur agenda. Cela prend cinq minutes.
+				Un email personnel à votre député ou sénateur reste l'un des moyens les plus efficaces pour
+				inscrire ce sujet à leur agenda. Cela prend cinq minutes.
 			</p>
 		{/if}
 	</section>
@@ -116,8 +116,8 @@
 					</p>
 				{:else}
 					<p>
-						Utilisez ces liens pour trouver votre député·e et votre (ou vos) sénateur·rice·s. Chaque
-						département compte au moins un·e sénateur·rice, parfois plusieurs selon la population.
+						Utilisez ces liens pour trouver votre député et votre (ou vos) sénateurs. Chaque
+						département compte au moins un sénateur, parfois plusieurs selon la population.
 					</p>
 				{/if}
 				<div class="find-links">
@@ -129,7 +129,7 @@
 					>
 						<span class="find-icon">🏛️</span>
 						<span>
-							<strong>{isEn ? 'Find my MP' : 'Trouver mon député·e'}</strong>
+							<strong>{isEn ? 'Find my MP' : 'Trouver mon député'}</strong>
 							<small>nosdeputes.fr</small>
 						</span>
 					</a>
@@ -141,7 +141,7 @@
 					>
 						<span class="find-icon">🏛️</span>
 						<span>
-							<strong>{isEn ? 'Find my senator(s)' : 'Trouver mon/mes sénateur·rice·s'}</strong>
+							<strong>{isEn ? 'Find my senator(s)' : 'Trouver mon/mes sénateurs'}</strong>
 							<small>nossenateurs.fr</small>
 						</span>
 					</a>
@@ -227,7 +227,7 @@
 								commune ou arrondissement. Les équipes trient le courrier par circonscription.
 							</li>
 							<li>
-								<strong>Inutile d'être expert·e.</strong> Vous n'avez pas à expliquer les détails techniques.
+								<strong>Inutile d'être expert.</strong> Vous n'avez pas à expliquer les détails techniques.
 								L'important est de montrer que de vrais citoyens s'en préoccupent.
 							</li>
 							<li>
@@ -294,8 +294,8 @@
 									[Your town / constituency]
 								</p>
 							{:else}
-								<p>Madame/Monsieur le/la Député·e / Sénateur·rice [nom],</p>
-								<p>Je suis [votre nom], habitant·e de [votre commune].</p>
+								<p>Madame/Monsieur le Député / le Sénateur [nom],</p>
+								<p>Je suis [votre nom], habitant de [votre commune].</p>
 								<p>
 									Je vous contacte au sujet du développement rapide de systèmes d'intelligence
 									artificielle de plus en plus autonomes et puissants. Les dirigeants des plus
@@ -419,9 +419,9 @@
 									[Your address / town / constituency]
 								</p>
 							{:else}
-								<p>Madame/Monsieur le/la Député·e / Sénateur·rice [nom],</p>
+								<p>Madame/Monsieur le Député / le Sénateur [nom],</p>
 								<p>
-									Je m'appelle [votre nom] et je suis un·e habitant·e de [votre
+									Je m'appelle [votre nom] et je suis un habitant de [votre
 									commune/circonscription].
 								</p>
 								<p>
