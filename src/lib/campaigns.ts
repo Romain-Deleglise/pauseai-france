@@ -62,10 +62,10 @@ export const campaigns: Campaign[] = [
 		status: 'active',
 		startDate: '2026-04',
 		fr: {
-			title: 'Écrivez à vos élu·es',
+			title: 'Écrivez à vos élus',
 			description:
-				"Envoyez un email à votre député·e et à votre sénateur·rice pour mettre les risques de l'IA à leur agenda. Un modèle personnalisable et deux versions (courte et complète) sont disponibles.",
-			cta: 'Envoyer un email à mes élu·es'
+				"Envoyez un email à votre député et à votre sénateur pour mettre les risques de l'IA à leur agenda. Un modèle personnalisable et deux versions (courte et complète) sont disponibles.",
+			cta: 'Envoyer un email à mes élus'
 		},
 		en: {
 			title: 'Write to your representatives',
