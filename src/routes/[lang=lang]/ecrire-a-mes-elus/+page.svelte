@@ -65,13 +65,6 @@
 		<UnderlinedTitle as="h1">
 			{isEn ? 'Write to your representatives' : 'Écrivez à vos élus'}
 		</UnderlinedTitle>
-		<p class="hero-subtitle">
-			{#if isEn}
-				A 5-minute action to put AI risks on the agenda of your elected officials
-			{:else}
-				Une action en 5 minutes pour mettre les risques de l'IA à l'agenda de vos représentants
-			{/if}
-		</p>
 	</section>
 
 	<!-- ── Pourquoi écrire ── -->
@@ -153,37 +146,6 @@
 		<div class="step">
 			<div class="step-number">2</div>
 			<div class="step-content">
-				<h3>{isEn ? 'Choose your concerns' : 'Choisissez vos préoccupations'}</h3>
-				{#if isEn}
-					<p>
-						Select the risks that concern you most. The email template will adapt automatically.
-						Keep all selected for the most complete message.
-					</p>
-				{:else}
-					<p>
-						Sélectionnez les risques qui vous préoccupent le plus. Le modèle d'email s'adaptera
-						automatiquement. Gardez tout sélectionné pour un message plus complet.
-					</p>
-				{/if}
-				<div class="theme-chips">
-					{#each themes as theme}
-						<button
-							class="chip"
-							class:active={selectedThemes.has(theme.id)}
-							on:click={() => toggleTheme(theme.id)}
-							aria-pressed={selectedThemes.has(theme.id)}
-						>
-							{isEn ? theme.labelEn : theme.label}
-						</button>
-					{/each}
-				</div>
-			</div>
-		</div>
-
-		<!-- Étape 3 -->
-		<div class="step">
-			<div class="step-number">3</div>
-			<div class="step-content">
 				<h3>{isEn ? 'Send your email' : 'Envoyez votre email'}</h3>
 
 				<!-- Conseils -->
@@ -191,52 +153,41 @@
 					<h4>{isEn ? 'A few tips' : 'Quelques conseils'}</h4>
 					{#if isEn}
 						<ul>
+							<li><strong>Be brief.</strong> Short and clear works better.</li>
 							<li>
-								<strong>Be brief.</strong> A short, clear email is more likely to be read than a long
-								one.
+								<strong>Personalise.</strong> One sentence in your own words carries far more weight.
 							</li>
 							<li>
-								<strong>Personalise it.</strong> Parliamentary teams recognise mass emails. Even one
-								or two sentences in your own words carry much more weight.
+								<strong>Mention your constituency.</strong> Full name + town, teams sort by constituency.
 							</li>
 							<li>
-								<strong>Mention your constituency.</strong> Include your full name and your town or district.
-								Teams sort mail by constituency.
-							</li>
-							<li>
-								<strong>No need to be an expert.</strong> You don't have to explain the technical details
-								what matters is signalling that real citizens care about this.
-							</li>
-							<li>
-								<strong>BCC us.</strong> Add <code>campagne@pauseia.fr</code> in BCC when you send. This
-								helps us count the letters sent.
+								<strong>No need to be an expert.</strong> What matters is that a real citizen cares.
 							</li>
 						</ul>
 					{:else}
 						<ul>
+							<li><strong>Soyez bref.</strong> Court et clair, c'est plus efficace.</li>
 							<li>
-								<strong>Soyez bref.</strong> Un email court et clair a plus de chances d'être lu qu'un
-								long message.
+								<strong>Personnalisez.</strong> Une phrase de vous a bien plus de poids qu'un copier-coller.
 							</li>
 							<li>
-								<strong>Personnalisez.</strong> Les équipes parlementaires reconnaissent les emails de
-								masse. Même une ou deux phrases de votre cru ont bien plus de poids.
+								<strong>Mentionnez votre circonscription.</strong> Nom complet + ville, les équipes trient
+								par circonscription.
 							</li>
 							<li>
-								<strong>Mentionnez votre circonscription.</strong> Indiquez votre nom complet et votre
-								commune ou arrondissement. Les équipes trient le courrier par circonscription.
-							</li>
-							<li>
-								<strong>Inutile d'être expert.</strong> Vous n'avez pas à expliquer les détails techniques.
-								L'important est de montrer que de vrais citoyens s'en préoccupent.
-							</li>
-							<li>
-								<strong>Mettez-nous en copie cachée.</strong> Ajoutez
-								<code>campagne@pauseia.fr</code>
-								en CCI lors de l'envoi. Cela nous aide à comptabiliser les lettres envoyées.
+								<strong>Inutile d'être expert.</strong> Ce qui compte : qu'un vrai citoyen s'en préoccupe.
 							</li>
 						</ul>
 					{/if}
+					<div class="bcc-block">
+						<span class="bcc-label">{isEn ? 'BCC:' : 'CCI :'}</span>
+						<code class="bcc-email">campagne@pauseia.fr</code>
+						<span class="bcc-desc">
+							{isEn
+								? 'helps us count letters sent'
+								: 'pour nous aider à compter les lettres envoyées'}
+						</span>
+					</div>
 				</div>
 
 				<!-- Sélecteur de version -->
@@ -535,6 +486,30 @@
 				</div>
 			</div>
 		</div>
+
+		<!-- Étape 3 : Personnaliser (version complète) -->
+		<div class="step">
+			<div class="step-number">3</div>
+			<div class="step-content">
+				<h3>{isEn ? 'Personalise (optional)' : 'Personnalisez (facultatif)'}</h3>
+				<p class="chips-intro">
+					{isEn
+						? 'Using the full version? Select the risks that matter most to you:'
+						: 'Version complète ? Cochez les risques qui vous tiennent le plus à cœur :'}
+				</p>
+				<div class="theme-chips">
+					{#each themes as theme}
+						<button
+							class="chip"
+							class:active={selectedThemes.has(theme.id)}
+							on:click={() => toggleTheme(theme.id)}
+						>
+							{isEn ? theme.labelEn : theme.label}
+						</button>
+					{/each}
+				</div>
+			</div>
+		</div>
 	</section>
 </article>
 
@@ -549,13 +524,6 @@
 
 	.hero {
 		margin-bottom: 3rem;
-	}
-
-	.hero-subtitle {
-		font-size: 1.15rem;
-		color: var(--color-text-muted, #555);
-		margin-top: 0.75rem;
-		max-width: 45rem;
 	}
 
 	.content-section {
@@ -605,6 +573,7 @@
 	.step-content h3 {
 		font-size: 1.15rem;
 		font-weight: 700;
+		margin-top: 0;
 		margin-bottom: 0.75rem;
 	}
 
@@ -744,6 +713,44 @@
 		padding: 0.1em 0.4em;
 		border-radius: 4px;
 		font-size: 0.85em;
+	}
+
+	.bcc-block {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		margin-top: 1.25rem;
+		padding: 0.6rem 0.875rem;
+		background: #f5f7ff;
+		border: 1px solid #c5cef0;
+		border-radius: 6px;
+		font-size: 0.85rem;
+		flex-wrap: wrap;
+	}
+
+	.bcc-label {
+		font-weight: 700;
+		color: #444;
+	}
+
+	.bcc-email {
+		background: none;
+		padding: 0;
+		font-size: 0.9rem;
+		font-weight: 700;
+		color: var(--color-primary, #e63946);
+		font-family: monospace;
+	}
+
+	.bcc-desc {
+		color: #666;
+		font-style: italic;
+	}
+
+	.chips-intro {
+		font-size: 0.9rem;
+		color: #555;
+		margin-bottom: 0.75rem;
 	}
 
 	/* Version tabs */
