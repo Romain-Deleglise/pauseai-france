@@ -84,21 +84,34 @@
 			<p>
 				The most powerful AI systems are being developed without independent oversight or an
 				adequate regulatory framework. Companies self-assess. No thresholds define what is too
-				dangerous to deploy.
+				dangerous to deploy. This needs to change, and elected officials are the ones who can act.
 			</p>
 			<p>
-				A personal email to your MP or senator remains one of the most effective ways to put this
-				issue on their agenda. It takes five minutes.
+				<strong>Email is more powerful than it seems.</strong> MPs and senators are required to respond
+				to their constituents. A personal email — especially a brief, sincere one — carries real weight:
+				it lands in a human inbox, it gets read, and it signals that a voter in their constituency cares
+				about this issue. Unlike a petition or a social media post, it demands a response.
+			</p>
+			<p>
+				It takes five minutes. And a handful of emails from real citizens is often enough to get a
+				topic onto a committee's agenda.
 			</p>
 		{:else}
 			<p>
 				Les systèmes d'IA les plus puissants se développent sans supervision indépendante ni cadre
 				réglementaire adapté. Les entreprises s'auto-évaluent. Aucun seuil ne définit ce qui est
-				trop dangereux pour être déployé.
+				trop dangereux pour être déployé. C'est aux élus d'agir.
 			</p>
 			<p>
-				Un email personnel à votre député ou sénateur reste l'un des moyens les plus efficaces pour
-				inscrire ce sujet à leur agenda. Cela prend cinq minutes.
+				<strong>L'email est un outil plus puissant qu'on ne le croit.</strong> Les députés et sénateurs
+				ont l'obligation de répondre à leurs concitoyens. Un email personnel — court et sincère — a un
+				vrai impact : il arrive dans une boite mail humaine, il est lu, et il signale qu'un électeur
+				de leur circonscription se préoccupe du sujet. Contrairement à une pétition ou à un post sur
+				les réseaux, il appelle une réponse.
+			</p>
+			<p>
+				Cela prend cinq minutes. Et une poignée d'emails de vrais citoyens suffit souvent à inscrire
+				un sujet à l'ordre du jour d'une commission.
 			</p>
 		{/if}
 	</section>
