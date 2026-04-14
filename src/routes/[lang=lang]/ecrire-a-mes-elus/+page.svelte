@@ -10,31 +10,15 @@
 
 	type Theme = 'individus' | 'societe' | 'economie' | 'humanite'
 
-	const themes: { id: Theme; label: string; labelEn: string; href: string }[] = [
-		{
-			id: 'individus',
-			label: 'Pour les individus',
-			labelEn: 'For individuals',
-			href: `/${lang}/dangers/pour-les-individus`
-		},
+	const themes: { id: Theme; label: string; labelEn: string }[] = [
+		{ id: 'individus', label: 'Vie privée et surveillance', labelEn: 'Privacy and surveillance' },
 		{
 			id: 'societe',
-			label: 'Pour la société',
-			labelEn: 'For society',
-			href: `/${lang}/dangers/pour-la-societe`
+			label: 'Désinformation et démocratie',
+			labelEn: 'Disinformation and democracy'
 		},
-		{
-			id: 'economie',
-			label: 'Économiques et matériels',
-			labelEn: 'Economic & material',
-			href: `/${lang}/dangers/economiques-et-materiels`
-		},
-		{
-			id: 'humanite',
-			label: "Pour l'humanité",
-			labelEn: 'For humanity',
-			href: `/${lang}/dangers/pour-l'humanite`
-		}
+		{ id: 'economie', label: 'Emploi et automatisation', labelEn: 'Jobs and automation' },
+		{ id: 'humanite', label: 'Risques existentiels', labelEn: 'Existential risks' }
 	]
 
 	let selectedThemes = new Set<Theme>(['individus', 'societe', 'economie', 'humanite'])
@@ -95,54 +79,23 @@
 		<h2>{isEn ? 'Why write?' : 'Pourquoi écrire ?'}</h2>
 		{#if isEn}
 			<p>
-				The world's most advanced AI labs are developing systems that are increasingly autonomous
-				and capable. Some can already write code, browse the web, use computer tools and act with
-				minimal human supervision. The next generation will be even more powerful.
+				The most powerful AI systems are being developed without independent oversight or an
+				adequate regulatory framework. Companies self-assess. No thresholds define what is too
+				dangerous to deploy.
 			</p>
 			<p>
-				These systems pose serious risks at several levels: automated cyberattacks, large-scale
-				disinformation, economic destabilisation, loss of human control over critical processes. As
-				their capabilities increase, so do the risks. The leaders of the main AI labs themselves
-				acknowledge that these technologies could, in the long run, pose an existential threat to
-				humanity.
-			</p>
-			<p>
-				Despite this, no regulatory framework, in France or internationally, governs the development
-				of these systems based on their actual capabilities. No independent safety evaluation before
-				deployment. No thresholds beyond which a system would be deemed too dangerous. Companies
-				self-assess and decide for themselves what is acceptable.
-			</p>
-			<p>
-				Elected officials who shape the law need to know this issue concerns real constituents in
-				their district. A short personal email remains one of the most effective ways to put an
-				issue on a parliamentarian's agenda. It takes five minutes.
+				A personal email to your MP or senator remains one of the most effective ways to put this
+				issue on their agenda. It takes five minutes.
 			</p>
 		{:else}
 			<p>
-				Les laboratoires d'IA les plus avancés au monde développent des systèmes de plus en plus
-				autonomes et capables. Certains peuvent déjà écrire du code, naviguer sur le web, utiliser
-				des outils informatiques et agir avec une supervision humaine minimale. La prochaine
-				génération sera encore plus puissante.
+				Les systèmes d'IA les plus puissants se développent sans supervision indépendante ni cadre
+				réglementaire adapté. Les entreprises s'auto-évaluent. Aucun seuil ne définit ce qui est
+				trop dangereux pour être déployé.
 			</p>
 			<p>
-				Ces systèmes posent des risques sérieux à plusieurs niveaux : cyberattaques automatisées,
-				désinformation à grande échelle, déstabilisation économique, perte de contrôle humain sur
-				des processus critiques. À mesure que leurs capacités augmentent, les risques augmentent
-				aussi. Les dirigeants des principaux laboratoires d'IA reconnaissent eux-mêmes que ces
-				technologies pourraient, à terme, représenter une menace existentielle pour l'humanité.
-			</p>
-			<p>
-				Malgré cela, aucun cadre réglementaire, en France ou à l'international, n'encadre
-				aujourd'hui le développement de ces systèmes en fonction de leurs capacités réelles. Pas
-				d'évaluation de sécurité indépendante avant mise en service. Pas de seuils au-delà desquels
-				un système serait jugé trop dangereux pour être déployé. Les entreprises s'auto-évaluent et
-				décident elles-mêmes de ce qui est acceptable.
-			</p>
-			<p>
-				Les élu·es qui façonnent la loi ont besoin de savoir que ce sujet préoccupe de vrais
-				citoyens dans leur circonscription. Un email personnel reste l'un des moyens les plus
-				efficaces pour mettre un enjeu à l'ordre du jour d'un·e parlementaire. Cela prend cinq
-				minutes.
+				Un email personnel à votre député·e ou sénateur·rice reste l'un des moyens les plus
+				efficaces pour inscrire ce sujet à leur agenda. Cela prend cinq minutes.
 			</p>
 		{/if}
 	</section>
@@ -224,15 +177,6 @@
 						</button>
 					{/each}
 				</div>
-				<p class="chip-hint">
-					{#if isEn}
-						<a href="/{lang}/dangers" target="_blank">Learn more about each risk category</a>
-					{:else}
-						<a href="/{lang}/dangers" target="_blank"
-							>En savoir plus sur chaque catégorie de risque</a
-						>
-					{/if}
-				</p>
 			</div>
 		</div>
 
@@ -853,7 +797,6 @@
 		padding: 1.5rem 1.75rem;
 		font-size: 0.9rem;
 		line-height: 1.7;
-		white-space: pre-wrap;
 		background: white;
 	}
 
