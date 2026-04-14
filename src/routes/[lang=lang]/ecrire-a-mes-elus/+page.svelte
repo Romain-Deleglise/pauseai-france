@@ -17,7 +17,7 @@
 			label: 'Désinformation et démocratie',
 			labelEn: 'Disinformation and democracy'
 		},
-		{ id: 'economie', label: 'Emploi et automatisation', labelEn: 'Jobs and automation' },
+		{ id: 'economie', label: "Perte d'emploi", labelEn: 'Job losses' },
 		{ id: 'humanite', label: 'Risques existentiels', labelEn: 'Existential risks' }
 	]
 
@@ -34,7 +34,17 @@
 	}
 
 	type Version = 'short' | 'long'
-	let version: Version = 'long'
+	let version: Version = 'short'
+
+	let copiedBcc = false
+	function copyBcc() {
+		navigator.clipboard.writeText('campagne@pauseia.fr').then(() => {
+			copiedBcc = true
+			setTimeout(() => {
+				copiedBcc = false
+			}, 2500)
+		})
+	}
 
 	let copied = false
 	function copyEmail() {
@@ -116,7 +126,7 @@
 				<div class="find-links">
 					<a
 						class="find-btn"
-						href="https://www.voxpublic.org/spip.php?page=annuaire&cat=deputes"
+						href="https://www.voxpublic.org/spip.php?page=annuaire&cat=deputes&tri=departement&pagnum=50#pagination_deputes"
 						target="_blank"
 						rel="noopener noreferrer"
 					>
@@ -128,7 +138,7 @@
 					</a>
 					<a
 						class="find-btn"
-						href="https://www.voxpublic.org/spip.php?page=annuaire&cat=senateurs"
+						href="https://www.voxpublic.org/spip.php?page=annuaire&cat=senateurs&pagnum=50&tri=departement#pagination_senateurs"
 						target="_blank"
 						rel="noopener noreferrer"
 					>
@@ -148,40 +158,33 @@
 			<div class="step-content">
 				<h3>{isEn ? 'Send your email' : 'Envoyez votre email'}</h3>
 
-				<!-- Conseils -->
+				<!-- Conseils compacts -->
 				<div class="tips-box">
-					<h4>{isEn ? 'A few tips' : 'Quelques conseils'}</h4>
 					{#if isEn}
 						<ul>
-							<li><strong>Be brief.</strong> Short and clear works better.</li>
 							<li>
-								<strong>Personalise.</strong> One sentence in your own words carries far more weight.
+								<strong>Personalise</strong> with one sentence of your own. Short and clear works better.
 							</li>
 							<li>
-								<strong>Mention your constituency.</strong> Full name + town, teams sort by constituency.
-							</li>
-							<li>
-								<strong>No need to be an expert.</strong> What matters is that a real citizen cares.
+								<strong>Mention your full name and town</strong> (teams sort by constituency).
 							</li>
 						</ul>
 					{:else}
 						<ul>
-							<li><strong>Soyez bref.</strong> Court et clair, c'est plus efficace.</li>
 							<li>
-								<strong>Personnalisez.</strong> Une phrase de vous a bien plus de poids qu'un copier-coller.
+								<strong>Personnalisez</strong> avec une phrase de vous. Court et clair, c'est plus efficace.
 							</li>
 							<li>
-								<strong>Mentionnez votre circonscription.</strong> Nom complet + ville, les équipes trient
-								par circonscription.
-							</li>
-							<li>
-								<strong>Inutile d'être expert.</strong> Ce qui compte : qu'un vrai citoyen s'en préoccupe.
+								<strong>Mentionnez votre nom complet et ville</strong> (les équipes trient par circonscription).
 							</li>
 						</ul>
 					{/if}
 					<div class="bcc-block">
 						<span class="bcc-label">{isEn ? 'BCC:' : 'CCI :'}</span>
 						<code class="bcc-email">campagne@pauseia.fr</code>
+						<button class="bcc-copy-btn" class:copied={copiedBcc} on:click={copyBcc}>
+							{copiedBcc ? '✓' : isEn ? 'Copy' : 'Copier'}
+						</button>
 						<span class="bcc-desc">
 							{isEn
 								? 'helps us count letters sent'
@@ -207,6 +210,26 @@
 						{isEn ? 'Full version' : 'Version complète'}
 					</button>
 				</div>
+
+				<!-- Chips risques (version complète) -->
+				{#if version === 'long'}
+					<div class="theme-chips-row">
+						<span class="chips-label">
+							{isEn ? 'Risks to include:' : 'Risques à inclure :'}
+						</span>
+						<div class="theme-chips">
+							{#each themes as theme}
+								<button
+									class="chip"
+									class:active={selectedThemes.has(theme.id)}
+									on:click={() => toggleTheme(theme.id)}
+								>
+									{isEn ? theme.labelEn : theme.label}
+								</button>
+							{/each}
+						</div>
+					</div>
+				{/if}
 
 				<!-- Modèle d'email -->
 				<div class="email-preview">
@@ -486,30 +509,6 @@
 				</div>
 			</div>
 		</div>
-
-		<!-- Étape 3 : Personnaliser (version complète) -->
-		<div class="step">
-			<div class="step-number">3</div>
-			<div class="step-content">
-				<h3>{isEn ? 'Personalise (optional)' : 'Personnalisez (facultatif)'}</h3>
-				<p class="chips-intro">
-					{isEn
-						? 'Using the full version? Select the risks that matter most to you:'
-						: 'Version complète ? Cochez les risques qui vous tiennent le plus à cœur :'}
-				</p>
-				<div class="theme-chips">
-					{#each themes as theme}
-						<button
-							class="chip"
-							class:active={selectedThemes.has(theme.id)}
-							on:click={() => toggleTheme(theme.id)}
-						>
-							{isEn ? theme.labelEn : theme.label}
-						</button>
-					{/each}
-				</div>
-			</div>
-		</div>
 	</section>
 </article>
 
@@ -656,14 +655,20 @@
 		font-weight: 600;
 	}
 
-	.chip-hint {
-		font-size: 0.82rem;
-		color: #666;
-		margin-top: 0.5rem;
+	.theme-chips-row {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		flex-wrap: wrap;
+		padding: 0.6rem 0;
+		margin-bottom: 0;
 	}
 
-	.chip-hint a {
-		color: var(--color-primary, #e63946);
+	.chips-label {
+		font-size: 0.82rem;
+		font-weight: 600;
+		color: #555;
+		white-space: nowrap;
 	}
 
 	/* Tips box */
@@ -747,10 +752,28 @@
 		font-style: italic;
 	}
 
-	.chips-intro {
-		font-size: 0.9rem;
-		color: #555;
-		margin-bottom: 0.75rem;
+	.bcc-copy-btn {
+		padding: 0.15rem 0.6rem;
+		border: 1px solid #c5cef0;
+		border-radius: 4px;
+		background: white;
+		font-size: 0.78rem;
+		font-weight: 600;
+		cursor: pointer;
+		color: var(--color-primary, #e63946);
+		transition: all 0.15s;
+	}
+
+	.bcc-copy-btn:hover {
+		background: var(--color-primary, #e63946);
+		color: white;
+		border-color: var(--color-primary, #e63946);
+	}
+
+	.bcc-copy-btn.copied {
+		background: #2a9d5c;
+		color: white;
+		border-color: #2a9d5c;
 	}
 
 	/* Version tabs */
