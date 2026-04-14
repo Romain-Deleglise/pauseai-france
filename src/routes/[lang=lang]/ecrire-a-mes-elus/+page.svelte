@@ -92,9 +92,19 @@
 				it lands in a human inbox, it gets read, and it signals that a voter in their constituency cares
 				about this issue. Unlike a petition or a social media post, it demands a response.
 			</p>
+			<div class="highlight-callout">
+				A personal email to your MP or senator is one of the most effective ways to put this issue
+				on their agenda. It takes five minutes.
+			</div>
 			<p>
-				It takes five minutes. And a handful of emails from real citizens is often enough to get a
-				topic onto a committee's agenda.
+				<strong>Email is more powerful than it seems.</strong> MPs and senators are required to respond
+				to their constituents. A personal email — especially a brief, sincere one — carries real weight:
+				it lands in a human inbox, it gets read, and it signals that a voter in their constituency cares
+				about this issue. Unlike a petition or a social media post, it demands a response.
+			</p>
+			<p>
+				A handful of emails from real citizens is often enough to get a topic onto a committee's
+				agenda.
 			</p>
 		{:else}
 			<p>
@@ -102,6 +112,10 @@
 				réglementaire adapté. Les entreprises s'auto-évaluent. Aucun seuil ne définit ce qui est
 				trop dangereux pour être déployé. C'est aux élus d'agir.
 			</p>
+			<div class="highlight-callout">
+				Un email personnel à votre député ou sénateur reste l'un des moyens les plus efficaces pour
+				inscrire ce sujet à leur agenda. Cela prend cinq minutes.
+			</div>
 			<p>
 				<strong>L'email est un outil plus puissant qu'on ne le croit.</strong> Les députés et sénateurs
 				ont l'obligation de répondre à leurs concitoyens. Un email personnel — court et sincère — a un
@@ -110,8 +124,8 @@
 				les réseaux, il appelle une réponse.
 			</p>
 			<p>
-				Cela prend cinq minutes. Et une poignée d'emails de vrais citoyens suffit souvent à inscrire
-				un sujet à l'ordre du jour d'une commission.
+				Une poignée d'emails de vrais citoyens suffit souvent à inscrire un sujet à l'ordre du jour
+				d'une commission.
 			</p>
 		{/if}
 	</section>
@@ -466,6 +480,18 @@
 	.content-section p {
 		line-height: 1.7;
 		margin-bottom: 1rem;
+	}
+
+	.highlight-callout {
+		font-size: 1.1rem;
+		font-weight: 600;
+		line-height: 1.6;
+		color: var(--color-primary, #e63946);
+		border-left: 4px solid var(--color-primary, #e63946);
+		padding: 0.6rem 1rem;
+		margin: 1.25rem 0;
+		background: #fff5f5;
+		border-radius: 0 6px 6px 0;
 	}
 
 	/* Steps */
