@@ -123,26 +123,26 @@
 				<div class="find-links">
 					<a
 						class="find-btn"
-						href="https://www.nosdeputes.fr/"
+						href="https://www.assemblee-nationale.fr/dyn/vos-deputes"
 						target="_blank"
 						rel="noopener noreferrer"
 					>
 						<span class="find-icon">🏛️</span>
 						<span>
 							<strong>{isEn ? 'Find my MP' : 'Trouver mon député'}</strong>
-							<small>nosdeputes.fr</small>
+							<small>assemblee-nationale.fr</small>
 						</span>
 					</a>
 					<a
 						class="find-btn"
-						href="https://www.nossenateurs.fr/"
+						href="https://www.senat.fr/elus/senateurs-par-departement.html"
 						target="_blank"
 						rel="noopener noreferrer"
 					>
 						<span class="find-icon">🏛️</span>
 						<span>
 							<strong>{isEn ? 'Find my senator(s)' : 'Trouver mon/mes sénateurs'}</strong>
-							<small>nossenateurs.fr</small>
+							<small>senat.fr</small>
 						</span>
 					</a>
 				</div>
