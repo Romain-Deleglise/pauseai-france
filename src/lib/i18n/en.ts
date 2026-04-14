@@ -12,6 +12,7 @@ export default {
 		comment_agir: 'How to act?',
 		groupes_locaux: 'Local groups',
 		toutes_campagnes: 'All our campaigns',
+		ecrire_elus: 'Write to my representatives',
 		municipales: 'Municipal 2026',
 		sommet: 'AI Summit 2026',
 		senat2025: 'Senate Colloquium 2025',

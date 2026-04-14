@@ -58,6 +58,23 @@ export interface Campaign {
  */
 export const campaigns: Campaign[] = [
 	{
+		slug: 'ecrire-a-mes-elus',
+		status: 'active',
+		startDate: '2026-04',
+		fr: {
+			title: 'Écrivez à vos élu·es',
+			description:
+				"Envoyez un email à votre député·e et à votre sénateur·rice pour mettre les risques de l'IA à leur agenda. Un modèle personnalisable et deux versions (courte et complète) sont disponibles.",
+			cta: 'Envoyer un email à mes élu·es'
+		},
+		en: {
+			title: 'Write to your representatives',
+			description:
+				'Send an email to your MP and senator to put AI risks on their agenda. A customisable template with both a short and a full version is available.',
+			cta: 'Write to my representatives'
+		}
+	},
+	{
 		slug: 'sommet-ia-2026',
 		status: 'ended',
 		startDate: '2026-01',
