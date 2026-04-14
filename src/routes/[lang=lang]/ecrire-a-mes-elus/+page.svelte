@@ -318,196 +318,107 @@
 							<!-- Version longue -->
 							{#if isEn}
 								<p>Dear [Deputy/Senator name],</p>
-								<p>My name is [your name] and I am a resident of [your town/constituency].</p>
+								<p>My name is [your name], a resident of [your town/constituency].</p>
 								<p>
-									I am writing about an issue I consider one of the most important for our
-									collective security in the years ahead: the development of increasingly autonomous
-									and capable artificial intelligence systems, in the absence of any adequate
-									regulatory framework.
-								</p>
-								<p>
-									<strong>Rapidly growing capabilities.</strong> The world's largest AI labs (OpenAI,
-									Google DeepMind, Anthropic, Meta and others) are currently building systems that can
-									write code, use computer tools, browse the web and act autonomously. The next generations
-									of these systems will be significantly more powerful. Their own creators acknowledge
-									that they do not yet fully understand how these systems behave and that current safety
-									methods may prove insufficient.
+									I am writing about the rapid development of increasingly powerful AI systems
+									without any adequate regulatory framework. The leaders of the main AI labs
+									acknowledge that their systems could pose a serious threat to civilisation if not
+									properly governed.
 								</p>
 								{#if selectedThemes.has('individus')}
 									<p>
-										<strong>Threats to fundamental rights.</strong> AI systems enable unprecedented mass
-										surveillance and individual profiling. Facial recognition technologies, systematic
-										behavioural data collection and automated decision-making algorithms already affect
-										millions of people, often without their knowledge or any possibility of appeal. Biases
-										in training data reproduce and amplify discrimination in critical areas such as employment,
-										housing and justice.
+										<strong>Privacy and surveillance.</strong> AI systems already enable mass surveillance
+										and individual profiling on an unprecedented scale, often without people's knowledge
+										or any possibility of redress.
 									</p>
 								{/if}
 								{#if selectedThemes.has('societe')}
 									<p>
-										<strong>Threats to democracy and social cohesion.</strong> Content generation tools
-										now enable the production of disinformation at scale, with videos, images and texts
-										indistinguishable from reality. This undermines democratic processes, amplifies existing
-										polarisation and erodes trust in institutions and the media.
+										<strong>Disinformation and democracy.</strong> Content generation tools now produce
+										disinformation at scale — videos and texts indistinguishable from reality — undermining
+										democratic processes and trust in institutions.
 									</p>
 								{/if}
 								{#if selectedThemes.has('economie')}
 									<p>
-										<strong>Economic disruption ahead.</strong> Rapid automation threatens to upend the
-										labour market at unprecedented speed. Recent studies estimate that tens of millions
-										of jobs in Europe could be significantly affected by 2030, across sectors from transport
-										to accounting, legal and medical services. Our social protection systems were not
-										designed to absorb such rapid change, and no adaptation policy is being deployed
-										at the scale required.
+										<strong>Job losses.</strong> Tens of millions of jobs in Europe could be significantly
+										affected by 2030, across transport, accounting, legal and medical services, with
+										no adaptation policy deployed at the scale required.
 									</p>
 								{/if}
 								{#if selectedThemes.has('humanite')}
 									<p>
-										<strong>A long-horizon risk acknowledged by experts.</strong> Hundreds of AI researchers
-										and the leaders of the main labs have publicly acknowledged that these systems could,
-										if not properly governed, pose a risk to civilisation itself. The International AI
-										Safety Report 2025, led by Turing Prize winner Yoshua Bengio with contributions from
-										over 100 experts and the backing of 30 countries, concludes that no current method
-										can reliably guarantee safe behaviour. The core problem: we do not yet know how to
-										build AI systems whose objectives remain aligned with human wellbeing as they become
-										very powerful.
+										<strong>Existential risks.</strong> The International AI Safety Report 2025, led
+										by Turing Prize winner Yoshua Bengio and backed by 30 countries, concludes that no
+										current safety method can reliably guarantee safe behaviour.
 									</p>
 								{/if}
 								<p>
-									<strong>An absence of regulatory framework.</strong> There is currently no legal framework,
-									in France or internationally, that requires an independent safety evaluation before
-									the development or deployment of AI systems with potentially dangerous capabilities,
-									defines capability thresholds beyond which specific precautions would be mandatory,
-									or provides a mechanism to suspend the deployment of a system deemed dangerous. Companies
-									self-assess and decide for themselves what is acceptable. This situation is unlike
-									any other area where public safety is at stake.
+									Today, no legal framework requires independent safety evaluations before deploying
+									AI systems with potentially dangerous capabilities. Companies self-assess.
 								</p>
-								<p>I ask you to:</p>
-								<ol>
-									<li>
-										Raise this issue with the relevant committee and request a briefing on the risks
-										posed by advanced AI systems and the current state of French and European
-										regulation.
-									</li>
-									<li>
-										Support efforts to require binding independent safety evaluations before AI
-										systems with potentially dangerous capabilities are developed or deployed.
-									</li>
-									<li>
-										Advocate for international cooperation to govern the most powerful AI systems,
-										as exists for other high-risk technologies.
-									</li>
-								</ol>
 								<p>
-									If you or your team would like more information, the Pause AI organisation
-									(pauseia.fr) works on these issues and would be happy to provide a briefing.
+									I ask you to raise this issue with the relevant committee and support measures
+									requiring independent safety evaluations for the most powerful AI systems. The
+									Pause AI association (pauseia.fr) would be happy to provide a briefing.
 								</p>
 								<p>
 									Yours sincerely,<br />
 									[Your full name]<br />
-									[Your address / town / constituency]
+									[Your town / constituency]
 								</p>
 							{:else}
 								<p>Madame/Monsieur le Député / le Sénateur [nom],</p>
+								<p>Je suis [votre nom], habitant de [votre commune/circonscription].</p>
 								<p>
-									Je m'appelle [votre nom] et je suis un habitant de [votre
-									commune/circonscription].
-								</p>
-								<p>
-									Je vous écris au sujet d'un enjeu que je considère comme l'un des plus importants
-									pour notre sécurité collective dans les années à venir : le développement de
-									systèmes d'intelligence artificielle de plus en plus autonomes et capables, sans
-									cadre réglementaire adapté.
-								</p>
-								<p>
-									<strong>Des capacités en croissance rapide.</strong> Les plus grands laboratoires d'IA
-									au monde (OpenAI, Google DeepMind, Anthropic, Meta et d'autres) développent actuellement
-									des systèmes capables d'écrire du code, d'utiliser des outils informatiques, de naviguer
-									sur le web et d'agir de manière autonome. Les prochaines générations de ces systèmes
-									seront significativement plus puissantes. Leurs propres créateurs reconnaissent qu'ils
-									ne maîtrisent pas encore pleinement le comportement de ces systèmes et que les méthodes
-									de sécurité actuelles pourraient se révéler insuffisantes.
+									Je vous écris au sujet du développement rapide de systèmes d'IA de plus en plus
+									puissants, sans cadre réglementaire adapté. Les dirigeants des principaux
+									laboratoires reconnaissent eux-mêmes que ces technologies pourraient représenter
+									une menace sérieuse pour la civilisation.
 								</p>
 								{#if selectedThemes.has('individus')}
 									<p>
-										<strong>Des atteintes aux droits fondamentaux.</strong> Les systèmes d'IA permettent
-										une surveillance de masse et un profilage des individus sans précédent. Les technologies
-										de reconnaissance faciale, la collecte systématique de données comportementales et
-										les algorithmes de décision automatisée affectent déjà des millions de personnes,
-										souvent sans leur consentement ni recours possible. Les biais présents dans les données
-										d'entraînement reproduisent et amplifient des discriminations dans des domaines aussi
-										critiques que l'accès à l'emploi, au logement ou à la justice.
+										<strong>Vie privée et surveillance.</strong> Les systèmes d'IA permettent déjà une
+										surveillance de masse et un profilage individuel sans précédent, souvent sans consentement
+										ni recours possible.
 									</p>
 								{/if}
 								{#if selectedThemes.has('societe')}
 									<p>
-										<strong>Des menaces pour la cohésion sociale et la démocratie.</strong> Les outils
-										de génération de contenu permettent désormais de produire de la désinformation à
-										grande échelle, avec des vidéos, images et textes indiscernables du réel. Cette capacité
-										fragilise les processus démocratiques, amplifie les polarisations existantes et mine
-										la confiance dans les institutions et dans les médias.
+										<strong>Désinformation et démocratie.</strong> Les outils d'IA produisent de la désinformation
+										à grande échelle — vidéos et textes indiscernables du réel — fragilisant les processus
+										démocratiques et la confiance dans les institutions.
 									</p>
 								{/if}
 								{#if selectedThemes.has('economie')}
 									<p>
-										<strong>Une déstabilisation économique à anticiper.</strong> L'automatisation rapide
-										menace de bouleverser le marché du travail à une vitesse sans précédent. Des études
-										récentes estiment que des dizaines de millions d'emplois en Europe pourraient être
-										significativement affectés d'ici 2030, dans des secteurs allant du transport à la
-										comptabilité, en passant par les services juridiques et médicaux. Nos systèmes de
-										protection sociale n'ont pas été conçus pour absorber une transformation aussi rapide,
-										et aucune politique d'adaptation n'est déployée à la hauteur du défi.
+										<strong>Perte d'emploi.</strong> Des dizaines de millions d'emplois en Europe pourraient
+										être affectés d'ici 2030, des transports aux services juridiques et médicaux, sans
+										politique d'adaptation à la hauteur.
 									</p>
 								{/if}
 								{#if selectedThemes.has('humanite')}
 									<p>
-										<strong>Un risque à longue portée reconnu par les experts.</strong> Des centaines
-										de chercheurs en IA et les dirigeants des principaux laboratoires ont publiquement
-										reconnu que ces systèmes pourraient, s'ils ne sont pas correctement encadrés, représenter
-										un risque pour l'ensemble de la civilisation. Le Rapport international de sécurité
-										IA 2025, dirigé par le prix Turing Yoshua Bengio avec la contribution de plus de
-										100 experts et le soutien de 30 pays, conclut qu'aucune méthode actuelle ne permet
-										de garantir des comportements sûrs de manière fiable. Le problème de fond : nous
-										ne savons pas encore comment concevoir des systèmes dont les objectifs restent alignés
-										avec le bien humain lorsqu'ils deviennent très puissants.
+										<strong>Risques existentiels.</strong> Le rapport international dirigé par le prix
+										Turing Yoshua Bengio, soutenu par 30 pays, conclut qu'aucune méthode actuelle ne
+										garantit des comportements sûrs de manière fiable.
 									</p>
 								{/if}
 								<p>
-									<strong>L'absence de cadre réglementaire.</strong> Il n'existe aujourd'hui aucun cadre
-									juridique, en France ou à l'international, qui exige une évaluation de sécurité indépendante
-									avant le développement ou le déploiement de systèmes d'IA aux capacités potentiellement
-									dangereuses, ni ne définit de seuils au-delà desquels des précautions spécifiques seraient
-									obligatoires. Les entreprises s'auto-évaluent et décident seules de ce qui est acceptable.
-									Cette situation n'est comparable à aucun autre domaine où la sécurité publique est
-									en jeu.
+									Aujourd'hui, aucun cadre juridique n'exige d'évaluation de sécurité indépendante
+									avant le déploiement de systèmes aux capacités potentiellement dangereuses. Les
+									entreprises s'auto-évaluent.
 								</p>
-								<p>Ce que je vous demande :</p>
-								<ol>
-									<li>
-										Soulever cette question auprès de la commission compétente et demander un
-										briefing sur les risques posés par les systèmes d'IA avancés et sur l'état de la
-										réglementation française et européenne en la matière.
-									</li>
-									<li>
-										Soutenir les efforts visant à exiger des évaluations de sécurité indépendantes
-										et contraignantes avant que des systèmes d'IA aux capacités potentiellement
-										dangereuses ne soient développés ou déployés.
-									</li>
-									<li>
-										Plaider en faveur d'une coopération internationale pour encadrer les systèmes
-										d'IA les plus puissants, à l'image des cadres existants pour d'autres
-										technologies à haut risque.
-									</li>
-								</ol>
 								<p>
-									Si vous ou votre équipe souhaitez plus d'informations, l'organisation Pause IA
-									(pauseia.fr) travaille sur ces questions et serait heureuse de vous fournir un
-									briefing.
+									Je vous demande d'inscrire ce sujet à l'ordre du jour d'une commission compétente
+									et de soutenir des évaluations de sécurité indépendantes pour les systèmes d'IA
+									les plus puissants. L'association Pause IA (pauseia.fr) serait heureuse de vous
+									fournir un briefing.
 								</p>
 								<p>
 									Cordialement,<br />
 									[Votre nom complet]<br />
-									[Votre adresse / commune / circonscription]
+									[Votre commune / circonscription]
 								</p>
 							{/if}
 						{/if}
