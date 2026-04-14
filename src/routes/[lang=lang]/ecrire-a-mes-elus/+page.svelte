@@ -88,7 +88,7 @@
 			</p>
 			<p>
 				<strong>Email is more powerful than it seems.</strong> MPs and senators are required to respond
-				to their constituents. A personal email — especially a brief, sincere one — carries real weight:
+				to their constituents. A personal email, especially a brief and sincere one, carries real weight:
 				it lands in a human inbox, it gets read, and it signals that a voter in their constituency cares
 				about this issue. Unlike a petition or a social media post, it demands a response.
 			</p>
@@ -98,7 +98,7 @@
 			</div>
 			<p>
 				<strong>Email is more powerful than it seems.</strong> MPs and senators are required to respond
-				to their constituents. A personal email — especially a brief, sincere one — carries real weight:
+				to their constituents. A personal email, especially a brief and sincere one, carries real weight:
 				it lands in a human inbox, it gets read, and it signals that a voter in their constituency cares
 				about this issue. Unlike a petition or a social media post, it demands a response.
 			</p>
@@ -118,7 +118,7 @@
 			</div>
 			<p>
 				<strong>L'email est un outil plus puissant qu'on ne le croit.</strong> Les députés et sénateurs
-				ont l'obligation de répondre à leurs concitoyens. Un email personnel — court et sincère — a un
+				ont l'obligation de répondre à leurs concitoyens. Un email personnel, court et sincère, a un
 				vrai impact : il arrive dans une boite mail humaine, il est lu, et il signale qu'un électeur
 				de leur circonscription se préoccupe du sujet. Contrairement à une pétition ou à un post sur
 				les réseaux, il appelle une réponse.
@@ -349,7 +349,7 @@
 								{#if selectedThemes.has('societe')}
 									<p>
 										<strong>Disinformation and democracy.</strong> Content generation tools now produce
-										disinformation at scale — videos and texts indistinguishable from reality — undermining
+										disinformation at scale (videos and texts indistinguishable from reality), undermining
 										democratic processes and trust in institutions.
 									</p>
 								{/if}
@@ -400,7 +400,7 @@
 								{#if selectedThemes.has('societe')}
 									<p>
 										<strong>Désinformation et démocratie.</strong> Les outils d'IA produisent de la désinformation
-										à grande échelle — vidéos et textes indiscernables du réel — fragilisant les processus
+										à grande échelle (vidéos et textes indiscernables du réel), fragilisant les processus
 										démocratiques et la confiance dans les institutions.
 									</p>
 								{/if}
