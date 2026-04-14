@@ -123,26 +123,26 @@
 				<div class="find-links">
 					<a
 						class="find-btn"
-						href="https://www.assemblee-nationale.fr/dyn/vos-deputes"
+						href="https://www.voxpublic.org/spip.php?page=annuaire&cat=deputes"
 						target="_blank"
 						rel="noopener noreferrer"
 					>
 						<span class="find-icon">🏛️</span>
 						<span>
 							<strong>{isEn ? 'Find my MP' : 'Trouver mon député'}</strong>
-							<small>assemblee-nationale.fr</small>
+							<small>voxpublic.org</small>
 						</span>
 					</a>
 					<a
 						class="find-btn"
-						href="https://www.senat.fr/elus/senateurs-par-departement.html"
+						href="https://www.voxpublic.org/spip.php?page=annuaire&cat=senateurs"
 						target="_blank"
 						rel="noopener noreferrer"
 					>
 						<span class="find-icon">🏛️</span>
 						<span>
 							<strong>{isEn ? 'Find my senator(s)' : 'Trouver mon/mes sénateurs'}</strong>
-							<small>senat.fr</small>
+							<small>voxpublic.org</small>
 						</span>
 					</a>
 				</div>
