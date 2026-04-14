@@ -176,7 +176,8 @@
 					{#if isEn}
 						<ul>
 							<li>
-								<strong>Personalise</strong> with one sentence of your own. Short and clear works better.
+								<strong>Add a personal sentence</strong>: an authentic email carries far more weight
+								than a copy-paste.
 							</li>
 							<li>
 								<strong>Mention your full name and town</strong> (teams sort by constituency).
@@ -185,7 +186,8 @@
 					{:else}
 						<ul>
 							<li>
-								<strong>Personnalisez</strong> avec une phrase de vous. Court et clair, c'est plus efficace.
+								<strong>Ajoutez une phrase personnelle</strong> : un email authentique pèse bien plus
+								lourd qu'un copier-coller.
 							</li>
 							<li>
 								<strong>Mentionnez votre nom complet et ville</strong> (les équipes trient par circonscription).
