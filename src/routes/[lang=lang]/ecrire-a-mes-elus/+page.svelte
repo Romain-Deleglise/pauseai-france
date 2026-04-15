@@ -497,11 +497,11 @@
 		font-size: 1.1rem;
 		font-weight: 600;
 		line-height: 1.6;
-		color: var(--color-primary, #e63946);
-		border-left: 4px solid var(--color-primary, #e63946);
+		color: var(--brand-subtle, #c96900);
+		border-left: 4px solid var(--brand, #ff9416);
 		padding: 0.6rem 1rem;
 		margin: 1.25rem 0;
-		background: #fff5f5;
+		background: var(--brand-light, #fff5e8);
 		border-radius: 0 6px 6px 0;
 	}
 
