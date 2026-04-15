@@ -215,9 +215,7 @@
 							{copiedBcc ? '✓' : isEn ? 'Copy' : 'Copier'}
 						</button>
 						<span class="bcc-desc">
-							{isEn
-								? 'helps us count letters sent'
-								: 'pour nous aider à compter les lettres envoyées'}
+							{isEn ? 'helps us count letters sent' : 'pour nous aider à compter les mails envoyés'}
 						</span>
 					</div>
 					<p class="personalise-reminder">
