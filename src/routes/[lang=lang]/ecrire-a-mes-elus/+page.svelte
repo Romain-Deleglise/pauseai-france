@@ -153,26 +153,26 @@
 				<div class="find-links">
 					<a
 						class="find-btn"
-						href="https://www.voxpublic.org/spip.php?page=annuaire&cat=deputes&tri=departement&pagnum=50#pagination_deputes"
+						href="https://www.assemblee-nationale.fr/dyn/vos-deputes/carte-departements"
 						target="_blank"
 						rel="noopener noreferrer"
 					>
 						<span class="find-icon">🏛️</span>
 						<span>
 							<strong>{isEn ? 'Find my MP' : 'Trouver mon député'}</strong>
-							<small>voxpublic.org</small>
+							<small>assemblee-nationale.fr</small>
 						</span>
 					</a>
 					<a
 						class="find-btn"
-						href="https://www.voxpublic.org/spip.php?page=annuaire&cat=senateurs&pagnum=50&tri=departement#pagination_senateurs"
+						href="https://www.senat.fr/vos-senateurs.html"
 						target="_blank"
 						rel="noopener noreferrer"
 					>
 						<span class="find-icon">🏛️</span>
 						<span>
 							<strong>{isEn ? 'Find my senator(s)' : 'Trouver mon/mes sénateurs'}</strong>
-							<small>voxpublic.org</small>
+							<small>senat.fr</small>
 						</span>
 					</a>
 				</div>
@@ -209,7 +209,7 @@
 						</ul>
 					{/if}
 					<div class="bcc-block">
-						<span class="bcc-label">{isEn ? 'BCC:' : 'CCI :'}</span>
+						<span class="bcc-label">{isEn ? 'BCC (blind copy):' : 'CCI (copie cachée) :'}</span>
 						<code class="bcc-email">campagne@pauseia.fr</code>
 						<button class="bcc-copy-btn" class:copied={copiedBcc} on:click={copyBcc}>
 							{copiedBcc ? '✓' : isEn ? 'Copy' : 'Copier'}
@@ -220,6 +220,17 @@
 								: 'pour nous aider à compter les lettres envoyées'}
 						</span>
 					</div>
+					<p class="personalise-reminder">
+						{#if isEn}
+							Remember to replace <strong>[Deputy/Senator name]</strong> with their actual name, and
+							fill in your <strong>[full name]</strong> and <strong>[department]</strong> at the start
+							and end of the email.
+						{:else}
+							N'oubliez pas de remplacer <strong>[Nom de votre député / sénateur]</strong> par leur
+							vrai nom, et d'indiquer votre <strong>[Nom complet]</strong> et votre
+							<strong>[département]</strong> en début et en fin de mail.
+						{/if}
+					</p>
 				</div>
 
 				<!-- Sélecteur de version -->
@@ -702,6 +713,13 @@
 	.bcc-desc {
 		color: #666;
 		font-style: italic;
+	}
+
+	.personalise-reminder {
+		margin-top: 0.75rem;
+		font-size: 0.85rem;
+		color: #555;
+		line-height: 1.5;
 	}
 
 	.bcc-copy-btn {
