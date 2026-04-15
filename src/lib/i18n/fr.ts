@@ -12,6 +12,7 @@ export default {
 		comment_agir: 'Comment agir ?',
 		groupes_locaux: 'Groupes locaux',
 		toutes_campagnes: 'Toutes nos campagnes',
+		ecrire_elus: 'Écrire à mes élus',
 		municipales: 'Municipales 2026',
 		sommet: "Sommet de l'IA 2026",
 		senat2025: 'Colloque Sénat 2025',

@@ -97,7 +97,10 @@
 		{
 			id: 'campagnes',
 			label: t.nav.campagnes,
-			items: [{ href: `${prefix}/campagnes`, label: t.nav.toutes_campagnes }]
+			items: [
+				{ href: `${prefix}/campagnes`, label: t.nav.toutes_campagnes },
+				{ href: `${prefix}/ecrire-a-mes-elus`, label: t.nav.ecrire_elus }
+			]
 		},
 		{
 			id: 'evenements',
