@@ -64,11 +64,13 @@
 
 	<p>{t.emploi_ia.intro_text}</p>
 
-	<div class="stat-block">
+	<a class="stat-block" href="https://jobloss.ai/" target="_blank" rel="noopener noreferrer">
 		<span class="stat-number">{t.emploi_ia.stat_number}</span>
-		<span class="stat-label">{t.emploi_ia.stat_label}</span>
-		<span class="stat-source">{t.emploi_ia.stat_source}</span>
-	</div>
+		<div class="stat-text">
+			<span class="stat-label">{t.emploi_ia.stat_label}</span>
+			<span class="stat-source">{t.emploi_ia.stat_source}</span>
+		</div>
+	</a>
 
 	<section id="enquete" aria-labelledby="enquete-heading">
 		<h2 id="enquete-heading">{t.emploi_ia.survey_section_title}</h2>
@@ -90,16 +92,6 @@
 		<h2 id="bigger-problem-heading">{t.emploi_ia.bigger_problem_title}</h2>
 		<p>{t.emploi_ia.bigger_problem_text_1}</p>
 		<p>{t.emploi_ia.bigger_problem_text_2}</p>
-
-		<details class="expand-details">
-			<summary>{t.emploi_ia.bigger_problem_expand}</summary>
-			<div class="expand-body">
-				<p>{t.emploi_ia.bigger_problem_detail_1}</p>
-				<p>{t.emploi_ia.bigger_problem_detail_2}</p>
-				<p>{t.emploi_ia.bigger_problem_detail_3}</p>
-				<p>{t.emploi_ia.bigger_problem_detail_4}</p>
-			</div>
-		</details>
 
 		<p class="cta-wrap">
 			<a class="cta-button" href="/{lang}/ecrire-a-mes-elus">{t.emploi_ia.cta_button}</a>
@@ -154,35 +146,50 @@
 	/* ── Stat block ── */
 	.stat-block {
 		display: flex;
-		flex-direction: column;
+		flex-direction: row;
 		align-items: center;
-		gap: 0.4rem;
-		text-align: center;
+		gap: 1.25rem;
 		border: 1px solid rgba(255, 148, 22, 0.35);
-		border-radius: 12px;
-		padding: 1.75rem 2rem;
+		border-radius: 10px;
+		padding: 0.9rem 1.5rem;
 		margin: 2rem 0 3rem;
+		text-decoration: none;
+		color: inherit;
+		transition:
+			border-color 0.2s,
+			box-shadow 0.2s;
+	}
+
+	.stat-block:hover {
+		border-color: var(--brand, #ff9416);
+		box-shadow: 0 2px 12px rgba(255, 148, 22, 0.12);
 	}
 
 	.stat-number {
-		font-size: clamp(2.5rem, 8vw, 4rem);
+		font-size: clamp(2rem, 5vw, 3rem);
 		font-weight: 800;
 		line-height: 1;
 		color: var(--brand-subtle, #c96900);
 		letter-spacing: -0.02em;
+		white-space: nowrap;
+		flex-shrink: 0;
+	}
+
+	.stat-text {
+		display: flex;
+		flex-direction: column;
+		gap: 0.15rem;
 	}
 
 	.stat-label {
-		font-size: 1rem;
+		font-size: 0.95rem;
 		color: var(--text, #111);
-		max-width: 26rem;
-		line-height: 1.4;
+		line-height: 1.3;
 	}
 
 	.stat-source {
-		font-size: 0.78rem;
+		font-size: 0.75rem;
 		color: var(--text-secondary, #888);
-		margin-top: 0.25rem;
 	}
 
 	/* ── Bigger-problem section ── */
@@ -199,62 +206,6 @@
 
 	.bigger-problem h2 {
 		margin-top: 0;
-	}
-
-	/* ── Details accordion ── */
-	.expand-details {
-		margin: 1.25rem 0 0;
-		border-radius: 8px;
-		border: 1px solid rgba(255, 148, 22, 0.25);
-		background: var(--bg, white);
-		overflow: hidden;
-	}
-
-	:global([data-theme='dark']) .expand-details {
-		background: rgba(255, 255, 255, 0.05);
-	}
-
-	.expand-details summary {
-		cursor: pointer;
-		padding: 0.75rem 1rem;
-		font-size: 0.9rem;
-		font-weight: 600;
-		color: var(--brand-subtle, #c96900);
-		list-style: none;
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-		user-select: none;
-	}
-
-	.expand-details summary::-webkit-details-marker {
-		display: none;
-	}
-
-	.expand-details summary::before {
-		content: '▸';
-		font-size: 0.75rem;
-		transition: transform 0.2s ease;
-		flex-shrink: 0;
-	}
-
-	.expand-details[open] summary::before {
-		transform: rotate(90deg);
-	}
-
-	.expand-body {
-		padding: 0.25rem 1rem 1rem;
-		font-size: 0.93rem;
-		line-height: 1.65;
-		color: var(--text, #111);
-	}
-
-	.expand-body p {
-		margin: 0 0 0.85rem;
-	}
-
-	.expand-body p:last-child {
-		margin-bottom: 0;
 	}
 
 	/* ── CTA button ── */
