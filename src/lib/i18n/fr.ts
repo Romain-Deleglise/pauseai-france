@@ -470,6 +470,10 @@ export default {
 			"La destruction d'emplois n'est pas un sujet séparé des risques majeurs de l'IA : elle en constitue l'un des premiers signaux. Lorsqu'un système décide de la valeur d'un travail, de l'accès à une information ou d'une orientation scolaire, notre capacité collective à comprendre et contester ces choix recule. Une technologie déployée sans contrôle démocratique, sans garde-fous ni évaluation indépendante est une technologie dont nous perdons progressivement le contrôle. Et plus l'humanité perd le contrôle, plus elle devient vulnérable aux risques catastrophiques posés par les systèmes d'IA avancés.",
 		bigger_problem_text_2:
 			"C'est pourquoi nous demandons qu'aucun système d'IA de pointe ne soit développé ou déployé davantage tant que ses concepteurs n'ont pas démontré, à des évaluateurs indépendants, qu'il est sûr sur le plan économique, social et politique. La France ne peut pas arrêter seule la course mondiale à l'IA, mais elle doit prendre position, construire des coalitions internationales et défendre un cadre contraignant capable de mener à une pause du développement des systèmes les plus dangereux.",
+		cta_callout:
+			"Un email à votre député ou sénateur est l'un des leviers les plus directs pour que ce sujet entre à l'agenda politique.",
+		cta_callout_detail:
+			"Les élus sont tenus de répondre, et un message personnel pèse bien plus lourd qu'une pétition. Cela prend cinq minutes.",
 		cta_button: "J'écris à mes représentants politiques",
 		evolution_section_title: "Évolution des pertes d'emploi liées à l'intelligence artificielle",
 		evolution_section_text_1: 'Le site ',

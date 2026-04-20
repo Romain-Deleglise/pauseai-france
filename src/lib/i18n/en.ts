@@ -467,6 +467,10 @@ export default {
 			'Job destruction is not a separate topic from the major risks of AI: it is one of its first signals. When a system decides the value of a job, access to information or an educational track, our collective ability to understand and challenge those choices recedes. A technology deployed without democratic oversight, without safeguards or independent evaluation, is a technology we are progressively losing control of. And the more humanity loses control, the more vulnerable it becomes to the catastrophic risks posed by advanced AI systems.',
 		bigger_problem_text_2:
 			'That is why we demand that no frontier AI system be further developed or deployed until its designers have demonstrated, to independent evaluators, that it is safe on economic, social and political grounds. France cannot stop the global AI race alone, but it must take a stand, build international coalitions and push for a binding framework capable of leading to a pause in the development of the most dangerous systems.',
+		cta_callout:
+			'An email to your MP or senator is one of the most direct levers to get this issue onto the political agenda.',
+		cta_callout_detail:
+			'Elected officials are required to respond, and a personal message carries far more weight than a petition. It takes five minutes.',
 		cta_button: 'I write to my elected officials',
 		evolution_section_title: 'Evolution of job losses linked to artificial intelligence',
 		evolution_section_text_1: 'The website ',

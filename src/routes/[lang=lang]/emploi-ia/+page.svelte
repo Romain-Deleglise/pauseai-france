@@ -92,6 +92,9 @@
 		<p>{t.emploi_ia.bigger_problem_text_1}</p>
 		<p>{t.emploi_ia.bigger_problem_text_2}</p>
 
+		<p class="cta-callout">{t.emploi_ia.cta_callout}</p>
+		<p class="cta-detail">{t.emploi_ia.cta_callout_detail}</p>
+
 		<p class="cta-wrap">
 			<a class="cta-button" href="/{lang}/ecrire-a-mes-elus">{t.emploi_ia.cta_button}</a>
 		</p>
@@ -205,6 +208,23 @@
 
 	.bigger-problem h2 {
 		margin-top: 0;
+	}
+
+	/* ── CTA callout ── */
+	.cta-callout {
+		font-weight: 600;
+		color: var(--brand-subtle, #c96900);
+		border-left: 4px solid var(--brand, #ff9416);
+		background: var(--brand-light, #fff5e8);
+		padding: 0.85rem 1.1rem;
+		margin: 1.5rem 0 0.5rem;
+		line-height: 1.5;
+	}
+
+	.cta-detail {
+		font-size: 0.95rem;
+		color: var(--text-secondary, #555);
+		margin: 0 0 0.25rem;
 	}
 
 	/* ── CTA button ── */
