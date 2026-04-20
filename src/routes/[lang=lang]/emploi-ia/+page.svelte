@@ -74,7 +74,6 @@
 
 	<section id="enquete" aria-labelledby="enquete-heading">
 		<h2 id="enquete-heading">{t.emploi_ia.survey_section_title}</h2>
-		<p>{t.emploi_ia.survey_section_text}</p>
 		<EmploiForm {lang} />
 	</section>
 
