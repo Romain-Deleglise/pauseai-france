@@ -270,7 +270,8 @@ export default {
 		nav: {
 			prev: 'Précédent',
 			next: 'Suivant',
-			submit: 'Envoyer mes réponses'
+			submit: 'Envoyer mes réponses',
+			submitting: 'Envoi en cours...'
 		},
 		toasts: {
 			required_fields: 'Veuillez remplir tous les champs obligatoires',
@@ -438,61 +439,48 @@ export default {
 		}
 	},
 	emploi_ia: {
-		meta_title: 'Emploi et IA - Informez vous et agissez | PauseAI France',
+		meta_title: "L'IA ne détruira pas QUE votre emploi | Pause IA",
 		meta_desc:
-			"Découvrez Emploi IA, un groupe de Pause IA dédié à comprendre l'impact de l'intelligence artificielle sur le travail et à préparer l'avenir.",
+			"Les systèmes d'IA généralistes peuvent remplacer du travail humain massivement, sans filet de sécurité. Mais le problème dépasse l'emploi : c'est notre capacité à contrôler ces technologies qui recule.",
 		keywords:
-			'Emploi, IA, Intelligence Artificielle, Travail, Automatisation, Marché du travail, Recrutement, Compétences, Formation, Reconversion, Chômage, Futur du travail',
-		title: 'Emploi et IA - Informez vous et agissez',
-		who_we_are_title: 'Qui sommes-nous ?',
-		who_we_are_text:
-			"Nous sommes un groupe de contributeurs de Pause IA qui réfléchit spécifiquement à l'impact de l'IA sur les emplois, aujourd'hui, dans 1 mois, dans 1 an, dans 2 ans... Comment le travail humain va-t-il évoluer ? Quand et comment chacun de nous sera impacté ? Quel risque avons-nous de perdre notre emploi ? Quelle reconversion envisager ? Quelles sont les nouvelles compétences demandées ? Vers quelle nouvelle organisation du travail allons-nous ? Comment subsisterons-nous ?",
-		resources_title: 'Nos ressources',
-		resources_intro:
-			"Nous sommes au début de nos réflexions, et nous vous proposons déjà avec l'aide d'autres associations et personnes :",
-		resource_survey: "Un questionnaire pour savoir quel impact a l'IA sur votre travail",
-		resource_testimonials:
-			"Des témoignages illustrant l'impact de l'IA sur des parcours professionnels",
-		resource_press: "Une revue de presse sur l'impact de l'IA sur le monde du travail",
-		resource_chart: "Un graphique sur l'évolution du nombre de pertes d'emploi dues à l'IA",
-		resource_feedback: 'Un formulaire pour que vous puissiez nous donner un feedback',
-		threat_title: "L'IA : une menace croissante pour de nombreux emplois",
-		threat_text_1:
-			"Avec les progrès rapides de l'intelligence artificielle, de nombreux métiers risquent d'être automatisés, partiellement ou totalement. L'essor des IA génératives a déjà commencé à affecter des professions comme journaliste, traducteur ou illustrateur. Et cette tendance pourrait s'étendre à d'autres secteurs à mesure que ",
-		threat_link_agi: "l'IA devient plus générale",
-		threat_text_2: '.',
+			"Emploi, IA, Intelligence Artificielle, Travail, Automatisation, Perte d'emploi, Licenciements, Pause IA, Risques IA",
+		title: "L'IA ne détruira pas QUE votre emploi",
+		intro_lead:
+			"L'IA ne menace pas seulement nos emplois : elle participe à une perte de contrôle croissante sur nos vies et sur nos sociétés.",
+		intro_text:
+			"Les systèmes d'IA généralistes sont capables d'accomplir un nombre croissant de tâches à une vitesse et à un coût qui rendent possible le remplacement massif de travail humain dans de nombreux secteurs. Rien ne garantit que les emplois détruits seront compensés par de nouveaux emplois, et rien n'a été sérieusement préparé pour absorber un choc social de cette ampleur.",
 		survey_section_title: "Je participe à la grande enquête sur l'IA au travail !",
 		survey_section_text:
 			"Comment l'IA impacte-t-elle votre vie professionnelle ? L'association Pause IA réalise une enquête sur l'IA et l'emploi pour évaluer et comprendre l'impact de l'IA sur le monde du travail.",
 		survey_card_title: 'Questionnaire',
 		survey_card_text: "Répondez à notre questionnaire sur l'IA et l'emploi",
 		survey_card_title_attr: "Questionnaire sur l'IA et l'emploi de Pause IA",
-		testimonials_section_title: "L'IA et mon travail : je témoigne !",
+		testimonials_section_title: 'Ils témoignent',
 		testimonials_section_text_1:
-			"Nous recueillons régulièrement des témoignages de personnes dont la vie professionnelle a été impactée par l'IA. Si vous aussi avez été concerné, ou pensez que cela pourrait arriver, vous pouvez partager votre expérience ",
-		testimonials_section_link: 'grâce à notre questionnaire',
+			"Nous recueillons régulièrement des témoignages de personnes dont la vie professionnelle a été impactée par l'IA. Si vous aussi avez été concerné, partagez votre expérience ",
+		testimonials_section_link: 'via notre questionnaire',
 		testimonials_section_text_2: '.',
-		evolution_section_title: 'Évolution des pertes d’emploi liées à l’intelligence artificielle',
+		bigger_problem_title: "Mais le problème ne s'arrête pas à l'emploi.",
+		bigger_problem_text_1:
+			"Lorsqu'un système décide de la valeur d'un travail, de l'accès à une information, d'une orientation scolaire, d'un diagnostic, d'un tri ou d'une priorité, c'est notre capacité collective à comprendre, contester et gouverner ces choix qui recule.",
+		bigger_problem_text_2:
+			"La destruction d'emplois n'est donc pas un sujet séparé des risques majeurs de l'IA : c'en est l'un des premiers signaux. Une technologie déployée sans contrôle démocratique, sans transparence, sans garde-fous et sans évaluation indépendante de ses effets systémiques est une technologie dont nous perdons le contrôle progressivement. Et plus l'humanité perd le contrôle, plus elle devient vulnérable aux risques catastrophiques posés par les systèmes d'IA avancés.",
+		bigger_problem_text_3:
+			"C'est pourquoi nous demandons qu'aucun système d'IA de pointe ne soit développé ou déployé davantage tant que ses concepteurs n'ont pas démontré, à des évaluateurs indépendants, qu'il est sûr, y compris quant à ses effets économiques, sociaux et politiques.",
+		bigger_problem_text_4:
+			"La France ne peut pas arrêter seule la course mondiale à l'IA. En revanche, elle doit prendre position, construire des coalitions internationales et défendre un cadre de coordination contraignant capable de mener à une pause du développement des systèmes les plus dangereux.",
+		cta_button: "J'écris à mes représentants politiques",
+		evolution_section_title: "Évolution des pertes d'emploi liées à l'intelligence artificielle",
 		evolution_section_text_1: 'Le site ',
 		evolution_strong: 'jobloss.ai',
 		evolution_section_text_2:
-			" suit les licenciements dans lesquels l’intelligence artificielle ou l’automatisation est citée comme facteur important. Les données proviennent d'annonces d'entreprises et de reportages de médias fiables.",
+			" suit les licenciements dans lesquels l'intelligence artificielle ou l'automatisation est citée comme facteur important. Les données proviennent d'annonces d'entreprises et de reportages de médias fiables.",
 		evolution_section_text_3:
-			'Le graphique de ce site permet d’observer l’évolution des pertes d’emploi attribuées à l’IA au fil du temps et d’identifier les secteurs les plus touchés par l’automatisation.',
+			"Le graphique de ce site permet d'observer l'évolution des pertes d'emploi attribuées à l'IA au fil du temps et d'identifier les secteurs les plus touchés par l'automatisation.",
 		evolution_link: 'Voir le graphique interactif sur jobloss.ai',
-		press_section_title: 'Revue de presse : je reste informé !',
+		press_section_title: 'Revue de presse : je reste informé',
 		press_section_text:
 			"De nombreux médias abordent l'impact de l'IA sur le marché du travail. Nous collectons régulièrement des articles de presse traitant de ce sujet.",
-		feedback_section_title: 'Donnez-nous votre avis',
-		feedback_section_text:
-			'Merci de nous faire un retour : vos avis nous aident à affiner la réflexion et les actions de Pause IA.',
-		feedback_form_success: 'Merci pour votre retour !',
-		feedback_form_error: 'Une erreur est survenue. Veuillez réessayer.',
-		feedback_form_label: 'Faites-nous un retour sur ce que vous aimeriez que l’on améliore ?',
-		feedback_form_placeholder:
-			'ex: J’aimerais avoir des graphiques pour savoir quels sont les métiers les plus impactés par l’IA.',
-		feedback_form_submitting: 'Envoi en cours...',
-		feedback_form_submit: 'Envoyer',
 		carousel_empty: 'Aucun témoignage pour le moment.',
 		carousel_nav_aria: 'Navigation des témoignages',
 		carousel_prev: 'Témoignage précédent',

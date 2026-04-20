@@ -874,7 +874,7 @@
 				<Button type="submit" disabled={isSubmitting}>
 					{#if currentStep === 4 || (currentStep === 3 && formData.veutPlusQuestions === 'Non')}
 						{isSubmitting
-							? t.emploi_ia.feedback_form_submitting
+							? t.emploi_questionnaire.nav.submitting
 							: t.emploi_questionnaire.nav.submit}
 					{:else}
 						{t.emploi_questionnaire.nav.next}
@@ -882,7 +882,7 @@
 				</Button>
 			{:else if currentStep === 3 && formData.veutPlusQuestions === 'Non'}
 				<Button type="submit" disabled={isSubmitting}>
-					{isSubmitting ? t.emploi_ia.feedback_form_submitting : t.emploi_questionnaire.nav.submit}
+					{isSubmitting ? t.emploi_questionnaire.nav.submitting : t.emploi_questionnaire.nav.submit}
 				</Button>
 			{/if}
 		</div>

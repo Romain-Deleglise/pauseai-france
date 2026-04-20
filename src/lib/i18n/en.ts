@@ -269,7 +269,8 @@ export default {
 		nav: {
 			prev: 'Previous',
 			next: 'Next',
-			submit: 'Submit my answers'
+			submit: 'Submit my answers',
+			submitting: 'Submitting...'
 		},
 		toasts: {
 			required_fields: 'Please fill in all required fields',
@@ -435,39 +436,37 @@ export default {
 		}
 	},
 	emploi_ia: {
-		meta_title: 'Employment and AI - Get informed and act | PauseAI France',
+		meta_title: 'AI will not destroy ONLY your job | Pause AI',
 		meta_desc:
-			'Discover Employment AI, a Pause AI group dedicated to understanding the impact of artificial intelligence on work and preparing for the future.',
+			'General-purpose AI systems can replace human work at scale, with no safety net. But the issue goes beyond employment: it is our ability to govern these technologies that is receding.',
 		keywords:
-			'Employment, AI, Artificial Intelligence, Work, Automation, Job market, Recruitment, Skills, Training, Career change, Unemployment, Future of work',
-		title: 'Employment and AI - Get informed and act',
-		who_we_are_title: 'Who are we?',
-		who_we_are_text:
-			'We are a group of Pause AI contributors specifically reflecting on the impact of AI on jobs, today, in 1 month, 1 year, 2 years... How will human work evolve? When and how will each of us be impacted? What is the risk of losing our job? What career change should we consider? What are the new required skills? What new organization of work are we heading towards? How will we make a living?',
-		resources_title: 'Our resources',
-		resources_intro:
-			'We are at the beginning of our reflections, and we already offer you with the help of other associations and individuals:',
-		resource_survey: 'A survey to find out what impact AI has on your work',
-		resource_testimonials: 'Testimonials illustrating the impact of AI on professional paths',
-		resource_press: 'A press review on the impact of AI on the world of work',
-		resource_chart: 'A chart on the evolution of job losses due to AI',
-		resource_feedback: 'A form so you can give us feedback',
-		threat_title: 'AI: a growing threat to many jobs',
-		threat_text_1:
-			'With the rapid progress of artificial intelligence, many jobs are at risk of being partially or fully automated. The rise of generative AI has already begun to affect professions such as journalists, translators, or illustrators. And this trend could spread to other sectors as ',
-		threat_link_agi: 'AI becomes more general',
-		threat_text_2: '.',
-		survey_section_title: 'I am participating in the major survey on AI at work!',
+			'Employment, AI, Artificial Intelligence, Work, Automation, Job loss, Layoffs, Pause AI, AI risks',
+		title: 'AI will not destroy ONLY your job',
+		intro_lead:
+			'AI does not only threaten our jobs: it contributes to a growing loss of control over our lives and societies.',
+		intro_text:
+			'General-purpose AI systems can now perform an ever-growing number of tasks at a speed and cost that make mass replacement of human work possible across many sectors. Nothing guarantees that destroyed jobs will be compensated by new ones, and nothing has been seriously prepared to absorb a social shock of this magnitude.',
+		survey_section_title: 'I am taking part in the major survey on AI at work!',
 		survey_section_text:
-			'How is AI impacting your professional life? The Pause AI association is conducting a survey on AI and employment to assess and understand the impact of AI on the world of work.',
+			'How is AI impacting your professional life? Pause AI is running a survey on AI and employment to assess and understand the impact of AI on the world of work.',
 		survey_card_title: 'Survey',
 		survey_card_text: 'Answer our survey on AI and employment',
 		survey_card_title_attr: 'Pause AI Survey on AI and employment',
-		testimonials_section_title: 'AI and my work: my testimony!',
+		testimonials_section_title: 'Their stories',
 		testimonials_section_text_1:
-			'We regularly collect testimonials from people whose professional lives have been impacted by AI. If you have also been affected, or think it might happen, you can share your experience ',
-		testimonials_section_link: 'thanks to our survey',
+			'We regularly collect testimonials from people whose working lives have been impacted by AI. If you have been affected too, share your experience ',
+		testimonials_section_link: 'through our survey',
 		testimonials_section_text_2: '.',
+		bigger_problem_title: 'But the problem does not stop at employment.',
+		bigger_problem_text_1:
+			'When a system decides the value of a job, access to information, an educational track, a diagnosis, a ranking or a priority, it is our collective ability to understand, challenge and govern those choices that recedes.',
+		bigger_problem_text_2:
+			'Job destruction is therefore not a separate topic from the major risks of AI: it is one of its first signals. A technology deployed without democratic oversight, without transparency, without safeguards and without independent evaluation of its systemic effects is a technology we are progressively losing control of. And the more humanity loses control, the more vulnerable it becomes to the catastrophic risks posed by advanced AI systems.',
+		bigger_problem_text_3:
+			'That is why we demand that no frontier AI system be further developed or deployed until its designers have demonstrated, to independent evaluators, that it is safe, including as regards its economic, social and political effects.',
+		bigger_problem_text_4:
+			'France cannot stop the global AI race alone. But it must take a stand, build international coalitions and push for a binding coordination framework capable of leading to a pause in the development of the most dangerous systems.',
+		cta_button: 'I write to my elected officials',
 		evolution_section_title: 'Evolution of job losses linked to artificial intelligence',
 		evolution_section_text_1: 'The website ',
 		evolution_strong: 'jobloss.ai',
@@ -476,19 +475,9 @@ export default {
 		evolution_section_text_3:
 			'The interactive chart of this site allows you to observe the evolution of job losses attributed to AI over time and identify the sectors most affected by automation.',
 		evolution_link: 'See the interactive chart on jobloss.ai',
-		press_section_title: 'Press review: I stay informed!',
+		press_section_title: 'Press review: stay informed',
 		press_section_text:
 			'Many media outlets cover the impact of AI on the job market. We regularly collect press articles dealing with this topic.',
-		feedback_section_title: 'Give us your feedback',
-		feedback_section_text:
-			"Thank you for providing feedback: your opinions help us refine Pause AI's thoughts and actions.",
-		feedback_form_success: 'Thank you for your feedback!',
-		feedback_form_error: 'An error occurred. Please try again.',
-		feedback_form_label: 'Give us feedback on what you would like us to improve?',
-		feedback_form_placeholder:
-			'e.g., I would like to have charts to know which jobs are most impacted by AI.',
-		feedback_form_submitting: 'Sending...',
-		feedback_form_submit: 'Send',
 		carousel_empty: 'No testimonials for now.',
 		carousel_nav_aria: 'Testimonial navigation',
 		carousel_prev: 'Previous testimonial',

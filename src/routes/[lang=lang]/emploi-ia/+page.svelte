@@ -2,9 +2,7 @@
 	import EmploiForm from '$components/EmploiForm.svelte'
 	import TestimonialCarousel from '$components/TestimonialCarousel.svelte'
 	import ArticleShowcase from '$components/ArticleShowcase.svelte'
-	import EmploiAvisForm from '$components/EmploiAvisForm.svelte'
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
-	import A from '$components/custom/a.svelte'
 	import type { Testimonial, ArticleShowcaseItem } from '$lib/types'
 	import type { Lang } from '$lib/i18n'
 	import { getT } from '$lib/i18n'
@@ -24,21 +22,18 @@
 
 	let articleShowcaseItems = data.articleShowcaseItems
 
-	// Sort testimonials by date descending (most recent first)
 	testimonials.sort((a, b) => {
 		const dateA = a.date ? new Date(a.date).getTime() : 0
 		const dateB = b.date ? new Date(b.date).getTime() : 0
 		return dateB - dateA
 	})
 
-	// Sort articleShowcaseItems by date descending
 	articleShowcaseItems.sort((a, b) => {
 		const dateA = a.date ? new Date(a.date).getTime() : 0
 		const dateB = b.date ? new Date(b.date).getTime() : 0
 		return dateB - dateA
 	})
 
-	// Set default image for articleShowcaseItems if undefined
 	articleShowcaseItems = articleShowcaseItems.map((item) => ({
 		...item,
 		image: item.image || '/emploi-ia/article-placeholder.svg'
@@ -67,36 +62,9 @@
 	</hgroup>
 
 	<div>
-		<h2>{t.emploi_ia.who_we_are_title}</h2>
+		<p class="lead">{t.emploi_ia.intro_lead}</p>
 
-		<p>{t.emploi_ia.who_we_are_text}</p>
-
-		<h2>{t.emploi_ia.resources_title}</h2>
-		<p>{t.emploi_ia.resources_intro}</p>
-		<ul>
-			<li>
-				<A href="#enquete">{t.emploi_ia.resource_survey}</A>
-			</li>
-			<li>
-				<A href="#temoignage">{t.emploi_ia.resource_testimonials}</A>
-			</li>
-			<li><A href="#revue">{t.emploi_ia.resource_press}</A></li>
-			<li>
-				<A href="#evolution">{t.emploi_ia.resource_chart}</A>
-			</li>
-			<li>
-				<A href="#avis-form">{t.emploi_ia.resource_feedback}</A>
-			</li>
-		</ul>
-
-		<h2>{t.emploi_ia.threat_title}</h2>
-		<p>
-			{t.emploi_ia.threat_text_1}<a
-				href="https://fr.wikipedia.org/wiki/Intelligence_artificielle_g%C3%A9n%C3%A9rale"
-				target="_blank"
-				rel="noopener noreferrer">{t.emploi_ia.threat_link_agi}</a
-			>{t.emploi_ia.threat_text_2}
-		</p>
+		<p>{t.emploi_ia.intro_text}</p>
 
 		<section id="enquete" aria-labelledby="enquete-heading">
 			<h2 id="enquete-heading">{t.emploi_ia.survey_section_title}</h2>
@@ -114,6 +82,18 @@
 			</p>
 
 			<TestimonialCarousel {testimonials} {lang} />
+		</section>
+
+		<section id="bigger-problem" aria-labelledby="bigger-problem-heading" class="bigger-problem">
+			<h2 id="bigger-problem-heading">{t.emploi_ia.bigger_problem_title}</h2>
+			<p>{t.emploi_ia.bigger_problem_text_1}</p>
+			<p>{t.emploi_ia.bigger_problem_text_2}</p>
+			<p>{t.emploi_ia.bigger_problem_text_3}</p>
+			<p>{t.emploi_ia.bigger_problem_text_4}</p>
+
+			<p class="cta-wrap">
+				<a class="cta-button" href="/{lang}/ecrire-a-mes-elus">{t.emploi_ia.cta_button}</a>
+			</p>
 		</section>
 
 		<section id="evolution" aria-labelledby="evolution-heading">
@@ -139,13 +119,6 @@
 
 			<ArticleShowcase articles={articleShowcaseItems} {lang} />
 		</section>
-
-		<section id="avis-form" aria-labelledby="avis-heading">
-			<h2 id="avis-heading">{t.emploi_ia.feedback_section_title}</h2>
-			<p>{t.emploi_ia.feedback_section_text}</p>
-
-			<EmploiAvisForm {lang} />
-		</section>
 	</div>
 </article>
 
@@ -158,5 +131,36 @@
 
 	section:not(:last-child) {
 		margin-bottom: 5rem;
+	}
+
+	.lead {
+		font-size: 1.25rem;
+		font-weight: 500;
+		line-height: 1.5;
+		color: var(--brand-subtle, #c96900);
+		border-left: 4px solid var(--brand, #ff9416);
+		background: var(--brand-light, #fff5e8);
+		padding: 1rem 1.25rem;
+		margin: 1.5rem 0 2rem;
+	}
+
+	.cta-wrap {
+		text-align: center;
+		margin-top: 2rem;
+	}
+
+	.cta-button {
+		display: inline-block;
+		background: var(--brand, #ff9416);
+		color: white;
+		padding: 0.9rem 1.75rem;
+		border-radius: 999px;
+		font-weight: 600;
+		text-decoration: none;
+		transition: background 0.2s;
+	}
+
+	.cta-button:hover {
+		background: var(--brand-subtle, #c96900);
 	}
 </style>
