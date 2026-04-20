@@ -41,9 +41,9 @@
 	}))
 
 	$: tocSections = [
-		{ id: 'bigger-problem', label: isEn ? 'Why act?' : 'Pourquoi agir ?' },
 		{ id: 'enquete', label: isEn ? 'Survey' : 'Enquête' },
 		{ id: 'temoignage', label: isEn ? 'Testimonials' : 'Témoignages' },
+		{ id: 'bigger-problem', label: isEn ? 'Why act?' : 'Pourquoi agir ?' },
 		{ id: 'evolution', label: isEn ? 'AI job losses' : "Pertes d'emploi" },
 		{ id: 'revue', label: isEn ? 'Press' : 'Revue de presse' }
 	]
@@ -114,7 +114,23 @@
 			<span class="stat-source">{t.emploi_ia.stat_source}</span>
 		</div>
 
-		<!-- Why act — key section, placed high -->
+		<section id="enquete" aria-labelledby="enquete-heading">
+			<h2 id="enquete-heading">{t.emploi_ia.survey_section_title}</h2>
+			<p>{t.emploi_ia.survey_section_text}</p>
+			<EmploiForm {lang} />
+		</section>
+
+		<section id="temoignage" aria-labelledby="temoignage-heading">
+			<h2 id="temoignage-heading">{t.emploi_ia.testimonials_section_title}</h2>
+			<p>
+				{t.emploi_ia.testimonials_section_text_1}<a href="/{lang}/emploi-ia/questionnaire"
+					>{t.emploi_ia.testimonials_section_link}</a
+				>{t.emploi_ia.testimonials_section_text_2}
+			</p>
+			<TestimonialCarousel {testimonials} {lang} />
+		</section>
+
+		<!-- Why act — after seeing the evidence -->
 		<section id="bigger-problem" aria-labelledby="bigger-problem-heading" class="bigger-problem">
 			<h2 id="bigger-problem-heading">{t.emploi_ia.bigger_problem_title}</h2>
 			<p>{t.emploi_ia.bigger_problem_text_1}</p>
@@ -133,22 +149,6 @@
 			<p class="cta-wrap">
 				<a class="cta-button" href="/{lang}/ecrire-a-mes-elus">{t.emploi_ia.cta_button}</a>
 			</p>
-		</section>
-
-		<section id="enquete" aria-labelledby="enquete-heading">
-			<h2 id="enquete-heading">{t.emploi_ia.survey_section_title}</h2>
-			<p>{t.emploi_ia.survey_section_text}</p>
-			<EmploiForm {lang} />
-		</section>
-
-		<section id="temoignage" aria-labelledby="temoignage-heading">
-			<h2 id="temoignage-heading">{t.emploi_ia.testimonials_section_title}</h2>
-			<p>
-				{t.emploi_ia.testimonials_section_text_1}<a href="/{lang}/emploi-ia/questionnaire"
-					>{t.emploi_ia.testimonials_section_link}</a
-				>{t.emploi_ia.testimonials_section_text_2}
-			</p>
-			<TestimonialCarousel {testimonials} {lang} />
 		</section>
 
 		<section id="evolution" aria-labelledby="evolution-heading">
