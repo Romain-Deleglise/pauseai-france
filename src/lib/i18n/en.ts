@@ -13,6 +13,7 @@ export default {
 		groupes_locaux: 'Local groups',
 		toutes_campagnes: 'All our campaigns',
 		ecrire_elus: 'Write to my representatives',
+		emploi_ia: 'Employment & AI',
 		municipales: 'Municipal 2026',
 		sommet: 'AI Summit 2026',
 		senat2025: 'Senate Colloquium 2025',
@@ -446,6 +447,10 @@ export default {
 			'AI does not only threaten our jobs: it contributes to a growing loss of control over our lives and societies.',
 		intro_text:
 			'General-purpose AI systems can now perform an ever-growing number of tasks at a speed and cost that make mass replacement of human work possible across many sectors. Nothing guarantees that destroyed jobs will be compensated by new ones, and nothing has been seriously prepared to absorb a social shock of this magnitude.',
+		// Manual update needed: fetch latest numbers from jobloss.ai
+		stat_number: '128,648',
+		stat_label: 'documented AI-linked job losses since January 2025',
+		stat_source: 'Source: jobloss.ai, updated Apr 15, 2026',
 		survey_section_title: 'I am taking part in the major survey on AI at work!',
 		survey_section_text:
 			'How is AI impacting your professional life? Pause AI is running a survey on AI and employment to assess and understand the impact of AI on the world of work.',
@@ -459,13 +464,9 @@ export default {
 		testimonials_section_text_2: '.',
 		bigger_problem_title: 'But the problem does not stop at employment.',
 		bigger_problem_text_1:
-			'When a system decides the value of a job, access to information, an educational track, a diagnosis, a ranking or a priority, it is our collective ability to understand, challenge and govern those choices that recedes.',
+			'Job destruction is not a separate topic from the major risks of AI: it is one of its first signals. When a system decides the value of a job, access to information or an educational track, our collective ability to understand and challenge those choices recedes. A technology deployed without democratic oversight, without safeguards or independent evaluation, is a technology we are progressively losing control of. And the more humanity loses control, the more vulnerable it becomes to the catastrophic risks posed by advanced AI systems.',
 		bigger_problem_text_2:
-			'Job destruction is therefore not a separate topic from the major risks of AI: it is one of its first signals. A technology deployed without democratic oversight, without transparency, without safeguards and without independent evaluation of its systemic effects is a technology we are progressively losing control of. And the more humanity loses control, the more vulnerable it becomes to the catastrophic risks posed by advanced AI systems.',
-		bigger_problem_text_3:
-			'That is why we demand that no frontier AI system be further developed or deployed until its designers have demonstrated, to independent evaluators, that it is safe, including as regards its economic, social and political effects.',
-		bigger_problem_text_4:
-			'France cannot stop the global AI race alone. But it must take a stand, build international coalitions and push for a binding coordination framework capable of leading to a pause in the development of the most dangerous systems.',
+			'That is why we demand that no frontier AI system be further developed or deployed until its designers have demonstrated, to independent evaluators, that it is safe on economic, social and political grounds. France cannot stop the global AI race alone, but it must take a stand, build international coalitions and push for a binding framework capable of leading to a pause in the development of the most dangerous systems.',
 		cta_button: 'I write to my elected officials',
 		evolution_section_title: 'Evolution of job losses linked to artificial intelligence',
 		evolution_section_text_1: 'The website ',

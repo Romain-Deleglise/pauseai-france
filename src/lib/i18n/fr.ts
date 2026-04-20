@@ -13,6 +13,7 @@ export default {
 		groupes_locaux: 'Groupes locaux',
 		toutes_campagnes: 'Toutes nos campagnes',
 		ecrire_elus: 'Écrire à mes élus',
+		emploi_ia: 'Emploi et IA',
 		municipales: 'Municipales 2026',
 		sommet: "Sommet de l'IA 2026",
 		senat2025: 'Colloque Sénat 2025',
@@ -449,6 +450,10 @@ export default {
 			"L'IA ne menace pas seulement nos emplois : elle participe à une perte de contrôle croissante sur nos vies et sur nos sociétés.",
 		intro_text:
 			"Les systèmes d'IA généralistes sont capables d'accomplir un nombre croissant de tâches à une vitesse et à un coût qui rendent possible le remplacement massif de travail humain dans de nombreux secteurs. Rien ne garantit que les emplois détruits seront compensés par de nouveaux emplois, et rien n'a été sérieusement préparé pour absorber un choc social de cette ampleur.",
+		// Mise à jour manuelle nécessaire : récupérer les chiffres sur jobloss.ai
+		stat_number: '128 648',
+		stat_label: "emplois liés à l'IA supprimés documentés depuis janvier 2025",
+		stat_source: 'Source : jobloss.ai, mis à jour le 15 avr. 2026',
 		survey_section_title: "Je participe à la grande enquête sur l'IA au travail !",
 		survey_section_text:
 			"Comment l'IA impacte-t-elle votre vie professionnelle ? L'association Pause IA réalise une enquête sur l'IA et l'emploi pour évaluer et comprendre l'impact de l'IA sur le monde du travail.",
@@ -462,13 +467,9 @@ export default {
 		testimonials_section_text_2: '.',
 		bigger_problem_title: "Mais le problème ne s'arrête pas à l'emploi.",
 		bigger_problem_text_1:
-			"Lorsqu'un système décide de la valeur d'un travail, de l'accès à une information, d'une orientation scolaire, d'un diagnostic, d'un tri ou d'une priorité, c'est notre capacité collective à comprendre, contester et gouverner ces choix qui recule.",
+			"La destruction d'emplois n'est pas un sujet séparé des risques majeurs de l'IA : c'en est l'un des premiers signaux. Lorsqu'un système décide de la valeur d'un travail, de l'accès à une information ou d'une orientation scolaire, notre capacité collective à comprendre et contester ces choix recule. Une technologie déployée sans contrôle démocratique, sans garde-fous ni évaluation indépendante est une technologie dont nous perdons progressivement le contrôle. Et plus l'humanité perd le contrôle, plus elle devient vulnérable aux risques catastrophiques posés par les systèmes d'IA avancés.",
 		bigger_problem_text_2:
-			"La destruction d'emplois n'est donc pas un sujet séparé des risques majeurs de l'IA : c'en est l'un des premiers signaux. Une technologie déployée sans contrôle démocratique, sans transparence, sans garde-fous et sans évaluation indépendante de ses effets systémiques est une technologie dont nous perdons le contrôle progressivement. Et plus l'humanité perd le contrôle, plus elle devient vulnérable aux risques catastrophiques posés par les systèmes d'IA avancés.",
-		bigger_problem_text_3:
-			"C'est pourquoi nous demandons qu'aucun système d'IA de pointe ne soit développé ou déployé davantage tant que ses concepteurs n'ont pas démontré, à des évaluateurs indépendants, qu'il est sûr, y compris quant à ses effets économiques, sociaux et politiques.",
-		bigger_problem_text_4:
-			"La France ne peut pas arrêter seule la course mondiale à l'IA. En revanche, elle doit prendre position, construire des coalitions internationales et défendre un cadre de coordination contraignant capable de mener à une pause du développement des systèmes les plus dangereux.",
+			"C'est pourquoi nous demandons qu'aucun système d'IA de pointe ne soit développé ou déployé davantage tant que ses concepteurs n'ont pas démontré, à des évaluateurs indépendants, qu'il est sûr sur le plan économique, social et politique. La France ne peut pas arrêter seule la course mondiale à l'IA, mais elle doit prendre position, construire des coalitions internationales et défendre un cadre contraignant capable de mener à une pause du développement des systèmes les plus dangereux.",
 		cta_button: "J'écris à mes représentants politiques",
 		evolution_section_title: "Évolution des pertes d'emploi liées à l'intelligence artificielle",
 		evolution_section_text_1: 'Le site ',

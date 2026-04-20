@@ -80,7 +80,6 @@
 			label: t.nav.comprendre,
 			items: [
 				{ href: `${prefix}/dangers`, label: t.nav.dangers },
-				{ href: `${prefix}/emploi-ia`, label: 'Emploi et IA' },
 				{ href: `${prefix}/newsletters`, label: t.nav.newsletter },
 				{ href: `${prefix}/propositions`, label: t.nav.propositions },
 				{ href: 'https://pauseia.substack.com/', label: t.nav.blog, external: true }
@@ -99,7 +98,8 @@
 			label: t.nav.campagnes,
 			items: [
 				{ href: `${prefix}/campagnes`, label: t.nav.toutes_campagnes },
-				{ href: `${prefix}/ecrire-a-mes-elus`, label: t.nav.ecrire_elus }
+				{ href: `${prefix}/ecrire-a-mes-elus`, label: t.nav.ecrire_elus },
+				{ href: `${prefix}/emploi-ia`, label: t.nav.emploi_ia }
 			]
 		},
 		{
