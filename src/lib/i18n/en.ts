@@ -463,6 +463,15 @@ export default {
 		testimonials_section_link: 'through our survey',
 		testimonials_section_text_2: '.',
 		bigger_problem_title: 'But the problem does not stop at employment.',
+		bigger_problem_expand: 'Expand the argument',
+		bigger_problem_detail_1:
+			'When a system decides the value of a job, access to information, an educational track, a diagnosis, a ranking or a priority, it is our collective ability to understand, challenge and govern those choices that recedes.',
+		bigger_problem_detail_2:
+			'A technology deployed without democratic oversight, without transparency, without safeguards and without independent evaluation of its systemic effects is a technology we are progressively losing control of. And the more humanity loses control, the more vulnerable it becomes to the catastrophic risks posed by advanced AI systems.',
+		bigger_problem_detail_3:
+			'We demand that no frontier AI system be further developed or deployed until its designers have demonstrated, to independent evaluators, that it is safe, including as regards its economic, social and political effects.',
+		bigger_problem_detail_4:
+			'France cannot stop the global AI race alone. But it must take a stand, build international coalitions and push for a binding coordination framework capable of leading to a pause in the development of the most dangerous systems.',
 		bigger_problem_text_1:
 			'Job destruction is not a separate topic from the major risks of AI: it is one of its first signals. When a system decides the value of a job, access to information or an educational track, our collective ability to understand and challenge those choices recedes. A technology deployed without democratic oversight, without safeguards or independent evaluation, is a technology we are progressively losing control of. And the more humanity loses control, the more vulnerable it becomes to the catastrophic risks posed by advanced AI systems.',
 		bigger_problem_text_2:

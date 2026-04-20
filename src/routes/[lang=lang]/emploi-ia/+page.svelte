@@ -120,6 +120,16 @@
 			<p>{t.emploi_ia.bigger_problem_text_1}</p>
 			<p>{t.emploi_ia.bigger_problem_text_2}</p>
 
+			<details class="expand-details">
+				<summary>{t.emploi_ia.bigger_problem_expand}</summary>
+				<div class="expand-body">
+					<p>{t.emploi_ia.bigger_problem_detail_1}</p>
+					<p>{t.emploi_ia.bigger_problem_detail_2}</p>
+					<p>{t.emploi_ia.bigger_problem_detail_3}</p>
+					<p>{t.emploi_ia.bigger_problem_detail_4}</p>
+				</div>
+			</details>
+
 			<p class="cta-wrap">
 				<a class="cta-button" href="/{lang}/ecrire-a-mes-elus">{t.emploi_ia.cta_button}</a>
 			</p>
@@ -309,6 +319,62 @@
 
 	.bigger-problem h2 {
 		margin-top: 0;
+	}
+
+	/* ── Details accordion ── */
+	.expand-details {
+		margin: 1.25rem 0 0;
+		border-radius: 8px;
+		border: 1px solid rgba(255, 148, 22, 0.25);
+		background: var(--bg, white);
+		overflow: hidden;
+	}
+
+	:global([data-theme='dark']) .expand-details {
+		background: rgba(255, 255, 255, 0.05);
+	}
+
+	.expand-details summary {
+		cursor: pointer;
+		padding: 0.75rem 1rem;
+		font-size: 0.9rem;
+		font-weight: 600;
+		color: var(--brand-subtle, #c96900);
+		list-style: none;
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		user-select: none;
+	}
+
+	.expand-details summary::-webkit-details-marker {
+		display: none;
+	}
+
+	.expand-details summary::before {
+		content: '▸';
+		font-size: 0.75rem;
+		transition: transform 0.2s ease;
+		flex-shrink: 0;
+	}
+
+	.expand-details[open] summary::before {
+		transform: rotate(90deg);
+	}
+
+	.expand-body {
+		padding: 0.25rem 1rem 1rem;
+		font-size: 0.93rem;
+		line-height: 1.65;
+		color: var(--text, #111);
+	}
+
+	.expand-body p {
+		margin: 0 0 0.85rem;
+	}
+
+	.expand-body p:last-child {
+		margin-bottom: 0;
 	}
 
 	/* ── CTA button ── */

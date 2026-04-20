@@ -466,6 +466,15 @@ export default {
 		testimonials_section_link: 'via notre questionnaire',
 		testimonials_section_text_2: '.',
 		bigger_problem_title: "Mais le problème ne s'arrête pas à l'emploi.",
+		bigger_problem_expand: "Développer l'argumentation",
+		bigger_problem_detail_1:
+			"Lorsqu'un système décide de la valeur d'un travail, de l'accès à une information, d'une orientation scolaire, d'un diagnostic, d'un tri ou d'une priorité, c'est notre capacité collective à comprendre, contester et gouverner ces choix qui recule.",
+		bigger_problem_detail_2:
+			"Une technologie déployée sans contrôle démocratique, sans transparence, sans garde-fous et sans évaluation indépendante de ses effets systémiques est une technologie dont nous perdons le contrôle progressivement. Et plus l'humanité perd le contrôle, plus elle devient vulnérable aux risques catastrophiques posés par les systèmes d'IA avancés.",
+		bigger_problem_detail_3:
+			"Nous demandons qu'aucun système d'IA de pointe ne soit développé ou déployé davantage tant que ses concepteurs n'ont pas démontré, à des évaluateurs indépendants, qu'il est sûr, y compris quant à ses effets économiques, sociaux et politiques.",
+		bigger_problem_detail_4:
+			"La France ne peut pas arrêter seule la course mondiale à l'IA. En revanche, elle doit prendre position, construire des coalitions internationales et défendre un cadre de coordination contraignant capable de mener à une pause du développement des systèmes les plus dangereux.",
 		bigger_problem_text_1:
 			"La destruction d'emplois n'est pas un sujet séparé des risques majeurs de l'IA : c'en est l'un des premiers signaux. Lorsqu'un système décide de la valeur d'un travail, de l'accès à une information ou d'une orientation scolaire, notre capacité collective à comprendre et contester ces choix recule. Une technologie déployée sans contrôle démocratique, sans garde-fous ni évaluation indépendante est une technologie dont nous perdons progressivement le contrôle. Et plus l'humanité perd le contrôle, plus elle devient vulnérable aux risques catastrophiques posés par les systèmes d'IA avancés.",
 		bigger_problem_text_2:
