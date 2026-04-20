@@ -19,7 +19,7 @@
 		$page.url.pathname == '/' ||
 		$page.url.pathname == `/${lang}` ||
 		$page.url.pathname == `/${lang}/`
-	$: onEmploiePage = $page.url.pathname.includes('/emploi-ia')
+	let bannerDismissed = false
 
 	// Hero has a light background — header stays dark on homepage
 	$: whiteNav = false && onHomepage && !scrolled
@@ -163,7 +163,10 @@
 		 - Other pages: visible at top, hidden when scrolled (original behavior)
 	-->
 	<div class="banner-wrapper" class:scrolled class:homepage={onHomepage}>
-		<Banner visible={$bannerStore.visible}>
+		<Banner
+			visible={$bannerStore.visible && !bannerDismissed}
+			on:close={() => (bannerDismissed = true)}
+		>
 			{$bannerStore.message}
 			{#if $bannerStore.linkUrl}
 				<a href={$bannerStore.linkUrl}>{$bannerStore.linkText}</a>
@@ -173,13 +176,9 @@
 
 	{#if mounted || !onHomepage}
 		<nav in:fade={{ duration: 400, delay: 100 }} class:scrolled class:homepage={onHomepage}>
-			<a href={onEmploiePage ? `${prefix}/emploi-ia` : `${prefix}`} class="logo">
+			<a href={`${prefix}`} class="logo">
 				<div class="big-logo">
-					<Logo
-						animate
-						fill_pause={whiteNav ? 'white' : $theme === 'dark' ? 'white' : 'black'}
-						emploi_ia={onEmploiePage}
-					/>
+					<Logo animate fill_pause={whiteNav ? 'white' : $theme === 'dark' ? 'white' : 'black'} />
 				</div>
 				<div class="small-logo">
 					<Logo animate only_circle />
