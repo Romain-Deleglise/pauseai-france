@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onMount } from 'svelte'
 	import EmploiForm from '$components/EmploiForm.svelte'
 	import TestimonialCarousel from '$components/TestimonialCarousel.svelte'
 	import ArticleShowcase from '$components/ArticleShowcase.svelte'
@@ -37,6 +38,25 @@
 		...item,
 		image: item.image || '/emploi-ia/article-placeholder.svg'
 	}))
+
+	const ACTIVOICE_CAMPAIGN_ID = '6b7ceb0e-22b1-48de-b8ae-5617c4920d05'
+
+	onMount(() => {
+		const init = () => {
+			// @ts-expect-error - Activoice global injected by external script
+			if (typeof window.Activoice !== 'undefined') {
+				// @ts-expect-error
+				window.Activoice.init({
+					container: '#av-embed-container',
+					campaignId: ACTIVOICE_CAMPAIGN_ID,
+					embedOptions: { spinnerColor: '#FF9416' }
+				})
+			} else {
+				setTimeout(init, 100)
+			}
+		}
+		init()
+	})
 </script>
 
 <svelte:head>
@@ -53,6 +73,7 @@
 	<meta name="twitter:title" content={t.emploi_ia.meta_title} />
 	<meta name="twitter:description" content={t.emploi_ia.meta_desc} />
 	<meta name="twitter:image" content="https://pauseia.fr/emploi-ia/emploi-IA.png" />
+	<script src="https://beta.app.activoice.org/embed/v1/loader.js"></script>
 </svelte:head>
 
 <article>
@@ -95,9 +116,7 @@
 		<p class="cta-callout">{t.emploi_ia.cta_callout}</p>
 		<p class="cta-detail">{t.emploi_ia.cta_callout_detail}</p>
 
-		<p class="cta-wrap">
-			<a class="cta-button" href="/{lang}/ecrire-a-mes-elus">{t.emploi_ia.cta_button}</a>
-		</p>
+		<div id="av-embed-container" class="av-embed"></div>
 	</section>
 
 	<section id="evolution" aria-labelledby="evolution-heading">
@@ -227,24 +246,8 @@
 		margin: 0 0 0.25rem;
 	}
 
-	/* ── CTA button ── */
-	.cta-wrap {
-		text-align: center;
-		margin-top: 2rem;
-	}
-
-	.cta-button {
-		display: inline-block;
-		background: var(--brand, #ff9416);
-		color: white;
-		padding: 0.9rem 1.75rem;
-		border-radius: 999px;
-		font-weight: 600;
-		text-decoration: none;
-		transition: background 0.2s;
-	}
-
-	.cta-button:hover {
-		background: var(--brand-subtle, #c96900);
+	/* ── ActiVoice embed ── */
+	.av-embed {
+		margin-top: 1.5rem;
 	}
 </style>

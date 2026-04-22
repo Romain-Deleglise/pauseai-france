@@ -470,8 +470,8 @@ export default {
 		cta_callout:
 			'An email to your MP or senator is one of the most direct levers to get this issue onto the political agenda.',
 		cta_callout_detail:
-			'Elected officials are required to respond, and a personal message carries far more weight than a petition. It takes five minutes.',
-		cta_button: 'I write to my elected officials',
+			'Elected officials are required to listen to the concerns of citizens, and a personal message carries far more weight than a petition. It takes five minutes.',
+		cta_button: 'I write a message to politicians',
 		evolution_section_title: 'Evolution of job losses linked to artificial intelligence',
 		evolution_section_text_1: 'The website ',
 		evolution_strong: 'jobloss.ai',

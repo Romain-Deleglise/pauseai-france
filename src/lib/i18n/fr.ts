@@ -473,8 +473,8 @@ export default {
 		cta_callout:
 			"Un email à votre député ou sénateur est l'un des leviers les plus directs pour que ce sujet entre à l'agenda politique.",
 		cta_callout_detail:
-			"Les élus sont tenus de répondre, et un message personnel pèse bien plus lourd qu'une pétition. Cela prend cinq minutes.",
-		cta_button: "J'écris à mes représentants politiques",
+			"Les élus sont tenus d'être à l'écoute des préoccupations des citoyens, et un message personnel pèse bien plus lourd qu'une pétition. Cela prend cinq minutes.",
+		cta_button: "J'écris un message à des politiques",
 		evolution_section_title: "Évolution des pertes d'emploi liées à l'intelligence artificielle",
 		evolution_section_text_1: 'Le site ',
 		evolution_strong: 'jobloss.ai',
