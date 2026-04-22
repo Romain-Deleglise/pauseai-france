@@ -1,5 +1,4 @@
 <script lang="ts">
-	import Logo from './Logo.svelte'
 	import type { Lang } from '$lib/i18n'
 	import { getT } from '$lib/i18n'
 
@@ -9,40 +8,58 @@
 </script>
 
 <a href="/{lang}/emploi-ia/questionnaire" title={t.emploi_ia.survey_card_title_attr}>
-	<h3>{t.emploi_ia.survey_card_title}</h3>
-	<div class="logo"><Logo fill_circle="white" fill_ai="white" emploi_ia={true} /></div>
-	<p>{t.emploi_ia.survey_card_text}</p>
+	<span class="card-title">{t.emploi_ia.survey_card_title}</span>
+	<span class="card-text">{t.emploi_ia.survey_card_text}</span>
+	<span class="card-arrow" aria-hidden="true">→</span>
 </a>
 
 <style>
-	h3 {
-		color: var(--text);
-	}
-
-	p {
-		color: white;
-	}
-
-	.logo {
-		width: 16rem;
-		height: 10rem;
-	}
-
 	a {
 		display: flex;
-		background-color: #ff9416;
+		align-items: center;
+		gap: 1rem;
+		background-color: var(--brand, #ff9416);
 		text-decoration: none;
-		max-width: 500px;
-		height: 200px;
-		flex-direction: column;
-		justify-content: center;
-		padding: 1rem;
-		margin: 5rem 0;
-		border-radius: 16px;
-		transition: transform 150ms ease;
+		padding: 1rem 1.25rem;
+		border-radius: 10px;
+		margin: 1.5rem 0;
+		transition: background 0.2s;
 	}
 
 	a:hover {
-		transform: translateY(-2px);
+		background-color: var(--brand-subtle, #c96900);
+	}
+
+	.card-title {
+		font-weight: 700;
+		color: white;
+		white-space: nowrap;
+		flex-shrink: 0;
+	}
+
+	.card-text {
+		font-size: 0.9rem;
+		color: rgba(255, 255, 255, 0.88);
+		line-height: 1.3;
+	}
+
+	.card-arrow {
+		margin-left: auto;
+		font-size: 1.2rem;
+		color: white;
+		flex-shrink: 0;
+	}
+
+	@media (max-width: 540px) {
+		a {
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 0.4rem;
+		}
+
+		.card-arrow {
+			margin-left: 0;
+			align-self: flex-end;
+		}
 	}
 </style>

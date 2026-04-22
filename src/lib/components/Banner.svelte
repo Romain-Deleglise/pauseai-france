@@ -1,7 +1,16 @@
 <script lang="ts">
 	import { X, Megaphone } from 'lucide-svelte'
 	import { slide } from 'svelte/transition'
-	export let visible = true // Initially, the banner is visible
+	import { createEventDispatcher } from 'svelte'
+
+	export let visible = true
+
+	const dispatch = createEventDispatcher<{ close: void }>()
+
+	function handleClose() {
+		visible = false
+		dispatch('close')
+	}
 </script>
 
 {#if visible}
@@ -12,7 +21,7 @@
 			</span>
 			<div class="banner-message"><slot /></div>
 		</div>
-		<button class="close-btn" on:click={() => (visible = false)} aria-label="Fermer le bandeau">
+		<button class="close-btn" on:click={handleClose} aria-label="Fermer le bandeau">
 			<X size={20} />
 		</button>
 	</div>

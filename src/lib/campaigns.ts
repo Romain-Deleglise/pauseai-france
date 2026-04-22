@@ -75,6 +75,23 @@ export const campaigns: Campaign[] = [
 		}
 	},
 	{
+		slug: 'emploi-ia',
+		status: 'active',
+		startDate: '2026-04',
+		fr: {
+			title: "L'IA ne détruira pas QUE votre emploi",
+			description:
+				"Les systèmes d'IA généralistes peuvent remplacer du travail humain massivement, sans filet de sécurité. Mais le problème dépasse l'emploi : c'est notre capacité à contrôler ces technologies qui recule. Témoignages, enquête et revue de presse.",
+			cta: 'Participer à la campagne'
+		},
+		en: {
+			title: 'AI will not destroy ONLY your job',
+			description:
+				'General-purpose AI systems can replace human work at scale, with no safety net. But the issue goes beyond employment: it is our ability to govern these technologies that is receding. Testimonials, survey and press review.',
+			cta: 'Join the campaign'
+		}
+	},
+	{
 		slug: 'sommet-ia-2026',
 		status: 'ended',
 		startDate: '2026-01',
