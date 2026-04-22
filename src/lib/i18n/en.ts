@@ -468,7 +468,7 @@ export default {
 		bigger_problem_text_2:
 			'That is why we demand that no frontier AI system be further developed or deployed until its designers have demonstrated, to independent evaluators, that it is safe on economic, social and political grounds. France cannot stop the global AI race alone, but it must take a stand, build international coalitions and push for a binding framework capable of leading to a pause in the development of the most dangerous systems.',
 		cta_transition:
-			'For France to take this turn, its elected officials must hear from citizens — and that is where you can act directly.',
+			'For France to take this turn, its elected officials must hear from citizens, and that is where you can act directly.',
 		cta_callout:
 			'An email to your MP or senator is one of the most direct levers to get this issue onto the political agenda.',
 		cta_callout_detail:
