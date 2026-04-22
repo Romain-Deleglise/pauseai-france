@@ -113,6 +113,8 @@
 		<p>{t.emploi_ia.bigger_problem_text_1}</p>
 		<p>{t.emploi_ia.bigger_problem_text_2}</p>
 
+		<p class="cta-transition">{t.emploi_ia.cta_transition}</p>
+
 		<p class="cta-callout">{t.emploi_ia.cta_callout}</p>
 		<p class="cta-detail">{t.emploi_ia.cta_callout_detail}</p>
 
@@ -227,6 +229,13 @@
 
 	.bigger-problem h2 {
 		margin-top: 0;
+	}
+
+	/* ── CTA transition ── */
+	.cta-transition {
+		font-style: italic;
+		color: var(--text-secondary, #555);
+		margin: 1.5rem 0 0;
 	}
 
 	/* ── CTA callout ── */
