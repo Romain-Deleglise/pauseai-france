@@ -217,6 +217,19 @@
 		color: var(--text-secondary, #888);
 	}
 
+	@media (max-width: 540px) {
+		.stat-block {
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 0.4rem;
+			padding: 0.8rem 1rem;
+		}
+
+		.stat-number {
+			font-size: 2.2rem;
+		}
+	}
+
 	/* ── Bigger-problem section ── */
 	.bigger-problem {
 		background: var(--bg-subtle, #f7f7f5);
