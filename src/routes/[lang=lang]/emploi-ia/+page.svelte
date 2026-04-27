@@ -145,6 +145,7 @@
 <style>
 	article {
 		max-inline-size: 50rem;
+		width: 100%;
 		margin-inline: auto;
 		margin-top: 2rem;
 		padding: 0 1rem;
