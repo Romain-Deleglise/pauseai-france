@@ -148,6 +148,7 @@
 		margin-inline: auto;
 		margin-top: 2rem;
 		padding: 0 1rem;
+		overflow-x: clip;
 	}
 
 	section:not(:last-child) {
@@ -258,5 +259,7 @@
 	/* ── ActiVoice embed ── */
 	.av-embed {
 		margin-top: 1.5rem;
+		max-width: 100%;
+		overflow: hidden;
 	}
 </style>
