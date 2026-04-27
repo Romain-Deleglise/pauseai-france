@@ -123,6 +123,7 @@
 		padding: 0 1rem 1rem;
 		display: flex;
 		flex-direction: column;
+		overflow-x: hidden;
 	}
 
 	@media (min-width: 640px) {
