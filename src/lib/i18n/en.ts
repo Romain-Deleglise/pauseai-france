@@ -502,6 +502,19 @@ export default {
 		articles_lang_label: 'Language:',
 		articles_lang_all: 'All',
 		articles_lang_fr: 'French',
-		articles_lang_en: 'English'
+		articles_lang_en: 'English',
+		analyses_section_title: 'Our analyses',
+		analyses_section_text:
+			'Our members have written in-depth analyses on the impact of AI on employment and our social model.',
+		analyses_read: 'Read the analysis',
+		article1_title: "AI won't just destroy your job: a threat to our social model",
+		article1_desc:
+			'Generative AI threatens not only our individual jobs, but also the foundations of our socio-economic model: social contributions, purchasing power and national sovereignty.',
+		article1_url:
+			'/newsletters/lia-ne-detruira-pas-que-votre-emploi-menace-sur-notre-modele-de-societe',
+		article2_title: 'Replacing humans is the goal',
+		article2_desc:
+			'Behind the scientific adventure of AI lies a clear goal: to replace humans in a growing number of tasks. What are the consequences for our work and our social model?',
+		article2_url: '/emploi-ia/remplacer-humain'
 	}
 }

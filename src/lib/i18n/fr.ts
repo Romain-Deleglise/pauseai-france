@@ -505,6 +505,19 @@ export default {
 		articles_lang_label: 'Langue :',
 		articles_lang_all: 'Toutes',
 		articles_lang_fr: 'Français',
-		articles_lang_en: 'Anglais'
+		articles_lang_en: 'Anglais',
+		analyses_section_title: 'Nos analyses',
+		analyses_section_text:
+			"Nos membres ont rédigé des analyses approfondies sur l'impact de l'IA sur l'emploi et notre modèle de société.",
+		analyses_read: "Lire l'analyse",
+		article1_title: "L'IA ne détruira pas que votre emploi : menace sur notre modèle de société",
+		article1_desc:
+			"L'IA générative menace non seulement nos emplois individuels, mais aussi les fondements de notre modèle socio-économique : cotisations sociales, pouvoir d'achat et souveraineté nationale.",
+		article1_url:
+			'/newsletters/lia-ne-detruira-pas-que-votre-emploi-menace-sur-notre-modele-de-societe',
+		article2_title: "Remplacer l'humain, tel est l'objectif",
+		article2_desc:
+			"Derrière l'aventure scientifique de l'IA se cache un objectif clair : remplacer les humains dans un nombre croissant de tâches. Quelles en sont les conséquences pour notre travail et notre modèle de société ?",
+		article2_url: '/emploi-ia/remplacer-humain'
 	}
 }
