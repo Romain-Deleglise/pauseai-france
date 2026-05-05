@@ -23,6 +23,9 @@ importers:
       '@prgm/sveltekit-progress-bar':
         specifier: ^2.0.0
         version: 2.0.0(@sveltejs/kit@2.5.18(@sveltejs/vite-plugin-svelte@3.1.1(svelte@4.2.18)(vite@5.3.4(@types/node@20.14.12)))(svelte@4.2.18)(vite@5.3.4(@types/node@20.14.12)))(svelte@4.2.18)
+      '@types/leaflet':
+        specifier: ^1.9.21
+        version: 1.9.21
       '@types/mapbox-gl':
         specifier: ^3.1.0
         version: 3.1.0
@@ -38,6 +41,9 @@ importers:
       html-to-image:
         specifier: ^1.11.11
         version: 1.11.11
+      leaflet:
+        specifier: ^1.9.4
+        version: 1.9.4
       lucide-svelte:
         specifier: ^0.378.0
         version: 0.378.0(svelte@4.2.18)
@@ -946,6 +952,9 @@ packages:
 
   '@types/hast@3.0.4':
     resolution: {integrity: sha512-WPs+bbQw5aCj+x6laNGWLH3wviHtoCv/P3+otBhbOhJgG8qtpdAMlTCxLtsTWA7LH1Oh/bFCHsBn0TPS5m30EQ==}
+
+  '@types/leaflet@1.9.21':
+    resolution: {integrity: sha512-TbAd9DaPGSnzp6QvtYngntMZgcRk+igFELwR2N99XZn7RXUdKgsXMR+28bUO0rPsWp8MIu/f47luLIQuSLYv/w==}
 
   '@types/mapbox-gl@3.1.0':
     resolution: {integrity: sha512-hI6cQDjw1bkJw7MC/eHMqq5TWUamLwsujnUUeiIX2KDRjxRNSYMjnHz07+LATz9I9XIsKumOtUz4gRYnZOJ/FA==}
@@ -2167,6 +2176,9 @@ packages:
   lazystream@1.0.1:
     resolution: {integrity: sha512-b94GiNHQNy6JNTrt5w6zNyffMrNkXZb3KTkCZJb2V1xaEGCk093vkZ2jk3tpaeP33/OiXC+WvK9AxUebnf5nbw==}
     engines: {node: '>= 0.6.3'}
+
+  leaflet@1.9.4:
+    resolution: {integrity: sha512-nxS1ynzJOmOlHp+iL3FyWqK89GtNL8U8rvlMOsQdTTssxZwCXh8N2NB3GDQOL+YR3XnWyZAxwQixURb+FA74PA==}
 
   levn@0.4.1:
     resolution: {integrity: sha512-+bT2uH4E5LGE7h/n3evcS/sQlJXCpIp6ym8OWJ5eV6+67Dsql/LaaT7qJBAt2rzfoa/5QBGBhxDix1dMt2kQKQ==}
@@ -4058,6 +4070,10 @@ snapshots:
     dependencies:
       '@types/unist': 3.0.2
 
+  '@types/leaflet@1.9.21':
+    dependencies:
+      '@types/geojson': 7946.0.14
+
   '@types/mapbox-gl@3.1.0':
     dependencies:
       '@types/geojson': 7946.0.14
@@ -5382,6 +5398,8 @@ snapshots:
   lazystream@1.0.1:
     dependencies:
       readable-stream: 2.3.8
+
+  leaflet@1.9.4: {}
 
   levn@0.4.1:
     dependencies:
