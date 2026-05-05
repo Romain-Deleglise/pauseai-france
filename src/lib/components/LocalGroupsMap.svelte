@@ -46,11 +46,11 @@
 			{ padding: [20, 20] }
 		)
 
-		// OpenStreetMap France — labels in French
-		L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
+		// CartoDB Light — clean design, local-language labels (French for French cities)
+		L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
 			attribution:
-				'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-			subdomains: 'abc',
+				'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+			subdomains: 'abcd',
 			maxZoom: 19
 		}).addTo(map)
 
