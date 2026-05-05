@@ -511,7 +511,7 @@ export default {
 		analyses_read: 'Lire',
 		article1_title: "Remplacer l'humain, tel est l'objectif",
 		article1_desc:
-			"En quelques années, l'IA est devenue capable de remplacer les humains dans des tâches de plus en plus nombreuses — 16 % du travail déjà automatisable en France.",
+			"En quelques années, l'IA est devenue capable de remplacer les humains dans des tâches de plus en plus nombreuses, 16 % du travail déjà automatisable en France.",
 		article1_url: '/emploi-ia/remplacer-humain',
 		article2_title: "Pas de pilote dans l'avion France",
 		article2_desc:
