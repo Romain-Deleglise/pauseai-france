@@ -507,17 +507,15 @@ export default {
 		articles_lang_fr: 'Français',
 		articles_lang_en: 'Anglais',
 		analyses_section_title: 'Nos analyses',
-		analyses_section_text:
-			"Nos membres ont rédigé des analyses approfondies sur l'impact de l'IA sur l'emploi et notre modèle de société.",
-		analyses_read: "Lire l'analyse",
-		article1_title: "L'IA ne détruira pas que votre emploi : menace sur notre modèle de société",
+		analyses_section_text: "Deux articles de fond sur l'IA et l'emploi, rédigés par nos membres.",
+		analyses_read: 'Lire',
+		article1_title: "Remplacer l'humain, tel est l'objectif",
 		article1_desc:
-			"L'IA générative menace non seulement nos emplois individuels, mais aussi les fondements de notre modèle socio-économique : cotisations sociales, pouvoir d'achat et souveraineté nationale.",
-		article1_url:
-			'/newsletters/lia-ne-detruira-pas-que-votre-emploi-menace-sur-notre-modele-de-societe',
-		article2_title: "Remplacer l'humain, tel est l'objectif",
+			"En quelques années, l'IA est devenue capable de remplacer les humains dans des tâches de plus en plus nombreuses — 16 % du travail déjà automatisable en France.",
+		article1_url: '/emploi-ia/remplacer-humain',
+		article2_title: "Pas de pilote dans l'avion France",
 		article2_desc:
-			"Derrière l'aventure scientifique de l'IA se cache un objectif clair : remplacer les humains dans un nombre croissant de tâches. Quelles en sont les conséquences pour notre travail et notre modèle de société ?",
-		article2_url: '/emploi-ia/remplacer-humain'
+			'Chômage massif des jeunes, modèle social fragilisé, dépendance à la Silicon Valley : à quoi ressemblera notre monde si nous ne réagissons pas.',
+		article2_url: '/emploi-ia/pas-de-pilote'
 	}
 }

@@ -113,11 +113,13 @@
 		<p>{t.emploi_ia.analyses_section_text}</p>
 		<div class="article-cards">
 			<a class="article-card" href={t.emploi_ia.article1_url}>
+				<span class="card-meta">Article 1/2 &middot; 4 min</span>
 				<h3 class="article-card-title">{t.emploi_ia.article1_title}</h3>
 				<p class="article-card-desc">{t.emploi_ia.article1_desc}</p>
 				<span class="article-card-link">{t.emploi_ia.analyses_read} &rarr;</span>
 			</a>
 			<a class="article-card" href={t.emploi_ia.article2_url}>
+				<span class="card-meta">Article 2/2 &middot; 5 min</span>
 				<h3 class="article-card-title">{t.emploi_ia.article2_title}</h3>
 				<p class="article-card-desc">{t.emploi_ia.article2_desc}</p>
 				<span class="article-card-link">{t.emploi_ia.analyses_read} &rarr;</span>
@@ -255,10 +257,17 @@
 		margin-top: 1.5rem;
 	}
 
+	.card-meta {
+		font-size: 0.75rem;
+		font-weight: 600;
+		color: var(--text-secondary, #888);
+		letter-spacing: 0.04em;
+	}
+
 	.article-card {
 		display: flex;
 		flex-direction: column;
-		gap: 0.75rem;
+		gap: 0.6rem;
 		padding: 1.25rem 1.5rem;
 		border: 1px solid var(--border, #e5e7eb);
 		border-radius: 10px;
