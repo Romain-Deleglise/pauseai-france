@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte'
+	import { PUBLIC_JAWG_TOKEN } from '$env/static/public'
 
 	interface Group {
 		name: string
@@ -46,12 +47,15 @@
 			{ padding: [20, 20] }
 		)
 
-		L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-			attribution:
-				'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-			subdomains: 'abcd',
-			maxZoom: 19
-		}).addTo(map)
+		// Jawg Light — clean minimal design, French labels via lang=fr
+		L.tileLayer(
+			`https://tile.jawg.io/jawg-light/{z}/{x}/{y}{r}.png?access-token=${PUBLIC_JAWG_TOKEN}&lang=fr`,
+			{
+				attribution:
+					'&copy; <a href="https://jawg.io">Jawg Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+				maxZoom: 22
+			}
+		).addTo(map)
 
 		for (const group of groups) {
 			const markerHtml = group.forming
