@@ -5,6 +5,27 @@ import type { PressCoverage } from '$lib/notion'
  * Ajouter ici tout nouvel article mentionnant l'association.
  */
 export const staticPressCoverage: PressCoverage[] = [
+	// ── Campagne Emploi & IA / manifestation 1er mai 2026 ───────────────────
+	{
+		id: 'static-nouvelobs-2026-05-01',
+		title:
+			"IA et travail : une poignée d'hommes de la Silicon Valley doit-elle être en mesure de remodeler tout notre contrat social ?",
+		source: 'Le Nouvel Obs',
+		date: '2026-05-01',
+		url: 'https://www.nouvelobs.com/economie/20260501.OBS114604/ia-et-travail-une-poignee-d-hommes-de-la-silicon-valley-doit-elle-etre-en-mesure-de-remodeler-tout-notre-contrat-social.html',
+		order: 0,
+		visible: true
+	},
+	{
+		id: 'static-mesinfos-paris-2026-05-01',
+		title: "Manifestation de Pause IA devant l'Assemblée le 1er mai",
+		source: 'MesInfos',
+		date: '2026-05-01',
+		url: 'https://mesinfos.fr/75000-paris/manifestation-de-pause-ia-devant-l-assemblee-le-1er-mai-245348.html',
+		order: 0,
+		visible: true
+	},
+
 	// ── Campagne élections municipales 2026 ─────────────────────────────────
 	{
 		id: 'static-next-municipales-2026-03-17',
