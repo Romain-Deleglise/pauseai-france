@@ -46,11 +46,12 @@
 			{ padding: [20, 20] }
 		)
 
-		// Stadia Alidade Smooth — clean like CartoDB, uses OSM local names (French for France)
-		L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png', {
+		// OpenStreetMap standard — free, no API key, French labels for French entities
+		L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 			attribution:
-				'&copy; <a href="https://stadiamaps.com/">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-			maxZoom: 20
+				'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+			subdomains: 'abc',
+			maxZoom: 19
 		}).addTo(map)
 
 		for (const group of groups) {
