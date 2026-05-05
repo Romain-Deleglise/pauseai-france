@@ -40,11 +40,14 @@
 			<h2>{isEn ? 'Join a group' : 'Rejoindre un groupe'}</h2>
 			<p>
 				{#if isEn}
-					Take part in collective awareness and citizen mobilization actions around the challenges
-					of artificial intelligence.
+					Fill in the registration form to contribute concretely to Pause AI's local action by
+					participating in collective awareness and citizen mobilization actions, and by nurturing
+					an engaged community around the challenges linked to artificial intelligence.
 				{:else}
-					Participez à des actions collectives de sensibilisation et de mobilisation citoyenne
-					autour des enjeux de l'intelligence artificielle.
+					Remplissez le formulaire d'inscription pour contribuer concrètement à l'action de Pause IA
+					au niveau local, en participant à des actions collectives de sensibilisation et de
+					mobilisation citoyenne, et en faisant vivre une communauté engagée autour des enjeux liés
+					à l'intelligence artificielle.
 				{/if}
 			</p>
 			<Button href="https://pauseia.notion.site/2e128fc94b7780fd94b6d35c35b2f0ac">
@@ -57,11 +60,13 @@
 			<h2>{isEn ? 'Start a group' : 'Lancer un groupe'}</h2>
 			<p>
 				{#if isEn}
-					Lead a community of engaged volunteers and coordinate Pause AI's local actions in your
-					city.
+					Help Pause AI grow locally by leading a community of engaged volunteers, coordinating
+					awareness and mobilization actions, and ensuring the link between the field and the
+					national team.
 				{:else}
-					Animez une communauté de bénévoles engagés et coordonnez les actions locales de Pause IA
-					dans votre ville.
+					Faites vivre et grandir Pause IA localement en animant une communauté de bénévoles
+					engagés, en coordonnant des actions de sensibilisation et de mobilisation, et en assurant
+					le lien entre le terrain et l'équipe nationale.
 				{/if}
 			</p>
 			<Button alt href="https://pauseia.notion.site/2e128fc94b7780fd94b6d35c35b2f0ac">

@@ -27,8 +27,10 @@
 			<MessageSquare size="2rem" />
 			<h2>Rejoindre un groupe</h2>
 			<p>
-				Participez à des actions collectives de sensibilisation et de mobilisation citoyenne autour
-				des enjeux de l'intelligence artificielle.
+				Remplissez le formulaire d'inscription pour contribuer concrètement à l'action de Pause IA
+				au niveau local, en participant à des actions collectives de sensibilisation et de
+				mobilisation citoyenne, et en faisant vivre une communauté engagée autour des enjeux liés à
+				l'intelligence artificielle.
 			</p>
 			<Button href="https://pauseia.notion.site/2e128fc94b7780fd94b6d35c35b2f0ac">S'inscrire</Button
 			>
@@ -38,8 +40,9 @@
 			<PlusCircle size="2rem" />
 			<h2>Lancer un groupe</h2>
 			<p>
-				Animez une communauté de bénévoles engagés et coordonnez les actions locales de Pause IA
-				dans votre ville.
+				Faites vivre et grandir Pause IA localement en animant une communauté de bénévoles engagés,
+				en coordonnant des actions de sensibilisation et de mobilisation, et en assurant le lien
+				entre le terrain et l'équipe nationale.
 			</p>
 			<Button alt href="https://pauseia.notion.site/2e128fc94b7780fd94b6d35c35b2f0ac"
 				>Créer un groupe</Button
