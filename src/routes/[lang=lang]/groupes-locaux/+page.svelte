@@ -2,6 +2,7 @@
 	import PostMeta from '$components/PostMeta.svelte'
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
 	import Button from '$components/Button.svelte'
+	import LocalGroupsMap from '$components/LocalGroupsMap.svelte'
 	import { MessageSquare, PlusCircle } from 'lucide-svelte'
 	import type { PageData } from './$types'
 
@@ -34,6 +35,16 @@
 				de chez vous ou lancez la dynamique dans votre ville !
 			{/if}
 		</p>
+	</section>
+
+	<section class="map-section">
+		<h2>{isEn ? 'Our groups in France' : 'Nos groupes en France'}</h2>
+		<p class="map-hint">
+			{isEn
+				? 'Hover over or click a marker to see the city.'
+				: 'Survolez ou cliquez sur un marqueur pour voir la ville.'}
+		</p>
+		<LocalGroupsMap />
 	</section>
 
 	<section class="cta-section">
@@ -88,7 +99,21 @@
 
 	.hero {
 		text-align: left;
+		margin-bottom: 3rem;
+	}
+
+	.map-section {
 		margin-bottom: 4rem;
+	}
+
+	.map-section h2 {
+		margin-bottom: 0.25rem;
+	}
+
+	.map-hint {
+		font-size: 0.875rem;
+		color: var(--text-secondary, #888);
+		margin-bottom: 1.25rem;
 	}
 
 	.hero-description {

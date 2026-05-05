@@ -2,11 +2,12 @@
 	import PostMeta from '$components/PostMeta.svelte'
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
 	import Button from '$components/Button.svelte'
+	import LocalGroupsMap from '$components/LocalGroupsMap.svelte'
 	import { MessageSquare, PlusCircle } from 'lucide-svelte'
 
 	const title = 'Groupes locaux | Pause IA'
 	const description =
-		'Trouvez un groupe local Pause IA près de chez vous ou créez-en un pour agir concrètement en faveur d’une pause sur l’intelligence artificielle.'
+		'Trouvez un groupe local Pause IA près de chez vous ou créez-en un pour agir concrètement en faveur d'une pause sur l'intelligence artificielle.'
 </script>
 
 <PostMeta {title} {description} />
@@ -22,15 +23,21 @@
 		</p>
 	</section>
 
+	<section class="map-section">
+		<h2>Nos groupes en France</h2>
+		<p class="map-hint">Survolez ou cliquez sur un marqueur pour voir la ville.</p>
+		<LocalGroupsMap />
+	</section>
+
 	<section class="cta-section">
 		<div class="cta-card join">
 			<MessageSquare size="2.5em" />
 			<h2>Je m'inscris pour rejoindre un groupe</h2>
 			<p>
-				Remplissez le formulaire d'inscription pour contribuer concrètement à l’action de Pause IA
+				Remplissez le formulaire d'inscription pour contribuer concrètement à l'action de Pause IA
 				au niveau local en participant à des actions collectives de sensibilisation et de
 				mobilisation citoyenne, et en faisant vivre une communauté engagée autour des enjeux liés à
-				l’intelligence artificielle.
+				l'intelligence artificielle.
 			</p>
 			<Button href="https://pauseia.notion.site/2e128fc94b7780fd94b6d35c35b2f0ac"
 				>Rejoindre un groupe</Button
@@ -43,7 +50,7 @@
 			<p>
 				Faites vivre et grandir Pause IA localement en animant une communauté de bénévoles engagés,
 				en coordonnant des actions de sensibilisation et de mobilisation, et en assurant le lien
-				entre le terrain et l’équipe nationale.
+				entre le terrain et l'équipe nationale.
 			</p>
 			<Button alt href="https://pauseia.notion.site/2e128fc94b7780fd94b6d35c35b2f0ac"
 				>Lancer un groupe</Button
@@ -62,13 +69,27 @@
 
 	.hero {
 		text-align: left;
-		margin-bottom: 4rem;
+		margin-bottom: 3rem;
 	}
 
 	.hero-description {
 		font-size: 1.25rem;
 		color: var(--text-muted);
 		line-height: 1.6;
+	}
+
+	.map-section {
+		margin-bottom: 4rem;
+	}
+
+	.map-section h2 {
+		margin-bottom: 0.25rem;
+	}
+
+	.map-hint {
+		font-size: 0.875rem;
+		color: var(--text-secondary, #888);
+		margin-bottom: 1.25rem;
 	}
 
 	.cta-section {
