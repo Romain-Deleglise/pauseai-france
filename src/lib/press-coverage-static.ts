@@ -7,6 +7,15 @@ import type { PressCoverage } from '$lib/notion'
 export const staticPressCoverage: PressCoverage[] = [
 	// ── Campagne Emploi & IA / manifestation 1er mai 2026 ───────────────────
 	{
+		id: 'static-radio-france-ici-matin-2026-05-01',
+		title: 'Pause IA à la matinale ICI Matin Paris IDF (1er mai)',
+		source: 'Radio France / ICI Matin',
+		date: '2026-05-01',
+		url: 'https://www.dailymotion.com/video/xa7pbcq?start=4708',
+		order: 0,
+		visible: true
+	},
+	{
 		id: 'static-nouvelobs-2026-05-01',
 		title:
 			"IA et travail : une poignée d'hommes de la Silicon Valley doit-elle être en mesure de remodeler tout notre contrat social ?",
