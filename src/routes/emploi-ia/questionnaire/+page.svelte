@@ -526,6 +526,7 @@
 						bind:value={formData.temoignage}
 						rows="6"
 						placeholder="Comment l'IA impacte-t-elle votre vie professionnelle ? Vous pouvez témoigner de votre vécu : aspects positifs ou négatifs ? Qu'avez-vous expérimenté, accepté, refusé ? Comment vos tâches se sont-elles modifiées ? Cela vous a-t-il demandé d'acquérir des compétences ou d'abandonner certaines parties de votre métier ? Avez-vous dû changer de poste, démissionner, vous reconvertir ? Quelles questions vous posez-vous ? Bref, tout nous intéresse ici."
+						maxlength={2000}
 					></textarea>
 				</div>
 

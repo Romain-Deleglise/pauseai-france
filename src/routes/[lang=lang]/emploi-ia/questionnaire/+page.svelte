@@ -576,6 +576,7 @@
 						bind:value={formData.temoignage}
 						rows="6"
 						placeholder={t.emploi_questionnaire.section3.placeholder_temoignage}
+						maxlength={2000}
 					></textarea>
 				</div>
 
