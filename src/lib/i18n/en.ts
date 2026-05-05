@@ -502,6 +502,17 @@ export default {
 		articles_lang_label: 'Language:',
 		articles_lang_all: 'All',
 		articles_lang_fr: 'French',
-		articles_lang_en: 'English'
+		articles_lang_en: 'English',
+		analyses_section_title: 'Our analyses',
+		analyses_section_text: 'Two in-depth articles on AI and employment, written by our members.',
+		analyses_read: 'Read',
+		article1_title: 'Replacing humans is the goal',
+		article1_desc:
+			'In a few years, AI has become capable of replacing humans in more and more tasks — 16% of work in France already automatable.',
+		article1_url: '/emploi-ia/remplacer-humain',
+		article2_title: 'France: no pilot in the cockpit',
+		article2_desc:
+			'Mass youth unemployment, a threatened welfare state, dependence on Silicon Valley: what our world could look like if we fail to act.',
+		article2_url: '/emploi-ia/pas-de-pilote'
 	}
 }

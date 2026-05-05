@@ -505,6 +505,17 @@ export default {
 		articles_lang_label: 'Langue :',
 		articles_lang_all: 'Toutes',
 		articles_lang_fr: 'Français',
-		articles_lang_en: 'Anglais'
+		articles_lang_en: 'Anglais',
+		analyses_section_title: 'Nos analyses',
+		analyses_section_text: "Deux articles de fond sur l'IA et l'emploi, rédigés par nos membres.",
+		analyses_read: 'Lire',
+		article1_title: "Remplacer l'humain, tel est l'objectif",
+		article1_desc:
+			"En quelques années, l'IA est devenue capable de remplacer les humains dans des tâches de plus en plus nombreuses, 16 % du travail déjà automatisable en France.",
+		article1_url: '/emploi-ia/remplacer-humain',
+		article2_title: "Pas de pilote dans l'avion France",
+		article2_desc:
+			'Chômage massif des jeunes, modèle social fragilisé, dépendance à la Silicon Valley : à quoi ressemblera notre monde si nous ne réagissons pas.',
+		article2_url: '/emploi-ia/pas-de-pilote'
 	}
 }
