@@ -3,7 +3,7 @@
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
 	import Button from '$components/Button.svelte'
 	import LocalGroupsMap from '$components/LocalGroupsMap.svelte'
-	import { MessageSquare, PlusCircle } from 'lucide-svelte'
+	import { MessageSquare, PlusCircle, MapPin } from 'lucide-svelte'
 	import type { PageData } from './$types'
 
 	export let data: PageData
@@ -25,123 +25,111 @@
 		<p class="hero-description">
 			{#if isEn}
 				Local action is essential for raising public awareness, engaging elected officials and
-				building a strong citizen movement. As a group, we can organize meetings, hand out leaflets,
-				and create a visible impact on the ground. Join a team near you or start the momentum in
-				your city!
+				building a strong citizen movement. Join a team near you or start the momentum in your city.
 			{:else}
 				L'action locale est essentielle pour sensibiliser le public, interpeller les élus et
-				construire un mouvement citoyen fort. En groupe, nous pouvons organiser des rencontres,
-				distribuer des tracts, et créer un impact visible sur le terrain. Rejoignez une équipe près
-				de chez vous ou lancez la dynamique dans votre ville !
+				construire un mouvement citoyen fort. Rejoignez une équipe près de chez vous ou lancez la
+				dynamique dans votre ville.
 			{/if}
 		</p>
 	</section>
 
-	<section class="map-section">
-		<h2>{isEn ? 'Our groups in France' : 'Nos groupes en France'}</h2>
-		<p class="map-hint">
-			{isEn
-				? 'Hover over or click a marker to see the city.'
-				: 'Survolez ou cliquez sur un marqueur pour voir la ville.'}
-		</p>
-		<LocalGroupsMap />
-	</section>
-
 	<section class="cta-section">
 		<div class="cta-card join">
-			<MessageSquare size="2.5em" />
-			<h2>{isEn ? 'I sign up to join a group' : "Je m'inscris pour rejoindre un groupe"}</h2>
+			<MessageSquare size="2rem" />
+			<h2>{isEn ? 'Join a group' : 'Rejoindre un groupe'}</h2>
 			<p>
 				{#if isEn}
-					Fill in the registration form to contribute concretely to Pause AI's local action by
-					participating in collective awareness and citizen mobilization actions, and by nurturing
-					an engaged community around the challenges linked to artificial intelligence.
+					Take part in collective awareness and citizen mobilization actions around the challenges
+					of artificial intelligence.
 				{:else}
-					Remplissez le formulaire d'inscription pour contribuer concrètement à l'action de Pause IA
-					au niveau local en participant à des actions collectives de sensibilisation et de
-					mobilisation citoyenne, et en faisant vivre une communauté engagée autour des enjeux liés
-					à l'intelligence artificielle.
+					Participez à des actions collectives de sensibilisation et de mobilisation citoyenne
+					autour des enjeux de l'intelligence artificielle.
 				{/if}
 			</p>
 			<Button href="https://pauseia.notion.site/2e128fc94b7780fd94b6d35c35b2f0ac">
-				{isEn ? 'Join a group' : 'Rejoindre un groupe'}
+				{isEn ? 'Sign up' : "S'inscrire"}
 			</Button>
 		</div>
 
 		<div class="cta-card create">
-			<PlusCircle size="2.5em" />
-			<h2>{isEn ? 'I launch a new group' : 'Je lance un nouveau groupe'}</h2>
+			<PlusCircle size="2rem" />
+			<h2>{isEn ? 'Start a group' : 'Lancer un groupe'}</h2>
 			<p>
 				{#if isEn}
-					Help Pause AI grow locally by leading a community of engaged volunteers, coordinating
-					awareness and mobilization actions, and ensuring the link between the field and the
-					national team.
+					Lead a community of engaged volunteers and coordinate Pause AI's local actions in your
+					city.
 				{:else}
-					Faites vivre et grandir Pause IA localement en animant une communauté de bénévoles
-					engagés, en coordonnant des actions de sensibilisation et de mobilisation, et en assurant
-					le lien entre le terrain et l'équipe nationale.
+					Animez une communauté de bénévoles engagés et coordonnez les actions locales de Pause IA
+					dans votre ville.
 				{/if}
 			</p>
 			<Button alt href="https://pauseia.notion.site/2e128fc94b7780fd94b6d35c35b2f0ac">
-				{isEn ? 'Start a group' : 'Lancer un groupe'}
+				{isEn ? 'Create a group' : 'Créer un groupe'}
 			</Button>
 		</div>
+	</section>
+
+	<section class="map-section">
+		<div class="map-header">
+			<div class="map-title-row">
+				<MapPin size="1.2em" class="map-pin-icon" />
+				<h2>{isEn ? 'Our groups in France' : 'Nos groupes en France'}</h2>
+			</div>
+			<p class="map-subtitle">
+				{isEn
+					? 'Hover over or click a marker to see the city.'
+					: 'Survolez ou cliquez sur un marqueur pour voir la ville.'}
+			</p>
+		</div>
+		<LocalGroupsMap />
 	</section>
 </article>
 
 <style>
 	article {
-		max-inline-size: 60rem;
+		max-inline-size: 62rem;
 		margin-inline: auto;
 		margin-top: 3rem;
 		padding: 0 2rem;
 	}
+
+	/* ── Hero ─────────────────────────────────────────────────────────── */
 
 	.hero {
 		text-align: left;
 		margin-bottom: 3rem;
 	}
 
-	.map-section {
-		margin-bottom: 4rem;
-	}
-
-	.map-section h2 {
-		margin-bottom: 0.25rem;
-	}
-
-	.map-hint {
-		font-size: 0.875rem;
-		color: var(--text-secondary, #888);
-		margin-bottom: 1.25rem;
-	}
-
 	.hero-description {
-		font-size: 1.25rem;
+		font-size: 1.2rem;
 		color: var(--text-muted);
-		line-height: 1.6;
+		line-height: 1.65;
+		max-inline-size: 48rem;
 	}
+
+	/* ── CTA cards ────────────────────────────────────────────────────── */
 
 	.cta-section {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-		gap: 2rem;
-		margin-bottom: 5rem;
+		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+		gap: 1.5rem;
+		margin-bottom: 4rem;
 	}
 
 	.cta-card {
-		padding: 3rem 2rem;
+		padding: 2.25rem 2rem;
 		border-radius: 20px;
 		text-align: center;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		gap: 1.5rem;
+		gap: 1rem;
 		transition: transform 0.2s;
 	}
 
 	.cta-card:hover {
-		transform: translateY(-5px);
+		transform: translateY(-4px);
 	}
 
 	.cta-card.join {
@@ -160,15 +148,50 @@
 
 	.cta-card h2 {
 		margin: 0;
-		font-size: 1.8rem;
+		font-size: 1.4rem;
 	}
 
 	.cta-card p {
 		margin: 0;
-		font-size: 1.1rem;
-		opacity: 0.9;
+		font-size: 1rem;
+		opacity: 0.88;
 		flex-grow: 1;
+		line-height: 1.55;
 	}
+
+	/* ── Map section ──────────────────────────────────────────────────── */
+
+	.map-section {
+		margin-bottom: 5rem;
+	}
+
+	.map-header {
+		margin-bottom: 1rem;
+	}
+
+	.map-title-row {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		margin-bottom: 0.25rem;
+	}
+
+	.map-title-row h2 {
+		margin: 0;
+	}
+
+	.map-title-row :global(.map-pin-icon) {
+		color: var(--brand, #ff9416);
+		flex-shrink: 0;
+	}
+
+	.map-subtitle {
+		font-size: 0.875rem;
+		color: var(--text-secondary, #888);
+		margin: 0;
+	}
+
+	/* ── Responsive ───────────────────────────────────────────────────── */
 
 	@media (max-width: 640px) {
 		article {
@@ -176,7 +199,7 @@
 		}
 
 		.cta-card {
-			padding: 2rem 1rem;
+			padding: 1.75rem 1.25rem;
 		}
 	}
 </style>

@@ -22,6 +22,9 @@
 		{ name: 'Genève', lat: 46.2, lon: 6.14 }
 	]
 
+	export const activeCount = groups.filter((g) => !g.forming).length
+	export const formingCount = groups.filter((g) => g.forming).length
+
 	let mapContainer: HTMLDivElement
 	let map: import('leaflet').Map | null = null
 
@@ -40,39 +43,40 @@
 				[41.3, -5.5],
 				[51.6, 10.0]
 			],
-			{ padding: [10, 10] }
+			{ padding: [20, 20] }
 		)
 
-		L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+		// OpenStreetMap France — labels in French
+		L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
 			attribution:
-				'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
-			subdomains: 'abcd',
+				'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+			subdomains: 'abc',
 			maxZoom: 19
 		}).addTo(map)
 
 		for (const group of groups) {
-			const marker = L.circleMarker([group.lat, group.lon], {
-				radius: 11,
-				fillColor: '#ff9416',
-				color: group.forming ? '#ff9416' : '#fff',
-				weight: group.forming ? 2.5 : 2.5,
-				opacity: 1,
-				fillOpacity: group.forming ? 0.35 : 1,
-				className: group.forming ? 'marker-forming' : 'marker-active'
-			}).addTo(map)
+			const markerHtml = group.forming
+				? `<div class="lm-forming"><div class="lm-dot"></div></div>`
+				: `<div class="lm-active"><div class="lm-pulse"></div><div class="lm-dot"></div></div>`
+
+			const icon = L.divIcon({
+				html: markerHtml,
+				className: '',
+				iconSize: [32, 32],
+				iconAnchor: [16, 16],
+				tooltipAnchor: [0, -18]
+			})
+
+			const marker = L.marker([group.lat, group.lon], { icon }).addTo(map)
 
 			const tooltipContent = group.forming
-				? `<strong>${group.name}</strong><br><em>En cours de création</em>`
-				: `<strong>${group.name}</strong>`
+				? `<div class="tt-name">${group.name}</div><div class="tt-status">En cours de création</div>`
+				: `<div class="tt-name">${group.name}</div>`
 
 			marker.bindTooltip(tooltipContent, {
 				direction: 'top',
-				offset: [0, -8],
+				offset: [0, -6],
 				className: 'map-tooltip'
-			})
-
-			marker.on('click', function () {
-				this.openTooltip()
 			})
 		}
 	})
@@ -103,36 +107,109 @@
 	}
 
 	.map-container {
-		height: 480px;
-		border-radius: 14px;
+		height: 500px;
+		border-radius: 16px;
 		overflow: hidden;
-		box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+		box-shadow:
+			0 4px 6px rgba(0, 0, 0, 0.04),
+			0 10px 40px rgba(0, 0, 0, 0.1);
 		border: 1px solid var(--border, #e5e7eb);
 	}
 
+	/* ── Marker styles (injected into DOM, need :global) ──────────────── */
+
+	:global(.lm-active),
+	:global(.lm-forming) {
+		position: relative;
+		width: 32px;
+		height: 32px;
+	}
+
+	:global(.lm-dot) {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 14px;
+		height: 14px;
+		border-radius: 50%;
+		background: #ff9416;
+		border: 2.5px solid #fff;
+		box-shadow: 0 2px 8px rgba(255, 148, 22, 0.55);
+		z-index: 2;
+	}
+
+	:global(.lm-forming .lm-dot) {
+		background: rgba(255, 148, 22, 0.35);
+		border: 2px dashed #ff9416;
+		box-shadow: none;
+		width: 16px;
+		height: 16px;
+	}
+
+	:global(.lm-pulse) {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 32px;
+		height: 32px;
+		border-radius: 50%;
+		background: rgba(255, 148, 22, 0.28);
+		animation: lm-pulse 2.5s ease-out infinite;
+		z-index: 1;
+	}
+
+	:global(@keyframes lm-pulse) {
+		0% {
+			transform: translate(-50%, -50%) scale(0.4);
+			opacity: 0.9;
+		}
+		70% {
+			opacity: 0.15;
+		}
+		100% {
+			transform: translate(-50%, -50%) scale(2);
+			opacity: 0;
+		}
+	}
+
+	/* ── Tooltip ──────────────────────────────────────────────────────── */
+
 	:global(.map-tooltip) {
-		background: #111 !important;
+		background: rgba(17, 17, 17, 0.93) !important;
 		color: #fff !important;
 		border: none !important;
-		border-radius: 6px !important;
-		padding: 6px 12px !important;
-		font-size: 13px !important;
-		font-weight: 600 !important;
+		border-radius: 8px !important;
+		padding: 0 !important;
+		box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25) !important;
 		font-family: inherit !important;
-		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
-		white-space: nowrap !important;
 	}
 
-	:global(.map-tooltip em) {
-		font-style: normal;
-		font-weight: 400;
+	:global(.map-tooltip .leaflet-tooltip-content) {
+		padding: 0;
+	}
+
+	:global(.tt-name) {
+		font-size: 13px;
+		font-weight: 700;
+		padding: 7px 13px 6px;
+		line-height: 1;
+	}
+
+	:global(.tt-status) {
 		font-size: 11px;
-		opacity: 0.75;
+		font-weight: 400;
+		color: rgba(255, 255, 255, 0.65);
+		padding: 0 13px 8px;
+		line-height: 1;
 	}
 
-	:global(.map-tooltip::before) {
-		border-top-color: #111 !important;
+	:global(.map-tooltip.leaflet-tooltip-top::before) {
+		border-top-color: rgba(17, 17, 17, 0.93) !important;
 	}
+
+	/* ── Leaflet overrides ────────────────────────────────────────────── */
 
 	:global(.leaflet-attribution-flag) {
 		display: none !important;
@@ -140,12 +217,22 @@
 
 	:global(.leaflet-control-attribution) {
 		font-size: 10px;
-		opacity: 0.6;
+		opacity: 0.55;
+		border-radius: 6px 0 0 0;
 	}
 
-	:global(.marker-forming) {
-		stroke-dasharray: 5 3 !important;
+	:global(.leaflet-control-zoom) {
+		border: none !important;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12) !important;
 	}
+
+	:global(.leaflet-control-zoom a) {
+		border-radius: 6px !important;
+		color: var(--text, #111) !important;
+		border-color: var(--border, #e5e7eb) !important;
+	}
+
+	/* ── Legend ───────────────────────────────────────────────────────── */
 
 	.legend {
 		display: flex;
