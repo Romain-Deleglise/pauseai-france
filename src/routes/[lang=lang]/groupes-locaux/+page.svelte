@@ -81,11 +81,17 @@
 				<MapPin size="1.2em" class="map-pin-icon" />
 				<h2>{isEn ? 'Our groups in France' : 'Nos groupes en France'}</h2>
 			</div>
-			<p class="map-subtitle">
-				{isEn
-					? 'Hover over or click a marker to see the city.'
-					: 'Survolez ou cliquez sur un marqueur pour voir la ville.'}
-			</p>
+			<div class="map-meta">
+				<span class="map-stat">{isEn ? '10 active groups' : '10 groupes actifs'}</span>
+				<span class="map-sep">·</span>
+				<span class="map-stat forming">{isEn ? '1 forming' : '1 en cours de création'}</span>
+				<span class="map-sep">·</span>
+				<span class="map-hint"
+					>{isEn
+						? 'hover a marker to see the city'
+						: 'survolez un marqueur pour voir la ville'}</span
+				>
+			</div>
 		</div>
 		<LocalGroupsMap />
 	</section>
@@ -178,7 +184,7 @@
 		display: flex;
 		align-items: center;
 		gap: 0.5rem;
-		margin-bottom: 0.25rem;
+		margin-bottom: 0.4rem;
 	}
 
 	.map-title-row h2 {
@@ -190,10 +196,29 @@
 		flex-shrink: 0;
 	}
 
-	.map-subtitle {
+	.map-meta {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		flex-wrap: wrap;
 		font-size: 0.875rem;
+	}
+
+	.map-stat {
+		font-weight: 600;
+		color: var(--brand, #ff9416);
+	}
+
+	.map-stat.forming {
 		color: var(--text-secondary, #888);
-		margin: 0;
+	}
+
+	.map-sep {
+		color: var(--border, #d1d5db);
+	}
+
+	.map-hint {
+		color: var(--text-secondary, #888);
 	}
 
 	/* ── Responsive ───────────────────────────────────────────────────── */

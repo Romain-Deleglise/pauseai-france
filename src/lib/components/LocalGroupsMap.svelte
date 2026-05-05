@@ -46,13 +46,16 @@
 			{ padding: [20, 20] }
 		)
 
-		// CartoDB Light — clean design, local-language labels (French for French cities)
-		L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-			attribution:
-				'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-			subdomains: 'abcd',
-			maxZoom: 19
-		}).addTo(map)
+		// IGN Géoportail — official French government map, all labels in French
+		L.tileLayer(
+			'https://data.geopf.fr/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2&STYLE=normal&FORMAT=image/png&TILEMATRIXSET=PM&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}',
+			{
+				attribution: '&copy; <a href="https://www.ign.fr/">IGN-France</a>',
+				minZoom: 0,
+				maxZoom: 18,
+				tileSize: 256
+			}
+		).addTo(map)
 
 		for (const group of groups) {
 			const markerHtml = group.forming
