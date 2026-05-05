@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte'
-	import { PUBLIC_JAWG_TOKEN } from '$env/static/public'
 
 	interface Group {
 		name: string
@@ -49,7 +48,7 @@
 
 		// Jawg Light — clean minimal design, French labels via lang=fr
 		L.tileLayer(
-			`https://tile.jawg.io/jawg-light/{z}/{x}/{y}{r}.png?access-token=${PUBLIC_JAWG_TOKEN}&lang=fr`,
+			'https://tile.jawg.io/jawg-light/{z}/{x}/{y}{r}.png?access-token=tPbKo2PQZw6CPVmNp3lYWRAV1aFiXbviN8bPJIo0K36w58mikRPrQdsLgVNqWhrT&lang=fr',
 			{
 				attribution:
 					'&copy; <a href="https://jawg.io">Jawg Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
