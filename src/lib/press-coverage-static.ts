@@ -8,8 +8,8 @@ export const staticPressCoverage: PressCoverage[] = [
 	// ── Campagne Emploi & IA / manifestation 1er mai 2026 ───────────────────
 	{
 		id: 'static-radio-france-ici-matin-2026-05-01',
-		title: 'Pause IA à la matinale ICI Matin Paris IDF (1er mai)',
-		source: 'Radio France / ICI Matin',
+		title: 'Pause IA à la matinale ICI Paris Île-de-France (1er mai)',
+		source: 'ICI Paris Île-de-France',
 		date: '2026-05-01',
 		url: 'https://www.dailymotion.com/video/xa7pbcq?start=4708',
 		order: 0,
