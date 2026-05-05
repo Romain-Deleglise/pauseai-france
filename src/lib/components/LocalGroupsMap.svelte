@@ -160,7 +160,7 @@
 		z-index: 1;
 	}
 
-	:global(@keyframes lm-pulse) {
+	@keyframes lm-pulse {
 		0% {
 			transform: translate(-50%, -50%) scale(0.4);
 			opacity: 0.9;
