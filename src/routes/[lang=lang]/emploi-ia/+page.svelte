@@ -196,9 +196,9 @@
 		</p>
 	</section>
 
-	<section id="revue" aria-labelledby="revue-heading">
-		<h2 id="revue-heading">{t.emploi_ia.press_section_title}</h2>
-		<p>{t.emploi_ia.press_section_text}</p>
+	<section id="presse-campagne" aria-labelledby="presse-campagne-heading">
+		<h2 id="presse-campagne-heading">Pause IA dans la presse</h2>
+		<p>Articles parus lors de la manifestation du 1er mai et des actions locales de la campagne.</p>
 
 		<div class="press-list">
 			{#each pressArticles as article}
@@ -211,7 +211,11 @@
 				</a>
 			{/each}
 		</div>
+	</section>
 
+	<section id="revue" aria-labelledby="revue-heading">
+		<h2 id="revue-heading">{t.emploi_ia.press_section_title}</h2>
+		<p>{t.emploi_ia.press_section_text}</p>
 		<ArticleShowcase articles={articleShowcaseItems} {lang} />
 	</section>
 </article>
