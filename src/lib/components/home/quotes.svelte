@@ -19,23 +19,23 @@
 	/* prettier-ignore */
 	const quotes: Quote[] = [
 		{
-			textFr: "Cela pourrait-il éliminer l’humanité ? Je pense que la réponse est oui.",
+			textFr: "Cela pourrait-il éliminer l'humanité ? Je pense que la réponse est oui.",
 			textEn: "Could it wipe out humanity? I think the answer is yes.",
 			author: "Geoffrey Hinton",
-			titleFr: "Prix Nobel de physique 2024 · Pionnier de l’apprentissage profond",
+			titleFr: "Prix Nobel de physique 2024 · Pionnier de l'apprentissage profond",
 			titleEn: "2024 Nobel Prize in Physics · Pioneer of deep learning",
 			source: "https://www.bbc.com/news/world-us-canada-65452940"
 		},
 		{
-			textFr: "J’ai peur. Et je pense que nous devrions tous avoir peur.",
-			textEn: "I’m scared. And I think all of us should be scared.",
+			textFr: "J'ai peur. Et je pense que nous devrions tous avoir peur.",
+			textEn: "I'm scared. And I think all of us should be scared.",
 			author: "Yoshua Bengio",
 			titleFr: "Prix Turing 2018 · Fondateur de Mila",
 			titleEn: "2018 Turing Award · Founder of Mila",
 			source: "https://yoshuabengio.org/2023/05/22/how-rogue-ais-may-arise/"
 		},
 		{
-			textFr: "Le développement d’une intelligence artificielle complète pourrait signifier la fin de la race humaine.",
+			textFr: "Le développement d'une intelligence artificielle complète pourrait signifier la fin de la race humaine.",
 			textEn: "The development of full artificial intelligence could spell the end of the human race.",
 			author: "Stephen Hawking",
 			titleFr: "Physicien théoricien, cosmologue",
@@ -46,12 +46,12 @@
 			textFr: "Si cette technologie tourne mal, elle peut très mal tourner. Nous voulons être clairs là-dessus.",
 			textEn: "If this technology goes wrong, it can go quite wrong. We want to be vocal about that.",
 			author: "Sam Altman",
-			titleFr: "PDG d’OpenAI · Témoignage au Sénat américain",
+			titleFr: "PDG d'OpenAI · Témoignage au Sénat américain",
 			titleEn: "CEO of OpenAI · US Senate testimony",
 			source: "https://www.judiciary.senate.gov/committee-activity/hearings/oversight-of-ai-rules-for-artificial-intelligence"
 		},
 		{
-			textFr: "Avec l’intelligence artificielle, nous invoquons le démon.",
+			textFr: "Avec l'intelligence artificielle, nous invoquons le démon.",
 			textEn: "With artificial intelligence we are summoning the demon.",
 			author: "Elon Musk",
 			titleFr: "PDG de Tesla et xAI · Symposium aérospatial du MIT",
@@ -59,7 +59,7 @@
 			source: "https://www.washingtonpost.com/news/innovations/wp/2014/10/24/elon-musk-with-artificial-intelligence-we-are-summoning-the-demon/"
 		},
 		{
-			textFr: "Réussir à créer une IA serait le plus grand événement de l’histoire humaine. Malheureusement, ce pourrait aussi être le dernier.",
+			textFr: "Réussir à créer une IA serait le plus grand événement de l'histoire humaine. Malheureusement, ce pourrait aussi être le dernier.",
 			textEn: "Success in creating AI would be the biggest event in human history. Unfortunately, it might also be the last.",
 			author: "Max Tegmark",
 			titleFr: "Physicien au MIT · Président du Future of Life Institute",
@@ -67,12 +67,36 @@
 			source: "https://futureoflife.org/open-letter/pause-giant-ai-experiments/"
 		},
 		{
-			textFr: "Atténuer le risque d’extinction lié à l’IA devrait être une priorité mondiale, au même titre que les pandémies et la guerre nucléaire.",
+			textFr: "Atténuer le risque d'extinction lié à l'IA devrait être une priorité mondiale, au même titre que les pandémies et la guerre nucléaire.",
 			textEn: "Mitigating the risk of extinction from AI should be a global priority alongside pandemics and nuclear war.",
 			author: "Center for AI Safety",
 			titleFr: "Signé par Hinton, Bengio, Altman, Hassabis et plus de 350 experts",
 			titleEn: "Signed by Hinton, Bengio, Altman, Hassabis and 350+ experts",
 			source: "https://www.safe.ai/work/statement-on-ai-risk"
+		},
+		{
+			textFr: "Je suis dans le camp de ceux qui s'inquiètent de la superintelligence.",
+			textEn: "I am in the camp that is concerned about super intelligence.",
+			author: "Bill Gates",
+			titleFr: "Co-fondateur de Microsoft · Reddit AMA",
+			titleEn: "Co-founder of Microsoft · Reddit AMA",
+			source: "https://www.reddit.com/r/IAmA/comments/2tzjp7/hi_reddit_im_bill_gates_and_im_back_for_my_third/"
+		},
+		{
+			textFr: "Nous construisons une technologie qui pourrait être la plus transformatrice et la plus dangereuse que l'humanité ait jamais créée.",
+			textEn: "We're building a technology that could be the most transformative and potentially dangerous humanity has ever created.",
+			author: "Mustafa Suleyman",
+			titleFr: "Co-fondateur de DeepMind · PDG de Microsoft AI",
+			titleEn: "Co-founder of DeepMind · CEO of Microsoft AI",
+			source: "https://www.thewave.ai/"
+		},
+		{
+			textFr: "Je crois que les systèmes que nous construisons sont dangereux — peut-être les plus dangereux que l'humanité ait jamais construits.",
+			textEn: "I believe the systems we are building are dangerous — perhaps the most dangerous things humanity has ever built.",
+			author: "Ilya Sutskever",
+			titleFr: "Co-fondateur d'OpenAI et de Safe Superintelligence Inc.",
+			titleEn: "Co-founder of OpenAI and Safe Superintelligence Inc.",
+			source: "https://twitter.com/ilyasut/status/1491554478243258368"
 		}
 	]
 
@@ -141,18 +165,22 @@
 	$: quote = quotes[current]
 </script>
 
-<section
-	aria-label={lang === 'en' ? 'What experts say' : 'Ce que disent les experts'}
-	on:mouseenter={pause}
-	on:mouseleave={resume}
-	on:focusin={pause}
-	on:focusout={resume}
->
-	<div class="inner">
-		<div class="quote-mark" aria-hidden="true">&ldquo;</div>
+<section aria-label={lang === 'en' ? 'What experts say' : 'Ce que disent les experts'}>
+	<p class="eyebrow">
+		{lang === 'en' ? 'What experts say' : 'Ce que disent les experts'}
+	</p>
+
+	<div
+		class="carousel-area"
+		on:mouseenter={pause}
+		on:mouseleave={resume}
+		on:focusin={pause}
+		on:focusout={resume}
+	>
+		<span class="quote-glyph" aria-hidden="true">&ldquo;</span>
 
 		{#key animKey}
-			<blockquote class="quote-body" in:fade={{ duration: 350 }}>
+			<blockquote class="quote-body" in:fade={{ duration: 300 }}>
 				<p class="quote-text">
 					{lang === 'en' ? quote.textEn : quote.textFr}
 				</p>
@@ -168,8 +196,8 @@
 					>
 						{lang === 'en' ? 'Source' : 'Source'}
 						<svg
-							width="12"
-							height="12"
+							width="11"
+							height="11"
 							viewBox="0 0 24 24"
 							fill="none"
 							stroke="currentColor"
@@ -186,104 +214,106 @@
 				</footer>
 			</blockquote>
 		{/key}
+	</div>
 
-		<div
-			class="controls"
-			role="group"
-			aria-label={lang === 'en' ? 'Quote navigation' : 'Navigation des citations'}
+	<div class="nav-row">
+		<button
+			class="arrow"
+			on:click={prev}
+			aria-label={lang === 'en' ? 'Previous quote' : 'Citation précédente'}
 		>
-			<button
-				class="arrow"
-				on:click={prev}
-				aria-label={lang === 'en' ? 'Previous quote' : 'Citation précédente'}
+			<svg
+				width="18"
+				height="18"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2.5"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				aria-hidden="true"
 			>
-				<svg
-					width="20"
-					height="20"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="2.5"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					aria-hidden="true"
-				>
-					<polyline points="15 18 9 12 15 6" />
-				</svg>
-			</button>
+				<polyline points="15 18 9 12 15 6" />
+			</svg>
+		</button>
 
-			<div class="dots" role="tablist">
-				{#each quotes as _, i}
-					<button
-						class="dot"
-						class:active={i === current}
-						role="tab"
-						aria-selected={i === current}
-						aria-label="{lang === 'en' ? 'Quote' : 'Citation'} {i + 1}"
-						on:click={() => goTo(i)}
-					></button>
-				{/each}
-			</div>
-
-			<button
-				class="arrow"
-				on:click={next}
-				aria-label={lang === 'en' ? 'Next quote' : 'Citation suivante'}
-			>
-				<svg
-					width="20"
-					height="20"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="2.5"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					aria-hidden="true"
-				>
-					<polyline points="9 18 15 12 9 6" />
-				</svg>
-			</button>
+		<div class="dots" role="tablist">
+			{#each quotes as _, i}
+				<button
+					class="dot"
+					class:active={i === current}
+					role="tab"
+					aria-selected={i === current}
+					aria-label="{lang === 'en' ? 'Quote' : 'Citation'} {i + 1}"
+					on:click={() => goTo(i)}
+				></button>
+			{/each}
 		</div>
 
-		<div class="progress-bar" aria-hidden="true">
-			<div class="progress-fill" style="width: {progress}%"></div>
-		</div>
+		<button
+			class="arrow"
+			on:click={next}
+			aria-label={lang === 'en' ? 'Next quote' : 'Citation suivante'}
+		>
+			<svg
+				width="18"
+				height="18"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2.5"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				aria-hidden="true"
+			>
+				<polyline points="9 18 15 12 9 6" />
+			</svg>
+		</button>
+	</div>
+
+	<div class="progress-bar" aria-hidden="true">
+		<div class="progress-fill" style="width: {progress}%"></div>
 	</div>
 </section>
 
 <style>
 	section {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--brand) 6%, var(--bg)) 0%,
-			var(--bg-subtle) 100%
-		);
-		border: 1px solid color-mix(in srgb, var(--brand) 18%, transparent);
-		border-radius: 1.5rem;
-		padding: 2rem 1.5rem 1.5rem;
-		position: relative;
-		overflow: hidden;
-	}
-
-	.inner {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		gap: 1.75rem;
-		max-width: 52rem;
-		margin: 0 auto;
+		gap: 1.5rem;
+		padding: 1rem 0;
 	}
 
-	.quote-mark {
-		font-family: Georgia, 'Times New Roman', serif;
-		font-size: 6rem;
-		line-height: 0.6;
+	.eyebrow {
+		margin: 0;
+		font-size: 0.78rem;
+		font-weight: 700;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
 		color: var(--brand);
-		opacity: 0.35;
-		align-self: flex-start;
+	}
+
+	.carousel-area {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		width: 100%;
+		max-width: 52rem;
+	}
+
+	.quote-glyph {
+		font-family: Georgia, 'Times New Roman', serif;
+		font-size: 7rem;
+		line-height: 1;
+		color: var(--brand);
+		opacity: 0.2;
+		position: absolute;
+		top: -1.5rem;
+		left: 0;
 		user-select: none;
-		margin-left: 0.5rem;
+		pointer-events: none;
 	}
 
 	.quote-body {
@@ -292,38 +322,40 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		gap: 1.25rem;
+		gap: 1.5rem;
 		text-align: center;
-		min-height: 10rem;
+		min-height: 9rem;
 		justify-content: center;
+		width: 100%;
 	}
 
 	.quote-text {
 		margin: 0;
-		font-size: 1.15rem;
-		line-height: 1.7;
+		font-size: 1.2rem;
+		line-height: 1.75;
 		color: var(--text);
 		font-style: italic;
 		font-weight: 400;
-		max-width: 44rem;
+		max-width: 42rem;
+		position: relative;
 	}
 
 	.quote-footer {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		gap: 0.2rem;
+		gap: 0.15rem;
 	}
 
 	.author-name {
 		font-style: normal;
 		font-weight: 700;
-		font-size: 1rem;
+		font-size: 0.95rem;
 		color: var(--text);
 	}
 
 	.author-title {
-		font-size: 0.82rem;
+		font-size: 0.8rem;
 		color: var(--text-2);
 		line-height: 1.4;
 	}
@@ -331,11 +363,11 @@
 	.source-link {
 		display: inline-flex;
 		align-items: center;
-		gap: 0.3rem;
-		margin-top: 0.3rem;
-		font-size: 0.78rem;
+		gap: 0.25rem;
+		margin-top: 0.25rem;
+		font-size: 0.75rem;
 		color: var(--brand);
-		opacity: 0.75;
+		opacity: 0.65;
 		text-decoration: none;
 		transition: opacity 0.15s;
 	}
@@ -345,7 +377,7 @@
 		text-decoration: underline;
 	}
 
-	.controls {
+	.nav-row {
 		display: flex;
 		align-items: center;
 		gap: 0.75rem;
@@ -355,9 +387,9 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 2.25rem;
-		height: 2.25rem;
-		border: 1.5px solid color-mix(in srgb, var(--brand) 30%, transparent);
+		width: 2rem;
+		height: 2rem;
+		border: 1.5px solid color-mix(in srgb, var(--text-2) 25%, transparent);
 		border-radius: 50%;
 		background: transparent;
 		color: var(--text-2);
@@ -370,42 +402,41 @@
 	}
 
 	.arrow:hover {
-		background: color-mix(in srgb, var(--brand) 12%, transparent);
+		background: color-mix(in srgb, var(--brand) 10%, transparent);
 		color: var(--brand);
 		border-color: var(--brand);
 	}
 
 	.dots {
 		display: flex;
-		gap: 0.5rem;
+		gap: 0.45rem;
 		align-items: center;
 	}
 
 	.dot {
-		width: 0.5rem;
-		height: 0.5rem;
+		width: 0.45rem;
+		height: 0.45rem;
 		border-radius: 50%;
 		border: none;
-		background: color-mix(in srgb, var(--brand) 25%, var(--text-2));
+		background: color-mix(in srgb, var(--text-2) 40%, transparent);
 		cursor: pointer;
 		padding: 0;
 		transition:
 			background 0.2s,
-			transform 0.2s,
 			width 0.2s;
 	}
 
 	.dot.active {
 		background: var(--brand);
-		width: 1.5rem;
+		width: 1.25rem;
 		border-radius: 0.25rem;
-		transform: none;
 	}
 
 	.progress-bar {
 		width: 100%;
-		height: 2px;
-		background: color-mix(in srgb, var(--brand) 15%, transparent);
+		max-width: 52rem;
+		height: 1.5px;
+		background: color-mix(in srgb, var(--text-2) 15%, transparent);
 		border-radius: 1px;
 		overflow: hidden;
 	}
@@ -418,30 +449,22 @@
 	}
 
 	@media (min-width: 640px) {
-		section {
-			padding: 2.5rem 2.5rem 2rem;
-		}
-
 		.quote-text {
-			font-size: 1.25rem;
-		}
-
-		.quote-body {
-			min-height: 8rem;
-		}
-	}
-
-	@media (min-width: 1024px) {
-		section {
-			padding: 3rem 4rem 2.25rem;
-		}
-
-		.quote-text {
-			font-size: 1.35rem;
+			font-size: 1.3rem;
 		}
 
 		.quote-body {
 			min-height: 7rem;
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.quote-text {
+			font-size: 1.4rem;
+		}
+
+		.quote-body {
+			min-height: 6rem;
 		}
 	}
 </style>
