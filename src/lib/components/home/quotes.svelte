@@ -1,11 +1,11 @@
 <script lang="ts">
-	import Fly from '$components/Fly.svelte'
-	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
+	import { onDestroy, onMount } from 'svelte'
+	import { fade } from 'svelte/transition'
 	import type { Lang } from '$lib/i18n'
 
 	export let lang: Lang = 'fr'
 
-	const label_id = 'quotes-title'
+	const INTERVAL_MS = 6000
 
 	interface Quote {
 		textFr: string
@@ -13,246 +13,435 @@
 		author: string
 		titleFr: string
 		titleEn: string
-		year: number
-		source?: string
+		source: string
 	}
 
+	/* prettier-ignore */
 	const quotes: Quote[] = [
 		{
-			textFr:
-				'L’extinction de l’humanité est une possibilité réelle. Si nous continuons sur cette voie, nous pourrions perdre le contrôle.',
-			textEn:
-				'Human extinction is a real possibility. If we continue on this path, we could lose control.',
-			author: 'Geoffrey Hinton',
-			titleFr: 'Prix Nobel de physique 2024, pionnier de l’apprentissage profond',
-			titleEn: '2024 Nobel Prize in Physics, pioneer of deep learning',
-			year: 2023,
-			source: 'https://www.bbc.com/news/world-us-canada-65452940'
+			textFr: "Cela pourrait-il éliminer l’humanité ? Je pense que la réponse est oui.",
+			textEn: "Could it wipe out humanity? I think the answer is yes.",
+			author: "Geoffrey Hinton",
+			titleFr: "Prix Nobel de physique 2024 · Pionnier de l’apprentissage profond",
+			titleEn: "2024 Nobel Prize in Physics · Pioneer of deep learning",
+			source: "https://www.bbc.com/news/world-us-canada-65452940"
 		},
 		{
-			textFr:
-				'Je pense que nous fabriquons peut-être l’une des technologies les plus transformatrices et potentiellement dangereuses de l’histoire humaine.',
-			textEn:
-				'I think we may be building one of the most transformative and potentially dangerous technologies in human history.',
-			author: 'Yoshua Bengio',
-			titleFr: 'Prix Turing 2018, fondateur de Mila (Institut québécois d’IA)',
-			titleEn: '2018 Turing Award, founder of Mila (Quebec AI Institute)',
-			year: 2023,
-			source: 'https://yoshuabengio.org/2023/05/22/how-rogue-ais-may-arise/'
+			textFr: "J’ai peur. Et je pense que nous devrions tous avoir peur.",
+			textEn: "I’m scared. And I think all of us should be scared.",
+			author: "Yoshua Bengio",
+			titleFr: "Prix Turing 2018 · Fondateur de Mila",
+			titleEn: "2018 Turing Award · Founder of Mila",
+			source: "https://yoshuabengio.org/2023/05/22/how-rogue-ais-may-arise/"
 		},
 		{
-			textFr:
-				'L’IA pourrait être la technologie la plus transformatrice et potentiellement dangereuse que l’humanité ait jamais développée. Le risque d’extinction mérite d’être pris au sérieux.',
-			textEn:
-				'AI could be the most transformative and potentially dangerous technology humanity has ever developed. The risk of extinction deserves to be taken seriously.',
-			author: 'Sam Altman',
-			titleFr: 'PDG d’OpenAI',
-			titleEn: 'CEO of OpenAI',
-			year: 2023,
-			source: 'https://www.lesswrong.com/posts/gJHgcshQc4eqe5dPC/sam-altman-on-ai-extinction'
+			textFr: "Le développement d’une intelligence artificielle complète pourrait signifier la fin de la race humaine.",
+			textEn: "The development of full artificial intelligence could spell the end of the human race.",
+			author: "Stephen Hawking",
+			titleFr: "Physicien théoricien, cosmologue",
+			titleEn: "Theoretical physicist, cosmologist",
+			source: "https://www.bbc.com/news/technology-30290540"
 		},
 		{
-			textFr:
-				'L’IA est potentiellement la technologie la plus dangereuse que l’humanité ait jamais inventée. Nous devons agir maintenant pour nous assurer qu’elle reste bénéfique.',
-			textEn:
-				'AI is potentially the most dangerous technology humanity has ever invented. We must act now to ensure it remains beneficial.',
-			author: 'Demis Hassabis',
-			titleFr: 'Prix Nobel de chimie 2024, PDG de Google DeepMind',
-			titleEn: '2024 Nobel Prize in Chemistry, CEO of Google DeepMind',
-			year: 2024,
-			source: 'https://time.com/6266923/demis-hassabis-google-deepmind-interview/'
+			textFr: "Si cette technologie tourne mal, elle peut très mal tourner. Nous voulons être clairs là-dessus.",
+			textEn: "If this technology goes wrong, it can go quite wrong. We want to be vocal about that.",
+			author: "Sam Altman",
+			titleFr: "PDG d’OpenAI · Témoignage au Sénat américain",
+			titleEn: "CEO of OpenAI · US Senate testimony",
+			source: "https://www.judiciary.senate.gov/committee-activity/hearings/oversight-of-ai-rules-for-artificial-intelligence"
 		},
 		{
-			textFr:
-				'Si nous créons des machines plus intelligentes que nous-mêmes et ne savons pas comment aligner leurs objectifs sur les nôtres, il n’y a aucune raison de s’attendre à ce qu’elles nous traitent bien.',
-			textEn:
-				'If we create machines smarter than ourselves and don’t know how to align their goals with ours, there is no reason to expect them to treat us well.',
-			author: 'Stuart Russell',
-			titleFr: 'Professeur à l’UC Berkeley, auteur de « Human Compatible »',
-			titleEn: 'Professor at UC Berkeley, author of "Human Compatible"',
-			year: 2023,
-			source: 'https://humancompatible.ai/'
+			textFr: "Avec l’intelligence artificielle, nous invoquons le démon.",
+			textEn: "With artificial intelligence we are summoning the demon.",
+			author: "Elon Musk",
+			titleFr: "PDG de Tesla et xAI · Symposium aérospatial du MIT",
+			titleEn: "CEO of Tesla and xAI · MIT Aeronautics Symposium",
+			source: "https://www.washingtonpost.com/news/innovations/wp/2014/10/24/elon-musk-with-artificial-intelligence-we-are-summoning-the-demon/"
 		},
 		{
-			textFr:
-				'Atténuer le risque d’extinction lié à l’IA devrait être une priorité mondiale au même titre que d’autres risques à l’échelle sociétale comme les pandémies et la guerre nucléaire.',
-			textEn:
-				'Mitigating the risk of extinction from AI should be a global priority alongside other societal-scale risks such as pandemics and nuclear war.',
-			author: 'Center for AI Safety',
-			titleFr: 'Signé par Hinton, Bengio, Altman, Hassabis et plus de 350 experts',
-			titleEn: 'Signed by Hinton, Bengio, Altman, Hassabis and over 350 experts',
-			year: 2023,
-			source: 'https://www.safe.ai/work/statement-on-ai-risk'
+			textFr: "Réussir à créer une IA serait le plus grand événement de l’histoire humaine. Malheureusement, ce pourrait aussi être le dernier.",
+			textEn: "Success in creating AI would be the biggest event in human history. Unfortunately, it might also be the last.",
+			author: "Max Tegmark",
+			titleFr: "Physicien au MIT · Président du Future of Life Institute",
+			titleEn: "MIT Physicist · President of the Future of Life Institute",
+			source: "https://futureoflife.org/open-letter/pause-giant-ai-experiments/"
+		},
+		{
+			textFr: "Atténuer le risque d’extinction lié à l’IA devrait être une priorité mondiale, au même titre que les pandémies et la guerre nucléaire.",
+			textEn: "Mitigating the risk of extinction from AI should be a global priority alongside pandemics and nuclear war.",
+			author: "Center for AI Safety",
+			titleFr: "Signé par Hinton, Bengio, Altman, Hassabis et plus de 350 experts",
+			titleEn: "Signed by Hinton, Bengio, Altman, Hassabis and 350+ experts",
+			source: "https://www.safe.ai/work/statement-on-ai-risk"
 		}
 	]
+
+	let current = 0
+	let paused = false
+	let progress = 0
+	let animKey = 0
+	let timer: ReturnType<typeof setInterval> | undefined
+	let progressTimer: ReturnType<typeof setInterval> | undefined
+
+	function goTo(index: number) {
+		current = (index + quotes.length) % quotes.length
+		animKey++
+		resetProgress()
+	}
+
+	function next() {
+		goTo(current + 1)
+	}
+
+	function prev() {
+		goTo(current - 1)
+	}
+
+	function resetProgress() {
+		progress = 0
+		clearInterval(progressTimer)
+		if (!paused) startProgress()
+	}
+
+	function startProgress() {
+		const step = 50
+		progressTimer = setInterval(() => {
+			progress += (step / INTERVAL_MS) * 100
+			if (progress >= 100) progress = 100
+		}, step)
+	}
+
+	function startAuto() {
+		clearInterval(timer)
+		timer = setInterval(() => {
+			if (!paused) next()
+		}, INTERVAL_MS)
+	}
+
+	function pause() {
+		paused = true
+		clearInterval(progressTimer)
+	}
+
+	function resume() {
+		paused = false
+		startProgress()
+	}
+
+	onMount(() => {
+		startAuto()
+		startProgress()
+	})
+
+	onDestroy(() => {
+		clearInterval(timer)
+		clearInterval(progressTimer)
+	})
+
+	$: quote = quotes[current]
 </script>
 
-<section aria-labelledby={label_id}>
-	<Fly>
-		<UnderlinedTitle id={label_id}>
-			{lang === 'en' ? 'What experts say' : 'Ce que disent les experts'}
-		</UnderlinedTitle>
-		<p class="subtitle">
-			{#if lang === 'en'}
-				Leading AI researchers and lab executives publicly warn about catastrophic risks.
-			{:else}
-				Les plus grands chercheurs en IA et dirigeants de laboratoires alertent publiquement sur les
-				risques catastrophiques.
-			{/if}
-		</p>
-	</Fly>
+<section
+	aria-label={lang === 'en' ? 'What experts say' : 'Ce que disent les experts'}
+	on:mouseenter={pause}
+	on:mouseleave={resume}
+	on:focusin={pause}
+	on:focusout={resume}
+>
+	<div class="inner">
+		<div class="quote-mark" aria-hidden="true">&ldquo;</div>
 
-	<div class="carousel" role="list">
-		{#each quotes as quote, i}
-			<Fly flyParams={{ y: 40, duration: 400 }}>
-				<article class="quote-card" role="listitem" style="--card-delay: {i * 60}ms">
-					<blockquote>
-						<p class="quote-text">
-							«&nbsp;{lang === 'en' ? quote.textEn : quote.textFr}&nbsp;»
-						</p>
-					</blockquote>
-					<footer class="quote-footer">
-						<div class="author-info">
-							<span class="author-name">{quote.author}</span>
-							<span class="author-title"
-								>{lang === 'en' ? quote.titleEn : quote.titleFr}, {quote.year}</span
-							>
-						</div>
-						{#if quote.source}
-							<a
-								href={quote.source}
-								target="_blank"
-								rel="noopener noreferrer"
-								class="source-link"
-								aria-label={lang === 'en' ? 'Source' : 'Source'}
-							>
-								<svg
-									width="16"
-									height="16"
-									viewBox="0 0 24 24"
-									fill="none"
-									stroke="currentColor"
-									stroke-width="2"
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									aria-hidden="true"
-								>
-									<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-									<polyline points="15 3 21 3 21 9" />
-									<line x1="10" y1="14" x2="21" y2="3" />
-								</svg>
-							</a>
-						{/if}
-					</footer>
-				</article>
-			</Fly>
-		{/each}
+		{#key animKey}
+			<blockquote class="quote-body" in:fade={{ duration: 350 }}>
+				<p class="quote-text">
+					{lang === 'en' ? quote.textEn : quote.textFr}
+				</p>
+				<footer class="quote-footer">
+					<cite class="author-name">{quote.author}</cite>
+					<span class="author-title">{lang === 'en' ? quote.titleEn : quote.titleFr}</span>
+					<a
+						href={quote.source}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="source-link"
+						aria-label={lang === 'en' ? 'View source' : 'Voir la source'}
+					>
+						{lang === 'en' ? 'Source' : 'Source'}
+						<svg
+							width="12"
+							height="12"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2.5"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							aria-hidden="true"
+						>
+							<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+							<polyline points="15 3 21 3 21 9" />
+							<line x1="10" y1="14" x2="21" y2="3" />
+						</svg>
+					</a>
+				</footer>
+			</blockquote>
+		{/key}
+
+		<div
+			class="controls"
+			role="group"
+			aria-label={lang === 'en' ? 'Quote navigation' : 'Navigation des citations'}
+		>
+			<button
+				class="arrow"
+				on:click={prev}
+				aria-label={lang === 'en' ? 'Previous quote' : 'Citation précédente'}
+			>
+				<svg
+					width="20"
+					height="20"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2.5"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					aria-hidden="true"
+				>
+					<polyline points="15 18 9 12 15 6" />
+				</svg>
+			</button>
+
+			<div class="dots" role="tablist">
+				{#each quotes as _, i}
+					<button
+						class="dot"
+						class:active={i === current}
+						role="tab"
+						aria-selected={i === current}
+						aria-label="{lang === 'en' ? 'Quote' : 'Citation'} {i + 1}"
+						on:click={() => goTo(i)}
+					></button>
+				{/each}
+			</div>
+
+			<button
+				class="arrow"
+				on:click={next}
+				aria-label={lang === 'en' ? 'Next quote' : 'Citation suivante'}
+			>
+				<svg
+					width="20"
+					height="20"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2.5"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					aria-hidden="true"
+				>
+					<polyline points="9 18 15 12 9 6" />
+				</svg>
+			</button>
+		</div>
+
+		<div class="progress-bar" aria-hidden="true">
+			<div class="progress-fill" style="width: {progress}%"></div>
+		</div>
 	</div>
 </section>
 
 <style>
 	section {
+		background: linear-gradient(
+			135deg,
+			color-mix(in srgb, var(--brand) 6%, var(--bg)) 0%,
+			var(--bg-subtle) 100%
+		);
+		border: 1px solid color-mix(in srgb, var(--brand) 18%, transparent);
+		border-radius: 1.5rem;
+		padding: 2rem 1.5rem 1.5rem;
+		position: relative;
+		overflow: hidden;
+	}
+
+	.inner {
 		display: flex;
 		flex-direction: column;
-		gap: 1.5rem;
+		align-items: center;
+		gap: 1.75rem;
+		max-width: 52rem;
+		margin: 0 auto;
 	}
 
-	.subtitle {
-		margin: -0.5rem 0 0;
-		color: var(--text-2);
-		font-size: 1rem;
-		line-height: 1.5;
-		max-width: 48rem;
+	.quote-mark {
+		font-family: Georgia, 'Times New Roman', serif;
+		font-size: 6rem;
+		line-height: 0.6;
+		color: var(--brand);
+		opacity: 0.35;
+		align-self: flex-start;
+		user-select: none;
+		margin-left: 0.5rem;
 	}
 
-	.carousel {
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
-		gap: 1rem;
-	}
-
-	.quote-card {
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
-		gap: 1.25rem;
-		padding: 1.5rem;
-		background: var(--bg-subtle);
-		border: 1px solid color-mix(in srgb, var(--brand) 20%, transparent);
-		border-radius: 1.25rem;
-		border-left: 4px solid var(--brand);
-		transition: box-shadow 0.2s ease;
-	}
-
-	.quote-card:hover {
-		box-shadow: 0 4px 20px color-mix(in srgb, var(--brand) 15%, transparent);
-	}
-
-	blockquote {
+	.quote-body {
 		margin: 0;
 		padding: 0;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 1.25rem;
+		text-align: center;
+		min-height: 10rem;
+		justify-content: center;
 	}
 
 	.quote-text {
 		margin: 0;
-		font-size: 0.95rem;
-		line-height: 1.65;
+		font-size: 1.15rem;
+		line-height: 1.7;
 		color: var(--text);
 		font-style: italic;
+		font-weight: 400;
+		max-width: 44rem;
 	}
 
 	.quote-footer {
 		display: flex;
-		align-items: flex-end;
-		justify-content: space-between;
-		gap: 0.5rem;
-	}
-
-	.author-info {
-		display: flex;
 		flex-direction: column;
+		align-items: center;
 		gap: 0.2rem;
 	}
 
 	.author-name {
+		font-style: normal;
 		font-weight: 700;
-		font-size: 0.9rem;
+		font-size: 1rem;
 		color: var(--text);
 	}
 
 	.author-title {
-		font-size: 0.78rem;
+		font-size: 0.82rem;
 		color: var(--text-2);
 		line-height: 1.4;
 	}
 
 	.source-link {
-		flex-shrink: 0;
-		color: var(--text-2);
-		opacity: 0.6;
-		transition:
-			opacity 0.15s,
-			color 0.15s;
-		display: flex;
+		display: inline-flex;
 		align-items: center;
+		gap: 0.3rem;
+		margin-top: 0.3rem;
+		font-size: 0.78rem;
+		color: var(--brand);
+		opacity: 0.75;
+		text-decoration: none;
+		transition: opacity 0.15s;
 	}
 
 	.source-link:hover {
 		opacity: 1;
+		text-decoration: underline;
+	}
+
+	.controls {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+	}
+
+	.arrow {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 2.25rem;
+		height: 2.25rem;
+		border: 1.5px solid color-mix(in srgb, var(--brand) 30%, transparent);
+		border-radius: 50%;
+		background: transparent;
+		color: var(--text-2);
+		cursor: pointer;
+		transition:
+			background 0.15s,
+			color 0.15s,
+			border-color 0.15s;
+		flex-shrink: 0;
+	}
+
+	.arrow:hover {
+		background: color-mix(in srgb, var(--brand) 12%, transparent);
 		color: var(--brand);
+		border-color: var(--brand);
+	}
+
+	.dots {
+		display: flex;
+		gap: 0.5rem;
+		align-items: center;
+	}
+
+	.dot {
+		width: 0.5rem;
+		height: 0.5rem;
+		border-radius: 50%;
+		border: none;
+		background: color-mix(in srgb, var(--brand) 25%, var(--text-2));
+		cursor: pointer;
+		padding: 0;
+		transition:
+			background 0.2s,
+			transform 0.2s,
+			width 0.2s;
+	}
+
+	.dot.active {
+		background: var(--brand);
+		width: 1.5rem;
+		border-radius: 0.25rem;
+		transform: none;
+	}
+
+	.progress-bar {
+		width: 100%;
+		height: 2px;
+		background: color-mix(in srgb, var(--brand) 15%, transparent);
+		border-radius: 1px;
+		overflow: hidden;
+	}
+
+	.progress-fill {
+		height: 100%;
+		background: var(--brand);
+		border-radius: 1px;
+		transition: width 0.05s linear;
 	}
 
 	@media (min-width: 640px) {
-		.carousel {
-			grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
-			gap: 1.25rem;
+		section {
+			padding: 2.5rem 2.5rem 2rem;
+		}
+
+		.quote-text {
+			font-size: 1.25rem;
+		}
+
+		.quote-body {
+			min-height: 8rem;
 		}
 	}
 
 	@media (min-width: 1024px) {
-		.carousel {
-			grid-template-columns: repeat(3, 1fr);
-			gap: 1.5rem;
+		section {
+			padding: 3rem 4rem 2.25rem;
+		}
+
+		.quote-text {
+			font-size: 1.35rem;
+		}
+
+		.quote-body {
+			min-height: 7rem;
 		}
 	}
 </style>
