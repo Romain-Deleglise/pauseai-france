@@ -41,6 +41,48 @@
 
 	const ACTIVOICE_CAMPAIGN_ID = '6b7ceb0e-22b1-48de-b8ae-5617c4920d05'
 
+	const pressArticles = [
+		{
+			title: 'Pause IA à la matinale ICI Paris Île-de-France (1er mai)',
+			source: 'ICI Paris Île-de-France',
+			date: '1er mai 2026',
+			url: 'https://www.dailymotion.com/video/xa7pbcq?start=4708'
+		},
+		{
+			title:
+				"IA et travail : une poignée d'hommes de la Silicon Valley doit-elle être en mesure de remodeler tout notre contrat social ?",
+			source: 'Le Nouvel Obs',
+			date: '1er mai 2026',
+			url: 'https://www.nouvelobs.com/economie/20260501.OBS114604/ia-et-travail-une-poignee-d-hommes-de-la-silicon-valley-doit-elle-etre-en-mesure-de-remodeler-tout-notre-contrat-social.html'
+		},
+		{
+			title:
+				"1er mai – Pause IA alerte sur les enjeux sociaux et démocratiques de la course à l'IA",
+			source: "L'Est en Val",
+			date: '1er mai 2026',
+			url: 'https://www.esteval.fr/article.46137.expertises-1er-mai-pause-ia-alerte-sur-les-enjeux-sociaux-et-democratiques-de-la-course-a-l-ia'
+		},
+		{
+			title: "Manifestation de Pause IA devant l'Assemblée le 1er mai",
+			source: 'MesInfos',
+			date: '1er mai 2026',
+			url: 'https://mesinfos.fr/75000-paris/manifestation-de-pause-ia-devant-l-assemblee-le-1er-mai-245348.html'
+		},
+		{
+			title: "De l'impact social de l'IA",
+			source: 'La Vie Économique',
+			date: 'Mai 2026',
+			url: 'https://www.vie-economique.com/actualites/de-limpact-social-de-lia/'
+		},
+		{
+			title:
+				"« La question de la sécurité n'est pas posée » — le collectif Pause IA demande un moratoire sur le développement de l'intelligence artificielle",
+			source: 'Dordogne Libre',
+			date: 'Mai 2026',
+			url: 'https://www.dordognelibre.fr/dordogne/la-question-de-la-securite-n-est-pas-posee-le-collectif-pause-ia-demande-un-moratoire-sur-le-developpement-de-l-intelligence-artificielle-28895566.php'
+		}
+	]
+
 	onMount(() => {
 		const init = () => {
 			// @ts-expect-error - Activoice global injected by external script
@@ -152,6 +194,23 @@
 				{t.emploi_ia.evolution_link}
 			</a>
 		</p>
+	</section>
+
+	<section id="presse-campagne" aria-labelledby="presse-campagne-heading">
+		<h2 id="presse-campagne-heading">Pause IA dans la presse</h2>
+		<p>Articles parus lors de la manifestation du 1er mai et des actions locales de la campagne.</p>
+
+		<div class="press-list">
+			{#each pressArticles as article}
+				<a href={article.url} target="_blank" rel="noopener noreferrer" class="press-item">
+					<div class="press-item-meta">
+						<span class="press-source">{article.source}</span>
+						<span class="press-date">{article.date}</span>
+					</div>
+					<span class="press-title">{article.title}</span>
+				</a>
+			{/each}
+		</div>
 	</section>
 
 	<section id="revue" aria-labelledby="revue-heading">
@@ -348,6 +407,68 @@
 		font-size: 0.95rem;
 		color: var(--text-secondary, #555);
 		margin: 0 0 0.25rem;
+	}
+
+	/* ── Press list ── */
+	.press-list {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		margin-bottom: 2rem;
+	}
+
+	.press-item {
+		display: flex;
+		flex-direction: column;
+		gap: 0.2rem;
+		padding: 0.85rem 1.1rem;
+		border: 1px solid var(--border, #e5e7eb);
+		border-radius: 8px;
+		text-decoration: none;
+		color: inherit;
+		transition:
+			border-color 0.2s,
+			box-shadow 0.2s;
+	}
+
+	.press-item:hover {
+		border-color: var(--brand, #ff9416);
+		box-shadow: 0 2px 8px rgba(255, 148, 22, 0.1);
+	}
+
+	.press-item-meta {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+
+	.press-source {
+		font-size: 0.75rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--brand-subtle, #c96900);
+	}
+
+	.press-date {
+		font-size: 0.75rem;
+		color: var(--text-secondary, #888);
+	}
+
+	.press-date::before {
+		content: '·';
+		margin-right: 0.5rem;
+	}
+
+	.press-title {
+		font-size: 0.9rem;
+		font-weight: 500;
+		color: var(--text, #111);
+		line-height: 1.4;
+	}
+
+	.press-item:hover .press-title {
+		color: var(--brand-subtle, #c96900);
 	}
 
 	/* ── ActiVoice embed ── */

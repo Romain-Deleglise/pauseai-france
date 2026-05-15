@@ -34,6 +34,34 @@ export const staticPressCoverage: PressCoverage[] = [
 		order: 0,
 		visible: true
 	},
+	{
+		id: 'static-esteval-2026-05-01',
+		title: "1er mai – Pause IA alerte sur les enjeux sociaux et démocratiques de la course à l'IA",
+		source: "L'Est en Val",
+		date: '2026-05-01',
+		url: 'https://www.esteval.fr/article.46137.expertises-1er-mai-pause-ia-alerte-sur-les-enjeux-sociaux-et-democratiques-de-la-course-a-l-ia',
+		order: 0,
+		visible: true
+	},
+	{
+		id: 'static-vie-economique-dordogne-2026-05',
+		title: "De l'impact social de l'IA",
+		source: 'La Vie Économique',
+		date: '2026-05-01',
+		url: 'https://www.vie-economique.com/actualites/de-limpact-social-de-lia/',
+		order: 0,
+		visible: true
+	},
+	{
+		id: 'static-dordogne-libre-2026-05',
+		title:
+			"« La question de la sécurité n'est pas posée » — le collectif Pause IA demande un moratoire sur le développement de l'intelligence artificielle",
+		source: 'Dordogne Libre',
+		date: '2026-05-01',
+		url: 'https://www.dordognelibre.fr/dordogne/la-question-de-la-securite-n-est-pas-posee-le-collectif-pause-ia-demande-un-moratoire-sur-le-developpement-de-l-intelligence-artificielle-28895566.php',
+		order: 0,
+		visible: true
+	},
 
 	// ── Campagne élections municipales 2026 ─────────────────────────────────
 	{
