@@ -7,7 +7,7 @@ export default {
 		apropos: 'À propos',
 		dangers: "Les dangers de l'IA",
 		newsletter: 'Newsletter',
-		propositions: 'Nos propositions',
+		propositions: 'Que demandons-nous ?',
 		blog: 'Blog',
 		comment_agir: 'Comment agir ?',
 		groupes_locaux: 'Groupes locaux',

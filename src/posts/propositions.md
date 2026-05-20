@@ -1,67 +1,116 @@
 ---
-title: Propositions de Pause IA
-description: Mettre en place un moratoire sur l'entraînement des systèmes d'IA Générale (IAG), interdire l'entraînement des systèmes d'IA sur du matériel sous droit d'auteur, tenir les créateurs de modèles d'IA responsables.
-original:
-  title: PauseAI Proposal
-  url: https://github.com/PauseAI/pauseai-website/blob/0cabfef1037097bd7a99f4fddd1bcd73abbe6760/src/posts/proposal.md
+title: Que demandons-nous ?
+description: Nous demandons une pause mondiale de l'entraînement des modèles d'IA de pointe, le temps qu'une gouvernance internationale se mette en place pour en encadrer le développement.
 ---
 
-**Instaurer un moratoire sur l'entraînement des systèmes d'IA Générale (IAG)** jusqu'à ce que nous sachions comment les développer en toute sécurité et les maintenir sous contrôle démocratique.
+<script lang="ts">
+  import Accordion from '$components/Accordion.svelte'
+</script>
 
-Chaque pays peut et doit mettre en œuvre cette mesure _immédiatement_. En particulier, les États-Unis (ou la Californie spécifiquement) devraient instaurer un moratoire, puisqu'ils hébergent pratiquement toutes les grandes entreprises d'IA. De nombreux scientifiques et leaders de l'industrie [conviennent qu'un moratoire est nécessaire](https://futureoflife.org/open-letter/pause-giant-ai-experiments/), et le grand public soutient également une telle mesure ([64%](https://www.campaignforaisafety.org/usa-ai-x-risk-perception-tracker/) - [69%](https://today.yougov.com/topics/technology/survey-results/daily/2023/04/03/ad825/2)).
+## **Nous demandons une pause mondiale de l'entraînement des modèles d'IA de pointe**
 
-Cependant, nous ne devons pas nous attendre à ce que des pays ou des entreprises prennent le risque de perdre leur avantage concurrentiel en mettant en pause l’entraînement de leurs modèles d’IA si d'autres ne font pas de même. C'est pourquoi nous avons besoin d'un **moratoire** **international**.
+En l'état de la recherche, les modèles d'intelligence artificielle de pointe, c'est-à-dire ceux susceptibles de conduire à l'intelligence artificielle générale voire à la super-intelligence, présentent des risques immenses que personne ne sait techniquement contrôler.
 
-## Mettre en œuvre un moratoire international
+Une réglementation sera lente à mettre en place, elle ne concernera pas tous les pays et elle sera rapidement dépassée par les progrès des modèles.
 
-Un accord international se conclut généralement lors d'un sommet, où les dirigeants des différents pays se réunissent pour discuter du problème et prendre une décision. Le Royaume-Uni a pris les devants et a organisé un sommet sur la sécurité de l'IA à l'automne 2023. Depuis, deux autres sommets ont été annoncés ([plus d'informations sur les sommets](https://pauseai.info/summit)).
+**La seule solution consiste à mettre en pause l'entraînement de ces modèles, le plus vite possible, à l'échelle mondiale.**
 
-L'objectif principal du sommet devrait être un **traité**. Ce traité devra spécifier les mesures politiques qui nous protègent des [risques liés à l'IA](/dangers). Il doit être signé par tous les États membres de l'ONU.
+**Pour cela, il faut qu'une gouvernance se mette en place au niveau des États, avec l'appui de scientifiques pour définir les modalités concrètes de la pause et contrôler son application.**
 
-### Agence internationale de sécurité de l'IA
+Cette position n'est pas marginale. Seuls 8 % des Français souhaitent accélérer le développement de l'IA en France et en Europe, d'après une [enquête exclusive](https://cesia.org/fr/publications/sondage-ia-2026/) réalisée par OpinionWay pour le CeSIA en avril 2026. À l'inverse, 42 % des sondés voudraient ralentir fortement le développement de l'IA ou le mettre en pause temporairement. Et près de huit personnes sur dix se déclarent favorables à des accords internationaux pour interdire les usages et les capacités de l'IA qui menacent la vie humaine ou les droits fondamentaux.
 
-Similaire à l'AIEA (Agence Internationale de l'Énergie Atomique), les prérogatives de cette agence seraient :
+Même chose aux États-Unis où, selon un [sondage](https://futureoflife.org/recent-news/americans-want-regulation-or-prohibition-of-superhuman-ai/) commandé en 2025 par le Future of Life Institute, 64 % des sondés estiment que l'IA surhumaine ne devrait pas être développée tant qu'il n'a pas été prouvé qu'elle était sûre et contrôlable, 73 % soutiennent une régulation robuste, et seulement 5 % soutiennent le statu quo actuel de développement rapide.
 
-- Accorder les autorisations pour le _déploiement_ d'IA. Cela inclura des évaluations/tests approfondis des modèles.
-- Accorder les autorisations pour de _nouvelles sessions d'entraînement_ de modèles d'IA dépassant une certaine taille (par exemple : 1 milliard de paramètres).
-- Organiser des rencontres périodiques pour discuter des progrès de la recherche sur la sécurité de l'IA.
+En pratique, on ne part pas de rien.
 
-### Entraînement de systèmes d'IA générale
+- **Les grandes enceintes politiques** ont déjà produit des principes et des codes de conduite. Ces textes non contraignants ne sont pas du tout à la hauteur des risques, mais ils montrent un embryon de gouvernance sur lequel on peut s'appuyer.
+  - **ONU :** [Global Dialogue on AI Governance (2024)](https://www.un.org/global-dialogue-ai-governance/fr)
+  - **G7 :** [Processus d'Hiroshima](https://www.soumu.go.jp/hiroshimaaiprocess/en/index.html) et déclarations sur l'IA (à partir de 2023)
+  - **UNESCO :** [Recommandation sur l'éthique de l'IA (2021)](https://www.unesco.org/en/articles/unescos-recommendation-ethics-artificial-intelligence-key-facts)
+  - **Haut-Commissariat aux droits de l'homme :** [Moratoires ciblés (2021)](https://www.ohchr.org/fr/press-releases/2021/09/artificial-intelligence-risks-privacy-demand-urgent-action-bachelet)
+  - **Comité international de la Croix-Rouge :** [Position sur les systèmes d'armes autonomes](https://www.icrc.org/sites/default/files/document_new/file_list/french_-_icrc_position_and_backgroud_paper.pdf) (2021)
+- **Surtout, des laboratoires et ONG spécialisés en sécurité de l'IA** élaborent déjà des scénarios opérationnels pour arrêter, ralentir ou encadrer très strictement ces systèmes. Ce sont des bases sérieuses pour travailler de manière concrète.
+  - **Machine Intelligence Research Institute :** [AI Governance to Avoid Extinction](https://intelligence.org/2026/04/13/summary-ai-governance-to-avoid-extinction/) (2025-2026)
+  - **ControlAI :** [A Narrow Path](https://www.narrowpath.co/) (2024) et [Direct Institutional Plan](https://controlai.com/dip) (2025)
+  - **Existential Risk Observatory :** [Review and Recommendations for a Conditional AI Safety Treaty](https://arxiv.org/pdf/2503.18956) (2025).
 
-Autoriser l'entraînement de systèmes d'IA générale puissants uniquement si leur sécurité peut être garantie :
+**PauseAI** a également exposé une approche dite « [Building the pause button](https://pauseai.info/building-the-pause-button) » consistant à contrôler la chaîne d'approvisionnement des puces nécessaires au développement logiciel de l'IA.
 
-- Par « puissants », nous entendons tous les modèles d'IA qui sont soit 1) de taille supérieure à 10^12 paramètres, 2) utilisent plus de 10^25 FLOP pour l'entraînement.
-- Ces prérogatives ne ciblent pas les systèmes d'IA _étroits_ (dits spécialisés), comme la reconnaissance d'images utilisée pour diagnostiquer des problèmes médicaux.
-- Exiger une [supervision pendant les sessions d'entraînement.](https://www.alignmentforum.org/posts/Zfk6faYvcf5Ht7xDx/compute-thresholds-proposed-rules-to-mitigate-risk-of-a-lab)
-- La sécurité ne peut être garantie que par l’existence d’un fort consensus scientifique et par [la preuve](https://arxiv.org/abs/2309.01933) que le _problème de l’alignement a été résolu_. Pour l'instant, ce n'est pas le cas, nous ne devrions donc pas permettre l'entraînement de tels systèmes.
-- Il se peut que le problème de l’alignement de l'IA ne soit jamais résolu - il pourrait être insoluble. Dans ce cas, nous ne devrions jamais autoriser l'entraînement de tels systèmes.
-- Même si nous pouvons construire une IA sûre et contrôlable, ne développer et déployer cette technologie qu'avec un **contrôle démocratique** solide. Une superintelligence est trop puissante pour être contrôlée par une seule entreprise ou un seul pays.
-- **[Surveiller les ventes de GPU](https://arxiv.org/abs/2303.11341)** et autre matériel pouvant être utilisés pour entraîner des IA.
+Citons également le [Future of Life Institute](https://futureoflife.org/), qui appelle depuis 2023 à un moratoire sur l'entraînement des modèles d'IA de pointe.
 
-### Déploiement des modèles
+<Accordion id="demarches">
+<svelte:fragment slot="head">En savoir plus sur ces différentes démarches</svelte:fragment>
+<svelte:fragment slot="details">
 
-Autoriser le déploiement de modèles seulement après avoir obtenu l’assurance qu'ils ne présentent aucune [capacité dangereuse](https://pauseai.info/dangerous-capabilities) :
+# **Démarches en faveur d'une gouvernance ou d'un moratoire de l'IA**
 
-- Nous aurons besoin de normes et d'équipes d'évaluation indépendantes pour déterminer si un modèle possède des capacités dangereuses.
-- La liste des capacités à risque pourra évoluer avec la croissance des capacités de l'IA.
-- Noter que se fier uniquement aux évaluations de modèles [n'est pas suffisant](https://pauseai.info/4-levels-of-ai-regulation).
+## **Institutions internationales**
 
-Mettre en place un moratoire peut avoir des effets délétères s'il n'est pas implémenté correctement ([en savoir plus sur la façon d'atténuer ces risques](https://pauseai.info/mitigating-pause-failures)).
+### UNESCO – [Recommandation sur l'éthique de l'IA](https://www.unesco.org/en/articles/unescos-recommendation-ethics-artificial-intelligence-key-facts)
 
-## **Autres mesures pour un ralentissement effectif**
+Texte adopté en 2021 au sein de l'UNESCO, puis endossé en 2023 par 193 États membres, définissant des principes (droits humains, transparence, évaluation d'impact, redevabilité) et invitant à des cadres nationaux cohérents. Il sert de référence, sans imposer de limites aux capacités techniques ni prévoir de mécanismes d'arrêt des systèmes d'IA de pointe.
 
-- **Interdire l'entraînement des systèmes d'IA sur du matériel sous droit d'auteur.** Cela résout les problèmes de droits d'auteur, ralentit l'accroissement des inégalités et freine la progression vers la superintelligence.
-- **Tenir les créateurs de modèles d'IA responsables** des actes criminels commis à l'aide de leurs systèmes. Cela les incitera à s'assurer que leurs modèles sont sûrs.
+### ONU – [Global Dialogue on AI Governance](https://www.un.org/global-dialogue-ai-governance/fr)
 
-## **Politique à long terme**
+En 2024, un « United Nations System White Paper on AI Governance » coordonné par l'UNESCO et l'UIT cartographie les options institutionnelles possibles et insiste sur la coordination et le suivi des risques. En 2025, le Sommet du futur aboutit à la création du Global Dialogue on AI Governance, un forum interétatique et multi-acteurs pour rapprocher les initiatives existantes et préparer d'éventuels accords plus formalisés, sans mécanisme de moratoire global.
 
-A l’heure où ce texte est rédigé, l'entraînement d'un modèle de la taille de GPT-3 coûte plusieurs millions de dollars. Cela rend l'entraînement de tels modèles très difficile, et facilite son contrôle via le traçage des GPUs. Cependant, le coût d'entraînement diminue de façon exponentielle avec l'amélioration des composants matériels et l'arrivée de nouveaux algorithmes d'entraînement.
+### Haut-Commissariat aux droits de l'homme – [Moratoires ciblés](https://www.ohchr.org/fr/press-releases/2021/09/artificial-intelligence-risks-privacy-demand-urgent-action-bachelet)
 
-Arrivera un moment où des modèles d'IA potentiellement superintelligents pourront être entraînés pour quelques milliers de dollars ou moins, peut-être même sur du matériel grand public. Nous devons nous y préparer. Nous devrions envisager les politiques suivantes :
+En 2021, la Haute-Commissaire Michelle Bachelet appelle à un moratoire sur la vente et l'usage de certaines technologies d'IA, notamment la reconnaissance biométrique à distance dans les espaces publics, tant que des garde-fous adéquats en matière de droits humains ne sont pas en place. La logique est celle d'une pause ciblée sur certains usages, non d'un arrêt des systèmes d'IA de pointe en général.
 
-- **Limiter la publication des algorithmes d'entraînement / d'améliorations de performance.** Parfois, la publication d'un nouvel algorithme rend l'entraînement beaucoup plus efficace. L'architecture « _Transformers_ », par exemple, a permis pratiquement tous les progrès récents en IA. Ces bonds en capacité peuvent survenir à tout moment, et nous devrions envisager de limiter la publication de tels algorithmes pour minimiser le risque d'un bond soudain en capacité. De même, certaines innovations en termes de performance pourraient changer radicalement ce qui est réalisable au moyen des modèles existants. Ces avancées pourraient elles aussi nécessiter d'être réglementées.
-- **Limiter l’augmentation des capacités de calcul.** Si l'entraînement d'une superintelligence devient possible sur du matériel grand public, nous serons dans une situation délicate. Nous devrions envisager de limiter les progrès des capacités de calcul des processeurs graphiques destinés au grand public.
+### CICR / ONU – [Position sur les systèmes d'armes autonomes](https://www.icrc.org/sites/default/files/document_new/file_list/french_-_icrc_position_and_backgroud_paper.pdf)
 
-## **Aidez-nous à réaliser cet objectif**
+Le Comité international de la Croix-Rouge et le Secrétaire général de l'ONU plaident depuis plusieurs années pour un instrument juridiquement contraignant interdisant ou restreignant certaines catégories d'armes autonomes, afin de préserver un « contrôle humain significatif » sur l'emploi de la force. Il s'agit d'un équivalent de moratoire/ban sectoriel limité à l'IA militaire.
+
+### G7 – [Processus d'Hiroshima](https://www.soumu.go.jp/hiroshimaaiprocess/en/index.html) et déclarations sur l'IA
+
+À partir de 2023, le processus d'Hiroshima sur l'IA au G7 produit des principes et un code de conduite pour l'IA générative et les modèles de fondation : évaluation des risques, transparence, responsabilité, partage d'information avec les autorités. La présidence française du G7 en 2026 annonce vouloir renforcer ces convergences autour d'une IA « sûre » et protectrice, sans remettre en cause la poursuite du développement des systèmes d'IA de pointe.
+
+## **ONG et think tanks**
+
+### Future of Life Institute (FLI)
+
+**Lettre « [Pause Giant AI Experiments](https://futureoflife.org/open-letter/pause-giant-ai-experiments/) » (2023)**
+
+Publiée en mars 2023, cette lettre appelle à une pause d'au moins six mois sur l'entraînement de systèmes plus puissants que GPT-4, c'est-à-dire les modèles d'IA de pointe de l'époque. La pause doit être publique et vérifiable ; en cas d'échec de l'auto-régulation, le texte invite les gouvernements à « intervenir et imposer un moratoire légal ». Malgré un fort écho médiatique, aucun laboratoire majeur ne met en place de pause coordonnée.
+
+**[Déclaration sur la super-intelligence](https://superintelligence-statement.org/fr) (2025)**
+
+En 2025, le FLI coordonne une nouvelle lettre appelant cette fois à une interdiction de long terme du développement d'IA super-intelligente tant qu'il n'existe ni garanties de sûreté suffisantes ni soutien démocratique clair. L'ONG se prononce alors pour une pause sur les expériences d'IA de pointe et pour un moratoire d'au moins quinze ans sur certaines formes d'IA générale ou de super-intelligence.
+
+### Machine Intelligence Research Institute (MIRI)
+
+**Rapport « [AI Governance to Avoid Extinction](https://intelligence.org/2026/04/13/summary-ai-governance-to-avoid-extinction/) » (2025)**
+
+Publié en mai 2025, ce rapport propose plusieurs trajectoires possibles pour la gouvernance de l'IA, dont un scénario central « Off Switch and Halt ». Il part du diagnostic que les systèmes d'IA de pointe pourraient, à court terme, dépasser les experts humains dans de nombreux domaines et créer un risque d'extinction (perte de contrôle, guerres, verrouillage autoritaire). Le scénario de Halt prévoit la construction d'une capacité mondiale à restreindre ou arrêter le développement et le déploiement de ces systèmes, puis à maintenir un moratoire global potentiellement de plusieurs décennies, le temps de résoudre les problèmes d'alignement.
+
+**[Projet de traité correspondant](https://arxiv.org/pdf/2511.10783) (2025)**
+
+Dans le prolongement, MIRI esquisse un traité international détaillant des seuils de calcul (FLOP) au-delà desquels l'entraînement de systèmes d'IA de pointe requiert une licence, un traçage des puces et des centres de données, des inspections internationales et un régime de sanctions. L'architecture s'inspire des régimes de contrôle des armements, avec une coalition États-Unis–Chine envisagée comme noyau dur.
+
+### ControlAI
+
+**« [A Narrow Path](https://www.narrowpath.co/) » (2024) et « [Direct Institutional Plan](https://controlai.com/dip) » (2025)**
+
+ControlAI, fondé au milieu des années 2020, publie entre 2024 et 2025 son plan « A Narrow Path », centré sur la prévention d'une superintelligence non contrôlée. Le texte propose d'interdire, pendant au moins vingt ans, le développement de super-intelligence et de certaines capacités extrêmes (évasion, auto-amélioration, usages stratégiques), tout en autorisant, sous licence, d'autres systèmes d'IA de pointe jugés moins dangereux. Il recommande aussi des mesures de gouvernance du calcul (plafonds de puissance, licences), des exigences de sécurité renforcées et, à terme, la création d'une agence internationale de sûreté de l'IA.
+
+Pour mettre ce cadre en œuvre dans les démocraties, ControlAI développe ensuite le « Direct Institutional Plan » (DIP), un plan d'action en deux étapes (élaboration de politiques ciblant la superintelligence et ses précurseurs, puis mobilisation systématique des acteurs institutionnels) visant à faire adopter des interdictions nationales et, in fine, un accord international durable contre le développement de la superintelligence.
+
+### Existential Risk Observatory (ERO)
+
+**« [Conditional AI Safety Treaty](https://arxiv.org/pdf/2503.18956) » (2025)**
+
+À partir de 2024–2025, l'Existential Risk Observatory propose un « Conditional AI Safety Treaty » qui se veut plus acceptable politiquement qu'un moratoire immédiat et général. L'idée est de ne pas décréter tout de suite un arrêt des systèmes d'IA de pointe, mais de prévoir un mécanisme : les États s'engagent à stopper certains entraînements dès que des instituts internationaux de sécurité de l'IA indépendants concluent qu'un projet ou un niveau de capacités rapproche trop d'une perte de contrôle. La durée du Halt n'est pas fixée à l'avance ; elle dépend de l'évolution des évaluations de risque et des progrès en matière d'alignement.
+
+### PauseAI (global)
+
+**« [Construire le bouton Pause](https://pauseai.info/building-the-pause-button) » (2025)**
+
+Le mouvement Pause AI a proposé une approche matérielle de la pause lors de l'AI Safety Camp de 2025. L'entraînement de modèles de pointe de type LLM nécessite beaucoup de matériel hautement spécialisé et coûteux (des puces). La chaîne d'approvisionnement pour ce matériel repose sur un très petit nombre d'entreprises extrêmement spécialisées, comme ASML (Pays-Bas) et SMEE (Chine) pour les machines de lithographie nécessaires à la fabrication des puces, ou TSMC (Taïwan), Samsung (Corée du Sud) et SMIC (Chine) pour les usines de fabrication. Via la chaîne d'approvisionnement des puces d'IA, les gouvernements ou d'autres instances de régulation peuvent connaître et contrôler matériellement l'activité des compagnies qui développent l'IA.
+
+</svelte:fragment>
+</Accordion>
+
+## **Une pause est possible, elle est indispensable.<br/>Aidez-nous à réaliser cet objectif**
 
 [Rejoignez](/rejoindre) le mouvement pour nous aider ou [agissez](/agir) par vous-même !
