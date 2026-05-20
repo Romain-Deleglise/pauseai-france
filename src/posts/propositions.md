@@ -39,8 +39,8 @@ En pratique, on ne part pas de rien.
 Citons également le [Future of Life Institute](https://futureoflife.org/), qui appelle depuis 2023 à un moratoire sur l'entraînement des modèles d'IA de pointe.
 
 <Accordion id="demarches">
-<svelte:fragment slot="head">En savoir plus sur ces différentes démarches</svelte:fragment>
-<svelte:fragment slot="details">
+<span slot="head">En savoir plus sur ces différentes démarches</span>
+<div slot="details">
 
 # **Démarches en faveur d'une gouvernance ou d'un moratoire de l'IA**
 
@@ -108,7 +108,7 @@ Pour mettre ce cadre en œuvre dans les démocraties, ControlAI développe ensui
 
 Le mouvement Pause AI a proposé une approche matérielle de la pause lors de l'AI Safety Camp de 2025. L'entraînement de modèles de pointe de type LLM nécessite beaucoup de matériel hautement spécialisé et coûteux (des puces). La chaîne d'approvisionnement pour ce matériel repose sur un très petit nombre d'entreprises extrêmement spécialisées, comme ASML (Pays-Bas) et SMEE (Chine) pour les machines de lithographie nécessaires à la fabrication des puces, ou TSMC (Taïwan), Samsung (Corée du Sud) et SMIC (Chine) pour les usines de fabrication. Via la chaîne d'approvisionnement des puces d'IA, les gouvernements ou d'autres instances de régulation peuvent connaître et contrôler matériellement l'activité des compagnies qui développent l'IA.
 
-</svelte:fragment>
+</div>
 </Accordion>
 
 ## **Une pause est possible, elle est indispensable.<br/>Aidez-nous à réaliser cet objectif**
