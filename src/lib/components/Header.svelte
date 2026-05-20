@@ -81,7 +81,6 @@
 			items: [
 				{ href: `${prefix}/dangers`, label: t.nav.dangers },
 				{ href: `${prefix}/newsletters`, label: t.nav.newsletter },
-				{ href: `${prefix}/propositions`, label: t.nav.propositions },
 				{ href: 'https://pauseia.substack.com/', label: t.nav.blog, external: true }
 			]
 		},
