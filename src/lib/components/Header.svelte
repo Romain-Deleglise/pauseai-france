@@ -80,6 +80,8 @@
 			label: t.nav.comprendre,
 			items: [
 				{ href: `${prefix}/dangers`, label: t.nav.dangers },
+				{ href: '/carte', label: t.nav.carte },
+				{ href: '/liens-utiles', label: t.nav.liens_utiles },
 				{ href: `${prefix}/newsletters`, label: t.nav.newsletter },
 				{ href: `${prefix}/propositions`, label: t.nav.propositions },
 				{ href: 'https://pauseia.substack.com/', label: t.nav.blog, external: true }

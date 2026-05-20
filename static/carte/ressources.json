@@ -1,0 +1,356 @@
+[
+	{
+		"id": "pauseia-fr",
+		"title": "Pause IA",
+		"description": "Mouvement français qui appelle à un moratoire sur le développement des IA générales les plus puissantes.",
+		"url": "https://pauseia.fr/",
+		"lang": "fr",
+		"zone": "plaine",
+		"logo": "/carte/logos/pauseia.svg"
+	},
+	{
+		"id": "pauseai-global",
+		"title": "PauseAI Global",
+		"description": "Organisation mère internationale du mouvement Pause AI, voix mondiale de la cause.",
+		"url": "https://pauseai.info/",
+		"lang": "en",
+		"zone": "plaine",
+		"logo": "/carte/logos/pauseai.svg"
+	},
+	{
+		"id": "controlai",
+		"title": "ControlAI",
+		"description": "Organisation britannique militant pour une régulation contraignante des IA les plus puissantes.",
+		"url": "https://controlai.com/",
+		"lang": "en",
+		"zone": "plaine",
+		"logo": "/carte/logos/controlai.png"
+	},
+	{
+		"id": "fli",
+		"title": "Future of Life Institute",
+		"description": "Institut de recherche et de plaidoyer sur les risques existentiels, à l'origine de la lettre ouverte de mars 2023.",
+		"url": "https://futureoflife.org/",
+		"lang": "en",
+		"zone": "plaine",
+		"logo": "/carte/logos/fli.svg"
+	},
+	{
+		"id": "cesia",
+		"title": "CeSIA",
+		"description": "Centre français pour la sécurité de l'IA : recherche et enseignement sur la prévention des risques majeurs.",
+		"url": "https://www.securite-ia.fr/",
+		"lang": "fr",
+		"zone": "village",
+		"logo": "/carte/logos/cesia.svg"
+	},
+	{
+		"id": "cais",
+		"title": "CAIS",
+		"description": "Center for AI Safety : recherche académique sur les risques catastrophiques liés à l'IA.",
+		"url": "https://www.safe.ai/",
+		"lang": "en",
+		"zone": "village",
+		"logo": "/carte/logos/cais.png"
+	},
+	{
+		"id": "miri",
+		"title": "MIRI",
+		"description": "Machine Intelligence Research Institute : pionnier de la recherche sur l'alignement et les risques existentiels.",
+		"url": "https://intelligence.org/",
+		"lang": "en",
+		"zone": "village",
+		"logo": "/carte/logos/miri.jpg"
+	},
+	{
+		"id": "pauseia-newsletter",
+		"title": "Newsletter Pause IA",
+		"description": "Actualités et nouvelles du mouvement français pour une pause sur l'IA.",
+		"url": "https://pauseia.fr/fr/newsletters",
+		"lang": "fr",
+		"zone": "monts",
+		"logo": "/carte/logos/pauseia_newsletter.svg"
+	},
+	{
+		"id": "transformer",
+		"title": "Transformer",
+		"description": "Synthèse hebdomadaire de l'actualité de l'IA, sourcée et précise.",
+		"url": "https://www.transformernews.ai/",
+		"lang": "en",
+		"zone": "monts",
+		"logo": "/carte/logos/transformer.png"
+	},
+	{
+		"id": "controlai-news",
+		"title": "ControlAI News",
+		"description": "Newsletter de ControlAI sur les développements liés à la régulation et à la sécurité de l'IA.",
+		"url": "https://controlai.news/",
+		"lang": "en",
+		"zone": "monts",
+		"logo": "/carte/logos/controlai.png"
+	},
+	{
+		"id": "contre-courant",
+		"title": "À Contre-Courant",
+		"description": "Newsletter de Romain Deléglise : analyses critiques sur l'IA et ses enjeux sociaux.",
+		"url": "https://romaindeleglise.substack.com/",
+		"lang": "fr",
+		"zone": "monts",
+		"fallback_text": "À.C."
+	},
+	{
+		"id": "cesia-newsletter",
+		"title": "Newsletter CeSIA",
+		"description": "Newsletter du Centre pour la Sécurité de l'IA : actualités françaises de la recherche et de la prévention.",
+		"url": "https://cesiafr.substack.com/",
+		"lang": "fr",
+		"zone": "monts",
+		"logo": "/carte/logos/cesia.svg"
+	},
+	{
+		"id": "cais-newsletter",
+		"title": "AI Safety Newsletter (CAIS)",
+		"description": "Newsletter du Center for AI Safety : synthèse régulière sur les risques catastrophiques de l'IA.",
+		"url": "https://newsletter.safe.ai/",
+		"lang": "en",
+		"zone": "monts",
+		"logo": "/carte/logos/cais.png"
+	},
+	{
+		"id": "situational-awareness",
+		"title": "Situational Awareness",
+		"description": "Prévisions de Leopold Aschenbrenner sur l'AGI et la superintelligence d'ici 2027-2030 (juin 2024).",
+		"url": "https://situational-awareness.ai/",
+		"lang": "en",
+		"zone": "avant-poste",
+		"fallback_text": "S.A."
+	},
+	{
+		"id": "ai-2027",
+		"title": "AI 2027",
+		"description": "Scénario d'impact d'IAs surhumaines sur la décennie, par Daniel Kokotajlo et al. (avril 2025).",
+		"url": "https://ai-2027.com/",
+		"lang": "en",
+		"zone": "avant-poste",
+		"fallback_text": "2027"
+	},
+	{
+		"id": "intelligence-curse",
+		"title": "The Intelligence Curse",
+		"description": "Essai sur la perte graduelle du pouvoir humain, par Luke Drago et Rudolf Laine (avril 2025).",
+		"url": "https://intelligence-curse.ai/",
+		"lang": "en",
+		"zone": "avant-poste",
+		"logo": "/carte/logos/intelligencecurse.jpg",
+		"logo_size": "large"
+	},
+	{
+		"id": "miri-governance",
+		"title": "MIRI - Governance to Avoid Extinction",
+		"description": "Rapport stratégique du MIRI (mai 2025) : panorama et questions de recherche pour éviter l'extinction.",
+		"url": "https://techgov.intelligence.org/research/ai-governance-to-avoid-extinction",
+		"lang": "en",
+		"zone": "avant-poste",
+		"logo": "/carte/logos/miri.jpg"
+	},
+	{
+		"id": "rand-agi-nations",
+		"title": "RAND - How AGI Could Affect Nations",
+		"description": "Rapport RAND (juillet 2025) sur l'impact géopolitique et stratégique de l'AGI sur les nations.",
+		"url": "https://www.rand.org/pubs/research_reports/RRA3034-2.html",
+		"lang": "en",
+		"zone": "avant-poste",
+		"logo": "/carte/logos/rand.svg"
+	},
+	{
+		"id": "aisafety-map",
+		"title": "AI Safety Map",
+		"description": "Cartographie interactive des acteurs de la sécurité de l'IA dans le monde.",
+		"url": "https://www.aisafety.com/map",
+		"lang": "en",
+		"zone": "ile",
+		"logo": "/carte/logos/aisafety.png"
+	},
+	{
+		"id": "aisafety-info",
+		"title": "AISafety.info",
+		"description": "FAQ exhaustive sur la sécurité de l'IA : centaines de réponses sourcées et accessibles.",
+		"url": "https://aisafety.info/",
+		"lang": "en",
+		"zone": "ile",
+		"logo": "/carte/logos/aisafetyinfo.png",
+		"logo_size": "large"
+	},
+	{
+		"id": "the-compendium",
+		"title": "The Compendium",
+		"description": "Synthèse de référence sur les risques liés à l'IA générale et la course à la superintelligence.",
+		"url": "https://www.thecompendium.ai/",
+		"lang": "en",
+		"zone": "ile",
+		"logo": "/carte/logos/compendium.png",
+		"logo_size": "large"
+	},
+	{
+		"id": "le-futurologue",
+		"title": "Le Futurologue",
+		"description": "Chaîne YouTube française dédiée aux futurs technologiques et aux risques liés à l'IA.",
+		"url": "https://www.youtube.com/@LeFuturologue",
+		"lang": "fr",
+		"zone": "delta",
+		"logo": "/carte/logos/lefuturologue.jpg"
+	},
+	{
+		"id": "the-flares",
+		"title": "The Flares",
+		"description": "Chaîne YouTube française sur les risques existentiels et les futurs lointains.",
+		"url": "https://www.youtube.com/@the-flares",
+		"lang": "fr",
+		"zone": "delta",
+		"logo": "/carte/logos/theflares.jpg"
+	},
+	{
+		"id": "mr-phi",
+		"title": "Mr Phi",
+		"description": "Playlist IA du philosophe Mr Phi : analyses et questions philosophiques sur l'intelligence artificielle.",
+		"url": "https://www.youtube.com/watch?v=JBaBAg4ny6U&list=PLuL1TsvlrSnc5tQsMgeOgm576PgY0rtRh",
+		"lang": "fr",
+		"zone": "delta",
+		"logo": "/carte/logos/mrphi.jpg"
+	},
+	{
+		"id": "rational-animations",
+		"title": "Rational Animations",
+		"description": "Vidéos animées rigoureuses sur la rationalité, la sécurité de l'IA et les risques existentiels.",
+		"url": "https://www.youtube.com/@RationalAnimations/videos",
+		"lang": "en",
+		"zone": "delta",
+		"logo": "/carte/logos/rationalanimations.jpg"
+	},
+	{
+		"id": "robert-miles",
+		"title": "Robert Miles AI Safety",
+		"description": "Référence pédagogique sur l'alignement et la sécurité de l'IA, en vidéos courtes et claires.",
+		"url": "https://www.youtube.com/@RobertMilesAI/videos",
+		"lang": "en",
+		"zone": "delta",
+		"logo": "/carte/logos/robertmiles.jpg"
+	},
+	{
+		"id": "ai-in-context",
+		"title": "AI in Context",
+		"description": "Chaîne YouTube qui contextualise les enjeux de l'IA pour le grand public.",
+		"url": "https://www.youtube.com/@AI_In_Context",
+		"lang": "en",
+		"zone": "delta",
+		"logo": "/carte/logos/aiincontext.jpg"
+	},
+	{
+		"id": "species-agi",
+		"title": "Species - Documenting AGI",
+		"description": "Série documentaire sur la trajectoire vers l'AGI et ses implications pour l'humanité.",
+		"url": "https://www.youtube.com/@AISpecies",
+		"lang": "en",
+		"zone": "delta",
+		"logo": "/carte/logos/species.jpg"
+	},
+	{
+		"id": "siliconversations",
+		"title": "Siliconversations",
+		"description": "Vidéos pédagogiques sur l'IA, ses promesses et ses dangers.",
+		"url": "https://www.youtube.com/@Siliconversations/videos",
+		"lang": "en",
+		"zone": "delta",
+		"logo": "/carte/logos/siliconversations.jpg"
+	},
+	{
+		"id": "lethal-intelligence",
+		"title": "The Lethal Intelligence",
+		"description": "Chaîne YouTube centrée sur les risques catastrophiques liés à l'IA.",
+		"url": "https://www.youtube.com/@lethal-intelligence",
+		"lang": "en",
+		"zone": "delta",
+		"logo": "/carte/logos/lethal.jpg"
+	},
+	{
+		"id": "le-futurologue-podcast",
+		"title": "Le Futurologue (Podcast)",
+		"description": "Podcast français du Futurologue : entretiens et analyses sur les futurs technologiques.",
+		"url": "https://www.youtube.com/@LeFuturologue/podcasts",
+		"lang": "fr",
+		"zone": "rives",
+		"logo": "/carte/logos/lefuturologue.jpg"
+	},
+	{
+		"id": "the-flares-podcast",
+		"title": "The Flares (Podcast)",
+		"description": "Podcast français consacré aux risques existentiels et aux grandes questions du futur.",
+		"url": "https://www.youtube.com/@the-flares/podcasts",
+		"lang": "fr",
+		"zone": "rives",
+		"logo": "/carte/logos/theflares.jpg"
+	},
+	{
+		"id": "fli-podcast",
+		"title": "Future of Life Institute Podcast",
+		"description": "Podcast du FLI : entretiens avec chercheurs et décideurs sur les risques existentiels et l'IA.",
+		"url": "https://futureoflife.org/podcast/?_category_browser=ai",
+		"lang": "en",
+		"zone": "rives",
+		"logo": "/carte/logos/fli.svg"
+	},
+	{
+		"id": "doom-debates",
+		"title": "Doom Debates",
+		"description": "Débats vidéos sur les scénarios catastrophiques liés à l'IA, avec invités spécialisés.",
+		"url": "https://www.youtube.com/@DoomDebates/videos",
+		"lang": "en",
+		"zone": "rives",
+		"logo": "/carte/logos/doomdebate.jpg"
+	},
+	{
+		"id": "80000-hours",
+		"title": "The 80,000 Hours Podcast",
+		"description": "Entretiens longs sur les enjeux mondiaux les plus importants, dont la sécurité de l'IA.",
+		"url": "https://80000hours.org/podcast/",
+		"lang": "en",
+		"zone": "rives",
+		"logo": "/carte/logos/80000.png"
+	},
+	{
+		"id": "pauseia-blog",
+		"title": "PauseIA - Substack",
+		"description": "Blog français du mouvement Pause IA : analyses et prises de position.",
+		"url": "https://pauseia.substack.com/",
+		"lang": "fr",
+		"zone": "foret",
+		"logo": "/carte/logos/pauseia.svg"
+	},
+	{
+		"id": "pauseai-blog",
+		"title": "PauseAI - Substack",
+		"description": "Blog international du mouvement PauseAI : actualités et essais sur la pause de l'IA.",
+		"url": "https://pauseai.substack.com/",
+		"lang": "en",
+		"zone": "foret",
+		"logo": "/carte/logos/pauseai.svg"
+	},
+	{
+		"id": "cognition-cafe",
+		"title": "Cognition Café",
+		"description": "Blog explorant les questions de cognition, d'IA et de leurs implications.",
+		"url": "https://cognition.cafe/",
+		"lang": "en",
+		"zone": "foret",
+		"logo": "/carte/logos/cafe.png"
+	},
+	{
+		"id": "dont-worry-vase",
+		"title": "Don't Worry About the Vase",
+		"description": "Blog de Zvi Mowshowitz : analyses détaillées et fréquentes sur l'IA, l'alignement et les risques.",
+		"url": "https://thezvi.substack.com/",
+		"lang": "en",
+		"zone": "foret",
+		"logo": "/carte/logos/zvi.png"
+	}
+]
