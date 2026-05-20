@@ -157,11 +157,13 @@
 	>
 
 	<div class="intro">
-		{#if lang === 'en'}
-			<FAQEn />
-		{:else}
-			<FAQ />
-		{/if}
+		<slot name="intro">
+			{#if lang === 'en'}
+				<FAQEn />
+			{:else}
+				<FAQ />
+			{/if}
+		</slot>
 		<div class="contact-cta">
 			<Button href="mailto:contact@pauseia.fr"
 				>{lang === 'en' ? 'Contact us' : 'Nous contacter'}</Button
