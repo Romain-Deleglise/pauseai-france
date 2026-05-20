@@ -9,7 +9,7 @@ export default {
 		carte: 'Carte',
 		liens_utiles: 'Liens utiles',
 		newsletter: 'Newsletter',
-		propositions: 'Nos propositions',
+		propositions: 'Que demandons-nous ?',
 		blog: 'Blog',
 		comment_agir: 'Comment agir ?',
 		groupes_locaux: 'Groupes locaux',
