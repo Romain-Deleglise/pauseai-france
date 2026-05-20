@@ -7,7 +7,7 @@ export default {
 		apropos: 'About',
 		dangers: 'Dangers of AI',
 		newsletter: 'Newsletter',
-		propositions: 'Our proposals',
+		propositions: 'What do we ask for?',
 		blog: 'Blog',
 		comment_agir: 'How to act?',
 		groupes_locaux: 'Local groups',
