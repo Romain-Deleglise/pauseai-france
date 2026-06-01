@@ -17,6 +17,8 @@
 
 	// 4 rows of photos, each row scrolls in its own direction
 	const row1 = [
+		'/hero/manif-12.webp',
+		'/hero/manif-13.webp',
 		'/hero/tshirt-pauseai.webp',
 		'/hero/senat-intro.webp',
 		'/hero/pauseia-01.webp',
@@ -34,11 +36,11 @@
 		'/hero/pauseia-15.webp',
 		'/hero/panneau-pauseai.webp',
 		'/hero/senat-audience1.webp',
-		'/hero/pauseia-09.webp',
-		'/hero/manif-12.webp',
-		'/hero/manif-13.webp'
+		'/hero/pauseia-09.webp'
 	]
 	const row2 = [
+		'/hero/manif-14.webp',
+		'/hero/manif-15.webp',
 		'/hero/megaphone.webp',
 		'/hero/senat-panel.webp',
 		'/hero/manif-07.webp',
@@ -56,11 +58,10 @@
 		'/hero/conf-presenter.webp',
 		'/hero/event-06.webp',
 		'/hero/manif-05.webp',
-		'/hero/manif-14.webp',
-		'/hero/manif-15.webp',
 		'/hero/manif-16.webp'
 	]
 	const row3 = [
+		'/hero/manif-20.webp',
 		'/hero/senat-orateur.webp',
 		'/hero/pauseia-03.webp',
 		'/hero/manif-04.webp',
@@ -101,7 +102,6 @@
 		'/hero/conf-speaker-new.webp',
 		'/hero/senat-speaker1.webp',
 		'/hero/manif-19.webp',
-		'/hero/manif-20.webp',
 		'/hero/manif-21.webp'
 	]
 
