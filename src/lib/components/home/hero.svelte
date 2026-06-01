@@ -17,11 +17,11 @@
 
 	// 4 rows of photos, each row scrolls in its own direction
 	const row1 = [
-		'/hero/manif-12.webp',
-		'/hero/manif-13.webp',
 		'/hero/tshirt-pauseai.webp',
 		'/hero/senat-intro.webp',
 		'/hero/pauseia-01.webp',
+		'/hero/manif-12.webp',
+		'/hero/manif-13.webp',
 		'/hero/manif-01.webp',
 		'/hero/projection-gateau.webp',
 		'/hero/conf-full-room.webp',
@@ -61,10 +61,10 @@
 		'/hero/manif-16.webp'
 	]
 	const row3 = [
-		'/hero/manif-20.webp',
 		'/hero/senat-orateur.webp',
 		'/hero/pauseia-03.webp',
 		'/hero/manif-04.webp',
+		'/hero/manif-20.webp',
 		'/hero/projection-discussion.webp',
 		'/hero/conference-salle.webp',
 		'/hero/manif-09.webp',
