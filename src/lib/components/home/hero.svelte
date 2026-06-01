@@ -34,7 +34,9 @@
 		'/hero/pauseia-15.webp',
 		'/hero/panneau-pauseai.webp',
 		'/hero/senat-audience1.webp',
-		'/hero/pauseia-09.webp'
+		'/hero/pauseia-09.webp',
+		'/hero/manif-12.webp',
+		'/hero/manif-13.webp'
 	]
 	const row2 = [
 		'/hero/megaphone.webp',
@@ -53,7 +55,10 @@
 		'/hero/sans-ia-sure.webp',
 		'/hero/conf-presenter.webp',
 		'/hero/event-06.webp',
-		'/hero/manif-05.webp'
+		'/hero/manif-05.webp',
+		'/hero/manif-14.webp',
+		'/hero/manif-15.webp',
+		'/hero/manif-16.webp'
 	]
 	const row3 = [
 		'/hero/senat-orateur.webp',
@@ -71,7 +76,9 @@
 		'/hero/manif-11.webp',
 		'/hero/event-09.webp',
 		'/hero/apidays-slide.webp',
-		'/hero/senat-discussion.webp'
+		'/hero/senat-discussion.webp',
+		'/hero/manif-17.webp',
+		'/hero/manif-18.webp'
 	]
 	const row4 = [
 		'/hero/manif-06.webp',
@@ -92,7 +99,10 @@
 		'/hero/event-26.webp',
 		'/hero/apidays-expo.webp',
 		'/hero/conf-speaker-new.webp',
-		'/hero/senat-speaker1.webp'
+		'/hero/senat-speaker1.webp',
+		'/hero/manif-19.webp',
+		'/hero/manif-20.webp',
+		'/hero/manif-21.webp'
 	]
 
 	let mounted = false
