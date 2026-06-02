@@ -421,6 +421,14 @@
 		opacity: 0.75;
 	}
 
+	.accordion-stack :global(.accordion .details) {
+		background-color: transparent;
+		border: none;
+		box-shadow: none;
+		margin: 0 0 0.5rem;
+		padding: 0 0 1rem;
+	}
+
 	.contact-cta {
 		display: flex;
 		gap: 1rem;
