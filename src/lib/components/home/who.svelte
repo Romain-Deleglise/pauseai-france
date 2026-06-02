@@ -160,7 +160,7 @@
 		{#if lang === 'en'}
 			<FAQEn />
 		{:else}
-			<div class="intro-card highlight">
+			<div class="intro-lead">
 				<p>
 					<strong>
 						Pause IA est une <a href="/mentions-legales">association</a> qui alerte les citoyens et
@@ -354,23 +354,18 @@
 		text-align: justify;
 	}
 
-	.intro-card {
-		padding: 1.5rem 1.75rem;
-		border-radius: 1rem;
-		background: var(--bg-subtle, #fff5e8);
-		border: 1px solid var(--border, #e5e7eb);
-		border-left: 4px solid var(--accent, #f97316);
+	.intro-lead {
 		margin: 1rem 0 2rem;
-		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+		font-size: 1.05rem;
+		line-height: 1.7;
 	}
 
-	.intro-card p {
-		margin: 0;
-		line-height: 1.65;
+	.intro-lead p {
+		margin: 0 0 1rem;
 	}
 
-	.intro-card p + p {
-		margin-top: 1rem;
+	.intro-lead p:last-child {
+		margin-bottom: 0;
 	}
 
 	.intro-block {
