@@ -138,7 +138,7 @@ export const resources: Resource[] = [
 		id: 'book-yampolskiy-unexplainable',
 		title: 'AI: Unexplainable, Unpredictable, Uncontrollable',
 		description: "Roman Yampolskiy, 2024. Arguments formels sur l'impossibilité du contrôle.",
-		url: 'https://www.routledge.com/AI-Unexplainable-Unpredictable-Uncontrollable/Yampolskiy/p/book/9781032576275',
+		url: 'https://www.amazon.fr/AI-Unexplainable-Unpredictable-Uncontrollable-Yampolskiy/dp/1032576278',
 		langs: ['en'],
 		category: 'livres',
 		subgroup: 'essentiels',
@@ -149,7 +149,7 @@ export const resources: Resource[] = [
 		title: 'Life 3.0 / La Vie 3.0',
 		description:
 			"Max Tegmark, 2017. Introduction accessible aux scénarios futurs de l'IA. Existe en français.",
-		url: 'https://futureoflife.org/life-3-0/',
+		url: 'https://www.amazon.fr/Life-3-0-Being-Artificial-Intelligence/dp/1101970316',
 		langs: ['en', 'fr'],
 		category: 'livres',
 		subgroup: 'recommandes',
@@ -180,7 +180,7 @@ export const resources: Resource[] = [
 		id: 'book-brief-history',
 		title: 'A Brief History of Intelligence',
 		description: "Max Bennett, 2023. Contexte sur l'intelligence biologique et artificielle.",
-		url: 'https://www.harpercollins.com/products/a-brief-history-of-intelligence-max-bennett',
+		url: 'https://www.amazon.fr/Brief-History-Intelligence-Evolution-Breakthroughs/dp/0063286343',
 		langs: ['en'],
 		category: 'livres',
 		subgroup: 'recommandes',
@@ -190,7 +190,7 @@ export const resources: Resource[] = [
 		id: 'book-yampolskiy-asi',
 		title: 'Artificial Superintelligence: A Futuristic Approach',
 		description: 'Roman Yampolskiy, 2015. Analyse technique des scénarios de superintelligence.',
-		url: 'https://www.routledge.com/Artificial-Superintelligence-A-Futuristic-Approach/Yampolskiy/p/book/9781482234435',
+		url: 'https://www.amazon.fr/Artificial-Superintelligence-Futuristic-Roman-Yampolskiy/dp/1482234432',
 		langs: ['en'],
 		category: 'livres',
 		subgroup: 'recommandes',
@@ -662,9 +662,9 @@ export const resources: Resource[] = [
 		logo: '/carte/logos/aisafetyinfo.png'
 	},
 	{
-		id: 'le-futurologue-yt',
-		title: 'Le Futurologue (YouTube)',
-		description: "Chaîne francophone sur le futur, l'IA et les risques existentiels.",
+		id: 'le-futurologue',
+		title: 'Le Futurologue',
+		description: "Chaîne et podcast francophones sur le futur, l'IA et les risques existentiels.",
 		url: 'https://www.youtube.com/@LeFuturologue',
 		langs: ['fr'],
 		category: 'comprendre',
@@ -673,10 +673,11 @@ export const resources: Resource[] = [
 		logo: '/carte/logos/lefuturologue.jpg'
 	},
 	{
-		id: 'the-flares-yt',
-		title: 'The Flares (YouTube)',
-		description: 'Chaîne francophone sur les risques existentiels et la prospective.',
-		url: 'https://www.youtube.com/@TheFlares',
+		id: 'the-flares',
+		title: 'The Flares',
+		description:
+			"Média francophone sur le futur, l'IA et les risques existentiels (vidéos, articles, podcasts).",
+		url: 'https://theflares.com/',
 		langs: ['fr'],
 		category: 'comprendre',
 		subgroup: 'demarrer',
@@ -706,28 +707,6 @@ export const resources: Resource[] = [
 		logo: '/carte/logos/rationalanimations.jpg'
 	},
 	{
-		id: 'ai-in-context',
-		title: 'AI in Context',
-		description: "Chaîne vidéo qui contextualise les développements récents de l'IA.",
-		url: 'https://www.youtube.com/@aiincontext',
-		langs: ['en'],
-		category: 'comprendre',
-		subgroup: 'demarrer',
-		zone: 'delta',
-		logo: '/carte/logos/aiincontext.jpg'
-	},
-	{
-		id: 'species-agi',
-		title: 'Species – The AGI documentary',
-		description: "Documentaire sur l'arrivée de l'AGI.",
-		url: 'https://www.species-film.com/',
-		langs: ['en'],
-		category: 'comprendre',
-		subgroup: 'aller-plus-loin',
-		zone: 'delta',
-		logo: '/carte/logos/species.jpg'
-	},
-	{
 		id: 'siliconversations',
 		title: 'Siliconversations',
 		description: "Vidéos d'analyse sur l'IA, l'alignement et les risques.",
@@ -748,28 +727,6 @@ export const resources: Resource[] = [
 		subgroup: 'demarrer',
 		zone: 'delta',
 		logo: '/carte/logos/lethal.jpg'
-	},
-	{
-		id: 'le-futurologue-pod',
-		title: 'Le Futurologue (podcast)',
-		description: "Podcast francophone sur le futur et l'IA.",
-		url: 'https://www.youtube.com/@LeFuturologue',
-		langs: ['fr'],
-		category: 'comprendre',
-		subgroup: 'demarrer',
-		zone: 'rives',
-		logo: '/carte/logos/lefuturologue.jpg'
-	},
-	{
-		id: 'the-flares-pod',
-		title: 'The Flares (podcast)',
-		description: 'Podcast francophone sur les risques existentiels.',
-		url: 'https://theflares.com/podcasts/',
-		langs: ['fr'],
-		category: 'comprendre',
-		subgroup: 'demarrer',
-		zone: 'rives',
-		logo: '/carte/logos/theflares.jpg'
 	},
 	{
 		id: 'fli-pod',

@@ -56,18 +56,43 @@
 	let langFilter: Lang | 'all' = 'all'
 	let categoryFilter: Category | 'all' = 'all'
 
-	function matches(r: Resource): boolean {
-		if (langFilter !== 'all' && !r.langs.includes(langFilter)) return false
-		if (categoryFilter !== 'all' && r.category !== categoryFilter) return false
-		if (query.trim()) {
-			const q = query.toLowerCase()
-			if (!r.title.toLowerCase().includes(q) && !r.description.toLowerCase().includes(q))
-				return false
-		}
-		return true
+	// Normalize for search: lowercase + strip accents + collapse whitespace.
+	// "Bénézet" → "benezet", "à l'écosystème" → "a l ecosysteme"
+	function normalize(s: string): string {
+		return s
+			.toLowerCase()
+			.normalize('NFD')
+			.replace(/[\u0300-\u036f]/g, '')
+			.replace(/['']/g, ' ')
 	}
 
-	$: filtered = resources.filter(matches)
+	// Pre-compute searchable haystack for each resource: title + description +
+	// category label + subgroup label (so searching "livre" or "alignement"
+	// matches the category/subgroup names too).
+	const haystacks = new Map<string, string>()
+	for (const r of resources) {
+		const parts = [r.title, r.description, r.category]
+		if (r.subgroup) parts.push(r.subgroup)
+		haystacks.set(r.id, normalize(parts.join(' ')))
+	}
+
+	// Reactive filtering. IMPORTANT: keep the expression inline so Svelte's
+	// compiler picks up `langFilter`, `categoryFilter` and `query` as deps.
+	// (Wrapping it in a helper function broke reactivity in the previous
+	// version.)
+	$: filtered = (() => {
+		const tokens = normalize(query.trim())
+			.split(/\s+/)
+			.filter((t) => t.length > 0)
+		return resources.filter((r) => {
+			if (langFilter !== 'all' && !r.langs.includes(langFilter)) return false
+			if (categoryFilter !== 'all' && r.category !== categoryFilter) return false
+			if (tokens.length === 0) return true
+			const hay = haystacks.get(r.id) ?? ''
+			// All tokens must match (AND semantic) somewhere in the haystack
+			return tokens.every((t) => hay.includes(t))
+		})
+	})()
 
 	$: byCategory = (() => {
 		const m: Record<string, Resource[]> = {}
