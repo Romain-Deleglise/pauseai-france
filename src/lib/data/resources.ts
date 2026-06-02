@@ -251,6 +251,17 @@ export const resources: Resource[] = [
 
 	// ── COMPRENDRE ──────────────────────────────────────────
 	{
+		id: 'intro-video-fr',
+		title: "Introduction vidéo aux risques de l'IA",
+		description:
+			"Vue d'ensemble accessible des enjeux liés au développement de l'IA avancée, format vidéo pour celles et ceux qui préfèrent l'audio-visuel.",
+		url: 'https://www.youtube.com/watch?v=5KVDDfAkRgc',
+		langs: ['fr'],
+		category: 'comprendre',
+		type: 'video',
+		subgroup: 'demarrer'
+	},
+	{
 		id: '3b1b-llm',
 		title: 'Comment fonctionne un LLM ? (3Blue1Brown)',
 		description: 'Vidéo pédagogique pour saisir le fonctionnement des grands modèles de langage.',
@@ -350,6 +361,19 @@ export const resources: Resource[] = [
 		subgroup: 'general'
 	},
 	{
+		id: 'bengio-2024-arguments',
+		title:
+			"Analyse de certains arguments avançant qu'il ne faut pas prendre la sécurité de l'IA au sérieux",
+		description:
+			"Yoshua Bengio, juillet 2024. Article approfondi en français qui passe en revue les principaux arguments minimisant les risques de l'IA et explique pourquoi chacun ne tient pas l'examen.",
+		url: 'https://yoshuabengio.org/2024/07/09/reasoning-through-arguments-against-taking-ai-safety-seriously/',
+		langs: ['fr', 'en'],
+		category: 'risques',
+		type: 'article',
+		subgroup: 'general',
+		date: 'juillet 2024'
+	},
+	{
 		id: 'bengio-faq',
 		title: 'FAQ on Catastrophic Risks (Yoshua Bengio)',
 		description: 'Réponses aux questions fréquentes sur les risques catastrophiques.',
@@ -369,6 +393,17 @@ export const resources: Resource[] = [
 		category: 'risques',
 		type: 'article',
 		subgroup: 'general'
+	},
+	{
+		id: 'the-compendium-intro',
+		title: 'The Compendium (introduction)',
+		description:
+			"Introduction synthétique en ligne aux risques existentiels de l'IA : un point d'entrée court avant d'aborder le document complet.",
+		url: 'https://www.thecompendium.ai/introduction',
+		langs: ['en'],
+		category: 'comprendre',
+		type: 'site',
+		subgroup: 'aller-plus-loin'
 	},
 	{
 		id: 'the-compendium',
@@ -970,13 +1005,13 @@ export const resources: Resource[] = [
 
 // Curated "starter pack" for newcomers, surfaced at the top of the
 // /ressources page. Order matters : it's the suggested reading order.
-// Keep it short — 4 entries max — so it stays a real recommendation,
-// not a second TOC.
+// Mix formats deliberately (vidéo, article, site, livre) so people pick
+// the one that matches their preferred medium.
 export const FEATURED_IDS: string[] = [
-	'3b1b-llm', // FR, 20 min : ce qu'est un LLM
-	'bengio-faq', // FR/EN, 30 min : pourquoi c'est dangereux
-	'rob-miles', // EN, série vidéo : l'alignement
-	'book-ifanyone' // EN, livre : l'argument complet et récent
+	'intro-video-fr', // FR vidéo : pour ceux qui préfèrent l'audio-visuel
+	'bengio-2024-arguments', // FR/EN article : la meilleure réponse récente aux objections
+	'the-compendium-intro', // EN online : introduction complète aux risques existentiels
+	'book-ifanyone' // EN livre : l'argument complet et récent
 ]
 
 // Injected at build time from `git log -1` on this file. See vite.config.ts.
