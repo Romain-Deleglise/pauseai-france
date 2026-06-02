@@ -366,7 +366,7 @@ export const resources: Resource[] = [
 			"Analyse de certains arguments avançant qu'il ne faut pas prendre la sécurité de l'IA au sérieux",
 		description:
 			"Yoshua Bengio, juillet 2024. Article approfondi en français qui passe en revue les principaux arguments minimisant les risques de l'IA et explique pourquoi chacun ne tient pas l'examen.",
-		url: 'https://yoshuabengio.org/2024/07/09/reasoning-through-arguments-against-taking-ai-safety-seriously/',
+		url: 'https://yoshuabengio.org/fr/blogue/analyse-de-certains-arguments-avancant-quil-ne-faut-pas-prendre-la-securite-de-lia-au',
 		langs: ['fr', 'en'],
 		category: 'risques',
 		type: 'article',
