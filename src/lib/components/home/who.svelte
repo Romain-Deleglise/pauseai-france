@@ -169,12 +169,12 @@
 			</p>
 		{/if}
 		<div class="contact-cta">
-			<Button href="mailto:contact@pauseia.fr"
-				>{lang === 'en' ? 'Contact us' : 'Nous contacter'}</Button
-			>
-			{#if lang !== 'en'}
+			{#if lang === 'en'}
+				<Button alt href="mailto:contact@pauseia.fr">Contact us</Button>
+			{:else}
 				<Button href="/dons">Faire un don</Button>
-				<Button href="/rejoindre">Nous rejoindre</Button>
+				<Button alt href="/rejoindre">Nous rejoindre</Button>
+				<Button alt href="mailto:contact@pauseia.fr">Nous contacter</Button>
 			{/if}
 		</div>
 	</div>
@@ -420,11 +420,6 @@
 		justify-content: center;
 		flex-wrap: wrap;
 		margin-top: 1.5rem;
-	}
-
-	.contact-cta :global(a),
-	.contact-cta :global(button) {
-		box-shadow: inset 0 0 0 2px var(--black, #000);
 	}
 
 	.team-section {
