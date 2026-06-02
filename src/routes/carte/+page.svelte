@@ -527,14 +527,14 @@
 			<div class="map-sources" bind:this={sourcesContainer}></div>
 		</div>
 		<div class="hint">Molette : zoom · Glisser : déplacer</div>
-	</div>
 
-	<div class="src-tooltip" bind:this={tooltip}>
-		<div class="src-tooltip-header">
-			<span class="src-tooltip-flag" bind:this={tooltipFlag}></span>
-			<span class="src-tooltip-title" bind:this={tooltipTitle}></span>
+		<div class="src-tooltip" bind:this={tooltip}>
+			<div class="src-tooltip-header">
+				<span class="src-tooltip-flag" bind:this={tooltipFlag}></span>
+				<span class="src-tooltip-title" bind:this={tooltipTitle}></span>
+			</div>
+			<div class="src-tooltip-desc" bind:this={tooltipDesc}></div>
 		</div>
-		<div class="src-tooltip-desc" bind:this={tooltipDesc}></div>
 	</div>
 </div>
 
