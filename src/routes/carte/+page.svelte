@@ -206,12 +206,24 @@
 		y = fit.y
 		MIN_SCALE = scale * 0.5
 
+		// Cache labels once — querySelectorAll on every frame is the bottleneck.
+		const labelEls = Array.from(stage.querySelectorAll<HTMLElement>('.zone-static-label'))
+		let rafPending = false
+		let visSet = false
+
 		function apply() {
-			stage.style.transform = `translate(${x}px, ${y}px) scale(${scale})`
-			stage.style.visibility = 'visible'
-			const inv = 1 / scale
-			stage.querySelectorAll('.zone-static-label').forEach((l) => {
-				;(l as HTMLElement).style.transform = `translate(-50%, -50%) scale(${inv})`
+			if (rafPending) return
+			rafPending = true
+			requestAnimationFrame(() => {
+				rafPending = false
+				stage.style.transform = `translate3d(${x}px, ${y}px, 0) scale(${scale})`
+				if (!visSet) {
+					stage.style.visibility = 'visible'
+					visSet = true
+				}
+				const inv = 1 / scale
+				const t = `translate(-50%, -50%) scale(${inv})`
+				for (let i = 0; i < labelEls.length; i++) labelEls[i].style.transform = t
 			})
 		}
 
@@ -533,7 +545,7 @@
 	.carte-page {
 		background: #fff5e8;
 		color: var(--text);
-		padding-bottom: 2rem;
+		padding-bottom: 0;
 		position: relative;
 	}
 
@@ -542,42 +554,55 @@
 		color: var(--text);
 	}
 
+	/* Compact hero — keep enough room for the title + 1 line subtitle,
+	   leave the rest of the viewport for the map itself. */
 	.carte-intro {
 		max-width: 52rem;
 		margin: 0 auto;
-		padding: 2rem 1.25rem 0.5rem;
+		padding: 1rem 1.25rem 0.4rem;
 		text-align: center;
 	}
 
 	.carte-intro :global(h1) {
-		margin-bottom: 1.25rem;
-		padding-bottom: 1rem;
+		margin-bottom: 0.4rem;
+		padding-bottom: 0.5rem;
+		font-size: clamp(1.4rem, 2.6vw, 1.85rem);
 		display: inline-block;
 	}
 
 	.carte-intro :global(h1::after) {
-		left: 0;
-		right: 0;
+		left: 15%;
+		right: 15%;
+		height: 3px;
 	}
 
 	.carte-intro .subtitle {
 		font-family: var(--font-body);
-		font-size: 1.05rem;
-		line-height: 1.5;
+		font-size: 0.95rem;
+		line-height: 1.4;
 		color: var(--text-secondary);
-		margin: 0 auto 1.5rem;
-		max-width: 36rem;
+		margin: 0 auto 0.5rem;
+		max-width: 38rem;
 	}
 
-	/* No frame, no border, no radius: the viewport bg matches the page bg
-	   so the map flows naturally into the page. */
+	/* The map fills (almost) all remaining viewport height under the header
+	   and the compact hero. No border / radius / shadow: it bleeds into the
+	   page so only two colors are visible. */
 	.map-viewport {
 		position: relative;
 		width: 100%;
-		height: clamp(520px, 75vh, 900px);
+		/* Header sticky (~64px) + hero (~110px) — leave a tiny bottom gap */
+		height: calc(100vh - 175px);
+		min-height: 480px;
 		overflow: hidden;
 		cursor: grab;
 		background: inherit;
+		touch-action: none;
+	}
+
+	.map-stage {
+		will-change: transform;
+		backface-visibility: hidden;
 	}
 
 	.map-viewport.fullscreen {
