@@ -161,30 +161,26 @@
 			<FAQEn />
 		{:else}
 			<p class="lead">
-				<strong>Pause IA</strong> est une <a href="/mentions-legales">association</a> qui alerte les
-				citoyens et les pouvoirs publics français sur les
+				Nous sommes une <a href="/mentions-legales">association</a> qui alerte les citoyens et les
+				pouvoirs publics français sur les
 				<a href="/dangers/economiques-et-materiels">graves dangers</a> de la course à l'intelligence
-				artificielle, et les incite à agir pour s'y opposer. Nous sommes la représentation en France
-				de <a href="https://pauseai.info">PauseAI Global</a>.
+				artificielle, et les incite à agir pour s'y opposer. Nous représentons en France
+				<a href="https://pauseai.info">PauseAI Global</a>.
 			</p>
 		{/if}
 		<div class="contact-cta">
 			<Button href="mailto:contact@pauseia.fr"
 				>{lang === 'en' ? 'Contact us' : 'Nous contacter'}</Button
 			>
+			{#if lang !== 'en'}
+				<Button href="/dons">Faire un don</Button>
+				<Button href="/rejoindre">Nous rejoindre</Button>
+			{/if}
 		</div>
 	</div>
 
 	<div class="team-section">
 		<h2 class="section-title">{lang === 'en' ? 'Leadership' : 'Direction'}</h2>
-		<p class="section-description">
-			{#if lang === 'en'}
-				The board members who lead the association's strategy and operations.
-			{:else}
-				Les membres du bureau et du conseil d'administration qui pilotent la stratégie et les
-				opérations de l'association.
-			{/if}
-		</p>
 		<div class="cards-grid cards-centered">
 			{#each leadership as leader}
 				<LeadershipCard name={leader.name} role={leader.role} image={leader.image} />
@@ -197,15 +193,6 @@
 			<h2 class="section-title">
 				{lang === 'en' ? 'Scientific Council' : 'Conseil scientifique'}
 			</h2>
-			<p class="section-description">
-				{#if lang === 'en'}
-					Our experts who inform our positions on the technical and scientific issues of artificial
-					intelligence.
-				{:else}
-					Nos experts qui éclairent nos positions sur les enjeux techniques et scientifiques de
-					l'intelligence artificielle.
-				{/if}
-			</p>
 			<div class="cards-grid cards-centered">
 				{#each scientificCouncil as scientist}
 					<ScientificCouncilCard
@@ -223,15 +210,6 @@
 			<h2 class="section-title">
 				{lang === 'en' ? 'Members & Volunteers' : 'Membres et bénévoles'}
 			</h2>
-			<p class="section-description">
-				{#if lang === 'en'}
-					The volunteers who bring the association to life every day through their skills and
-					commitment.
-				{:else}
-					Les bénévoles qui font vivre l'association au quotidien à travers leurs compétences et
-					leur engagement.
-				{/if}
-			</p>
 			<div class="cards-grid cards-centered">
 				{#each members as member}
 					<WhoCard name={member.name} image={member.image} job={member.job} />
@@ -256,7 +234,7 @@
 			</p>
 
 			<div class="accordion-stack">
-				<Accordion id="quelle-ia" noHash open>
+				<Accordion id="quelle-ia" noHash>
 					<svelte:fragment slot="head">Quelle IA&nbsp;?</svelte:fragment>
 					<svelte:fragment slot="details">
 						<ul class="bullet-list">
@@ -334,15 +312,12 @@
 					</svelte:fragment>
 				</Accordion>
 			</div>
-		</div>
 
-		<div class="team-section">
-			<h2 class="section-title">Notre indépendance</h2>
-			<p class="section-description">
-				Association à but non lucratif créée en juin 2024, Pause IA est <strong
-					>totalement indépendante de l'industrie de l'IA et de la tech</strong
-				>. Nous fonctionnons grâce aux <a href="/dons">dons</a> de nos soutiens, qui financent nos campagnes,
-				nos événements et le fonctionnement de l'association.
+			<p class="independence">
+				Association à but non lucratif créée en juin 2024, nous sommes <strong
+					>totalement indépendants de l'industrie de l'IA et de la tech</strong
+				>&nbsp;: nous fonctionnons grâce aux <a href="/dons">dons</a> de nos soutiens, qui financent
+				nos campagnes, nos événements et le fonctionnement de l'association.
 			</p>
 		</div>
 	{/if}
@@ -427,6 +402,16 @@
 		box-shadow: none;
 		margin: 0 0 0.5rem;
 		padding: 0 0 1rem;
+	}
+
+	.independence {
+		margin: 1.75rem 0 0;
+		padding-top: 1.5rem;
+		border-top: 1px solid var(--border, #e5e7eb);
+		font-size: 0.95rem;
+		color: var(--text-secondary, #4b5563);
+		line-height: 1.6;
+		text-align: center;
 	}
 
 	.contact-cta {
