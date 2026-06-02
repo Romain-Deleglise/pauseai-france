@@ -202,8 +202,10 @@
 							<li>
 								Les modèles d'IA généralistes (aujourd'hui tels que GPT, Claude, Gemini) deviennent
 								chaque jour plus puissants, ils sont faciles à utiliser et se déploient à grande
-								vitesse dans la société, sans réelles <a href="/dangers/economiques-et-materiels"
-									>normes de sécurité</a
+								vitesse dans la société, sans réelles <a
+									href="https://www.gov.uk/government/publications/international-ai-safety-report-2025"
+									target="_blank"
+									rel="noopener noreferrer">normes de sécurité</a
 								> et hors de tout contrôle institutionnel.
 							</li>
 							<li>
@@ -213,14 +215,18 @@
 								<a href="/dangers/pour-les-individus">notre modèle social</a>.
 							</li>
 							<li>
-								Ces modèles d'IA commencent à <a href="/dangers/pour-l'humanite"
-									>échapper à leurs créateurs</a
+								Ces modèles d'IA commencent à <a
+									href="https://www.anthropic.com/research/alignment-faking"
+									target="_blank"
+									rel="noopener noreferrer">échapper à leurs créateurs</a
 								>. Certains le reconnaissent publiquement.
 							</li>
 							<li>
 								Dans un scénario catastrophe que l'on ne peut exclure, ils pourraient donner
-								naissance à une <a href="/dangers/pour-l'humanite"
-									>super-intelligence incontrôlable</a
+								naissance à une <a
+									href="https://www.safe.ai/work/statement-on-ai-risk"
+									target="_blank"
+									rel="noopener noreferrer">super-intelligence incontrôlable</a
 								>.
 							</li>
 						</ul>
@@ -430,7 +436,11 @@
 	}
 
 	.accordion-group :global(.accordion .header:hover) {
-		color: var(--accent, #f97316);
+		opacity: 0.75;
+	}
+
+	.accordion-group .intro-list li::before {
+		background: var(--text-secondary, #4b5563);
 	}
 
 	.intro-footer {
