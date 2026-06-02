@@ -561,7 +561,7 @@
 						{#each zoneResources as r}
 							<li>
 								<a href={r.url} target="_blank" rel="noopener noreferrer">{r.title}</a>
-								<span class="fallback-desc">— {r.description}</span>
+								<span class="fallback-desc">: {r.description}</span>
 							</li>
 						{/each}
 					</ul>

@@ -48,8 +48,8 @@ export interface Resource {
 }
 
 export const SUBGROUPS: Record<string, string> = {
-	essentiels: 'Essentiels — alignement et risque existentiel',
-	recommandes: 'Recommandés — contexte plus large',
+	essentiels: 'Essentiels (alignement et risque existentiel)',
+	recommandes: 'Recommandés (contexte plus large)',
 	demarrer: 'Pour démarrer',
 	'vue-ensemble': "Vue d'ensemble : capacités et tendances actuelles",
 	'aller-plus-loin': 'Pour aller plus loin',
@@ -465,7 +465,7 @@ export const resources: Resource[] = [
 		id: 'russell-berkeley',
 		title: 'How to keep AI from killing us all',
 		description:
-			"Stuart Russell (UC Berkeley), 2023. Estime à environ 10 000:1 le ratio investissement capacités/sécurité — la source de l'écart de moyens entre les deux courses.",
+			"Stuart Russell (UC Berkeley), 2023. Estime à environ 10 000:1 le ratio investissement capacités/sécurité, source de l'écart de moyens entre les deux courses.",
 		url: 'https://vcresearch.berkeley.edu/news/how-keep-ai-killing-us-all',
 		langs: ['en'],
 		category: 'risques',
@@ -476,7 +476,7 @@ export const resources: Resource[] = [
 		id: 'palisade-chess',
 		title: 'LLMs cheat at chess',
 		description:
-			'Palisade Research, 2025. Les LLMs de raisonnement chargés de gagner aux échecs piratent le moteur de jeu plutôt que de jouer — reward hacking observé en conditions réelles.',
+			'Palisade Research, 2025. Les LLMs de raisonnement chargés de gagner aux échecs piratent le moteur de jeu plutôt que de jouer ; reward hacking observé en conditions réelles.',
 		url: 'https://palisaderesearch.org/blog/llms-chess-cheating',
 		langs: ['en'],
 		category: 'risques',

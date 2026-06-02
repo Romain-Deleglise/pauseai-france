@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onMount } from 'svelte'
 	import PostMeta from '$components/PostMeta.svelte'
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
 	import {
@@ -76,14 +77,47 @@
 			.replace(/['']/g, ' ')
 	}
 
-	// Pre-compute searchable haystack for each resource: title + description +
-	// category label + subgroup label (so searching "livre" or "alignement"
-	// matches the category/subgroup names too).
+	// Synonyms / aliases so that searches in either language find the
+	// same resources. Searching "alignment" surfaces French "alignement"
+	// content and vice-versa ; "AGI" finds "IAG", etc.
+	const SYNONYMS: Record<string, string[]> = {
+		alignement: ['alignment'],
+		alignment: ['alignement'],
+		agi: ['iag', 'intelligence artificielle generale', 'superintelligence', 'asi'],
+		iag: ['agi', 'intelligence artificielle generale'],
+		superintelligence: ['asi', 'agi', 'iag'],
+		extinction: ['xrisk', 'p(doom)', 'risque existentiel'],
+		risque: ['danger', 'risk'],
+		llm: ['large language model', 'modele de langage'],
+		paper: ['papier', 'article scientifique', 'recherche'],
+		livre: ['book'],
+		book: ['livre'],
+		newsletter: ['lettre', 'infolettre'],
+		video: ['videos', 'youtube', 'chaine'],
+		podcast: ['podcasts']
+	}
+
+	function expandSynonyms(text: string): string {
+		// Append the synonyms of any token already in the text. Idempotent.
+		const tokens = text.split(/\s+/)
+		const extras: string[] = []
+		for (const t of tokens) {
+			const syns = SYNONYMS[t]
+			if (syns) extras.push(...syns.map(normalize))
+		}
+		return extras.length > 0 ? text + ' ' + extras.join(' ') : text
+	}
+
+	// Pre-compute searchable haystack for each resource. Includes title,
+	// description, category, subgroup, date AND synonym expansion so that
+	// "alignment" / "alignement", "AGI" / "IAG", "book" / "livre", etc.
+	// all find the same content.
 	const haystacks = new Map<string, string>()
 	for (const r of resources) {
 		const parts = [r.title, r.description, r.category]
 		if (r.subgroup) parts.push(r.subgroup)
-		haystacks.set(r.id, normalize(parts.join(' ')))
+		if (r.date) parts.push(r.date)
+		haystacks.set(r.id, expandSynonyms(normalize(parts.join(' '))))
 	}
 
 	// Reactive filtering. IMPORTANT: keep the expression inline so Svelte's
@@ -91,7 +125,11 @@
 	// (Wrapping it in a helper function broke reactivity in the previous
 	// version.)
 	$: filtered = (() => {
-		const tokens = normalize(query.trim())
+		// Expand the query the same way we expanded the haystacks. Searching
+		// "livre" still matches haystacks that only contain "book" (and the
+		// reverse), without us having to enumerate every variant in both
+		// directions in the data.
+		const tokens = expandSynonyms(normalize(query.trim()))
 			.split(/\s+/)
 			.filter((t) => t.length > 0)
 		return resources.filter((r) => {
@@ -99,7 +137,8 @@
 			if (categoryFilter.length > 0 && !categoryFilter.includes(r.category)) return false
 			if (tokens.length === 0) return true
 			const hay = haystacks.get(r.id) ?? ''
-			// All tokens must match (AND semantic) somewhere in the haystack
+			// Each query token (or its synonym) must appear somewhere in the
+			// haystack — AND semantic across tokens, OR within synonyms.
 			return tokens.every((t) => hay.includes(t))
 		})
 	})()
@@ -146,6 +185,34 @@
 	$: visibleCount = filtered.length
 	$: hasActiveFilter = query.trim() !== '' || langFilter.length > 0 || categoryFilter.length > 0
 
+	// Track the category section currently in the viewport so the side TOC
+	// can highlight it. Uses IntersectionObserver — far cheaper than scroll
+	// listeners and triggers exactly when a section header crosses the top
+	// 30% of the viewport.
+	let activeSection: Category | '' = ''
+	onMount(() => {
+		const sections = CATEGORY_ORDER.map((c) => document.getElementById(c)).filter(
+			(el): el is HTMLElement => el !== null
+		)
+		if (sections.length === 0) return
+
+		const observer = new IntersectionObserver(
+			(entries) => {
+				// Pick the topmost entry currently intersecting. If several are
+				// visible, prefer the one closest to the top of the viewport.
+				const visible = entries
+					.filter((e) => e.isIntersecting)
+					.sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)
+				if (visible[0]) {
+					activeSection = visible[0].target.id as Category
+				}
+			},
+			{ rootMargin: '-15% 0px -70% 0px', threshold: 0 }
+		)
+		sections.forEach((s) => observer.observe(s))
+		return () => observer.disconnect()
+	})
+
 	// Pre-filled mailto so the user lands in their mail client with a
 	// ready-to-send template. Universal (works without any GitHub auth)
 	// and reliable across browsers / extensions.
@@ -175,167 +242,305 @@
 
 <PostMeta {title} {description} />
 
-<article class="ressources-page">
-	<!-- Hero -->
-	<section class="hero">
-		<UnderlinedTitle as="h1">Ressources</UnderlinedTitle>
-		<p class="hero-description">
-			Une base de connaissances curée sur l'IA, ses risques existentiels et le problème de
-			l'alignement.
-		</p>
+<div class="layout">
+	<!-- Side TOC : sticky on desktop, hidden on mobile (top filter pills
+	     already act as quick category jump on small screens). -->
+	<aside class="toc" aria-label="Sommaire des sections">
+		<p class="toc-title">Sections</p>
+		<ul>
+			{#each CATEGORY_ORDER as cat}
+				{@const items = byCategory[cat] ?? []}
+				{#if items.length > 0}
+					<li>
+						<a href={'#' + cat} class="toc-link" class:active={activeSection === cat}>
+							<svelte:component this={CATEGORIES[cat].icon} size={14} />
+							<span class="toc-label">{CATEGORIES[cat].label}</span>
+							<span class="toc-count">{items.length}</span>
+						</a>
+					</li>
+				{/if}
+			{/each}
+		</ul>
+	</aside>
 
-		<a href="/carte" class="map-link">
-			<MapIcon size={16} />
-			<span>Voir l'écosystème en vue cartographique</span>
-		</a>
-	</section>
+	<article class="ressources-page">
+		<!-- Hero -->
+		<section class="hero">
+			<UnderlinedTitle as="h1">Ressources</UnderlinedTitle>
+			<p class="hero-description">
+				Une base de connaissances curée sur l'IA, ses risques existentiels et le problème de
+				l'alignement.
+			</p>
 
-	<!-- Controls -->
-	<section class="controls" aria-label="Filtres">
-		<div class="search">
-			<Search size={16} class="search-icon" />
-			<input
-				type="search"
-				placeholder="Rechercher une ressource…"
-				bind:value={query}
-				aria-label="Rechercher"
-			/>
-			{#if query}
-				<button class="clear-btn" on:click={() => (query = '')} aria-label="Effacer la recherche">
-					<X size={14} />
-				</button>
-			{/if}
-		</div>
+			<a href="/carte" class="map-link">
+				<MapIcon size={16} />
+				<span>Voir l'écosystème en vue cartographique</span>
+			</a>
+		</section>
 
-		<div class="filter-row">
-			<div class="filter-group" aria-label="Langue (multi-sélection)">
-				<button
-					class="pill"
-					class:active={langFilter.includes('fr')}
-					on:click={() => toggleLang('fr')}
-					aria-pressed={langFilter.includes('fr')}
-				>
-					<img src="/flags/fr.svg" alt="" width="16" /> FR
-				</button>
-				<button
-					class="pill"
-					class:active={langFilter.includes('en')}
-					on:click={() => toggleLang('en')}
-					aria-pressed={langFilter.includes('en')}
-				>
-					<img src="/flags/gb.svg" alt="" width="16" /> EN
-				</button>
+		<!-- Controls -->
+		<section class="controls" aria-label="Filtres">
+			<div class="search">
+				<Search size={16} class="search-icon" />
+				<input
+					type="search"
+					placeholder="Rechercher une ressource…"
+					bind:value={query}
+					aria-label="Rechercher"
+				/>
+				{#if query}
+					<button class="clear-btn" on:click={() => (query = '')} aria-label="Effacer la recherche">
+						<X size={14} />
+					</button>
+				{/if}
 			</div>
 
-			<div class="filter-group" aria-label="Catégorie (multi-sélection)">
-				{#each CATEGORY_ORDER as cat}
+			<div class="filter-row">
+				<div class="filter-group" aria-label="Langue (multi-sélection)">
 					<button
 						class="pill"
-						class:active={categoryFilter.includes(cat)}
-						on:click={() => toggleCategory(cat)}
-						aria-pressed={categoryFilter.includes(cat)}
+						class:active={langFilter.includes('fr')}
+						on:click={() => toggleLang('fr')}
+						aria-pressed={langFilter.includes('fr')}
 					>
-						<svelte:component this={CATEGORIES[cat].icon} size={14} />
-						<span>{CATEGORIES[cat].label}</span>
+						<img src="/flags/fr.svg" alt="" width="16" /> FR
 					</button>
-				{/each}
+					<button
+						class="pill"
+						class:active={langFilter.includes('en')}
+						on:click={() => toggleLang('en')}
+						aria-pressed={langFilter.includes('en')}
+					>
+						<img src="/flags/gb.svg" alt="" width="16" /> EN
+					</button>
+				</div>
+
+				<div class="filter-group" aria-label="Catégorie (multi-sélection)">
+					{#each CATEGORY_ORDER as cat}
+						<button
+							class="pill"
+							class:active={categoryFilter.includes(cat)}
+							on:click={() => toggleCategory(cat)}
+							aria-pressed={categoryFilter.includes(cat)}
+						>
+							<svelte:component this={CATEGORIES[cat].icon} size={14} />
+							<span>{CATEGORIES[cat].label}</span>
+						</button>
+					{/each}
+				</div>
 			</div>
-		</div>
 
-		<div class="meta-row">
-			<p class="count">
-				<strong>{visibleCount}</strong>
-				{visibleCount === 1 ? 'ressource' : 'ressources'}
-				{#if hasActiveFilter}
-					<span class="count-total">sur {totalCount}</span>
-					<button class="reset-btn" on:click={clearFilters}>Réinitialiser</button>
-				{/if}
-			</p>
-			<p class="updated">Mise à jour : {RESOURCES_LAST_UPDATED}</p>
-		</div>
-	</section>
+			<div class="meta-row">
+				<p class="count">
+					<strong>{visibleCount}</strong>
+					{visibleCount === 1 ? 'ressource' : 'ressources'}
+					{#if hasActiveFilter}
+						<span class="count-total">sur {totalCount}</span>
+						<button class="reset-btn" on:click={clearFilters}>Réinitialiser</button>
+					{/if}
+				</p>
+				<p class="updated">Mise à jour : {RESOURCES_LAST_UPDATED}</p>
+			</div>
+		</section>
 
-	<!-- Sections -->
-	{#if visibleCount === 0}
-		<p class="empty">Aucune ressource ne correspond à votre recherche.</p>
-	{/if}
-
-	{#each CATEGORY_ORDER as cat}
-		{@const items = byCategory[cat] ?? []}
-		{#if items.length > 0}
-			<section id={cat} class="res-section">
-				<header class="res-section-header">
-					<div class="section-icon" aria-hidden="true">
-						<svelte:component this={CATEGORIES[cat].icon} size="1.2em" />
-					</div>
-					<div>
-						<h2>{CATEGORIES[cat].label}</h2>
-						{#if CATEGORIES[cat].intro}
-							<p class="section-intro">{CATEGORIES[cat].intro}</p>
-						{/if}
-					</div>
-				</header>
-
-				{#each groupBySubgroup(items, cat) as group}
-					<div class="res-group">
-						{#if group.label}
-							<h3 class="res-subtitle">{group.label}</h3>
-						{/if}
-						<ul class="res-list">
-							{#each group.items as entry}
-								<li class="res-entry">
-									<a
-										class="res-card"
-										href={entry.url}
-										target={entry.internal ? undefined : '_blank'}
-										rel={entry.internal ? undefined : 'noopener noreferrer'}
-									>
-										<div class="res-card-main">
-											<div class="res-card-header">
-												<h4 class="res-title">{entry.title}</h4>
-												<MoveUpRight class="res-arrow" size={16} aria-hidden="true" />
-											</div>
-											<p class="res-desc">{entry.description}</p>
-										</div>
-										<div class="res-card-meta">
-											<span class="res-flags">
-												{#each entry.langs as l}
-													<img class="res-flag" src={flagSrc(l)} alt={flagAlt(l)} />
-												{/each}
-											</span>
-											{#if entry.date}<span class="res-date">{entry.date}</span>{/if}
-										</div>
-									</a>
-								</li>
-							{/each}
-						</ul>
-					</div>
-				{/each}
-			</section>
+		<!-- Sections -->
+		{#if visibleCount === 0}
+			<p class="empty">Aucune ressource ne correspond à votre recherche.</p>
 		{/if}
-	{/each}
 
-	<!-- Bottom CTA -->
-	<section class="cta-card">
-		<h3>Une ressource à suggérer&nbsp;?</h3>
-		<p>
-			Vous connaissez une référence francophone ou internationale qui devrait figurer ici&nbsp;?
-			Écrivez-nous avec le modèle pré-rempli — votre client mail s'ouvrira directement avec tous les
-			champs prêts.
-		</p>
-		<a class="cta-btn" href={SUGGEST_URL}>
-			<Mail size={16} />
-			<span>Suggérer une ressource</span>
-		</a>
-	</section>
-</article>
+		{#each CATEGORY_ORDER as cat}
+			{@const items = byCategory[cat] ?? []}
+			{#if items.length > 0}
+				<section id={cat} class="res-section">
+					<header class="res-section-header">
+						<div class="section-icon" aria-hidden="true">
+							<svelte:component this={CATEGORIES[cat].icon} size="1.2em" />
+						</div>
+						<div>
+							<h2>{CATEGORIES[cat].label}</h2>
+							{#if CATEGORIES[cat].intro}
+								<p class="section-intro">{CATEGORIES[cat].intro}</p>
+							{/if}
+						</div>
+					</header>
+
+					{#each groupBySubgroup(items, cat) as group}
+						<div class="res-group">
+							{#if group.label}
+								<h3 class="res-subtitle">{group.label}</h3>
+							{/if}
+							<ul class="res-list">
+								{#each group.items as entry}
+									<li class="res-entry">
+										<a
+											class="res-card"
+											href={entry.url}
+											target={entry.internal ? undefined : '_blank'}
+											rel={entry.internal ? undefined : 'noopener noreferrer'}
+										>
+											<div class="res-card-main">
+												<div class="res-card-header">
+													<h4 class="res-title">{entry.title}</h4>
+													<MoveUpRight class="res-arrow" size={16} aria-hidden="true" />
+												</div>
+												<p class="res-desc">{entry.description}</p>
+											</div>
+											<div class="res-card-meta">
+												<span class="res-flags">
+													{#each entry.langs as l}
+														<img class="res-flag" src={flagSrc(l)} alt={flagAlt(l)} />
+													{/each}
+												</span>
+												{#if entry.date}<span class="res-date">{entry.date}</span>{/if}
+											</div>
+										</a>
+									</li>
+								{/each}
+							</ul>
+						</div>
+					{/each}
+				</section>
+			{/if}
+		{/each}
+
+		<!-- Bottom CTA -->
+		<section class="cta-card">
+			<h3>Une ressource à suggérer&nbsp;?</h3>
+			<p>
+				Vous connaissez une référence francophone ou internationale qui devrait figurer ici&nbsp;?
+				Écrivez-nous avec le modèle pré-rempli ; votre client mail s'ouvrira directement avec tous
+				les champs prêts.
+			</p>
+			<a class="cta-btn" href={SUGGEST_URL}>
+				<Mail size={16} />
+				<span>Suggérer une ressource</span>
+			</a>
+		</section>
+	</article>
+</div>
 
 <style>
+	/* ─── Page layout : sticky TOC on the left, content on the right ── */
+	.layout {
+		display: grid;
+		grid-template-columns: 1fr;
+		max-width: 72rem;
+		margin: 2rem auto 0;
+		padding: 0 1.25rem;
+		gap: 2.5rem;
+	}
+
 	.ressources-page {
+		min-width: 0; /* allow grid item to shrink */
 		max-inline-size: 52rem;
-		margin-inline: auto;
-		margin-top: 2rem;
-		padding: 0 1.25rem 4rem;
+		padding: 0 0 4rem;
+		margin: 0 auto;
+	}
+
+	/* ─── Side TOC ────────────────────────────────────────── */
+	.toc {
+		display: none; /* hidden on mobile, see media query below */
+	}
+
+	.toc-title {
+		font-family: var(--font-heading);
+		font-weight: 600;
+		font-size: 0.72rem;
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+		color: var(--text-secondary);
+		margin: 0 0 0.6rem;
+		padding-left: 0.75rem;
+	}
+
+	.toc ul {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 0.1rem;
+	}
+
+	.toc-link {
+		display: flex;
+		align-items: center;
+		gap: 0.45rem;
+		padding: 0.45rem 0.75rem;
+		border-radius: 8px;
+		font-family: var(--font-heading);
+		font-weight: 500;
+		font-size: 0.85rem;
+		color: var(--text-secondary);
+		text-decoration: none;
+		border-left: 2px solid transparent;
+		transition:
+			background 0.15s,
+			color 0.15s,
+			border-color 0.15s;
+	}
+
+	.toc-link:hover {
+		background: rgba(255, 148, 22, 0.08);
+		color: var(--brand-subtle, var(--brand));
+	}
+
+	.toc-link.active {
+		background: rgba(255, 148, 22, 0.1);
+		color: var(--brand-subtle, var(--brand));
+		border-left-color: var(--brand);
+		font-weight: 600;
+	}
+
+	:global([data-theme='dark']) .toc-link:hover,
+	:global([data-theme='dark']) .toc-link.active {
+		background: rgba(255, 148, 22, 0.12);
+		color: var(--brand);
+	}
+
+	.toc-label {
+		flex: 1;
+		min-width: 0;
+	}
+
+	.toc-count {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-width: 1.3rem;
+		height: 1.3rem;
+		padding: 0 0.35rem;
+		border-radius: 999px;
+		background: rgba(0, 0, 0, 0.06);
+		color: var(--text-secondary);
+		font-size: 0.7rem;
+		font-weight: 600;
+	}
+
+	.toc-link.active .toc-count {
+		background: var(--brand);
+		color: white;
+	}
+
+	:global([data-theme='dark']) .toc-count {
+		background: rgba(255, 255, 255, 0.08);
+	}
+
+	@media (min-width: 1024px) {
+		.layout {
+			grid-template-columns: 14rem minmax(0, 1fr);
+		}
+		.toc {
+			display: block;
+			position: sticky;
+			top: 5.5rem;
+			align-self: start;
+			max-height: calc(100vh - 7rem);
+			overflow-y: auto;
+		}
+		.ressources-page {
+			margin: 0;
+		}
 	}
 
 	/* ─── Hero ─────────────────────────────────────────────── */
