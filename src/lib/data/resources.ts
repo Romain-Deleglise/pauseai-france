@@ -624,7 +624,7 @@ export const resources: Resource[] = [
 		id: 'controlai',
 		title: 'ControlAI',
 		description:
-			"Organisation sœur anglaise qui informe le grand public sur les risques d'une superintelligence. Mène actuellement une campagne pour demander une régulation contraignante des IA les plus puissantes.",
+			"Organisation britannique qui informe le grand public sur les risques d'une superintelligence et mène une campagne pour demander une régulation contraignante des IA les plus puissantes.",
 		url: 'https://controlai.com/',
 		langs: ['en'],
 		category: 'newsletters',
@@ -839,19 +839,6 @@ export const resources: Resource[] = [
 		subgroup: 'demarrer',
 		zone: 'delta',
 		logo: '/carte/logos/lefuturologue.jpg'
-	},
-	{
-		id: 'the-flares',
-		title: 'The Flares',
-		description:
-			"Média francophone sur le futur, l'IA et les risques existentiels (vidéos, articles, podcasts).",
-		url: 'https://theflares.com/',
-		langs: ['fr'],
-		category: 'comprendre',
-		type: 'site',
-		subgroup: 'demarrer',
-		zone: 'delta',
-		logo: '/carte/logos/theflares.jpg'
 	},
 	{
 		id: 'mr-phi',
