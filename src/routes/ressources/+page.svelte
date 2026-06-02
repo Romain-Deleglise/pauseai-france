@@ -26,11 +26,19 @@
 		RESOURCES_LAST_UPDATED,
 		MEDIA_TYPE_ORDER,
 		MEDIA_TYPE_LABELS,
+		FEATURED_IDS,
 		type Category,
 		type Lang,
 		type Resource,
 		type MediaType
 	} from '$lib/data/resources'
+
+	// Resolve the curated starter pack from the data file. We keep the
+	// declared order (it's the suggested reading order, not alphabetical).
+	const resById = new Map(resources.map((r) => [r.id, r]))
+	const featured: Resource[] = FEATURED_IDS.map((id) => resById.get(id)).filter(
+		(r): r is Resource => r !== undefined
+	)
 
 	const title = 'Ressources - Pause IA'
 	const description =
@@ -323,6 +331,42 @@
 			</a>
 		</section>
 
+		<!-- Onboarding : si vous découvrez le sujet, commencez ici -->
+		<section class="onboarding" aria-label="Pour bien commencer">
+			<h2 class="onboarding-title">Vous découvrez le sujet ? Commencez ici.</h2>
+			<p class="onboarding-intro">
+				Quatre ressources soigneusement choisies pour comprendre l'essentiel, dans l'ordre suggéré
+				de lecture.
+			</p>
+			<ol class="onboarding-list">
+				{#each featured as entry, i}
+					<li>
+						<a
+							class="onboarding-card"
+							href={entry.url}
+							target={entry.internal ? undefined : '_blank'}
+							rel={entry.internal ? undefined : 'noopener noreferrer'}
+						>
+							<span class="onboarding-num">{i + 1}</span>
+							<div class="onboarding-body">
+								<div class="onboarding-row">
+									<h3 class="onboarding-card-title">{entry.title}</h3>
+									<span class="onboarding-meta">
+										{#each entry.langs as l}
+											<img class="res-flag" src={flagSrc(l)} alt={flagAlt(l)} />
+										{/each}
+										<span class="onboarding-type">{MEDIA_TYPE_LABELS[entry.type]}</span>
+									</span>
+								</div>
+								<p class="onboarding-desc">{entry.description}</p>
+							</div>
+							<MoveUpRight class="res-arrow" size={16} aria-hidden="true" />
+						</a>
+					</li>
+				{/each}
+			</ol>
+		</section>
+
 		<!-- Controls -->
 		<section class="controls" aria-label="Filtres">
 			<div class="search">
@@ -598,6 +642,168 @@
 		}
 		.ressources-page {
 			margin: 0;
+		}
+	}
+
+	/* ─── Onboarding (starter pack) ────────────────────────── */
+	.onboarding {
+		margin-bottom: 2.5rem;
+		padding: 1.5rem 1.5rem 1.25rem;
+		border: 1px solid rgba(255, 148, 22, 0.35);
+		background: linear-gradient(180deg, rgba(255, 148, 22, 0.08), rgba(255, 148, 22, 0.02));
+		border-radius: 12px;
+	}
+
+	:global([data-theme='dark']) .onboarding {
+		background: linear-gradient(180deg, rgba(255, 148, 22, 0.1), rgba(255, 148, 22, 0.03));
+	}
+
+	.onboarding-title {
+		font-family: var(--font-heading);
+		font-weight: 700;
+		font-size: 1.15rem;
+		margin: 0 0 0.25rem;
+		color: var(--text);
+		letter-spacing: -0.01em;
+	}
+
+	.onboarding-intro {
+		font-family: var(--font-body);
+		font-size: 0.92rem;
+		line-height: 1.5;
+		color: var(--text-secondary);
+		margin: 0 0 1rem;
+	}
+
+	.onboarding-list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: grid;
+		gap: 0.55rem;
+		counter-reset: onboarding;
+	}
+
+	.onboarding-card {
+		display: flex;
+		gap: 0.85rem;
+		align-items: flex-start;
+		padding: 0.85rem 1rem;
+		background: var(--bg);
+		border: 1px solid var(--border);
+		border-radius: 10px;
+		text-decoration: none;
+		color: var(--text);
+		transition:
+			border-color 0.2s ease,
+			transform 0.2s ease,
+			box-shadow 0.2s ease;
+	}
+
+	.onboarding-card:hover {
+		border-color: var(--brand);
+		transform: translateY(-1px);
+		box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+	}
+
+	:global([data-theme='dark']) .onboarding-card {
+		background: rgba(255, 255, 255, 0.02);
+	}
+
+	.onboarding-num {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 1.85rem;
+		height: 1.85rem;
+		flex-shrink: 0;
+		border-radius: 50%;
+		background: var(--brand);
+		color: white;
+		font-family: var(--font-heading);
+		font-weight: 700;
+		font-size: 0.95rem;
+		margin-top: 0.1rem;
+	}
+
+	.onboarding-body {
+		flex: 1;
+		min-width: 0;
+	}
+
+	.onboarding-row {
+		display: flex;
+		align-items: flex-start;
+		justify-content: space-between;
+		gap: 0.6rem;
+		margin-bottom: 0.2rem;
+	}
+
+	.onboarding-card-title {
+		font-family: var(--font-heading);
+		font-weight: 600;
+		font-size: 1rem;
+		line-height: 1.35;
+		margin: 0;
+		color: var(--brand-subtle, var(--brand));
+	}
+
+	:global([data-theme='dark']) .onboarding-card-title {
+		color: var(--brand);
+	}
+
+	.onboarding-meta {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+		flex-shrink: 0;
+	}
+
+	.onboarding-type {
+		font-family: var(--font-heading);
+		font-weight: 600;
+		font-size: 0.7rem;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		color: var(--text-secondary);
+		padding: 0.15rem 0.5rem;
+		border-radius: 999px;
+		background: rgba(0, 0, 0, 0.06);
+	}
+
+	:global([data-theme='dark']) .onboarding-type {
+		background: rgba(255, 255, 255, 0.08);
+	}
+
+	.onboarding-desc {
+		font-family: var(--font-body);
+		font-size: 0.92rem;
+		line-height: 1.5;
+		color: var(--text);
+		margin: 0;
+	}
+
+	.onboarding-card :global(.res-arrow) {
+		color: var(--text-secondary);
+		flex-shrink: 0;
+		margin-top: 0.5rem;
+		transition:
+			transform 0.2s ease,
+			color 0.2s ease;
+	}
+
+	.onboarding-card:hover :global(.res-arrow) {
+		color: var(--brand);
+		transform: translate(2px, -2px);
+	}
+
+	@media (max-width: 640px) {
+		.onboarding {
+			padding: 1.1rem 1rem 1rem;
+		}
+		.onboarding-row {
+			flex-direction: column;
+			gap: 0.25rem;
 		}
 	}
 

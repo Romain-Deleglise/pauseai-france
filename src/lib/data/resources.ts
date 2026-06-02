@@ -841,6 +841,18 @@ export const resources: Resource[] = [
 		logo: '/carte/logos/lefuturologue.jpg'
 	},
 	{
+		id: 'the-flares',
+		title: 'The Flares (YouTube)',
+		description: "Chaîne francophone sur le futur, l'IA et les risques existentiels.",
+		url: 'https://www.youtube.com/@the-flares',
+		langs: ['fr'],
+		category: 'comprendre',
+		type: 'video',
+		subgroup: 'demarrer',
+		zone: 'delta',
+		logo: '/carte/logos/theflares.jpg'
+	},
+	{
 		id: 'mr-phi',
 		title: 'Monsieur Phi',
 		description: "Vulgarisation philosophique, dont des épisodes dédiés à l'alignement.",
@@ -954,6 +966,17 @@ export const resources: Resource[] = [
 		zone: 'foret',
 		logo: '/carte/logos/zvi.png'
 	}
+]
+
+// Curated "starter pack" for newcomers, surfaced at the top of the
+// /ressources page. Order matters : it's the suggested reading order.
+// Keep it short — 4 entries max — so it stays a real recommendation,
+// not a second TOC.
+export const FEATURED_IDS: string[] = [
+	'3b1b-llm', // FR, 20 min : ce qu'est un LLM
+	'bengio-faq', // FR/EN, 30 min : pourquoi c'est dangereux
+	'rob-miles', // EN, série vidéo : l'alignement
+	'book-ifanyone' // EN, livre : l'argument complet et récent
 ]
 
 // Injected at build time from `git log -1` on this file. See vite.config.ts.
