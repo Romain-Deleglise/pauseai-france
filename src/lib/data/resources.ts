@@ -16,6 +16,45 @@ export type Category =
 	| 'newsletters'
 	| 'agir'
 
+// Type of media — second filter axis on the /ressources page.
+export type MediaType =
+	| 'book'
+	| 'paper'
+	| 'article'
+	| 'video'
+	| 'podcast'
+	| 'newsletter'
+	| 'org'
+	| 'declaration'
+	| 'tool'
+	| 'site'
+
+export const MEDIA_TYPE_ORDER: MediaType[] = [
+	'book',
+	'paper',
+	'article',
+	'video',
+	'podcast',
+	'newsletter',
+	'org',
+	'declaration',
+	'tool',
+	'site'
+]
+
+export const MEDIA_TYPE_LABELS: Record<MediaType, string> = {
+	book: 'Livre',
+	paper: 'Papier de recherche',
+	article: 'Article',
+	video: 'Vidéo',
+	podcast: 'Podcast',
+	newsletter: 'Newsletter',
+	org: 'Organisation',
+	declaration: 'Déclaration',
+	tool: 'Outil',
+	site: 'Site'
+}
+
 // Carte "fantasy" zones — kept as-is for backward compat with the map artwork
 export type Zone =
 	| 'foret' // blogs
@@ -34,6 +73,7 @@ export interface Resource {
 	url: string
 	langs: Lang[]
 	category: Category
+	type: MediaType
 	subgroup?: string
 	date?: string
 	internal?: boolean // SvelteKit-internal link (no target=_blank)
@@ -77,7 +117,8 @@ export const resources: Resource[] = [
 		url: '/dangers/pour-les-individus',
 		internal: true,
 		langs: ['fr'],
-		category: 'pause-ia'
+		category: 'pause-ia',
+		type: 'article'
 	},
 	{
 		id: 'pauseia-carte',
@@ -87,7 +128,8 @@ export const resources: Resource[] = [
 		url: '/carte',
 		internal: true,
 		langs: ['fr'],
-		category: 'pause-ia'
+		category: 'pause-ia',
+		type: 'tool'
 	},
 
 	// ── LIVRES ──────────────────────────────────────────────
@@ -99,6 +141,7 @@ export const resources: Resource[] = [
 		url: 'https://ifanyonebuildsit.com/',
 		langs: ['en'],
 		category: 'livres',
+		type: 'book',
 		subgroup: 'essentiels',
 		date: '2025'
 	},
@@ -109,6 +152,7 @@ export const resources: Resource[] = [
 		url: 'https://www.amazon.fr/Superintelligence-Dangers-Strategies-Nick-Bostrom/dp/0199678111',
 		langs: ['en'],
 		category: 'livres',
+		type: 'book',
 		subgroup: 'essentiels',
 		date: '2014'
 	},
@@ -120,6 +164,7 @@ export const resources: Resource[] = [
 		url: 'https://www.amazon.fr/Human-Compatible-Artificial-Intelligence-Problem/dp/0525558616',
 		langs: ['en'],
 		category: 'livres',
+		type: 'book',
 		subgroup: 'essentiels',
 		date: '2019'
 	},
@@ -131,6 +176,7 @@ export const resources: Resource[] = [
 		url: 'https://theprecipice.com/',
 		langs: ['en'],
 		category: 'livres',
+		type: 'book',
 		subgroup: 'essentiels',
 		date: '2020'
 	},
@@ -141,6 +187,7 @@ export const resources: Resource[] = [
 		url: 'https://www.amazon.fr/AI-Unexplainable-Unpredictable-Uncontrollable-Yampolskiy/dp/1032576278',
 		langs: ['en'],
 		category: 'livres',
+		type: 'book',
 		subgroup: 'essentiels',
 		date: '2024'
 	},
@@ -152,6 +199,7 @@ export const resources: Resource[] = [
 		url: 'https://www.amazon.fr/Life-3-0-Being-Artificial-Intelligence/dp/1101970316',
 		langs: ['en', 'fr'],
 		category: 'livres',
+		type: 'book',
 		subgroup: 'recommandes',
 		date: '2017'
 	},
@@ -163,6 +211,7 @@ export const resources: Resource[] = [
 		url: 'https://brianchristian.org/the-alignment-problem/',
 		langs: ['en'],
 		category: 'livres',
+		type: 'book',
 		subgroup: 'recommandes',
 		date: '2020'
 	},
@@ -173,6 +222,7 @@ export const resources: Resource[] = [
 		url: 'https://intelligence.org/smarter-than-us/',
 		langs: ['en'],
 		category: 'livres',
+		type: 'book',
 		subgroup: 'recommandes',
 		date: '2014'
 	},
@@ -183,6 +233,7 @@ export const resources: Resource[] = [
 		url: 'https://www.amazon.fr/Brief-History-Intelligence-Evolution-Breakthroughs/dp/0063286343',
 		langs: ['en'],
 		category: 'livres',
+		type: 'book',
 		subgroup: 'recommandes',
 		date: '2023'
 	},
@@ -193,6 +244,7 @@ export const resources: Resource[] = [
 		url: 'https://www.amazon.fr/Artificial-Superintelligence-Futuristic-Roman-Yampolskiy/dp/1482234432',
 		langs: ['en'],
 		category: 'livres',
+		type: 'book',
 		subgroup: 'recommandes',
 		date: '2015'
 	},
@@ -205,6 +257,7 @@ export const resources: Resource[] = [
 		url: 'https://www.3blue1brown.com/lessons/mini-llm',
 		langs: ['fr'],
 		category: 'comprendre',
+		type: 'video',
 		subgroup: 'demarrer',
 		date: 'nov. 2024'
 	},
@@ -215,6 +268,7 @@ export const resources: Resource[] = [
 		url: 'https://www.youtube.com/@RobertMilesAI',
 		langs: ['en'],
 		category: 'comprendre',
+		type: 'video',
 		subgroup: 'demarrer',
 		zone: 'delta',
 		logo: '/carte/logos/robertmiles.jpg'
@@ -226,6 +280,7 @@ export const resources: Resource[] = [
 		url: 'https://dashboard.safe.ai/',
 		langs: ['en'],
 		category: 'comprendre',
+		type: 'tool',
 		subgroup: 'vue-ensemble'
 	},
 	{
@@ -236,6 +291,7 @@ export const resources: Resource[] = [
 		url: 'https://epoch.ai/benchmarks',
 		langs: ['en'],
 		category: 'comprendre',
+		type: 'tool',
 		subgroup: 'vue-ensemble'
 	},
 	{
@@ -245,6 +301,7 @@ export const resources: Resource[] = [
 		url: 'https://metr.org/blog/2025-03-19-measuring-ai-ability-to-complete-long-tasks/',
 		langs: ['en'],
 		category: 'comprendre',
+		type: 'article',
 		subgroup: 'vue-ensemble'
 	},
 	{
@@ -254,6 +311,7 @@ export const resources: Resource[] = [
 		url: 'https://www.agidefinition.ai/',
 		langs: ['en'],
 		category: 'comprendre',
+		type: 'site',
 		subgroup: 'aller-plus-loin',
 		date: 'octobre 2025'
 	},
@@ -264,6 +322,7 @@ export const resources: Resource[] = [
 		url: 'https://www.aisafety.com/map',
 		langs: ['en'],
 		category: 'comprendre',
+		type: 'tool',
 		subgroup: 'aller-plus-loin',
 		zone: 'ile',
 		logo: '/carte/logos/aisafety.png'
@@ -275,6 +334,7 @@ export const resources: Resource[] = [
 		url: 'https://internationalaisafetyreport.org/',
 		langs: ['fr', 'en'],
 		category: 'comprendre',
+		type: 'article',
 		subgroup: 'aller-plus-loin'
 	},
 
@@ -286,6 +346,7 @@ export const resources: Resource[] = [
 		url: 'https://intelligence.org/briefing/',
 		langs: ['en'],
 		category: 'risques',
+		type: 'article',
 		subgroup: 'general'
 	},
 	{
@@ -295,6 +356,7 @@ export const resources: Resource[] = [
 		url: 'https://yoshuabengio.org/2023/06/24/faq-on-catastrophic-ai-risks/',
 		langs: ['fr', 'en'],
 		category: 'risques',
+		type: 'article',
 		subgroup: 'general',
 		date: 'juin 2023'
 	},
@@ -305,6 +367,7 @@ export const resources: Resource[] = [
 		url: 'https://pauseai.info/faq#how-likely-is-it-that-superintelligent-ai-will-cause-very-bad-outcomes-like-human-extinction',
 		langs: ['en'],
 		category: 'risques',
+		type: 'article',
 		subgroup: 'general'
 	},
 	{
@@ -315,6 +378,7 @@ export const resources: Resource[] = [
 		url: 'https://www.thecompendium.ai/',
 		langs: ['en'],
 		category: 'risques',
+		type: 'site',
 		subgroup: 'general',
 		zone: 'ile',
 		logo: '/carte/logos/compendium.png'
@@ -326,6 +390,7 @@ export const resources: Resource[] = [
 		url: 'https://intelligence.org/the-problem/',
 		langs: ['en'],
 		category: 'risques',
+		type: 'article',
 		subgroup: 'general'
 	},
 	{
@@ -335,6 +400,7 @@ export const resources: Resource[] = [
 		url: 'https://intelligence.org/2026/04/13/summary-ai-governance-to-avoid-extinction/',
 		langs: ['en'],
 		category: 'risques',
+		type: 'article',
 		subgroup: 'general',
 		zone: 'avant-poste',
 		logo: '/carte/logos/miri.jpg'
@@ -347,6 +413,7 @@ export const resources: Resource[] = [
 		url: 'https://www.lesswrong.com/posts/uMQ3cqWDPHhjtiesc/agi-ruin-a-list-of-lethalities',
 		langs: ['en'],
 		category: 'risques',
+		type: 'article',
 		subgroup: 'general',
 		date: 'juin 2022'
 	},
@@ -360,6 +427,7 @@ export const resources: Resource[] = [
 		url: 'https://arxiv.org/abs/1906.01820',
 		langs: ['en'],
 		category: 'risques',
+		type: 'paper',
 		subgroup: 'recherche-alignement',
 		date: '2019'
 	},
@@ -371,6 +439,7 @@ export const resources: Resource[] = [
 		url: 'https://nickbostrom.com/superintelligentwill.pdf',
 		langs: ['en'],
 		category: 'risques',
+		type: 'paper',
 		subgroup: 'recherche-alignement',
 		date: '2012'
 	},
@@ -381,6 +450,7 @@ export const resources: Resource[] = [
 		url: 'https://arxiv.org/abs/1912.01683',
 		langs: ['en'],
 		category: 'risques',
+		type: 'paper',
 		subgroup: 'recherche-alignement',
 		date: '2021'
 	},
@@ -392,6 +462,7 @@ export const resources: Resource[] = [
 		url: 'https://arxiv.org/abs/2206.13353',
 		langs: ['en'],
 		category: 'risques',
+		type: 'paper',
 		subgroup: 'recherche-alignement',
 		date: '2022'
 	},
@@ -403,6 +474,7 @@ export const resources: Resource[] = [
 		url: 'https://arxiv.org/abs/2412.14093',
 		langs: ['en'],
 		category: 'risques',
+		type: 'paper',
 		subgroup: 'recherche-alignement',
 		date: 'déc. 2024'
 	},
@@ -414,6 +486,7 @@ export const resources: Resource[] = [
 		url: 'https://www.apolloresearch.ai/research/scheming-reasoning-evaluations',
 		langs: ['en'],
 		category: 'risques',
+		type: 'paper',
 		subgroup: 'recherche-alignement',
 		date: '2024'
 	},
@@ -425,6 +498,7 @@ export const resources: Resource[] = [
 		url: 'https://selfawaresystems.com/wp-content/uploads/2008/01/ai_drives_final.pdf',
 		langs: ['en'],
 		category: 'risques',
+		type: 'paper',
 		subgroup: 'recherche-alignement',
 		date: '2008'
 	},
@@ -436,6 +510,7 @@ export const resources: Resource[] = [
 		url: 'https://intelligence.org/files/Corrigibility.pdf',
 		langs: ['en'],
 		category: 'risques',
+		type: 'paper',
 		subgroup: 'recherche-alignement',
 		date: '2015'
 	},
@@ -447,6 +522,7 @@ export const resources: Resource[] = [
 		url: 'https://deepmindsafetyresearch.medium.com/specification-gaming-the-flip-side-of-ai-ingenuity-c85bdb0deeb4',
 		langs: ['en'],
 		category: 'risques',
+		type: 'article',
 		subgroup: 'recherche-alignement',
 		date: '2020'
 	},
@@ -458,6 +534,7 @@ export const resources: Resource[] = [
 		url: 'https://www.aisafetyreport.com/',
 		langs: ['en'],
 		category: 'risques',
+		type: 'article',
 		subgroup: 'recherche-alignement',
 		date: '2025'
 	},
@@ -469,6 +546,7 @@ export const resources: Resource[] = [
 		url: 'https://vcresearch.berkeley.edu/news/how-keep-ai-killing-us-all',
 		langs: ['en'],
 		category: 'risques',
+		type: 'article',
 		subgroup: 'recherche-alignement',
 		date: '2023'
 	},
@@ -480,6 +558,7 @@ export const resources: Resource[] = [
 		url: 'https://palisaderesearch.org/blog/llms-chess-cheating',
 		langs: ['en'],
 		category: 'risques',
+		type: 'article',
 		subgroup: 'recherche-alignement',
 		date: '2025'
 	},
@@ -492,6 +571,7 @@ export const resources: Resource[] = [
 		url: 'https://red-lines.ai/',
 		langs: ['fr'],
 		category: 'declarations',
+		type: 'declaration',
 		date: 'septembre 2025'
 	},
 	{
@@ -502,6 +582,7 @@ export const resources: Resource[] = [
 		url: 'https://superintelligence-statement.org/',
 		langs: ['en'],
 		category: 'declarations',
+		type: 'declaration',
 		date: 'octobre 2025'
 	},
 	{
@@ -512,6 +593,7 @@ export const resources: Resource[] = [
 		url: 'https://aistatement.com/',
 		langs: ['en'],
 		category: 'declarations',
+		type: 'declaration',
 		date: 'mai 2023'
 	},
 
@@ -523,6 +605,7 @@ export const resources: Resource[] = [
 		url: 'https://pauseia.fr/fr/newsletters',
 		langs: ['fr'],
 		category: 'newsletters',
+		type: 'newsletter',
 		zone: 'monts',
 		logo: '/carte/logos/pauseia_newsletter.svg'
 	},
@@ -533,6 +616,7 @@ export const resources: Resource[] = [
 		url: 'https://pauseai.info/',
 		langs: ['en'],
 		category: 'newsletters',
+		type: 'org',
 		zone: 'plaine',
 		logo: '/carte/logos/pauseai.svg'
 	},
@@ -544,6 +628,7 @@ export const resources: Resource[] = [
 		url: 'https://controlai.com/',
 		langs: ['en'],
 		category: 'newsletters',
+		type: 'org',
 		zone: 'plaine',
 		logo: '/carte/logos/controlai.png'
 	},
@@ -555,6 +640,7 @@ export const resources: Resource[] = [
 		url: 'https://www.securite-ia.fr/',
 		langs: ['fr'],
 		category: 'newsletters',
+		type: 'org',
 		zone: 'village',
 		logo: '/carte/logos/cesia.svg'
 	},
@@ -565,6 +651,7 @@ export const resources: Resource[] = [
 		url: 'https://www.transformernews.ai/',
 		langs: ['en'],
 		category: 'newsletters',
+		type: 'newsletter',
 		zone: 'monts',
 		logo: '/carte/logos/transformer.png'
 	},
@@ -575,6 +662,7 @@ export const resources: Resource[] = [
 		url: 'https://romaindeleglise.substack.com/',
 		langs: ['fr'],
 		category: 'newsletters',
+		type: 'newsletter',
 		zone: 'monts',
 		fallbackText: 'À.C.'
 	},
@@ -588,7 +676,8 @@ export const resources: Resource[] = [
 		url: '/fr/emploi-ia',
 		internal: true,
 		langs: ['fr'],
-		category: 'agir'
+		category: 'agir',
+		type: 'article'
 	},
 	{
 		id: 'pause-action',
@@ -597,7 +686,8 @@ export const resources: Resource[] = [
 			'Chaque semaine une action en quelques clics pour faire pencher la balance (WhatsApp).',
 		url: 'https://chat.whatsapp.com/LThhghXc0Hk3sTwQMyy1wU',
 		langs: ['fr'],
-		category: 'agir'
+		category: 'agir',
+		type: 'article'
 	},
 
 	// ── ENTRÉES "MAP-ONLY" (existing carte content kept for the map) ──
@@ -609,6 +699,7 @@ export const resources: Resource[] = [
 		url: 'https://futureoflife.org/',
 		langs: ['en'],
 		category: 'newsletters',
+		type: 'org',
 		zone: 'plaine',
 		logo: '/carte/logos/fli.svg'
 	},
@@ -620,6 +711,7 @@ export const resources: Resource[] = [
 		url: 'https://www.safe.ai/',
 		langs: ['en'],
 		category: 'newsletters',
+		type: 'org',
 		zone: 'village',
 		logo: '/carte/logos/cais.png'
 	},
@@ -631,6 +723,7 @@ export const resources: Resource[] = [
 		url: 'https://intelligence.org/',
 		langs: ['en'],
 		category: 'newsletters',
+		type: 'org',
 		zone: 'village',
 		logo: '/carte/logos/miri.jpg'
 	},
@@ -642,6 +735,7 @@ export const resources: Resource[] = [
 		url: 'https://controlai.news/',
 		langs: ['en'],
 		category: 'newsletters',
+		type: 'newsletter',
 		zone: 'monts',
 		logo: '/carte/logos/controlai.png'
 	},
@@ -653,6 +747,7 @@ export const resources: Resource[] = [
 		url: 'https://cesiafr.substack.com/',
 		langs: ['fr'],
 		category: 'newsletters',
+		type: 'newsletter',
 		zone: 'monts',
 		logo: '/carte/logos/cesia.svg'
 	},
@@ -664,6 +759,7 @@ export const resources: Resource[] = [
 		url: 'https://newsletter.safe.ai/',
 		langs: ['en'],
 		category: 'newsletters',
+		type: 'newsletter',
 		zone: 'monts',
 		logo: '/carte/logos/cais.png'
 	},
@@ -675,6 +771,7 @@ export const resources: Resource[] = [
 		url: 'https://situational-awareness.ai/',
 		langs: ['en'],
 		category: 'risques',
+		type: 'article',
 		subgroup: 'general',
 		zone: 'avant-poste',
 		fallbackText: 'S.A.',
@@ -687,6 +784,7 @@ export const resources: Resource[] = [
 		url: 'https://ai-2027.com/',
 		langs: ['en'],
 		category: 'risques',
+		type: 'article',
 		subgroup: 'general',
 		zone: 'avant-poste',
 		fallbackText: '2027',
@@ -699,6 +797,7 @@ export const resources: Resource[] = [
 		url: 'https://intelligence-curse.ai/',
 		langs: ['en'],
 		category: 'risques',
+		type: 'article',
 		subgroup: 'general',
 		zone: 'avant-poste',
 		logo: '/carte/logos/intelligencecurse.jpg',
@@ -712,6 +811,7 @@ export const resources: Resource[] = [
 		url: 'https://www.rand.org/pubs/perspectives/PEA3691-1.html',
 		langs: ['en'],
 		category: 'risques',
+		type: 'paper',
 		subgroup: 'general',
 		zone: 'avant-poste',
 		logo: '/carte/logos/rand.svg'
@@ -723,6 +823,7 @@ export const resources: Resource[] = [
 		url: 'https://aisafety.info/',
 		langs: ['en'],
 		category: 'comprendre',
+		type: 'site',
 		subgroup: 'aller-plus-loin',
 		zone: 'ile',
 		logo: '/carte/logos/aisafetyinfo.png'
@@ -734,6 +835,7 @@ export const resources: Resource[] = [
 		url: 'https://www.youtube.com/@LeFuturologue',
 		langs: ['fr'],
 		category: 'comprendre',
+		type: 'video',
 		subgroup: 'demarrer',
 		zone: 'delta',
 		logo: '/carte/logos/lefuturologue.jpg'
@@ -746,6 +848,7 @@ export const resources: Resource[] = [
 		url: 'https://theflares.com/',
 		langs: ['fr'],
 		category: 'comprendre',
+		type: 'site',
 		subgroup: 'demarrer',
 		zone: 'delta',
 		logo: '/carte/logos/theflares.jpg'
@@ -757,6 +860,7 @@ export const resources: Resource[] = [
 		url: 'https://www.youtube.com/@MonsieurPhi',
 		langs: ['fr'],
 		category: 'comprendre',
+		type: 'video',
 		subgroup: 'demarrer',
 		zone: 'delta',
 		logo: '/carte/logos/mrphi.jpg'
@@ -768,6 +872,7 @@ export const resources: Resource[] = [
 		url: 'https://www.youtube.com/@RationalAnimations',
 		langs: ['en'],
 		category: 'comprendre',
+		type: 'video',
 		subgroup: 'demarrer',
 		zone: 'delta',
 		logo: '/carte/logos/rationalanimations.jpg'
@@ -779,6 +884,7 @@ export const resources: Resource[] = [
 		url: 'https://www.youtube.com/@Siliconversations',
 		langs: ['en'],
 		category: 'comprendre',
+		type: 'video',
 		subgroup: 'demarrer',
 		zone: 'delta',
 		logo: '/carte/logos/siliconversations.jpg'
@@ -790,6 +896,7 @@ export const resources: Resource[] = [
 		url: 'https://www.youtube.com/@lethal-intelligence',
 		langs: ['en'],
 		category: 'comprendre',
+		type: 'video',
 		subgroup: 'demarrer',
 		zone: 'delta',
 		logo: '/carte/logos/lethal.jpg'
@@ -845,6 +952,7 @@ export const resources: Resource[] = [
 		url: 'https://cognition.cafe/',
 		langs: ['en'],
 		category: 'newsletters',
+		type: 'newsletter',
 		zone: 'foret',
 		logo: '/carte/logos/cafe.png'
 	},
@@ -855,9 +963,12 @@ export const resources: Resource[] = [
 		url: 'https://thezvi.substack.com/',
 		langs: ['en'],
 		category: 'newsletters',
+		type: 'newsletter',
 		zone: 'foret',
 		logo: '/carte/logos/zvi.png'
 	}
 ]
 
-export const RESOURCES_LAST_UPDATED = '2026-06-02'
+// Injected at build time from `git log -1` on this file. See vite.config.ts.
+export const RESOURCES_LAST_UPDATED: string =
+	typeof __RESOURCES_UPDATED__ !== 'undefined' ? __RESOURCES_UPDATED__ : '2026-06-02'

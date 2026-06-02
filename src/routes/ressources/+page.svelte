@@ -1,5 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
+	import { goto } from '$app/navigation'
+	import { page } from '$app/stores'
+	import { browser } from '$app/environment'
 	import PostMeta from '$components/PostMeta.svelte'
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
 	import {
@@ -21,9 +24,12 @@
 		SUBGROUPS,
 		CATEGORY_ORDER,
 		RESOURCES_LAST_UPDATED,
+		MEDIA_TYPE_ORDER,
+		MEDIA_TYPE_LABELS,
 		type Category,
 		type Lang,
-		type Resource
+		type Resource,
+		type MediaType
 	} from '$lib/data/resources'
 
 	const title = 'Ressources - Pause IA'
@@ -52,11 +58,11 @@
 		risques: ['general', 'recherche-alignement']
 	}
 
+	// ─── State (also synced with ?query params, see below) ──────
 	let query = ''
-	// Multi-select filters. Empty list = no filter (= all). User can pick
-	// any combination of languages and any combination of categories.
 	let langFilter: Lang[] = []
 	let categoryFilter: Category[] = []
+	let typeFilter: MediaType[] = []
 
 	function toggleLang(l: Lang) {
 		langFilter = langFilter.includes(l) ? langFilter.filter((x) => x !== l) : [...langFilter, l]
@@ -65,6 +71,39 @@
 		categoryFilter = categoryFilter.includes(c)
 			? categoryFilter.filter((x) => x !== c)
 			: [...categoryFilter, c]
+	}
+	function toggleType(t: MediaType) {
+		typeFilter = typeFilter.includes(t) ? typeFilter.filter((x) => x !== t) : [...typeFilter, t]
+	}
+
+	// ─── URL <-> state sync ─────────────────────────────────────
+	// Read initial filter state from the URL on first browser load. This
+	// lets users bookmark / share specific views (e.g. ?lang=fr&type=book).
+	let initialized = false
+	onMount(() => {
+		const u = new URL(window.location.href)
+		query = u.searchParams.get('q') ?? ''
+		const splitParam = (k: string) =>
+			(u.searchParams.get(k) ?? '').split(',').filter((x) => x.length > 0)
+		langFilter = splitParam('lang') as Lang[]
+		categoryFilter = splitParam('cat') as Category[]
+		typeFilter = splitParam('type') as MediaType[]
+		initialized = true
+	})
+
+	// Push state changes back into the URL (replace, no history bloat).
+	// Skipped until initialized so the onMount read doesn't fight with this.
+	$: if (browser && initialized) {
+		const params = new URLSearchParams()
+		if (query.trim()) params.set('q', query.trim())
+		if (langFilter.length) params.set('lang', langFilter.join(','))
+		if (categoryFilter.length) params.set('cat', categoryFilter.join(','))
+		if (typeFilter.length) params.set('type', typeFilter.join(','))
+		const qs = params.toString()
+		const target = qs ? `${$page.url.pathname}?${qs}` : $page.url.pathname
+		if (target !== $page.url.pathname + $page.url.search) {
+			goto(target, { replaceState: true, keepFocus: true, noScroll: true })
+		}
 	}
 
 	// Normalize for search: lowercase + strip accents + collapse whitespace.
@@ -114,7 +153,7 @@
 	// all find the same content.
 	const haystacks = new Map<string, string>()
 	for (const r of resources) {
-		const parts = [r.title, r.description, r.category]
+		const parts = [r.title, r.description, r.category, r.type]
 		if (r.subgroup) parts.push(r.subgroup)
 		if (r.date) parts.push(r.date)
 		haystacks.set(r.id, expandSynonyms(normalize(parts.join(' '))))
@@ -135,10 +174,11 @@
 		return resources.filter((r) => {
 			if (langFilter.length > 0 && !r.langs.some((l) => langFilter.includes(l))) return false
 			if (categoryFilter.length > 0 && !categoryFilter.includes(r.category)) return false
+			if (typeFilter.length > 0 && !typeFilter.includes(r.type)) return false
 			if (tokens.length === 0) return true
 			const hay = haystacks.get(r.id) ?? ''
 			// Each query token (or its synonym) must appear somewhere in the
-			// haystack — AND semantic across tokens, OR within synonyms.
+			// haystack ; AND semantic across tokens, OR within synonyms.
 			return tokens.every((t) => hay.includes(t))
 		})
 	})()
@@ -179,11 +219,16 @@
 		query = ''
 		langFilter = []
 		categoryFilter = []
+		typeFilter = []
 	}
 
 	const totalCount = resources.length
 	$: visibleCount = filtered.length
-	$: hasActiveFilter = query.trim() !== '' || langFilter.length > 0 || categoryFilter.length > 0
+	$: hasActiveFilter =
+		query.trim() !== '' ||
+		langFilter.length > 0 ||
+		categoryFilter.length > 0 ||
+		typeFilter.length > 0
 
 	// Track the category section currently in the viewport so the side TOC
 	// can highlight it. Uses IntersectionObserver — far cheaper than scroll
@@ -325,6 +370,19 @@
 						>
 							<svelte:component this={CATEGORIES[cat].icon} size={14} />
 							<span>{CATEGORIES[cat].label}</span>
+						</button>
+					{/each}
+				</div>
+
+				<div class="filter-group" aria-label="Type de média (multi-sélection)">
+					{#each MEDIA_TYPE_ORDER as mt}
+						<button
+							class="pill pill-type"
+							class:active={typeFilter.includes(mt)}
+							on:click={() => toggleType(mt)}
+							aria-pressed={typeFilter.includes(mt)}
+						>
+							{MEDIA_TYPE_LABELS[mt]}
 						</button>
 					{/each}
 				</div>
