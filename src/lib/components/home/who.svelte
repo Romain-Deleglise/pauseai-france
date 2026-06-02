@@ -160,110 +160,12 @@
 		{#if lang === 'en'}
 			<FAQEn />
 		{:else}
-			<div class="intro-lead">
-				<p>
-					<strong>
-						Pause IA est une <a href="/mentions-legales">association</a> qui alerte les citoyens et
-						les pouvoirs publics français sur les
-						<a href="/dangers/economiques-et-materiels">graves dangers</a> de la course à l'intelligence
-						artificielle, et les incite à agir pour s'y opposer.
-					</strong>
-				</p>
-
-				<p>
-					<strong>
-						Pause IA est la représentation en France de <a href="https://pauseai.info"
-							>PauseAI Global</a
-						>, qui demande un
-						<a href="/propositions">moratoire sur l'entraînement des systèmes d'IA généralistes</a>
-						jusqu'à ce que toutes les conditions de sécurité et de contrôle démocratique soient réunies.
-					</strong>
-				</p>
-			</div>
-
-			<div class="intro-block">
-				<h3 class="intro-question">Quelle IA&nbsp;?</h3>
-				<ul class="intro-list">
-					<li>Nous ne sommes pas contre toute forme d'IA.</li>
-					<li>
-						Nous sommes contre <strong
-							>le développement sans contrôle et sans limite de l'intelligence artificielle
-							généraliste</strong
-						> car il expose notre civilisation à des risques catastrophiques.
-					</li>
-				</ul>
-			</div>
-
-			<div class="accordion-group">
-				<Accordion id="pourquoi" noHash>
-					<svelte:fragment slot="head">Pourquoi ?</svelte:fragment>
-					<svelte:fragment slot="details">
-						<ul class="intro-list">
-							<li>
-								Les modèles d'IA généralistes (aujourd'hui tels que GPT, Claude, Gemini) deviennent
-								chaque jour plus puissants, ils sont faciles à utiliser et se déploient à grande
-								vitesse dans la société, sans réelles <a
-									href="https://www.gov.uk/government/publications/international-ai-safety-report-2025"
-									target="_blank"
-									rel="noopener noreferrer">normes de sécurité</a
-								> et hors de tout contrôle institutionnel.
-							</li>
-							<li>
-								Ils présentent déjà des risques majeurs pour la sécurité de nos <a
-									href="/dangers/economiques-et-materiels">infrastructures</a
-								>, pour <a href="/dangers/pour-la-societe">nos institutions</a>, pour
-								<a href="/dangers/pour-les-individus">notre modèle social</a>.
-							</li>
-							<li>
-								Ces modèles d'IA commencent à <a
-									href="https://www.anthropic.com/research/alignment-faking"
-									target="_blank"
-									rel="noopener noreferrer">échapper à leurs créateurs</a
-								>. Certains le reconnaissent publiquement.
-							</li>
-							<li>
-								Dans un scénario catastrophe que l'on ne peut exclure, ils pourraient donner
-								naissance à une <a
-									href="https://www.safe.ai/work/statement-on-ai-risk"
-									target="_blank"
-									rel="noopener noreferrer">super-intelligence incontrôlable</a
-								>.
-							</li>
-						</ul>
-					</svelte:fragment>
-				</Accordion>
-
-				<Accordion id="que-faire" noHash>
-					<svelte:fragment slot="head">Que faire ?</svelte:fragment>
-					<svelte:fragment slot="details">
-						<ul class="intro-list">
-							<li>
-								Les discours «&nbsp;<a href="/faq">rassuristes</a>&nbsp;» nous font perdre du temps.
-								<em
-									>L'IA ne serait pas vraiment intelligente, les géants de la tech exagéreraient les
-									performances de leurs modèles, on serait à la veille de l'explosion d'une bulle
-									spéculative…</em
-								> Rien de tout cela ne nous protège du danger, bien au contraire.
-							</li>
-							<li>
-								La violence, que nous condamnons par principe, est également contre-productive. Elle
-								renforce des antagonismes stériles au moment où l'avenir de l'humanité est en jeu.
-							</li>
-							<li>
-								La seule réponse au danger est la mise en place d'une <a href="/propositions"
-									>gouvernance mondiale</a
-								> qui ait les moyens institutionnels, techniques et financiers de contrôler l'IA.
-							</li>
-						</ul>
-					</svelte:fragment>
-				</Accordion>
-			</div>
-
-			<p class="intro-footer">
-				Association à but non lucratif créée en juin 2024, Pause IA réunit plus d'une centaine
-				d'adhérents et bénévoles. Totalement indépendants de l'industrie de l'IA et de la tech, nous
-				fonctionnons grâce aux <a href="/dons">dons</a> de nos soutiens, qui financent nos campagnes,
-				nos événements et le fonctionnement de l'association.
+			<p class="lead">
+				<strong>Pause IA</strong> est une <a href="/mentions-legales">association</a> qui alerte les
+				citoyens et les pouvoirs publics français sur les
+				<a href="/dangers/economiques-et-materiels">graves dangers</a> de la course à l'intelligence
+				artificielle, et les incite à agir pour s'y opposer. Nous sommes la représentation en France
+				de <a href="https://pauseai.info">PauseAI Global</a>.
 			</p>
 		{/if}
 		<div class="contact-cta">
@@ -343,6 +245,107 @@
 			? '+ a hundred members and volunteers'
 			: '+ une centaine de membres et bénévoles'}
 	</p>
+
+	{#if lang !== 'en'}
+		<div class="team-section">
+			<h2 class="section-title">Notre positionnement</h2>
+			<p class="section-description">
+				Nous demandons un <a href="/propositions"
+					>moratoire sur l'entraînement des systèmes d'IA généralistes</a
+				> jusqu'à ce que toutes les conditions de sécurité et de contrôle démocratique soient réunies.
+			</p>
+
+			<div class="accordion-stack">
+				<Accordion id="quelle-ia" noHash open>
+					<svelte:fragment slot="head">Quelle IA&nbsp;?</svelte:fragment>
+					<svelte:fragment slot="details">
+						<ul class="bullet-list">
+							<li>Nous ne sommes pas contre toute forme d'IA.</li>
+							<li>
+								Nous sommes contre <strong
+									>le développement sans contrôle et sans limite de l'intelligence artificielle
+									généraliste</strong
+								> car il expose notre civilisation à des risques catastrophiques.
+							</li>
+						</ul>
+					</svelte:fragment>
+				</Accordion>
+
+				<Accordion id="pourquoi" noHash>
+					<svelte:fragment slot="head">Pourquoi&nbsp;?</svelte:fragment>
+					<svelte:fragment slot="details">
+						<ul class="bullet-list">
+							<li>
+								Les modèles d'IA généralistes (aujourd'hui tels que GPT, Claude, Gemini) deviennent
+								chaque jour plus puissants, ils sont faciles à utiliser et se déploient à grande
+								vitesse dans la société, sans réelles <a
+									href="https://www.gov.uk/government/publications/international-ai-safety-report-2025"
+									target="_blank"
+									rel="noopener noreferrer">normes de sécurité</a
+								> et hors de tout contrôle institutionnel.
+							</li>
+							<li>
+								Ils présentent déjà des risques majeurs pour la sécurité de nos <a
+									href="/dangers/economiques-et-materiels">infrastructures</a
+								>, pour <a href="/dangers/pour-la-societe">nos institutions</a>, pour
+								<a href="/dangers/pour-les-individus">notre modèle social</a>.
+							</li>
+							<li>
+								Ces modèles d'IA commencent à <a
+									href="https://www.anthropic.com/research/alignment-faking"
+									target="_blank"
+									rel="noopener noreferrer">échapper à leurs créateurs</a
+								>. Certains le reconnaissent publiquement.
+							</li>
+							<li>
+								Dans un scénario catastrophe que l'on ne peut exclure, ils pourraient donner
+								naissance à une <a
+									href="https://www.safe.ai/work/statement-on-ai-risk"
+									target="_blank"
+									rel="noopener noreferrer">super-intelligence incontrôlable</a
+								>.
+							</li>
+						</ul>
+					</svelte:fragment>
+				</Accordion>
+
+				<Accordion id="que-faire" noHash>
+					<svelte:fragment slot="head">Que faire&nbsp;?</svelte:fragment>
+					<svelte:fragment slot="details">
+						<ul class="bullet-list">
+							<li>
+								Les discours «&nbsp;<a href="/faq">rassuristes</a>&nbsp;» nous font perdre du temps.
+								<em
+									>L'IA ne serait pas vraiment intelligente, les géants de la tech exagéreraient les
+									performances de leurs modèles, on serait à la veille de l'explosion d'une bulle
+									spéculative…</em
+								> Rien de tout cela ne nous protège du danger, bien au contraire.
+							</li>
+							<li>
+								La violence, que nous condamnons par principe, est également contre-productive. Elle
+								renforce des antagonismes stériles au moment où l'avenir de l'humanité est en jeu.
+							</li>
+							<li>
+								La seule réponse au danger est la mise en place d'une <a href="/propositions"
+									>gouvernance mondiale</a
+								> qui ait les moyens institutionnels, techniques et financiers de contrôler l'IA.
+							</li>
+						</ul>
+					</svelte:fragment>
+				</Accordion>
+			</div>
+		</div>
+
+		<div class="team-section">
+			<h2 class="section-title">Notre indépendance</h2>
+			<p class="section-description">
+				Association à but non lucratif créée en juin 2024, Pause IA est <strong
+					>totalement indépendante de l'industrie de l'IA et de la tech</strong
+				>. Nous fonctionnons grâce aux <a href="/dons">dons</a> de nos soutiens, qui financent nos campagnes,
+				nos événements et le fonctionnement de l'association.
+			</p>
+		</div>
+	{/if}
 </section>
 
 <style>
@@ -353,54 +356,36 @@
 	}
 
 	.intro {
-		text-align: justify;
-		margin-bottom: 1rem;
+		margin-bottom: 2rem;
+		text-align: center;
 	}
 
 	.intro :global(p) {
-		text-align: justify;
+		text-align: center;
 	}
 
-	.intro-lead {
-		margin: 1rem 0 2rem;
-		font-size: 1.05rem;
+	.lead {
+		max-width: 720px;
+		margin: 1rem auto 1.5rem;
+		font-size: 1.1rem;
 		line-height: 1.7;
+		color: var(--text, #1f2937);
 	}
 
-	.intro-lead p {
-		margin: 0 0 1rem;
-	}
-
-	.intro-lead p:last-child {
-		margin-bottom: 0;
-	}
-
-	.intro-block {
-		margin: 1.75rem 0;
-	}
-
-	.intro-question {
-		font-size: 1.25rem;
-		font-weight: 700;
-		margin: 0 0 0.75rem;
-		padding-bottom: 0.5rem;
-		border-bottom: 2px solid var(--border, #e5e7eb);
-	}
-
-	.intro-list {
+	.bullet-list {
 		list-style: none;
 		padding: 0;
 		margin: 0;
 	}
 
-	.intro-list li {
+	.bullet-list li {
 		position: relative;
 		padding: 0.25rem 0 0.25rem 1.5rem;
 		margin-bottom: 0.5rem;
 		line-height: 1.6;
 	}
 
-	.intro-list li::before {
+	.bullet-list li::before {
 		content: '';
 		position: absolute;
 		left: 0;
@@ -408,51 +393,32 @@
 		width: 0.5rem;
 		height: 0.5rem;
 		border-radius: 50%;
-		background: var(--accent, #f97316);
-	}
-
-	.intro-list li:last-child {
-		margin-bottom: 0;
-	}
-
-	.accordion-group {
-		display: flex;
-		flex-direction: column;
-		margin: 1.5rem 0;
-		padding: 0 1.25rem;
-		background: var(--bg-card, #fff);
-		border: 1px solid var(--border, #e5e7eb);
-		border-radius: 1rem;
-		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-	}
-
-	.accordion-group :global(.accordion .title) {
-		font-size: 1.15rem;
-		font-weight: 700;
-	}
-
-	.accordion-group :global(.accordion .header) {
-		padding: 1.25rem 0.25rem;
-		transition: color 0.2s ease;
-	}
-
-	.accordion-group :global(.accordion .header:hover) {
-		opacity: 0.75;
-	}
-
-	.accordion-group .intro-list li::before {
 		background: var(--text-secondary, #4b5563);
 	}
 
-	.intro-footer {
-		margin-top: 2rem;
-		padding: 1.25rem 1.5rem;
-		border-radius: 0.75rem;
-		background: var(--bg-card, #fff);
-		border: 1px dashed var(--border, #e5e7eb);
-		font-size: 0.95rem;
-		color: var(--text-secondary, #4b5563);
-		line-height: 1.6;
+	.bullet-list li:last-child {
+		margin-bottom: 0;
+	}
+
+	.accordion-stack {
+		display: flex;
+		flex-direction: column;
+		text-align: left;
+		margin-top: 1.5rem;
+	}
+
+	.accordion-stack :global(.accordion .title) {
+		font-size: 1.1rem;
+		font-weight: 700;
+	}
+
+	.accordion-stack :global(.accordion .header) {
+		padding: 1rem 0;
+		transition: opacity 0.2s ease;
+	}
+
+	.accordion-stack :global(.accordion .header:hover) {
+		opacity: 0.75;
 	}
 
 	.contact-cta {
