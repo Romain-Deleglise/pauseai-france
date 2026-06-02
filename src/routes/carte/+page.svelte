@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte'
 	import PostMeta from '$components/PostMeta.svelte'
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
+	import { Maximize2, Minimize2 } from 'lucide-svelte'
 
 	const title = 'Carte des ressources IA - Pause IA'
 	const description =
@@ -91,6 +92,16 @@
 	let tooltipFlag: HTMLSpanElement
 	let tooltipTitle: HTMLSpanElement
 	let tooltipDesc: HTMLDivElement
+	let isFullscreen = false
+
+	function toggleFullscreen() {
+		if (!viewport) return
+		if (!document.fullscreenElement) {
+			viewport.requestFullscreen?.().catch(() => {})
+		} else {
+			document.exitFullscreen?.()
+		}
+	}
 
 	function flagHTML(lang: string) {
 		if (lang === 'fr')
@@ -315,6 +326,11 @@
 			}, 150)
 		}
 
+		const onFullscreenChange = () => {
+			isFullscreen = document.fullscreenElement === viewport
+			onResize()
+		}
+
 		viewport.addEventListener('mousedown', onMouseDown)
 		window.addEventListener('mousemove', onMouseMove)
 		window.addEventListener('mouseup', onMouseUp)
@@ -323,6 +339,7 @@
 		viewport.addEventListener('touchmove', onTouchMove, { passive: false })
 		viewport.addEventListener('touchend', onTouchEnd)
 		window.addEventListener('resize', onResize)
+		document.addEventListener('fullscreenchange', onFullscreenChange)
 
 		// Hover sync polygon → label
 		stage.querySelectorAll('.zone').forEach((poly) => {
@@ -441,6 +458,7 @@
 			viewport.removeEventListener('touchmove', onTouchMove)
 			viewport.removeEventListener('touchend', onTouchEnd)
 			window.removeEventListener('resize', onResize)
+			document.removeEventListener('fullscreenchange', onFullscreenChange)
 		}
 	})
 </script>
@@ -455,37 +473,48 @@
 		</p>
 	</header>
 
-	<div class="map-frame">
-		<div class="map-viewport" bind:this={viewport}>
-			<div class="map-stage" bind:this={stage} style="visibility: hidden;">
-				<img src="/carte/map.jpg" alt="Carte des ressources Pause IA" class="map-image" />
-				<svg class="map-zones" viewBox="0 0 {MAP_W} {MAP_H}" preserveAspectRatio="xMidYMid meet">
-					{#each ZONES as z}
-						<polygon
-							class="zone"
-							data-zone={z.id}
-							data-name={z.name}
-							fill="transparent"
-							stroke="none"
-							points={z.points}
-						/>
-					{/each}
-				</svg>
-				<div class="zone-labels">
-					{#each ZONES as z}
-						<div
-							class="zone-static-label"
-							data-zone={z.id}
-							style="left: {z.label.left}px; top: {z.label.top}px;"
-						>
-							{z.name}
-						</div>
-					{/each}
-				</div>
-				<div class="map-sources" bind:this={sourcesContainer}></div>
+	<div class="map-viewport" class:fullscreen={isFullscreen} bind:this={viewport}>
+		<button
+			type="button"
+			class="fullscreen-btn"
+			on:click={toggleFullscreen}
+			aria-label={isFullscreen ? 'Quitter le plein écran' : 'Passer en plein écran'}
+			title={isFullscreen ? 'Quitter le plein écran' : 'Plein écran'}
+		>
+			{#if isFullscreen}
+				<Minimize2 size={18} />
+			{:else}
+				<Maximize2 size={18} />
+			{/if}
+		</button>
+		<div class="map-stage" bind:this={stage} style="visibility: hidden;">
+			<img src="/carte/map.jpg" alt="Carte des ressources Pause IA" class="map-image" />
+			<svg class="map-zones" viewBox="0 0 {MAP_W} {MAP_H}" preserveAspectRatio="xMidYMid meet">
+				{#each ZONES as z}
+					<polygon
+						class="zone"
+						data-zone={z.id}
+						data-name={z.name}
+						fill="transparent"
+						stroke="none"
+						points={z.points}
+					/>
+				{/each}
+			</svg>
+			<div class="zone-labels">
+				{#each ZONES as z}
+					<div
+						class="zone-static-label"
+						data-zone={z.id}
+						style="left: {z.label.left}px; top: {z.label.top}px;"
+					>
+						{z.name}
+					</div>
+				{/each}
 			</div>
-			<div class="hint">Molette : zoom · Glisser : déplacer</div>
+			<div class="map-sources" bind:this={sourcesContainer}></div>
 		</div>
+		<div class="hint">Molette : zoom · Glisser : déplacer</div>
 	</div>
 
 	<div class="src-tooltip" bind:this={tooltip}>
@@ -498,11 +527,19 @@
 </div>
 
 <style>
+	/* Use the parchment tone as the unique page background so the map
+	   (whose corners share the same tone) blends seamlessly — only two
+	   colors visible: parchment everywhere + the colorful island. */
 	.carte-page {
-		background: var(--bg);
+		background: #fff5e8;
 		color: var(--text);
-		padding-bottom: 3rem;
+		padding-bottom: 2rem;
 		position: relative;
+	}
+
+	:global([data-theme='dark']) .carte-page {
+		background: #2a241c;
+		color: var(--text);
 	}
 
 	.carte-intro {
@@ -512,8 +549,6 @@
 		text-align: center;
 	}
 
-	/* UnderlinedTitle is centered with the brand-gradient underline.
-	   We reduce its bottom margin since the map follows right after. */
 	.carte-intro :global(h1) {
 		margin-bottom: 1.25rem;
 		padding-bottom: 1rem;
@@ -530,27 +565,56 @@
 		font-size: 1.05rem;
 		line-height: 1.5;
 		color: var(--text-secondary);
-		margin: 0 auto 1.75rem;
+		margin: 0 auto 1.5rem;
 		max-width: 36rem;
 	}
 
-	/* ─── Map frame : carte enveloppée dans une carte du site ──── */
-	.map-frame {
-		max-width: 80rem;
-		margin: 0 auto;
-		padding: 0 1rem;
-	}
-
+	/* No frame, no border, no radius: the viewport bg matches the page bg
+	   so the map flows naturally into the page. */
 	.map-viewport {
 		position: relative;
 		width: 100%;
-		height: clamp(520px, 70vh, 820px);
+		height: clamp(520px, 75vh, 900px);
 		overflow: hidden;
 		cursor: grab;
-		background: var(--brand-light, #fff5e8);
-		border-radius: 12px;
-		border: 1px solid var(--border);
-		box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+		background: inherit;
+	}
+
+	.map-viewport.fullscreen {
+		height: 100vh;
+		width: 100vw;
+	}
+
+	/* ─── Fullscreen button ───────────────────────────────── */
+	.fullscreen-btn {
+		position: absolute;
+		top: 0.85rem;
+		right: 0.85rem;
+		z-index: 30;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 2.4rem;
+		height: 2.4rem;
+		border: 1px solid rgba(0, 0, 0, 0.15);
+		border-radius: 8px;
+		background: rgba(255, 255, 255, 0.85);
+		color: var(--text);
+		cursor: pointer;
+		backdrop-filter: blur(4px);
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+		transition:
+			background 0.18s,
+			border-color 0.18s,
+			color 0.18s,
+			transform 0.18s;
+	}
+
+	.fullscreen-btn:hover {
+		background: var(--brand);
+		border-color: var(--brand);
+		color: white;
+		transform: translateY(-1px);
 	}
 
 	:global([data-theme='dark']) .map-viewport {
@@ -766,12 +830,17 @@
 	}
 
 	.hint {
-		text-align: center;
+		position: absolute;
+		bottom: 0.85rem;
+		left: 50%;
+		transform: translateX(-50%);
 		font-family: var(--font-heading);
-		font-size: 0.75rem;
+		font-size: 0.7rem;
 		color: var(--text-secondary);
 		letter-spacing: 0.15em;
 		text-transform: uppercase;
-		padding: 0.85rem 0 0;
+		pointer-events: none;
+		z-index: 10;
+		opacity: 0.7;
 	}
 </style>
