@@ -458,7 +458,7 @@
 	<div class="map-frame">
 		<div class="map-viewport" bind:this={viewport}>
 			<div class="map-stage" bind:this={stage} style="visibility: hidden;">
-				<img src="/carte/map.png" alt="Carte des ressources Pause IA" class="map-image" />
+				<img src="/carte/map.jpg" alt="Carte des ressources Pause IA" class="map-image" />
 				<svg class="map-zones" viewBox="0 0 {MAP_W} {MAP_H}" preserveAspectRatio="xMidYMid meet">
 					{#each ZONES as z}
 						<polygon
@@ -547,15 +547,17 @@
 		height: clamp(520px, 70vh, 820px);
 		overflow: hidden;
 		cursor: grab;
-		background: #050608;
+		background: var(--brand-light, #fff5e8);
 		border-radius: 12px;
 		border: 1px solid var(--border);
 		box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
 	}
 
 	:global([data-theme='dark']) .map-viewport {
+		background: #2a241c;
 		box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
 	}
+
 	.map-viewport:active {
 		cursor: grabbing;
 	}
