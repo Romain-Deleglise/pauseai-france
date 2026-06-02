@@ -942,6 +942,7 @@ export const resources: Resource[] = [
 		url: 'https://futureoflife.org/podcast/',
 		langs: ['en'],
 		category: 'comprendre',
+		type: 'podcast',
 		subgroup: 'demarrer',
 		zone: 'rives',
 		logo: '/carte/logos/fli.svg'
@@ -953,6 +954,7 @@ export const resources: Resource[] = [
 		url: 'https://www.youtube.com/@DoomDebates',
 		langs: ['en'],
 		category: 'comprendre',
+		type: 'podcast',
 		subgroup: 'demarrer',
 		zone: 'rives',
 		logo: '/carte/logos/doomdebate.jpg'
@@ -964,6 +966,7 @@ export const resources: Resource[] = [
 		url: 'https://80000hours.org/podcast/',
 		langs: ['en'],
 		category: 'comprendre',
+		type: 'podcast',
 		subgroup: 'demarrer',
 		zone: 'rives',
 		logo: '/carte/logos/80000.png'
@@ -975,6 +978,7 @@ export const resources: Resource[] = [
 		url: 'https://pauseia.substack.com/',
 		langs: ['fr'],
 		category: 'newsletters',
+		type: 'newsletter',
 		zone: 'foret',
 		logo: '/carte/logos/pauseia.svg'
 	},
@@ -1015,5 +1019,7 @@ export const FEATURED_IDS: string[] = [
 ]
 
 // Injected at build time from `git log -1` on this file. See vite.config.ts.
+// Declared inline so svelte-check picks it up without depending on app.d.ts.
+declare const __RESOURCES_UPDATED__: string | undefined
 export const RESOURCES_LAST_UPDATED: string =
 	typeof __RESOURCES_UPDATED__ !== 'undefined' ? __RESOURCES_UPDATED__ : '2026-06-02'

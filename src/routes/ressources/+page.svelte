@@ -326,8 +326,9 @@
 			</p>
 
 			<a href="/carte" class="map-link">
-				<MapIcon size={16} />
+				<MapIcon size={18} class="map-link-icon" />
 				<span>Voir l'écosystème en vue cartographique</span>
+				<MoveUpRight size={16} class="map-link-arrow" aria-hidden="true" />
 			</a>
 		</section>
 
@@ -825,36 +826,72 @@
 		margin: 0 auto 1.25rem;
 	}
 
+	/* Filled CTA so the "vue cartographique" alternative actually catches
+	   the eye in the hero (people otherwise scroll past it). Subtle pulse
+	   ring draws attention without being aggressive. */
 	.map-link {
+		position: relative;
 		display: inline-flex;
 		align-items: center;
-		gap: 0.4rem;
-		padding: 0.5rem 1rem;
+		gap: 0.55rem;
+		padding: 0.7rem 1.25rem;
 		border-radius: 999px;
-		border: 1px solid var(--brand);
-		color: var(--brand-subtle, var(--brand));
+		background: var(--brand);
+		color: white;
 		text-decoration: none;
 		font-family: var(--font-heading);
-		font-weight: 600;
-		font-size: 0.9rem;
+		font-weight: 700;
+		font-size: 0.95rem;
+		box-shadow: 0 6px 18px rgba(255, 148, 22, 0.35);
 		transition:
-			background 0.18s,
-			color 0.18s,
-			transform 0.18s;
+			transform 0.18s ease,
+			box-shadow 0.18s ease,
+			background 0.18s ease;
+	}
+
+	/* Pulse ring : a second pseudo-element behind the pill that expands
+	   and fades repeatedly. Slow (3 s) so it's noticed but not annoying. */
+	.map-link::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		border-radius: 999px;
+		box-shadow: 0 0 0 0 rgba(255, 148, 22, 0.5);
+		animation: map-link-pulse 2.6s ease-out infinite;
+		pointer-events: none;
+	}
+
+	@keyframes map-link-pulse {
+		0% {
+			box-shadow: 0 0 0 0 rgba(255, 148, 22, 0.5);
+		}
+		70% {
+			box-shadow: 0 0 0 12px rgba(255, 148, 22, 0);
+		}
+		100% {
+			box-shadow: 0 0 0 0 rgba(255, 148, 22, 0);
+		}
 	}
 
 	.map-link:hover {
-		background: var(--brand);
-		color: white;
-		transform: translateY(-1px);
+		background: var(--brand-bright, #ffa945);
+		transform: translateY(-2px);
+		box-shadow: 0 10px 22px rgba(255, 148, 22, 0.45);
 	}
 
-	:global([data-theme='dark']) .map-link {
-		color: var(--brand);
+	.map-link:hover :global(.map-link-arrow) {
+		transform: translate(3px, -3px);
 	}
 
-	:global([data-theme='dark']) .map-link:hover {
-		color: white;
+	:global(.map-link-arrow) {
+		transition: transform 0.18s ease;
+	}
+
+	/* Respect reduced motion : disable the pulse for users who opt out. */
+	@media (prefers-reduced-motion: reduce) {
+		.map-link::before {
+			animation: none;
+		}
 	}
 
 	/* ─── Controls ─────────────────────────────────────────── */
