@@ -164,8 +164,9 @@
 				<p>
 					<strong>
 						Pause IA est une <a href="/mentions-legales">association</a> qui alerte les citoyens et
-						les pouvoirs publics français sur les <a href="/dangers">graves dangers</a> de la course
-						à l'intelligence artificielle, et les incite à agir pour s'y opposer.
+						les pouvoirs publics français sur les
+						<a href="/dangers/economiques-et-materiels">graves dangers</a> de la course à l'intelligence
+						artificielle, et les incite à agir pour s'y opposer.
 					</strong>
 				</p>
 
@@ -201,8 +202,9 @@
 							<li>
 								Les modèles d'IA généralistes (aujourd'hui tels que GPT, Claude, Gemini) deviennent
 								chaque jour plus puissants, ils sont faciles à utiliser et se déploient à grande
-								vitesse dans la société, sans réelles <a href="/dangers">normes de sécurité</a> et hors
-								de tout contrôle institutionnel.
+								vitesse dans la société, sans réelles <a href="/dangers/economiques-et-materiels"
+									>normes de sécurité</a
+								> et hors de tout contrôle institutionnel.
 							</li>
 							<li>
 								Ils présentent déjà des risques majeurs pour la sécurité de nos <a
