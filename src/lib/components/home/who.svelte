@@ -178,20 +178,16 @@
 				</strong>
 			</p>
 
-			<Accordion id="quelle-ia">
-				<svelte:fragment slot="head">Quelle IA ?</svelte:fragment>
-				<svelte:fragment slot="details">
-					<ul>
-						<li>Nous ne sommes pas contre toute forme d'IA.</li>
-						<li>
-							Nous sommes contre <strong
-								>le développement sans contrôle et sans limite de l'intelligence artificielle
-								généraliste</strong
-							> car il expose notre civilisation à des risques catastrophiques.
-						</li>
-					</ul>
-				</svelte:fragment>
-			</Accordion>
+			<p><strong>Quelle IA ?</strong></p>
+			<ul>
+				<li>Nous ne sommes pas contre toute forme d'IA.</li>
+				<li>
+					Nous sommes contre <strong
+						>le développement sans contrôle et sans limite de l'intelligence artificielle
+						généraliste</strong
+					> car il expose notre civilisation à des risques catastrophiques.
+				</li>
+			</ul>
 
 			<Accordion id="pourquoi">
 				<svelte:fragment slot="head">Pourquoi ?</svelte:fragment>
@@ -243,13 +239,10 @@
 			</Accordion>
 
 			<p>
-				Association à but non lucratif enregistrée depuis juin 2024, Pause IA rassemble plus d'une
-				centaine d'adhérents et bénévoles. Nous ne recevons aucun financement d'entreprises d'IA ou
-				de la tech&nbsp;: notre indépendance vis-à-vis de l'industrie est totale. Notre
-				professionnalisation (recrutement d'une directrice exécutive, organisation d'événements
-				comme la conférence au Sénat) est rendue possible par les <a href="/dons">dons</a> de nos soutiens,
-				que nous consacrons à des événements impactants, à des campagnes de sensibilisation et au fonctionnement
-				de notre structure.
+				Association à but non lucratif créée en juin 2024, Pause IA réunit plus d'une centaine
+				d'adhérents et bénévoles. Totalement indépendants de l'industrie de l'IA et de la tech, nous
+				fonctionnons grâce aux <a href="/dons">dons</a> de nos soutiens, qui financent nos campagnes,
+				nos événements et le fonctionnement de l'association.
 			</p>
 		{/if}
 		<div class="contact-cta">
