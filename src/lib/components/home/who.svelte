@@ -196,20 +196,23 @@
 						<li>
 							Les modèles d'IA généralistes (aujourd'hui tels que GPT, Claude, Gemini) deviennent
 							chaque jour plus puissants, ils sont faciles à utiliser et se déploient à grande
-							vitesse dans la société, sans réelles normes de sécurité et hors de tout contrôle
-							institutionnel.
+							vitesse dans la société, sans réelles <a href="/dangers">normes de sécurité</a> et hors
+							de tout contrôle institutionnel.
 						</li>
 						<li>
-							Ils présentent déjà des risques majeurs pour la sécurité de nos infrastructures, pour
-							nos institutions, pour notre modèle social.
+							Ils présentent déjà des risques majeurs pour la sécurité de nos <a
+								href="/dangers/economiques-et-materiels">infrastructures</a
+							>, pour <a href="/dangers/pour-la-societe">nos institutions</a>, pour
+							<a href="/dangers/pour-les-individus">notre modèle social</a>.
 						</li>
 						<li>
-							Ces modèles d'IA commencent à échapper à leurs créateurs. Certains le reconnaissent
-							publiquement.
+							Ces modèles d'IA commencent à <a href="/dangers/pour-l'humanite"
+								>échapper à leurs créateurs</a
+							>. Certains le reconnaissent publiquement.
 						</li>
 						<li>
 							Dans un scénario catastrophe que l'on ne peut exclure, ils pourraient donner naissance
-							à une super-intelligence incontrôlable.
+							à une <a href="/dangers/pour-l'humanite">super-intelligence incontrôlable</a>.
 						</li>
 					</ul>
 				</svelte:fragment>
@@ -220,7 +223,8 @@
 				<svelte:fragment slot="details">
 					<ul>
 						<li>
-							Les discours «&nbsp;rassuristes&nbsp;» nous font perdre du temps. <em
+							Les discours «&nbsp;<a href="/faq">rassuristes</a>&nbsp;» nous font perdre du temps.
+							<em
 								>L'IA ne serait pas vraiment intelligente, les géants de la tech exagéreraient les
 								performances de leurs modèles, on serait à la veille de l'explosion d'une bulle
 								spéculative…</em
@@ -231,8 +235,9 @@
 							renforce des antagonismes stériles au moment où l'avenir de l'humanité est en jeu.
 						</li>
 						<li>
-							La seule réponse au danger est la mise en place d'une gouvernance mondiale qui ait les
-							moyens institutionnels, techniques et financiers de contrôler l'IA.
+							La seule réponse au danger est la mise en place d'une <a href="/propositions"
+								>gouvernance mondiale</a
+							> qui ait les moyens institutionnels, techniques et financiers de contrôler l'IA.
 						</li>
 					</ul>
 				</svelte:fragment>
