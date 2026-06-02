@@ -3,6 +3,10 @@
 	import PostMeta from '$components/PostMeta.svelte'
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
 	import { Maximize2, Minimize2 } from 'lucide-svelte'
+	import { theme } from '$lib/stores/theme'
+	import { resources } from '$lib/data/resources'
+
+	$: mapSrc = $theme === 'dark' ? '/carte/map-dark.jpg' : '/carte/map.jpg'
 
 	const title = 'Carte des ressources IA - Pause IA'
 	const description =
@@ -104,10 +108,9 @@
 	}
 
 	function flagHTML(lang: string) {
-		if (lang === 'fr')
-			return '<img src="/carte/flags/fr.svg" alt="FR" class="src-tooltip-flag-img">'
+		if (lang === 'fr') return '<img src="/flags/fr.svg" alt="FR" class="src-tooltip-flag-img">'
 		if (lang === 'en' || lang === 'gb')
-			return '<img src="/carte/flags/gb.svg" alt="EN" class="src-tooltip-flag-img">'
+			return '<img src="/flags/gb.svg" alt="EN" class="src-tooltip-flag-img">'
 		return ''
 	}
 
@@ -451,14 +454,22 @@
 			})
 		}
 
-		fetch('/carte/ressources.json')
-			.then((r) => r.json())
-			.then((sources: Source[]) => {
-				renderSources(sources)
-				apply()
-			})
-			.catch(() => {})
-
+		// Build map sources from the unified resources module — only entries
+		// that declare a `zone` appear on the map.
+		const mapSources: Source[] = resources
+			.filter((r) => r.zone)
+			.map((r) => ({
+				id: r.id,
+				title: r.title,
+				description: r.description,
+				url: r.url,
+				lang: r.langs[0] ?? 'en',
+				zone: r.zone as string,
+				logo: r.logo,
+				logo_size: r.logoSize,
+				fallback_text: r.fallbackText
+			}))
+		renderSources(mapSources)
 		apply()
 
 		return () => {
@@ -500,7 +511,7 @@
 			{/if}
 		</button>
 		<div class="map-stage" bind:this={stage} style="visibility: hidden;">
-			<img src="/carte/map.jpg" alt="Carte des ressources Pause IA" class="map-image" />
+			<img src={mapSrc} alt="Carte des ressources Pause IA" class="map-image" />
 			<svg class="map-zones" viewBox="0 0 {MAP_W} {MAP_H}" preserveAspectRatio="xMidYMid meet">
 				{#each ZONES as z}
 					<polygon
@@ -536,6 +547,31 @@
 			<div class="src-tooltip-desc" bind:this={tooltipDesc}></div>
 		</div>
 	</div>
+
+	<!-- SEO-indexable fallback list, also visible by default on mobile
+	     where the interactive map is unusable at finger size. -->
+	<section class="map-fallback" aria-label="Liste des sources de la carte">
+		<h2>Liste des sources</h2>
+		{#each ZONES as z}
+			{@const zoneResources = resources.filter((r) => r.zone === z.id)}
+			{#if zoneResources.length > 0}
+				<div class="fallback-zone">
+					<h3>{z.name}</h3>
+					<ul>
+						{#each zoneResources as r}
+							<li>
+								<a href={r.url} target="_blank" rel="noopener noreferrer">{r.title}</a>
+								<span class="fallback-desc">— {r.description}</span>
+							</li>
+						{/each}
+					</ul>
+				</div>
+			{/if}
+		{/each}
+		<p class="back-to-ressources">
+			<a href="/ressources">← Retour à la page Ressources</a>
+		</p>
+	</section>
 </div>
 
 <style>
@@ -867,5 +903,99 @@
 		pointer-events: none;
 		z-index: 10;
 		opacity: 0.7;
+	}
+
+	/* ─── Fallback list (SEO + mobile) ───────────────────── */
+	.map-fallback {
+		max-width: 52rem;
+		margin: 2rem auto 0;
+		padding: 2rem 1.25rem;
+	}
+
+	.map-fallback h2 {
+		font-family: var(--font-heading);
+		font-weight: 700;
+		font-size: 1.3rem;
+		margin: 0 0 1.25rem;
+		color: var(--text);
+	}
+
+	.fallback-zone {
+		margin-bottom: 1.5rem;
+	}
+
+	.fallback-zone h3 {
+		font-family: var(--font-heading);
+		font-weight: 600;
+		font-size: 0.78rem;
+		text-transform: uppercase;
+		letter-spacing: 0.09em;
+		color: var(--brand-subtle, var(--brand));
+		margin: 0 0 0.5rem;
+	}
+
+	:global([data-theme='dark']) .fallback-zone h3 {
+		color: var(--brand);
+	}
+
+	.fallback-zone ul {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: grid;
+		gap: 0.45rem;
+	}
+
+	.fallback-zone li {
+		padding: 0.55rem 0.75rem;
+		background: var(--bg);
+		border: 1px solid var(--border);
+		border-radius: 8px;
+	}
+
+	.fallback-zone a {
+		color: var(--brand-subtle, var(--brand));
+		text-decoration: none;
+		font-weight: 600;
+	}
+
+	:global([data-theme='dark']) .fallback-zone a {
+		color: var(--brand);
+	}
+
+	.fallback-zone a:hover {
+		text-decoration: underline;
+	}
+
+	.fallback-desc {
+		color: var(--text-secondary);
+		font-size: 0.9rem;
+	}
+
+	.back-to-ressources {
+		margin-top: 2rem;
+		text-align: center;
+	}
+
+	.back-to-ressources a {
+		color: var(--brand-subtle, var(--brand));
+		text-decoration: none;
+		font-family: var(--font-heading);
+		font-weight: 600;
+	}
+
+	.back-to-ressources a:hover {
+		text-decoration: underline;
+	}
+
+	/* On mobile (< 768px) the interactive map is unusable at finger size,
+	   so we hide it and the fallback list becomes the primary view. */
+	@media (max-width: 767px) {
+		.map-viewport {
+			display: none;
+		}
+		.map-fallback {
+			margin-top: 1rem;
+		}
 	}
 </style>

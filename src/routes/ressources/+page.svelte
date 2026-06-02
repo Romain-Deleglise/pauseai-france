@@ -1,213 +1,119 @@
 <script lang="ts">
 	import PostMeta from '$components/PostMeta.svelte'
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
-	import { Brain, AlertTriangle, FileText, Megaphone, BookMarked, MoveUpRight } from 'lucide-svelte'
+	import {
+		Brain,
+		AlertTriangle,
+		FileText,
+		Megaphone,
+		BookMarked,
+		BookOpen,
+		Mail,
+		MoveUpRight,
+		Search,
+		X,
+		Map as MapIcon,
+		Github
+	} from 'lucide-svelte'
 	import type { ComponentType } from 'svelte'
+	import {
+		resources,
+		SUBGROUPS,
+		CATEGORY_ORDER,
+		RESOURCES_LAST_UPDATED,
+		type Category,
+		type Lang,
+		type Resource
+	} from '$lib/data/resources'
 
 	const title = 'Ressources - Pause IA'
 	const description =
-		"Ressources, références et liens utiles : une base de connaissances sur l'IA et ses risques existentiels."
+		"Ressources, références et liens utiles : une base de connaissances sur l'IA, ses risques existentiels et le problème de l'alignement."
 
-	type Lang = 'fr' | 'en'
-	type Entry = {
-		title: string
-		desc: string
-		url: string
-		langs: Lang[]
-		date?: string
-	}
-	type Group = { subtitle?: string; highlight?: boolean; entries: Entry[] }
-	type Section = {
-		id: string
-		icon: ComponentType
-		title: string
-		intro?: string
-		groups: Group[]
-	}
-
-	const sections: Section[] = [
-		{
-			id: 'pause-ia',
-			icon: BookMarked,
-			title: 'Ressources Pause IA',
-			groups: [
-				{
-					entries: [
-						{
-							title: "Dangers pour les individus, la société et l'humanité",
-							desc: "Panorama des dangers allant de l'individuel à la société jusqu'à la perte de contrôle.",
-							url: 'https://pauseia.fr/dangers/pour-les-individus',
-							langs: ['fr']
-						}
-					]
-				}
-			]
-		},
-		{
-			id: 'comprendre',
-			icon: Brain,
-			title: "Mieux comprendre l'IA",
-			groups: [
-				{
-					subtitle: 'Pour démarrer',
-					entries: [
-						{
-							title: 'Comment fonctionne un LLM ? (3Blue1Brown)',
-							desc: 'Vidéo pédagogique pour saisir le fonctionnement des grands modèles de langage.',
-							url: 'https://www.3blue1brown.com/lessons/mini-llm',
-							langs: ['fr'],
-							date: 'nov. 2024'
-						}
-					]
-				},
-				{
-					highlight: true,
-					subtitle: "Vue d'ensemble : capacités et tendances actuelles",
-					entries: [
-						{
-							title: 'CAIS Dashboard',
-							desc: 'Comparaison interactive des IA de pointe (capacité et sécurité).',
-							url: 'https://dashboard.safe.ai/',
-							langs: ['en']
-						},
-						{
-							title: 'Epoch AI Benchmarks',
-							desc: "Comparaison des performances selon le modèle, à partir d'un ensemble d'évaluations de sécurité.",
-							url: 'https://epoch.ai/benchmarks',
-							langs: ['en']
-						},
-						{
-							title: 'Long-horizon tasks (METR)',
-							desc: 'Évaluation de la longueur des tâches réalisées en autonomie par les IA.',
-							url: 'https://metr.org/blog/2025-03-19-measuring-ai-ability-to-complete-long-tasks/',
-							langs: ['en']
-						}
-					]
-				},
-				{
-					subtitle: 'Pour aller plus loin',
-					entries: [
-						{
-							title: "Définition de l'Intelligence Artificielle Générale (IAG)",
-							desc: 'Mesure de la polyvalence cognitive.',
-							url: 'https://www.agidefinition.ai/',
-							langs: ['en'],
-							date: 'oct. 2025'
-						},
-						{
-							title: 'AI Safety Map',
-							desc: "Carte existentielle de la sécurité de l'IA et ensemble de ressources.",
-							url: 'https://www.aisafety.com/map',
-							langs: ['en']
-						},
-						{
-							title: 'International AI Safety Report 2026',
-							desc: 'État des lieux mondial de référence des capacités et des risques.',
-							url: 'https://internationalaisafetyreport.org/',
-							langs: ['en']
-						}
-					]
-				}
-			]
-		},
-		{
-			id: 'risques',
+	type CategoryMeta = { label: string; icon: ComponentType; intro?: string }
+	const CATEGORIES: Record<Category, CategoryMeta> = {
+		'pause-ia': { label: 'Ressources Pause IA', icon: BookMarked },
+		livres: { label: 'Livres', icon: BookOpen },
+		comprendre: { label: "Mieux comprendre l'IA", icon: Brain },
+		risques: {
+			label: 'Risques existentiels',
 			icon: AlertTriangle,
-			title: 'Risques existentiels',
-			intro: "Perte de contrôle et menaces d'extinction.",
-			groups: [
-				{
-					entries: [
-						{
-							title: 'Briefing on Extinction Threats (MIRI)',
-							desc: 'Synthèse des risques existentiels et pourquoi ils sont probables.',
-							url: 'https://intelligence.org/briefing/',
-							langs: ['en']
-						},
-						{
-							title: 'FAQ on Catastrophic Risks (Yoshua Bengio)',
-							desc: 'Réponses aux questions fréquentes sur les risques catastrophiques.',
-							url: 'https://yoshuabengio.org/2023/06/24/faq-on-catastrophic-ai-risks/',
-							langs: ['fr', 'en'],
-							date: 'juin 2023'
-						},
-						{
-							title: "Probabilité d'extinction par IA (PauseAI Global)",
-							desc: 'Quelle est la probabilité de conséquences catastrophiques ?',
-							url: 'https://pauseai.info/faq#how-likely-is-it-that-superintelligent-ai-will-cause-very-bad-outcomes-like-human-extinction',
-							langs: ['en']
-						}
-					]
-				}
-			]
+			intro: "Perte de contrôle, menaces d'extinction et recherche en alignement."
 		},
-		{
-			id: 'declarations',
-			icon: FileText,
-			title: "Déclarations et appels à l'action",
-			groups: [
-				{
-					entries: [
-						{
-							title: "Lignes Rouges pour l'IA (CeSIA)",
-							desc: 'Propositions de limites à ne pas franchir.',
-							url: 'https://red-lines.ai/',
-							langs: ['fr'],
-							date: 'sept. 2025'
-						},
-						{
-							title: 'Déclaration sur la Superintelligence (FLI)',
-							desc: 'Appel international à interdire le développement de superintelligence artificielle.',
-							url: 'https://superintelligence-statement.org/',
-							langs: ['en'],
-							date: 'oct. 2025'
-						},
-						{
-							title: 'Statement on AI Risk (CAIS)',
-							desc: "« La réduction du risque d'extinction lié à l'IA devrait être une priorité mondiale au même titre que les pandémies et la guerre nucléaire. »",
-							url: 'https://aistatement.com/',
-							langs: ['en'],
-							date: 'mai 2023'
-						}
-					]
-				}
-			]
-		},
-		{
-			id: 'agir',
-			icon: Megaphone,
-			title: 'Faire entendre votre voix',
-			groups: [
-				{
-					entries: [
-						{
-							title: "L'IA ne détruira pas QUE votre emploi",
-							desc: 'Témoigner, participer à l’enquête, envoyer un mail à vos représentants.',
-							url: 'https://pauseia.fr/fr/emploi-ia',
-							langs: ['fr']
-						},
-						{
-							title: 'Rejoindre Pause Action',
-							desc: 'Chaque semaine une action en quelques clics pour faire pencher la balance (WhatsApp).',
-							url: 'https://chat.whatsapp.com/LThhghXc0Hk3sTwQMyy1wU',
-							langs: ['fr']
-						}
-					]
-				}
-			]
+		declarations: { label: "Déclarations et appel à l'action", icon: FileText },
+		newsletters: { label: "Suivre l'actualité", icon: Mail },
+		agir: { label: 'Faire entendre votre voix', icon: Megaphone }
+	}
+
+	// Subgroup ordering inside each category
+	const SUBGROUP_ORDER: Record<string, string[]> = {
+		livres: ['essentiels', 'recommandes'],
+		comprendre: ['demarrer', 'vue-ensemble', 'aller-plus-loin'],
+		risques: ['general', 'recherche-alignement']
+	}
+
+	let query = ''
+	let langFilter: Lang | 'all' = 'all'
+	let categoryFilter: Category | 'all' = 'all'
+
+	function matches(r: Resource): boolean {
+		if (langFilter !== 'all' && !r.langs.includes(langFilter)) return false
+		if (categoryFilter !== 'all' && r.category !== categoryFilter) return false
+		if (query.trim()) {
+			const q = query.toLowerCase()
+			if (!r.title.toLowerCase().includes(q) && !r.description.toLowerCase().includes(q))
+				return false
 		}
-	]
+		return true
+	}
+
+	$: filtered = resources.filter(matches)
+
+	$: byCategory = (() => {
+		const m: Record<string, Resource[]> = {}
+		for (const r of filtered) {
+			if (!m[r.category]) m[r.category] = []
+			m[r.category].push(r)
+		}
+		return m
+	})()
+
+	function groupBySubgroup(list: Resource[], category: string) {
+		const m: Record<string, Resource[]> = {}
+		for (const r of list) {
+			const key = r.subgroup ?? '__no_subgroup__'
+			if (!m[key]) m[key] = []
+			m[key].push(r)
+		}
+		const order = SUBGROUP_ORDER[category] ?? []
+		const keys = Object.keys(m).sort((a, b) => {
+			if (a === '__no_subgroup__') return -1
+			if (b === '__no_subgroup__') return 1
+			return order.indexOf(a) - order.indexOf(b) || a.localeCompare(b)
+		})
+		return keys.map((k) => ({ key: k, label: SUBGROUPS[k] ?? '', items: m[k] }))
+	}
 
 	function flagSrc(l: Lang) {
-		return l === 'fr' ? '/carte/flags/fr.svg' : '/carte/flags/gb.svg'
+		return l === 'fr' ? '/flags/fr.svg' : '/flags/gb.svg'
 	}
 	function flagAlt(l: Lang) {
 		return l === 'fr' ? 'FR' : 'EN'
 	}
 
-	function countEntries(s: Section) {
-		return s.groups.reduce((n, g) => n + g.entries.length, 0)
+	function clearFilters() {
+		query = ''
+		langFilter = 'all'
+		categoryFilter = 'all'
 	}
+
+	const totalCount = resources.length
+	$: visibleCount = filtered.length
+	$: hasActiveFilter = query.trim() !== '' || langFilter !== 'all' || categoryFilter !== 'all'
+
+	// GitHub issue template URL
+	const SUGGEST_URL =
+		'https://github.com/Romain-Deleglise/pauseai-france/issues/new?title=Suggestion+de+ressource&body=%23%23+Ressource+%C3%A0+ajouter%0A%0A-+**Titre**+%3A+%0A-+**URL**+%3A+%0A-+**Langue**+%3A+FR+%2F+EN%0A-+**Cat%C3%A9gorie**+%3A+(pause-ia+%2F+livres+%2F+comprendre+%2F+risques+%2F+declarations+%2F+newsletters+%2F+agir)%0A-+**Description+courte**+%3A+%0A%0A%23%23+Pourquoi+cette+ressource+est-elle+utile+%3F%0A%0A'
 </script>
 
 <PostMeta {title} {description} />
@@ -217,66 +123,160 @@
 	<section class="hero">
 		<UnderlinedTitle as="h1">Ressources</UnderlinedTitle>
 		<p class="hero-description">
-			Une base de connaissances curée sur l'IA et ses risques&nbsp;: pour comprendre, approfondir et
-			passer à l'action.
+			Une base de connaissances curée sur l'IA, ses risques existentiels et le problème de
+			l'alignement.
 		</p>
 
-		<!-- Quick nav / TOC -->
-		<nav class="toc" aria-label="Sommaire">
-			{#each sections as section}
-				<a href={'#' + section.id} class="toc-link">
-					<svelte:component this={section.icon} size="1em" />
-					<span>{section.title}</span>
-					<span class="toc-count">{countEntries(section)}</span>
-				</a>
-			{/each}
-		</nav>
+		<a href="/carte" class="map-link">
+			<MapIcon size={16} />
+			<span>Voir l'écosystème en vue cartographique</span>
+		</a>
+	</section>
+
+	<!-- Controls -->
+	<section class="controls" aria-label="Filtres">
+		<div class="search">
+			<Search size={16} class="search-icon" />
+			<input
+				type="search"
+				placeholder="Rechercher une ressource…"
+				bind:value={query}
+				aria-label="Rechercher"
+			/>
+			{#if query}
+				<button class="clear-btn" on:click={() => (query = '')} aria-label="Effacer la recherche">
+					<X size={14} />
+				</button>
+			{/if}
+		</div>
+
+		<div class="filter-row">
+			<div class="filter-group" role="radiogroup" aria-label="Langue">
+				<button
+					class="pill"
+					class:active={langFilter === 'all'}
+					on:click={() => (langFilter = 'all')}
+					role="radio"
+					aria-checked={langFilter === 'all'}
+				>
+					Toutes
+				</button>
+				<button
+					class="pill"
+					class:active={langFilter === 'fr'}
+					on:click={() => (langFilter = 'fr')}
+					role="radio"
+					aria-checked={langFilter === 'fr'}
+				>
+					<img src="/flags/fr.svg" alt="" width="16" /> FR
+				</button>
+				<button
+					class="pill"
+					class:active={langFilter === 'en'}
+					on:click={() => (langFilter = 'en')}
+					role="radio"
+					aria-checked={langFilter === 'en'}
+				>
+					<img src="/flags/gb.svg" alt="" width="16" /> EN
+				</button>
+			</div>
+
+			<div class="filter-group" role="radiogroup" aria-label="Catégorie">
+				<button
+					class="pill"
+					class:active={categoryFilter === 'all'}
+					on:click={() => (categoryFilter = 'all')}
+					role="radio"
+					aria-checked={categoryFilter === 'all'}
+				>
+					Toutes catégories
+				</button>
+				{#each CATEGORY_ORDER as cat}
+					<button
+						class="pill"
+						class:active={categoryFilter === cat}
+						on:click={() => (categoryFilter = cat)}
+						role="radio"
+						aria-checked={categoryFilter === cat}
+					>
+						<svelte:component this={CATEGORIES[cat].icon} size={14} />
+						<span>{CATEGORIES[cat].label}</span>
+					</button>
+				{/each}
+			</div>
+		</div>
+
+		<div class="meta-row">
+			<p class="count">
+				<strong>{visibleCount}</strong>
+				{visibleCount === 1 ? 'ressource' : 'ressources'}
+				{#if hasActiveFilter}
+					<span class="count-total">sur {totalCount}</span>
+					<button class="reset-btn" on:click={clearFilters}>Réinitialiser</button>
+				{/if}
+			</p>
+			<p class="updated">Mise à jour : {RESOURCES_LAST_UPDATED}</p>
+		</div>
 	</section>
 
 	<!-- Sections -->
-	{#each sections as section}
-		<section id={section.id} class="res-section">
-			<header class="res-section-header">
-				<div class="section-icon" aria-hidden="true">
-					<svelte:component this={section.icon} size="1.2em" />
-				</div>
-				<div>
-					<h2>{section.title}</h2>
-					{#if section.intro}<p class="section-intro">{section.intro}</p>{/if}
-				</div>
-			</header>
+	{#if visibleCount === 0}
+		<p class="empty">Aucune ressource ne correspond à votre recherche.</p>
+	{/if}
 
-			{#each section.groups as group}
-				<div class="res-group" class:highlight={group.highlight}>
-					{#if group.subtitle}
-						<h3 class="res-subtitle">{group.subtitle}</h3>
-					{/if}
-					<ul class="res-list">
-						{#each group.entries as entry}
-							<li class="res-entry">
-								<a class="res-card" href={entry.url} target="_blank" rel="noopener noreferrer">
-									<div class="res-card-main">
-										<div class="res-card-header">
-											<h4 class="res-title">{entry.title}</h4>
-											<MoveUpRight class="res-arrow" size={16} aria-hidden="true" />
+	{#each CATEGORY_ORDER as cat}
+		{@const items = byCategory[cat] ?? []}
+		{#if items.length > 0}
+			<section id={cat} class="res-section">
+				<header class="res-section-header">
+					<div class="section-icon" aria-hidden="true">
+						<svelte:component this={CATEGORIES[cat].icon} size="1.2em" />
+					</div>
+					<div>
+						<h2>{CATEGORIES[cat].label}</h2>
+						{#if CATEGORIES[cat].intro}
+							<p class="section-intro">{CATEGORIES[cat].intro}</p>
+						{/if}
+					</div>
+				</header>
+
+				{#each groupBySubgroup(items, cat) as group}
+					<div class="res-group">
+						{#if group.label}
+							<h3 class="res-subtitle">{group.label}</h3>
+						{/if}
+						<ul class="res-list">
+							{#each group.items as entry}
+								<li class="res-entry">
+									<a
+										class="res-card"
+										href={entry.url}
+										target={entry.internal ? undefined : '_blank'}
+										rel={entry.internal ? undefined : 'noopener noreferrer'}
+									>
+										<div class="res-card-main">
+											<div class="res-card-header">
+												<h4 class="res-title">{entry.title}</h4>
+												<MoveUpRight class="res-arrow" size={16} aria-hidden="true" />
+											</div>
+											<p class="res-desc">{entry.description}</p>
 										</div>
-										<p class="res-desc">{entry.desc}</p>
-									</div>
-									<div class="res-card-meta">
-										<span class="res-flags">
-											{#each entry.langs as l}
-												<img class="res-flag" src={flagSrc(l)} alt={flagAlt(l)} />
-											{/each}
-										</span>
-										{#if entry.date}<span class="res-date">{entry.date}</span>{/if}
-									</div>
-								</a>
-							</li>
-						{/each}
-					</ul>
-				</div>
-			{/each}
-		</section>
+										<div class="res-card-meta">
+											<span class="res-flags">
+												{#each entry.langs as l}
+													<img class="res-flag" src={flagSrc(l)} alt={flagAlt(l)} />
+												{/each}
+											</span>
+											{#if entry.date}<span class="res-date">{entry.date}</span>{/if}
+										</div>
+									</a>
+								</li>
+							{/each}
+						</ul>
+					</div>
+				{/each}
+			</section>
+		{/if}
 	{/each}
 
 	<!-- Bottom CTA -->
@@ -284,9 +284,12 @@
 		<h3>Une ressource à suggérer&nbsp;?</h3>
 		<p>
 			Vous connaissez une référence francophone ou internationale qui devrait figurer ici&nbsp;?
-			Écrivez-nous à
-			<a href="mailto:contact@pauseia.fr">contact@pauseia.fr</a>.
+			Ouvrez une issue sur le dépôt GitHub avec le template pré-rempli.
 		</p>
+		<a class="cta-btn" href={SUGGEST_URL} target="_blank" rel="noopener noreferrer">
+			<Github size={16} />
+			<span>Suggérer une ressource</span>
+		</a>
 	</section>
 </article>
 
@@ -301,81 +304,221 @@
 	/* ─── Hero ─────────────────────────────────────────────── */
 	.hero {
 		text-align: center;
-		margin-bottom: 3rem;
+		margin-bottom: 2rem;
 		background: var(--bg);
-		padding: 2.5rem 1.5rem;
+		padding: 2rem 1.5rem 1.75rem;
 		border-radius: 12px;
 		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
 	}
 
 	.hero-description {
-		font-size: 1.1rem;
+		font-size: 1.05rem;
 		line-height: 1.55;
 		color: var(--text-secondary);
 		max-width: 38rem;
-		margin: 0 auto 2rem;
+		margin: 0 auto 1.25rem;
 	}
 
-	/* ─── Quick nav (TOC) ──────────────────────────────────── */
-	.toc {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.5rem;
-		justify-content: center;
-	}
-
-	.toc-link {
+	.map-link {
 		display: inline-flex;
 		align-items: center;
-		gap: 0.45rem;
-		padding: 0.45rem 0.85rem;
+		gap: 0.4rem;
+		padding: 0.5rem 1rem;
 		border-radius: 999px;
-		background: var(--bg-card, #fafafa);
-		border: 1px solid var(--border);
-		color: var(--text);
+		border: 1px solid var(--brand);
+		color: var(--brand-subtle, var(--brand));
 		text-decoration: none;
 		font-family: var(--font-heading);
 		font-weight: 600;
-		font-size: 0.85rem;
+		font-size: 0.9rem;
 		transition:
 			background 0.18s,
-			border-color 0.18s,
 			color 0.18s,
 			transform 0.18s;
 	}
 
-	.toc-link:hover {
-		background: var(--brand-light, #fff5e8);
-		border-color: var(--brand);
-		color: var(--brand-subtle, var(--brand));
+	.map-link:hover {
+		background: var(--brand);
+		color: white;
 		transform: translateY(-1px);
 	}
 
-	:global([data-theme='dark']) .toc-link {
-		background: rgba(255, 255, 255, 0.04);
-	}
-
-	:global([data-theme='dark']) .toc-link:hover {
-		background: rgba(255, 148, 22, 0.12);
+	:global([data-theme='dark']) .map-link {
 		color: var(--brand);
 	}
 
-	.toc-count {
+	:global([data-theme='dark']) .map-link:hover {
+		color: white;
+	}
+
+	/* ─── Controls ─────────────────────────────────────────── */
+	.controls {
+		margin-bottom: 2rem;
+	}
+
+	.search {
+		position: relative;
+		margin-bottom: 0.85rem;
+	}
+
+	.search :global(.search-icon) {
+		position: absolute;
+		left: 0.85rem;
+		top: 50%;
+		transform: translateY(-50%);
+		color: var(--text-secondary);
+		pointer-events: none;
+	}
+
+	.search input {
+		width: 100%;
+		padding: 0.7rem 2.25rem 0.7rem 2.4rem;
+		font-family: var(--font-body);
+		font-size: 1rem;
+		border: 1px solid var(--border);
+		border-radius: 10px;
+		background: var(--bg);
+		color: var(--text);
+		transition:
+			border-color 0.18s,
+			box-shadow 0.18s;
+	}
+
+	.search input:focus {
+		outline: none;
+		border-color: var(--brand);
+		box-shadow: 0 0 0 3px rgba(255, 148, 22, 0.15);
+	}
+
+	.clear-btn {
+		position: absolute;
+		right: 0.6rem;
+		top: 50%;
+		transform: translateY(-50%);
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		min-width: 1.4rem;
-		height: 1.4rem;
-		padding: 0 0.4rem;
-		border-radius: 999px;
-		background: var(--brand);
-		color: white;
-		font-size: 0.72rem;
-		font-weight: 700;
-		line-height: 1;
+		width: 1.6rem;
+		height: 1.6rem;
+		border-radius: 50%;
+		border: none;
+		background: rgba(0, 0, 0, 0.06);
+		color: var(--text-secondary);
+		cursor: pointer;
 	}
 
-	/* ─── Section ──────────────────────────────────────────── */
+	.clear-btn:hover {
+		background: rgba(0, 0, 0, 0.12);
+		color: var(--text);
+	}
+
+	:global([data-theme='dark']) .clear-btn {
+		background: rgba(255, 255, 255, 0.08);
+	}
+
+	.filter-row {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		margin-bottom: 0.75rem;
+	}
+
+	.filter-group {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.4rem;
+	}
+
+	.pill {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
+		padding: 0.4rem 0.75rem;
+		border-radius: 999px;
+		border: 1px solid var(--border);
+		background: var(--bg);
+		color: var(--text-secondary);
+		font-family: var(--font-heading);
+		font-weight: 600;
+		font-size: 0.8rem;
+		cursor: pointer;
+		transition: all 0.15s;
+	}
+
+	.pill:hover {
+		border-color: var(--brand);
+		color: var(--brand-subtle, var(--brand));
+	}
+
+	.pill.active {
+		background: var(--brand);
+		border-color: var(--brand);
+		color: white;
+	}
+
+	.pill img {
+		display: block;
+		border-radius: 2px;
+	}
+
+	:global([data-theme='dark']) .pill:hover {
+		color: var(--brand);
+	}
+
+	.meta-row {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 1rem;
+		flex-wrap: wrap;
+		font-size: 0.85rem;
+		color: var(--text-secondary);
+	}
+
+	.count {
+		margin: 0;
+	}
+
+	.count strong {
+		color: var(--text);
+	}
+
+	.count-total {
+		margin-left: 0.3rem;
+		opacity: 0.7;
+	}
+
+	.reset-btn {
+		margin-left: 0.5rem;
+		padding: 0.2rem 0.55rem;
+		font-size: 0.78rem;
+		font-family: var(--font-heading);
+		font-weight: 600;
+		background: transparent;
+		border: 1px solid var(--border);
+		border-radius: 999px;
+		color: var(--text-secondary);
+		cursor: pointer;
+		transition: all 0.15s;
+	}
+
+	.reset-btn:hover {
+		border-color: var(--brand);
+		color: var(--brand-subtle, var(--brand));
+	}
+
+	.updated {
+		margin: 0;
+		font-style: italic;
+	}
+
+	.empty {
+		text-align: center;
+		padding: 3rem 1rem;
+		color: var(--text-secondary);
+	}
+
+	/* ─── Sections ──────────────────────────────────────────── */
 	.res-section {
 		margin-bottom: 2.5rem;
 		scroll-margin-top: 5rem;
@@ -424,26 +567,12 @@
 		margin: 0.35rem 0 0;
 	}
 
-	/* ─── Group ────────────────────────────────────────────── */
 	.res-group {
 		margin-top: 1.5rem;
 	}
 
 	.res-group:first-of-type {
 		margin-top: 0;
-	}
-
-	.res-group.highlight {
-		background: var(--brand-light, #fff5e8);
-		border: 1px solid rgba(255, 148, 22, 0.25);
-		border-radius: 12px;
-		padding: 1.1rem 1.25rem 1.25rem;
-		margin-top: 1.5rem;
-	}
-
-	:global([data-theme='dark']) .res-group.highlight {
-		background: rgba(255, 148, 22, 0.06);
-		border-color: rgba(255, 148, 22, 0.2);
 	}
 
 	.res-subtitle {
@@ -454,14 +583,6 @@
 		letter-spacing: 0.09em;
 		color: var(--text-secondary);
 		margin: 0 0 0.7rem;
-	}
-
-	.res-group.highlight .res-subtitle {
-		color: var(--brand-subtle, var(--brand));
-	}
-
-	:global([data-theme='dark']) .res-group.highlight .res-subtitle {
-		color: var(--brand);
 	}
 
 	/* ─── Entries ──────────────────────────────────────────── */
@@ -585,7 +706,7 @@
 		white-space: nowrap;
 	}
 
-	/* ─── Bottom CTA ───────────────────────────────────────── */
+	/* ─── CTA ──────────────────────────────────────────────── */
 	.cta-card {
 		margin-top: 3rem;
 		padding: 1.75rem;
@@ -608,28 +729,36 @@
 		font-family: var(--font-body);
 		font-size: 0.95rem;
 		color: var(--text-secondary);
-		margin: 0;
+		margin: 0 0 1.25rem;
 		line-height: 1.55;
 	}
 
-	.cta-card a {
-		color: var(--brand-subtle, var(--brand));
-		font-weight: 600;
+	.cta-btn {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.45rem;
+		padding: 0.6rem 1.15rem;
+		border-radius: 8px;
+		background: var(--brand);
+		color: white;
 		text-decoration: none;
+		font-family: var(--font-heading);
+		font-weight: 700;
+		font-size: 0.95rem;
+		transition:
+			opacity 0.18s,
+			transform 0.18s;
 	}
 
-	:global([data-theme='dark']) .cta-card a {
-		color: var(--brand);
-	}
-
-	.cta-card a:hover {
-		text-decoration: underline;
+	.cta-btn:hover {
+		opacity: 0.9;
+		transform: translateY(-1px);
 	}
 
 	/* ─── Responsive ───────────────────────────────────────── */
 	@media (max-width: 640px) {
 		.hero {
-			padding: 2rem 1.1rem;
+			padding: 1.5rem 1rem 1.5rem;
 		}
 		.res-card {
 			flex-direction: column;
@@ -640,9 +769,6 @@
 			flex-direction: row;
 			align-items: center;
 			align-self: flex-start;
-		}
-		.res-group.highlight {
-			padding: 0.9rem 1rem 1rem;
 		}
 	}
 </style>
