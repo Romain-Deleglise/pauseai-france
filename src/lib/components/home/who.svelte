@@ -194,7 +194,7 @@
 			</div>
 
 			<div class="accordion-group">
-				<Accordion id="pourquoi">
+				<Accordion id="pourquoi" noHash>
 					<svelte:fragment slot="head">Pourquoi ?</svelte:fragment>
 					<svelte:fragment slot="details">
 						<ul class="intro-list">
@@ -225,7 +225,7 @@
 					</svelte:fragment>
 				</Accordion>
 
-				<Accordion id="que-faire">
+				<Accordion id="que-faire" noHash>
 					<svelte:fragment slot="head">Que faire ?</svelte:fragment>
 					<svelte:fragment slot="details">
 						<ul class="intro-list">
