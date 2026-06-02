@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
 	import PostMeta from '$components/PostMeta.svelte'
+	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
 
 	const title = 'Carte des ressources IA - Pause IA'
 	const description =
@@ -448,39 +449,42 @@
 
 <div class="carte-page">
 	<header class="carte-intro">
-		<h1>La carte de l'<span class="brand">écosystème IA</span></h1>
+		<UnderlinedTitle as="h1">Carte de l'écosystème IA</UnderlinedTitle>
 		<p class="subtitle">
 			Explorez les médias, communautés et acteurs qui décryptent les risques de l'IA.
 		</p>
 	</header>
 
-	<div class="map-viewport" bind:this={viewport}>
-		<div class="map-stage" bind:this={stage} style="visibility: hidden;">
-			<img src="/carte/map.png" alt="Carte des ressources Pause IA" class="map-image" />
-			<svg class="map-zones" viewBox="0 0 {MAP_W} {MAP_H}" preserveAspectRatio="xMidYMid meet">
-				{#each ZONES as z}
-					<polygon
-						class="zone"
-						data-zone={z.id}
-						data-name={z.name}
-						fill="transparent"
-						stroke="none"
-						points={z.points}
-					/>
-				{/each}
-			</svg>
-			<div class="zone-labels">
-				{#each ZONES as z}
-					<div
-						class="zone-static-label"
-						data-zone={z.id}
-						style="left: {z.label.left}px; top: {z.label.top}px;"
-					>
-						{z.name}
-					</div>
-				{/each}
+	<div class="map-frame">
+		<div class="map-viewport" bind:this={viewport}>
+			<div class="map-stage" bind:this={stage} style="visibility: hidden;">
+				<img src="/carte/map.png" alt="Carte des ressources Pause IA" class="map-image" />
+				<svg class="map-zones" viewBox="0 0 {MAP_W} {MAP_H}" preserveAspectRatio="xMidYMid meet">
+					{#each ZONES as z}
+						<polygon
+							class="zone"
+							data-zone={z.id}
+							data-name={z.name}
+							fill="transparent"
+							stroke="none"
+							points={z.points}
+						/>
+					{/each}
+				</svg>
+				<div class="zone-labels">
+					{#each ZONES as z}
+						<div
+							class="zone-static-label"
+							data-zone={z.id}
+							style="left: {z.label.left}px; top: {z.label.top}px;"
+						>
+							{z.name}
+						</div>
+					{/each}
+				</div>
+				<div class="map-sources" bind:this={sourcesContainer}></div>
 			</div>
-			<div class="map-sources" bind:this={sourcesContainer}></div>
+			<div class="hint">Molette : zoom · Glisser : déplacer</div>
 		</div>
 	</div>
 
@@ -491,51 +495,66 @@
 		</div>
 		<div class="src-tooltip-desc" bind:this={tooltipDesc}></div>
 	</div>
-
-	<div class="hint">Molette : zoom · Glisser : déplacer</div>
 </div>
 
 <style>
 	.carte-page {
-		background: #050608;
-		color: #f5f5f5;
-		margin: 0;
+		background: var(--bg);
+		color: var(--text);
+		padding-bottom: 3rem;
 		position: relative;
 	}
 
 	.carte-intro {
-		max-width: 60rem;
+		max-width: 52rem;
 		margin: 0 auto;
-		padding: 2.5rem 1.5rem 1rem;
+		padding: 2rem 1.25rem 0.5rem;
 		text-align: center;
 	}
 
-	.carte-intro h1 {
-		font-family: var(--font-heading, 'IBM Plex Sans', sans-serif);
-		font-weight: 800;
-		font-size: clamp(1.7rem, 3.4vw, 2.5rem);
-		line-height: 1.15;
-		margin: 0 0 0.5rem;
-		color: #fff;
+	/* UnderlinedTitle is centered with the brand-gradient underline.
+	   We reduce its bottom margin since the map follows right after. */
+	.carte-intro :global(h1) {
+		margin-bottom: 1.25rem;
+		padding-bottom: 1rem;
+		display: inline-block;
 	}
 
-	.carte-intro .brand {
-		color: var(--brand, #ff9416);
+	.carte-intro :global(h1::after) {
+		left: 0;
+		right: 0;
 	}
 
 	.carte-intro .subtitle {
+		font-family: var(--font-body);
 		font-size: 1.05rem;
-		color: #b8b8b8;
-		margin: 0;
+		line-height: 1.5;
+		color: var(--text-secondary);
+		margin: 0 auto 1.75rem;
+		max-width: 36rem;
+	}
+
+	/* ─── Map frame : carte enveloppée dans une carte du site ──── */
+	.map-frame {
+		max-width: 80rem;
+		margin: 0 auto;
+		padding: 0 1rem;
 	}
 
 	.map-viewport {
 		position: relative;
 		width: 100%;
-		height: clamp(560px, 75vh, 900px);
+		height: clamp(520px, 70vh, 820px);
 		overflow: hidden;
 		cursor: grab;
 		background: #050608;
+		border-radius: 12px;
+		border: 1px solid var(--border);
+		box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+	}
+
+	:global([data-theme='dark']) .map-viewport {
+		box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
 	}
 	.map-viewport:active {
 		cursor: grabbing;
@@ -746,11 +765,11 @@
 
 	.hint {
 		text-align: center;
-		font-family: var(--font-heading, 'IBM Plex Sans', sans-serif);
-		font-size: 12px;
-		color: #888;
-		letter-spacing: 2px;
+		font-family: var(--font-heading);
+		font-size: 0.75rem;
+		color: var(--text-secondary);
+		letter-spacing: 0.15em;
 		text-transform: uppercase;
-		padding: 0.75rem 0 1.5rem;
+		padding: 0.85rem 0 0;
 	}
 </style>
