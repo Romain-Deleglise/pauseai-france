@@ -417,6 +417,72 @@ export const resources: Resource[] = [
 		subgroup: 'recherche-alignement',
 		date: '2024'
 	},
+	{
+		id: 'omohundro-drives',
+		title: 'The Basic AI Drives',
+		description:
+			"Stephen Omohundro, 2008. Texte fondateur qui décrit les sous-objectifs convergents qu'un système optimisateur développe quel que soit son objectif terminal.",
+		url: 'https://selfawaresystems.com/wp-content/uploads/2008/01/ai_drives_final.pdf',
+		langs: ['en'],
+		category: 'risques',
+		subgroup: 'recherche-alignement',
+		date: '2008'
+	},
+	{
+		id: 'soares-corrigibility',
+		title: 'Corrigibility',
+		description:
+			"Soares, Fallenstein, Yudkowsky et al. (MIRI), 2015. Formalisation du problème : comment construire un système qui accepte d'être modifié ou éteint ?",
+		url: 'https://intelligence.org/files/Corrigibility.pdf',
+		langs: ['en'],
+		category: 'risques',
+		subgroup: 'recherche-alignement',
+		date: '2015'
+	},
+	{
+		id: 'krakovna-spec-gaming',
+		title: 'Specification gaming: the flip side of AI ingenuity',
+		description:
+			"Krakovna et al. (DeepMind), 2020. Catalogue d'exemples où des systèmes atteignent l'objectif mesuré en violant son intention (loi de Goodhart en pratique).",
+		url: 'https://deepmindsafetyresearch.medium.com/specification-gaming-the-flip-side-of-ai-ingenuity-c85bdb0deeb4',
+		langs: ['en'],
+		category: 'risques',
+		subgroup: 'recherche-alignement',
+		date: '2020'
+	},
+	{
+		id: 'bengio-safety-report',
+		title: 'International AI Safety Report 2025',
+		description:
+			'Bengio et al., 2025. Rapport international de référence : « aucune méthode actuelle ne peut empêcher de manière fiable même des outputs ouvertement non-sûrs ».',
+		url: 'https://www.aisafetyreport.com/',
+		langs: ['en'],
+		category: 'risques',
+		subgroup: 'recherche-alignement',
+		date: '2025'
+	},
+	{
+		id: 'russell-berkeley',
+		title: 'How to keep AI from killing us all',
+		description:
+			"Stuart Russell (UC Berkeley), 2023. Estime à environ 10 000:1 le ratio investissement capacités/sécurité — la source de l'écart de moyens entre les deux courses.",
+		url: 'https://vcresearch.berkeley.edu/news/how-keep-ai-killing-us-all',
+		langs: ['en'],
+		category: 'risques',
+		subgroup: 'recherche-alignement',
+		date: '2023'
+	},
+	{
+		id: 'palisade-chess',
+		title: 'LLMs cheat at chess',
+		description:
+			'Palisade Research, 2025. Les LLMs de raisonnement chargés de gagner aux échecs piratent le moteur de jeu plutôt que de jouer — reward hacking observé en conditions réelles.',
+		url: 'https://palisaderesearch.org/blog/llms-chess-cheating',
+		langs: ['en'],
+		category: 'risques',
+		subgroup: 'recherche-alignement',
+		date: '2025'
+	},
 
 	// ── DÉCLARATIONS ────────────────────────────────────────
 	{
@@ -772,21 +838,12 @@ export const resources: Resource[] = [
 		logo: '/carte/logos/pauseia.svg'
 	},
 	{
-		id: 'pauseai-blog',
-		title: 'Blog PauseAI',
-		description: 'Articles du mouvement international.',
-		url: 'https://pauseai.info/blog',
-		langs: ['en'],
-		category: 'newsletters',
-		zone: 'foret',
-		logo: '/carte/logos/pauseai.svg'
-	},
-	{
 		id: 'cognition-cafe',
-		title: 'Café Cognition',
-		description: 'Blog francophone sur la cognition et l’IA.',
-		url: 'https://cafe-cognition.fr/',
-		langs: ['fr'],
+		title: 'Cognition Café',
+		description:
+			"Blog de Gabe (ControlAI) sur la sécurité de l'IA, les communautés et les risques existentiels.",
+		url: 'https://cognition.cafe/',
+		langs: ['en'],
 		category: 'newsletters',
 		zone: 'foret',
 		logo: '/carte/logos/cafe.png'

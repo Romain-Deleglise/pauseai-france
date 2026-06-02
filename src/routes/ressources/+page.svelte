@@ -12,8 +12,7 @@
 		MoveUpRight,
 		Search,
 		X,
-		Map as MapIcon,
-		Github
+		Map as MapIcon
 	} from 'lucide-svelte'
 	import type { ComponentType } from 'svelte'
 	import {
@@ -53,8 +52,19 @@
 	}
 
 	let query = ''
-	let langFilter: Lang | 'all' = 'all'
-	let categoryFilter: Category | 'all' = 'all'
+	// Multi-select filters. Empty list = no filter (= all). User can pick
+	// any combination of languages and any combination of categories.
+	let langFilter: Lang[] = []
+	let categoryFilter: Category[] = []
+
+	function toggleLang(l: Lang) {
+		langFilter = langFilter.includes(l) ? langFilter.filter((x) => x !== l) : [...langFilter, l]
+	}
+	function toggleCategory(c: Category) {
+		categoryFilter = categoryFilter.includes(c)
+			? categoryFilter.filter((x) => x !== c)
+			: [...categoryFilter, c]
+	}
 
 	// Normalize for search: lowercase + strip accents + collapse whitespace.
 	// "Bénézet" → "benezet", "à l'écosystème" → "a l ecosysteme"
@@ -85,8 +95,8 @@
 			.split(/\s+/)
 			.filter((t) => t.length > 0)
 		return resources.filter((r) => {
-			if (langFilter !== 'all' && !r.langs.includes(langFilter)) return false
-			if (categoryFilter !== 'all' && r.category !== categoryFilter) return false
+			if (langFilter.length > 0 && !r.langs.some((l) => langFilter.includes(l))) return false
+			if (categoryFilter.length > 0 && !categoryFilter.includes(r.category)) return false
 			if (tokens.length === 0) return true
 			const hay = haystacks.get(r.id) ?? ''
 			// All tokens must match (AND semantic) somewhere in the haystack
@@ -128,17 +138,39 @@
 
 	function clearFilters() {
 		query = ''
-		langFilter = 'all'
-		categoryFilter = 'all'
+		langFilter = []
+		categoryFilter = []
 	}
 
 	const totalCount = resources.length
 	$: visibleCount = filtered.length
-	$: hasActiveFilter = query.trim() !== '' || langFilter !== 'all' || categoryFilter !== 'all'
+	$: hasActiveFilter = query.trim() !== '' || langFilter.length > 0 || categoryFilter.length > 0
 
-	// GitHub issue template URL
+	// Pre-filled mailto so the user lands in their mail client with a
+	// ready-to-send template. Universal (works without any GitHub auth)
+	// and reliable across browsers / extensions.
 	const SUGGEST_URL =
-		'https://github.com/Romain-Deleglise/pauseai-france/issues/new?title=Suggestion+de+ressource&body=%23%23+Ressource+%C3%A0+ajouter%0A%0A-+**Titre**+%3A+%0A-+**URL**+%3A+%0A-+**Langue**+%3A+FR+%2F+EN%0A-+**Cat%C3%A9gorie**+%3A+(pause-ia+%2F+livres+%2F+comprendre+%2F+risques+%2F+declarations+%2F+newsletters+%2F+agir)%0A-+**Description+courte**+%3A+%0A%0A%23%23+Pourquoi+cette+ressource+est-elle+utile+%3F%0A%0A'
+		'mailto:contact@pauseia.fr' +
+		'?subject=' +
+		encodeURIComponent('Suggestion de ressource pour /ressources') +
+		'&body=' +
+		encodeURIComponent(
+			[
+				'Bonjour,',
+				'',
+				'Je vous propose la ressource suivante pour la page /ressources :',
+				'',
+				'- Titre : ',
+				'- URL : ',
+				'- Langue : FR / EN',
+				'- Catégorie : (pause-ia / livres / comprendre / risques / declarations / newsletters / agir)',
+				'- Description courte : ',
+				'',
+				'Pourquoi elle est utile :',
+				'',
+				''
+			].join('\n')
+		)
 </script>
 
 <PostMeta {title} {description} />
@@ -176,53 +208,32 @@
 		</div>
 
 		<div class="filter-row">
-			<div class="filter-group" role="radiogroup" aria-label="Langue">
+			<div class="filter-group" aria-label="Langue (multi-sélection)">
 				<button
 					class="pill"
-					class:active={langFilter === 'all'}
-					on:click={() => (langFilter = 'all')}
-					role="radio"
-					aria-checked={langFilter === 'all'}
-				>
-					Toutes
-				</button>
-				<button
-					class="pill"
-					class:active={langFilter === 'fr'}
-					on:click={() => (langFilter = 'fr')}
-					role="radio"
-					aria-checked={langFilter === 'fr'}
+					class:active={langFilter.includes('fr')}
+					on:click={() => toggleLang('fr')}
+					aria-pressed={langFilter.includes('fr')}
 				>
 					<img src="/flags/fr.svg" alt="" width="16" /> FR
 				</button>
 				<button
 					class="pill"
-					class:active={langFilter === 'en'}
-					on:click={() => (langFilter = 'en')}
-					role="radio"
-					aria-checked={langFilter === 'en'}
+					class:active={langFilter.includes('en')}
+					on:click={() => toggleLang('en')}
+					aria-pressed={langFilter.includes('en')}
 				>
 					<img src="/flags/gb.svg" alt="" width="16" /> EN
 				</button>
 			</div>
 
-			<div class="filter-group" role="radiogroup" aria-label="Catégorie">
-				<button
-					class="pill"
-					class:active={categoryFilter === 'all'}
-					on:click={() => (categoryFilter = 'all')}
-					role="radio"
-					aria-checked={categoryFilter === 'all'}
-				>
-					Toutes catégories
-				</button>
+			<div class="filter-group" aria-label="Catégorie (multi-sélection)">
 				{#each CATEGORY_ORDER as cat}
 					<button
 						class="pill"
-						class:active={categoryFilter === cat}
-						on:click={() => (categoryFilter = cat)}
-						role="radio"
-						aria-checked={categoryFilter === cat}
+						class:active={categoryFilter.includes(cat)}
+						on:click={() => toggleCategory(cat)}
+						aria-pressed={categoryFilter.includes(cat)}
 					>
 						<svelte:component this={CATEGORIES[cat].icon} size={14} />
 						<span>{CATEGORIES[cat].label}</span>
@@ -309,10 +320,11 @@
 		<h3>Une ressource à suggérer&nbsp;?</h3>
 		<p>
 			Vous connaissez une référence francophone ou internationale qui devrait figurer ici&nbsp;?
-			Ouvrez une issue sur le dépôt GitHub avec le template pré-rempli.
+			Écrivez-nous avec le modèle pré-rempli — votre client mail s'ouvrira directement avec tous les
+			champs prêts.
 		</p>
-		<a class="cta-btn" href={SUGGEST_URL} target="_blank" rel="noopener noreferrer">
-			<Github size={16} />
+		<a class="cta-btn" href={SUGGEST_URL}>
+			<Mail size={16} />
 			<span>Suggérer une ressource</span>
 		</a>
 	</section>
