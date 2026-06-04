@@ -261,6 +261,106 @@ export const resources: Resource[] = [
 		date: 'nov. 2024'
 	},
 	{
+		id: 'rob-miles',
+		title: 'Rob Miles (YouTube)',
+		description: "La meilleure chaîne de vulgarisation sur l'alignement.",
+		url: 'https://www.youtube.com/@RobertMilesAI',
+		langs: ['en'],
+		category: 'comprendre',
+		type: 'video',
+		subgroup: 'demarrer'
+	},
+	{
+		id: 'le-futurologue',
+		title: 'Le Futurologue',
+		description: "Chaîne et podcast francophones sur le futur, l'IA et les risques existentiels.",
+		url: 'https://www.youtube.com/@LeFuturologue',
+		langs: ['fr'],
+		category: 'comprendre',
+		type: 'video',
+		subgroup: 'demarrer'
+	},
+	{
+		id: 'the-flares',
+		title: 'The Flares (YouTube)',
+		description: "Chaîne francophone sur le futur, l'IA et les risques existentiels.",
+		url: 'https://www.youtube.com/@the-flares',
+		langs: ['fr'],
+		category: 'comprendre',
+		type: 'video',
+		subgroup: 'demarrer'
+	},
+	{
+		id: 'mr-phi',
+		title: 'Monsieur Phi',
+		description: "Vulgarisation philosophique, dont des épisodes dédiés à l'alignement.",
+		url: 'https://www.youtube.com/@MonsieurPhi',
+		langs: ['fr'],
+		category: 'comprendre',
+		type: 'video',
+		subgroup: 'demarrer'
+	},
+	{
+		id: 'rational-animations',
+		title: 'Rational Animations',
+		description: "Vidéos animées sur la rationalité, l'IA et les risques.",
+		url: 'https://www.youtube.com/@RationalAnimations',
+		langs: ['en'],
+		category: 'comprendre',
+		type: 'video',
+		subgroup: 'demarrer'
+	},
+	{
+		id: 'siliconversations',
+		title: 'Siliconversations',
+		description: "Vidéos d'analyse sur l'IA, l'alignement et les risques.",
+		url: 'https://www.youtube.com/@Siliconversations',
+		langs: ['en'],
+		category: 'comprendre',
+		type: 'video',
+		subgroup: 'demarrer'
+	},
+	{
+		id: 'lethal-intelligence',
+		title: 'Lethal Intelligence',
+		description: 'Vidéos courtes percutantes sur les risques existentiels.',
+		url: 'https://www.youtube.com/@lethal-intelligence',
+		langs: ['en'],
+		category: 'comprendre',
+		type: 'video',
+		subgroup: 'demarrer'
+	},
+	{
+		id: 'fli-pod',
+		title: 'Future of Life Institute Podcast',
+		description: "Podcast d'entretiens approfondis sur la sécurité de l'IA.",
+		url: 'https://futureoflife.org/podcast/',
+		langs: ['en'],
+		category: 'comprendre',
+		type: 'podcast',
+		subgroup: 'demarrer'
+	},
+	{
+		id: 'doom-debates',
+		title: 'Doom Debates',
+		description: 'Podcast de débats sur le p(doom) et les risques existentiels.',
+		url: 'https://www.youtube.com/@DoomDebates',
+		langs: ['en'],
+		category: 'comprendre',
+		type: 'podcast',
+		subgroup: 'demarrer'
+	},
+	{
+		id: '80000-hours',
+		title: '80,000 Hours Podcast',
+		description: 'Carrière à fort impact, dont la sécurité IA.',
+		url: 'https://80000hours.org/podcast/',
+		langs: ['en'],
+		category: 'comprendre',
+		type: 'podcast',
+		subgroup: 'demarrer'
+	},
+	{
 		id: 'cais-dashboard',
 		title: 'CAIS Dashboard',
 		description: 'Comparaison interactive des IA de pointe (capacité et sécurité).',
