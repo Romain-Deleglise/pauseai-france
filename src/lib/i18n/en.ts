@@ -14,6 +14,7 @@ export default {
 		toutes_campagnes: 'All our campaigns',
 		ecrire_elus: 'Write to my representatives',
 		emploi_ia: 'Employment & AI',
+		g7_2026: 'G7 2026',
 		municipales: 'Municipal 2026',
 		sommet: 'AI Summit 2026',
 		senat2025: 'Senate Colloquium 2025',
