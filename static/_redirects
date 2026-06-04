@@ -5,3 +5,4 @@
 /directeur-france /recrutement-emploi 301!
 /publications /newsletters 301!
 /publications/* /newsletters/:splat 301!
+/ressources /fr/ressources 301!
