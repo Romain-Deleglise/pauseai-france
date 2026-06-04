@@ -18,37 +18,60 @@
 		X
 	} from 'lucide-svelte'
 	import type { ComponentType } from 'svelte'
+	import { getT } from '$lib/i18n'
+	import type { PageData } from './$types'
 	import {
 		resources,
-		SUBGROUPS,
+		localized,
 		CATEGORY_ORDER,
 		RESOURCES_LAST_UPDATED,
 		MEDIA_TYPE_ORDER,
-		MEDIA_TYPE_LABELS,
 		type Category,
 		type Lang,
 		type Resource,
 		type MediaType
 	} from '$lib/data/resources'
 
-	const title = 'Liens utiles - Pause IA'
-	const description =
-		"Liens utiles, références et ressources : une base de connaissances sur l'IA, ses risques existentiels et le problème de l'alignement."
+	export let data: PageData
+	$: lang = data.lang
+	$: t = getT(lang).liens_utiles_page
+
+	$: title = t.meta_title
+	$: description = t.meta_desc
 
 	type CategoryMeta = { label: string; icon: ComponentType; intro?: string }
-	const CATEGORIES: Record<Category, CategoryMeta> = {
-		'pause-ia': { label: 'Ressources Pause IA', icon: BookMarked },
-		livres: { label: 'Livres', icon: BookOpen },
-		comprendre: { label: "Mieux comprendre l'IA", icon: Brain },
-		risques: {
-			label: 'Risques existentiels',
-			icon: AlertTriangle,
-			intro: "Perte de contrôle, menaces d'extinction et recherche en alignement."
-		},
-		declarations: { label: "Déclarations et appel à l'action", icon: FileText },
-		newsletters: { label: "Suivre l'actualité", icon: Mail },
-		agir: { label: 'Faire entendre votre voix', icon: Megaphone }
-	}
+	$: CATEGORIES = {
+		'pause-ia': { label: t.cat_pause_ia, icon: BookMarked },
+		livres: { label: t.cat_livres, icon: BookOpen },
+		comprendre: { label: t.cat_comprendre, icon: Brain },
+		risques: { label: t.cat_risques, icon: AlertTriangle, intro: t.risques_intro },
+		declarations: { label: t.cat_declarations, icon: FileText },
+		newsletters: { label: t.cat_newsletters, icon: Mail },
+		agir: { label: t.cat_agir, icon: Megaphone }
+	} as Record<Category, CategoryMeta>
+
+	$: SUBGROUP_LABELS = {
+		essentiels: t.sg_essentiels,
+		recommandes: t.sg_recommandes,
+		demarrer: t.sg_demarrer,
+		'vue-ensemble': t.sg_vue_ensemble,
+		'aller-plus-loin': t.sg_aller_plus_loin,
+		general: t.sg_general,
+		'recherche-alignement': t.sg_recherche_alignement
+	} as Record<string, string>
+
+	$: MEDIA_TYPE_LABELS = {
+		book: t.mt_book,
+		paper: t.mt_paper,
+		article: t.mt_article,
+		video: t.mt_video,
+		podcast: t.mt_podcast,
+		newsletter: t.mt_newsletter,
+		org: t.mt_org,
+		declaration: t.mt_declaration,
+		tool: t.mt_tool,
+		site: t.mt_site
+	} as Record<MediaType, string>
 
 	// Subgroup ordering inside each category
 	const SUBGROUP_ORDER: Record<string, string[]> = {
@@ -150,9 +173,19 @@
 	// description, category, subgroup, date AND synonym expansion so that
 	// "alignment" / "alignement", "AGI" / "IAG", "book" / "livre", etc.
 	// all find the same content.
+	// Concat the bilingual fields in BOTH languages so users searching
+	// "alignement" find resources whose EN description happens to contain
+	// "alignment" too, and vice-versa.
 	const haystacks = new Map<string, string>()
 	for (const r of resources) {
-		const parts = [r.title, r.description, r.category, r.type]
+		const parts: string[] = [
+			localized(r.title, 'fr'),
+			localized(r.title, 'en'),
+			localized(r.description, 'fr'),
+			localized(r.description, 'en'),
+			r.category,
+			r.type
+		]
 		if (r.subgroup) parts.push(r.subgroup)
 		if (r.date) parts.push(r.date)
 		haystacks.set(r.id, expandSynonyms(normalize(parts.join(' '))))
@@ -204,7 +237,7 @@
 			if (b === '__no_subgroup__') return 1
 			return order.indexOf(a) - order.indexOf(b) || a.localeCompare(b)
 		})
-		return keys.map((k) => ({ key: k, label: SUBGROUPS[k] ?? '', items: m[k] }))
+		return keys.map((k) => ({ key: k, label: SUBGROUP_LABELS[k] ?? '', items: m[k] }))
 	}
 
 	function flagSrc(l: Lang) {
@@ -258,26 +291,26 @@
 	})
 
 	// Pre-filled mailto so the user lands in their mail client with a
-	// ready-to-send template. Universal (works without any GitHub auth)
-	// and reliable across browsers / extensions.
-	const SUGGEST_URL =
+	// ready-to-send template. Universal and reliable across browsers /
+	// extensions ; localized in the active UI language.
+	$: SUGGEST_URL =
 		'mailto:contact@pauseia.fr' +
 		'?subject=' +
-		encodeURIComponent('Suggestion de ressource pour /ressources') +
+		encodeURIComponent(t.mail_subject) +
 		'&body=' +
 		encodeURIComponent(
 			[
-				'Bonjour,',
+				t.mail_body_intro,
 				'',
-				'Je vous propose la ressource suivante pour la page /ressources :',
+				t.mail_body_line1,
 				'',
-				'- Titre : ',
-				'- URL : ',
-				'- Langue : FR / EN',
-				'- Catégorie : (pause-ia / livres / comprendre / risques / declarations / newsletters / agir)',
-				'- Description courte : ',
+				t.mail_body_title,
+				t.mail_body_url,
+				t.mail_body_lang,
+				t.mail_body_cat,
+				t.mail_body_desc,
 				'',
-				'Pourquoi elle est utile :',
+				t.mail_body_why,
 				'',
 				''
 			].join('\n')
@@ -289,8 +322,8 @@
 <div class="layout">
 	<!-- Side TOC : sticky on desktop, hidden on mobile (top filter pills
 	     already act as quick category jump on small screens). -->
-	<aside class="toc" aria-label="Sommaire des sections">
-		<p class="toc-title">Sections</p>
+	<aside class="toc" aria-label={t.toc_title}>
+		<p class="toc-title">{t.toc_title}</p>
 		<ul>
 			{#each CATEGORY_ORDER as cat}
 				{@const items = byCategory[cat] ?? []}
@@ -310,31 +343,31 @@
 	<article class="ressources-page">
 		<!-- Hero -->
 		<section class="hero">
-			<UnderlinedTitle as="h1">Liens utiles</UnderlinedTitle>
+			<UnderlinedTitle as="h1">{t.hero_title}</UnderlinedTitle>
 			<p class="hero-description">
-				Une base de connaissances sur l'IA, ses risques existentiels et le problème de l'alignement.
+				{t.hero_desc}
 			</p>
 		</section>
 
 		<!-- Controls -->
-		<section class="controls" aria-label="Filtres">
+		<section class="controls">
 			<div class="search">
 				<Search size={16} class="search-icon" />
 				<input
 					type="search"
-					placeholder="Rechercher une ressource…"
+					placeholder={t.search_placeholder}
 					bind:value={query}
-					aria-label="Rechercher"
+					aria-label={t.search_placeholder}
 				/>
 				{#if query}
-					<button class="clear-btn" on:click={() => (query = '')} aria-label="Effacer la recherche">
+					<button class="clear-btn" on:click={() => (query = '')} aria-label={t.search_clear}>
 						<X size={14} />
 					</button>
 				{/if}
 			</div>
 
 			<div class="filter-row">
-				<div class="filter-group" aria-label="Langue (multi-sélection)">
+				<div class="filter-group" aria-label={t.filter_lang}>
 					<button
 						class="pill"
 						class:active={langFilter.includes('fr')}
@@ -353,7 +386,7 @@
 					</button>
 				</div>
 
-				<div class="filter-group" aria-label="Catégorie (multi-sélection)">
+				<div class="filter-group" aria-label={t.filter_category}>
 					{#each CATEGORY_ORDER as cat}
 						<button
 							class="pill"
@@ -367,7 +400,7 @@
 					{/each}
 				</div>
 
-				<div class="filter-group" aria-label="Type de média (multi-sélection)">
+				<div class="filter-group" aria-label={t.filter_type}>
 					{#each MEDIA_TYPE_ORDER as mt}
 						<button
 							class="pill pill-type"
@@ -384,19 +417,19 @@
 			<div class="meta-row">
 				<p class="count">
 					<strong>{visibleCount}</strong>
-					{visibleCount === 1 ? 'ressource' : 'ressources'}
+					{visibleCount === 1 ? t.count_singular : t.count_plural}
 					{#if hasActiveFilter}
-						<span class="count-total">sur {totalCount}</span>
-						<button class="reset-btn" on:click={clearFilters}>Réinitialiser</button>
+						<span class="count-total">{t.count_total} {totalCount}</span>
+						<button class="reset-btn" on:click={clearFilters}>{t.reset}</button>
 					{/if}
 				</p>
-				<p class="updated">Mise à jour : {RESOURCES_LAST_UPDATED}</p>
+				<p class="updated">{t.updated} {RESOURCES_LAST_UPDATED}</p>
 			</div>
 		</section>
 
 		<!-- Sections -->
 		{#if visibleCount === 0}
-			<p class="empty">Aucune ressource ne correspond à votre recherche.</p>
+			<p class="empty">{t.empty}</p>
 		{/if}
 
 		{#each CATEGORY_ORDER as cat}
@@ -431,10 +464,10 @@
 										>
 											<div class="res-card-main">
 												<div class="res-card-header">
-													<h4 class="res-title">{entry.title}</h4>
+													<h4 class="res-title">{localized(entry.title, lang)}</h4>
 													<MoveUpRight class="res-arrow" size={16} aria-hidden="true" />
 												</div>
-												<p class="res-desc">{entry.description}</p>
+												<p class="res-desc">{localized(entry.description, lang)}</p>
 											</div>
 											<div class="res-card-meta">
 												<span class="res-flags">
@@ -456,15 +489,11 @@
 
 		<!-- Bottom CTA -->
 		<section class="cta-card">
-			<h3>Une ressource à suggérer&nbsp;?</h3>
-			<p>
-				Vous connaissez une référence francophone ou internationale qui devrait figurer ici&nbsp;?
-				Écrivez-nous avec le modèle pré-rempli ; votre client mail s'ouvrira directement avec tous
-				les champs prêts.
-			</p>
+			<h3>{t.cta_title}</h3>
+			<p>{t.cta_desc}</p>
 			<a class="cta-btn" href={SUGGEST_URL}>
 				<Mail size={16} />
-				<span>Suggérer une ressource</span>
+				<span>{t.cta_button}</span>
 			</a>
 		</section>
 	</article>
