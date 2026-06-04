@@ -10,7 +10,7 @@
 		'En 2026, la France accueille le G7. Pause IA demande que la sécurité de l’IA soit remise au cœur de l’agenda international.'
 
 	onMount(() => {
-		const SCRIPT_SRC = 'https://app.activoice.org/embed/v1/loader.js'
+		const SCRIPT_SRC = 'https://beta.app.activoice.org/embed/v1/loader.js'
 
 		function initEmbed() {
 			const w = window as Window & {
@@ -95,12 +95,15 @@
 			développement et au déploiement des systèmes d’IA avancés.
 		</p>
 		<p>
-			Nous sommes très nombreux à le penser. Publiée en mai 2026, une enquête d’opinion conduite par
-			OpinionWay pour le Centre pour la Sécurité de l’IA révèle que seuls 8 % des Français
-			souhaitent accélérer le développement de l’IA. À l’inverse, une très large majorité d’entre
-			eux, tous bords politiques confondus, se déclarent favorables à ce que cette technologie soit
-			davantage encadrée et à ce que son développement soit prioritairement orienté vers la «
-			sécurité, les droits et l’éthique ».
+			Nous sommes très nombreux à le penser. Publiée en mai 2026, une <a
+				href="https://cesia.org/fr/publications/sondage-ia-2026/"
+				target="_blank"
+				rel="noopener noreferrer">enquête d’opinion</a
+			> conduite par OpinionWay pour le Centre pour la Sécurité de l’IA révèle que seuls 8 % des Français
+			souhaitent accélérer le développement de l’IA. À l’inverse, une très large majorité d’entre eux,
+			tous bords politiques confondus, se déclarent favorables à ce que cette technologie soit davantage
+			encadrée et à ce que son développement soit prioritairement orienté vers la « sécurité, les droits
+			et l’éthique ».
 		</p>
 
 		<h2>J’agis pour la sécurité de l’IA</h2>
