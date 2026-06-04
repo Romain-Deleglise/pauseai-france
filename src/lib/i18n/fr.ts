@@ -7,7 +7,7 @@ export default {
 		apropos: 'À propos',
 		dangers: "Les dangers de l'IA",
 		carte: "Carte de l'écosystème",
-		liens_utiles: 'Ressources',
+		liens_utiles: 'Liens utiles',
 		newsletter: 'Newsletter',
 		propositions: 'Que demandons-nous ?',
 		blog: 'Blog',

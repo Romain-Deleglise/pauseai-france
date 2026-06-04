@@ -7,7 +7,7 @@ export default {
 		apropos: 'About',
 		dangers: 'Dangers of AI',
 		carte: 'Ecosystem map',
-		liens_utiles: 'Resources',
+		liens_utiles: 'Useful links',
 		newsletter: 'Newsletter',
 		propositions: 'What do we ask for?',
 		blog: 'Blog',

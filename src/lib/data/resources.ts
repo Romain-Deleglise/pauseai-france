@@ -1,9 +1,8 @@
-// Single source of truth for both /ressources and /carte.
-//
-// Each resource may carry two orthogonal classifications:
-//   - `category` (+ `subgroup`)  → used by the /ressources page
-//   - `zone` (+ `logo` / coords) → used by the /carte page
-// Resources without a zone simply do not appear on the map.
+// Source de vérité unique pour la page /ressources.
+// Chaque entrée est rangée par `category` + `subgroup` (rendu) et porte
+// un `type` (filtrable). Les champs `zone` / `logo` / `fallbackText` sont
+// des reliquats de l'ancienne carte ; ils sont conservés sans usage actif
+// au cas où on réactiverait une vue cartographique plus tard.
 
 export type Lang = 'fr' | 'en'
 
@@ -99,9 +98,9 @@ export const SUBGROUPS: Record<string, string> = {
 
 export const CATEGORY_ORDER: Category[] = [
 	'pause-ia',
-	'livres',
 	'comprendre',
 	'risques',
+	'livres',
 	'declarations',
 	'newsletters',
 	'agir'
@@ -119,17 +118,6 @@ export const resources: Resource[] = [
 		langs: ['fr'],
 		category: 'pause-ia',
 		type: 'article'
-	},
-	{
-		id: 'pauseia-carte',
-		title: "Comprendre l'IA et ses risques existentiels",
-		description:
-			"Parcourez visuellement ce qu'est l'IA et ses risques existentiels. Explications simplifiées, illustrées par des analogies.",
-		url: '/carte',
-		internal: true,
-		langs: ['fr'],
-		category: 'pause-ia',
-		type: 'tool'
 	},
 
 	// ── LIVRES ──────────────────────────────────────────────
@@ -251,11 +239,11 @@ export const resources: Resource[] = [
 
 	// ── COMPRENDRE ──────────────────────────────────────────
 	{
-		id: 'intro-video-fr',
-		title: "Introduction vidéo aux risques de l'IA",
+		id: 'science-etonnante-ia',
+		title: "Science étonnante – playlist sur l'IA",
 		description:
-			"Vue d'ensemble accessible des enjeux liés au développement de l'IA avancée, format vidéo pour celles et ceux qui préfèrent l'audio-visuel.",
-		url: 'https://www.youtube.com/watch?v=5KVDDfAkRgc',
+			"Playlist de vulgarisation scientifique en français sur l'intelligence artificielle, par David Louapre.",
+		url: 'https://www.youtube.com/playlist?list=PLxzM9a5lhAumG-HwgT47WF2u18OsMtko5',
 		langs: ['fr'],
 		category: 'comprendre',
 		type: 'video',
@@ -271,18 +259,6 @@ export const resources: Resource[] = [
 		type: 'video',
 		subgroup: 'demarrer',
 		date: 'nov. 2024'
-	},
-	{
-		id: 'rob-miles',
-		title: 'Rob Miles (YouTube)',
-		description: "La meilleure chaîne de vulgarisation sur l'alignement.",
-		url: 'https://www.youtube.com/@RobertMilesAI',
-		langs: ['en'],
-		category: 'comprendre',
-		type: 'video',
-		subgroup: 'demarrer',
-		zone: 'delta',
-		logo: '/carte/logos/robertmiles.jpg'
 	},
 	{
 		id: 'cais-dashboard',
@@ -562,18 +538,6 @@ export const resources: Resource[] = [
 		date: '2020'
 	},
 	{
-		id: 'bengio-safety-report',
-		title: 'International AI Safety Report 2025',
-		description:
-			'Bengio et al., 2025. Rapport international de référence : « aucune méthode actuelle ne peut empêcher de manière fiable même des outputs ouvertement non-sûrs ».',
-		url: 'https://www.aisafetyreport.com/',
-		langs: ['en'],
-		category: 'risques',
-		type: 'article',
-		subgroup: 'recherche-alignement',
-		date: '2025'
-	},
-	{
 		id: 'russell-berkeley',
 		title: 'How to keep AI from killing us all',
 		description:
@@ -799,20 +763,6 @@ export const resources: Resource[] = [
 		logo: '/carte/logos/cais.png'
 	},
 	{
-		id: 'situational-awareness',
-		title: 'Situational Awareness',
-		description:
-			"Prévisions de Leopold Aschenbrenner sur l'AGI et la superintelligence d'ici 2027-2030.",
-		url: 'https://situational-awareness.ai/',
-		langs: ['en'],
-		category: 'risques',
-		type: 'article',
-		subgroup: 'general',
-		zone: 'avant-poste',
-		fallbackText: 'S.A.',
-		date: 'juin 2024'
-	},
-	{
 		id: 'ai-2027',
 		title: 'AI 2027',
 		description: "Scénario d'impact d'IAs surhumaines sur la décennie, par Daniel Kokotajlo et al.",
@@ -864,114 +814,6 @@ export const resources: Resource[] = [
 		logo: '/carte/logos/aisafetyinfo.png'
 	},
 	{
-		id: 'le-futurologue',
-		title: 'Le Futurologue',
-		description: "Chaîne et podcast francophones sur le futur, l'IA et les risques existentiels.",
-		url: 'https://www.youtube.com/@LeFuturologue',
-		langs: ['fr'],
-		category: 'comprendre',
-		type: 'video',
-		subgroup: 'demarrer',
-		zone: 'delta',
-		logo: '/carte/logos/lefuturologue.jpg'
-	},
-	{
-		id: 'the-flares',
-		title: 'The Flares (YouTube)',
-		description: "Chaîne francophone sur le futur, l'IA et les risques existentiels.",
-		url: 'https://www.youtube.com/@the-flares',
-		langs: ['fr'],
-		category: 'comprendre',
-		type: 'video',
-		subgroup: 'demarrer',
-		zone: 'delta',
-		logo: '/carte/logos/theflares.jpg'
-	},
-	{
-		id: 'mr-phi',
-		title: 'Monsieur Phi',
-		description: "Vulgarisation philosophique, dont des épisodes dédiés à l'alignement.",
-		url: 'https://www.youtube.com/@MonsieurPhi',
-		langs: ['fr'],
-		category: 'comprendre',
-		type: 'video',
-		subgroup: 'demarrer',
-		zone: 'delta',
-		logo: '/carte/logos/mrphi.jpg'
-	},
-	{
-		id: 'rational-animations',
-		title: 'Rational Animations',
-		description: "Vidéos animées sur la rationalité, l'IA et les risques.",
-		url: 'https://www.youtube.com/@RationalAnimations',
-		langs: ['en'],
-		category: 'comprendre',
-		type: 'video',
-		subgroup: 'demarrer',
-		zone: 'delta',
-		logo: '/carte/logos/rationalanimations.jpg'
-	},
-	{
-		id: 'siliconversations',
-		title: 'Siliconversations',
-		description: "Vidéos d'analyse sur l'IA, l'alignement et les risques.",
-		url: 'https://www.youtube.com/@Siliconversations',
-		langs: ['en'],
-		category: 'comprendre',
-		type: 'video',
-		subgroup: 'demarrer',
-		zone: 'delta',
-		logo: '/carte/logos/siliconversations.jpg'
-	},
-	{
-		id: 'lethal-intelligence',
-		title: 'Lethal Intelligence',
-		description: 'Vidéos courtes percutantes sur les risques existentiels.',
-		url: 'https://www.youtube.com/@lethal-intelligence',
-		langs: ['en'],
-		category: 'comprendre',
-		type: 'video',
-		subgroup: 'demarrer',
-		zone: 'delta',
-		logo: '/carte/logos/lethal.jpg'
-	},
-	{
-		id: 'fli-pod',
-		title: 'Future of Life Institute Podcast',
-		description: "Podcast d'entretiens approfondis sur la sécurité de l'IA.",
-		url: 'https://futureoflife.org/podcast/',
-		langs: ['en'],
-		category: 'comprendre',
-		type: 'podcast',
-		subgroup: 'demarrer',
-		zone: 'rives',
-		logo: '/carte/logos/fli.svg'
-	},
-	{
-		id: 'doom-debates',
-		title: 'Doom Debates',
-		description: 'Podcast de débats sur le p(doom) et les risques existentiels.',
-		url: 'https://www.youtube.com/@DoomDebates',
-		langs: ['en'],
-		category: 'comprendre',
-		type: 'podcast',
-		subgroup: 'demarrer',
-		zone: 'rives',
-		logo: '/carte/logos/doomdebate.jpg'
-	},
-	{
-		id: '80000-hours',
-		title: '80,000 Hours Podcast',
-		description: 'Carrière à fort impact, dont la sécurité IA.',
-		url: 'https://80000hours.org/podcast/',
-		langs: ['en'],
-		category: 'comprendre',
-		type: 'podcast',
-		subgroup: 'demarrer',
-		zone: 'rives',
-		logo: '/carte/logos/80000.png'
-	},
-	{
 		id: 'pauseia-blog',
 		title: 'Blog Pause IA',
 		description: 'Articles et analyses du mouvement français.',
@@ -1005,17 +847,6 @@ export const resources: Resource[] = [
 		zone: 'foret',
 		logo: '/carte/logos/zvi.png'
 	}
-]
-
-// Curated "starter pack" for newcomers, surfaced at the top of the
-// /ressources page. Order matters : it's the suggested reading order.
-// Mix formats deliberately (vidéo, article, site, livre) so people pick
-// the one that matches their preferred medium.
-export const FEATURED_IDS: string[] = [
-	'intro-video-fr', // FR vidéo : pour ceux qui préfèrent l'audio-visuel
-	'bengio-2024-arguments', // FR/EN article : la meilleure réponse récente aux objections
-	'the-compendium-intro', // EN online : introduction complète aux risques existentiels
-	'book-ifanyone' // EN livre : l'argument complet et récent
 ]
 
 // Injected at build time from `git log -1` on this file. See vite.config.ts.
