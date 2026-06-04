@@ -119,6 +119,16 @@ export const resources: Resource[] = [
 		category: 'pause-ia',
 		type: 'article'
 	},
+	{
+		id: 'pauseia-comprendre',
+		title: "Comprendre l'IA et ses risques existentiels",
+		description:
+			"Parcourez visuellement ce qu'est l'IA et ses risques existentiels. Explications simplifiées, illustrées par des analogies.",
+		url: 'https://pauseia.notion.site/Comprendre-l-IA-et-ses-risques-existentiels-34d28fc94b7780739a4ffc204262495b',
+		langs: ['fr'],
+		category: 'pause-ia',
+		type: 'site'
+	},
 
 	// ── LIVRES ──────────────────────────────────────────────
 	{
