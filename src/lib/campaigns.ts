@@ -58,6 +58,23 @@ export interface Campaign {
  */
 export const campaigns: Campaign[] = [
 	{
+		slug: 'g7-2026',
+		status: 'active',
+		startDate: '2026-06',
+		fr: {
+			title: 'G7 2026 : sécuriser plutôt qu’accélérer l’IA',
+			description:
+				'En 2026, la France accueille le G7. Pause IA demande que la sécurité de l’IA soit remise au cœur de l’agenda international. Interpellez le Président et la ministre chargée du numérique.',
+			cta: 'Participer à la campagne'
+		},
+		en: {
+			title: 'G7 2026: secure AI, don’t accelerate it',
+			description:
+				'In 2026, France hosts the G7. Pause AI calls for AI safety to be put back at the heart of the international agenda. Write to the President and the Minister for Digital Affairs.',
+			cta: 'Join the campaign'
+		}
+	},
+	{
 		slug: 'ecrire-a-mes-elus',
 		status: 'active',
 		startDate: '2026-04',

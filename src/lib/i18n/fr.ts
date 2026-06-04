@@ -16,6 +16,7 @@ export default {
 		toutes_campagnes: 'Toutes nos campagnes',
 		ecrire_elus: 'Écrire à mes élus',
 		emploi_ia: 'Emploi et IA',
+		g7_2026: 'G7 2026',
 		municipales: 'Municipales 2026',
 		sommet: "Sommet de l'IA 2026",
 		senat2025: 'Colloque Sénat 2025',

@@ -20,6 +20,8 @@
 		'/hero/tshirt-pauseai.webp',
 		'/hero/senat-intro.webp',
 		'/hero/pauseia-01.webp',
+		'/hero/manif-12.webp',
+		'/hero/manif-13.webp',
 		'/hero/manif-01.webp',
 		'/hero/projection-gateau.webp',
 		'/hero/conf-full-room.webp',
@@ -37,6 +39,8 @@
 		'/hero/pauseia-09.webp'
 	]
 	const row2 = [
+		'/hero/manif-14.webp',
+		'/hero/manif-15.webp',
 		'/hero/megaphone.webp',
 		'/hero/senat-panel.webp',
 		'/hero/manif-07.webp',
@@ -53,12 +57,14 @@
 		'/hero/sans-ia-sure.webp',
 		'/hero/conf-presenter.webp',
 		'/hero/event-06.webp',
-		'/hero/manif-05.webp'
+		'/hero/manif-05.webp',
+		'/hero/manif-16.webp'
 	]
 	const row3 = [
 		'/hero/senat-orateur.webp',
 		'/hero/pauseia-03.webp',
 		'/hero/manif-04.webp',
+		'/hero/manif-20.webp',
 		'/hero/projection-discussion.webp',
 		'/hero/conference-salle.webp',
 		'/hero/manif-09.webp',
@@ -71,7 +77,9 @@
 		'/hero/manif-11.webp',
 		'/hero/event-09.webp',
 		'/hero/apidays-slide.webp',
-		'/hero/senat-discussion.webp'
+		'/hero/senat-discussion.webp',
+		'/hero/manif-17.webp',
+		'/hero/manif-18.webp'
 	]
 	const row4 = [
 		'/hero/manif-06.webp',
@@ -92,7 +100,9 @@
 		'/hero/event-26.webp',
 		'/hero/apidays-expo.webp',
 		'/hero/conf-speaker-new.webp',
-		'/hero/senat-speaker1.webp'
+		'/hero/senat-speaker1.webp',
+		'/hero/manif-19.webp',
+		'/hero/manif-21.webp'
 	]
 
 	let mounted = false
