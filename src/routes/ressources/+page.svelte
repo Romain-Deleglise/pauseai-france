@@ -312,8 +312,7 @@
 		<section class="hero">
 			<UnderlinedTitle as="h1">Liens utiles</UnderlinedTitle>
 			<p class="hero-description">
-				Une base de connaissances curée sur l'IA, ses risques existentiels et le problème de
-				l'alignement.
+				Une base de connaissances sur l'IA, ses risques existentiels et le problème de l'alignement.
 			</p>
 		</section>
 
