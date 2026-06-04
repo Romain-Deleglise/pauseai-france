@@ -36,6 +36,8 @@ export interface Campaign {
 	endDate?: string
 	/** Override URL (absolute path). If omitted, defaults to /{lang}/{slug} */
 	url?: string
+	/** Emoji icon shown on campaign cards */
+	icon?: string
 	/** Summary shown in a popup when the ended campaign card is clicked */
 	summary?: CampaignSummary
 	fr: {
@@ -61,6 +63,7 @@ export const campaigns: Campaign[] = [
 		slug: 'g7-2026',
 		status: 'active',
 		startDate: '2026-06',
+		icon: '🌍',
 		fr: {
 			title: 'G7 2026 : sécuriser plutôt qu’accélérer l’IA',
 			description:
@@ -78,6 +81,7 @@ export const campaigns: Campaign[] = [
 		slug: 'ecrire-a-mes-elus',
 		status: 'active',
 		startDate: '2026-04',
+		icon: '✉️',
 		fr: {
 			title: 'Écrivez à vos élus',
 			description:
@@ -95,6 +99,7 @@ export const campaigns: Campaign[] = [
 		slug: 'emploi-ia',
 		status: 'active',
 		startDate: '2026-04',
+		icon: '💼',
 		fr: {
 			title: "L'IA ne détruira pas QUE votre emploi",
 			description:
