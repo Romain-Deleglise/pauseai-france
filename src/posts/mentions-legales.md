@@ -29,3 +29,7 @@ Aucune information vous concernant n'est conservé sur le site.
 ## Contact:
 
 [contact@pauseia.fr](mailto:contact@pauseia.fr)
+
+## Crédits images :
+
+- Façade du Palais Bourbon (campagne « Écrire à vos élus ») : Daniel Vorndran / DXR, domaine public, via [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Palais_Bourbon.jpg).
