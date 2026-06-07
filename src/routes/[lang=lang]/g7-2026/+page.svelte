@@ -4,6 +4,7 @@
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
 
 	const CAMPAIGN_ID = 'ffccd310-c37c-406b-8425-0225f237857b'
+	const CAMPAIGN_ID_G7 = 'c858d3be-34d3-4478-b199-0b8d01fcdc4e'
 
 	const title = 'G7 2026 : sécuriser plutôt qu’accélérer l’IA'
 	const description =
@@ -12,17 +13,21 @@
 	onMount(() => {
 		const SCRIPT_SRC = 'https://beta.app.activoice.org/embed/v1/loader.js'
 
-		function initEmbed() {
+		function initEmbeds() {
 			const w = window as Window & {
 				Activoice?: { init: (opts: Record<string, unknown>) => void }
 			}
-			if (w.Activoice) {
-				w.Activoice.init({
-					container: '#av-embed-container',
-					campaignId: CAMPAIGN_ID,
-					embedOptions: { spinnerColor: '#005DCA' }
-				})
-			}
+			if (!w.Activoice) return
+			w.Activoice.init({
+				container: '#av-embed-container',
+				campaignId: CAMPAIGN_ID,
+				embedOptions: { spinnerColor: '#005DCA' }
+			})
+			w.Activoice.init({
+				container: '#av-embed-container-g7',
+				campaignId: CAMPAIGN_ID_G7,
+				embedOptions: { spinnerColor: '#005DCA' }
+			})
 		}
 
 		const existing = document.querySelector(
@@ -30,9 +35,9 @@
 		) as HTMLScriptElement | null
 		if (existing) {
 			if ((window as Window & { Activoice?: unknown }).Activoice) {
-				initEmbed()
+				initEmbeds()
 			} else {
-				existing.addEventListener('load', initEmbed, { once: true })
+				existing.addEventListener('load', initEmbeds, { once: true })
 			}
 			return
 		}
@@ -40,7 +45,7 @@
 		const script = document.createElement('script')
 		script.src = SCRIPT_SRC
 		script.async = true
-		script.addEventListener('load', initEmbed, { once: true })
+		script.addEventListener('load', initEmbeds, { once: true })
 		document.head.appendChild(script)
 	})
 </script>
@@ -115,6 +120,17 @@
 
 	<section class="embed-section">
 		<div id="av-embed-container"></div>
+	</section>
+
+	<section class="prose">
+		<h2>Interpellons les dirigeants du G7</h2>
+		<p>
+			Interpellons en anglais les Chefs d’État et les ministres chargés du numérique des pays du G7.
+		</p>
+	</section>
+
+	<section class="embed-section">
+		<div id="av-embed-container-g7"></div>
 	</section>
 </article>
 
