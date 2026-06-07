@@ -43,11 +43,15 @@ export interface Campaign {
 	fr: {
 		title: string
 		description: string
+		/** Shorter description used on compact cards (e.g. homepage). Falls back to description. */
+		shortDescription?: string
 		cta: string
 	}
 	en: {
 		title: string
 		description: string
+		/** Shorter description used on compact cards (e.g. homepage). Falls back to description. */
+		shortDescription?: string
 		cta: string
 	}
 }
@@ -67,12 +71,16 @@ export const campaigns: Campaign[] = [
 			title: 'G7 2026 : sécuriser plutôt qu’accélérer l’IA',
 			description:
 				'En 2026, la France accueille le G7. Pause IA demande que la sécurité de l’IA soit remise au cœur de l’agenda international. Interpellez le Président et la ministre chargée du numérique.',
+			shortDescription:
+				'La France préside le G7 en 2026. Interpellons l’Élysée et la ministre du Numérique pour que la sécurité passe avant.',
 			cta: 'Participer à la campagne'
 		},
 		en: {
 			title: 'G7 2026: secure AI, don’t accelerate it',
 			description:
 				'In 2026, France hosts the G7. Pause AI calls for AI safety to be put back at the heart of the international agenda. Write to the President and the Minister for Digital Affairs.',
+			shortDescription:
+				'France chairs the G7 in 2026. Let’s push the Élysée and the Digital Minister to put safety before acceleration.',
 			cta: 'Join the campaign'
 		}
 	},
@@ -84,12 +92,16 @@ export const campaigns: Campaign[] = [
 			title: 'Écrivez à vos élus',
 			description:
 				"Envoyez un email à votre député et à votre sénateur pour mettre les risques de l'IA à leur agenda. Un modèle personnalisable et deux versions (courte et complète) sont disponibles.",
+			shortDescription:
+				"Un email prêt à personnaliser pour mettre les risques de l'IA à l'agenda de votre député et de votre sénateur.",
 			cta: 'Envoyer un email à mes élus'
 		},
 		en: {
 			title: 'Write to your representatives',
 			description:
 				'Send an email to your MP and senator to put AI risks on their agenda. A customisable template with both a short and a full version is available.',
+			shortDescription:
+				'A ready-to-personalise email to put AI risks on the agenda of your MP and senator.',
 			cta: 'Write to my representatives'
 		}
 	},
@@ -101,12 +113,16 @@ export const campaigns: Campaign[] = [
 			title: "L'IA ne détruira pas QUE votre emploi",
 			description:
 				"Les systèmes d'IA généralistes peuvent remplacer du travail humain massivement, sans filet de sécurité. Mais le problème dépasse l'emploi : c'est notre capacité à contrôler ces technologies qui recule. Témoignages, enquête et revue de presse.",
+			shortDescription:
+				"Témoignages, enquête, revue de presse : comprendre comment l'IA bouleverse le travail — et notre capacité à la contrôler.",
 			cta: 'Participer à la campagne'
 		},
 		en: {
 			title: 'AI will not destroy ONLY your job',
 			description:
 				'General-purpose AI systems can replace human work at scale, with no safety net. But the issue goes beyond employment: it is our ability to govern these technologies that is receding. Testimonials, survey and press review.',
+			shortDescription:
+				'Testimonials, survey, press review: see how AI is upending work — and our ability to keep it in check.',
 			cta: 'Join the campaign'
 		}
 	},

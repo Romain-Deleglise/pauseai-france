@@ -48,7 +48,7 @@
 								</span>
 							</div>
 							<h3>{info.title}</h3>
-							<p class="desc">{info.description}</p>
+							<p class="desc">{info.shortDescription ?? info.description}</p>
 							<span class="read-more">
 								{t.home.campaigns_cta}
 								<span class="link-icon"><MoveUpRight size="1.125rem" /></span>
