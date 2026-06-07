@@ -75,8 +75,7 @@ export default {
 		hero_highlight: 'agissons maintenant',
 		hero_cta: 'Rejoindre',
 		campaigns_title: 'Nos campagnes en cours',
-		campaigns_subtitle:
-			'Chaque signature, chaque email, chaque témoignage pèse. Choisissez la mobilisation qui vous parle.',
+		campaigns_subtitle: 'Signez, écrivez, témoignez : chaque action compte.',
 		campaigns_cta: 'Participer',
 		campaigns_see_all: 'Voir toutes nos campagnes'
 	},

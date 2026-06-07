@@ -117,7 +117,7 @@ export const campaigns: Campaign[] = [
 			description:
 				"Les systèmes d'IA généralistes peuvent remplacer du travail humain massivement, sans filet de sécurité. Mais le problème dépasse l'emploi : c'est notre capacité à contrôler ces technologies qui recule. Témoignages, enquête et revue de presse.",
 			shortDescription:
-				"Témoignages, enquête, revue de presse : comprendre comment l'IA bouleverse le travail — et notre capacité à la contrôler.",
+				"Témoignages, enquête, revue de presse : comprendre comment l'IA bouleverse le travail et notre capacité à la contrôler.",
 			cta: 'Participer à la campagne'
 		},
 		en: {
@@ -125,7 +125,7 @@ export const campaigns: Campaign[] = [
 			description:
 				'General-purpose AI systems can replace human work at scale, with no safety net. But the issue goes beyond employment: it is our ability to govern these technologies that is receding. Testimonials, survey and press review.',
 			shortDescription:
-				'Testimonials, survey, press review: see how AI is upending work — and our ability to keep it in check.',
+				'Testimonials, survey, press review: see how AI is upending work and our ability to keep it in check.',
 			cta: 'Join the campaign'
 		}
 	},
