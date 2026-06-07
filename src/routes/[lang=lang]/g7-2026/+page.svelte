@@ -180,7 +180,8 @@
 		margin-bottom: 5rem;
 	}
 
-	#av-embed-container {
+	#av-embed-container,
+	#av-embed-container-g7 {
 		min-height: 400px;
 	}
 
