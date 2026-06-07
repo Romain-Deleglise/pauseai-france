@@ -3,7 +3,7 @@
 	import Fly from '$components/Fly.svelte'
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
 	import { MoveUpRight } from 'lucide-svelte'
-	import { getSortedCampaigns } from '$lib/campaigns'
+	import { getSortedCampaigns, formatCampaignDate } from '$lib/campaigns'
 	import { getT, type Lang } from '$lib/i18n'
 
 	export let lang: Lang = 'fr'
@@ -31,13 +31,24 @@
 				{@const info = lang === 'en' ? campaign.en : campaign.fr}
 				{@const href = campaign.url ?? `${prefix}/${campaign.slug}`}
 				<a class="card-link" {href}>
-					<article>
-						<div class="content">
-							<span class="category">{lang === 'en' ? 'Campaign' : 'Campagne'}</span>
+					<article class:has-image={!!campaign.image}>
+						{#if campaign.image}
+							<div class="cover">
+								<img src={campaign.image} alt="" loading="lazy" />
+							</div>
+						{/if}
+						<div class="body">
+							<div class="meta">
+								<span class="pill pill-brand">
+									{lang === 'en' ? 'Campaign' : 'Campagne'}
+								</span>
+								<span class="pill pill-outline">
+									{lang === 'en' ? 'Since' : 'Depuis'}
+									{formatCampaignDate(campaign.startDate, lang)}
+								</span>
+							</div>
 							<h3>{info.title}</h3>
-							<p>{info.description}</p>
-						</div>
-						<div class="footer">
+							<p class="desc">{info.description}</p>
 							<span class="read-more">
 								{t.home.campaigns_cta}
 								<span class="link-icon"><MoveUpRight size="1.125rem" /></span>
@@ -89,8 +100,7 @@
 		text-decoration: none;
 		display: block;
 		height: 100%;
-		border-radius: 0.75rem;
-		overflow: hidden;
+		border-radius: 0.875rem;
 		transition:
 			transform 0.2s ease,
 			box-shadow 0.2s ease;
@@ -114,44 +124,90 @@
 	}
 
 	article {
-		padding: 1.5rem;
 		display: flex;
 		flex-direction: column;
 		height: 100%;
-		background-color: var(--bg-subtle);
-		border: 2px solid transparent;
-		border-radius: 0.75rem;
+		background-color: var(--bg);
+		border: 2px solid var(--border);
+		border-radius: 0.875rem;
+		overflow: hidden;
 		transition: border-color 0.2s ease;
+		position: relative;
 	}
 
-	.content {
-		flex-grow: 1;
+	article::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 4px;
+		background: var(--primary, #ff9416);
+	}
+
+	.cover {
+		width: 100%;
+		aspect-ratio: 16 / 9;
+		overflow: hidden;
+		background: var(--bg-subtle);
+	}
+
+	.cover img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
+		transition: transform 0.4s ease;
+	}
+
+	.card-link:hover .cover img {
+		transform: scale(1.03);
+	}
+
+	.body {
+		padding: 1.5rem;
 		display: flex;
 		flex-direction: column;
+		flex: 1;
 		gap: 0.75rem;
 	}
 
-	.category {
-		align-self: flex-start;
-		font-size: 0.75rem;
-		color: var(--brand);
-		font-weight: 600;
+	.meta {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.4rem;
+	}
+
+	.pill {
+		font-size: 0.7rem;
+		font-weight: 700;
 		text-transform: uppercase;
 		letter-spacing: 0.5px;
-		background-color: rgba(255, 148, 22, 0.12);
-		padding: 0.25rem 0.5rem;
+		padding: 0.25rem 0.55rem;
 		border-radius: 4px;
+		line-height: 1.2;
+	}
+
+	.pill-brand {
+		color: var(--brand);
+		background-color: rgba(255, 148, 22, 0.12);
+	}
+
+	.pill-outline {
+		color: var(--text-2);
+		border: 1px solid var(--border);
+		background: transparent;
 	}
 
 	h3 {
 		margin: 0;
-		font-size: 1.125rem;
+		font-size: 1.2rem;
 		font-weight: 700;
-		line-height: 1.4;
+		line-height: 1.35;
 		color: var(--text);
 	}
 
-	p {
+	.desc {
 		margin: 0;
 		font-size: 0.9375rem;
 		line-height: 1.6;
@@ -160,15 +216,7 @@
 		-webkit-line-clamp: 4;
 		-webkit-box-orient: vertical;
 		overflow: hidden;
-	}
-
-	.footer {
-		display: flex;
-		justify-content: flex-end;
-		align-items: center;
-		margin-top: 1rem;
-		padding-top: 1rem;
-		border-top: 1px solid var(--border);
+		flex: 1;
 	}
 
 	.read-more {
@@ -179,6 +227,7 @@
 		font-weight: 600;
 		color: var(--text);
 		transition: color 0.2s ease;
+		margin-top: auto;
 	}
 
 	.link-icon {

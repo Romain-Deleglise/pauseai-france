@@ -36,6 +36,8 @@ export interface Campaign {
 	endDate?: string
 	/** Override URL (absolute path). If omitted, defaults to /{lang}/{slug} */
 	url?: string
+	/** Optional cover image (absolute URL or path under /static, e.g. '/campaigns/g7.jpg') */
+	image?: string
 	/** Summary shown in a popup when the ended campaign card is clicked */
 	summary?: CampaignSummary
 	fr: {
@@ -245,6 +247,43 @@ export const campaigns: Campaign[] = [
 		}
 	}
 ]
+
+const MONTHS_FR = [
+	'jan.',
+	'fév.',
+	'mars',
+	'avr.',
+	'mai',
+	'juin',
+	'juil.',
+	'août',
+	'sept.',
+	'oct.',
+	'nov.',
+	'déc.'
+]
+const MONTHS_EN = [
+	'Jan',
+	'Feb',
+	'Mar',
+	'Apr',
+	'May',
+	'Jun',
+	'Jul',
+	'Aug',
+	'Sep',
+	'Oct',
+	'Nov',
+	'Dec'
+]
+
+/** Format a YYYY-MM string as "juin 2026" / "Jun 2026". */
+export function formatCampaignDate(yyyymm: string, lang: 'fr' | 'en'): string {
+	const [year, month] = yyyymm.split('-')
+	const m = parseInt(month, 10) - 1
+	const months = lang === 'en' ? MONTHS_EN : MONTHS_FR
+	return `${months[m]} ${year}`
+}
 
 const byStartDateDesc = (a: Campaign, b: Campaign) => b.startDate.localeCompare(a.startDate)
 
