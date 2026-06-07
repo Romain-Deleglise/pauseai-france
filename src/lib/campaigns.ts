@@ -109,6 +109,7 @@ export const campaigns: Campaign[] = [
 		slug: 'emploi-ia',
 		status: 'active',
 		startDate: '2026-04',
+		image: '/campaigns/DSC08648_r.webp',
 		fr: {
 			title: "L'IA ne détruira pas QUE votre emploi",
 			description:
