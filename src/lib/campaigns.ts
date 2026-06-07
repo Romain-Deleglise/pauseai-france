@@ -88,6 +88,7 @@ export const campaigns: Campaign[] = [
 		slug: 'ecrire-a-mes-elus',
 		status: 'active',
 		startDate: '2026-04',
+		image: '/campaigns/960px-Palais_Bourbon.jpg',
 		fr: {
 			title: 'Écrivez à vos élus',
 			description:
