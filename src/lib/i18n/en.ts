@@ -75,7 +75,8 @@ export default {
 		hero_highlight: "let's act now",
 		hero_cta: 'Join us',
 		campaigns_title: 'Our active campaigns',
-		campaigns_subtitle: 'Take action with us for concrete steps towards safe AI.',
+		campaigns_subtitle:
+			'Every signature, every email, every testimony counts. Pick the action that speaks to you.',
 		campaigns_cta: 'Take part',
 		campaigns_see_all: 'See all our campaigns'
 	},

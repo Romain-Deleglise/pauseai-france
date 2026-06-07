@@ -76,7 +76,7 @@ export default {
 		hero_cta: 'Rejoindre',
 		campaigns_title: 'Nos campagnes en cours',
 		campaigns_subtitle:
-			"Mobilisez-vous à nos côtés pour des actions concrètes en faveur d'une IA sûre.",
+			'Chaque signature, chaque email, chaque témoignage pèse. Choisissez la mobilisation qui vous parle.',
 		campaigns_cta: 'Participer',
 		campaigns_see_all: 'Voir toutes nos campagnes'
 	},
