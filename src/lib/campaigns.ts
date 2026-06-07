@@ -67,6 +67,8 @@ export const campaigns: Campaign[] = [
 		slug: 'g7-2026',
 		status: 'active',
 		startDate: '2026-06',
+		// Photo: Leynadmar, CC BY-SA 4.0, via Wikimedia Commons
+		image: '/campaigns/palais-elysee.jpg',
 		fr: {
 			title: 'G7 2026 : sécuriser plutôt qu’accélérer l’IA',
 			description:

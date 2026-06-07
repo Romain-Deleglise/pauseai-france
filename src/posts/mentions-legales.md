@@ -33,3 +33,4 @@ Aucune information vous concernant n'est conservé sur le site.
 ## Crédits images :
 
 - Façade du Palais Bourbon (campagne « Écrire à vos élus ») : Daniel Vorndran / DXR, domaine public, via [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Palais_Bourbon.jpg).
+- Façade du Palais de l'Élysée (campagne « G7 2026 ») : Leynadmar, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/), via [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Palais_de_l%27%C3%89lys%C3%A9e_2019.jpg).
