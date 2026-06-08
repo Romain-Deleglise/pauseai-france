@@ -159,15 +159,22 @@ export default {
 		cta_desc:
 			'Know a French or international reference that should be listed here? Email us with the pre-filled template; your mail client will open with all fields ready.',
 		cta_button: 'Suggest a resource',
-		risques_intro: 'Loss of control, extinction threats and alignment research.',
 		cat_pause_ia: 'Pause AI resources',
 		cat_livres: 'Books',
 		cat_comprendre: 'Better understand AI',
 		cat_risques: 'Existential risks',
 		cat_declarations: 'Statements and calls to action',
 		cat_newsletters: 'Follow the news',
-		sg_essentiels: 'Essentials (alignment and existential risk)',
-		sg_recommandes: 'Recommended (broader context)',
+		pause_ia_intro: 'The flagship content produced by Pause AI to start exploring the topic.',
+		livres_intro: 'Reference books on the existential risks of AI and the alignment problem.',
+		comprendre_intro:
+			'Videos, podcasts, tools and sites to make sense of AI and what is at stake, from beginner to advanced.',
+		declarations_intro:
+			'Public statements, open letters and calls to action signed by researchers, executives and organisations.',
+		newsletters_intro:
+			'The best French and English newsletters to stay on top of AI news and AI safety.',
+		sg_essentiels: 'Essentials (alignment and existential risks)',
+		sg_recommandes: 'Recommended (cover broader topics)',
 		sg_demarrer: 'To get started',
 		sg_vue_ensemble: 'Overview: current capabilities and trends',
 		sg_aller_plus_loin: 'To go further',

@@ -160,15 +160,23 @@ export default {
 		cta_desc:
 			"Vous connaissez une référence francophone ou internationale qui devrait figurer ici ? Écrivez-nous avec le modèle pré-rempli ; votre client mail s'ouvrira directement avec tous les champs prêts.",
 		cta_button: 'Suggérer une ressource',
-		risques_intro: "Perte de contrôle, menaces d'extinction et recherche en alignement.",
 		cat_pause_ia: 'Ressources Pause IA',
 		cat_livres: 'Livres',
 		cat_comprendre: "Mieux comprendre l'IA",
 		cat_risques: 'Risques existentiels',
 		cat_declarations: "Déclarations et appel à l'action",
 		cat_newsletters: "Suivre l'actualité",
-		sg_essentiels: 'Essentiels (alignement et risque existentiel)',
-		sg_recommandes: 'Recommandés (contexte plus large)',
+		pause_ia_intro: 'Les contenus phares produits par Pause IA pour découvrir le sujet.',
+		livres_intro:
+			"Ouvrages de référence sur les risques existentiels de l'IA et le problème de l'alignement.",
+		comprendre_intro:
+			"Vidéos, podcasts, outils et sites pour comprendre l'IA et ses enjeux, du niveau débutant à plus avancé.",
+		declarations_intro:
+			"Déclarations publiques, lettres ouvertes et appels à l'action signés par des chercheurs, dirigeants et organisations.",
+		newsletters_intro:
+			"Les meilleures newsletters francophones et anglophones pour suivre l'actualité de l'IA et de sa sécurité.",
+		sg_essentiels: 'Essentiels (alignement et risques existentiels)',
+		sg_recommandes: 'Recommandés (couvrent des sujets plus larges)',
 		sg_demarrer: 'Pour démarrer',
 		sg_vue_ensemble: "Vue d'ensemble : capacités et tendances actuelles",
 		sg_aller_plus_loin: 'Pour aller plus loin',

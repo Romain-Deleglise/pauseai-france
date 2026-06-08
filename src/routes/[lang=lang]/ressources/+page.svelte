@@ -6,10 +6,10 @@
 	import PostMeta from '$components/PostMeta.svelte'
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
 	import {
-		Brain,
+		Lightbulb,
 		AlertTriangle,
 		FileText,
-		BookMarked,
+		Book,
 		BookOpen,
 		Mail,
 		MoveUpRight,
@@ -40,12 +40,12 @@
 
 	type CategoryMeta = { label: string; icon: ComponentType; intro?: string }
 	$: CATEGORIES = {
-		'pause-ia': { label: t.cat_pause_ia, icon: BookMarked },
-		livres: { label: t.cat_livres, icon: BookOpen },
-		comprendre: { label: t.cat_comprendre, icon: Brain },
-		risques: { label: t.cat_risques, icon: AlertTriangle, intro: t.risques_intro },
-		declarations: { label: t.cat_declarations, icon: FileText },
-		newsletters: { label: t.cat_newsletters, icon: Mail }
+		'pause-ia': { label: t.cat_pause_ia, icon: BookOpen, intro: t.pause_ia_intro },
+		livres: { label: t.cat_livres, icon: Book, intro: t.livres_intro },
+		comprendre: { label: t.cat_comprendre, icon: Lightbulb, intro: t.comprendre_intro },
+		risques: { label: t.cat_risques, icon: AlertTriangle },
+		declarations: { label: t.cat_declarations, icon: FileText, intro: t.declarations_intro },
+		newsletters: { label: t.cat_newsletters, icon: Mail, intro: t.newsletters_intro }
 	} as Record<Category, CategoryMeta>
 
 	$: SUBGROUP_LABELS = {
@@ -245,6 +245,47 @@
 		return l === 'fr' ? 'FR' : 'EN'
 	}
 
+	// Format the auto-injected YYYY-MM-DD update date in a human, localised way.
+	const MONTHS_FR = [
+		'janvier',
+		'février',
+		'mars',
+		'avril',
+		'mai',
+		'juin',
+		'juillet',
+		'août',
+		'septembre',
+		'octobre',
+		'novembre',
+		'décembre'
+	]
+	const MONTHS_EN = [
+		'January',
+		'February',
+		'March',
+		'April',
+		'May',
+		'June',
+		'July',
+		'August',
+		'September',
+		'October',
+		'November',
+		'December'
+	]
+	function formatUpdated(iso: string, l: Lang): string {
+		const m = iso.match(/^(\d{4})-(\d{2})-(\d{2})$/)
+		if (!m) return iso
+		const [, year, month, day] = m
+		const d = parseInt(day, 10)
+		const mi = parseInt(month, 10) - 1
+		if (l === 'en') {
+			return `${MONTHS_EN[mi]} ${d}, ${year}`
+		}
+		return `${d} ${MONTHS_FR[mi]} ${year}`
+	}
+
 	function clearFilters() {
 		query = ''
 		langFilter = []
@@ -421,7 +462,7 @@
 						<button class="reset-btn" on:click={clearFilters}>{t.reset}</button>
 					{/if}
 				</p>
-				<p class="updated">{t.updated} {RESOURCES_LAST_UPDATED}</p>
+				<p class="updated">{t.updated} {formatUpdated(RESOURCES_LAST_UPDATED, lang)}</p>
 			</div>
 		</section>
 
