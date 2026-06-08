@@ -5,6 +5,7 @@
 	import { browser } from '$app/environment'
 	import PostMeta from '$components/PostMeta.svelte'
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
+	import { url as siteUrl } from '$config'
 	import {
 		Lightbulb,
 		AlertTriangle,
@@ -329,6 +330,64 @@
 		return () => observer.disconnect()
 	})
 
+	// Map our internal media types to Schema.org @type values for the
+	// JSON-LD payload. Kept conservative: when no good fit exists we
+	// fall back to CreativeWork.
+	const SCHEMA_TYPE: Record<MediaType, string> = {
+		book: 'Book',
+		paper: 'ScholarlyArticle',
+		article: 'Article',
+		video: 'VideoObject',
+		podcast: 'PodcastSeries',
+		newsletter: 'CreativeWork',
+		org: 'Organization',
+		declaration: 'CreativeWork',
+		tool: 'WebApplication',
+		site: 'WebSite'
+	}
+
+	// Build a CollectionPage + ItemList JSON-LD payload describing every
+	// resource on the page. Helps Google understand this is a curated
+	// list (potential rich-results in search) and gives each item a
+	// typed entry rather than a generic link.
+	$: jsonLd = (() => {
+		const pageUrl = `${siteUrl}/${lang}/ressources`
+		const items = resources.map((r, i) => {
+			const itemUrl = r.internal ? `${siteUrl}${r.url}` : r.url
+			const node: Record<string, unknown> = {
+				'@type': SCHEMA_TYPE[r.type] ?? 'CreativeWork',
+				name: localized(r.title, lang),
+				description: localized(r.description, lang),
+				url: itemUrl,
+				inLanguage: r.langs
+			}
+			if (r.date) node.datePublished = r.date
+			return {
+				'@type': 'ListItem',
+				position: i + 1,
+				item: node
+			}
+		})
+		return {
+			'@context': 'https://schema.org',
+			'@type': 'CollectionPage',
+			name: t.hero_title,
+			description: t.meta_desc,
+			url: pageUrl,
+			inLanguage: lang,
+			isPartOf: {
+				'@type': 'WebSite',
+				name: 'Pause IA',
+				url: siteUrl
+			},
+			mainEntity: {
+				'@type': 'ItemList',
+				numberOfItems: items.length,
+				itemListElement: items
+			}
+		}
+	})()
+
 	// Pre-filled mailto so the user lands in their mail client with a
 	// ready-to-send template. Universal and reliable across browsers /
 	// extensions ; localized in the active UI language.
@@ -357,6 +416,10 @@
 </script>
 
 <PostMeta {title} {description} />
+
+<svelte:head>
+	{@html `<script type="application/ld+json">${JSON.stringify(jsonLd).replace(/</g, '\\u003c')}</script>`}
+</svelte:head>
 
 <div class="layout">
 	<!-- Side TOC : sticky on desktop, hidden on mobile (top filter pills
