@@ -226,7 +226,7 @@ export const resources: Resource[] = [
 			fr: 'Thibaut Giraud, Flammarion, 2025. Intelligence artificielle, conscience, autonomie et risques existentiels : une introduction accessible en français, signée par le créateur de la chaîne Monsieur Phi.',
 			en: 'Thibaut Giraud, Flammarion, 2025. Artificial intelligence, consciousness, autonomy and existential risks: an accessible French-language introduction by the creator of the Monsieur Phi channel.'
 		},
-		url: 'https://editions.flammarion.com/la-parole-aux-machines/9782080448477',
+		url: 'https://www.fnac.com/a21814164/Thibaut-Giraud-La-parole-aux-machines',
 		langs: ['fr'],
 		category: 'livres',
 		type: 'book',
@@ -254,7 +254,7 @@ export const resources: Resource[] = [
 			fr: "Stuart Russell et Peter Norvig, 4ᵉ édition, Pearson, 2021. Le manuel de référence mondialement utilisé dans l'enseignement de l'IA, traduit en français.",
 			en: 'Stuart Russell and Peter Norvig, 4th ed., Pearson, 2021. The worldwide reference textbook for teaching AI, translated into French.'
 		},
-		url: 'https://www.pearson.fr/9782326002241/livre/intelligence-artificielle-4ed',
+		url: 'https://www.amazon.fr/Intelligence-artificielle-%C3%A9dition-Peter-Norvig/dp/2326002210',
 		langs: ['fr', 'en'],
 		category: 'livres',
 		type: 'book',
@@ -389,7 +389,7 @@ export const resources: Resource[] = [
 			fr: 'Vidéo de synthèse en français du livre de Yudkowsky & Soares, par la chaîne Le Futurologue.',
 			en: 'French-language video summary of the Yudkowsky & Soares book, by the Le Futurologue channel.'
 		},
-		url: 'https://www.youtube.com/@LeFuturologue',
+		url: 'https://youtu.be/zmnc9maQRb4',
 		langs: ['fr'],
 		category: 'comprendre',
 		type: 'video',
@@ -488,15 +488,15 @@ export const resources: Resource[] = [
 	},
 	{
 		id: 'fli-pod',
-		title: 'Future of Life Institute Podcast',
+		title: 'Future of Life Institute (YouTube)',
 		description: {
-			fr: "Podcast d'entretiens approfondis sur la sécurité de l'IA.",
-			en: 'In-depth interview podcast on AI safety.'
+			fr: "Chaîne YouTube du Future of Life Institute : entretiens et conférences sur la sécurité de l'IA et les risques existentiels.",
+			en: 'Future of Life Institute YouTube channel: interviews and talks on AI safety and existential risks.'
 		},
-		url: 'https://futureoflife.org/podcast/',
+		url: 'https://www.youtube.com/@futureoflifeinstitute',
 		langs: ['en'],
 		category: 'comprendre',
-		type: 'podcast',
+		type: 'video',
 		subgroup: 'demarrer'
 	},
 	{
@@ -514,15 +514,15 @@ export const resources: Resource[] = [
 	},
 	{
 		id: '80000-hours',
-		title: '80,000 Hours Podcast',
+		title: '80,000 Hours (YouTube)',
 		description: {
-			fr: 'Carrière à fort impact, dont la sécurité IA.',
-			en: 'High-impact careers, including AI safety.'
+			fr: "Chaîne YouTube sur les carrières à fort impact, dont la sécurité de l'IA : entretiens longs avec chercheurs et décideurs.",
+			en: 'YouTube channel on high-impact careers, including AI safety: long-form interviews with researchers and decision-makers.'
 		},
-		url: 'https://80000hours.org/podcast/',
+		url: 'https://www.youtube.com/@eightythousandhours',
 		langs: ['en'],
 		category: 'comprendre',
-		type: 'podcast',
+		type: 'video',
 		subgroup: 'demarrer'
 	},
 	{
