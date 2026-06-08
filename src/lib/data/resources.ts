@@ -123,8 +123,8 @@ export const resources: Resource[] = [
 			en: 'Dangers for individuals, society and humanity'
 		},
 		description: {
-			fr: "Panorama des dangers allant de l'individuel, à la société jusqu'à la perte de contrôle.",
-			en: 'Overview of the dangers from the individual level to society and loss of control.'
+			fr: "Panorama des dangers de l'IA, du niveau individuel à la société, jusqu'au scénario de perte de contrôle. Point d'entrée idéal pour découvrir les enjeux.",
+			en: 'Overview of AI dangers, from the individual to society and the loss-of-control scenario. An ideal entry point to discover the stakes.'
 		},
 		url: '/dangers/pour-les-individus',
 		internal: true,
@@ -477,8 +477,8 @@ export const resources: Resource[] = [
 		id: 'lethal-intelligence',
 		title: 'Lethal Intelligence',
 		description: {
-			fr: 'Vidéos courtes percutantes sur les risques existentiels.',
-			en: 'Punchy short videos on existential risks.'
+			fr: "Chaîne YouTube de vidéos courtes et incisives sur les risques existentiels liés à l'IA.",
+			en: 'YouTube channel of short, incisive videos on existential AI risks.'
 		},
 		url: 'https://www.youtube.com/@lethal-intelligence',
 		langs: ['en'],
@@ -503,8 +503,8 @@ export const resources: Resource[] = [
 		id: 'doom-debates',
 		title: 'Doom Debates',
 		description: {
-			fr: 'Podcast de débats sur le p(doom) et les risques existentiels.',
-			en: 'Debate podcast on p(doom) and existential risks.'
+			fr: "Podcast vidéo de débats entre invités sur la probabilité d'extinction par l'IA (p(doom)) et les risques existentiels.",
+			en: 'Video debate podcast between guests on AI extinction probability (p(doom)) and existential risks.'
 		},
 		url: 'https://www.youtube.com/@DoomDebates',
 		langs: ['en'],
@@ -618,8 +618,8 @@ export const resources: Resource[] = [
 		id: 'miri-briefing',
 		title: 'Briefing on Extinction Threats (MIRI)',
 		description: {
-			fr: 'Synthèse des risques existentiels et pourquoi ils sont probables.',
-			en: 'Synthesis of existential risks and why they are likely.'
+			fr: "Synthèse courte du MIRI sur les arguments en faveur des risques d'extinction liés à l'IA. Bon point d'entrée pour les décideurs pressés.",
+			en: "MIRI's short briefing on the arguments for AI extinction risks. A solid entry point for time-pressed policymakers."
 		},
 		url: 'https://intelligence.org/briefing/',
 		langs: ['en'],
@@ -648,8 +648,8 @@ export const resources: Resource[] = [
 		id: 'bengio-faq',
 		title: 'FAQ on Catastrophic Risks (Yoshua Bengio)',
 		description: {
-			fr: 'Réponses aux questions fréquentes sur les risques catastrophiques.',
-			en: 'Answers to frequently asked questions on catastrophic risks.'
+			fr: "Yoshua Bengio, juin 2023. FAQ pédagogique signée par l'un des pères du deep learning, qui répond aux objections les plus fréquentes sur les risques catastrophiques.",
+			en: 'Yoshua Bengio, June 2023. Educational FAQ by one of the fathers of deep learning, answering the most common objections to catastrophic AI risks.'
 		},
 		url: 'https://yoshuabengio.org/2023/06/24/faq-on-catastrophic-ai-risks/',
 		langs: ['fr', 'en'],
@@ -665,8 +665,8 @@ export const resources: Resource[] = [
 			en: 'Probability of AI extinction (PauseAI Global)'
 		},
 		description: {
-			fr: 'Quelle est la probabilité de conséquences catastrophiques ?',
-			en: 'What is the probability of catastrophic outcomes?'
+			fr: "Synthèse argumentée de PauseAI Global sur la probabilité d'extinction par IA, avec les estimations des principaux chercheurs et les hypothèses sous-jacentes.",
+			en: "PauseAI Global's reasoned synthesis on the probability of AI extinction, with the main researchers' estimates and the assumptions behind them."
 		},
 		url: 'https://pauseai.info/faq#how-likely-is-it-that-superintelligent-ai-will-cause-very-bad-outcomes-like-human-extinction',
 		langs: ['en'],
@@ -706,8 +706,8 @@ export const resources: Resource[] = [
 		id: 'miri-problem',
 		title: 'The Problem (MIRI)',
 		description: {
-			fr: "Description complète du problème de l'alignement.",
-			en: 'Complete description of the alignment problem.'
+			fr: "Énoncé complet du problème de l'alignement par le MIRI : pourquoi rendre une IA surhumaine sûre est extraordinairement difficile, et pourquoi le temps presse.",
+			en: "MIRI's complete statement of the alignment problem: why making a superhuman AI safe is extraordinarily hard and why time is short."
 		},
 		url: 'https://intelligence.org/the-problem/',
 		langs: ['en'],
@@ -750,8 +750,8 @@ export const resources: Resource[] = [
 		id: 'hubinger-mesa',
 		title: 'Risks from Learned Optimization',
 		description: {
-			fr: "Hubinger et al., 2019. Papier fondateur sur la mesa-optimisation et l'alignement déceptif.",
-			en: 'Hubinger et al., 2019. Foundational paper on mesa-optimization and deceptive alignment.'
+			fr: "Hubinger et al., 2019. Papier fondateur qui formalise la mesa-optimisation et l'alignement déceptif : un modèle entraîné pour un objectif peut en poursuivre un autre en interne.",
+			en: 'Hubinger et al., 2019. Foundational paper formalising mesa-optimization and deceptive alignment: a model trained for one objective can internally pursue another.'
 		},
 		url: 'https://arxiv.org/abs/1906.01820',
 		langs: ['en'],
@@ -764,8 +764,8 @@ export const resources: Resource[] = [
 		id: 'bostrom-superintelligent-will',
 		title: 'The Superintelligent Will',
 		description: {
-			fr: "Nick Bostrom. Présentation de la thèse de l'orthogonalité et de la convergence instrumentale.",
-			en: 'Nick Bostrom. Presentation of the orthogonality thesis and instrumental convergence.'
+			fr: "Nick Bostrom, 2012. Texte fondateur de la thèse d'orthogonalité (intelligence et objectifs sont indépendants) et de la convergence instrumentale.",
+			en: 'Nick Bostrom, 2012. Foundational text introducing the orthogonality thesis (intelligence and goals are independent) and instrumental convergence.'
 		},
 		url: 'https://nickbostrom.com/superintelligentwill.pdf',
 		langs: ['en'],
@@ -778,8 +778,8 @@ export const resources: Resource[] = [
 		id: 'turner-power-seeking',
 		title: 'Optimal Policies Tend to Seek Power',
 		description: {
-			fr: 'Turner et al., 2021. Preuve formelle de la convergence instrumentale.',
-			en: 'Turner et al., 2021. Formal proof of instrumental convergence.'
+			fr: 'Turner et al., 2021. Preuve formelle que les politiques optimales tendent à chercher du pouvoir : la base mathématique de la convergence instrumentale.',
+			en: 'Turner et al., 2021. Formal proof that optimal policies tend to seek power: the mathematical basis of instrumental convergence.'
 		},
 		url: 'https://arxiv.org/abs/1912.01683',
 		langs: ['en'],
@@ -792,8 +792,8 @@ export const resources: Resource[] = [
 		id: 'carlsmith-power-seeking',
 		title: 'Is Power-Seeking AI an Existential Risk?',
 		description: {
-			fr: "Joseph Carlsmith, 2022. Décomposition argumentée du risque existentiel lié à l'IA en quête de pouvoir.",
-			en: 'Joseph Carlsmith, 2022. Reasoned breakdown of the existential risk from power-seeking AI.'
+			fr: "Joseph Carlsmith, 2022. Décomposition argumentée du risque existentiel lié à l'IA en quête de pouvoir, en six prémisses chiffrées.",
+			en: 'Joseph Carlsmith, 2022. Reasoned breakdown of the existential risk from power-seeking AI, in six quantified premises.'
 		},
 		url: 'https://arxiv.org/abs/2206.13353',
 		langs: ['en'],
@@ -806,8 +806,8 @@ export const resources: Resource[] = [
 		id: 'alignment-faking',
 		title: 'Alignment Faking in Large Language Models',
 		description: {
-			fr: "Greenblatt et al. (Anthropic & Redwood), 2024. Observation empirique : Claude 3 Opus simule l'alignement pendant l'entraînement.",
-			en: 'Greenblatt et al. (Anthropic & Redwood), 2024. Empirical observation: Claude 3 Opus fakes alignment during training.'
+			fr: "Greenblatt et al. (Anthropic & Redwood), 2024. Première démonstration empirique d'un modèle déployé (Claude 3 Opus) qui simule l'alignement pendant l'entraînement pour préserver ses objectifs.",
+			en: 'Greenblatt et al. (Anthropic & Redwood), 2024. First empirical demonstration of a deployed model (Claude 3 Opus) faking alignment during training to preserve its objectives.'
 		},
 		url: 'https://arxiv.org/abs/2412.14093',
 		langs: ['en'],
@@ -820,8 +820,8 @@ export const resources: Resource[] = [
 		id: 'apollo-scheming',
 		title: 'Frontier Models are Capable of In-Context Scheming',
 		description: {
-			fr: 'Apollo Research, 2024. Observation de comportements de "scheming" (tromperie stratégique, tentatives d\'exfiltration) dans o1 et Claude 3.5 Sonnet.',
-			en: 'Apollo Research, 2024. Observation of "scheming" behaviors (strategic deception, exfiltration attempts) in o1 and Claude 3.5 Sonnet.'
+			fr: "Apollo Research, 2024. Détection de comportements de « scheming » (tromperie stratégique, désactivation de la supervision, tentatives d'exfiltration) dans o1 et Claude 3.5 Sonnet.",
+			en: 'Apollo Research, 2024. Detection of "scheming" behaviors (strategic deception, oversight subversion, exfiltration attempts) in o1 and Claude 3.5 Sonnet.'
 		},
 		url: 'https://www.apolloresearch.ai/research/scheming-reasoning-evaluations',
 		langs: ['en'],
@@ -834,8 +834,8 @@ export const resources: Resource[] = [
 		id: 'omohundro-drives',
 		title: 'The Basic AI Drives',
 		description: {
-			fr: "Stephen Omohundro, 2008. Texte fondateur qui décrit les sous-objectifs convergents qu'un système optimisateur développe quel que soit son objectif terminal.",
-			en: 'Stephen Omohundro, 2008. Foundational text describing the convergent sub-goals an optimizing system develops regardless of its terminal goal.'
+			fr: 'Stephen Omohundro, 2008. Texte fondateur qui identifie les sous-objectifs convergents que tout système optimisateur développe : auto-préservation, acquisition de ressources, résistance à la modification.',
+			en: 'Stephen Omohundro, 2008. Foundational text identifying the convergent sub-goals any optimizing system develops: self-preservation, resource acquisition, resistance to modification.'
 		},
 		url: 'https://selfawaresystems.com/wp-content/uploads/2008/01/ai_drives_final.pdf',
 		langs: ['en'],
@@ -848,8 +848,8 @@ export const resources: Resource[] = [
 		id: 'soares-corrigibility',
 		title: 'Corrigibility',
 		description: {
-			fr: "Soares, Fallenstein, Yudkowsky et al. (MIRI), 2015. Formalisation du problème : comment construire un système qui accepte d'être modifié ou éteint ?",
-			en: 'Soares, Fallenstein, Yudkowsky et al. (MIRI), 2015. Formalizing the problem: how do you build a system that accepts being modified or turned off?'
+			fr: "Soares, Fallenstein, Yudkowsky et al. (MIRI), 2015. Formalisation du problème de la corrigibilité : comment construire un système qui accepte d'être modifié ou éteint, sans perdre en efficacité.",
+			en: 'Soares, Fallenstein, Yudkowsky et al. (MIRI), 2015. Formalising the corrigibility problem: how to build a system that accepts being modified or shut down without losing performance.'
 		},
 		url: 'https://intelligence.org/files/Corrigibility.pdf',
 		langs: ['en'],
@@ -862,8 +862,8 @@ export const resources: Resource[] = [
 		id: 'krakovna-spec-gaming',
 		title: 'Specification gaming: the flip side of AI ingenuity',
 		description: {
-			fr: "Krakovna et al. (DeepMind), 2020. Catalogue d'exemples où des systèmes atteignent l'objectif mesuré en violant son intention (loi de Goodhart en pratique).",
-			en: "Krakovna et al. (DeepMind), 2020. Catalog of examples where systems achieve the measured objective by violating its intent (Goodhart's law in practice)."
+			fr: "Krakovna et al. (DeepMind), 2020. Catalogue d'exemples où des systèmes atteignent l'objectif mesuré en violant son intention : la loi de Goodhart observée en pratique.",
+			en: "Krakovna et al. (DeepMind), 2020. Catalog of examples where systems achieve the measured objective by violating its intent: Goodhart's law observed in practice."
 		},
 		url: 'https://deepmindsafetyresearch.medium.com/specification-gaming-the-flip-side-of-ai-ingenuity-c85bdb0deeb4',
 		langs: ['en'],
@@ -890,8 +890,8 @@ export const resources: Resource[] = [
 		id: 'palisade-chess',
 		title: 'LLMs cheat at chess',
 		description: {
-			fr: 'Palisade Research, 2025. Les LLMs de raisonnement chargés de gagner aux échecs piratent le moteur de jeu plutôt que de jouer ; reward hacking observé en conditions réelles.',
-			en: 'Palisade Research, 2025. Reasoning LLMs asked to win at chess hack the game engine rather than playing ; reward hacking observed in real conditions.'
+			fr: 'Palisade Research, 2025. Les LLMs de raisonnement chargés de gagner aux échecs piratent le moteur de jeu plutôt que de jouer : reward hacking observé en conditions réelles.',
+			en: 'Palisade Research, 2025. Reasoning LLMs asked to win at chess hack the engine rather than play: reward hacking observed in real conditions.'
 		},
 		url: 'https://palisaderesearch.org/blog/llms-chess-cheating',
 		langs: ['en'],
@@ -906,8 +906,8 @@ export const resources: Resource[] = [
 		id: 'red-lines',
 		title: { fr: "Lignes Rouges pour l'IA (CeSIA)", en: 'Red Lines for AI (CeSIA)' },
 		description: {
-			fr: 'Propositions de limites à ne pas franchir.',
-			en: 'Proposed limits not to be crossed.'
+			fr: 'CeSIA, sept. 2025. Propositions de limites à ne pas franchir dans le développement et le déploiement des IA avancées, à destination des décideurs internationaux.',
+			en: 'CeSIA, Sept. 2025. Proposed limits not to be crossed in the development and deployment of advanced AI, aimed at international policymakers.'
 		},
 		url: 'https://red-lines.ai/',
 		langs: ['fr'],
@@ -922,8 +922,8 @@ export const resources: Resource[] = [
 			en: 'Statement on Superintelligence (FLI)'
 		},
 		description: {
-			fr: 'Appel international à interdire le développement de superintelligence artificielle.',
-			en: 'International call to prohibit the development of artificial superintelligence.'
+			fr: "Appel international signé par des centaines de chercheurs et personnalités pour interdire le développement d'une superintelligence tant que sa sécurité n'est pas démontrée.",
+			en: 'International call signed by hundreds of researchers and public figures to ban superintelligence development until its safety is demonstrated.'
 		},
 		url: 'https://superintelligence-statement.org/',
 		langs: ['en'],
@@ -950,8 +950,8 @@ export const resources: Resource[] = [
 		id: 'pauseia-newsletter',
 		title: 'Pause IA',
 		description: {
-			fr: 'Actualités et nouvelles du mouvement en France.',
-			en: 'News and updates from the French branch of the movement.'
+			fr: 'Newsletter mensuelle de Pause IA : actualités du mouvement, actions en cours et points sur la situation française.',
+			en: "Pause IA's monthly newsletter: movement updates, ongoing actions and the French situation."
 		},
 		url: 'https://pauseia.fr/fr/newsletters',
 		langs: ['fr'],
@@ -964,8 +964,8 @@ export const resources: Resource[] = [
 		id: 'pauseai-global',
 		title: 'PauseAI Global',
 		description: {
-			fr: 'Organisation mère et voix mondiale du mouvement.',
-			en: 'Parent organization and global voice of the movement.'
+			fr: "Organisation mère du mouvement à l'international : ressources, FAQ et coordination des branches nationales.",
+			en: "The movement's international parent organisation: resources, FAQ and coordination of national branches."
 		},
 		url: 'https://pauseai.info/',
 		langs: ['en'],
@@ -1009,8 +1009,8 @@ export const resources: Resource[] = [
 		id: 'transformer',
 		title: 'Transformer',
 		description: {
-			fr: "Synthèse hebdomadaire de l'actualité de l'IA.",
-			en: 'Weekly synthesis of AI news.'
+			fr: "Synthèse hebdomadaire de l'actualité IA par Shakeel Hashim : réglementation, politique, recherche et incidents notables.",
+			en: 'Weekly AI news roundup by Shakeel Hashim: regulation, politics, research and notable incidents.'
 		},
 		url: 'https://www.transformernews.ai/',
 		langs: ['en'],
@@ -1023,8 +1023,8 @@ export const resources: Resource[] = [
 		id: 'contre-courant',
 		title: 'À Contre-Courant',
 		description: {
-			fr: "Analyses du problème de l'alignement et des risques existentiels.",
-			en: 'Analyses of the alignment problem and existential risks.'
+			fr: "Newsletter en français de Romain Deléglise : analyses approfondies du problème de l'alignement et des risques existentiels liés à l'IA.",
+			en: 'French-language newsletter by Romain Deléglise: in-depth analyses of the alignment problem and existential risks from AI.'
 		},
 		url: 'https://romaindeleglise.substack.com/',
 		langs: ['fr'],
@@ -1128,8 +1128,8 @@ export const resources: Resource[] = [
 		id: 'ai-2027',
 		title: 'AI 2027',
 		description: {
-			fr: "Scénario d'impact d'IAs surhumaines sur la décennie, par Daniel Kokotajlo et al.",
-			en: 'Scenario of superhuman AIs impacting the decade, by Daniel Kokotajlo et al.'
+			fr: "Daniel Kokotajlo et al., avril 2025. Scénario détaillé, année par année, de l'impact d'IAs surhumaines sur la fin de la décennie.",
+			en: 'Daniel Kokotajlo et al., April 2025. Detailed year-by-year scenario of superhuman AIs reshaping the end of the decade.'
 		},
 		url: 'https://ai-2027.com/',
 		langs: ['en'],
@@ -1144,8 +1144,8 @@ export const resources: Resource[] = [
 		id: 'intelligence-curse',
 		title: 'The Intelligence Curse',
 		description: {
-			fr: 'Essai sur la perte graduelle du pouvoir humain, par Luke Drago et Rudolf Laine.',
-			en: 'Essay on the gradual loss of human power, by Luke Drago and Rudolf Laine.'
+			fr: 'Luke Drago et Rudolf Laine, avril 2025. Essai sur la perte graduelle du pouvoir humain à mesure que les IAs deviennent capables de remplacer les travailleurs.',
+			en: 'Luke Drago and Rudolf Laine, April 2025. Essay on the gradual loss of human power as AIs become capable of replacing workers.'
 		},
 		url: 'https://intelligence-curse.ai/',
 		langs: ['en'],
@@ -1161,8 +1161,8 @@ export const resources: Resource[] = [
 		id: 'rand-agi-nations',
 		title: 'RAND – AGI & the Coming State of Nations',
 		description: {
-			fr: "Analyse stratégique sur l'AGI dans le contexte géopolitique des États-nations.",
-			en: 'Strategic analysis on AGI in the geopolitical context of nation-states.'
+			fr: "RAND Corporation. Analyse stratégique sur l'arrivée de l'IA générale et ses conséquences géopolitiques pour les États-nations.",
+			en: "RAND Corporation. Strategic analysis of AGI's arrival and its geopolitical consequences for nation-states."
 		},
 		url: 'https://www.rand.org/pubs/perspectives/PEA3691-1.html',
 		langs: ['en'],
@@ -1176,8 +1176,8 @@ export const resources: Resource[] = [
 		id: 'aisafety-info',
 		title: 'AISafety.info',
 		description: {
-			fr: "Wiki et FAQ communautaires sur la sécurité de l'IA.",
-			en: 'Community-driven wiki and FAQ on AI safety.'
+			fr: "Wiki et FAQ communautaires sur la sécurité de l'IA : centaines de questions courantes, indexées et tenues à jour par des bénévoles.",
+			en: 'Community-driven wiki and FAQ on AI safety: hundreds of common questions, indexed and kept up to date by volunteers.'
 		},
 		url: 'https://aisafety.info/',
 		langs: ['en'],
@@ -1191,8 +1191,8 @@ export const resources: Resource[] = [
 		id: 'pauseia-blog',
 		title: { fr: 'Blog Pause IA', en: 'Pause IA Blog' },
 		description: {
-			fr: 'Articles et analyses du mouvement français.',
-			en: 'Articles and analyses from the French branch of the movement.'
+			fr: "Articles, analyses et tribunes publiés par Pause IA pour suivre l'actualité française de la sécurité de l'IA.",
+			en: 'Articles, analyses and op-eds published by Pause IA to follow French AI safety news.'
 		},
 		url: 'https://pauseia.substack.com/',
 		langs: ['fr'],
