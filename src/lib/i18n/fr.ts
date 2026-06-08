@@ -143,7 +143,7 @@ export default {
 			"Une bibliothèque de ressources sélectionnées, en français et en anglais, pour comprendre l'IA, ses risques existentiels et le problème de l'alignement : vidéos de vulgarisation, articles scientifiques, livres de référence, déclarations internationales et newsletters.",
 		hero_title: 'Ressources',
 		hero_desc:
-			"Une bibliothèque de ressources sélectionnées, en français et en anglais, pour comprendre l'intelligence artificielle, ses risques et le problème de l'alignement. Des vidéos de vulgarisation aux articles scientifiques, en passant par les livres de référence, les déclarations internationales et les meilleures sources pour suivre l'actualité, cette base de connaissances rassemble de quoi s'informer sur la sécurité de l'IA et les risques existentiels — que vous découvriez le sujet ou que vous souhaitiez l'approfondir. Mise à jour régulièrement.",
+			"Une bibliothèque de ressources sélectionnées, en français et en anglais, pour comprendre l'intelligence artificielle, ses risques et le problème de l'alignement. Des vidéos de vulgarisation aux articles scientifiques, en passant par les livres de référence, les déclarations internationales et les meilleures sources pour suivre l'actualité, cette base de connaissances rassemble de quoi s'informer sur la sécurité de l'IA et les risques existentiels, que vous découvriez le sujet ou que vous souhaitiez l'approfondir. Mise à jour régulièrement.",
 		search_placeholder: 'Rechercher une ressource…',
 		search_clear: 'Effacer la recherche',
 		filter_lang: 'Langue (multi-sélection)',

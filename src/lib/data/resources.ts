@@ -223,8 +223,8 @@ export const resources: Resource[] = [
 		id: 'book-giraud-parole',
 		title: 'La parole aux machines',
 		description: {
-			fr: 'Thibaut Giraud, Flammarion, 2025. Intelligence artificielle, conscience, autonomie et risques existentiels — une introduction accessible en français, signée par le créateur de la chaîne Monsieur Phi.',
-			en: 'Thibaut Giraud, Flammarion, 2025. Artificial intelligence, consciousness, autonomy and existential risks — an accessible French-language introduction by the creator of the Monsieur Phi channel.'
+			fr: 'Thibaut Giraud, Flammarion, 2025. Intelligence artificielle, conscience, autonomie et risques existentiels : une introduction accessible en français, signée par le créateur de la chaîne Monsieur Phi.',
+			en: 'Thibaut Giraud, Flammarion, 2025. Artificial intelligence, consciousness, autonomy and existential risks: an accessible French-language introduction by the creator of the Monsieur Phi channel.'
 		},
 		url: 'https://editions.flammarion.com/la-parole-aux-machines/9782080448477',
 		langs: ['fr'],
@@ -572,7 +572,7 @@ export const resources: Resource[] = [
 		},
 		description: {
 			fr: "Proposition d'un cadre pour mesurer la polyvalence cognitive d'un système d'IA et statuer sur ce qui constitue, ou non, une AGI.",
-			en: "A proposed framework to measure an AI system's cognitive versatility and decide what does — or does not — count as AGI."
+			en: "A proposed framework to measure an AI system's cognitive versatility and decide what does, or does not, count as AGI."
 		},
 		url: 'https://www.agidefinition.ai/',
 		langs: ['en'],

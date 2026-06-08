@@ -142,7 +142,7 @@ export default {
 			'A curated library of resources, in French and English, to understand AI, its existential risks and the alignment problem: explainer videos, research papers, reference books, international statements and newsletters.',
 		hero_title: 'Resources',
 		hero_desc:
-			'A curated library of resources, in French and English, to understand artificial intelligence, its risks and the alignment problem. From explainer videos to scientific papers, reference books, international statements and the best sources to follow the news, this knowledge base gathers what you need to learn about AI safety and existential risks — whether you are discovering the topic or want to deepen your knowledge. Updated regularly.',
+			'A curated library of resources, in French and English, to understand artificial intelligence, its risks and the alignment problem. From explainer videos to scientific papers, reference books, international statements and the best sources to follow the news, this knowledge base gathers what you need to learn about AI safety and existential risks, whether you are discovering the topic or want to deepen your knowledge. Updated regularly.',
 		search_placeholder: 'Search a resource…',
 		search_clear: 'Clear search',
 		filter_lang: 'Language (multi-select)',
