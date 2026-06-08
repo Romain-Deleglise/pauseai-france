@@ -13,7 +13,6 @@ export type Category =
 	| 'risques'
 	| 'declarations'
 	| 'newsletters'
-	| 'agir'
 
 // Type of media — second filter axis on the /ressources page.
 export type MediaType =
@@ -43,7 +42,7 @@ export const MEDIA_TYPE_ORDER: MediaType[] = [
 
 export const MEDIA_TYPE_LABELS: Record<MediaType, string> = {
 	book: 'Livre',
-	paper: 'Papier de recherche',
+	paper: 'Article scientifique',
 	article: 'Article',
 	video: 'Vidéo',
 	podcast: 'Podcast',
@@ -112,8 +111,7 @@ export const CATEGORY_ORDER: Category[] = [
 	'risques',
 	'livres',
 	'declarations',
-	'newsletters',
-	'agir'
+	'newsletters'
 ]
 
 export const resources: Resource[] = [
@@ -155,8 +153,8 @@ export const resources: Resource[] = [
 		id: 'book-ifanyone',
 		title: 'If Anyone Builds It, Everyone Dies',
 		description: {
-			fr: "Eliezer Yudkowsky & Nate Soares, 2025. L'argument le plus complet et récent pour le risque d'extinction. Disponible gratuitement sur le site du livre.",
-			en: 'Eliezer Yudkowsky & Nate Soares, 2025. The most complete and recent case for extinction risk. Available for free on the book website.'
+			fr: "Eliezer Yudkowsky & Nate Soares, 2025. L'argument le plus complet et récent pour le risque d'extinction. Ressources complémentaires gratuites disponibles sur le site du livre.",
+			en: 'Eliezer Yudkowsky & Nate Soares, 2025. The most complete and recent case for extinction risk. Free supplementary resources available on the book website.'
 		},
 		url: 'https://ifanyonebuildsit.com/',
 		langs: ['en'],
@@ -169,11 +167,11 @@ export const resources: Resource[] = [
 		id: 'book-superintelligence',
 		title: 'Superintelligence: Paths, Dangers, Strategies',
 		description: {
-			fr: "Nick Bostrom, 2014. L'ouvrage fondateur sur les risques de l'IA surhumaine.",
-			en: 'Nick Bostrom, 2014. The foundational book on the risks of superhuman AI.'
+			fr: "Nick Bostrom, 2014. L'ouvrage fondateur sur les risques de l'IA surhumaine. Traduction française disponible (« Superintelligence », Dunod, 2017).",
+			en: 'Nick Bostrom, 2014. The foundational book on the risks of superhuman AI. A French translation is available (« Superintelligence », Dunod, 2017).'
 		},
 		url: 'https://www.amazon.fr/Superintelligence-Dangers-Strategies-Nick-Bostrom/dp/0199678111',
-		langs: ['en'],
+		langs: ['en', 'fr'],
 		category: 'livres',
 		type: 'book',
 		subgroup: 'essentiels',
@@ -220,6 +218,48 @@ export const resources: Resource[] = [
 		type: 'book',
 		subgroup: 'essentiels',
 		date: '2024'
+	},
+	{
+		id: 'book-giraud-parole',
+		title: 'La parole aux machines',
+		description: {
+			fr: 'Thibaut Giraud, Flammarion, 2025. Intelligence artificielle, conscience, autonomie et risques existentiels — une introduction accessible en français, signée par le créateur de la chaîne Monsieur Phi.',
+			en: 'Thibaut Giraud, Flammarion, 2025. Artificial intelligence, consciousness, autonomy and existential risks — an accessible French-language introduction by the creator of the Monsieur Phi channel.'
+		},
+		url: 'https://editions.flammarion.com/la-parole-aux-machines/9782080448477',
+		langs: ['fr'],
+		category: 'livres',
+		type: 'book',
+		subgroup: 'recommandes',
+		date: '2025'
+	},
+	{
+		id: 'book-suleyman-coming-wave',
+		title: 'La déferlante / The Coming Wave',
+		description: {
+			fr: "Mustafa Suleyman, 2023. Très accessible, traite de la vitesse de propagation de l'IA et de la difficulté politique et physique de contenir une telle technologie. Existe en français (Fayard, 2024).",
+			en: "Mustafa Suleyman, 2023. Very accessible: on the speed of AI's spread and the political and physical difficulty of containing such a technology. Also available in French (Fayard, 2024)."
+		},
+		url: 'https://www.the-coming-wave.com/',
+		langs: ['en', 'fr'],
+		category: 'livres',
+		type: 'book',
+		subgroup: 'recommandes',
+		date: '2023'
+	},
+	{
+		id: 'book-russell-norvig',
+		title: 'Intelligence artificielle : Une approche moderne',
+		description: {
+			fr: "Stuart Russell et Peter Norvig, 4ᵉ édition, Pearson, 2021. Le manuel de référence mondialement utilisé dans l'enseignement de l'IA, traduit en français.",
+			en: 'Stuart Russell and Peter Norvig, 4th ed., Pearson, 2021. The worldwide reference textbook for teaching AI, translated into French.'
+		},
+		url: 'https://www.pearson.fr/9782326002241/livre/intelligence-artificielle-4ed',
+		langs: ['fr', 'en'],
+		category: 'livres',
+		type: 'book',
+		subgroup: 'recommandes',
+		date: '2021'
 	},
 	{
 		id: 'book-life3',
@@ -317,11 +357,43 @@ export const resources: Resource[] = [
 			en: 'Educational video to grasp how large language models work.'
 		},
 		url: 'https://www.3blue1brown.com/lessons/mini-llm',
-		langs: ['fr'],
+		langs: ['en'],
 		category: 'comprendre',
 		type: 'video',
 		subgroup: 'demarrer',
 		date: 'nov. 2024'
+	},
+	{
+		id: 'altruisme-efficace-fr-ia',
+		title: {
+			fr: 'Intelligence artificielle – Altruisme Efficace France',
+			en: 'Artificial Intelligence – Altruisme Efficace France'
+		},
+		description: {
+			fr: "Page d'introduction francophone aux risques de l'IA : un bon point d'entrée pour découvrir le sujet.",
+			en: 'French-language introduction to the risks of AI: a good entry point to discover the topic.'
+		},
+		url: 'https://www.altruismeefficacefrance.org/intelligence-artificielle',
+		langs: ['fr'],
+		category: 'comprendre',
+		type: 'site',
+		subgroup: 'demarrer'
+	},
+	{
+		id: 'futurologue-ifanyone',
+		title: {
+			fr: 'Résumé en français de « If Anyone Builds It, Everyone Dies » (Le Futurologue)',
+			en: 'French-language summary of "If Anyone Builds It, Everyone Dies" (Le Futurologue)'
+		},
+		description: {
+			fr: 'Vidéo de synthèse en français du livre de Yudkowsky & Soares, par la chaîne Le Futurologue.',
+			en: 'French-language video summary of the Yudkowsky & Soares book, by the Le Futurologue channel.'
+		},
+		url: 'https://www.youtube.com/@LeFuturologue',
+		langs: ['fr'],
+		category: 'comprendre',
+		type: 'video',
+		subgroup: 'demarrer'
 	},
 	{
 		id: 'rob-miles',
@@ -962,35 +1034,10 @@ export const resources: Resource[] = [
 		fallbackText: 'À.C.'
 	},
 
-	// ── AGIR ───────────────────────────────────────────────
-	{
-		id: 'emploi-ia',
-		title: {
-			fr: "L'IA ne détruira pas QUE votre emploi (Pause IA)",
-			en: "AI won't just destroy your job (Pause IA)"
-		},
-		description: {
-			fr: "Perte de contrôle croissante sur nos vies et sur nos sociétés. Venez témoigner, participer à l'enquête et envoyer un mail à vos représentants.",
-			en: 'Growing loss of control over our lives and societies. Share your story, take part in the survey and email your representatives.'
-		},
-		url: '/fr/emploi-ia',
-		internal: true,
-		langs: ['fr'],
-		category: 'agir',
-		type: 'article'
-	},
-	{
-		id: 'pause-action',
-		title: { fr: 'Rejoindre Pause Action (Pause IA)', en: 'Join Pause Action (Pause IA)' },
-		description: {
-			fr: 'Chaque semaine une action en quelques clics pour faire pencher la balance (WhatsApp).',
-			en: 'A weekly few-click action to tip the balance (WhatsApp).'
-		},
-		url: 'https://chat.whatsapp.com/LThhghXc0Hk3sTwQMyy1wU',
-		langs: ['fr'],
-		category: 'agir',
-		type: 'article'
-	},
+	// "Agir" / "Faire entendre votre voix" entries were removed from this page:
+	// they duplicate calls to action that already live under /campagnes, /agir
+	// and /rejoindre — surfacing them here blurred the page's purpose
+	// ("comprendre" / library of resources).
 
 	// ── ENTRÉES "MAP-ONLY" (existing carte content kept for the map) ──
 	{

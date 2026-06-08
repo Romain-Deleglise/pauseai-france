@@ -9,7 +9,6 @@
 		Brain,
 		AlertTriangle,
 		FileText,
-		Megaphone,
 		BookMarked,
 		BookOpen,
 		Mail,
@@ -46,8 +45,7 @@
 		comprendre: { label: t.cat_comprendre, icon: Brain },
 		risques: { label: t.cat_risques, icon: AlertTriangle, intro: t.risques_intro },
 		declarations: { label: t.cat_declarations, icon: FileText },
-		newsletters: { label: t.cat_newsletters, icon: Mail },
-		agir: { label: t.cat_agir, icon: Megaphone }
+		newsletters: { label: t.cat_newsletters, icon: Mail }
 	} as Record<Category, CategoryMeta>
 
 	$: SUBGROUP_LABELS = {

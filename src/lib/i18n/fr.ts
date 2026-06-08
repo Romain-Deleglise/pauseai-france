@@ -138,12 +138,12 @@ export default {
 		read_fullscreen: 'Lire en plein écran'
 	},
 	liens_utiles_page: {
-		meta_title: 'Liens utiles - Pause IA',
+		meta_title: 'IA, risques et alignement : ressources - Pause IA',
 		meta_desc:
-			"Liens utiles, références et ressources : une base de connaissances sur l'IA, ses risques existentiels et le problème de l'alignement.",
+			"Une bibliothèque de ressources sélectionnées, en français et en anglais, pour comprendre l'IA, ses risques existentiels et le problème de l'alignement : vidéos de vulgarisation, articles scientifiques, livres de référence, déclarations internationales et newsletters.",
 		hero_title: 'Liens utiles',
 		hero_desc:
-			"Une base de connaissances sur l'IA, ses risques existentiels et le problème de l'alignement.",
+			"Une bibliothèque de ressources sélectionnées, en français et en anglais, pour comprendre l'intelligence artificielle, ses risques et le problème de l'alignement. Des vidéos de vulgarisation aux articles scientifiques, en passant par les livres de référence, les déclarations internationales et les meilleures sources pour suivre l'actualité, cette base de connaissances rassemble de quoi s'informer sur la sécurité de l'IA et les risques existentiels — que vous découvriez le sujet ou que vous souhaitiez l'approfondir. Mise à jour régulièrement.",
 		search_placeholder: 'Rechercher une ressource…',
 		search_clear: 'Effacer la recherche',
 		filter_lang: 'Langue (multi-sélection)',
@@ -167,7 +167,6 @@ export default {
 		cat_risques: 'Risques existentiels',
 		cat_declarations: "Déclarations et appel à l'action",
 		cat_newsletters: "Suivre l'actualité",
-		cat_agir: 'Faire entendre votre voix',
 		sg_essentiels: 'Essentiels (alignement et risque existentiel)',
 		sg_recommandes: 'Recommandés (contexte plus large)',
 		sg_demarrer: 'Pour démarrer',
@@ -176,7 +175,7 @@ export default {
 		sg_general: "Perte de contrôle et menaces d'extinction",
 		sg_recherche_alignement: 'Recherche en alignement (papiers fondateurs et empiriques)',
 		mt_book: 'Livre',
-		mt_paper: 'Papier de recherche',
+		mt_paper: 'Article scientifique',
 		mt_article: 'Article',
 		mt_video: 'Vidéo',
 		mt_podcast: 'Podcast',
@@ -192,7 +191,7 @@ export default {
 		mail_body_url: '- URL : ',
 		mail_body_lang: '- Langue : FR / EN',
 		mail_body_cat:
-			'- Catégorie : (pause-ia / livres / comprendre / risques / declarations / newsletters / agir)',
+			'- Catégorie : (pause-ia / livres / comprendre / risques / declarations / newsletters)',
 		mail_body_desc: '- Description courte : ',
 		mail_body_why: 'Pourquoi elle est utile :'
 	},
