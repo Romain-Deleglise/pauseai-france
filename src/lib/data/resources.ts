@@ -527,10 +527,10 @@ export const resources: Resource[] = [
 	},
 	{
 		id: 'cais-dashboard',
-		title: 'CAIS Dashboard',
+		title: { fr: 'Tableau de bord du CAIS', en: 'CAIS Dashboard' },
 		description: {
-			fr: 'Comparaison interactive des IA de pointe (capacité et sécurité).',
-			en: 'Interactive comparison of frontier AIs (capability and safety).'
+			fr: 'Comparaison interactive des IA de pointe sur les axes capacité et sécurité.',
+			en: 'Interactive comparison of frontier AIs across capability and safety axes.'
 		},
 		url: 'https://dashboard.safe.ai/',
 		langs: ['en'],
@@ -540,10 +540,10 @@ export const resources: Resource[] = [
 	},
 	{
 		id: 'epoch-benchmarks',
-		title: 'Epoch AI Benchmarks',
+		title: { fr: 'Benchmarks IA (Epoch)', en: 'Epoch AI Benchmarks' },
 		description: {
-			fr: "Comparaison des performances selon le modèle en leur attribuant un score (à partir d'un ensemble d'évaluations de sécurité).",
-			en: 'Performance comparison per model with a score, based on a set of safety evaluations.'
+			fr: "Tableau comparatif des performances des modèles d'IA sur un ensemble d'évaluations standardisées.",
+			en: 'Comparative table of AI model performance across a set of standardised evaluations.'
 		},
 		url: 'https://epoch.ai/benchmarks',
 		langs: ['en'],
@@ -553,10 +553,10 @@ export const resources: Resource[] = [
 	},
 	{
 		id: 'metr-horizon',
-		title: 'Long-horizon tasks (METR)',
+		title: { fr: 'Tâches à long horizon (METR)', en: 'Long-horizon tasks (METR)' },
 		description: {
-			fr: 'Évaluation de la longueur des tâches réalisées en autonomie par les IA.',
-			en: 'Measuring how long autonomous tasks AI systems can complete.'
+			fr: 'Mesure la durée des tâches que les IA parviennent à mener en autonomie : un proxy de leur capacité à agir sans supervision humaine.',
+			en: 'Measures how long AIs can run tasks autonomously: a proxy for their ability to act without human supervision.'
 		},
 		url: 'https://metr.org/blog/2025-03-19-measuring-ai-ability-to-complete-long-tasks/',
 		langs: ['en'],
@@ -571,8 +571,8 @@ export const resources: Resource[] = [
 			en: 'Definition of Artificial General Intelligence (AGI)'
 		},
 		description: {
-			fr: 'Mesure de la polyvalence cognitive.',
-			en: 'A measure of cognitive versatility.'
+			fr: "Proposition d'un cadre pour mesurer la polyvalence cognitive d'un système d'IA et statuer sur ce qui constitue, ou non, une AGI.",
+			en: "A proposed framework to measure an AI system's cognitive versatility and decide what does — or does not — count as AGI."
 		},
 		url: 'https://www.agidefinition.ai/',
 		langs: ['en'],
@@ -585,8 +585,8 @@ export const resources: Resource[] = [
 		id: 'aisafety-map',
 		title: 'AI Safety Map',
 		description: {
-			fr: "Carte existentielle de la sécurité de l'IA et ensemble de ressources.",
-			en: 'Existential map of AI safety and a set of resources.'
+			fr: "Carte interactive de l'écosystème de la sécurité de l'IA, avec un index de ressources associées.",
+			en: 'Interactive map of the AI safety ecosystem, with an index of associated resources.'
 		},
 		url: 'https://www.aisafety.com/map',
 		langs: ['en'],
@@ -876,8 +876,8 @@ export const resources: Resource[] = [
 		id: 'russell-berkeley',
 		title: 'How to keep AI from killing us all',
 		description: {
-			fr: "Stuart Russell (UC Berkeley), 2023. Estime à environ 10 000:1 le ratio investissement capacités/sécurité, source de l'écart de moyens entre les deux courses.",
-			en: 'Stuart Russell (UC Berkeley), 2023. Estimates the capabilities/safety investment ratio at roughly 10,000:1, source of the gap between the two races.'
+			fr: "Stuart Russell (UC Berkeley), 2023. Pourquoi la sécurité de l'IA mobilise un ordre de grandeur de chercheurs et de moyens bien inférieur à la course aux capacités.",
+			en: 'Stuart Russell (UC Berkeley), 2023. Why AI safety mobilises orders of magnitude fewer researchers and resources than the race for capabilities.'
 		},
 		url: 'https://vcresearch.berkeley.edu/news/how-keep-ai-killing-us-all',
 		langs: ['en'],
@@ -1112,7 +1112,7 @@ export const resources: Resource[] = [
 	},
 	{
 		id: 'cais-newsletter',
-		title: 'AI Safety Newsletter (CAIS)',
+		title: { fr: 'Newsletter du CAIS', en: 'AI Safety Newsletter (CAIS)' },
 		description: {
 			fr: "Newsletter du Center for AI Safety : synthèse régulière sur les risques catastrophiques de l'IA.",
 			en: 'Center for AI Safety newsletter: regular synthesis on catastrophic AI risks.'

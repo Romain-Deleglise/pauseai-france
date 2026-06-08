@@ -470,7 +470,10 @@
 											<div class="res-card-meta">
 												<span class="res-flags">
 													{#each entry.langs as l}
-														<img class="res-flag" src={flagSrc(l)} alt={flagAlt(l)} />
+														<span class="res-flag">
+															<img src={flagSrc(l)} alt="" aria-hidden="true" />
+															<span class="res-flag-label">{flagAlt(l)}</span>
+														</span>
 													{/each}
 												</span>
 												{#if entry.date}<span class="res-date">{entry.date}</span>{/if}
@@ -980,11 +983,25 @@
 	}
 
 	.res-flag {
-		width: 1.25rem;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.25rem;
+		font-size: 0.75rem;
+		font-weight: 600;
+		letter-spacing: 0.04em;
+		color: var(--text-secondary);
+	}
+
+	.res-flag img {
+		width: 1rem;
 		height: auto;
 		display: block;
 		border-radius: 2px;
 		box-shadow: 0 0 0 1px var(--border);
+	}
+
+	.res-flag-label {
+		display: inline-block;
 	}
 
 	.res-date {

@@ -7,7 +7,7 @@ export default {
 		apropos: 'About',
 		dangers: 'Dangers of AI',
 		carte: 'Ecosystem map',
-		liens_utiles: 'Useful links',
+		liens_utiles: 'Resources',
 		newsletter: 'Newsletter',
 		propositions: 'What do we ask for?',
 		blog: 'Blog',
@@ -140,7 +140,7 @@ export default {
 		meta_title: 'AI, risks and alignment: resources - Pause AI',
 		meta_desc:
 			'A curated library of resources, in French and English, to understand AI, its existential risks and the alignment problem: explainer videos, research papers, reference books, international statements and newsletters.',
-		hero_title: 'Useful links',
+		hero_title: 'Resources',
 		hero_desc:
 			'A curated library of resources, in French and English, to understand artificial intelligence, its risks and the alignment problem. From explainer videos to scientific papers, reference books, international statements and the best sources to follow the news, this knowledge base gathers what you need to learn about AI safety and existential risks — whether you are discovering the topic or want to deepen your knowledge. Updated regularly.',
 		search_placeholder: 'Search a resource…',

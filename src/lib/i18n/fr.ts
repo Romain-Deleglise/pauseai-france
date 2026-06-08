@@ -7,7 +7,7 @@ export default {
 		apropos: 'À propos',
 		dangers: "Les dangers de l'IA",
 		carte: "Carte de l'écosystème",
-		liens_utiles: 'Liens utiles',
+		liens_utiles: 'Ressources',
 		newsletter: 'Newsletter',
 		propositions: 'Que demandons-nous ?',
 		blog: 'Blog',
@@ -141,7 +141,7 @@ export default {
 		meta_title: 'IA, risques et alignement : ressources - Pause IA',
 		meta_desc:
 			"Une bibliothèque de ressources sélectionnées, en français et en anglais, pour comprendre l'IA, ses risques existentiels et le problème de l'alignement : vidéos de vulgarisation, articles scientifiques, livres de référence, déclarations internationales et newsletters.",
-		hero_title: 'Liens utiles',
+		hero_title: 'Ressources',
 		hero_desc:
 			"Une bibliothèque de ressources sélectionnées, en français et en anglais, pour comprendre l'intelligence artificielle, ses risques et le problème de l'alignement. Des vidéos de vulgarisation aux articles scientifiques, en passant par les livres de référence, les déclarations internationales et les meilleures sources pour suivre l'actualité, cette base de connaissances rassemble de quoi s'informer sur la sécurité de l'IA et les risques existentiels — que vous découvriez le sujet ou que vous souhaitiez l'approfondir. Mise à jour régulièrement.",
 		search_placeholder: 'Rechercher une ressource…',
