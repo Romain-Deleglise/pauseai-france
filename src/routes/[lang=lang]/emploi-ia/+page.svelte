@@ -125,7 +125,7 @@
 	<meta name="twitter:description" content={t.emploi_ia.meta_desc} />
 	<meta name="twitter:image" content="https://pauseia.fr/emploi-ia/emploi-IA.png" />
 	<link rel="preconnect" href="https://beta.app.activoice.org" crossorigin="anonymous" />
-	<script async src="https://beta.app.activoice.org/embed/v1/loader.js"></script>
+	<script src="https://beta.app.activoice.org/embed/v1/loader.js"></script>
 </svelte:head>
 
 <article>
