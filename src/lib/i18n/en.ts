@@ -77,7 +77,7 @@ export default {
 		hero_highlight: "let's act now",
 		hero_cta: 'Join us',
 		campaigns_title: 'Our active campaigns',
-		campaigns_subtitle: 'Sign, write, testify: every action counts.',
+		campaigns_subtitle: 'Speak up, write, testify: every action counts.',
 		campaigns_cta: 'Take part',
 		campaigns_see_all: 'See all our campaigns'
 	},

@@ -77,7 +77,7 @@ export default {
 		hero_highlight: 'agissons maintenant',
 		hero_cta: 'Rejoindre',
 		campaigns_title: 'Nos campagnes en cours',
-		campaigns_subtitle: 'Signez, écrivez, témoignez : chaque action compte.',
+		campaigns_subtitle: 'Interpellez, écrivez, témoignez : chaque action compte.',
 		campaigns_cta: 'Participer',
 		campaigns_see_all: 'Voir toutes nos campagnes'
 	},
