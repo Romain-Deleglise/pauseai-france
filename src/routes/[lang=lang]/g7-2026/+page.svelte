@@ -3,15 +3,15 @@
 	import PostMeta from '$components/PostMeta.svelte'
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
 
-	const CAMPAIGN_ID = 'ffccd310-c37c-406b-8425-0225f237857b'
-	const CAMPAIGN_ID_G7 = 'c858d3be-34d3-4478-b199-0b8d01fcdc4e'
+	const CAMPAIGN_ID = 'interpellez-les-dirigeants-du-g7-en-vue-du-sommet-devian'
+	const CAMPAIGN_ID_G7 = 'call-on-g7-leaders-ahead-of-the-evian-summit'
 
 	const title = 'G7 2026 : sécuriser plutôt qu’accélérer l’IA'
 	const description =
 		'En 2026, la France accueille le G7. Pause IA demande que la sécurité de l’IA soit remise au cœur de l’agenda international.'
 
 	onMount(() => {
-		const SCRIPT_SRC = 'https://beta.app.activoice.org/embed/v1/loader.js'
+		const SCRIPT_SRC = 'https://app.activoice.org/embed/v1/loader.js'
 
 		function initEmbeds() {
 			const w = window as Window & {
@@ -205,6 +205,17 @@
 	#av-embed-container,
 	#av-embed-container-g7 {
 		min-height: 400px;
+		width: 100%;
+		max-width: 100%;
+	}
+
+	#av-embed-container :global(iframe),
+	#av-embed-container-g7 :global(iframe) {
+		width: 100% !important;
+		max-width: 100% !important;
+		min-height: 400px;
+		border: 0;
+		display: block;
 	}
 
 	@media (max-width: 600px) {

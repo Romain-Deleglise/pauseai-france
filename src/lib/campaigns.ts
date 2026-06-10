@@ -36,17 +36,35 @@ export interface Campaign {
 	endDate?: string
 	/** Override URL (absolute path). If omitted, defaults to /{lang}/{slug} */
 	url?: string
+	/** Optional cover image (absolute URL or path under /static, e.g. '/campaigns/g7.jpg') */
+	image?: string
 	/** Summary shown in a popup when the ended campaign card is clicked */
 	summary?: CampaignSummary
 	fr: {
 		title: string
 		description: string
+		/** Shorter description used on compact cards (e.g. homepage). Falls back to description. */
+		shortDescription?: string
 		cta: string
+		/** Action-oriented title used on the homepage card. Falls back to title. */
+		homeTitle?: string
+		/** Action-specific CTA label used on the homepage card. Falls back to cta. */
+		homeCta?: string
+		/** Short progress / deadline / target label shown on the homepage card. */
+		progress?: string
 	}
 	en: {
 		title: string
 		description: string
+		/** Shorter description used on compact cards (e.g. homepage). Falls back to description. */
+		shortDescription?: string
 		cta: string
+		/** Action-oriented title used on the homepage card. Falls back to title. */
+		homeTitle?: string
+		/** Action-specific CTA label used on the homepage card. Falls back to cta. */
+		homeCta?: string
+		/** Short progress / deadline / target label shown on the homepage card. */
+		progress?: string
 	}
 }
 
@@ -61,51 +79,82 @@ export const campaigns: Campaign[] = [
 		slug: 'g7-2026',
 		status: 'active',
 		startDate: '2026-06',
+		// Photo: Leynadmar, CC BY-SA 4.0, via Wikimedia Commons
+		image: '/campaigns/palais-elysee.jpg',
 		fr: {
 			title: 'G7 2026 : sécuriser plutôt qu’accélérer l’IA',
+			homeTitle: 'Interpellez le gouvernement sur la sécurité de l’IA au G7',
 			description:
 				'En 2026, la France accueille le G7. Pause IA demande que la sécurité de l’IA soit remise au cœur de l’agenda international. Interpellez le Président et la ministre chargée du numérique.',
-			cta: 'Participer à la campagne'
+			shortDescription:
+				'La France préside le G7 en 2026. Interpellons l’Élysée et la ministre du Numérique pour que la sécurité passe avant.',
+			cta: 'Participer à la campagne',
+			homeCta: 'Interpeller le gouvernement',
+			progress: 'Avant le sommet d’Évian (15-17 juin 2026)'
 		},
 		en: {
 			title: 'G7 2026: secure AI, don’t accelerate it',
+			homeTitle: 'Push the French government on AI safety at the G7',
 			description:
 				'In 2026, France hosts the G7. Pause AI calls for AI safety to be put back at the heart of the international agenda. Write to the President and the Minister for Digital Affairs.',
-			cta: 'Join the campaign'
+			shortDescription:
+				'France chairs the G7 in 2026. Let’s push the Élysée and the Digital Minister to put safety before acceleration.',
+			cta: 'Join the campaign',
+			homeCta: 'Write to the government',
+			progress: 'Before the Évian G7 summit (15-17 June 2026)'
 		}
 	},
 	{
 		slug: 'ecrire-a-mes-elus',
 		status: 'active',
 		startDate: '2026-04',
+		// Photo: Daniel Vorndran / DXR, public domain, via Wikimedia Commons
+		image: '/campaigns/960px-Palais_Bourbon.jpg',
 		fr: {
 			title: 'Écrivez à vos élus',
+			homeTitle: 'Écrivez à votre député·e et à votre sénateur·rice',
 			description:
 				"Envoyez un email à votre député et à votre sénateur pour mettre les risques de l'IA à leur agenda. Un modèle personnalisable et deux versions (courte et complète) sont disponibles.",
-			cta: 'Envoyer un email à mes élus'
+			shortDescription:
+				"Un email prêt à personnaliser pour mettre les risques de l'IA à l'agenda de votre député et de votre sénateur.",
+			cta: 'Envoyer un email à mes élus',
+			homeCta: 'Envoyer mon email'
 		},
 		en: {
 			title: 'Write to your representatives',
+			homeTitle: 'Write to your MP and senator',
 			description:
 				'Send an email to your MP and senator to put AI risks on their agenda. A customisable template with both a short and a full version is available.',
-			cta: 'Write to my representatives'
+			shortDescription:
+				'A ready-to-personalise email to put AI risks on the agenda of your MP and senator.',
+			cta: 'Write to my representatives',
+			homeCta: 'Send my email'
 		}
 	},
 	{
 		slug: 'emploi-ia',
 		status: 'active',
 		startDate: '2026-04',
+		image: '/campaigns/DSC08648_r.webp',
 		fr: {
 			title: "L'IA ne détruira pas QUE votre emploi",
+			homeTitle: "Témoignez de l'impact de l'IA sur votre travail",
 			description:
 				"Les systèmes d'IA généralistes peuvent remplacer du travail humain massivement, sans filet de sécurité. Mais le problème dépasse l'emploi : c'est notre capacité à contrôler ces technologies qui recule. Témoignages, enquête et revue de presse.",
-			cta: 'Participer à la campagne'
+			shortDescription:
+				"Témoignages, enquête, revue de presse : comprendre comment l'IA bouleverse le travail et notre capacité à la contrôler.",
+			cta: 'Participer à la campagne',
+			homeCta: 'Partager mon témoignage'
 		},
 		en: {
 			title: 'AI will not destroy ONLY your job',
+			homeTitle: 'Share how AI is affecting your work',
 			description:
 				'General-purpose AI systems can replace human work at scale, with no safety net. But the issue goes beyond employment: it is our ability to govern these technologies that is receding. Testimonials, survey and press review.',
-			cta: 'Join the campaign'
+			shortDescription:
+				'Testimonials, survey, press review: see how AI is upending work and our ability to keep it in check.',
+			cta: 'Join the campaign',
+			homeCta: 'Share my testimony'
 		}
 	},
 	{
@@ -245,6 +294,43 @@ export const campaigns: Campaign[] = [
 		}
 	}
 ]
+
+const MONTHS_FR = [
+	'jan.',
+	'fév.',
+	'mars',
+	'avr.',
+	'mai',
+	'juin',
+	'juil.',
+	'août',
+	'sept.',
+	'oct.',
+	'nov.',
+	'déc.'
+]
+const MONTHS_EN = [
+	'Jan',
+	'Feb',
+	'Mar',
+	'Apr',
+	'May',
+	'Jun',
+	'Jul',
+	'Aug',
+	'Sep',
+	'Oct',
+	'Nov',
+	'Dec'
+]
+
+/** Format a YYYY-MM string as "juin 2026" / "Jun 2026". */
+export function formatCampaignDate(yyyymm: string, lang: 'fr' | 'en'): string {
+	const [year, month] = yyyymm.split('-')
+	const m = parseInt(month, 10) - 1
+	const months = lang === 'en' ? MONTHS_EN : MONTHS_FR
+	return `${months[m]} ${year}`
+}
 
 const byStartDateDesc = (a: Campaign, b: Campaign) => b.startDate.localeCompare(a.startDate)
 

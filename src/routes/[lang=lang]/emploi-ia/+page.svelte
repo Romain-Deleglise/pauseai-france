@@ -39,9 +39,18 @@
 		image: item.image || '/emploi-ia/article-placeholder.svg'
 	}))
 
-	const ACTIVOICE_CAMPAIGN_ID = '6b7ceb0e-22b1-48de-b8ae-5617c4920d05'
+	const ACTIVOICE_CAMPAIGN_ID = 'lia-ne-detruira-pas-que-votre-emploi'
 
 	const pressArticles = [
+		{
+			title: "« De la réticence au refus, ces cadres qui vivent mal l'injonction d'utiliser l'IA »",
+			source: 'Le Monde',
+			date: '6 juin 2026',
+			url: 'https://www.lemonde.fr/emploi/article/2026/06/05/de-la-reticence-au-refus-ces-cadres-qui-vivent-mal-l-injonction-d-utiliser-l-ia_6697853_1698637.html',
+			featured: true,
+			excerpt:
+				"Article s'appuyant notamment sur les résultats de la campagne de témoignages de Pause IA."
+		},
 		{
 			title: 'Pause IA à la matinale ICI Paris Île-de-France (1er mai)',
 			source: 'ICI Paris Île-de-France',
@@ -84,20 +93,37 @@
 	]
 
 	onMount(() => {
-		const init = () => {
-			// @ts-expect-error - Activoice global injected by external script
-			if (typeof window.Activoice !== 'undefined') {
-				// @ts-expect-error
-				window.Activoice.init({
-					container: '#av-embed-container',
-					campaignId: ACTIVOICE_CAMPAIGN_ID,
-					embedOptions: { spinnerColor: '#FF9416' }
-				})
-			} else {
-				setTimeout(init, 100)
+		const SCRIPT_SRC = 'https://app.activoice.org/embed/v1/loader.js'
+
+		function initEmbed() {
+			const w = window as Window & {
+				Activoice?: { init: (opts: Record<string, unknown>) => void }
 			}
+			if (!w.Activoice) return
+			w.Activoice.init({
+				container: '#av-embed-container',
+				campaignId: ACTIVOICE_CAMPAIGN_ID,
+				embedOptions: { spinnerColor: '#FF9416' }
+			})
 		}
-		init()
+
+		const existing = document.querySelector(
+			`script[src="${SCRIPT_SRC}"]`
+		) as HTMLScriptElement | null
+		if (existing) {
+			if ((window as Window & { Activoice?: unknown }).Activoice) {
+				initEmbed()
+			} else {
+				existing.addEventListener('load', initEmbed, { once: true })
+			}
+			return
+		}
+
+		const script = document.createElement('script')
+		script.src = SCRIPT_SRC
+		script.async = true
+		script.addEventListener('load', initEmbed, { once: true })
+		document.head.appendChild(script)
 	})
 </script>
 
@@ -115,7 +141,6 @@
 	<meta name="twitter:title" content={t.emploi_ia.meta_title} />
 	<meta name="twitter:description" content={t.emploi_ia.meta_desc} />
 	<meta name="twitter:image" content="https://pauseia.fr/emploi-ia/emploi-IA.png" />
-	<script src="https://beta.app.activoice.org/embed/v1/loader.js"></script>
 </svelte:head>
 
 <article>
@@ -202,12 +227,24 @@
 
 		<div class="press-list">
 			{#each pressArticles as article}
-				<a href={article.url} target="_blank" rel="noopener noreferrer" class="press-item">
+				<a
+					href={article.url}
+					target="_blank"
+					rel="noopener noreferrer"
+					class="press-item"
+					class:press-item-featured={article.featured}
+				>
+					{#if article.featured}
+						<span class="press-badge">À la une</span>
+					{/if}
 					<div class="press-item-meta">
 						<span class="press-source">{article.source}</span>
 						<span class="press-date">{article.date}</span>
 					</div>
 					<span class="press-title">{article.title}</span>
+					{#if article.excerpt}
+						<p class="press-excerpt">{article.excerpt}</p>
+					{/if}
 				</a>
 			{/each}
 		</div>
@@ -471,10 +508,54 @@
 		color: var(--brand-subtle, #c96900);
 	}
 
+	.press-item-featured {
+		position: relative;
+		padding: 1.25rem 1.4rem 1.1rem;
+		border-width: 2px;
+		border-color: var(--brand, #ff9416);
+		background: rgba(255, 148, 22, 0.04);
+	}
+
+	.press-badge {
+		position: absolute;
+		top: -0.65rem;
+		left: 1rem;
+		background: var(--brand, #ff9416);
+		color: white;
+		font-size: 0.68rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		padding: 0.2rem 0.55rem;
+		border-radius: 4px;
+		line-height: 1.2;
+	}
+
+	.press-item-featured .press-title {
+		font-size: 1.05rem;
+		font-weight: 600;
+		margin-top: 0.15rem;
+	}
+
+	.press-excerpt {
+		font-size: 0.875rem;
+		line-height: 1.5;
+		color: var(--text-secondary, #555);
+		margin: 0.3rem 0 0;
+	}
+
 	/* ── ActiVoice embed ── */
 	.av-embed {
 		margin-top: 1.5rem;
+		width: 100%;
 		max-width: 100%;
-		overflow: hidden;
+	}
+
+	.av-embed :global(iframe) {
+		width: 100% !important;
+		max-width: 100% !important;
+		min-height: 400px;
+		border: 0;
+		display: block;
 	}
 </style>
