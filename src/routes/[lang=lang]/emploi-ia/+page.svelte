@@ -84,7 +84,7 @@
 	]
 
 	onMount(() => {
-		const SCRIPT_SRC = 'https://beta.app.activoice.org/embed/v1/loader.js'
+		const SCRIPT_SRC = 'https://app.activoice.org/embed/v1/loader.js'
 
 		function initEmbed() {
 			const w = window as Window & {

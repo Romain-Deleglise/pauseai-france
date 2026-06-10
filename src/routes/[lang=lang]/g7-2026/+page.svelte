@@ -11,7 +11,7 @@
 		'En 2026, la France accueille le G7. Pause IA demande que la sécurité de l’IA soit remise au cœur de l’agenda international.'
 
 	onMount(() => {
-		const SCRIPT_SRC = 'https://beta.app.activoice.org/embed/v1/loader.js'
+		const SCRIPT_SRC = 'https://app.activoice.org/embed/v1/loader.js'
 
 		function initEmbeds() {
 			const w = window as Window & {
