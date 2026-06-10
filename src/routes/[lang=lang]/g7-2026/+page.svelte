@@ -192,7 +192,7 @@
 		background: var(--brand, #ff9416);
 		border-radius: 2px;
 		margin: 3.5rem auto 1.5rem;
-		width: 6rem;
+		width: 12rem;
 	}
 
 	.embed-section {
