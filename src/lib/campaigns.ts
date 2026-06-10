@@ -118,8 +118,7 @@ export const campaigns: Campaign[] = [
 			shortDescription:
 				"Un email prêt à personnaliser pour mettre les risques de l'IA à l'agenda de votre député et de votre sénateur.",
 			cta: 'Envoyer un email à mes élus',
-			homeCta: 'Envoyer mon email',
-			progress: 'Objectif : 5 000 emails envoyés'
+			homeCta: 'Envoyer mon email'
 		},
 		en: {
 			title: 'Write to your representatives',
@@ -129,8 +128,7 @@ export const campaigns: Campaign[] = [
 			shortDescription:
 				'A ready-to-personalise email to put AI risks on the agenda of your MP and senator.',
 			cta: 'Write to my representatives',
-			homeCta: 'Send my email',
-			progress: 'Target: 5,000 emails sent'
+			homeCta: 'Send my email'
 		}
 	},
 	{
@@ -146,8 +144,7 @@ export const campaigns: Campaign[] = [
 			shortDescription:
 				"Témoignages, enquête, revue de presse : comprendre comment l'IA bouleverse le travail et notre capacité à la contrôler.",
 			cta: 'Participer à la campagne',
-			homeCta: 'Partager mon témoignage',
-			progress: '68 témoignages collectés'
+			homeCta: 'Partager mon témoignage'
 		},
 		en: {
 			title: 'AI will not destroy ONLY your job',
@@ -157,8 +154,7 @@ export const campaigns: Campaign[] = [
 			shortDescription:
 				'Testimonials, survey, press review: see how AI is upending work and our ability to keep it in check.',
 			cta: 'Join the campaign',
-			homeCta: 'Share my testimony',
-			progress: '68 testimonies collected'
+			homeCta: 'Share my testimony'
 		}
 	},
 	{

@@ -531,7 +531,15 @@
 	/* ── ActiVoice embed ── */
 	.av-embed {
 		margin-top: 1.5rem;
+		width: 100%;
 		max-width: 100%;
-		overflow: hidden;
+	}
+
+	.av-embed :global(iframe) {
+		width: 100% !important;
+		max-width: 100% !important;
+		min-height: 400px;
+		border: 0;
+		display: block;
 	}
 </style>
