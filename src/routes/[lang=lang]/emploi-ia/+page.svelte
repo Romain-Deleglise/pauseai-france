@@ -84,18 +84,17 @@
 	]
 
 	onMount(() => {
-		const SCRIPT_SRC = 'https://activoice.online/embed/activoice-12.0.0.js'
+		const SCRIPT_SRC = 'https://beta.app.activoice.org/embed/v1/loader.js'
 
 		function initEmbed() {
 			const w = window as Window & {
-				Activoice?: { bootstrap: () => Promise<void> }
+				Activoice?: { init: (opts: Record<string, unknown>) => void }
 			}
 			if (!w.Activoice) return
-			w.Activoice.bootstrap().then(() => {
-				const embed = document.getElementById(
-					'activoice-embed-6b7ceb0e_22b1_48de_b8ae_5617c4920d05'
-				) as HTMLElement & { openWithId?: (id: string) => void }
-				embed?.openWithId?.(ACTIVOICE_CAMPAIGN_ID)
+			w.Activoice.init({
+				container: '#av-embed-container',
+				campaignId: ACTIVOICE_CAMPAIGN_ID,
+				embedOptions: { spinnerColor: '#FF9416' }
 			})
 		}
 
@@ -196,7 +195,7 @@
 		<p class="cta-callout">{t.emploi_ia.cta_callout}</p>
 		<p class="cta-detail">{t.emploi_ia.cta_callout_detail}</p>
 
-		<activoice-embed id="activoice-embed-6b7ceb0e_22b1_48de_b8ae_5617c4920d05" class="av-embed" />
+		<div id="av-embed-container" class="av-embed"></div>
 	</section>
 
 	<section id="evolution" aria-labelledby="evolution-heading">

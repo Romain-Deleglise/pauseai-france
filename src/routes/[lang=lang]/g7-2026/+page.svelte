@@ -11,22 +11,22 @@
 		'En 2026, la France accueille le G7. Pause IA demande que la sécurité de l’IA soit remise au cœur de l’agenda international.'
 
 	onMount(() => {
-		const SCRIPT_SRC = 'https://activoice.online/embed/activoice-12.0.0.js'
+		const SCRIPT_SRC = 'https://beta.app.activoice.org/embed/v1/loader.js'
 
 		function initEmbeds() {
 			const w = window as Window & {
-				Activoice?: { bootstrap: () => Promise<void> }
+				Activoice?: { init: (opts: Record<string, unknown>) => void }
 			}
 			if (!w.Activoice) return
-			w.Activoice.bootstrap().then(() => {
-				const embed1 = document.getElementById(
-					'activoice-embed-ffccd310_c37c_406b_8425_0225f237857b'
-				) as HTMLElement & { openWithId?: (id: string) => void }
-				embed1?.openWithId?.(CAMPAIGN_ID)
-				const embed2 = document.getElementById(
-					'activoice-embed-c858d3be_34d3_4478_b199_0b8d01fcdc4e'
-				) as HTMLElement & { openWithId?: (id: string) => void }
-				embed2?.openWithId?.(CAMPAIGN_ID_G7)
+			w.Activoice.init({
+				container: '#av-embed-container',
+				campaignId: CAMPAIGN_ID,
+				embedOptions: { spinnerColor: '#005DCA' }
+			})
+			w.Activoice.init({
+				container: '#av-embed-container-g7',
+				campaignId: CAMPAIGN_ID_G7,
+				embedOptions: { spinnerColor: '#005DCA' }
 			})
 		}
 
@@ -119,7 +119,7 @@
 	</section>
 
 	<section class="embed-section">
-		<activoice-embed id="activoice-embed-ffccd310_c37c_406b_8425_0225f237857b" />
+		<div id="av-embed-container"></div>
 	</section>
 
 	<section class="prose">
@@ -130,7 +130,7 @@
 	</section>
 
 	<section class="embed-section">
-		<activoice-embed id="activoice-embed-c858d3be_34d3_4478_b199_0b8d01fcdc4e" />
+		<div id="av-embed-container-g7"></div>
 	</section>
 </article>
 
@@ -180,8 +180,8 @@
 		margin-bottom: 5rem;
 	}
 
-	activoice-embed {
-		display: block;
+	#av-embed-container,
+	#av-embed-container-g7 {
 		min-height: 400px;
 	}
 
