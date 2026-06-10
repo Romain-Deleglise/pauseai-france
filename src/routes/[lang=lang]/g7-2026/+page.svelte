@@ -183,6 +183,17 @@
 	#av-embed-container,
 	#av-embed-container-g7 {
 		min-height: 400px;
+		width: 100%;
+		max-width: 100%;
+	}
+
+	#av-embed-container :global(iframe),
+	#av-embed-container-g7 :global(iframe) {
+		width: 100% !important;
+		max-width: 100% !important;
+		min-height: 400px;
+		border: 0;
+		display: block;
 	}
 
 	@media (max-width: 600px) {

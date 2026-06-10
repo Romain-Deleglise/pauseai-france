@@ -2,6 +2,7 @@
 	import PostMeta from '$components/PostMeta.svelte'
 	import Hero from '$components/home/hero.svelte'
 	import Lead from '$components/home/lead.svelte'
+	import Campaigns from '$components/home/campaigns.svelte'
 	import Risks from '$components/home/risks.svelte'
 	import Articles from '$components/home/articles.svelte'
 	import NewsletterCta from '$components/home/newsletter-cta.svelte'
@@ -28,6 +29,8 @@
 <Hero {lang} />
 
 <Lead {lang} />
+
+<Campaigns {lang} />
 
 <Risks {lang} />
 

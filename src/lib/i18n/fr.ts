@@ -75,7 +75,11 @@ export default {
 		meta_desc: "Ne laissons pas l'IA nous détruire, agissons maintenant.",
 		hero_title: "Pour garder l'IA sous contrôle,",
 		hero_highlight: 'agissons maintenant',
-		hero_cta: 'Rejoindre'
+		hero_cta: 'Rejoindre',
+		campaigns_title: 'Nos campagnes en cours',
+		campaigns_subtitle: 'Interpellez, écrivez, témoignez : chaque action compte.',
+		campaigns_cta: 'Participer',
+		campaigns_see_all: 'Voir toutes nos campagnes'
 	},
 	dons: {
 		meta_title: 'Faire un don - Pause IA',
