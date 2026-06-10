@@ -5,12 +5,12 @@
 	import { browser } from '$app/environment'
 	import PostMeta from '$components/PostMeta.svelte'
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
+	import { url as siteUrl } from '$config'
 	import {
-		Brain,
+		Lightbulb,
 		AlertTriangle,
 		FileText,
-		Megaphone,
-		BookMarked,
+		Book,
 		BookOpen,
 		Mail,
 		MoveUpRight,
@@ -41,13 +41,12 @@
 
 	type CategoryMeta = { label: string; icon: ComponentType; intro?: string }
 	$: CATEGORIES = {
-		'pause-ia': { label: t.cat_pause_ia, icon: BookMarked },
-		livres: { label: t.cat_livres, icon: BookOpen },
-		comprendre: { label: t.cat_comprendre, icon: Brain },
-		risques: { label: t.cat_risques, icon: AlertTriangle, intro: t.risques_intro },
-		declarations: { label: t.cat_declarations, icon: FileText },
-		newsletters: { label: t.cat_newsletters, icon: Mail },
-		agir: { label: t.cat_agir, icon: Megaphone }
+		'pause-ia': { label: t.cat_pause_ia, icon: BookOpen, intro: t.pause_ia_intro },
+		livres: { label: t.cat_livres, icon: Book, intro: t.livres_intro },
+		comprendre: { label: t.cat_comprendre, icon: Lightbulb, intro: t.comprendre_intro },
+		risques: { label: t.cat_risques, icon: AlertTriangle },
+		declarations: { label: t.cat_declarations, icon: FileText, intro: t.declarations_intro },
+		newsletters: { label: t.cat_newsletters, icon: Mail, intro: t.newsletters_intro }
 	} as Record<Category, CategoryMeta>
 
 	$: SUBGROUP_LABELS = {
@@ -247,6 +246,47 @@
 		return l === 'fr' ? 'FR' : 'EN'
 	}
 
+	// Format the auto-injected YYYY-MM-DD update date in a human, localised way.
+	const MONTHS_FR = [
+		'janvier',
+		'février',
+		'mars',
+		'avril',
+		'mai',
+		'juin',
+		'juillet',
+		'août',
+		'septembre',
+		'octobre',
+		'novembre',
+		'décembre'
+	]
+	const MONTHS_EN = [
+		'January',
+		'February',
+		'March',
+		'April',
+		'May',
+		'June',
+		'July',
+		'August',
+		'September',
+		'October',
+		'November',
+		'December'
+	]
+	function formatUpdated(iso: string, l: Lang): string {
+		const m = iso.match(/^(\d{4})-(\d{2})-(\d{2})$/)
+		if (!m) return iso
+		const [, year, month, day] = m
+		const d = parseInt(day, 10)
+		const mi = parseInt(month, 10) - 1
+		if (l === 'en') {
+			return `${MONTHS_EN[mi]} ${d}, ${year}`
+		}
+		return `${d} ${MONTHS_FR[mi]} ${year}`
+	}
+
 	function clearFilters() {
 		query = ''
 		langFilter = []
@@ -290,6 +330,64 @@
 		return () => observer.disconnect()
 	})
 
+	// Map our internal media types to Schema.org @type values for the
+	// JSON-LD payload. Kept conservative: when no good fit exists we
+	// fall back to CreativeWork.
+	const SCHEMA_TYPE: Record<MediaType, string> = {
+		book: 'Book',
+		paper: 'ScholarlyArticle',
+		article: 'Article',
+		video: 'VideoObject',
+		podcast: 'PodcastSeries',
+		newsletter: 'CreativeWork',
+		org: 'Organization',
+		declaration: 'CreativeWork',
+		tool: 'WebApplication',
+		site: 'WebSite'
+	}
+
+	// Build a CollectionPage + ItemList JSON-LD payload describing every
+	// resource on the page. Helps Google understand this is a curated
+	// list (potential rich-results in search) and gives each item a
+	// typed entry rather than a generic link.
+	$: jsonLd = (() => {
+		const pageUrl = `${siteUrl}/${lang}/ressources`
+		const items = resources.map((r, i) => {
+			const itemUrl = r.internal ? `${siteUrl}${r.url}` : r.url
+			const node: Record<string, unknown> = {
+				'@type': SCHEMA_TYPE[r.type] ?? 'CreativeWork',
+				name: localized(r.title, lang),
+				description: localized(r.description, lang),
+				url: itemUrl,
+				inLanguage: r.langs
+			}
+			if (r.date) node.datePublished = r.date
+			return {
+				'@type': 'ListItem',
+				position: i + 1,
+				item: node
+			}
+		})
+		return {
+			'@context': 'https://schema.org',
+			'@type': 'CollectionPage',
+			name: t.hero_title,
+			description: t.meta_desc,
+			url: pageUrl,
+			inLanguage: lang,
+			isPartOf: {
+				'@type': 'WebSite',
+				name: 'Pause IA',
+				url: siteUrl
+			},
+			mainEntity: {
+				'@type': 'ItemList',
+				numberOfItems: items.length,
+				itemListElement: items
+			}
+		}
+	})()
+
 	// Pre-filled mailto so the user lands in their mail client with a
 	// ready-to-send template. Universal and reliable across browsers /
 	// extensions ; localized in the active UI language.
@@ -318,6 +416,10 @@
 </script>
 
 <PostMeta {title} {description} />
+
+<svelte:head>
+	{@html `<script type="application/ld+json">${JSON.stringify(jsonLd).replace(/</g, '\\u003c')}</script>`}
+</svelte:head>
 
 <div class="layout">
 	<!-- Side TOC : sticky on desktop, hidden on mobile (top filter pills
@@ -423,7 +525,7 @@
 						<button class="reset-btn" on:click={clearFilters}>{t.reset}</button>
 					{/if}
 				</p>
-				<p class="updated">{t.updated} {RESOURCES_LAST_UPDATED}</p>
+				<p class="updated">{t.updated} {formatUpdated(RESOURCES_LAST_UPDATED, lang)}</p>
 			</div>
 		</section>
 
@@ -472,7 +574,10 @@
 											<div class="res-card-meta">
 												<span class="res-flags">
 													{#each entry.langs as l}
-														<img class="res-flag" src={flagSrc(l)} alt={flagAlt(l)} />
+														<span class="res-flag">
+															<img src={flagSrc(l)} alt="" aria-hidden="true" />
+															<span class="res-flag-label">{flagAlt(l)}</span>
+														</span>
 													{/each}
 												</span>
 												{#if entry.date}<span class="res-date">{entry.date}</span>{/if}
@@ -982,11 +1087,25 @@
 	}
 
 	.res-flag {
-		width: 1.25rem;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.25rem;
+		font-size: 0.75rem;
+		font-weight: 600;
+		letter-spacing: 0.04em;
+		color: var(--text-secondary);
+	}
+
+	.res-flag img {
+		width: 1rem;
 		height: auto;
 		display: block;
 		border-radius: 2px;
 		box-shadow: 0 0 0 1px var(--border);
+	}
+
+	.res-flag-label {
+		display: inline-block;
 	}
 
 	.res-date {

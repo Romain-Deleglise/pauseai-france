@@ -7,7 +7,7 @@ export default {
 		apropos: 'À propos',
 		dangers: "Les dangers de l'IA",
 		carte: "Carte de l'écosystème",
-		liens_utiles: 'Liens utiles',
+		liens_utiles: 'Ressources',
 		newsletter: 'Newsletter',
 		propositions: 'Que demandons-nous ?',
 		blog: 'Blog',
@@ -142,12 +142,12 @@ export default {
 		read_fullscreen: 'Lire en plein écran'
 	},
 	liens_utiles_page: {
-		meta_title: 'Liens utiles - Pause IA',
+		meta_title: 'IA, risques et alignement : ressources - Pause IA',
 		meta_desc:
-			"Liens utiles, références et ressources : une base de connaissances sur l'IA, ses risques existentiels et le problème de l'alignement.",
-		hero_title: 'Liens utiles',
+			"Une bibliothèque de ressources sélectionnées, en français et en anglais, pour comprendre l'IA, ses risques existentiels et le problème de l'alignement : vidéos de vulgarisation, articles scientifiques, livres de référence, déclarations internationales et newsletters.",
+		hero_title: 'Ressources',
 		hero_desc:
-			"Une base de connaissances sur l'IA, ses risques existentiels et le problème de l'alignement.",
+			"Une bibliothèque de ressources sélectionnées, en français et en anglais, pour comprendre l'intelligence artificielle, ses risques et le problème de l'alignement. Des vidéos de vulgarisation aux articles scientifiques, en passant par les livres de référence, les déclarations internationales et les meilleures sources pour suivre l'actualité, cette base de connaissances rassemble de quoi s'informer sur la sécurité de l'IA et les risques existentiels, que vous découvriez le sujet ou que vous souhaitiez l'approfondir. Mise à jour régulièrement.",
 		search_placeholder: 'Rechercher une ressource…',
 		search_clear: 'Effacer la recherche',
 		filter_lang: 'Langue (multi-sélection)',
@@ -164,23 +164,30 @@ export default {
 		cta_desc:
 			"Vous connaissez une référence francophone ou internationale qui devrait figurer ici ? Écrivez-nous avec le modèle pré-rempli ; votre client mail s'ouvrira directement avec tous les champs prêts.",
 		cta_button: 'Suggérer une ressource',
-		risques_intro: "Perte de contrôle, menaces d'extinction et recherche en alignement.",
 		cat_pause_ia: 'Ressources Pause IA',
 		cat_livres: 'Livres',
 		cat_comprendre: "Mieux comprendre l'IA",
 		cat_risques: 'Risques existentiels',
 		cat_declarations: "Déclarations et appel à l'action",
 		cat_newsletters: "Suivre l'actualité",
-		cat_agir: 'Faire entendre votre voix',
-		sg_essentiels: 'Essentiels (alignement et risque existentiel)',
-		sg_recommandes: 'Recommandés (contexte plus large)',
+		pause_ia_intro: 'Les contenus phares produits par Pause IA pour découvrir le sujet.',
+		livres_intro:
+			"Ouvrages de référence sur les risques existentiels de l'IA et le problème de l'alignement.",
+		comprendre_intro:
+			"Vidéos, podcasts, outils et sites pour comprendre l'IA et ses enjeux, du niveau débutant à plus avancé.",
+		declarations_intro:
+			"Déclarations publiques, lettres ouvertes et appels à l'action signés par des chercheurs, dirigeants et organisations.",
+		newsletters_intro:
+			"Les meilleures newsletters francophones et anglophones pour suivre l'actualité de l'IA et de sa sécurité.",
+		sg_essentiels: 'Essentiels (alignement et risques existentiels)',
+		sg_recommandes: 'Recommandés (couvrent des sujets plus larges)',
 		sg_demarrer: 'Pour démarrer',
 		sg_vue_ensemble: "Vue d'ensemble : capacités et tendances actuelles",
 		sg_aller_plus_loin: 'Pour aller plus loin',
 		sg_general: "Perte de contrôle et menaces d'extinction",
 		sg_recherche_alignement: 'Recherche en alignement (papiers fondateurs et empiriques)',
 		mt_book: 'Livre',
-		mt_paper: 'Papier de recherche',
+		mt_paper: 'Article scientifique',
 		mt_article: 'Article',
 		mt_video: 'Vidéo',
 		mt_podcast: 'Podcast',
@@ -196,7 +203,7 @@ export default {
 		mail_body_url: '- URL : ',
 		mail_body_lang: '- Langue : FR / EN',
 		mail_body_cat:
-			'- Catégorie : (pause-ia / livres / comprendre / risques / declarations / newsletters / agir)',
+			'- Catégorie : (pause-ia / livres / comprendre / risques / declarations / newsletters)',
 		mail_body_desc: '- Description courte : ',
 		mail_body_why: 'Pourquoi elle est utile :'
 	},
