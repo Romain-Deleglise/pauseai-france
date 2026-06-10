@@ -90,7 +90,7 @@ export const campaigns: Campaign[] = [
 				'La France préside le G7 en 2026. Interpellons l’Élysée et la ministre du Numérique pour que la sécurité passe avant.',
 			cta: 'Participer à la campagne',
 			homeCta: 'Interpeller le gouvernement',
-			progress: 'Avant le sommet G7 (juin 2026)'
+			progress: 'Avant le sommet d’Évian (15-17 juin 2026)'
 		},
 		en: {
 			title: 'G7 2026: secure AI, don’t accelerate it',
@@ -101,7 +101,7 @@ export const campaigns: Campaign[] = [
 				'France chairs the G7 in 2026. Let’s push the Élysée and the Digital Minister to put safety before acceleration.',
 			cta: 'Join the campaign',
 			homeCta: 'Write to the government',
-			progress: 'Before the G7 summit (June 2026)'
+			progress: 'Before the Évian G7 summit (15-17 June 2026)'
 		}
 	},
 	{
@@ -147,7 +147,7 @@ export const campaigns: Campaign[] = [
 				"Témoignages, enquête, revue de presse : comprendre comment l'IA bouleverse le travail et notre capacité à la contrôler.",
 			cta: 'Participer à la campagne',
 			homeCta: 'Partager mon témoignage',
-			progress: 'Objectif : 1 000 témoignages'
+			progress: '68 témoignages collectés'
 		},
 		en: {
 			title: 'AI will not destroy ONLY your job',
@@ -158,7 +158,7 @@ export const campaigns: Campaign[] = [
 				'Testimonials, survey, press review: see how AI is upending work and our ability to keep it in check.',
 			cta: 'Join the campaign',
 			homeCta: 'Share my testimony',
-			progress: 'Target: 1,000 testimonies'
+			progress: '68 testimonies collected'
 		}
 	},
 	{
