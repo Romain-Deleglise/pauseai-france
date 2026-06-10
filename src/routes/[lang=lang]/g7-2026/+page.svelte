@@ -188,9 +188,11 @@
 
 	.section-divider {
 		border: 0;
-		height: 1px;
-		background: var(--border, #e5e7eb);
-		margin: 3rem 0 1rem;
+		height: 4px;
+		background: var(--brand, #ff9416);
+		border-radius: 2px;
+		margin: 3.5rem auto 1.5rem;
+		width: 6rem;
 	}
 
 	.embed-section {
