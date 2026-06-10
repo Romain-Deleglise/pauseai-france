@@ -111,10 +111,21 @@
 			et l’éthique ».
 		</p>
 
+		<hr class="section-divider" />
+
 		<h2>J’agis pour la sécurité de l’IA</h2>
 		<p>
-			Interpellons le Président et la ministre chargée du numérique pour leur demander de remettre
-			la sécurité au centre des discussions pour le G7.
+			Demandez aux dirigeants du G7 de traiter la sécurité de l’IA à la hauteur des vrais enjeux.
+		</p>
+		<p>
+			Pause IA a préparé pour vous un outil pratique et rapide pour leur envoyer un e-mail ou les
+			interpeller via les réseaux sociaux, en français et en anglais.
+		</p>
+
+		<h3>1) En français</h3>
+		<p>
+			Interpellez le président de la République Emmanuel Macron et la ministre chargée du numérique
+			Anne Le Hénanff.
 		</p>
 	</section>
 
@@ -123,10 +134,8 @@
 	</section>
 
 	<section class="prose">
-		<h2>Interpellons les dirigeants du G7</h2>
-		<p>
-			Interpellons en anglais les Chefs d’État et les ministres chargés du numérique des pays du G7.
-		</p>
+		<h3>2) En anglais</h3>
+		<p>Interpellez tous les chefs d’État et les ministres du numérique des pays du G7.</p>
 	</section>
 
 	<section class="embed-section">
@@ -167,8 +176,21 @@
 		margin-bottom: 1rem;
 	}
 
+	.prose h3 {
+		font-size: 1.2rem;
+		margin-top: 2rem;
+		margin-bottom: 0.75rem;
+	}
+
 	.prose p {
 		margin-bottom: 1.2rem;
+	}
+
+	.section-divider {
+		border: 0;
+		height: 1px;
+		background: var(--border, #e5e7eb);
+		margin: 3rem 0 1rem;
 	}
 
 	.embed-section {
