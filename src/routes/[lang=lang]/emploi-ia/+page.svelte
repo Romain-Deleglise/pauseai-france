@@ -84,20 +84,37 @@
 	]
 
 	onMount(() => {
-		const init = () => {
-			// @ts-expect-error - Activoice global injected by external script
-			if (typeof window.Activoice !== 'undefined') {
-				// @ts-expect-error
-				window.Activoice.init({
-					container: '#av-embed-container',
-					campaignId: ACTIVOICE_CAMPAIGN_ID,
-					embedOptions: { spinnerColor: '#FF9416' }
-				})
-			} else {
-				setTimeout(init, 100)
+		const SCRIPT_SRC = 'https://beta.app.activoice.org/embed/v1/loader.js'
+
+		function initEmbed() {
+			const w = window as Window & {
+				Activoice?: { init: (opts: Record<string, unknown>) => void }
 			}
+			if (!w.Activoice) return
+			w.Activoice.init({
+				container: '#av-embed-container',
+				campaignId: ACTIVOICE_CAMPAIGN_ID,
+				embedOptions: { spinnerColor: '#FF9416' }
+			})
 		}
-		init()
+
+		const existing = document.querySelector(
+			`script[src="${SCRIPT_SRC}"]`
+		) as HTMLScriptElement | null
+		if (existing) {
+			if ((window as Window & { Activoice?: unknown }).Activoice) {
+				initEmbed()
+			} else {
+				existing.addEventListener('load', initEmbed, { once: true })
+			}
+			return
+		}
+
+		const script = document.createElement('script')
+		script.src = SCRIPT_SRC
+		script.async = true
+		script.addEventListener('load', initEmbed, { once: true })
+		document.head.appendChild(script)
 	})
 </script>
 
@@ -115,7 +132,6 @@
 	<meta name="twitter:title" content={t.emploi_ia.meta_title} />
 	<meta name="twitter:description" content={t.emploi_ia.meta_desc} />
 	<meta name="twitter:image" content="https://pauseia.fr/emploi-ia/emploi-IA.png" />
-	<script src="https://beta.app.activoice.org/embed/v1/loader.js"></script>
 </svelte:head>
 
 <article>
@@ -475,6 +491,5 @@
 	.av-embed {
 		margin-top: 1.5rem;
 		max-width: 100%;
-		overflow: hidden;
 	}
 </style>
