@@ -3,14 +3,16 @@
 	import PostMeta from '$components/PostMeta.svelte'
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
 
-	const CAMPAIGN_ID = 'ffccd310-c37c-406b-8425-0225f237857b'
-	const CAMPAIGN_ID_G7 = 'c858d3be-34d3-4478-b199-0b8d01fcdc4e'
+	const CAMPAIGN_ID = 'interpellez-les-dirigeants-du-g7-en-vue-du-sommet-devian'
+	const CAMPAIGN_ID_G7 = 'call-on-g7-leaders-ahead-of-the-evian-summit'
 
 	const title = 'G7 2026 : sécuriser plutôt qu’accélérer l’IA'
 	const description =
 		'En 2026, la France accueille le G7. Pause IA demande que la sécurité de l’IA soit remise au cœur de l’agenda international.'
 
 	onMount(() => {
+		const SCRIPT_SRC = 'https://app.activoice.org/embed/v1/loader.js'
+
 		function initEmbeds() {
 			const w = window as Window & {
 				Activoice?: { init: (opts: Record<string, unknown>) => void }
@@ -28,26 +30,27 @@
 			})
 		}
 
-		// The loader script is preloaded in <svelte:head> (async). It may have
-		// already finished by the time we run, or still be in-flight. Poll once
-		// per animation frame for ~5s, then give up.
-		let frames = 300
-		;(function waitForLoader() {
+		const existing = document.querySelector(
+			`script[src="${SCRIPT_SRC}"]`
+		) as HTMLScriptElement | null
+		if (existing) {
 			if ((window as Window & { Activoice?: unknown }).Activoice) {
 				initEmbeds()
-			} else if (frames-- > 0) {
-				requestAnimationFrame(waitForLoader)
+			} else {
+				existing.addEventListener('load', initEmbeds, { once: true })
 			}
-		})()
+			return
+		}
+
+		const script = document.createElement('script')
+		script.src = SCRIPT_SRC
+		script.async = true
+		script.addEventListener('load', initEmbeds, { once: true })
+		document.head.appendChild(script)
 	})
 </script>
 
 <PostMeta {title} {description} />
-
-<svelte:head>
-	<link rel="preconnect" href="https://beta.app.activoice.org" crossorigin="anonymous" />
-	<script async src="https://beta.app.activoice.org/embed/v1/loader.js"></script>
-</svelte:head>
 
 <article>
 	<section class="hero">
