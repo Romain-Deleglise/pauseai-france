@@ -3,8 +3,8 @@
 	import PostMeta from '$components/PostMeta.svelte'
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
 
-	const CAMPAIGN_ID = 'ffccd310-c37c-406b-8425-0225f237857b'
-	const CAMPAIGN_ID_G7 = 'c858d3be-34d3-4478-b199-0b8d01fcdc4e'
+	const CAMPAIGN_ID = 'interpellez-les-dirigeants-du-g7-en-vue-du-sommet-devian'
+	const CAMPAIGN_ID_G7 = 'call-on-g7-leaders-ahead-of-the-evian-summit'
 
 	const title = 'G7 2026 : sécuriser plutôt qu’accélérer l’IA'
 	const description =

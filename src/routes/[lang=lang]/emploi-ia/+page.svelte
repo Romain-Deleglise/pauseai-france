@@ -39,7 +39,7 @@
 		image: item.image || '/emploi-ia/article-placeholder.svg'
 	}))
 
-	const ACTIVOICE_CAMPAIGN_ID = '6b7ceb0e-22b1-48de-b8ae-5617c4920d05'
+	const ACTIVOICE_CAMPAIGN_ID = 'lia-ne-detruira-pas-que-votre-emploi'
 
 	const pressArticles = [
 		{
