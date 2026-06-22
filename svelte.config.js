@@ -53,6 +53,8 @@ const config = {
 							'/en/posts',
 							'/fr/sommet-ia-2026',
 							'/en/sommet-ia-2026',
+							'/fr/g7-2026',
+							'/en/g7-2026',
 							'/fr/emploi-ia',
 							'/en/emploi-ia',
 							'/fr/emploi-ia/questionnaire',
