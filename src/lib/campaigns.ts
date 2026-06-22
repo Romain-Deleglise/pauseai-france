@@ -77,10 +77,57 @@ export interface Campaign {
 export const campaigns: Campaign[] = [
 	{
 		slug: 'g7-2026',
-		status: 'active',
+		status: 'ended',
 		startDate: '2026-06',
+		endDate: '2026-06',
 		// Photo: Leynadmar, CC BY-SA 4.0, via Wikimedia Commons
 		image: '/campaigns/palais-elysee.jpg',
+		summary: {
+			fr: {
+				text: "À l'occasion du sommet du G7 à Évian (15-17 juin 2026), Pause IA a publié une tribune dans Le Nouvel Obs avec 30 signataires : « Le G7 ne doit pas accélérer mais sécuriser l'IA ! ». Alors que les déclarations officielles d'ouverture du sommet étaient très décevantes, la réunion du 17 juin entre les représentants du G7 et les dirigeants d'OpenAI, Anthropic et Google DeepMind a remis la sécurité à l'agenda : Emmanuel Macron a annoncé la construction d'une plateforme de coopération entre démocraties sur les risques de l'IA, afin de définir des standards communs. Pause IA salue cette prise de conscience tout en appelant à des règles contraignantes et à une coopération véritablement internationale.",
+				results: [
+					{ label: 'Tribune & presse', value: 'Le Nouvel Obs (31 signataires), Channel News' }
+				],
+				articles: [
+					{
+						title: "« Le G7 ne doit pas accélérer mais sécuriser l'IA »",
+						source: 'Le Nouvel Obs',
+						url: 'https://www.nouvelobs.com/economie/20260615.OBS115808/le-g7-ne-doit-pas-accelerer-mais-securiser-l-ia.html'
+					},
+					{
+						title: "Pause IA salue la prise de conscience par le G7 des risques posés par l'IA",
+						source: 'Channel News',
+						url: 'https://www.channelnews.fr/pause-ia-salue-la-prise-de-conscience-par-le-g7-des-risques-poses-par-lia-157380'
+					}
+				],
+				link: {
+					label: 'Lire la tribune dans Le Nouvel Obs',
+					url: 'https://www.nouvelobs.com/economie/20260615.OBS115808/le-g7-ne-doit-pas-accelerer-mais-securiser-l-ia.html'
+				}
+			},
+			en: {
+				text: 'For the G7 summit in Évian (15-17 June 2026), Pause AI published an op-ed in Le Nouvel Obs co-signed by 30 others: "The G7 must not accelerate but secure AI!". While the summit\'s opening statements on AI safety were disappointing, the 17 June meeting between G7 representatives and the heads of OpenAI, Anthropic and Google DeepMind put safety back on the agenda: Emmanuel Macron announced the creation of a cooperation platform between democracies on AI risks, aimed at defining common standards. Pause AI welcomes this awareness while calling for binding rules and genuinely international cooperation.',
+				results: [
+					{ label: 'Op-ed & press', value: 'Le Nouvel Obs (31 signatories), Channel News' }
+				],
+				articles: [
+					{
+						title: '"The G7 must not accelerate but secure AI"',
+						source: 'Le Nouvel Obs',
+						url: 'https://www.nouvelobs.com/economie/20260615.OBS115808/le-g7-ne-doit-pas-accelerer-mais-securiser-l-ia.html'
+					},
+					{
+						title: 'Pause AI welcomes G7 awareness of AI risks',
+						source: 'Channel News',
+						url: 'https://www.channelnews.fr/pause-ia-salue-la-prise-de-conscience-par-le-g7-des-risques-poses-par-lia-157380'
+					}
+				],
+				link: {
+					label: 'Read the op-ed in Le Nouvel Obs',
+					url: 'https://www.nouvelobs.com/economie/20260615.OBS115808/le-g7-ne-doit-pas-accelerer-mais-securiser-l-ia.html'
+				}
+			}
+		},
 		fr: {
 			title: 'G7 2026 : sécuriser plutôt qu’accélérer l’IA',
 			homeTitle: 'Interpellez le gouvernement sur la sécurité de l’IA au G7',
