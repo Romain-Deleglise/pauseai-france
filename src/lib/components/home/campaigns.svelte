@@ -14,8 +14,10 @@
 		.filter((c) => c.status === 'active')
 		.slice(0, 3)
 
-	$: featured = activeCampaigns[0]
-	$: secondary = activeCampaigns.slice(1)
+	// With 3 campaigns: 1 featured + 2 secondary in a grid.
+	// With 2 campaigns: show both side-by-side, no featured.
+	$: featured = activeCampaigns.length >= 3 ? activeCampaigns[0] : null
+	$: secondary = activeCampaigns.length >= 3 ? activeCampaigns.slice(1) : activeCampaigns
 
 	const label_id = 'home-campaigns-title'
 </script>
