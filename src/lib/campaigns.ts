@@ -86,9 +86,7 @@ export const campaigns: Campaign[] = [
 			fr: {
 				text: "À l'occasion du sommet du G7 à Évian (15-17 juin 2026), Pause IA a publié une tribune dans Le Nouvel Obs avec 30 signataires : « Le G7 ne doit pas accélérer mais sécuriser l'IA ! ». Alors que les déclarations officielles d'ouverture du sommet étaient très décevantes, la réunion du 17 juin entre les représentants du G7 et les dirigeants d'OpenAI, Anthropic et Google DeepMind a remis la sécurité à l'agenda : Emmanuel Macron a annoncé la construction d'une plateforme de coopération entre démocraties sur les risques de l'IA, afin de définir des standards communs. Pause IA salue cette prise de conscience tout en appelant à des règles contraignantes et à une coopération véritablement internationale.",
 				results: [
-					{ label: 'Tribune', value: 'Le Nouvel Obs (31 signataires)' },
-					{ label: 'Annonce G7', value: 'Plateforme de coopération démocratique' },
-					{ label: 'Couverture presse', value: 'Le Nouvel Obs, Channel News' }
+					{ label: 'Tribune & presse', value: 'Le Nouvel Obs (31 signataires), Channel News' }
 				],
 				articles: [
 					{
@@ -110,9 +108,7 @@ export const campaigns: Campaign[] = [
 			en: {
 				text: 'For the G7 summit in Évian (15-17 June 2026), Pause AI published an op-ed in Le Nouvel Obs co-signed by 30 others: "The G7 must not accelerate but secure AI!". While the summit\'s opening statements on AI safety were disappointing, the 17 June meeting between G7 representatives and the heads of OpenAI, Anthropic and Google DeepMind put safety back on the agenda: Emmanuel Macron announced the creation of a cooperation platform between democracies on AI risks, aimed at defining common standards. Pause AI welcomes this awareness while calling for binding rules and genuinely international cooperation.',
 				results: [
-					{ label: 'Op-ed', value: 'Le Nouvel Obs (31 signatories)' },
-					{ label: 'G7 announcement', value: 'Democratic cooperation platform' },
-					{ label: 'Press coverage', value: 'Le Nouvel Obs, Channel News' }
+					{ label: 'Op-ed & press', value: 'Le Nouvel Obs (31 signatories), Channel News' }
 				],
 				articles: [
 					{
