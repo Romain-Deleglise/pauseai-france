@@ -1,0 +1,14 @@
+{
+	"name": "pauseai-youtube-shorts-bot",
+	"version": "1.0.0",
+	"private": true,
+	"type": "module",
+	"description": "Bot Pause IA : publie automatiquement sur YouTube les Shorts déposés dans un dossier Google Drive.",
+	"scripts": {
+		"auth": "node auth.js",
+		"start": "node index.js"
+	},
+	"dependencies": {
+		"googleapis": "^144.0.0"
+	}
+}
