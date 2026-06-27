@@ -391,11 +391,6 @@
 					on:input={saveUser}
 				/>
 			</div>
-			<p class="user-fields-hint">
-				{isEn
-					? 'Used only to fill your emails, never sent to a server.'
-					: 'Servent uniquement à remplir vos emails, jamais envoyées à un serveur.'}
-			</p>
 
 			{#if isSampleData}
 				<p class="notice notice--warn">
@@ -569,8 +564,8 @@
 				</span>
 				<p slot="details">
 					{isEn
-						? 'Yes. Representatives track how many constituents raise an issue, and it shapes what they prioritise. A few sincere emails can be enough to get a topic onto a committee’s agenda.'
-						: "Oui. Les élus comptabilisent le nombre d'électeurs qui soulèvent un sujet, et cela oriente leurs priorités. Quelques emails sincères peuvent suffire à inscrire un sujet à l'ordre du jour d'une commission."}
+						? 'Yes! Representatives track how many constituents raise an issue, and it shapes what they prioritise. A few sincere emails can be enough to get a topic onto a committee’s agenda.'
+						: "Oui ! Les élus comptabilisent le nombre d'électeurs qui soulèvent un sujet, et cela oriente leurs priorités. Quelques emails sincères peuvent suffire à inscrire un sujet à l'ordre du jour d'une commission."}
 				</p>
 			</Accordion>
 			<Accordion id="faq-duree" noHash>
@@ -587,8 +582,8 @@
 				</span>
 				<p slot="details">
 					{isEn
-						? 'Your name and town stay on your device (used only to fill the draft, never sent to a server). The email is sent from your own mail app to your representative. A blind copy reaches us at campagne@pauseia.fr so we can measure and follow up the campaign; it therefore contains your message and your email address. You can remove that BCC before sending if you prefer.'
-						: "Votre nom et votre ville restent sur votre appareil (ils servent seulement à remplir le brouillon, ils ne sont jamais envoyés à un serveur). L'email part de votre propre messagerie vers votre élu. Une copie cachée nous parvient à campagne@pauseia.fr pour mesurer et suivre la campagne : elle contient donc votre message et votre adresse. Vous pouvez retirer cette copie cachée avant l'envoi si vous le préférez."}
+						? 'Your name and town stay on your device and are never sent to a server: they only fill the draft. The email leaves from your own mailbox. A blind copy (BCC) reaches us at campagne@pauseia.fr to count the campaign; you can remove it before sending.'
+						: "Votre nom et votre ville restent sur votre appareil et ne sont jamais envoyés à un serveur : ils servent seulement à remplir le brouillon. L'email part de votre propre messagerie. Une copie cachée (CCI) nous parvient à campagne@pauseia.fr pour mesurer la campagne ; vous pouvez la retirer avant l'envoi."}
 				</p>
 			</Accordion>
 			<Accordion id="faq-relance" noHash>
@@ -597,8 +592,8 @@
 				</span>
 				<p slot="details">
 					{isEn
-						? 'Send from your personal address (an authentic email carries more weight), and feel free to follow up politely after about three weeks. You can also ask for a short meeting at their local office.'
-						: "Envoyez depuis votre adresse personnelle (un email authentique a plus de poids), et n'hésitez pas à relancer poliment après environ trois semaines. Vous pouvez aussi demander un rendez-vous à leur permanence."}
+						? "That's common, and not a reason to give up. Follow up politely after about three weeks: a reminder shows the topic matters to you and often prompts a reply. You can also ask for a short meeting at their local office."
+						: "C'est fréquent, et ce n'est pas une raison d'abandonner. Relancez poliment après environ trois semaines : une relance montre que le sujet vous tient à cœur et débloque souvent une réponse. Vous pouvez aussi demander un rendez-vous à leur permanence."}
 				</p>
 			</Accordion>
 		</section>
@@ -870,12 +865,6 @@
 		gap: 0.5rem;
 		flex-wrap: wrap;
 		margin-top: 0.75rem;
-	}
-
-	.user-fields-hint {
-		font-size: 0.75rem;
-		color: var(--text-secondary);
-		margin: 0.35rem 0 0;
 	}
 
 	.user-input {
