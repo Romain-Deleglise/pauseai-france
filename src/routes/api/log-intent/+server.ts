@@ -65,7 +65,9 @@ export const POST: RequestHandler = async ({ request }) => {
 		return json({ ok: false }, { status: 400 })
 	}
 
-	const activityTypeId = Number(privateEnv.CIVICRM_ELU_INTENT_ACTIVITY_ID)
+	// Type d'activité « Intention d'écrire à un élu » (CiviCRM, ID 76 par défaut).
+	// Surchargé par CIVICRM_ELU_INTENT_ACTIVITY_ID si défini.
+	const activityTypeId = Number(privateEnv.CIVICRM_ELU_INTENT_ACTIVITY_ID || 76)
 	const apiContactId = Number(privateEnv.CIVICRM_NEWSLETTER_API_CONTACT_ID)
 
 	// Journalisation best-effort : si CiviCRM n'est pas configuré pour cela, on
