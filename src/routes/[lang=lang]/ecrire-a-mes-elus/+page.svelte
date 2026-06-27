@@ -1,6 +1,7 @@
 <script lang="ts">
 	import PostMeta from '$components/PostMeta.svelte'
 	import Button from '$components/Button.svelte'
+	import Accordion from '$components/Accordion.svelte'
 	import { lookupElus, isSampleData, type Elu, type LookupResult } from '$lib/data/elus'
 	import type { PageData } from './$types'
 
@@ -252,7 +253,7 @@
 		</section>
 
 		<!-- Pourquoi c'est important -->
-		<section class="prose">
+		<section class="card prose">
 			<h2>{isEn ? 'Why it matters' : "Pourquoi c'est important"}</h2>
 			{#if isEn}
 				<p>
@@ -274,38 +275,38 @@
 		</section>
 
 		<!-- FAQ -->
-		<section class="faq">
+		<section class="card faq">
 			<h2>{isEn ? 'FAQ' : 'Questions fréquentes'}</h2>
-			<details>
-				<summary>
+			<Accordion id="faq-difference" noHash>
+				<span slot="head">
 					{isEn
 						? 'Does contacting a representative really make a difference?'
 						: 'Est-ce que contacter un élu change vraiment quelque chose ?'}
-				</summary>
-				<p>
+				</span>
+				<p slot="details">
 					{isEn
 						? 'Yes. Representatives track how many constituents raise an issue, and it shapes what they prioritise. A few sincere emails can be enough to get a topic onto a committee’s agenda.'
 						: "Oui. Les élus comptabilisent le nombre d'électeurs qui soulèvent un sujet, et cela oriente leurs priorités. Quelques emails sincères peuvent suffire à inscrire un sujet à l'ordre du jour d'une commission."}
 				</p>
-			</details>
-			<details>
-				<summary>{isEn ? 'How long does it take?' : 'Combien de temps ça prend ?'}</summary>
-				<p>
+			</Accordion>
+			<Accordion id="faq-duree" noHash>
+				<span slot="head">{isEn ? 'How long does it take?' : 'Combien de temps ça prend ?'}</span>
+				<p slot="details">
 					{isEn
 						? 'About two minutes. Enter your postal code, pick a representative, replace your name and town, and send.'
 						: 'Environ deux minutes. Entrez votre code postal, choisissez un élu, remplacez votre nom et votre commune, puis envoyez.'}
 				</p>
-			</details>
-			<details>
-				<summary
-					>{isEn ? 'Is my information safe?' : 'Mes informations sont-elles protégées ?'}</summary
-				>
-				<p>
+			</Accordion>
+			<Accordion id="faq-donnees" noHash>
+				<span slot="head">
+					{isEn ? 'Is my information safe?' : 'Mes informations sont-elles protégées ?'}
+				</span>
+				<p slot="details">
 					{isEn
 						? 'We collect nothing. The email is sent from your own mail app directly to your representative. The blind copy (BCC) only lets us count how many emails were sent.'
 						: "Nous ne collectons rien. L'email part de votre propre messagerie directement vers votre élu. La copie cachée (CCI) nous sert uniquement à compter le nombre d'emails envoyés."}
 				</p>
-			</details>
+			</Accordion>
 		</section>
 	{:else if selectedElu}
 		<!-- ════════ Étape 2 : rédiger le mail ════════ -->
@@ -917,57 +918,27 @@
 		font-weight: 600;
 	}
 
-	/* Prose + FAQ */
-	.prose,
-	.faq {
-		margin-top: 2.5rem;
-	}
-
+	/* Prose + FAQ (en boxes blanches comme les cartes d'étape) */
 	.prose h2,
 	.faq h2 {
 		font-size: 1.3rem;
 		font-weight: 700;
-		margin-bottom: 1rem;
+		margin: 0 0 1rem;
 	}
 
 	.prose p {
 		line-height: 1.7;
 		color: var(--text-2);
+		margin: 0;
 	}
 
-	.faq details {
-		border-bottom: 1px solid var(--border);
-		padding: 0.4rem 0;
+	/* L'accordéon partagé gère son propre titre : on neutralise la marge h3 */
+	.faq :global(.accordion .title) {
+		font-size: 1.05rem;
 	}
 
-	.faq summary {
-		cursor: pointer;
-		font-weight: 600;
-		padding: 0.6rem 0;
-		list-style: none;
-	}
-
-	.faq summary::-webkit-details-marker {
-		display: none;
-	}
-
-	.faq summary::before {
-		content: '+';
-		display: inline-block;
-		inline-size: 1.2rem;
-		color: var(--brand-subtle);
-		font-weight: 700;
-	}
-
-	.faq details[open] summary::before {
-		content: '−';
-	}
-
-	.faq details p {
-		padding: 0 0 0.75rem 1.2rem;
-		line-height: 1.65;
-		color: var(--text-2);
-		font-size: 0.95rem;
+	.faq :global(.accordion .header) {
+		padding: 1.1rem 0;
 	}
 
 	@media (max-width: 600px) {
