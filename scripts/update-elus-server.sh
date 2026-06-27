@@ -15,6 +15,8 @@
 #   BASE_BRANCH    branche cible de la PR         (défaut : main)
 #   PR_BRANCH      branche de travail             (défaut : chore/maj-elus)
 #   GIT_NAME / GIT_EMAIL   auteur des commits
+#   ALERT_WEBHOOK  URL d'un webhook Discord/Slack pour les alertes d'échec
+#                  (recommandé : pas de dépendance SMTP).
 #   ALERT_EMAIL    adresse prévenue en cas d'échec (défaut romain@pauseia.fr ;
 #                  vide = pas d'alerte). Utilise la commande `mail` du serveur.
 #
@@ -27,21 +29,38 @@ BASE_BRANCH="${BASE_BRANCH:-main}"
 PR_BRANCH="${PR_BRANCH:-chore/maj-elus}"
 GIT_NAME="${GIT_NAME:-Pause IA Bot}"
 GIT_EMAIL="${GIT_EMAIL:-bot@pauseia.fr}"
-# Adresse alertée en cas d'échec (vide = pas d'alerte mail).
+# Canaux d'alerte en cas d'échec (laisser vide pour désactiver) :
+#   ALERT_WEBHOOK : URL d'un webhook entrant Discord/Slack (prioritaire, le plus
+#                   robuste : pas de dépendance SMTP).
+#   ALERT_EMAIL   : adresse mail (utilise la commande `mail` si un MTA marche).
+ALERT_WEBHOOK="${ALERT_WEBHOOK:-}"
 ALERT_EMAIL="${ALERT_EMAIL:-romain@pauseia.fr}"
 
-# Alerte par mail si une étape échoue : on est ainsi prévenu d'une source
-# cassée, d'un garde-fou déclenché ou d'un token expiré (fini la staleness
-# silencieuse). Les données en ligne, elles, restent intactes.
+# Alerte si une étape échoue : on est ainsi prévenu d'une source cassée, d'un
+# garde-fou déclenché ou d'un token expiré (fini la staleness silencieuse). Les
+# données en ligne, elles, restent intactes.
 notify_failure() {
 	local line=$1
 	local msg="Échec de la mise à jour des élus (pauseia.fr), ligne $line : ${BASH_COMMAND}"
 	echo "✗ $msg" >&2
+	if [[ -n "$ALERT_WEBHOOK" ]]; then
+		# Format compatible Discord ({"content":...}) et Slack ({"text":...}).
+		curl -s -m 15 -H 'Content-Type: application/json' \
+			-d "$(printf '{"content":%s,"text":%s}' "$(json_str "$msg")" "$(json_str "$msg")")" \
+			"$ALERT_WEBHOOK" >/dev/null || true
+	fi
 	if [[ -n "$ALERT_EMAIL" ]] && command -v mail >/dev/null 2>&1; then
 		printf '%s\n\nDétails : journalctl -u update-elus -n 100\n' "$msg" |
-			mail -s "[Pause IA] Échec mise à jour des élus" "$ALERT_EMAIL" || true
+			mail -s "[Pause IA] Échec mise à jour des élus" "$ALERT_EMAIL" 2>/dev/null || true
 	fi
 }
+
+# Échappe une chaîne pour l'inclure dans du JSON (guillemets, antislashs, sauts de ligne).
+json_str() {
+	printf '%s' "$1" | sed 's/\\/\\\\/g; s/"/\\"/g; s/\t/\\t/g' |
+		awk 'BEGIN{printf "\""} {printf "%s%s", sep, $0; sep="\\n"} END{printf "\""}'
+}
+
 trap 'notify_failure "$LINENO"' ERR
 
 if [[ -z "${GITHUB_TOKEN:-}" ]]; then
