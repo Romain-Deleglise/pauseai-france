@@ -94,10 +94,10 @@
 	// ── Infos utilisateur pour personnaliser le mail (jamais envoyées à un serveur,
 	// seulement injectées dans le brouillon et mémorisées localement) ──
 	let userName = ''
-	let userCommune = ''
+	let userVille = ''
 	function saveUser() {
 		try {
-			localStorage.setItem('elus-user', JSON.stringify({ userName, userCommune }))
+			localStorage.setItem('elus-user', JSON.stringify({ userName, userVille }))
 		} catch {
 			/* localStorage indisponible */
 		}
@@ -110,7 +110,7 @@
 			sent = new Set(JSON.parse(localStorage.getItem('elus-contactes') ?? '[]'))
 			const u = JSON.parse(localStorage.getItem('elus-user') ?? '{}')
 			userName = u.userName ?? ''
-			userCommune = u.userCommune ?? ''
+			userVille = u.userVille ?? ''
 		} catch {
 			sent = new Set()
 		}
@@ -266,6 +266,31 @@
 				/>
 				<Button type="submit">{isEn ? 'Find' : 'Rechercher'}</Button>
 			</form>
+
+			<!-- Vos infos : saisies une seule fois, elles remplissent chaque mail
+			     (jamais envoyées à un serveur, mémorisées sur votre appareil). -->
+			<div class="user-fields">
+				<input
+					class="user-input"
+					type="text"
+					placeholder={isEn ? 'Your full name' : 'Votre nom complet'}
+					autocomplete="name"
+					bind:value={userName}
+					on:input={saveUser}
+				/>
+				<input
+					class="user-input"
+					type="text"
+					placeholder={isEn ? 'Your town' : 'Votre ville'}
+					bind:value={userVille}
+					on:input={saveUser}
+				/>
+			</div>
+			<p class="user-fields-hint">
+				{isEn
+					? 'Used only to fill your emails, never sent to a server.'
+					: 'Servent uniquement à remplir vos emails, jamais envoyées à un serveur.'}
+			</p>
 
 			{#if isSampleData}
 				<p class="notice notice--warn">
@@ -463,33 +488,15 @@
 				</div>
 			</div>
 
-			<p class="card-intro">
-				{#if isEn}
-					Add your name and town below and the email is fully written, ready to send.
-				{:else}
-					Indiquez votre nom et votre commune ci-dessous : l'email est alors entièrement rédigé,
-					prêt à envoyer.
-				{/if}
-			</p>
-
-			<!-- Vos infos : remplissent le mail (jamais envoyées à un serveur) -->
-			<div class="user-fields">
-				<input
-					class="user-input"
-					type="text"
-					placeholder={isEn ? 'Your full name' : 'Votre nom complet'}
-					autocomplete="name"
-					bind:value={userName}
-					on:input={saveUser}
-				/>
-				<input
-					class="user-input"
-					type="text"
-					placeholder={isEn ? 'Your town' : 'Votre commune'}
-					bind:value={userCommune}
-					on:input={saveUser}
-				/>
-			</div>
+			{#if !userName.trim()}
+				<p class="card-intro">
+					{#if isEn}
+						Tip: add your name and town in step 1 and the email writes itself in full.
+					{:else}
+						Astuce : indiquez votre nom et votre ville à l'étape 1 et l'email se rédige entièrement.
+					{/if}
+				</p>
+			{/if}
 
 			<!-- Réglages compacts -->
 			<div class="msg-toolbar">
@@ -665,7 +672,7 @@
 					<p>
 						{isEn ? 'Yours sincerely,' : 'Cordialement,'}<br />
 						{userName.trim() || (isEn ? '[Your full name]' : '[Votre nom complet]')}<br />
-						{userCommune.trim() || localite(selectedElu)}
+						{userVille.trim() || localite(selectedElu)}
 					</p>
 				</div>
 			</div>
@@ -785,7 +792,13 @@
 		display: flex;
 		gap: 0.5rem;
 		flex-wrap: wrap;
-		margin-bottom: 1.25rem;
+		margin-top: 0.75rem;
+	}
+
+	.user-fields-hint {
+		font-size: 0.75rem;
+		color: var(--text-secondary);
+		margin: 0.35rem 0 0;
 	}
 
 	.user-input {
