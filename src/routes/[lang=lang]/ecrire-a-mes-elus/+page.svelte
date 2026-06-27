@@ -2,6 +2,7 @@
 	import PostMeta from '$components/PostMeta.svelte'
 	import Button from '$components/Button.svelte'
 	import Accordion from '$components/Accordion.svelte'
+	import { onMount } from 'svelte'
 	import { lookupElus, isSampleData, type Elu, type LookupResult } from '$lib/data/elus'
 	import type { PageData } from './$types'
 
@@ -36,32 +37,70 @@
 		if (typeof window !== 'undefined') window.scrollTo({ top: 0 })
 	}
 
-	/**
-	 * Construit le corps de l'email en texte brut à partir de l'aperçu affiché
-	 * (qui reflète la version et les risques sélectionnés), avec la formule
-	 * d'appel adaptée au rôle de l'élu.
-	 */
-	function buildBody(elu: Elu): string {
-		const el = document.getElementById('email-body')
-		let text = el ? el.innerText : ''
+	// Formule d'appel personnalisée (civilité + titre selon le rôle).
+	function salutation(elu: Elu): string {
+		if (isEn) return `Dear ${elu.nom},`
+		const titre = elu.role === 'depute' ? 'Député' : 'Sénateur'
+		if (elu.civ === 'Mme') return `Madame la ${titre === 'Député' ? 'Députée' : 'Sénatrice'},`
+		if (elu.civ === 'M') return `Monsieur le ${titre},`
+		return `Madame, Monsieur le ${titre},`
+	}
+
+	// Localité de l'élu (circonscription pour un député, département pour un sénateur).
+	function localite(elu: Elu): string {
+		return elu.role === 'depute'
+			? (elu.nomCirco ?? `${isEn ? 'department' : 'département'} ${elu.departement}`)
+			: (elu.nomDept ?? `${isEn ? 'department' : 'département'} ${elu.departement}`)
+	}
+
+	// 1re phrase, localisée : signale « je suis votre électeur ».
+	function introLine(elu: Elu): string {
+		const loc = localite(elu)
 		if (isEn) {
-			text = text.replace('Dear [Deputy/Senator name],', `Dear ${elu.nom},`)
-		} else {
-			const salutation =
-				elu.role === 'depute' ? 'Madame, Monsieur le Député,' : 'Madame, Monsieur le Sénateur,'
-			text = text.replace('Madame/Monsieur le Député / le Sénateur [nom],', salutation)
+			return elu.role === 'depute'
+				? `My name is [your name], a resident of your constituency: ${loc}.`
+				: `My name is [your name], a resident of your department: ${loc}.`
 		}
-		return text
+		return elu.role === 'depute'
+			? `Je suis [votre nom], habitant de votre circonscription : ${loc}.`
+			: `Je suis [votre nom], habitant de votre département : ${loc}.`
+	}
+
+	// L'aperçu (#email-body) est déjà personnalisé pour l'élu choisi : il suffit
+	// d'en prendre le texte brut.
+	function buildBody(): string {
+		const el = document.getElementById('email-body')
+		return el ? el.innerText : ''
 	}
 
 	function mailtoHref(elu: Elu): string {
-		const params = new URLSearchParams({ subject, bcc: BCC, body: buildBody(elu) })
+		const params = new URLSearchParams({ subject, bcc: BCC, body: buildBody() })
 		// URLSearchParams encode les espaces en "+", à reconvertir en %20 pour mailto.
 		return `mailto:${elu.email ?? ''}?${params.toString().replace(/\+/g, '%20')}`
 	}
 
+	// ── Suivi de progression : élus déjà contactés (mémorisé localement) ──
+	let sent = new Set<string>()
+	onMount(() => {
+		try {
+			sent = new Set(JSON.parse(localStorage.getItem('elus-contactes') ?? '[]'))
+		} catch {
+			sent = new Set()
+		}
+	})
+	function markSent(id: string) {
+		sent = new Set(sent).add(id)
+		try {
+			localStorage.setItem('elus-contactes', JSON.stringify([...sent]))
+		} catch {
+			/* localStorage indisponible : on ignore */
+		}
+	}
+
 	function openMail() {
-		if (selectedElu) window.location.href = mailtoHref(selectedElu)
+		if (!selectedElu) return
+		markSent(selectedElu.id)
+		window.location.href = mailtoHref(selectedElu)
 	}
 
 	function confidenceNote(elu: Elu): string | null {
@@ -141,6 +180,9 @@
 				}
 			]
 		: []
+
+	$: allElus = result ? [...result.senateurs, ...result.deputes] : []
+	$: sentCount = allElus.filter((e) => sent.has(e.id)).length
 </script>
 
 <PostMeta
@@ -153,6 +195,23 @@
 <article>
 	{#if step === 1}
 		<!-- ════════ Étape 1 : trouver ses élus ════════ -->
+		<aside class="top-banner">
+			<span class="top-banner-icon">⚠️</span>
+			<p>
+				{#if isEn}
+					<strong>“Mitigating the risk of extinction from AI should be a global priority.”</strong>
+					Hundreds of the world's leading AI scientists and lab directors signed this warning. Your representatives
+					are the ones who can act.
+				{:else}
+					<strong
+						>« Atténuer le risque d'extinction lié à l'IA devrait être une priorité mondiale. »</strong
+					>
+					Des centaines de scientifiques et de dirigeants des plus grands laboratoires d'IA ont signé
+					cet avertissement. Ce sont vos élus qui peuvent agir.
+				{/if}
+			</p>
+		</aside>
+
 		<header class="hero">
 			<h1>{isEn ? 'Write to your representatives' : 'Écrivez à vos élus'}</h1>
 			<p class="hero-sub">
@@ -205,7 +264,23 @@
 
 			{#if result}
 				<p class="results-hint">
-					{isEn ? 'Pick a representative to write to.' : 'Choisissez un élu à qui écrire.'}
+					{#if sentCount > 0}
+						<strong>{sentCount}/{allElus.length}</strong>
+						{isEn ? 'contacted.' : 'contactés.'}
+						{#if sentCount < allElus.length}
+							{isEn
+								? 'Write to the others too. It all counts.'
+								: 'Écrivez aussi aux autres, chaque message compte.'}
+						{:else}
+							🎉 {isEn
+								? 'You contacted them all. Thank you!'
+								: 'Vous les avez tous contactés. Merci !'}
+						{/if}
+					{:else}
+						{isEn
+							? 'Write to each of your representatives: one personal email each.'
+							: 'Écrivez à chacun de vos élus : un email personnel pour chaque.'}
+					{/if}
 				</p>
 				{#each eluGroups as group}
 					{#if group.list.length}
@@ -213,13 +288,19 @@
 							<h3>{group.title}</h3>
 							<ul class="elu-list">
 								{#each group.list as elu (elu.id)}
-									<li class="elu-card">
+									<li class="elu-card" class:done={sent.has(elu.id)}>
 										<div class="elu-info">
-											<strong>{elu.nom}</strong>
+											<strong>
+												{#if sent.has(elu.id)}<span class="done-check">✓</span>{/if}{elu.nom}
+											</strong>
 											<small>{eluSubtitle(elu)}</small>
 										</div>
-										<Button on:click={() => choose(elu)}>
-											{isEn ? 'Write' : 'Écrire'}
+										<Button alt={sent.has(elu.id)} on:click={() => choose(elu)}>
+											{#if sent.has(elu.id)}
+												{isEn ? 'Written ✓' : 'Écrit ✓'}
+											{:else}
+												{isEn ? 'Write' : 'Écrire'}
+											{/if}
 										</Button>
 									</li>
 								{/each}
@@ -229,31 +310,31 @@
 				{/each}
 			{/if}
 
-			<details class="manual-fallback">
-				<summary>
-					{isEn
-						? "Can't find them? Official directories"
-						: 'Vous ne les trouvez pas ? Annuaires officiels'}
-				</summary>
-				<div class="find-links">
-					<a
-						class="find-btn"
-						href="https://www.assemblee-nationale.fr/dyn/vos-deputes/carte-departements"
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						🏛️ {isEn ? 'Find my MP' : 'Trouver mon député'} · assemblee-nationale.fr
-					</a>
-					<a
-						class="find-btn"
-						href="https://www.senat.fr/vos-senateurs.html"
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						🏛️ {isEn ? 'Find my senator(s)' : 'Trouver mon/mes sénateurs'} · senat.fr
-					</a>
-				</div>
-			</details>
+			{#if searched && !result}
+				<details class="manual-fallback" open>
+					<summary>
+						{isEn ? 'Official directories' : 'Annuaires officiels'}
+					</summary>
+					<div class="find-links">
+						<a
+							class="find-btn"
+							href="https://www.assemblee-nationale.fr/dyn/vos-deputes/carte-departements"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							🏛️ {isEn ? 'Find my MP' : 'Trouver mon député'} · assemblee-nationale.fr
+						</a>
+						<a
+							class="find-btn"
+							href="https://www.senat.fr/vos-senateurs.html"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							🏛️ {isEn ? 'Find my senator(s)' : 'Trouver mon/mes sénateurs'} · senat.fr
+						</a>
+					</div>
+				</details>
+			{/if}
 		</section>
 
 		<!-- Pourquoi c'est important -->
@@ -333,12 +414,11 @@
 
 			<p class="card-intro">
 				{#if isEn}
-					Ready to send. Personalise it if you like: just replace <strong>[your name]</strong> and
-					<strong>[your town]</strong>. The recipient's name is filled in automatically.
+					Ready to send. The recipient's name and your constituency are already filled in. Just
+					replace <strong>[your name]</strong>.
 				{:else}
-					Prêt à l'envoi. Personnalisez-le si vous voulez : remplacez simplement
-					<strong>[votre nom]</strong> et <strong>[votre commune]</strong>. Le nom du destinataire
-					est rempli automatiquement.
+					Prêt à l'envoi. Le nom du destinataire et votre circonscription sont déjà remplis ;
+					remplacez simplement <strong>[votre nom]</strong>.
 				{/if}
 			</p>
 
@@ -374,10 +454,10 @@
 					<span>{subject}</span>
 				</div>
 				<div class="email-body" id="email-body">
+					<p>{salutation(selectedElu)}</p>
+					<p>{introLine(selectedElu)}</p>
 					{#if version === 'short'}
 						{#if isEn}
-							<p>Dear [Deputy/Senator name],</p>
-							<p>My name is [your name] and I am a resident of [your town/constituency].</p>
 							<p>
 								I am writing to draw your attention to the rapid development of increasingly
 								autonomous artificial intelligence systems. The leaders of the world's largest AI
@@ -404,8 +484,6 @@
 								[Your town / constituency]
 							</p>
 						{:else}
-							<p>Madame/Monsieur le Député / le Sénateur [nom],</p>
-							<p>Je suis [votre nom], habitant de [votre commune].</p>
 							<p>
 								Je vous contacte au sujet du développement rapide de systèmes d'intelligence
 								artificielle de plus en plus autonomes et puissants. Les dirigeants des plus grands
@@ -436,8 +514,6 @@
 							</p>
 						{/if}
 					{:else if isEn}
-						<p>Dear [Deputy/Senator name],</p>
-						<p>My name is [your name], a resident of [your town/constituency].</p>
 						<p>
 							I am writing about the rapid development of increasingly powerful AI systems without
 							any adequate regulatory framework. The leaders of the main AI labs acknowledge that
@@ -486,8 +562,6 @@
 							[Your town / constituency]
 						</p>
 					{:else}
-						<p>Madame/Monsieur le Député / le Sénateur [nom],</p>
-						<p>Je suis [votre nom], habitant de [votre commune/circonscription].</p>
 						<p>
 							Je vous écris au sujet du développement rapide de systèmes d'IA de plus en plus
 							puissants, sans cadre réglementaire adapté. Les dirigeants des principaux laboratoires
@@ -577,6 +651,36 @@
 		margin-inline: auto;
 		margin-top: 2.5rem;
 		padding: 0 1.25rem 5rem;
+	}
+
+	/* Bandeau d'accroche */
+	.top-banner {
+		display: flex;
+		align-items: flex-start;
+		gap: 0.75rem;
+		background: var(--brand-light);
+		border: 1px solid var(--brand);
+		border-left: 5px solid var(--brand);
+		border-radius: 10px;
+		padding: 0.9rem 1.1rem;
+		margin-bottom: 2rem;
+	}
+
+	.top-banner-icon {
+		font-size: 1.3rem;
+		line-height: 1.4;
+		flex-shrink: 0;
+	}
+
+	.top-banner p {
+		margin: 0;
+		font-size: 0.92rem;
+		line-height: 1.55;
+		color: var(--text);
+	}
+
+	.top-banner strong {
+		color: var(--brand-subtle);
 	}
 
 	/* Hero */
@@ -722,6 +826,19 @@
 		border: 1px solid var(--border);
 		border-radius: 10px;
 		background: var(--bg-card);
+		transition: opacity 0.15s;
+	}
+
+	.elu-card.done {
+		opacity: 0.7;
+		background: var(--brand-light);
+		border-color: var(--brand);
+	}
+
+	.done-check {
+		color: #2a9d5c;
+		font-weight: 700;
+		margin-right: 0.35rem;
 	}
 
 	.elu-info {

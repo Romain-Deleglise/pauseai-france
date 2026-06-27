@@ -262,6 +262,7 @@ async function fetchDeputes() {
 		out.push({
 			id: anId || slugifyName(`${prenom} ${nom}`),
 			nom: `${prenom} ${nom}`.trim(),
+			civ: /mme/i.test(get(r, 'civ')) ? 'Mme' : 'M',
 			role: 'depute',
 			departement: dept,
 			circo: Number.isFinite(circo) ? circo : null,
@@ -422,6 +423,7 @@ async function fetchSenateurs() {
 	const iGrp = col('Groupe politique')
 	const iCirco = col('Circonscription')
 	const iMail = col('Courrier électronique')
+	const iQual = col('Qualité')
 
 	const out = []
 	let unmappedDept = 0
@@ -443,6 +445,7 @@ async function fetchSenateurs() {
 		out.push({
 			id: mat || slugifyName(`${prenom} ${nom}`),
 			nom: `${prenom} ${nom}`.trim(),
+			civ: /mme/i.test(c[iQual] || '') ? 'Mme' : 'M',
 			role: 'senateur',
 			departement: dept,
 			nomDept: circo || null,

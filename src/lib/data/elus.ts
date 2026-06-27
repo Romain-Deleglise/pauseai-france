@@ -19,6 +19,7 @@ export type EmailConfidence = 'high' | 'medium' | 'low' | 'none'
 export interface Elu {
 	id: string
 	nom: string
+	civ?: 'M' | 'Mme' | null
 	role: 'depute' | 'senateur'
 	departement: string
 	circo?: number | null
