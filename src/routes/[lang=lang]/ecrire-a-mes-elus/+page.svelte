@@ -125,9 +125,32 @@
 		}
 	}
 
+	// Journalise l'intention d'envoi côté serveur, sans donnée personnelle.
+	// `sendBeacon` est conçu pour survivre à la navigation immédiate vers le
+	// client mail (un simple fetch serait annulé). Aucune preuve d'envoi réel :
+	// c'est le clic, pas l'email. Le compteur fiable reste le BCC.
+	function logIntent(elu: Elu) {
+		if (typeof navigator === 'undefined' || !navigator.sendBeacon) return
+		try {
+			const payload = JSON.stringify({
+				eluId: elu.id,
+				eluNom: elu.nom,
+				role: elu.role,
+				departement: elu.departement,
+				circo: elu.circo ?? null,
+				angle,
+				version
+			})
+			navigator.sendBeacon('/api/log-intent', new Blob([payload], { type: 'application/json' }))
+		} catch {
+			/* journalisation best-effort : on ignore toute erreur */
+		}
+	}
+
 	function openMail() {
 		if (!selectedElu) return
 		markSent(selectedElu.id)
+		logIntent(selectedElu)
 		window.location.href = mailtoHref(selectedElu)
 	}
 
