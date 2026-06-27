@@ -70,7 +70,11 @@ const SOURCES = {
  * Sans cette variable, le géocodage fin est ignoré et la page retombe sur une
  * recherche au niveau département (toujours fonctionnelle).
  */
-const COMMUNE_CIRCO_URL = process.env.COMMUNE_CIRCO_URL || null
+const COMMUNE_CIRCO_URL =
+	process.env.COMMUNE_CIRCO_URL ||
+	// Défaut : GeoJSON officiel « Contours des circonscriptions législatives »
+	// (Ministère de l'Intérieur, data.gouv.fr — URL stable, ressource p10).
+	'https://www.data.gouv.fr/api/1/datasets/r/8b681b69-739c-47eb-a96b-06e8e2d8dc08'
 
 /** Déduit le code département d'un code commune INSEE (3 chiffres en outre-mer). */
 function deptFromInsee(insee) {
