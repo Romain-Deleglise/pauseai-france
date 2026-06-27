@@ -62,9 +62,10 @@
 	}
 
 	// 1re phrase, localisée : signale « je suis votre électeur ».
-	function introLine(elu: Elu): string {
+	// `name` est passé explicitement pour que Svelte recalcule l'aperçu à la frappe.
+	function introLine(elu: Elu, name: string): string {
 		const loc = localite(elu)
-		const nom = userName.trim() || (isEn ? '[your name]' : '[votre nom]')
+		const nom = name.trim() || (isEn ? '[your name]' : '[votre nom]')
 		const zone = isEn ? 'constituency' : 'circonscription'
 		const zoneSen = isEn ? 'department' : 'département'
 		if (isEn) {
@@ -258,7 +259,6 @@
 					class="cp-input"
 					type="text"
 					inputmode="numeric"
-					pattern="[0-9]&lbrace;5&rbrace;"
 					maxlength="5"
 					placeholder={isEn ? 'Your postal code (e.g. 75011)' : 'Votre code postal (ex. 75011)'}
 					bind:value={codePostal}
@@ -524,7 +524,7 @@
 				</div>
 				<div class="email-body" id="email-body">
 					<p>{salutation(selectedElu)}</p>
-					<p>{introLine(selectedElu)}</p>
+					<p>{introLine(selectedElu, userName)}</p>
 					{#if version === 'short'}
 						{#if isEn}
 							<p>
