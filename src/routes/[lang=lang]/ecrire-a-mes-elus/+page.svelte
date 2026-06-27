@@ -97,7 +97,7 @@
 	let userVille = ''
 	function saveUser() {
 		try {
-			localStorage.setItem('elus-user', JSON.stringify({ userName, userVille }))
+			localStorage.setItem('elus-user', JSON.stringify({ userName, userVille, personalSentence }))
 		} catch {
 			/* localStorage indisponible */
 		}
@@ -111,6 +111,7 @@
 			const u = JSON.parse(localStorage.getItem('elus-user') ?? '{}')
 			userName = u.userName ?? ''
 			userVille = u.userVille ?? ''
+			personalSentence = u.personalSentence ?? ''
 		} catch {
 			sent = new Set()
 		}
@@ -156,33 +157,79 @@
 		return elu.groupe && elu.groupe !== '—' ? `${base} · ${elu.groupe}` : base
 	}
 
-	type Theme = 'individus' | 'societe' | 'economie' | 'humanite'
-
-	const themes: { id: Theme; label: string; labelEn: string }[] = [
-		{ id: 'individus', label: 'Vie privée et surveillance', labelEn: 'Privacy and surveillance' },
-		{
-			id: 'societe',
-			label: 'Désinformation et démocratie',
-			labelEn: 'Disinformation and democracy'
-		},
-		{ id: 'economie', label: "Perte d'emploi", labelEn: 'Job losses' },
-		{ id: 'humanite', label: 'Risques existentiels', labelEn: 'Existential risks' }
+	// ── Angle principal du message (1 choix) ──
+	type Angle = 'ensemble' | 'existentiel' | 'democratie' | 'emploi' | 'privacy'
+	const angles: { id: Angle; fr: string; en: string }[] = [
+		{ id: 'ensemble', fr: "Vue d'ensemble", en: 'Overview' },
+		{ id: 'existentiel', fr: 'Risque existentiel', en: 'Existential risk' },
+		{ id: 'democratie', fr: 'Démocratie & désinformation', en: 'Democracy & disinformation' },
+		{ id: 'emploi', fr: 'Emploi & inégalités', en: 'Jobs & inequality' },
+		{ id: 'privacy', fr: 'Vie privée & libertés', en: 'Privacy & freedoms' }
 	]
-
-	let selectedThemes = new Set<Theme>(['individus', 'societe', 'economie', 'humanite'])
-
-	function toggleTheme(theme: Theme) {
-		const next = new Set(selectedThemes)
-		if (next.has(theme)) {
-			if (next.size > 1) next.delete(theme)
-		} else {
-			next.add(theme)
-		}
-		selectedThemes = next
-	}
+	let angle: Angle = 'ensemble'
+	let personalSentence = ''
 
 	type Version = 'short' | 'long'
 	let version: Version = 'short'
+
+	// ── Contenu du mail (modulaire, sans tirets longs) ──
+	const HOOK = {
+		fr: "Les dirigeants des principaux laboratoires d'IA reconnaissent eux-mêmes que les systèmes les plus avancés pourraient représenter une menace majeure, voire un risque d'extinction. Le Rapport international sur la sécurité de l'IA, dirigé par le prix Turing Yoshua Bengio et présenté au Sommet de Paris, confirme qu'aucune méthode actuelle ne garantit leur contrôle.",
+		en: 'The leaders of the main AI labs acknowledge that the most advanced systems could pose a major threat, even a risk of extinction. The International AI Safety Report, led by Turing Prize winner Yoshua Bengio and presented at the Paris Summit, confirms that no current method can guarantee their control.'
+	}
+	const FOCUS: Record<Angle, { fr: string; en: string }> = {
+		ensemble: {
+			fr: "Ces risques sont déjà concrets (désinformation, surveillance de masse, déstabilisation de l'emploi et de la démocratie), et la course aux modèles toujours plus autonomes accroît un risque existentiel.",
+			en: 'These risks are already concrete (disinformation, mass surveillance, disruption of jobs and democracy), and the race toward ever more autonomous models increases an existential risk.'
+		},
+		existentiel: {
+			fr: "Des chercheurs parmi les plus reconnus, comme Yoshua Bengio et Geoffrey Hinton, ainsi que les dirigeants d'OpenAI, de Google DeepMind et d'Anthropic, avertissent qu'une IA surpassant l'intelligence humaine pourrait, si elle échappait à notre contrôle, menacer l'existence même de l'humanité.",
+			en: 'Some of the most respected researchers, such as Yoshua Bengio and Geoffrey Hinton, along with the leaders of OpenAI, Google DeepMind and Anthropic, warn that an AI surpassing human intelligence could, if it escaped our control, threaten the very existence of humanity.'
+		},
+		democratie: {
+			fr: "Les systèmes d'IA produisent déjà de la désinformation et des deepfakes à grande échelle, indiscernables du réel, qui fragilisent le débat public, la confiance dans l'information et nos processus démocratiques.",
+			en: 'AI systems already produce disinformation and deepfakes at scale, indistinguishable from reality, undermining public debate, trust in information and our democratic processes.'
+		},
+		emploi: {
+			fr: "En automatisant un nombre croissant de tâches intellectuelles, ces systèmes menacent des millions d'emplois et risquent d'aggraver fortement les inégalités, sans politique d'adaptation à la hauteur.",
+			en: 'By automating a growing share of intellectual tasks, these systems threaten millions of jobs and could sharply worsen inequality, with no adaptation policy on the right scale.'
+		},
+		privacy: {
+			fr: 'Ces systèmes rendent possible une surveillance de masse et un profilage individuel sans précédent (analyse automatisée de nos traces en ligne, reconnaissance faciale), au détriment de la vie privée et des libertés.',
+			en: 'These systems enable mass surveillance and unprecedented individual profiling (automated analysis of our online traces, facial recognition), at the expense of privacy and civil liberties.'
+		}
+	}
+	const COMPLEMENT = {
+		wide: {
+			fr: "Au-delà de ce point, l'IA concentre tout un faisceau de risques (vie privée, désinformation, emploi, armes autonomes, et à terme un risque existentiel) qui appellent la même prudence : ralentir le temps de comprendre comment les maîtriser.",
+			en: 'Beyond this specific point, AI concentrates a whole set of risks (privacy, disinformation, jobs, autonomous weapons, and ultimately an existential risk) that call for the same caution: slowing down long enough to understand how to keep them in check.'
+		},
+		exist: {
+			fr: "Le plus préoccupant reste le risque existentiel : en construisant des systèmes plus intelligents que nous sans savoir les contrôler, nous prenons un pari dont l'humanité pourrait ne pas se relever.",
+			en: 'The most worrying is the existential risk: by building systems more intelligent than us without knowing how to control them, we are taking a gamble humanity might not recover from.'
+		}
+	}
+	const POLL = {
+		fr: "Cette préoccupation est largement partagée : selon un sondage OpinionWay réalisé pour le CeSIA en 2026, seuls 8 % des Français souhaitent accélérer le développement de l'IA, et près de huit sur dix sont favorables à des accords internationaux interdisant les capacités d'IA qui menacent la vie humaine ou les droits fondamentaux.",
+		en: 'This concern is widely shared: according to an OpinionWay poll for CeSIA in 2026, only 8% of French people want to accelerate AI development, and nearly eight in ten support international agreements banning AI capabilities that threaten human life or fundamental rights.'
+	}
+	const ASK = {
+		fr: "Je vous demande de soutenir publiquement une gouvernance internationale visant à mettre en pause l'entraînement des modèles d'IA les plus avancés, tant que leur sûreté et leur contrôle démocratique ne sont pas démontrés, et de porter cette position aux niveaux français et européen. L'association Pause IA (pauseia.fr) se tient à votre disposition, ainsi que celle de votre équipe, pour un briefing.",
+		en: 'I ask you to publicly support international governance aimed at pausing the training of the most advanced AI models, until their safety and democratic control are demonstrated, and to carry this position at the French and European level. The Pause AI association (pauseia.fr) would be glad to provide a briefing to you or your team.'
+	}
+
+	// Compose les paragraphes du corps selon l'angle, la longueur et la phrase perso.
+	function buildParagraphs(a: Angle, v: Version, personal: string): string[] {
+		const L = isEn ? 'en' : 'fr'
+		const paras = [HOOK[L], FOCUS[a][L]]
+		if (v === 'long') {
+			paras.push(a === 'ensemble' ? COMPLEMENT.exist[L] : COMPLEMENT.wide[L])
+			paras.push(POLL[L])
+		}
+		if (personal.trim()) paras.push(personal.trim())
+		paras.push(ASK[L])
+		return paras
+	}
 
 	let copied = false
 	function copyEmail() {
@@ -197,8 +244,8 @@
 	}
 
 	$: subject = isEn
-		? 'AI risks: concern from a constituent'
-		: "Risques liés aux systèmes d'IA avancés"
+		? 'Governing the most powerful AI systems'
+		: 'Encadrer le développement des IA les plus puissantes'
 
 	$: eluGroups = result
 		? [
@@ -315,19 +362,17 @@
 			{/if}
 
 			{#if result}
-				<p class="results-hint">
-					{#if sentCount > 0}
+				<p class="results-hint" class:done-all={sentCount > 0 && sentCount >= allElus.length}>
+					{#if sentCount >= allElus.length && allElus.length > 0}
+						🎉 {isEn
+							? `Done! You've written to all ${allElus.length} of your representatives. Thank you, this really helps.`
+							: `Bravo ! Vous avez écrit à vos ${allElus.length} élus. Merci, votre geste compte vraiment.`}
+					{:else if sentCount > 0}
 						<strong>{sentCount}/{allElus.length}</strong>
 						{isEn ? 'contacted.' : 'contactés.'}
-						{#if sentCount < allElus.length}
-							{isEn
-								? 'Write to the others too. It all counts.'
-								: 'Écrivez aussi aux autres, chaque message compte.'}
-						{:else}
-							🎉 {isEn
-								? 'You contacted them all. Thank you!'
-								: 'Vous les avez tous contactés. Merci !'}
-						{/if}
+						{isEn
+							? 'Keep going with the others, each message counts.'
+							: 'Continuez avec les autres, chaque message compte.'}
 					{:else}
 						{isEn
 							? 'Write to each of your representatives: one personal email each.'
@@ -508,20 +553,37 @@
 						{isEn ? 'Detailed' : 'Détaillée'}
 					</button>
 				</div>
-				{#if version === 'long'}
-					<div class="theme-chips">
-						{#each themes as theme}
-							<button
-								class="chip"
-								class:active={selectedThemes.has(theme.id)}
-								on:click={() => toggleTheme(theme.id)}
-							>
-								{isEn ? theme.labelEn : theme.label}
-							</button>
-						{/each}
-					</div>
-				{/if}
 			</div>
+
+			<div class="angle-row">
+				<span class="angle-label">
+					{isEn ? 'What worries you most:' : 'Ce qui vous préoccupe le plus :'}
+				</span>
+				<div class="theme-chips">
+					{#each angles as a}
+						<button class="chip" class:active={angle === a.id} on:click={() => (angle = a.id)}>
+							{isEn ? a.en : a.fr}
+						</button>
+					{/each}
+				</div>
+			</div>
+
+			<label class="perso-field">
+				<span
+					>{isEn
+						? 'Add a personal sentence (optional)'
+						: 'Ajoutez une phrase personnelle (facultatif)'}</span
+				>
+				<textarea
+					class="perso-input"
+					rows="2"
+					placeholder={isEn
+						? 'Why this matters to you. An authentic line carries far more weight.'
+						: 'Pourquoi cela vous touche. Une phrase sincère pèse bien plus lourd.'}
+					bind:value={personalSentence}
+					on:input={saveUser}
+				></textarea>
+			</label>
 
 			<!-- Aperçu de l'email -->
 			<div class="email-preview">
@@ -532,143 +594,9 @@
 				<div class="email-body" id="email-body">
 					<p>{salutation(selectedElu)}</p>
 					<p>{introLine(selectedElu, userName)}</p>
-					{#if version === 'short'}
-						{#if isEn}
-							<p>
-								I am writing to draw your attention to the rapid development of increasingly
-								autonomous artificial intelligence systems. The leaders of the world's largest AI
-								labs acknowledge that these technologies could pose a serious threat to civilisation
-								if their development is not properly governed. An international report led by Turing
-								Prize winner Yoshua Bengio, backed by 30 countries, confirms that no current safety
-								method is reliable.
-							</p>
-							<p>
-								There is currently no legal framework requiring independent safety evaluations
-								before these systems are developed or deployed. Companies self-regulate.
-							</p>
-							<p>
-								I ask you to put this issue on your committee's agenda and to support measures
-								requiring independent safety evaluations for the most powerful AI systems.
-							</p>
-							<p>
-								The Pause AI association (pauseia.fr) would be happy to provide a briefing to you or
-								your team.
-							</p>
-						{:else}
-							<p>
-								Je vous contacte au sujet du développement rapide de systèmes d'intelligence
-								artificielle de plus en plus autonomes et puissants. Les dirigeants des plus grands
-								laboratoires d'IA reconnaissent eux-mêmes que ces technologies pourraient
-								représenter une menace sérieuse pour la civilisation si leur développement n'est pas
-								correctement encadré. Un rapport international dirigé par le prix Turing Yoshua
-								Bengio, soutenu par 30 pays, confirme qu'aucune méthode de sécurité actuelle n'est
-								fiable.
-							</p>
-							<p>
-								Il n'existe aujourd'hui aucun cadre juridique exigeant des évaluations de sécurité
-								indépendantes avant que ces systèmes ne soient développés ou déployés. Les
-								entreprises s'auto-évaluent.
-							</p>
-							<p>
-								Je vous demande d'inscrire ce sujet à l'ordre du jour de votre commission et de
-								soutenir des mesures imposant des évaluations de sécurité indépendantes pour les
-								systèmes d'IA les plus puissants.
-							</p>
-							<p>
-								L'association Pause IA (pauseia.fr) serait heureuse de vous fournir un briefing, à
-								vous ou à votre équipe.
-							</p>
-						{/if}
-					{:else if isEn}
-						<p>
-							I am writing about the rapid development of increasingly powerful AI systems without
-							any adequate regulatory framework. The leaders of the main AI labs acknowledge that
-							their systems could pose a serious threat to civilisation if not properly governed.
-						</p>
-						{#if selectedThemes.has('individus')}
-							<p>
-								<strong>Privacy and surveillance.</strong> AI systems already enable mass surveillance
-								and individual profiling on an unprecedented scale, often without people's knowledge
-								or any possibility of redress.
-							</p>
-						{/if}
-						{#if selectedThemes.has('societe')}
-							<p>
-								<strong>Disinformation and democracy.</strong> Content generation tools now produce disinformation
-								at scale (videos and texts indistinguishable from reality), undermining democratic processes
-								and trust in institutions.
-							</p>
-						{/if}
-						{#if selectedThemes.has('economie')}
-							<p>
-								<strong>Job losses.</strong> Tens of millions of jobs in Europe could be significantly
-								affected by 2030, across transport, accounting, legal and medical services, with no adaptation
-								policy deployed at the scale required.
-							</p>
-						{/if}
-						{#if selectedThemes.has('humanite')}
-							<p>
-								<strong>Existential risks.</strong> The International AI Safety Report 2025, led by Turing
-								Prize winner Yoshua Bengio and backed by 30 countries, concludes that no current safety
-								method can reliably guarantee safe behaviour.
-							</p>
-						{/if}
-						<p>
-							Today, no legal framework requires independent safety evaluations before deploying AI
-							systems with potentially dangerous capabilities. Companies self-assess.
-						</p>
-						<p>
-							I ask you to raise this issue with the relevant committee and support measures
-							requiring independent safety evaluations for the most powerful AI systems. The Pause
-							AI association (pauseia.fr) would be happy to provide a briefing.
-						</p>
-					{:else}
-						<p>
-							Je vous écris au sujet du développement rapide de systèmes d'IA de plus en plus
-							puissants, sans cadre réglementaire adapté. Les dirigeants des principaux laboratoires
-							reconnaissent eux-mêmes que ces technologies pourraient représenter une menace
-							sérieuse pour la civilisation.
-						</p>
-						{#if selectedThemes.has('individus')}
-							<p>
-								<strong>Vie privée et surveillance.</strong> Les systèmes d'IA permettent déjà une surveillance
-								de masse et un profilage individuel sans précédent, souvent sans consentement ni recours
-								possible.
-							</p>
-						{/if}
-						{#if selectedThemes.has('societe')}
-							<p>
-								<strong>Désinformation et démocratie.</strong> Les outils d'IA produisent de la désinformation
-								à grande échelle (vidéos et textes indiscernables du réel), fragilisant les processus
-								démocratiques et la confiance dans les institutions.
-							</p>
-						{/if}
-						{#if selectedThemes.has('economie')}
-							<p>
-								<strong>Perte d'emploi.</strong> Des dizaines de millions d'emplois en Europe pourraient
-								être affectés d'ici 2030, des transports aux services juridiques et médicaux, sans politique
-								d'adaptation à la hauteur.
-							</p>
-						{/if}
-						{#if selectedThemes.has('humanite')}
-							<p>
-								<strong>Risques existentiels.</strong> Le rapport international dirigé par le prix Turing
-								Yoshua Bengio, soutenu par 30 pays, conclut qu'aucune méthode actuelle ne garantit des
-								comportements sûrs de manière fiable.
-							</p>
-						{/if}
-						<p>
-							Aujourd'hui, aucun cadre juridique n'exige d'évaluation de sécurité indépendante avant
-							le déploiement de systèmes aux capacités potentiellement dangereuses. Les entreprises
-							s'auto-évaluent.
-						</p>
-						<p>
-							Je vous demande d'inscrire ce sujet à l'ordre du jour d'une commission compétente et
-							de soutenir des évaluations de sécurité indépendantes pour les systèmes d'IA les plus
-							puissants. L'association Pause IA (pauseia.fr) serait heureuse de vous fournir un
-							briefing.
-						</p>
-					{/if}
+					{#each buildParagraphs(angle, version, personalSentence) as para}
+						<p>{para}</p>
+					{/each}
 					<p>
 						{isEn ? 'Yours sincerely,' : 'Cordialement,'}<br />
 						{userName.trim() || (isEn ? '[Your full name]' : '[Votre nom complet]')}<br />
@@ -865,6 +793,15 @@
 		margin-top: 1.25rem;
 		font-size: 0.9rem;
 		color: var(--text-2);
+	}
+
+	.results-hint.done-all {
+		font-size: 1rem;
+		font-weight: 600;
+		color: var(--brand-subtle);
+		background: var(--brand-light);
+		border-radius: 8px;
+		padding: 0.6rem 0.85rem;
 	}
 
 	/* Élus */
@@ -1105,6 +1042,49 @@
 		border-color: var(--brand);
 		background: var(--brand);
 		color: #1a1a1a;
+	}
+
+	.angle-row {
+		margin-bottom: 1rem;
+	}
+
+	.angle-label {
+		display: block;
+		font-size: 0.8rem;
+		font-weight: 600;
+		color: var(--text-2);
+		margin-bottom: 0.5rem;
+	}
+
+	.perso-field {
+		display: block;
+		margin-bottom: 1rem;
+	}
+
+	.perso-field span {
+		display: block;
+		font-size: 0.8rem;
+		font-weight: 600;
+		color: var(--text-2);
+		margin-bottom: 0.4rem;
+	}
+
+	.perso-input {
+		width: 100%;
+		padding: 0.6rem 0.8rem;
+		border: 2px solid var(--border);
+		border-radius: 9px;
+		font-size: 0.9rem;
+		font-family: inherit;
+		line-height: 1.5;
+		background: var(--bg);
+		color: var(--text);
+		resize: vertical;
+	}
+
+	.perso-input:focus {
+		outline: none;
+		border-color: var(--brand);
 	}
 
 	/* Aperçu email */
