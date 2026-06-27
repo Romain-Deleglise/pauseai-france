@@ -476,6 +476,39 @@ async function main() {
 	deputes.sort((a, b) => a.id.localeCompare(b.id))
 	senateurs.sort((a, b) => a.id.localeCompare(b.id))
 
+	// ── Garde-fous : si une source est cassée/tronquée, on échoue SANS rien
+	// écrire (les données committées restent en ligne). 577 députés / 348
+	// sénateurs officiellement ; on garde une marge pour les sièges vacants.
+	const depWithEmail = deputes.filter((d) => d.email).length
+	const depWithCirco = deputes.filter((d) => d.circo).length
+	const senWithEmail = senateurs.filter((s) => s.email).length
+	const checks = [
+		[
+			deputes.length >= 555 && deputes.length <= 585,
+			`nombre de députés suspect : ${deputes.length}`
+		],
+		[
+			senateurs.length >= 335 && senateurs.length <= 360,
+			`nombre de sénateurs suspect : ${senateurs.length}`
+		],
+		[
+			depWithEmail >= deputes.length * 0.95,
+			`trop de députés sans email (${depWithEmail}/${deputes.length})`
+		],
+		[
+			depWithCirco >= deputes.length * 0.95,
+			`trop de députés sans circonscription (${depWithCirco}/${deputes.length})`
+		],
+		[
+			senWithEmail >= senateurs.length * 0.8,
+			`trop de sénateurs sans email (${senWithEmail}/${senateurs.length})`
+		]
+	]
+	const failed = checks.filter(([ok]) => !ok).map(([, msg]) => msg)
+	if (failed.length) {
+		throw new Error(`Garde-fous échoués, rien n'est écrit : ${failed.join(' ; ')}`)
+	}
+
 	const data = {
 		generatedAt: new Date().toISOString().slice(0, 10),
 		sources: SOURCES,
@@ -498,8 +531,14 @@ async function main() {
 		console.warn(`⚠️  Géocodage ignoré : ${err.message}`)
 		return null
 	})
-	if (cpToCirco) {
+	if (cpToCirco && Object.keys(cpToCirco).length >= 4000) {
 		await writeStableJson(CP_FILE, cpToCirco)
+	} else if (cpToCirco) {
+		// Résultat anormalement faible : on garde le fichier existant plutôt que
+		// d'écraser un bon géocodage par un partiel.
+		console.warn(
+			`⚠️  Géocodage suspect (${Object.keys(cpToCirco).length} codes postaux) → fichier conservé.`
+		)
 	}
 
 	if (REPORT) printReport(deputes, senateurs)
