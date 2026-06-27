@@ -195,36 +195,19 @@
 <article>
 	{#if step === 1}
 		<!-- ════════ Étape 1 : trouver ses élus ════════ -->
-		<aside class="top-banner">
-			<span class="top-banner-icon">⚠️</span>
-			<p>
-				{#if isEn}
-					<strong>“Mitigating the risk of extinction from AI should be a global priority.”</strong>
-					Hundreds of the world's leading AI scientists and lab directors signed this warning. Your representatives
-					are the ones who can act.
-				{:else}
-					<strong
-						>« Atténuer le risque d'extinction lié à l'IA devrait être une priorité mondiale. »</strong
-					>
-					Des centaines de scientifiques et de dirigeants des plus grands laboratoires d'IA ont signé
-					cet avertissement. Ce sont vos élus qui peuvent agir.
-				{/if}
-			</p>
-		</aside>
-
-		<header class="hero">
-			<h1>{isEn ? 'Write to your representatives' : 'Écrivez à vos élus'}</h1>
-			<p class="hero-sub">
-				{#if isEn}
-					The most powerful AI systems are being built without independent oversight. A personal
-					email to your representative is one of the most effective ways to change that, and it
-					takes two minutes.
-				{:else}
-					Les systèmes d'IA les plus puissants se développent sans supervision indépendante. Un
-					email personnel à votre élu est l'un des moyens les plus efficaces d'y remédier, et cela
-					prend deux minutes.
-				{/if}
-			</p>
+		<header class="hero-band">
+			<div class="hero-inner">
+				<h1>{isEn ? 'Write to your representatives' : 'Écrivez à vos élus'}</h1>
+				<p class="hero-sub">
+					{#if isEn}
+						The most powerful AI is being built with no real safeguards. Your representatives can
+						change that. Write to them: it takes two minutes.
+					{:else}
+						Les IA les plus puissantes se développent sans véritable garde-fou. Vos élus peuvent
+						changer ça. Écrivez-leur : cela prend deux minutes.
+					{/if}
+				</p>
+			</div>
 		</header>
 
 		<section class="card">
@@ -409,6 +392,16 @@
 				<div>
 					<strong>{selectedElu.nom}</strong>
 					<small>{eluSubtitle(selectedElu)}</small>
+					{#if selectedElu.role === 'depute' && selectedElu.contactUrl}
+						<a
+							class="profile-link"
+							href={selectedElu.contactUrl}
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							{isEn ? 'View official profile ↗' : 'Voir sa fiche officielle ↗'}
+						</a>
+					{/if}
 				</div>
 			</div>
 
@@ -653,55 +646,37 @@
 		padding: 0 1.25rem 5rem;
 	}
 
-	/* Bandeau d'accroche */
-	.top-banner {
-		display: flex;
-		align-items: flex-start;
-		gap: 0.75rem;
-		background: var(--brand-light);
-		border: 1px solid var(--brand);
-		border-left: 5px solid var(--brand);
-		border-radius: 10px;
-		padding: 0.9rem 1.1rem;
-		margin-bottom: 2rem;
-	}
-
-	.top-banner-icon {
-		font-size: 1.3rem;
-		line-height: 1.4;
-		flex-shrink: 0;
-	}
-
-	.top-banner p {
-		margin: 0;
-		font-size: 0.92rem;
-		line-height: 1.55;
-		color: var(--text);
-	}
-
-	.top-banner strong {
-		color: var(--brand-subtle);
-	}
-
-	/* Hero */
-	.hero {
+	/* Hero coloré pleine largeur (full-bleed : déborde de la largeur de l'article) */
+	.hero-band {
+		width: 100vw;
+		margin-left: calc(50% - 50vw);
+		margin-top: -2.5rem; /* annule le margin-top de l'article */
+		margin-bottom: 2.75rem;
+		padding: 3.5rem 1.25rem 3.25rem;
+		background: var(--brand);
 		text-align: center;
-		margin-bottom: 2.5rem;
 	}
 
-	.hero h1 {
-		font-size: clamp(1.8rem, 5vw, 2.6rem);
+	.hero-inner {
+		max-inline-size: 44rem;
+		margin-inline: auto;
+	}
+
+	.hero-band h1 {
+		font-size: clamp(2rem, 6vw, 3rem);
 		font-weight: 800;
-		line-height: 1.1;
-		margin-bottom: 1rem;
+		line-height: 1.05;
+		margin: 0 0 1rem;
+		color: #1a1a1a;
 	}
 
 	.hero-sub {
-		font-size: 1.05rem;
-		line-height: 1.6;
-		color: var(--text-2);
-		max-inline-size: 38rem;
-		margin-inline: auto;
+		font-size: clamp(1rem, 2.2vw, 1.2rem);
+		line-height: 1.5;
+		margin: 0 auto;
+		max-inline-size: 36rem;
+		color: #3a2600;
+		font-weight: 500;
 	}
 
 	/* Cards */
@@ -929,6 +904,13 @@
 	.recipient small {
 		font-size: 0.8rem;
 		color: var(--text-2);
+	}
+
+	.profile-link {
+		font-size: 0.78rem;
+		color: var(--brand-subtle);
+		margin-top: 0.15rem;
+		width: fit-content;
 	}
 
 	/* Toolbar message */
