@@ -173,10 +173,24 @@
 	let version: Version = 'short'
 
 	// ── Contenu du mail (modulaire, sans tirets longs) ──
-	const HOOK = {
-		fr: "Les dirigeants des principaux laboratoires d'IA reconnaissent eux-mêmes que les systèmes les plus avancés pourraient représenter une menace majeure, voire un risque d'extinction. Le Rapport international sur la sécurité de l'IA, dirigé par le prix Turing Yoshua Bengio et présenté au Sommet de Paris, confirme qu'aucune méthode actuelle ne garantit leur contrôle.",
-		en: 'The leaders of the main AI labs acknowledge that the most advanced systems could pose a major threat, even a risk of extinction. The International AI Safety Report, led by Turing Prize winner Yoshua Bengio and presented at the Paris Summit, confirms that no current method can guarantee their control.'
-	}
+	// Plusieurs accroches : une est tirée au hasard par visiteur, pour diversifier
+	// les envois (anti « copier-coller » repéré par les équipes parlementaires).
+	const HOOKS = [
+		{
+			fr: "Les dirigeants des principaux laboratoires d'IA reconnaissent eux-mêmes que les systèmes les plus avancés pourraient représenter une menace majeure, voire un risque d'extinction. Le Rapport international sur la sécurité de l'IA, dirigé par le prix Turing Yoshua Bengio et présenté au Sommet de Paris, confirme qu'aucune méthode actuelle ne garantit leur contrôle.",
+			en: 'The leaders of the main AI labs acknowledge that the most advanced systems could pose a major threat, even a risk of extinction. The International AI Safety Report, led by Turing Prize winner Yoshua Bengio and presented at the Paris Summit, confirms that no current method can guarantee their control.'
+		},
+		{
+			fr: "En mai 2023, des centaines de scientifiques et les dirigeants des principaux laboratoires d'IA ont signé une déclaration commune : « Atténuer le risque d'extinction lié à l'IA devrait être une priorité mondiale, au même titre que les pandémies ou la guerre nucléaire. » Je partage profondément cette inquiétude.",
+			en: 'In May 2023, hundreds of scientists and the leaders of the main AI labs signed a joint statement: "Mitigating the risk of extinction from AI should be a global priority, alongside other societal-scale risks such as pandemics and nuclear war." I deeply share this concern.'
+		},
+		{
+			fr: "Le développement de l'IA s'accélère bien plus vite que notre capacité à l'encadrer. Des prix Turing comme Yoshua Bengio et Geoffrey Hinton, mais aussi les dirigeants d'OpenAI et d'Anthropic, alertent publiquement sur des risques graves et reconnaissent qu'aucune méthode ne permet aujourd'hui de garantir le contrôle de ces systèmes.",
+			en: 'AI is advancing far faster than our ability to govern it. Turing Prize winners such as Yoshua Bengio and Geoffrey Hinton, along with the leaders of OpenAI and Anthropic, publicly warn of severe risks and admit that no method today can guarantee control of these systems.'
+		}
+	]
+	// Tirée à l'initialisation (avant le 1er rendu côté client).
+	let hookIndex = Math.floor(Math.random() * HOOKS.length)
 	const FOCUS: Record<Angle, { fr: string; en: string }> = {
 		ensemble: {
 			fr: "Ces risques sont déjà concrets (désinformation, surveillance de masse, déstabilisation de l'emploi et de la démocratie), et la course aux modèles toujours plus autonomes accroît un risque existentiel.",
@@ -221,7 +235,7 @@
 	// Compose les paragraphes du corps selon l'angle, la longueur et la phrase perso.
 	function buildParagraphs(a: Angle, v: Version, personal: string): string[] {
 		const L = isEn ? 'en' : 'fr'
-		const paras = [HOOK[L], FOCUS[a][L]]
+		const paras = [HOOKS[hookIndex][L], FOCUS[a][L]]
 		if (v === 'long') {
 			paras.push(a === 'ensemble' ? COMPLEMENT.exist[L] : COMPLEMENT.wide[L])
 			paras.push(POLL[L])
@@ -229,6 +243,27 @@
 		if (personal.trim()) paras.push(personal.trim())
 		paras.push(ASK[L])
 		return paras
+	}
+
+	// ── Partage de la campagne (après envoi) ──
+	const SHARE_URL = 'https://pauseia.fr/ecrire-a-mes-elus'
+	$: shareText = isEn
+		? 'I just wrote to my representatives about the risks of the most powerful AI. Two minutes, and you can too:'
+		: "Je viens d'écrire à mes élus sur les risques des IA les plus puissantes. Deux minutes, et vous pouvez le faire aussi :"
+	$: shareLinks = {
+		x: `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(SHARE_URL)}`,
+		facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(SHARE_URL)}`,
+		linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(SHARE_URL)}`
+	}
+	$: joinHref = isEn ? '/en/rejoindre' : '/fr/rejoindre'
+	let shareCopied = false
+	function copyShareLink() {
+		void navigator.clipboard.writeText(SHARE_URL).then(() => {
+			shareCopied = true
+			setTimeout(() => {
+				shareCopied = false
+			}, 2500)
+		})
 	}
 
 	let copied = false
@@ -379,6 +414,42 @@
 							: 'Écrivez à chacun de vos élus : un email personnel pour chaque.'}
 					{/if}
 				</p>
+				{#if sentCount >= allElus.length && allElus.length > 0}
+					<div class="share-box">
+						<p class="share-title">
+							{isEn ? 'Spread the word:' : 'Faites passer le mot :'}
+						</p>
+						<div class="share-links">
+							<a class="share-btn" href={shareLinks.x} target="_blank" rel="noopener noreferrer"
+								>X / Twitter</a
+							>
+							<a
+								class="share-btn"
+								href={shareLinks.facebook}
+								target="_blank"
+								rel="noopener noreferrer">Facebook</a
+							>
+							<a
+								class="share-btn"
+								href={shareLinks.linkedin}
+								target="_blank"
+								rel="noopener noreferrer">LinkedIn</a
+							>
+							<button class="share-btn" on:click={copyShareLink}>
+								{#if shareCopied}
+									{isEn ? '✓ Link copied' : '✓ Lien copié'}
+								{:else}
+									{isEn ? 'Copy link' : 'Copier le lien'}
+								{/if}
+							</button>
+						</div>
+						<a class="join-link" href={joinHref}>
+							{isEn
+								? 'Want to do more? Join Pause AI ↗'
+								: 'Envie d’aller plus loin ? Rejoignez Pause IA ↗'}
+						</a>
+					</div>
+				{/if}
 				{#each eluGroups as group}
 					{#if group.list.length}
 						<div class="elu-group">
@@ -483,18 +554,28 @@
 				<span slot="head">{isEn ? 'How long does it take?' : 'Combien de temps ça prend ?'}</span>
 				<p slot="details">
 					{isEn
-						? 'About two minutes. Enter your postal code, pick a representative, replace your name and town, and send.'
-						: 'Environ deux minutes. Entrez votre code postal, choisissez un élu, remplacez votre nom et votre commune, puis envoyez.'}
+						? 'About two minutes. Enter your postal code and your name, pick a representative, and send.'
+						: 'Environ deux minutes. Entrez votre code postal et votre nom, choisissez un élu, puis envoyez.'}
 				</p>
 			</Accordion>
 			<Accordion id="faq-donnees" noHash>
 				<span slot="head">
-					{isEn ? 'Is my information safe?' : 'Mes informations sont-elles protégées ?'}
+					{isEn ? 'What about my data?' : 'Et mes données ?'}
 				</span>
 				<p slot="details">
 					{isEn
-						? 'We collect nothing. The email is sent from your own mail app directly to your representative. The blind copy (BCC) only lets us count how many emails were sent.'
-						: "Nous ne collectons rien. L'email part de votre propre messagerie directement vers votre élu. La copie cachée (CCI) nous sert uniquement à compter le nombre d'emails envoyés."}
+						? 'Your name and town stay on your device (used only to fill the draft, never sent to a server). The email is sent from your own mail app to your representative. A blind copy reaches us at campagne@pauseia.fr so we can measure and follow up the campaign; it therefore contains your message and your email address. You can remove that BCC before sending if you prefer.'
+						: "Votre nom et votre ville restent sur votre appareil (ils servent seulement à remplir le brouillon, ils ne sont jamais envoyés à un serveur). L'email part de votre propre messagerie vers votre élu. Une copie cachée nous parvient à campagne@pauseia.fr pour mesurer et suivre la campagne : elle contient donc votre message et votre adresse. Vous pouvez retirer cette copie cachée avant l'envoi si vous le préférez."}
+				</p>
+			</Accordion>
+			<Accordion id="faq-relance" noHash>
+				<span slot="head">
+					{isEn ? "What if I don't get a reply?" : "Et si je n'ai pas de réponse ?"}
+				</span>
+				<p slot="details">
+					{isEn
+						? 'Send from your personal address (an authentic email carries more weight), and feel free to follow up politely after about three weeks. You can also ask for a short meeting at their local office.'
+						: "Envoyez depuis votre adresse personnelle (un email authentique a plus de poids), et n'hésitez pas à relancer poliment après environ trois semaines. Vous pouvez aussi demander un rendez-vous à leur permanence."}
 				</p>
 			</Accordion>
 		</section>
@@ -626,10 +707,55 @@
 				</Button>
 			</div>
 
+			<p class="deliverability">
+				{isEn
+					? 'Send from your personal mailbox: an email from a real constituent carries far more weight than a form. Check the recipient before sending.'
+					: 'Envoyez depuis votre messagerie personnelle : un email d’un vrai électeur a bien plus de poids qu’un formulaire. Vérifiez le destinataire avant l’envoi.'}
+			</p>
+
 			<p class="bcc-hint">
 				{isEn ? 'BCC' : 'CCI'} <code>{BCC}</code>
 				{isEn ? '(helps us count letters sent)' : '(pour compter les emails envoyés)'}
 			</p>
+
+			{#if sent.has(selectedElu.id)}
+				<div class="share-box">
+					<p class="share-title">
+						{isEn
+							? 'Message sent! Help us reach more people:'
+							: 'Message envoyé ! Aidez-nous à toucher plus de monde :'}
+					</p>
+					<div class="share-links">
+						<a class="share-btn" href={shareLinks.x} target="_blank" rel="noopener noreferrer"
+							>X / Twitter</a
+						>
+						<a
+							class="share-btn"
+							href={shareLinks.facebook}
+							target="_blank"
+							rel="noopener noreferrer">Facebook</a
+						>
+						<a
+							class="share-btn"
+							href={shareLinks.linkedin}
+							target="_blank"
+							rel="noopener noreferrer">LinkedIn</a
+						>
+						<button class="share-btn" on:click={copyShareLink}>
+							{#if shareCopied}
+								{isEn ? '✓ Link copied' : '✓ Lien copié'}
+							{:else}
+								{isEn ? 'Copy link' : 'Copier le lien'}
+							{/if}
+						</button>
+					</div>
+					<a class="join-link" href={joinHref}>
+						{isEn
+							? 'Want to do more? Join Pause AI ↗'
+							: 'Envie d’aller plus loin ? Rejoignez Pause IA ↗'}
+					</a>
+				</div>
+			{/if}
 		</section>
 	{/if}
 </article>
@@ -1127,10 +1253,62 @@
 		margin-top: 1.25rem;
 	}
 
+	.deliverability {
+		font-size: 0.82rem;
+		line-height: 1.6;
+		color: var(--text-2);
+		margin-top: 1rem;
+	}
+
 	.bcc-hint {
 		font-size: 0.78rem;
 		color: var(--text-secondary);
 		margin-top: 0.85rem;
+	}
+
+	/* Partage après envoi */
+	.share-box {
+		margin-top: 1.5rem;
+		padding: 1.25rem;
+		border: 1px solid var(--brand);
+		background: var(--brand-light);
+		border-radius: 12px;
+	}
+
+	.share-title {
+		font-size: 0.95rem;
+		font-weight: 700;
+		margin: 0 0 0.75rem;
+	}
+
+	.share-links {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+	}
+
+	.share-btn {
+		padding: 0.5rem 0.9rem;
+		border: 1px solid var(--border);
+		border-radius: 8px;
+		background: var(--bg);
+		color: var(--text);
+		font-size: 0.85rem;
+		font-weight: 600;
+		text-decoration: none;
+		cursor: pointer;
+	}
+
+	.share-btn:hover {
+		border-color: var(--brand);
+	}
+
+	.join-link {
+		display: inline-block;
+		margin-top: 0.9rem;
+		font-size: 0.88rem;
+		font-weight: 600;
+		color: var(--brand-subtle);
 	}
 
 	.bcc-hint code {
