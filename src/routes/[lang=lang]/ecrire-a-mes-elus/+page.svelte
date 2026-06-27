@@ -180,13 +180,11 @@
 	}
 
 	// ── Angle principal du message (1 choix) ──
-	type Angle = 'ensemble' | 'existentiel' | 'democratie' | 'emploi' | 'privacy'
+	type Angle = 'ensemble' | 'existentiel' | 'societe'
 	const angles: { id: Angle; fr: string; en: string }[] = [
 		{ id: 'ensemble', fr: "Vue d'ensemble", en: 'Overview' },
 		{ id: 'existentiel', fr: 'Risque existentiel', en: 'Existential risk' },
-		{ id: 'democratie', fr: 'Démocratie & désinformation', en: 'Democracy & disinformation' },
-		{ id: 'emploi', fr: 'Emploi & inégalités', en: 'Jobs & inequality' },
-		{ id: 'privacy', fr: 'Vie privée & libertés', en: 'Privacy & freedoms' }
+		{ id: 'societe', fr: 'Risques pour la société', en: 'Risks to society' }
 	]
 	let angle: Angle = 'ensemble'
 	let personalSentence = ''
@@ -195,63 +193,63 @@
 	let version: Version = 'short'
 
 	// ── Contenu du mail (modulaire, sans tirets longs) ──
+	// Registre volontairement humain : on écrit à la première personne, on
+	// reconnaît les bénéfices de l'IA, et on évite l'empilement de citations.
 	// Plusieurs accroches : une est tirée au hasard par visiteur, pour diversifier
 	// les envois (anti « copier-coller » repéré par les équipes parlementaires).
 	const HOOKS = [
 		{
-			fr: "Les dirigeants des principaux laboratoires d'IA reconnaissent eux-mêmes que les systèmes les plus avancés pourraient représenter une menace majeure, voire un risque d'extinction. Le Rapport international sur la sécurité de l'IA, dirigé par le prix Turing Yoshua Bengio et présenté au Sommet de Paris, confirme qu'aucune méthode actuelle ne garantit leur contrôle.",
-			en: 'The leaders of the main AI labs acknowledge that the most advanced systems could pose a major threat, even a risk of extinction. The International AI Safety Report, led by Turing Prize winner Yoshua Bengio and presented at the Paris Summit, confirms that no current method can guarantee their control.'
+			fr: "Je vous écris parce que je suis préoccupé par la vitesse à laquelle se développent les intelligences artificielles les plus puissantes. Ce qui m'inquiète n'est pas la science-fiction : ce sont les dirigeants de ces laboratoires eux-mêmes qui reconnaissent publiquement que leurs systèmes pourraient, à terme, échapper à notre contrôle.",
+			en: 'I am writing because I am worried about the speed at which the most powerful artificial intelligence systems are being developed. What concerns me is not science fiction: it is the leaders of these very labs who publicly acknowledge that their systems could, in time, escape our control.'
 		},
 		{
-			fr: "En mai 2023, des centaines de scientifiques et les dirigeants des principaux laboratoires d'IA ont signé une déclaration commune : « Atténuer le risque d'extinction lié à l'IA devrait être une priorité mondiale, au même titre que les pandémies ou la guerre nucléaire. » Je partage profondément cette inquiétude.",
-			en: 'In May 2023, hundreds of scientists and the leaders of the main AI labs signed a joint statement: "Mitigating the risk of extinction from AI should be a global priority, alongside other societal-scale risks such as pandemics and nuclear war." I deeply share this concern.'
+			fr: "Je suis un citoyen inquiet de la tournure que prend le développement de l'intelligence artificielle. En mai 2023, des centaines de chercheurs et les dirigeants des principaux laboratoires d'IA ont signé une même phrase : « Atténuer le risque d'extinction lié à l'IA devrait être une priorité mondiale, au même titre que les pandémies ou la guerre nucléaire. » Quand ceux qui construisent cette technologie lancent eux-mêmes une telle alerte, il me semble que nous devons l'écouter.",
+			en: 'I am a citizen worried about the direction AI development is taking. In May 2023, hundreds of researchers and the leaders of the main AI labs signed a single sentence: "Mitigating the risk of extinction from AI should be a global priority, alongside other societal-scale risks such as pandemics and nuclear war." When the very people building this technology raise such a warning, it seems to me we should listen.'
 		},
 		{
-			fr: "Le développement de l'IA s'accélère bien plus vite que notre capacité à l'encadrer. Des prix Turing comme Yoshua Bengio et Geoffrey Hinton, mais aussi les dirigeants d'OpenAI et d'Anthropic, alertent publiquement sur des risques graves et reconnaissent qu'aucune méthode ne permet aujourd'hui de garantir le contrôle de ces systèmes.",
-			en: 'AI is advancing far faster than our ability to govern it. Turing Prize winners such as Yoshua Bengio and Geoffrey Hinton, along with the leaders of OpenAI and Anthropic, publicly warn of severe risks and admit that no method today can guarantee control of these systems.'
+			fr: "Comme beaucoup, j'observe avec un mélange d'enthousiasme et d'inquiétude les progrès rapides de l'intelligence artificielle. L'inquiétude l'emporte quand des scientifiques parmi les plus respectés, comme les prix Turing Yoshua Bengio et Geoffrey Hinton, expliquent que personne ne sait aujourd'hui garantir le contrôle des systèmes les plus avancés.",
+			en: 'Like many people, I watch the rapid progress of artificial intelligence with a mix of enthusiasm and concern. Concern wins out when some of the most respected scientists, such as Turing laureates Yoshua Bengio and Geoffrey Hinton, explain that no one today knows how to guarantee control of the most advanced systems.'
 		}
 	]
 	// Tirée à l'initialisation (avant le 1er rendu côté client).
 	let hookIndex = Math.floor(Math.random() * HOOKS.length)
 	const FOCUS: Record<Angle, { fr: string; en: string }> = {
 		ensemble: {
-			fr: "Ces risques sont déjà concrets (désinformation, surveillance de masse, déstabilisation de l'emploi et de la démocratie), et la course aux modèles toujours plus autonomes accroît un risque existentiel.",
-			en: 'These risks are already concrete (disinformation, mass surveillance, disruption of jobs and democracy), and the race toward ever more autonomous models increases an existential risk.'
+			fr: 'Ces dangers ne sont pas tous lointains : certains sont déjà là, comme la désinformation de masse ou la surveillance, tandis que la course à des systèmes toujours plus autonomes fait planer un risque bien plus grave encore.',
+			en: 'These dangers are not all distant: some are already here, such as mass disinformation or surveillance, while the race toward ever more autonomous systems raises an even graver risk.'
 		},
 		existentiel: {
-			fr: "Des chercheurs parmi les plus reconnus, comme Yoshua Bengio et Geoffrey Hinton, ainsi que les dirigeants d'OpenAI, de Google DeepMind et d'Anthropic, avertissent qu'une IA surpassant l'intelligence humaine pourrait, si elle échappait à notre contrôle, menacer l'existence même de l'humanité.",
-			en: 'Some of the most respected researchers, such as Yoshua Bengio and Geoffrey Hinton, along with the leaders of OpenAI, Google DeepMind and Anthropic, warn that an AI surpassing human intelligence could, if it escaped our control, threaten the very existence of humanity.'
+			fr: "Ce qui me préoccupe le plus est le risque le plus extrême : en construisant des machines plus intelligentes que nous sans savoir les maîtriser, nous prenons un pari dont l'humanité pourrait ne jamais se relever. Ce n'est plus une crainte marginale, mais une inquiétude partagée au plus haut niveau de la recherche.",
+			en: 'What worries me most is the most extreme risk: by building machines more intelligent than us without knowing how to control them, we are taking a gamble humanity might never recover from. This is no longer a fringe fear, but a concern shared at the highest levels of research.'
 		},
-		democratie: {
-			fr: "Les systèmes d'IA produisent déjà de la désinformation et des deepfakes à grande échelle, indiscernables du réel, qui fragilisent le débat public, la confiance dans l'information et nos processus démocratiques.",
-			en: 'AI systems already produce disinformation and deepfakes at scale, indistinguishable from reality, undermining public debate, trust in information and our democratic processes.'
-		},
-		emploi: {
-			fr: "En automatisant un nombre croissant de tâches intellectuelles, ces systèmes menacent des millions d'emplois et risquent d'aggraver fortement les inégalités, sans politique d'adaptation à la hauteur.",
-			en: 'By automating a growing share of intellectual tasks, these systems threaten millions of jobs and could sharply worsen inequality, with no adaptation policy on the right scale.'
-		},
-		privacy: {
-			fr: 'Ces systèmes rendent possible une surveillance de masse et un profilage individuel sans précédent (analyse automatisée de nos traces en ligne, reconnaissance faciale), au détriment de la vie privée et des libertés.',
-			en: 'These systems enable mass surveillance and unprecedented individual profiling (automated analysis of our online traces, facial recognition), at the expense of privacy and civil liberties.'
+		societe: {
+			fr: "Au-delà du long terme, ces systèmes fragilisent déjà notre société : deepfakes et désinformation qui minent le débat démocratique, surveillance et profilage qui menacent la vie privée, automatisation qui déstabilise l'emploi et risque d'aggraver les inégalités.",
+			en: 'Beyond the long term, these systems are already straining our society: deepfakes and disinformation that erode democratic debate, surveillance and profiling that threaten privacy, and automation that destabilises jobs and could deepen inequality.'
 		}
 	}
 	const COMPLEMENT = {
 		wide: {
-			fr: "Au-delà de ce point, l'IA concentre tout un faisceau de risques (vie privée, désinformation, emploi, armes autonomes, et à terme un risque existentiel) qui appellent la même prudence : ralentir le temps de comprendre comment les maîtriser.",
-			en: 'Beyond this specific point, AI concentrates a whole set of risks (privacy, disinformation, jobs, autonomous weapons, and ultimately an existential risk) that call for the same caution: slowing down long enough to understand how to keep them in check.'
+			fr: "Ce risque n'efface pas les autres : vie privée, désinformation, emploi, armes autonomes. Tous appellent la même prudence, celle de prendre le temps de comprendre avant de déployer.",
+			en: 'This risk does not erase the others: privacy, disinformation, jobs, autonomous weapons. They all call for the same caution, that of taking the time to understand before deploying.'
 		},
 		exist: {
-			fr: "Le plus préoccupant reste le risque existentiel : en construisant des systèmes plus intelligents que nous sans savoir les contrôler, nous prenons un pari dont l'humanité pourrait ne pas se relever.",
-			en: 'The most worrying is the existential risk: by building systems more intelligent than us without knowing how to control them, we are taking a gamble humanity might not recover from.'
+			fr: "Et même en mettant de côté ces effets immédiats, une question demeure : nous nous apprêtons à créer des intelligences supérieures à la nôtre sans aucune garantie de pouvoir les garder sous contrôle. C'est ce pari que je trouve déraisonnable.",
+			en: 'And even setting aside these immediate effects, one question remains: we are about to create intelligences greater than our own with no guarantee of keeping them under control. It is this gamble that I find unreasonable.'
 		}
 	}
 	const POLL = {
-		fr: "Cette préoccupation est largement partagée : selon un sondage OpinionWay réalisé pour le CeSIA en 2026, seuls 8 % des Français souhaitent accélérer le développement de l'IA, et près de huit sur dix sont favorables à des accords internationaux interdisant les capacités d'IA qui menacent la vie humaine ou les droits fondamentaux.",
+		fr: "Cette préoccupation est largement partagée : selon un sondage OpinionWay pour le CeSIA en 2026, seuls 8 % des Français souhaitent accélérer le développement de l'IA, et près de huit sur dix sont favorables à des accords internationaux interdisant les capacités d'IA qui menacent la vie humaine ou les droits fondamentaux.",
 		en: 'This concern is widely shared: according to an OpinionWay poll for CeSIA in 2026, only 8% of French people want to accelerate AI development, and nearly eight in ten support international agreements banning AI capabilities that threaten human life or fundamental rights.'
 	}
+	// Reconnaissance des bénéfices : désamorce le « catastrophisme » et rend le
+	// message plus crédible. Présent dans toutes les versions, juste avant l'appel.
+	const BALANCE = {
+		fr: "Je ne suis pas opposé au progrès : l'IA peut rendre d'immenses services, en médecine, dans la recherche ou au quotidien. C'est précisément parce que cette technologie est puissante qu'elle mérite d'être développée avec prudence et sous contrôle démocratique.",
+		en: 'I am not against progress: AI can bring immense benefits, in medicine, research and everyday life. It is precisely because this technology is so powerful that it deserves to be developed with caution and under democratic oversight.'
+	}
 	const ASK = {
-		fr: "Je vous demande de soutenir publiquement une gouvernance internationale visant à mettre en pause l'entraînement des modèles d'IA les plus avancés, tant que leur sûreté et leur contrôle démocratique ne sont pas démontrés, et de porter cette position aux niveaux français et européen. L'association Pause IA (pauseia.fr) se tient à votre disposition, ainsi que celle de votre équipe, pour un briefing.",
-		en: 'I ask you to publicly support international governance aimed at pausing the training of the most advanced AI models, until their safety and democratic control are demonstrated, and to carry this position at the French and European level. The Pause AI association (pauseia.fr) would be glad to provide a briefing to you or your team.'
+		fr: "C'est pourquoi je vous demande de soutenir publiquement une gouvernance internationale visant à mettre en pause l'entraînement des modèles d'IA les plus avancés, tant que leur sûreté et leur contrôle démocratique ne sont pas démontrés, et de porter cette position aux niveaux français et européen. L'association Pause IA (pauseia.fr) se tient à votre disposition, ainsi que celle de votre équipe, pour en échanger.",
+		en: 'That is why I ask you to publicly support international governance aimed at pausing the training of the most advanced AI models, until their safety and democratic control are demonstrated, and to carry this position at the French and European level. The Pause AI association (pauseia.fr) would be glad to discuss this with you or your team.'
 	}
 
 	// Compose les paragraphes du corps selon l'angle, la longueur et la phrase perso.
@@ -259,10 +257,13 @@
 		const L = isEn ? 'en' : 'fr'
 		const paras = [HOOKS[hookIndex][L], FOCUS[a][L]]
 		if (v === 'long') {
-			paras.push(a === 'ensemble' ? COMPLEMENT.exist[L] : COMPLEMENT.wide[L])
+			// On approfondit : l'angle existentiel s'élargit aux autres risques,
+			// les autres angles pointent vers le risque existentiel.
+			paras.push(a === 'existentiel' ? COMPLEMENT.wide[L] : COMPLEMENT.exist[L])
 			paras.push(POLL[L])
 		}
 		if (personal.trim()) paras.push(personal.trim())
+		paras.push(BALANCE[L])
 		paras.push(ASK[L])
 		return paras
 	}
