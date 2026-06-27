@@ -2,12 +2,14 @@ name: Mise à jour des élus
 
 # Régénère src/lib/data/elus.json (députés + sénateurs + emails) depuis les
 # sources ouvertes, et ouvre une PR quand les données ont changé.
-# Garde la page « Écrire à mes élus » à jour sans intervention manuelle.
+#
+# Filet de secours MANUEL : la mise à jour planifiée est assurée par le timer
+# systemd du serveur (scripts/update-elus-server.sh). On garde ce workflow en
+# déclenchement manuel pour pouvoir régénérer depuis GitHub si le serveur est
+# indisponible — sans ouvrir de PR en double avec le timer.
 
 on:
-  schedule:
-    - cron: '0 4 * * 1' # tous les lundis à 04:00 UTC
-  workflow_dispatch: {} # déclenchement manuel possible
+  workflow_dispatch: {} # déclenchement manuel uniquement (onglet Actions → Run workflow)
 
 permissions:
   contents: write
