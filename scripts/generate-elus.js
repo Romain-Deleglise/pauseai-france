@@ -6,7 +6,7 @@
  *
  * ⚠️  Ce script doit être exécuté depuis un environnement avec accès réseau
  *     ouvert (machine d'un mainteneur ou CI). Les hôtes utilisés
- *     (nosdeputes.fr, nossenateurs.fr, geo.api.gouv.fr) sont parfois bloqués
+ *     (data.gouv.fr, data.senat.fr, geo.api.gouv.fr) sont parfois bloqués
  *     par des proxies d'entreprise / environnements sandboxés.
  *
  * Usage :
@@ -60,76 +60,15 @@ const SOURCES = {
 	communes: 'https://geo.api.gouv.fr/communes?fields=code,codesPostaux,centre'
 }
 
-/**
- * Correspondance commune (code INSEE) → circonscription législative.
- *
- * Fournie via la variable d'environnement COMMUNE_CIRCO_URL. Deux formats sont
- * acceptés automatiquement :
- *
- *   1. GeoJSON « Contours des circonscriptions législatives » (Ministère de
- *      l'Intérieur, data.gouv.fr) — RECOMMANDÉ. Chaque feature porte
- *      `properties.code_circonscription` et `properties.communes` (codes INSEE
- *      séparés par des tirets).
- *      → Page du dataset : https://www.data.gouv.fr/datasets/contours-geographiques-des-circonscriptions-legislatives
- *        Copier le lien de la ressource GeoJSON et le mettre dans COMMUNE_CIRCO_URL.
- *
- *   2. CSV (séparateur `;` ou `,`) avec une colonne INSEE (en-tête contenant
- *      "insee"/"code_commune") et une colonne "circo".
- *
- * Sans cette variable, le géocodage fin est ignoré et la page retombe sur une
- * recherche au niveau département (toujours fonctionnelle).
- */
-const COMMUNE_CIRCO_URL =
-	process.env.COMMUNE_CIRCO_URL ||
-	// Défaut : GeoJSON officiel « Contours des circonscriptions législatives »
-	// (Ministère de l'Intérieur, data.gouv.fr — URL stable, ressource p10).
-	'https://www.data.gouv.fr/api/1/datasets/r/8b681b69-739c-47eb-a96b-06e8e2d8dc08'
+// Correspondance commune (INSEE) → circonscriptions, fichier statique committé.
+// Construit à partir de la table officielle commune↔circonscription (découpage
+// inchangé depuis 2012). Une commune découpée (grandes villes) a plusieurs
+// circonscriptions. Voir scripts/build-commune-circo.py pour le régénérer.
+const CIRCO_FILE = resolve(OUT_DIR, 'commune-circo.json')
 
 /** Déduit le code département d'un code commune INSEE (3 chiffres en outre-mer). */
 function deptFromInsee(insee) {
 	return insee.startsWith('97') || insee.startsWith('98') ? insee.slice(0, 3) : insee.slice(0, 2)
-}
-
-/** Extrait le numéro de circonscription d'un code type "01-02", "2A-01", "ZA-03". */
-function circoNumber(code) {
-	const m = String(code).match(/(\d+)\s*$/)
-	return m ? Number(m[1]) : NaN
-}
-
-/** Construit la map INSEE → { departement, circo } depuis un GeoJSON de contours. */
-function inseeMapFromGeojson(geo) {
-	const map = new Map()
-	for (const f of geo.features || []) {
-		const p = f.properties || {}
-		const circo = circoNumber(p.code_circonscription ?? p.codeCirconscription ?? p.circo)
-		const communes = String(p.communes ?? p.codes_insee ?? '')
-		if (!Number.isFinite(circo) || !communes) continue
-		for (const insee of communes
-			.split('-')
-			.map((s) => s.trim())
-			.filter(Boolean)) {
-			map.set(insee, { departement: deptFromInsee(insee), circo })
-		}
-	}
-	return map
-}
-
-/** Construit la map INSEE → { departement, circo } depuis un CSV. */
-function inseeMapFromCsv(rows) {
-	const inseeKey = Object.keys(rows[0] || {}).find((k) =>
-		/insee|code_commune|^codgeo|^com$/.test(k)
-	)
-	const circoKey = Object.keys(rows[0] || {}).find((k) => /circo/.test(k))
-	if (!inseeKey || !circoKey) return new Map()
-	const map = new Map()
-	for (const r of rows) {
-		const insee = (r[inseeKey] || '').padStart(5, '0')
-		const circo = circoNumber(r[circoKey])
-		if (insee && Number.isFinite(circo) && circo > 0) {
-			map.set(insee, { departement: deptFromInsee(insee), circo })
-		}
-	}
-	return map
 }
 
 const REPORT = process.argv.includes('--report')
@@ -152,128 +91,36 @@ async function fetchText(url) {
 	return res.text()
 }
 
-/** Parse un CSV simple (séparateur ; ou ,) en tableau d'objets indexés par en-tête. */
-function parseCsv(text) {
-	const lines = text.trim().split(/\r?\n/)
-	if (lines.length < 2) return []
-	const sep = (lines[0].match(/;/g) || []).length >= (lines[0].match(/,/g) || []).length ? ';' : ','
-	const headers = lines[0].split(sep).map((h) => h.trim().toLowerCase().replace(/^"|"$/g, ''))
-	return lines.slice(1).map((line) => {
-		const cells = line.split(sep)
-		const row = {}
-		headers.forEach((h, i) => (row[h] = (cells[i] ?? '').trim().replace(/^"|"$/g, '')))
-		return row
-	})
-}
-
-// Paris / Lyon / Marseille : une seule commune INSEE mais plusieurs
-// circonscriptions → on ne peut pas les géocoder par le centre de la commune.
-// On les exclut : leurs codes postaux retombent sur la liste départementale.
-const PLM_INSEE = new Set(['75056', '69123', '13055'])
-
-/** Test point-dans-polygone (ray casting) sur un anneau [[x,y],…]. */
-function pointInRing(x, y, ring) {
-	let inside = false
-	for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
-		const xi = ring[i][0]
-		const yi = ring[i][1]
-		const xj = ring[j][0]
-		const yj = ring[j][1]
-		if (yi > y !== yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) inside = !inside
-	}
-	return inside
-}
-
-/** Prépare les features (dept, circo, anneaux extérieurs, bbox) pour le test géométrique. */
-function prepareCircoFeatures(geo) {
-	const feats = []
-	for (const f of geo.features || []) {
-		const p = f.properties || {}
-		const dept = String(p.codeDepartement ?? '')
-		const cc = String(p.codeCirconscription ?? '')
-		let circo = Number(cc.slice(dept.length))
-		if (!Number.isFinite(circo) || !circo) circo = circoNumber(p.nomCirconscription)
-		const g = f.geometry
-		if (!dept || !Number.isFinite(circo) || !g) continue
-		const polys = g.type === 'Polygon' ? [g.coordinates] : g.coordinates
-		const rings = polys.map((poly) => poly[0]) // anneau extérieur de chaque polygone
-		let minX = Infinity,
-			minY = Infinity,
-			maxX = -Infinity,
-			maxY = -Infinity
-		for (const ring of rings)
-			for (const [x, y] of ring) {
-				if (x < minX) minX = x
-				if (x > maxX) maxX = x
-				if (y < minY) minY = y
-				if (y > maxY) maxY = y
-			}
-		feats.push({ dept, circo, rings, bbox: [minX, minY, maxX, maxY] })
-	}
-	return feats
-}
-
 /**
  * Construit la table code postal → liste de circonscriptions { departement, circo }.
- * Trois cas selon la source COMMUNE_CIRCO_URL :
- *   - GeoJSON de contours (géométries) → point-dans-polygone via le centre des communes ;
- *   - GeoJSON avec liste de communes par feature → correspondance directe ;
- *   - CSV commune INSEE → circo.
- * Renvoie null si rien d'exploitable.
+ * Croise le fichier statique commune→circos (CIRCO_FILE, table officielle) avec
+ * les codes postaux des communes (geo.api.gouv.fr). Une commune découpée
+ * (grande ville) apporte plusieurs circonscriptions : la page affiche alors les
+ * députés candidats, sans jamais en désigner un faux. Renvoie null si le fichier
+ * n'est pas disponible.
  */
 async function buildCodePostalToCirco() {
-	if (!COMMUNE_CIRCO_URL) {
-		console.log('ℹ️  COMMUNE_CIRCO_URL non défini → géocodage fin ignoré.')
-		return null
-	}
-	console.log('→ Téléchargement de la source de circonscriptions…')
-	const raw = await fetchText(COMMUNE_CIRCO_URL)
-	let geo = null
+	let communeCirco
 	try {
-		geo = JSON.parse(raw)
+		communeCirco = JSON.parse(await readFile(CIRCO_FILE, 'utf8'))
 	} catch {
-		geo = null
+		console.warn(`⚠️  ${CIRCO_FILE} introuvable → géocodage fin ignoré.`)
+		return null
 	}
 
 	console.log('→ Téléchargement des communes (geo.api.gouv.fr)…')
 	const communes = await fetchJson(SOURCES.communes)
 
-	// code postal → set de circos (dédupliquées via clé "dept-circo")
+	// code postal → circos (dédupliquées via clé "dept-circo")
 	const cpMap = {}
-	const add = (cps, circo) => {
-		for (const cp of cps || []) {
-			;(cpMap[cp] ||= new Map()).set(`${circo.departement}-${circo.circo}`, circo)
-		}
-	}
-
-	if (geo && Array.isArray(geo.features) && geo.features[0]?.geometry) {
-		// Contours géométriques → point-dans-polygone.
-		const feats = prepareCircoFeatures(geo)
-		for (const c of communes) {
-			if (PLM_INSEE.has(c.code)) continue
-			const ctr = c.centre && c.centre.coordinates
-			if (!ctr) continue
-			const [x, y] = ctr
-			for (const ft of feats) {
-				const [a, b, A, B] = ft.bbox
-				if (x < a || x > A || y < b || y > B) continue
-				if (ft.rings.some((ring) => pointInRing(x, y, ring))) {
-					add(c.codesPostaux, { departement: ft.dept, circo: ft.circo })
-					break
-				}
+	for (const c of communes) {
+		const circos = communeCirco[c.code]
+		if (!circos) continue
+		const departement = deptFromInsee(c.code)
+		for (const circo of circos) {
+			for (const cp of c.codesPostaux || []) {
+				;(cpMap[cp] ||= new Map()).set(`${departement}-${circo}`, { departement, circo })
 			}
-		}
-	} else {
-		// Liste de communes (GeoJSON) ou CSV → correspondance INSEE directe.
-		const inseeToCirco =
-			geo && Array.isArray(geo.features) ? inseeMapFromGeojson(geo) : inseeMapFromCsv(parseCsv(raw))
-		if (inseeToCirco.size === 0) {
-			console.warn('⚠️  Aucune correspondance INSEE→circo exploitable → géocodage ignoré.')
-			return null
-		}
-		for (const c of communes) {
-			const circo = inseeToCirco.get(c.code)
-			if (circo) add(c.codesPostaux, circo)
 		}
 	}
 

@@ -62,45 +62,34 @@ pnpm run generate-elus                    # régénère src/lib/data/elus.json
 node scripts/generate-elus.js --report    # + rapport de qualité des emails
 ```
 
-> ⚠️ Nécessite un accès réseau ouvert vers `nosdeputes.fr` / `nossenateurs.fr`.
-> Certains environnements (CI sandboxée, proxy d'entreprise) bloquent ces hôtes.
+> ⚠️ Nécessite un accès réseau ouvert vers `data.gouv.fr`, `data.senat.fr` et
+> `geo.api.gouv.fr`. Certains environnements (CI sandboxée, proxy d'entreprise)
+> bloquent ces hôtes.
 
-## Géocodage code postal → circonscription (clic unique sur le bon député)
+## Géocodage code postal → circonscription (cibler le bon député)
 
-Avec la variable d'environnement `COMMUNE_CIRCO_URL`, le script produit en plus
-`code-postal-circo.json`, qui permet de cibler **le député exact** au lieu de
-lister tous les députés du département.
+Le générateur produit `code-postal-circo.json` en croisant deux choses :
 
-### Où trouver le fichier (≈ 2 clics)
+- **`commune-circo.json`** : table statique commune INSEE → circonscription(s),
+  committée dans le repo. Construite depuis la table officielle commune ↔
+  circonscription (découpage **inchangé depuis 2012**), donc à ne régénérer que
+  si le découpage change, via `python3 scripts/build-commune-circo.py`
+  (nécessite `pip install openpyxl`).
+- les **codes postaux** des communes (`geo.api.gouv.fr`).
 
-Source recommandée : le dataset **« Contours des circonscriptions législatives »**
-du Ministère de l'Intérieur sur data.gouv.fr :
-<https://www.data.gouv.fr/datasets/contours-geographiques-des-circonscriptions-legislatives>
+Les **grandes villes découpées** (Paris, Toulouse, Nantes…) sont une seule
+commune répartie sur plusieurs circonscriptions : toutes sont conservées, et la
+page propose alors les **députés candidats** de la ville (jamais un seul faux).
+Pour les ~35 000 autres communes, le ciblage désigne le **député exact**.
 
-1. Ouvrir la page, section **Fichiers / Ressources**.
-2. Sur la ressource **GeoJSON**, copier le lien de téléchargement (clic droit →
-   « Copier l'adresse du lien »).
+## Fiabilité des emails
 
-C'est cette URL qu'on met dans `COMMUNE_CIRCO_URL`. Le script détecte
-automatiquement le format (GeoJSON de contours **ou** CSV `insee;circo`).
+- **Députés** : email officiel du CSV de l'Assemblée, sinon déduit du motif
+  `prenom.nom@assemblee-nationale.fr` (motif réel et fiable).
+- **Sénateurs** : email public de l'open data du Sénat ; sinon lien vers
+  l'annuaire officiel (`vos-senateurs.html`).
 
-```bash
-COMMUNE_CIRCO_URL="https://www.data.gouv.fr/fr/datasets/r/<id-de-la-ressource>" \
-  pnpm run generate-elus
-```
-
-Pour l'automatiser, coller la même URL dans
-_Settings → Secrets and variables → Actions → Variables_ (`COMMUNE_CIRCO_URL`) :
-le workflow hebdomadaire l'utilisera. Sans elle, la recherche fonctionne au
-niveau département (repli sûr). Pour les codes postaux couvrant plusieurs
-circonscriptions (grandes villes), la page affiche les députés candidats
-correspondants.
-
-## Fiabilité des emails (redondance multi-sources)
-
-Le script croise, pour chaque élu, l'email fourni par la source ouverte et
-l'email déduit du **motif institutionnel** (`prenom.nom@assemblee-nationale.fr`
-ou `@senat.fr`), puis attribue un niveau de confiance :
+Chaque élu reçoit un niveau de confiance :
 
 | `emailConfidence` | Signification                                           |
 | ----------------- | ------------------------------------------------------- |
