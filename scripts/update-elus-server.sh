@@ -15,7 +15,8 @@
 #   BASE_BRANCH    branche cible de la PR         (défaut : main)
 #   PR_BRANCH      branche de travail             (défaut : chore/maj-elus)
 #   GIT_NAME / GIT_EMAIL   auteur des commits
-#   COMMUNE_CIRCO_URL      surcharge la source des circonscriptions (sinon défaut)
+#   ALERT_EMAIL    adresse prévenue en cas d'échec (défaut romain@pauseia.fr ;
+#                  vide = pas d'alerte). Utilise la commande `mail` du serveur.
 #
 set -euo pipefail
 
@@ -26,6 +27,22 @@ BASE_BRANCH="${BASE_BRANCH:-main}"
 PR_BRANCH="${PR_BRANCH:-chore/maj-elus}"
 GIT_NAME="${GIT_NAME:-Pause IA Bot}"
 GIT_EMAIL="${GIT_EMAIL:-bot@pauseia.fr}"
+# Adresse alertée en cas d'échec (vide = pas d'alerte mail).
+ALERT_EMAIL="${ALERT_EMAIL:-romain@pauseia.fr}"
+
+# Alerte par mail si une étape échoue : on est ainsi prévenu d'une source
+# cassée, d'un garde-fou déclenché ou d'un token expiré (fini la staleness
+# silencieuse). Les données en ligne, elles, restent intactes.
+notify_failure() {
+	local line=$1
+	local msg="Échec de la mise à jour des élus (pauseia.fr), ligne $line : ${BASH_COMMAND}"
+	echo "✗ $msg" >&2
+	if [[ -n "$ALERT_EMAIL" ]] && command -v mail >/dev/null 2>&1; then
+		printf '%s\n\nDétails : journalctl -u update-elus -n 100\n' "$msg" |
+			mail -s "[Pause IA] Échec mise à jour des élus" "$ALERT_EMAIL" || true
+	fi
+}
+trap 'notify_failure "$LINENO"' ERR
 
 if [[ -z "${GITHUB_TOKEN:-}" ]]; then
 	echo "✗ GITHUB_TOKEN manquant (PAT avec Contents + Pull requests en write)." >&2
