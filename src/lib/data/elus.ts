@@ -4,12 +4,15 @@
 // de sources ouvertes (NosDéputés / NosSénateurs), avec croisement des emails.
 // Voir l'en-tête du script pour le détail des niveaux de confiance.
 //
-// La résolution se fait au niveau DÉPARTEMENT : on déduit le département du code
-// postal (déterministe, sans appel réseau au runtime), puis on présente les
-// sénateurs du département (élus au département) et les députés du département
-// (l'utilisateur choisit sa circonscription dans la liste, identifiée par nom).
+// Résolution :
+//  - Sénateurs : par DÉPARTEMENT (ils sont élus au département) — toujours fiable.
+//  - Députés : par CIRCONSCRIPTION exacte quand le code postal est présent dans
+//    code-postal-circo.json (géocodage fin) ; sinon repli sur tous les députés
+//    du département (l'utilisateur reconnaît le sien au nom de circonscription).
+// Tout est déterministe et sans appel réseau au runtime.
 
 import eluxData from './elus.json'
+import cpCircoData from './code-postal-circo.json'
 
 export type EmailConfidence = 'high' | 'medium' | 'low' | 'none'
 
@@ -37,7 +40,13 @@ interface ElusData {
 	senateurs: Elu[]
 }
 
+interface CircoRef {
+	departement: string
+	circo: number
+}
+
 const data = eluxData as unknown as ElusData
+const cpToCirco = cpCircoData as unknown as Record<string, CircoRef[] | undefined>
 
 export const generatedAt = data.generatedAt
 export const isSampleData = data.sample === true
@@ -68,20 +77,38 @@ export interface LookupResult {
 	departements: string[]
 	senateurs: Elu[]
 	deputes: Elu[]
+	/** true si les députés sont ciblés à la circonscription exacte (géocodage). */
+	exactDeputes: boolean
 }
 
 /** Renvoie tous les élus (sénateurs + députés) pour un code postal donné. */
 export function lookupElus(codePostal: string): LookupResult | null {
-	const depts = departementsFromCodePostal(codePostal)
+	const clean = (codePostal || '').replace(/\s/g, '')
+	const depts = departementsFromCodePostal(clean)
 	if (depts.length === 0) return null
 
 	const senateurs: Elu[] = []
-	const deputes: Elu[] = []
+	const allDeputes: Elu[] = []
 	for (const dept of depts) {
 		senateurs.push(...(data.senateursParDept[dept] ?? []))
-		deputes.push(...(data.deputesParDept[dept] ?? []))
+		allDeputes.push(...(data.deputesParDept[dept] ?? []))
 	}
+
+	// Géocodage fin : si le code postal mappe vers des circonscriptions précises,
+	// on ne garde que les députés de ces circonscriptions.
+	let deputes = allDeputes
+	let exactDeputes = false
+	const circos = cpToCirco[clean]
+	if (circos && circos.length) {
+		const keys = new Set(circos.map((c) => `${c.departement}-${c.circo}`))
+		const filtered = allDeputes.filter((d) => keys.has(`${d.departement}-${d.circo}`))
+		if (filtered.length) {
+			deputes = filtered
+			exactDeputes = true
+		}
+	}
+
 	if (senateurs.length === 0 && deputes.length === 0) return null
 
-	return { departements: depts, senateurs, deputes }
+	return { departements: depts, senateurs, deputes, exactDeputes }
 }

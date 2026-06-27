@@ -521,7 +521,7 @@
 				{/if}
 
 				{#if result}
-					{#each [{ key: 'senateurs', list: result.senateurs, fr: 'Vos sénateurs', en: 'Your senators' }, { key: 'deputes', list: result.deputes, fr: 'Vos députés', en: 'Your MPs' }] as group}
+					{#each [{ key: 'senateurs', list: result.senateurs, fr: 'Vos sénateurs', en: 'Your senators' }, { key: 'deputes', list: result.deputes, fr: result.exactDeputes ? 'Votre député' : 'Les députés de votre département', en: result.exactDeputes ? 'Your MP' : 'The MPs of your department' }] as group}
 						{#if group.list.length}
 							<div class="elu-group">
 								<h4>{isEn ? group.en : group.fr}</h4>

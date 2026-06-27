@@ -42,11 +42,28 @@ import { fileURLToPath } from 'node:url'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const OUT_DIR = resolve(__dirname, '../src/lib/data')
 const OUT_FILE = resolve(OUT_DIR, 'elus.json')
+const CP_FILE = resolve(OUT_DIR, 'code-postal-circo.json')
 
 const SOURCES = {
 	deputes: 'https://www.nosdeputes.fr/deputes/enmandat/json',
-	senateurs: 'https://www.nossenateurs.fr/senateurs/enmandat/json'
+	senateurs: 'https://www.nossenateurs.fr/senateurs/enmandat/json',
+	// Toutes les communes avec leurs codes postaux + code INSEE (Etalab, geo.api.gouv.fr).
+	communes: 'https://geo.api.gouv.fr/communes?fields=code,nom,codesPostaux,codeDepartement'
 }
+
+/**
+ * Correspondance commune (code INSEE) → circonscription législative.
+ *
+ * Pas d'API stable et universelle pour ça : on passe par un CSV open data,
+ * fourni via la variable d'environnement COMMUNE_CIRCO_URL.
+ * Format attendu : un CSV (séparateur `;` ou `,`) avec au minimum les colonnes
+ *   - code commune INSEE   (en-tête contenant "insee" ou "code_commune")
+ *   - numéro de circo       (en-tête contenant "circo")
+ * Récupérable sur data.gouv.fr (rechercher « circonscriptions législatives
+ * communes »). Sans cette variable, le géocodage fin est ignoré et la page
+ * retombe sur une recherche au niveau département (toujours fonctionnelle).
+ */
+const COMMUNE_CIRCO_URL = process.env.COMMUNE_CIRCO_URL || null
 
 const REPORT = process.argv.includes('--report')
 
@@ -54,12 +71,86 @@ const REPORT = process.argv.includes('--report')
 // Utilitaires
 // ─────────────────────────────────────────────────────────────────────────────
 
+const UA = { 'User-Agent': 'pauseia.fr elus generator (contact: campagne@pauseia.fr)' }
+
 async function fetchJson(url) {
-	const res = await fetch(url, {
-		headers: { 'User-Agent': 'pauseia.fr elus generator (contact: campagne@pauseia.fr)' }
-	})
+	const res = await fetch(url, { headers: UA })
 	if (!res.ok) throw new Error(`HTTP ${res.status} pour ${url}`)
 	return res.json()
+}
+
+async function fetchText(url) {
+	const res = await fetch(url, { headers: UA })
+	if (!res.ok) throw new Error(`HTTP ${res.status} pour ${url}`)
+	return res.text()
+}
+
+/** Parse un CSV simple (séparateur ; ou ,) en tableau d'objets indexés par en-tête. */
+function parseCsv(text) {
+	const lines = text.trim().split(/\r?\n/)
+	if (lines.length < 2) return []
+	const sep = (lines[0].match(/;/g) || []).length >= (lines[0].match(/,/g) || []).length ? ';' : ','
+	const headers = lines[0].split(sep).map((h) => h.trim().toLowerCase().replace(/^"|"$/g, ''))
+	return lines.slice(1).map((line) => {
+		const cells = line.split(sep)
+		const row = {}
+		headers.forEach((h, i) => (row[h] = (cells[i] ?? '').trim().replace(/^"|"$/g, '')))
+		return row
+	})
+}
+
+/**
+ * Construit la table code postal → liste de circonscriptions { departement, circo }.
+ * Croise les communes (geo.api.gouv.fr) avec la correspondance commune→circo.
+ * Renvoie null si la source de circonscriptions n'est pas disponible.
+ */
+async function buildCodePostalToCirco() {
+	if (!COMMUNE_CIRCO_URL) {
+		console.log('ℹ️  COMMUNE_CIRCO_URL non défini → géocodage fin ignoré.')
+		return null
+	}
+	console.log('→ Téléchargement de la correspondance commune → circonscription…')
+	const rows = parseCsv(await fetchText(COMMUNE_CIRCO_URL))
+	const inseeKey = Object.keys(rows[0] || {}).find((k) =>
+		/insee|code_commune|^codgeo|^com$/.test(k)
+	)
+	const circoKey = Object.keys(rows[0] || {}).find((k) => /circo/.test(k))
+	if (!inseeKey || !circoKey) {
+		console.warn('⚠️  Colonnes INSEE/circo introuvables dans le CSV → géocodage ignoré.')
+		return null
+	}
+	// INSEE → { departement, circo }
+	const inseeToCirco = new Map()
+	for (const r of rows) {
+		const insee = (r[inseeKey] || '').padStart(5, '0')
+		const circo = Number(String(r[circoKey]).replace(/\D/g, ''))
+		if (insee && Number.isFinite(circo) && circo > 0) {
+			// Le département se déduit du code INSEE (2 premiers car., 3 pour l'outre-mer).
+			const dept =
+				insee.startsWith('97') || insee.startsWith('98') ? insee.slice(0, 3) : insee.slice(0, 2)
+			inseeToCirco.set(insee, { departement: dept, circo })
+		}
+	}
+
+	console.log('→ Téléchargement des communes (geo.api.gouv.fr)…')
+	const communes = await fetchJson(SOURCES.communes)
+
+	// code postal → set de circos (dédupliquées via clé "dept-circo")
+	const cpMap = {}
+	for (const c of communes) {
+		const circo = inseeToCirco.get(c.code)
+		if (!circo) continue
+		for (const cp of c.codesPostaux || []) {
+			const key = `${circo.departement}-${circo.circo}`
+			;(cpMap[cp] ||= new Map()).set(key, circo)
+		}
+	}
+	const out = {}
+	for (const [cp, m] of Object.entries(cpMap)) {
+		out[cp] = [...m.values()].sort((a, b) => a.circo - b.circo)
+	}
+	console.log(`  ${Object.keys(out).length} codes postaux mappés`)
+	return out
 }
 
 /** Enlève accents, met en minuscule, garde [a-z0-9] → pour les emails déduits. */
@@ -201,6 +292,16 @@ async function main() {
 	await writeFile(OUT_FILE, JSON.stringify(data, null, '\t') + '\n')
 	console.log(`✓ Écrit ${OUT_FILE}`)
 	console.log(`  ${deputes.length} députés, ${senateurs.length} sénateurs`)
+
+	// Table code postal → circonscription (géocodage fin, optionnel).
+	const cpToCirco = await buildCodePostalToCirco().catch((err) => {
+		console.warn(`⚠️  Géocodage ignoré : ${err.message}`)
+		return null
+	})
+	if (cpToCirco) {
+		await writeFile(CP_FILE, JSON.stringify(cpToCirco) + '\n')
+		console.log(`✓ Écrit ${CP_FILE}`)
+	}
 
 	if (REPORT) printReport(deputes, senateurs)
 }
