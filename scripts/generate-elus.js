@@ -272,6 +272,9 @@ async function fetchDeputes() {
 			emailConfidence: confidence,
 			emailSources,
 			contactUrl: anId ? `https://www.assemblee-nationale.fr/dyn/deputes/${anId}` : null,
+			photo: anId
+				? `https://www.assemblee-nationale.fr/dyn/static/tribun/17/photos/carre/${anId.replace(/^PA/, '')}.jpg`
+				: null,
 			...(conflict ? { _conflict: conflict } : {})
 		})
 	}
@@ -405,6 +408,16 @@ const DEPT_NAME_TO_CODE = (() => {
 	return m
 })()
 
+/** Slug pour les URLs de fiche du Sénat : minuscules, sans accents, séparé par « _ ». */
+function senatSlug(s) {
+	return (s || '')
+		.normalize('NFD')
+		.replace(/[̀-ͯ]/g, '')
+		.toLowerCase()
+		.replace(/[^a-z0-9]+/g, '_')
+		.replace(/^_+|_+$/g, '')
+}
+
 /** Télécharge et parse le CSV ODSEN, ne garde que les sénateurs en exercice. */
 async function fetchSenateurs() {
 	const res = await fetch(SOURCES.senateurs, { headers: UA })
@@ -453,8 +466,11 @@ async function fetchSenateurs() {
 			email,
 			emailConfidence: email ? 'high' : 'none',
 			emailSources: email ? ['senat'] : [],
-			// Pas de fiche par matricule fiable : on pointe l'annuaire officiel.
-			contactUrl: 'https://www.senat.fr/vos-senateurs.html'
+			// Fiche officielle du sénateur (motif nom_prenom + matricule).
+			contactUrl: mat
+				? `https://www.senat.fr/senateur/${senatSlug(nom)}_${senatSlug(prenom)}${mat}.html`
+				: 'https://www.senat.fr/vos-senateurs.html',
+			photo: null
 		})
 	}
 	if (unmappedDept) {

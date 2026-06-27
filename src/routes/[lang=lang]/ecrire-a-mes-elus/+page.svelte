@@ -20,10 +20,18 @@
 	let codePostal = ''
 	let result: LookupResult | null = null
 	let searched = false
+	let searchError: 'format' | 'notfound' | null = null
 
 	function search() {
 		searched = true
-		result = lookupElus(codePostal)
+		const clean = codePostal.replace(/\s/g, '')
+		if (!/^\d{5}$/.test(clean)) {
+			result = null
+			searchError = 'format'
+			return
+		}
+		result = lookupElus(clean)
+		searchError = result ? null : 'notfound'
 	}
 
 	function choose(elu: Elu) {
@@ -56,14 +64,17 @@
 	// 1re phrase, localisée : signale « je suis votre électeur ».
 	function introLine(elu: Elu): string {
 		const loc = localite(elu)
+		const nom = userName.trim() || (isEn ? '[your name]' : '[votre nom]')
+		const zone = isEn ? 'constituency' : 'circonscription'
+		const zoneSen = isEn ? 'department' : 'département'
 		if (isEn) {
 			return elu.role === 'depute'
-				? `My name is [your name], a resident of your constituency: ${loc}.`
-				: `My name is [your name], a resident of your department: ${loc}.`
+				? `My name is ${nom}, a resident of your constituency: ${loc}.`
+				: `My name is ${nom}, a resident of your department: ${loc}.`
 		}
 		return elu.role === 'depute'
-			? `Je suis [votre nom], habitant de votre circonscription : ${loc}.`
-			: `Je suis [votre nom], habitant de votre département : ${loc}.`
+			? `Je suis ${nom}, habitant de votre ${zone} : ${loc}.`
+			: `Je suis ${nom}, habitant de votre ${zoneSen} : ${loc}.`
 	}
 
 	// L'aperçu (#email-body) est déjà personnalisé pour l'élu choisi : il suffit
@@ -79,11 +90,26 @@
 		return `mailto:${elu.email ?? ''}?${params.toString().replace(/\+/g, '%20')}`
 	}
 
+	// ── Infos utilisateur pour personnaliser le mail (jamais envoyées à un serveur,
+	// seulement injectées dans le brouillon et mémorisées localement) ──
+	let userName = ''
+	let userCommune = ''
+	function saveUser() {
+		try {
+			localStorage.setItem('elus-user', JSON.stringify({ userName, userCommune }))
+		} catch {
+			/* localStorage indisponible */
+		}
+	}
+
 	// ── Suivi de progression : élus déjà contactés (mémorisé localement) ──
 	let sent = new Set<string>()
 	onMount(() => {
 		try {
 			sent = new Set(JSON.parse(localStorage.getItem('elus-contactes') ?? '[]'))
+			const u = JSON.parse(localStorage.getItem('elus-user') ?? '{}')
+			userName = u.userName ?? ''
+			userCommune = u.userCommune ?? ''
 		} catch {
 			sent = new Set()
 		}
@@ -107,6 +133,18 @@
 		if (elu.emailConfidence === 'high' || elu.emailConfidence === 'medium') return null
 		if (isEn) return 'Please double-check this address before sending.'
 		return "Vérifiez l'adresse avant l'envoi."
+	}
+
+	// Masque une photo qui ne charge pas (404) → les initiales restent visibles.
+	function hideImg(e: Event) {
+		;(e.currentTarget as HTMLImageElement).style.display = 'none'
+	}
+
+	function initials(elu: Elu): string {
+		const parts = elu.nom.trim().split(/\s+/)
+		const first = parts[0]?.[0] ?? ''
+		const last = parts.length > 1 ? parts[parts.length - 1][0] : ''
+		return (first + last).toUpperCase()
 	}
 
 	function eluSubtitle(elu: Elu): string {
@@ -237,11 +275,17 @@
 				</p>
 			{/if}
 
-			{#if searched && !result}
+			{#if searchError === 'format'}
 				<p class="notice notice--error">
 					{isEn
-						? "We couldn't find representatives for this postal code. Use the official directories below."
-						: 'Aucun élu trouvé pour ce code postal. Utilisez les annuaires officiels ci-dessous.'}
+						? 'A French postal code has 5 digits (e.g. 75011). Please check what you typed.'
+						: 'Un code postal français comporte 5 chiffres (ex. 75011). Vérifiez votre saisie.'}
+				</p>
+			{:else if searchError === 'notfound'}
+				<p class="notice notice--error">
+					{isEn
+						? 'No representative found for this postal code. Double-check it, or use the official directories below.'
+						: 'Aucun élu trouvé pour ce code postal. Vérifiez-le, ou utilisez les annuaires officiels ci-dessous.'}
 				</p>
 			{/if}
 
@@ -272,11 +316,19 @@
 							<ul class="elu-list">
 								{#each group.list as elu (elu.id)}
 									<li class="elu-card" class:done={sent.has(elu.id)}>
-										<div class="elu-info">
-											<strong>
-												{#if sent.has(elu.id)}<span class="done-check">✓</span>{/if}{elu.nom}
-											</strong>
-											<small>{eluSubtitle(elu)}</small>
+										<div class="elu-left">
+											<span class="avatar">
+												{initials(elu)}
+												{#if elu.photo}
+													<img src={elu.photo} alt="" loading="lazy" on:error={hideImg} />
+												{/if}
+											</span>
+											<div class="elu-info">
+												<strong>
+													{#if sent.has(elu.id)}<span class="done-check">✓</span>{/if}{elu.nom}
+												</strong>
+												<small>{eluSubtitle(elu)}</small>
+											</div>
 										</div>
 										<Button alt={sent.has(elu.id)} on:click={() => choose(elu)}>
 											{#if sent.has(elu.id)}
@@ -388,11 +440,17 @@
 			</h2>
 
 			<div class="recipient">
-				<span class="recipient-label">{isEn ? 'To:' : 'À :'}</span>
+				<span class="avatar avatar--lg">
+					{initials(selectedElu)}
+					{#if selectedElu.photo}
+						<img src={selectedElu.photo} alt="" on:error={hideImg} />
+					{/if}
+				</span>
 				<div>
+					<span class="recipient-label">{isEn ? 'To:' : 'À :'}</span>
 					<strong>{selectedElu.nom}</strong>
 					<small>{eluSubtitle(selectedElu)}</small>
-					{#if selectedElu.role === 'depute' && selectedElu.contactUrl}
+					{#if selectedElu.contactUrl}
 						<a
 							class="profile-link"
 							href={selectedElu.contactUrl}
@@ -407,13 +465,31 @@
 
 			<p class="card-intro">
 				{#if isEn}
-					Ready to send. The recipient's name and your constituency are already filled in. Just
-					replace <strong>[your name]</strong>.
+					Add your name and town below and the email is fully written, ready to send.
 				{:else}
-					Prêt à l'envoi. Le nom du destinataire et votre circonscription sont déjà remplis ;
-					remplacez simplement <strong>[votre nom]</strong>.
+					Indiquez votre nom et votre commune ci-dessous : l'email est alors entièrement rédigé,
+					prêt à envoyer.
 				{/if}
 			</p>
+
+			<!-- Vos infos : remplissent le mail (jamais envoyées à un serveur) -->
+			<div class="user-fields">
+				<input
+					class="user-input"
+					type="text"
+					placeholder={isEn ? 'Your full name' : 'Votre nom complet'}
+					autocomplete="name"
+					bind:value={userName}
+					on:input={saveUser}
+				/>
+				<input
+					class="user-input"
+					type="text"
+					placeholder={isEn ? 'Your town' : 'Votre commune'}
+					bind:value={userCommune}
+					on:input={saveUser}
+				/>
+			</div>
 
 			<!-- Réglages compacts -->
 			<div class="msg-toolbar">
@@ -471,11 +547,6 @@
 								The Pause AI association (pauseia.fr) would be happy to provide a briefing to you or
 								your team.
 							</p>
-							<p>
-								Yours sincerely,<br />
-								[Your full name]<br />
-								[Your town / constituency]
-							</p>
 						{:else}
 							<p>
 								Je vous contacte au sujet du développement rapide de systèmes d'intelligence
@@ -499,11 +570,6 @@
 							<p>
 								L'association Pause IA (pauseia.fr) serait heureuse de vous fournir un briefing, à
 								vous ou à votre équipe.
-							</p>
-							<p>
-								Cordialement,<br />
-								[Votre nom complet]<br />
-								[Votre commune / circonscription]
 							</p>
 						{/if}
 					{:else if isEn}
@@ -548,11 +614,6 @@
 							I ask you to raise this issue with the relevant committee and support measures
 							requiring independent safety evaluations for the most powerful AI systems. The Pause
 							AI association (pauseia.fr) would be happy to provide a briefing.
-						</p>
-						<p>
-							Yours sincerely,<br />
-							[Your full name]<br />
-							[Your town / constituency]
 						</p>
 					{:else}
 						<p>
@@ -600,12 +661,12 @@
 							puissants. L'association Pause IA (pauseia.fr) serait heureuse de vous fournir un
 							briefing.
 						</p>
-						<p>
-							Cordialement,<br />
-							[Votre nom complet]<br />
-							[Votre commune / circonscription]
-						</p>
 					{/if}
+					<p>
+						{isEn ? 'Yours sincerely,' : 'Cordialement,'}<br />
+						{userName.trim() || (isEn ? '[Your full name]' : '[Votre nom complet]')}<br />
+						{userCommune.trim() || localite(selectedElu)}
+					</p>
 				</div>
 			</div>
 
@@ -719,6 +780,30 @@
 		margin-bottom: 1.25rem;
 	}
 
+	/* Champs nom / commune */
+	.user-fields {
+		display: flex;
+		gap: 0.5rem;
+		flex-wrap: wrap;
+		margin-bottom: 1.25rem;
+	}
+
+	.user-input {
+		flex: 1;
+		min-inline-size: 180px;
+		padding: 0.7rem 0.9rem;
+		border: 2px solid var(--border);
+		border-radius: 9px;
+		font-size: 0.95rem;
+		background: var(--bg);
+		color: var(--text);
+	}
+
+	.user-input:focus {
+		outline: none;
+		border-color: var(--brand);
+	}
+
 	/* Recherche code postal */
 	.cp-form {
 		display: flex;
@@ -816,6 +901,44 @@
 		margin-right: 0.35rem;
 	}
 
+	/* Avatar (photo ou initiales) */
+	.elu-left {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+		min-inline-size: 0;
+	}
+
+	.avatar {
+		position: relative;
+		flex-shrink: 0;
+		inline-size: 2.6rem;
+		block-size: 2.6rem;
+		border-radius: 50%;
+		background: var(--brand-light);
+		color: var(--brand-subtle);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 0.85rem;
+		font-weight: 700;
+		overflow: hidden;
+	}
+
+	.avatar img {
+		position: absolute;
+		inset: 0;
+		inline-size: 100%;
+		block-size: 100%;
+		object-fit: cover;
+	}
+
+	.avatar--lg {
+		inline-size: 3.4rem;
+		block-size: 3.4rem;
+		font-size: 1.05rem;
+	}
+
 	.elu-info {
 		display: flex;
 		flex-direction: column;
@@ -892,13 +1015,17 @@
 	}
 
 	.recipient-label {
+		font-size: 0.72rem;
 		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
 		color: var(--brand-subtle);
 	}
 
-	.recipient div {
+	.recipient > div {
 		display: flex;
 		flex-direction: column;
+		gap: 0.05rem;
 	}
 
 	.recipient small {

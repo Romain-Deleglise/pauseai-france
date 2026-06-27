@@ -30,6 +30,7 @@ export interface Elu {
 	emailConfidence: EmailConfidence
 	emailSources: string[]
 	contactUrl: string | null
+	photo?: string | null
 }
 
 interface ElusData {
