@@ -470,7 +470,10 @@ async function fetchSenateurs() {
 			contactUrl: mat
 				? `https://www.senat.fr/senateur/${senatSlug(nom)}_${senatSlug(prenom)}${mat}.html`
 				: 'https://www.senat.fr/vos-senateurs.html',
-			photo: null
+			// Portrait officiel (même slug, suffixe _carre).
+			photo: mat
+				? `https://www.senat.fr/senimg/${senatSlug(nom)}_${senatSlug(prenom)}${mat}_carre.jpg`
+				: null
 		})
 	}
 	if (unmappedDept) {
