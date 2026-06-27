@@ -5,10 +5,49 @@ députés et sénateurs par code postal, avec email pré-rempli.
 
 ## Mise à jour automatique
 
+Deux mécanismes possibles (en choisir un) :
+
+### a) GitHub Actions (sans serveur)
+
 Le workflow **`.github/workflows/update-elus.yml`** régénère les données chaque
 semaine (cron du lundi) et **ouvre une PR** quand elles ont changé. Plus rien à
 faire à la main : il suffit de relire le diff et de merger. Déclenchable aussi
 manuellement via l'onglet _Actions_ → _Mise à jour des élus_ → _Run workflow_.
+
+### b) Serveur (timer systemd)
+
+Pour faire tourner la mise à jour sur le serveur Hetzner (comme les autres
+bots), `scripts/update-elus-server.sh` régénère les données et **pousse
+directement sur `main`** : Netlify redéploie automatiquement le site.
+
+```bash
+# 1. Cloner le repo sur le serveur (une fois)
+sudo git clone https://github.com/Pause-IA/pauseai-france.git /opt/bots/pauseai-france
+sudo chown -R romain:romain /opt/bots/pauseai-france
+
+# 2. Donner au serveur le droit de POUSSER sur le repo (write). Au choix :
+#    - PAT GitHub « fine-grained » avec permission Contents: Read and write,
+#      stocké via git credential store :
+git -C /opt/bots/pauseai-france config credential.helper store
+#      (le 1er push demandera identifiant = nom GitHub, mot de passe = le PAT)
+#    - OU une clé SSH de déploiement avec write access (remote en git@github.com:...)
+
+# 3. Test manuel
+cd /opt/bots/pauseai-france
+chmod +x scripts/update-elus-server.sh
+./scripts/update-elus-server.sh        # doit générer, committer et pousser
+
+# 4. Installer le timer hebdomadaire
+sudo cp scripts/systemd/update-elus.service /etc/systemd/system/
+sudo cp scripts/systemd/update-elus.timer   /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable --now update-elus.timer
+systemctl list-timers update-elus.timer     # vérifier la prochaine exécution
+```
+
+> Adapter `User=`, `WorkingDirectory=` et `REPO_DIR=` dans
+> `update-elus.service` si le clone n'est pas dans `/opt/bots/pauseai-france`.
+> Le script ne requiert que **Node 18+** et **git** (aucune dépendance npm).
 
 ## Régénérer manuellement
 

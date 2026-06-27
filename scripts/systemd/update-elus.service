@@ -1,0 +1,16 @@
+[Unit]
+Description=Mise a jour des elus Pause IA (genere elus.json et push)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=romain
+WorkingDirectory=/opt/bots/pauseai-france
+# Adapter REPO_DIR si le clone est ailleurs.
+Environment=REPO_DIR=/opt/bots/pauseai-france
+Environment=BRANCH=main
+ExecStart=/opt/bots/pauseai-france/scripts/update-elus-server.sh
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=update-elus
