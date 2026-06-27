@@ -17,25 +17,25 @@ manuellement via l'onglet _Actions_ → _Mise à jour des élus_ → _Run workfl
 ### b) Serveur (timer systemd)
 
 Pour faire tourner la mise à jour sur le serveur Hetzner (comme les autres
-bots), `scripts/update-elus-server.sh` régénère les données et **pousse
-directement sur `main`** : Netlify redéploie automatiquement le site.
+bots), `scripts/update-elus-server.sh` régénère les données et **ouvre une pull
+request**. Rien n'est poussé sur `main` directement : on relit puis on merge la
+PR, ce qui déclenche le redéploiement Netlify.
 
 ```bash
 # 1. Cloner le repo sur le serveur (une fois)
 sudo git clone https://github.com/Pause-IA/pauseai-france.git /opt/bots/pauseai-france
 sudo chown -R romain:romain /opt/bots/pauseai-france
 
-# 2. Donner au serveur le droit de POUSSER sur le repo (write). Au choix :
-#    - PAT GitHub « fine-grained » avec permission Contents: Read and write,
-#      stocké via git credential store :
-git -C /opt/bots/pauseai-france config credential.helper store
-#      (le 1er push demandera identifiant = nom GitHub, mot de passe = le PAT)
-#    - OU une clé SSH de déploiement avec write access (remote en git@github.com:...)
+# 2. Créer un PAT GitHub « fine-grained » sur le repo pauseai-france avec
+#    Permissions : Contents = Read and write ET Pull requests = Read and write.
+#    Le mettre dans un fichier d'env lisible par root uniquement :
+echo 'GITHUB_TOKEN=github_pat_xxxxx' | sudo tee /opt/bots/pauseai-france/.elus.env
+sudo chmod 600 /opt/bots/pauseai-france/.elus.env
 
 # 3. Test manuel
 cd /opt/bots/pauseai-france
 chmod +x scripts/update-elus-server.sh
-./scripts/update-elus-server.sh        # doit générer, committer et pousser
+GITHUB_TOKEN=github_pat_xxxxx ./scripts/update-elus-server.sh   # doit ouvrir une PR
 
 # 4. Installer le timer hebdomadaire
 sudo cp scripts/systemd/update-elus.service /etc/systemd/system/
@@ -45,9 +45,10 @@ sudo systemctl enable --now update-elus.timer
 systemctl list-timers update-elus.timer     # vérifier la prochaine exécution
 ```
 
-> Adapter `User=`, `WorkingDirectory=` et `REPO_DIR=` dans
-> `update-elus.service` si le clone n'est pas dans `/opt/bots/pauseai-france`.
-> Le script ne requiert que **Node 18+** et **git** (aucune dépendance npm).
+> Adapter `User=`, `WorkingDirectory=`, `REPO_DIR=` et le chemin de
+> `EnvironmentFile=` dans `update-elus.service` si le clone n'est pas dans
+> `/opt/bots/pauseai-france`. Le script ne requiert que **Node 18+**, **git** et
+> **curl** (aucune dépendance npm). `.elus.env` ne doit jamais être commité.
 
 ## Régénérer manuellement
 
