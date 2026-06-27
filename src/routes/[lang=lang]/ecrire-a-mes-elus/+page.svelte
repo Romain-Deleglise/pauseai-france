@@ -127,13 +127,17 @@
 				{ list: result.senateurs, title: isEn ? 'Your senators' : 'Vos sénateurs' },
 				{
 					list: result.deputes,
-					title: result.exactDeputes
+					title: !result.exactDeputes
 						? isEn
-							? 'Your MP'
-							: 'Votre député'
-						: isEn
 							? 'The MPs of your department'
 							: 'Les députés de votre département'
+						: result.deputes.length > 1
+							? isEn
+								? 'Your MPs (your city)'
+								: 'Vos députés (votre ville)'
+							: isEn
+								? 'Your MP'
+								: 'Votre député'
 				}
 			]
 		: []
