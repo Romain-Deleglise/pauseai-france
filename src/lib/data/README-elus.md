@@ -22,21 +22,34 @@ node scripts/generate-elus.js --report    # + rapport de qualité des emails
 
 ## Géocodage code postal → circonscription (clic unique sur le bon député)
 
-Avec la variable d'environnement `COMMUNE_CIRCO_URL` (URL d'un CSV open data
-commune INSEE → circonscription), le script produit en plus
+Avec la variable d'environnement `COMMUNE_CIRCO_URL`, le script produit en plus
 `code-postal-circo.json`, qui permet de cibler **le député exact** au lieu de
 lister tous les députés du département.
 
+### Où trouver le fichier (≈ 2 clics)
+
+Source recommandée : le dataset **« Contours des circonscriptions législatives »**
+du Ministère de l'Intérieur sur data.gouv.fr :
+<https://www.data.gouv.fr/datasets/contours-geographiques-des-circonscriptions-legislatives>
+
+1. Ouvrir la page, section **Fichiers / Ressources**.
+2. Sur la ressource **GeoJSON**, copier le lien de téléchargement (clic droit →
+   « Copier l'adresse du lien »).
+
+C'est cette URL qu'on met dans `COMMUNE_CIRCO_URL`. Le script détecte
+automatiquement le format (GeoJSON de contours **ou** CSV `insee;circo`).
+
 ```bash
-COMMUNE_CIRCO_URL="https://www.data.gouv.fr/.../communes-circonscriptions.csv" \
+COMMUNE_CIRCO_URL="https://www.data.gouv.fr/fr/datasets/r/<id-de-la-ressource>" \
   pnpm run generate-elus
 ```
 
-Pour l'automatiser, définir cette URL dans
-_Settings → Secrets and variables → Actions → Variables_ (`COMMUNE_CIRCO_URL`).
-Sans elle, la recherche fonctionne au niveau département (repli sûr). Pour les
-codes postaux couvrant plusieurs circonscriptions (grandes villes), la page
-affiche les députés candidats correspondants.
+Pour l'automatiser, coller la même URL dans
+_Settings → Secrets and variables → Actions → Variables_ (`COMMUNE_CIRCO_URL`) :
+le workflow hebdomadaire l'utilisera. Sans elle, la recherche fonctionne au
+niveau département (repli sûr). Pour les codes postaux couvrant plusieurs
+circonscriptions (grandes villes), la page affiche les députés candidats
+correspondants.
 
 ## Fiabilité des emails (redondance multi-sources)
 

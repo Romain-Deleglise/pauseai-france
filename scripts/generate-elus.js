@@ -54,16 +54,70 @@ const SOURCES = {
 /**
  * Correspondance commune (code INSEE) → circonscription législative.
  *
- * Pas d'API stable et universelle pour ça : on passe par un CSV open data,
- * fourni via la variable d'environnement COMMUNE_CIRCO_URL.
- * Format attendu : un CSV (séparateur `;` ou `,`) avec au minimum les colonnes
- *   - code commune INSEE   (en-tête contenant "insee" ou "code_commune")
- *   - numéro de circo       (en-tête contenant "circo")
- * Récupérable sur data.gouv.fr (rechercher « circonscriptions législatives
- * communes »). Sans cette variable, le géocodage fin est ignoré et la page
- * retombe sur une recherche au niveau département (toujours fonctionnelle).
+ * Fournie via la variable d'environnement COMMUNE_CIRCO_URL. Deux formats sont
+ * acceptés automatiquement :
+ *
+ *   1. GeoJSON « Contours des circonscriptions législatives » (Ministère de
+ *      l'Intérieur, data.gouv.fr) — RECOMMANDÉ. Chaque feature porte
+ *      `properties.code_circonscription` et `properties.communes` (codes INSEE
+ *      séparés par des tirets).
+ *      → Page du dataset : https://www.data.gouv.fr/datasets/contours-geographiques-des-circonscriptions-legislatives
+ *        Copier le lien de la ressource GeoJSON et le mettre dans COMMUNE_CIRCO_URL.
+ *
+ *   2. CSV (séparateur `;` ou `,`) avec une colonne INSEE (en-tête contenant
+ *      "insee"/"code_commune") et une colonne "circo".
+ *
+ * Sans cette variable, le géocodage fin est ignoré et la page retombe sur une
+ * recherche au niveau département (toujours fonctionnelle).
  */
 const COMMUNE_CIRCO_URL = process.env.COMMUNE_CIRCO_URL || null
+
+/** Déduit le code département d'un code commune INSEE (3 chiffres en outre-mer). */
+function deptFromInsee(insee) {
+	return insee.startsWith('97') || insee.startsWith('98') ? insee.slice(0, 3) : insee.slice(0, 2)
+}
+
+/** Extrait le numéro de circonscription d'un code type "01-02", "2A-01", "ZA-03". */
+function circoNumber(code) {
+	const m = String(code).match(/(\d+)\s*$/)
+	return m ? Number(m[1]) : NaN
+}
+
+/** Construit la map INSEE → { departement, circo } depuis un GeoJSON de contours. */
+function inseeMapFromGeojson(geo) {
+	const map = new Map()
+	for (const f of geo.features || []) {
+		const p = f.properties || {}
+		const circo = circoNumber(p.code_circonscription ?? p.codeCirconscription ?? p.circo)
+		const communes = String(p.communes ?? p.codes_insee ?? '')
+		if (!Number.isFinite(circo) || !communes) continue
+		for (const insee of communes
+			.split('-')
+			.map((s) => s.trim())
+			.filter(Boolean)) {
+			map.set(insee, { departement: deptFromInsee(insee), circo })
+		}
+	}
+	return map
+}
+
+/** Construit la map INSEE → { departement, circo } depuis un CSV. */
+function inseeMapFromCsv(rows) {
+	const inseeKey = Object.keys(rows[0] || {}).find((k) =>
+		/insee|code_commune|^codgeo|^com$/.test(k)
+	)
+	const circoKey = Object.keys(rows[0] || {}).find((k) => /circo/.test(k))
+	if (!inseeKey || !circoKey) return new Map()
+	const map = new Map()
+	for (const r of rows) {
+		const insee = (r[inseeKey] || '').padStart(5, '0')
+		const circo = circoNumber(r[circoKey])
+		if (insee && Number.isFinite(circo) && circo > 0) {
+			map.set(insee, { departement: deptFromInsee(insee), circo })
+		}
+	}
+	return map
+}
 
 const REPORT = process.argv.includes('--report')
 
@@ -110,26 +164,17 @@ async function buildCodePostalToCirco() {
 		return null
 	}
 	console.log('→ Téléchargement de la correspondance commune → circonscription…')
-	const rows = parseCsv(await fetchText(COMMUNE_CIRCO_URL))
-	const inseeKey = Object.keys(rows[0] || {}).find((k) =>
-		/insee|code_commune|^codgeo|^com$/.test(k)
-	)
-	const circoKey = Object.keys(rows[0] || {}).find((k) => /circo/.test(k))
-	if (!inseeKey || !circoKey) {
-		console.warn('⚠️  Colonnes INSEE/circo introuvables dans le CSV → géocodage ignoré.')
-		return null
+	const raw = await fetchText(COMMUNE_CIRCO_URL)
+	// Détection automatique du format : GeoJSON (recommandé) ou CSV.
+	let inseeToCirco
+	try {
+		inseeToCirco = inseeMapFromGeojson(JSON.parse(raw))
+	} catch {
+		inseeToCirco = inseeMapFromCsv(parseCsv(raw))
 	}
-	// INSEE → { departement, circo }
-	const inseeToCirco = new Map()
-	for (const r of rows) {
-		const insee = (r[inseeKey] || '').padStart(5, '0')
-		const circo = Number(String(r[circoKey]).replace(/\D/g, ''))
-		if (insee && Number.isFinite(circo) && circo > 0) {
-			// Le département se déduit du code INSEE (2 premiers car., 3 pour l'outre-mer).
-			const dept =
-				insee.startsWith('97') || insee.startsWith('98') ? insee.slice(0, 3) : insee.slice(0, 2)
-			inseeToCirco.set(insee, { departement: dept, circo })
-		}
+	if (inseeToCirco.size === 0) {
+		console.warn('⚠️  Aucune correspondance INSEE→circo exploitable → géocodage ignoré.')
+		return null
 	}
 
 	console.log('→ Téléchargement des communes (geo.api.gouv.fr)…')
