@@ -46,7 +46,10 @@ const CP_FILE = resolve(OUT_DIR, 'code-postal-circo.json')
 
 const SOURCES = {
 	deputes: 'https://www.nosdeputes.fr/deputes/enmandat/json',
-	senateurs: 'https://www.nossenateurs.fr/senateurs/enmandat/json',
+	// Open data officiel du Sénat (ODSEN). CSV latin1, préambule en lignes « % »,
+	// contient tous les sénateurs depuis 1959 (filtrer État = ACTIF) avec une
+	// colonne « Courrier électronique » publique.
+	senateurs: 'https://data.senat.fr/data/senateurs/ODSEN_GENERAL.csv',
 	// Toutes les communes avec leurs codes postaux + code INSEE (Etalab, geo.api.gouv.fr).
 	communes: 'https://geo.api.gouv.fr/communes?fields=code,nom,codesPostaux,codeDepartement'
 }
@@ -284,31 +287,187 @@ function normalizeDepute(entry) {
 	}
 }
 
-function normalizeSenateur(entry) {
-	const s = entry.senateur || entry
-	const prenom = s.prenom || ''
-	const nom = s.nom_de_famille || (s.nom || '').replace(prenom, '').trim()
-	const sourced = []
-	if (Array.isArray(s.emails)) sourced.push(...s.emails.map((e) => e.email || e))
-	if (s.email) sourced.push(s.email)
-	const pattern = institutionalEmail(prenom, nom, 'senat.fr')
-	const { email, confidence, emailSources, conflict } = reconcileEmail(sourced, pattern)
+// ── Sénateurs : open data du Sénat (ODSEN) ──
 
-	const dept = String(s.num_deptmt ?? s.num_departement ?? '').trim()
+const normDept = (s) =>
+	(s || '')
+		.normalize('NFD')
+		.replace(/[̀-ͯ]/g, '')
+		.toLowerCase()
+		.replace(/[^a-z0-9]+/g, ' ')
+		.trim()
 
-	return {
-		id: s.slug || slugifyName(s.nom),
-		nom: s.nom || `${prenom} ${nom}`.trim(),
-		role: 'senateur',
-		departement: dept,
-		nomDept: s.nom_circo || s.departement || null,
-		groupe: s.groupe_sigle || null,
-		email,
-		emailConfidence: confidence,
-		emailSources,
-		contactUrl: s.url_institution || (s.slug ? `https://www.nossenateurs.fr/${s.slug}` : null),
-		...(conflict ? { _conflict: conflict } : {})
+/** Table « nom de département » → code, pour indexer les sénateurs par code. */
+const DEPT_NAME_TO_CODE = (() => {
+	const list = [
+		['01', 'Ain'],
+		['02', 'Aisne'],
+		['03', 'Allier'],
+		['04', 'Alpes-de-Haute-Provence'],
+		['05', 'Hautes-Alpes'],
+		['06', 'Alpes-Maritimes'],
+		['07', 'Ardèche'],
+		['08', 'Ardennes'],
+		['09', 'Ariège'],
+		['10', 'Aube'],
+		['11', 'Aude'],
+		['12', 'Aveyron'],
+		['13', 'Bouches-du-Rhône'],
+		['14', 'Calvados'],
+		['15', 'Cantal'],
+		['16', 'Charente'],
+		['17', 'Charente-Maritime'],
+		['18', 'Cher'],
+		['19', 'Corrèze'],
+		['21', "Côte-d'Or"],
+		['22', "Côtes-d'Armor"],
+		['23', 'Creuse'],
+		['24', 'Dordogne'],
+		['25', 'Doubs'],
+		['26', 'Drôme'],
+		['27', 'Eure'],
+		['28', 'Eure-et-Loir'],
+		['29', 'Finistère'],
+		['2A', 'Corse-du-Sud'],
+		['2B', 'Haute-Corse'],
+		['30', 'Gard'],
+		['31', 'Haute-Garonne'],
+		['32', 'Gers'],
+		['33', 'Gironde'],
+		['34', 'Hérault'],
+		['35', 'Ille-et-Vilaine'],
+		['36', 'Indre'],
+		['37', 'Indre-et-Loire'],
+		['38', 'Isère'],
+		['39', 'Jura'],
+		['40', 'Landes'],
+		['41', 'Loir-et-Cher'],
+		['42', 'Loire'],
+		['43', 'Haute-Loire'],
+		['44', 'Loire-Atlantique'],
+		['45', 'Loiret'],
+		['46', 'Lot'],
+		['47', 'Lot-et-Garonne'],
+		['48', 'Lozère'],
+		['49', 'Maine-et-Loire'],
+		['50', 'Manche'],
+		['51', 'Marne'],
+		['52', 'Haute-Marne'],
+		['53', 'Mayenne'],
+		['54', 'Meurthe-et-Moselle'],
+		['55', 'Meuse'],
+		['56', 'Morbihan'],
+		['57', 'Moselle'],
+		['58', 'Nièvre'],
+		['59', 'Nord'],
+		['60', 'Oise'],
+		['61', 'Orne'],
+		['62', 'Pas-de-Calais'],
+		['63', 'Puy-de-Dôme'],
+		['64', 'Pyrénées-Atlantiques'],
+		['65', 'Hautes-Pyrénées'],
+		['66', 'Pyrénées-Orientales'],
+		['67', 'Bas-Rhin'],
+		['68', 'Haut-Rhin'],
+		['69', 'Rhône'],
+		['70', 'Haute-Saône'],
+		['71', 'Saône-et-Loire'],
+		['72', 'Sarthe'],
+		['73', 'Savoie'],
+		['74', 'Haute-Savoie'],
+		['75', 'Paris'],
+		['76', 'Seine-Maritime'],
+		['77', 'Seine-et-Marne'],
+		['78', 'Yvelines'],
+		['79', 'Deux-Sèvres'],
+		['80', 'Somme'],
+		['81', 'Tarn'],
+		['82', 'Tarn-et-Garonne'],
+		['83', 'Var'],
+		['84', 'Vaucluse'],
+		['85', 'Vendée'],
+		['86', 'Vienne'],
+		['87', 'Haute-Vienne'],
+		['88', 'Vosges'],
+		['89', 'Yonne'],
+		['90', 'Territoire de Belfort'],
+		['91', 'Essonne'],
+		['92', 'Hauts-de-Seine'],
+		['93', 'Seine-Saint-Denis'],
+		['94', 'Val-de-Marne'],
+		['95', "Val-d'Oise"],
+		['971', 'Guadeloupe'],
+		['972', 'Martinique'],
+		['973', 'Guyane'],
+		['974', 'La Réunion'],
+		['976', 'Mayotte'],
+		['975', 'Saint-Pierre-et-Miquelon'],
+		['977', 'Saint-Barthélemy'],
+		['978', 'Saint-Martin'],
+		['986', 'Wallis-et-Futuna'],
+		['987', 'Polynésie française'],
+		['988', 'Nouvelle-Calédonie']
+	]
+	const m = new Map(list.map(([code, name]) => [normDept(name), code]))
+	m.set(normDept('Réunion'), '974') // alias
+	return m
+})()
+
+/** Télécharge et parse le CSV ODSEN, ne garde que les sénateurs en exercice. */
+async function fetchSenateurs() {
+	const res = await fetch(SOURCES.senateurs, { headers: UA })
+	if (!res.ok) throw new Error(`HTTP ${res.status} pour ${SOURCES.senateurs}`)
+	// ODSEN est encodé en latin1.
+	const text = new TextDecoder('latin1').decode(await res.arrayBuffer())
+	// Ignorer le préambule (« % … ») ; la 1re ligne restante est l'en-tête.
+	const lines = text.split(/\r?\n/).filter((l) => l && !l.startsWith('%'))
+	if (lines.length < 2) return []
+	const header = lines[0].split(',')
+	const col = (name) => header.indexOf(name)
+	const iMat = col('Matricule')
+	const iNom = col('Nom usuel')
+	const iPre = col('Prénom usuel')
+	const iEtat = col('État')
+	const iGrp = col('Groupe politique')
+	const iCirco = col('Circonscription')
+	const iMail = col('Courrier électronique')
+
+	const out = []
+	let unmappedDept = 0
+	for (const line of lines.slice(1)) {
+		// Les colonnes utiles (0..12) ne contiennent pas de virgule interne :
+		// un simple split convient (les champs entre guillemets sont après).
+		const c = line.split(',')
+		if ((c[iEtat] || '').trim() !== 'ACTIF') continue
+
+		const prenom = (c[iPre] || '').trim()
+		const nom = (c[iNom] || '').trim()
+		const circo = (c[iCirco] || '').trim()
+		const mat = (c[iMat] || '').trim().toLowerCase()
+		const mailRaw = (c[iMail] || '').trim()
+		const email = mailRaw.includes('@') ? mailRaw.toLowerCase() : null
+		const dept = DEPT_NAME_TO_CODE.get(normDept(circo)) || ''
+		if (!dept) unmappedDept++
+
+		out.push({
+			id: mat || slugifyName(`${prenom} ${nom}`),
+			nom: `${prenom} ${nom}`.trim(),
+			role: 'senateur',
+			departement: dept,
+			nomDept: circo || null,
+			groupe: (c[iGrp] || '').trim() || null,
+			email,
+			emailConfidence: email ? 'high' : 'none',
+			emailSources: email ? ['senat'] : [],
+			contactUrl: mat
+				? `https://www.senat.fr/senateur/${mat}.html`
+				: 'https://www.senat.fr/vos-senateurs.html'
+		})
 	}
+	if (unmappedDept) {
+		console.warn(`⚠️  ${unmappedDept} sénateur(s) sans code département (ex. hors de France).`)
+	}
+	return out
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -320,9 +479,8 @@ async function main() {
 	const rawDeputes = await fetchJson(SOURCES.deputes)
 	const deputes = (rawDeputes.deputes || rawDeputes).map(normalizeDepute)
 
-	console.log('→ Téléchargement des sénateurs…')
-	const rawSenateurs = await fetchJson(SOURCES.senateurs)
-	const senateurs = (rawSenateurs.senateurs || rawSenateurs).map(normalizeSenateur)
+	console.log('→ Téléchargement des sénateurs (Sénat open data)…')
+	const senateurs = await fetchSenateurs()
 
 	// Tri déterministe : la sortie ne dépend pas de l'ordre des sources, donc le
 	// fichier ne change que si un contact change réellement (pas de PR inutile).
