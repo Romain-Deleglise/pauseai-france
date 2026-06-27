@@ -61,21 +61,20 @@
 			: (elu.nomDept ?? `${isEn ? 'department' : 'département'} ${elu.departement}`)
 	}
 
-	// 1re phrase, localisée : signale « je suis votre électeur ».
+	// 1re phrase : ouverture naturelle qui signale « je suis votre électeur ».
+	// La localité précise figure dans la signature (comme une vraie lettre), on
+	// évite donc le « : Savoie » un peu mécanique dans le corps du message.
 	// `name` est passé explicitement pour que Svelte recalcule l'aperçu à la frappe.
 	function introLine(elu: Elu, name: string): string {
-		const loc = localite(elu)
 		const nom = name.trim() || (isEn ? '[your name]' : '[votre nom]')
-		const zone = isEn ? 'constituency' : 'circonscription'
-		const zoneSen = isEn ? 'department' : 'département'
 		if (isEn) {
 			return elu.role === 'depute'
-				? `My name is ${nom}, a resident of your constituency: ${loc}.`
-				: `My name is ${nom}, a resident of your department: ${loc}.`
+				? `My name is ${nom}, and I am writing to you as one of your constituents.`
+				: `My name is ${nom}, and I am writing to you as a resident of your department.`
 		}
 		return elu.role === 'depute'
-			? `Je suis ${nom}, habitant de votre ${zone} : ${loc}.`
-			: `Je suis ${nom}, habitant de votre ${zoneSen} : ${loc}.`
+			? `Je m'appelle ${nom} et je vous écris en tant qu'habitant de votre circonscription.`
+			: `Je m'appelle ${nom} et je vous écris en tant qu'habitant de votre département.`
 	}
 
 	// L'aperçu (#email-body) est déjà personnalisé pour l'élu choisi : il suffit
@@ -268,26 +267,8 @@
 		return paras
 	}
 
-	// ── Partage de la campagne (après envoi) ──
-	const SHARE_URL = 'https://pauseia.fr/ecrire-a-mes-elus'
-	$: shareText = isEn
-		? 'I just wrote to my representatives about the risks of the most powerful AI. Two minutes, and you can too:'
-		: "Je viens d'écrire à mes élus sur les risques des IA les plus puissantes. Deux minutes, et vous pouvez le faire aussi :"
-	$: shareLinks = {
-		x: `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(SHARE_URL)}`,
-		facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(SHARE_URL)}`,
-		linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(SHARE_URL)}`
-	}
+	// ── Suite après envoi : on invite simplement à rejoindre Pause IA ──
 	$: joinHref = isEn ? '/en/rejoindre' : '/fr/rejoindre'
-	let shareCopied = false
-	function copyShareLink() {
-		void navigator.clipboard.writeText(SHARE_URL).then(() => {
-			shareCopied = true
-			setTimeout(() => {
-				shareCopied = false
-			}, 2500)
-		})
-	}
 
 	let copied = false
 	function copyEmail() {
@@ -433,40 +414,11 @@
 					{/if}
 				</p>
 				{#if sentCount >= allElus.length && allElus.length > 0}
-					<div class="share-box">
-						<p class="share-title">
-							{isEn ? 'Spread the word:' : 'Faites passer le mot :'}
-						</p>
-						<div class="share-links">
-							<a class="share-btn" href={shareLinks.x} target="_blank" rel="noopener noreferrer"
-								>X / Twitter</a
-							>
-							<a
-								class="share-btn"
-								href={shareLinks.facebook}
-								target="_blank"
-								rel="noopener noreferrer">Facebook</a
-							>
-							<a
-								class="share-btn"
-								href={shareLinks.linkedin}
-								target="_blank"
-								rel="noopener noreferrer">LinkedIn</a
-							>
-							<button class="share-btn" on:click={copyShareLink}>
-								{#if shareCopied}
-									{isEn ? '✓ Link copied' : '✓ Lien copié'}
-								{:else}
-									{isEn ? 'Copy link' : 'Copier le lien'}
-								{/if}
-							</button>
-						</div>
-						<a class="join-link" href={joinHref}>
-							{isEn
-								? 'Want to do more? Join Pause AI ↗'
-								: 'Envie d’aller plus loin ? Rejoignez Pause IA ↗'}
-						</a>
-					</div>
+					<a class="join-link join-link--block" href={joinHref}>
+						{isEn
+							? 'Want to do more? Join Pause AI ↗'
+							: 'Envie d’aller plus loin ? Rejoignez Pause IA ↗'}
+					</a>
 				{/if}
 				{#each eluGroups as group}
 					{#if group.list.length}
@@ -737,36 +689,12 @@
 			</p>
 
 			{#if sent.has(selectedElu.id)}
-				<div class="share-box">
-					<p class="share-title">
+				<div class="after-send">
+					<p>
 						{isEn
-							? 'Message sent! Help us reach more people:'
-							: 'Message envoyé ! Aidez-nous à toucher plus de monde :'}
+							? 'Message ready! Go back to write to your other representatives.'
+							: 'Message prêt ! Revenez en arrière pour écrire à vos autres élus.'}
 					</p>
-					<div class="share-links">
-						<a class="share-btn" href={shareLinks.x} target="_blank" rel="noopener noreferrer"
-							>X / Twitter</a
-						>
-						<a
-							class="share-btn"
-							href={shareLinks.facebook}
-							target="_blank"
-							rel="noopener noreferrer">Facebook</a
-						>
-						<a
-							class="share-btn"
-							href={shareLinks.linkedin}
-							target="_blank"
-							rel="noopener noreferrer">LinkedIn</a
-						>
-						<button class="share-btn" on:click={copyShareLink}>
-							{#if shareCopied}
-								{isEn ? '✓ Link copied' : '✓ Lien copié'}
-							{:else}
-								{isEn ? 'Copy link' : 'Copier le lien'}
-							{/if}
-						</button>
-					</div>
 					<a class="join-link" href={joinHref}>
 						{isEn
 							? 'Want to do more? Join Pause AI ↗'
@@ -1278,49 +1206,29 @@
 		margin-top: 0.85rem;
 	}
 
-	/* Partage après envoi */
-	.share-box {
+	/* Suite après envoi */
+	.after-send {
 		margin-top: 1.5rem;
-		padding: 1.25rem;
+		padding: 1.1rem 1.25rem;
 		border: 1px solid var(--brand);
 		background: var(--brand-light);
 		border-radius: 12px;
 	}
 
-	.share-title {
-		font-size: 0.95rem;
-		font-weight: 700;
-		margin: 0 0 0.75rem;
-	}
-
-	.share-links {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.5rem;
-	}
-
-	.share-btn {
-		padding: 0.5rem 0.9rem;
-		border: 1px solid var(--border);
-		border-radius: 8px;
-		background: var(--bg);
-		color: var(--text);
-		font-size: 0.85rem;
-		font-weight: 600;
-		text-decoration: none;
-		cursor: pointer;
-	}
-
-	.share-btn:hover {
-		border-color: var(--brand);
+	.after-send p {
+		font-size: 0.9rem;
+		margin: 0 0 0.5rem;
 	}
 
 	.join-link {
 		display: inline-block;
-		margin-top: 0.9rem;
 		font-size: 0.88rem;
 		font-weight: 600;
 		color: var(--brand-subtle);
+	}
+
+	.join-link--block {
+		margin-top: 1rem;
 	}
 
 	.bcc-hint code {
