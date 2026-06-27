@@ -1,0 +1,86 @@
+{
+	"generatedAt": "1970-01-01",
+	"sample": true,
+	"_comment": "DONNÉES D'EXEMPLE — emails fictifs en @example.invalid. Lancer `node scripts/generate-elus.js` pour générer les vraies données.",
+	"sources": {
+		"deputes": "https://www.nosdeputes.fr/deputes/enmandat/json",
+		"senateurs": "https://www.nossenateurs.fr/senateurs/enmandat/json"
+	},
+	"senateursParDept": {
+		"75": [
+			{
+				"id": "exemple-senateur-paris-1",
+				"nom": "Sénateur·rice de Paris (exemple)",
+				"role": "senateur",
+				"departement": "75",
+				"nomDept": "Paris",
+				"groupe": "—",
+				"email": "exemple.paris@example.invalid",
+				"emailConfidence": "low",
+				"emailSources": ["pattern"],
+				"contactUrl": "https://www.senat.fr/"
+			}
+		],
+		"69": [
+			{
+				"id": "exemple-senateur-rhone-1",
+				"nom": "Sénateur·rice du Rhône (exemple)",
+				"role": "senateur",
+				"departement": "69",
+				"nomDept": "Rhône",
+				"groupe": "—",
+				"email": "exemple.rhone@example.invalid",
+				"emailConfidence": "low",
+				"emailSources": ["pattern"],
+				"contactUrl": "https://www.senat.fr/"
+			}
+		]
+	},
+	"deputesParDept": {
+		"75": [
+			{
+				"id": "exemple-depute-paris-1",
+				"nom": "Député·e de Paris, 1re circo (exemple)",
+				"role": "depute",
+				"departement": "75",
+				"circo": 1,
+				"nomCirco": "Paris (1re circonscription)",
+				"groupe": "—",
+				"email": "exemple.paris1@example.invalid",
+				"emailConfidence": "low",
+				"emailSources": ["pattern"],
+				"contactUrl": "https://www.assemblee-nationale.fr/"
+			},
+			{
+				"id": "exemple-depute-paris-2",
+				"nom": "Député·e de Paris, 2e circo (exemple)",
+				"role": "depute",
+				"departement": "75",
+				"circo": 2,
+				"nomCirco": "Paris (2e circonscription)",
+				"groupe": "—",
+				"email": null,
+				"emailConfidence": "none",
+				"emailSources": [],
+				"contactUrl": "https://www.assemblee-nationale.fr/"
+			}
+		],
+		"69": [
+			{
+				"id": "exemple-depute-rhone-1",
+				"nom": "Député·e du Rhône, 1re circo (exemple)",
+				"role": "depute",
+				"departement": "69",
+				"circo": 1,
+				"nomCirco": "Rhône (1re circonscription)",
+				"groupe": "—",
+				"email": "exemple.rhone1@example.invalid",
+				"emailConfidence": "low",
+				"emailSources": ["pattern"],
+				"contactUrl": "https://www.assemblee-nationale.fr/"
+			}
+		]
+	},
+	"deputes": [],
+	"senateurs": []
+}

@@ -1,12 +1,54 @@
 <script lang="ts">
 	import PostMeta from '$components/PostMeta.svelte'
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
-	import Button from '$lib/components/Button.svelte'
+	import { lookupElus, isSampleData, type Elu, type LookupResult } from '$lib/data/elus'
 	import type { PageData } from './$types'
 
 	export let data: PageData
 	$: lang = data.lang
 	$: isEn = lang === 'en'
+
+	const BCC = 'campagne@pauseia.fr'
+
+	// ── Recherche des élus par code postal ──
+	let codePostal = ''
+	let result: LookupResult | null = null
+	let searched = false
+
+	function search() {
+		searched = true
+		result = lookupElus(codePostal)
+	}
+
+	/**
+	 * Construit le corps de l'email en texte brut à partir de l'aperçu affiché
+	 * (qui reflète la version + les risques sélectionnés), avec la formule
+	 * d'appel adaptée au rôle de l'élu.
+	 */
+	function buildBody(elu: Elu): string {
+		const el = document.getElementById('email-body')
+		let text = el ? el.innerText : ''
+		if (isEn) {
+			text = text.replace('Dear [Deputy/Senator name],', `Dear ${elu.nom},`)
+		} else {
+			const salutation =
+				elu.role === 'depute' ? 'Madame, Monsieur le Député,' : 'Madame, Monsieur le Sénateur,'
+			text = text.replace('Madame/Monsieur le Député / le Sénateur [nom],', salutation)
+		}
+		return text
+	}
+
+	function mailtoHref(elu: Elu): string {
+		const params = new URLSearchParams({ subject, bcc: BCC, body: buildBody(elu) })
+		// URLSearchParams encode les espaces en "+", à reconvertir en %20 pour mailto.
+		return `mailto:${elu.email}?${params.toString().replace(/\+/g, '%20')}`
+	}
+
+	function confidenceNote(elu: Elu): string | null {
+		if (elu.emailConfidence === 'high' || elu.emailConfidence === 'medium') return null
+		if (isEn) return 'Please double-check this address before sending.'
+		return "Vérifiez l'adresse avant l'envoi."
+	}
 
 	type Theme = 'individus' | 'societe' | 'economie' | 'humanite'
 
@@ -134,56 +176,24 @@
 	<section class="content-section">
 		<h2>{isEn ? 'How to do it' : 'Comment faire'}</h2>
 
-		<!-- Étape 1 -->
+		<!-- Étape 1 : personnaliser le message -->
 		<div class="step">
 			<div class="step-number">1</div>
 			<div class="step-content">
-				<h3>{isEn ? 'Find your representatives' : 'Trouvez vos représentants'}</h3>
+				<h3>{isEn ? 'Personalise your message' : 'Personnalisez votre message'}</h3>
 				{#if isEn}
 					<p>
-						Use these links to find your MP (deputy) and senator(s) for your area. Note that each
-						department has at least one senator, sometimes several.
+						The template below is ready to send. You can keep it as is, or switch to the full
+						version and choose which risks to mention. You'll attach your representatives in the
+						next step.
 					</p>
 				{:else}
 					<p>
-						Utilisez ces liens pour trouver votre député et votre (ou vos) sénateurs. Chaque
-						département compte au moins un sénateur, parfois plusieurs selon la population.
+						Le modèle ci-dessous est prêt à l'envoi. Vous pouvez le garder tel quel, ou passer à la
+						version complète et choisir les risques à mentionner. Vous y associerez vos élus à
+						l'étape suivante.
 					</p>
 				{/if}
-				<div class="find-links">
-					<a
-						class="find-btn"
-						href="https://www.assemblee-nationale.fr/dyn/vos-deputes/carte-departements"
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						<span class="find-icon">🏛️</span>
-						<span>
-							<strong>{isEn ? 'Find my MP' : 'Trouver mon député'}</strong>
-							<small>assemblee-nationale.fr</small>
-						</span>
-					</a>
-					<a
-						class="find-btn"
-						href="https://www.senat.fr/vos-senateurs.html"
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						<span class="find-icon">🏛️</span>
-						<span>
-							<strong>{isEn ? 'Find my senator(s)' : 'Trouver mon/mes sénateurs'}</strong>
-							<small>senat.fr</small>
-						</span>
-					</a>
-				</div>
-			</div>
-		</div>
-
-		<!-- Étape 2 -->
-		<div class="step">
-			<div class="step-number">2</div>
-			<div class="step-content">
-				<h3>{isEn ? 'Send your email' : 'Envoyez votre email'}</h3>
 
 				<!-- Conseils compacts -->
 				<div class="tips-box">
@@ -220,13 +230,13 @@
 					</div>
 					<p class="personalise-reminder">
 						{#if isEn}
-							Remember to replace <strong>[Deputy/Senator name]</strong> with their actual name, and
-							fill in your <strong>[full name]</strong> and <strong>[department]</strong> at the start
-							and end of the email.
+							The recipient's name is filled in automatically. Just replace your
+							<strong>[your name]</strong> and <strong>[your town]</strong> at the start and end of the
+							email.
 						{:else}
-							N'oubliez pas de remplacer <strong>[Nom de votre député / sénateur]</strong> par leur
-							vrai nom, et d'indiquer votre <strong>[Nom complet]</strong> et votre
-							<strong>[département]</strong> en début et en fin de mail.
+							Le nom du destinataire est rempli automatiquement. Indiquez simplement votre
+							<strong>[votre nom]</strong> et votre <strong>[votre commune]</strong> en début et en fin
+							de mail.
 						{/if}
 					</p>
 				</div>
@@ -456,6 +466,136 @@
 						</button>
 					</div>
 				</div>
+			</div>
+		</div>
+
+		<!-- Étape 2 : trouver et contacter ses élus -->
+		<div class="step">
+			<div class="step-number">2</div>
+			<div class="step-content">
+				<h3>{isEn ? 'Find and contact your representatives' : 'Trouvez et contactez vos élus'}</h3>
+				{#if isEn}
+					<p>
+						Enter your postal code: we'll list your senators (elected per department) and the MPs of
+						your department. One click opens a ready-to-send email — your message and the BCC are
+						already filled in.
+					</p>
+				{:else}
+					<p>
+						Entrez votre code postal : nous listons vos sénateurs (élus au département) et les
+						députés de votre département. Un clic ouvre un email prêt à envoyer — votre message et
+						la copie cachée sont déjà remplis.
+					</p>
+				{/if}
+
+				<form class="cp-form" on:submit|preventDefault={search}>
+					<input
+						class="cp-input"
+						type="text"
+						inputmode="numeric"
+						pattern="[0-9]&lbrace;5&rbrace;"
+						maxlength="5"
+						placeholder={isEn ? 'Postal code (e.g. 75011)' : 'Code postal (ex. 75011)'}
+						bind:value={codePostal}
+						aria-label={isEn ? 'Postal code' : 'Code postal'}
+					/>
+					<button class="cp-btn" type="submit">
+						{isEn ? 'Find my representatives' : 'Trouver mes élus'}
+					</button>
+				</form>
+
+				{#if isSampleData}
+					<p class="sample-warning">
+						{isEn
+							? '⚠️ Demo data — run the generation script to load real representatives and emails.'
+							: "⚠️ Données d'exemple — lancez le script de génération pour charger les vrais élus et emails."}
+					</p>
+				{/if}
+
+				{#if searched && !result}
+					<p class="cp-error">
+						{isEn
+							? "We couldn't find representatives for this postal code. Use the direct links below."
+							: 'Aucun élu trouvé pour ce code postal. Utilisez les liens directs ci-dessous.'}
+					</p>
+				{/if}
+
+				{#if result}
+					{#each [{ key: 'senateurs', list: result.senateurs, fr: 'Vos sénateurs', en: 'Your senators' }, { key: 'deputes', list: result.deputes, fr: 'Vos députés', en: 'Your MPs' }] as group}
+						{#if group.list.length}
+							<div class="elu-group">
+								<h4>{isEn ? group.en : group.fr}</h4>
+								<ul class="elu-list">
+									{#each group.list as elu (elu.id)}
+										<li class="elu-card">
+											<div class="elu-info">
+												<strong>{elu.nom}</strong>
+												<small>
+													{elu.role === 'depute'
+														? elu.nomCirco || `${isEn ? 'Dept.' : 'Dépt.'} ${elu.departement}`
+														: elu.nomDept || `${isEn ? 'Dept.' : 'Dépt.'} ${elu.departement}`}
+													{#if elu.groupe && elu.groupe !== '—'}· {elu.groupe}{/if}
+												</small>
+												{#if confidenceNote(elu)}
+													<small class="elu-note">{confidenceNote(elu)}</small>
+												{/if}
+											</div>
+											{#if elu.email}
+												<a class="elu-send" href={mailtoHref(elu)}>
+													{isEn ? 'Write' : 'Écrire'}
+												</a>
+											{:else if elu.contactUrl}
+												<a
+													class="elu-send elu-send--alt"
+													href={elu.contactUrl}
+													target="_blank"
+													rel="noopener noreferrer"
+												>
+													{isEn ? 'Contact form' : 'Formulaire'}
+												</a>
+											{/if}
+										</li>
+									{/each}
+								</ul>
+							</div>
+						{/if}
+					{/each}
+				{/if}
+
+				<!-- Repli : liens officiels pour rechercher manuellement -->
+				<details class="manual-fallback">
+					<summary>
+						{isEn
+							? "Can't find your representative? Official directories"
+							: 'Vous ne trouvez pas ? Annuaires officiels'}
+					</summary>
+					<div class="find-links">
+						<a
+							class="find-btn"
+							href="https://www.assemblee-nationale.fr/dyn/vos-deputes/carte-departements"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							<span class="find-icon">🏛️</span>
+							<span>
+								<strong>{isEn ? 'Find my MP' : 'Trouver mon député'}</strong>
+								<small>assemblee-nationale.fr</small>
+							</span>
+						</a>
+						<a
+							class="find-btn"
+							href="https://www.senat.fr/vos-senateurs.html"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							<span class="find-icon">🏛️</span>
+							<span>
+								<strong>{isEn ? 'Find my senator(s)' : 'Trouver mon/mes sénateurs'}</strong>
+								<small>senat.fr</small>
+							</span>
+						</a>
+					</div>
+				</details>
 			</div>
 		</div>
 	</section>
@@ -842,6 +982,144 @@
 
 	.copy-btn.copied {
 		background: #2a9d5c;
+	}
+
+	/* Recherche par code postal */
+	.cp-form {
+		display: flex;
+		gap: 0.5rem;
+		margin: 1.25rem 0 0.5rem;
+		flex-wrap: wrap;
+	}
+
+	.cp-input {
+		flex: 1;
+		min-width: 180px;
+		padding: 0.6rem 0.9rem;
+		border: 2px solid #ccc;
+		border-radius: 8px;
+		font-size: 1rem;
+	}
+
+	.cp-input:focus {
+		outline: none;
+		border-color: var(--color-primary, #e63946);
+	}
+
+	.cp-btn {
+		padding: 0.6rem 1.4rem;
+		background: var(--color-primary, #e63946);
+		color: white;
+		border: none;
+		border-radius: 8px;
+		font-size: 0.95rem;
+		font-weight: 600;
+		cursor: pointer;
+		transition: opacity 0.15s;
+	}
+
+	.cp-btn:hover {
+		opacity: 0.88;
+	}
+
+	.sample-warning {
+		font-size: 0.85rem;
+		color: #8a6d00;
+		background: #fff8e1;
+		border: 1px solid #ffe08a;
+		border-radius: 6px;
+		padding: 0.5rem 0.75rem;
+		margin: 0.5rem 0;
+	}
+
+	.cp-error {
+		font-size: 0.9rem;
+		color: var(--color-primary, #e63946);
+		margin: 0.5rem 0;
+	}
+
+	.elu-group {
+		margin-top: 1.5rem;
+	}
+
+	.elu-group h4 {
+		font-size: 0.95rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		color: var(--color-primary, #e63946);
+		margin-bottom: 0.6rem;
+	}
+
+	.elu-list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	.elu-card {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		padding: 0.75rem 1rem;
+		border: 1px solid #e0e0e0;
+		border-radius: 8px;
+		background: white;
+	}
+
+	.elu-info {
+		display: flex;
+		flex-direction: column;
+		gap: 0.15rem;
+	}
+
+	.elu-info small {
+		font-size: 0.8rem;
+		color: #666;
+	}
+
+	.elu-note {
+		color: #b06a00 !important;
+		font-style: italic;
+	}
+
+	.elu-send {
+		flex-shrink: 0;
+		padding: 0.5rem 1.1rem;
+		background: var(--color-primary, #e63946);
+		color: white;
+		border-radius: 6px;
+		text-decoration: none;
+		font-size: 0.9rem;
+		font-weight: 600;
+		transition: opacity 0.15s;
+	}
+
+	.elu-send:hover {
+		opacity: 0.88;
+	}
+
+	.elu-send--alt {
+		background: #666;
+	}
+
+	.manual-fallback {
+		margin-top: 1.75rem;
+		font-size: 0.9rem;
+	}
+
+	.manual-fallback summary {
+		cursor: pointer;
+		color: #555;
+		font-weight: 500;
+	}
+
+	.manual-fallback .find-links {
+		margin-top: 1rem;
 	}
 
 	@media (max-width: 600px) {
