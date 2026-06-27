@@ -26,13 +26,14 @@
  *   place du `mailto:`.
  *
  * Sources :
- *   - NosDéputés.fr   (Regards Citoyens, CC-BY-SA) : circonscription + emails
- *   - NosSénateurs.fr (Regards Citoyens, CC-BY-SA) : département + emails
- *   - Motif institutionnel : prenom.nom@assemblee-nationale.fr / @senat.fr
- *   - geo.api.gouv.fr (Etalab) : code postal → communes (INSEE) → département
+ *   - Députés : CSV « Députés actifs de l'Assemblée nationale » (data.gouv,
+ *     législature en cours) — nom/prénom, département, circonscription, mail.
+ *   - Sénateurs : open data officiel du Sénat (ODSEN) — emails publics.
+ *   - Motif institutionnel : prenom.nom@assemblee-nationale.fr (repli députés).
+ *   - geo.api.gouv.fr (Etalab) : code postal → communes (INSEE) → département.
  *
- * Si une source change de format, adapter les fonctions `normalizeDepute` /
- * `normalizeSenateur` ci-dessous. Le reste du pipeline est agnostique.
+ * Si une source change de format, adapter `fetchDeputes` / `fetchSenateurs`.
+ * Le reste du pipeline est agnostique.
  */
 
 import { writeFile, readFile, mkdir } from 'node:fs/promises'
@@ -45,7 +46,12 @@ const OUT_FILE = resolve(OUT_DIR, 'elus.json')
 const CP_FILE = resolve(OUT_DIR, 'code-postal-circo.json')
 
 const SOURCES = {
-	deputes: 'https://www.nosdeputes.fr/deputes/enmandat/json',
+	// API data.gouv du jeu « Députés actifs de l'Assemblée nationale » (CSV à jour,
+	// avec nom/prénom, departementCode, circo, groupe et mail). On résout l'URL du
+	// CSV dynamiquement pour ne pas dépendre d'une URL datée. NosDéputés n'est plus
+	// à jour depuis la dissolution de 2024.
+	deputes:
+		'https://www.data.gouv.fr/api/1/datasets/deputes-actifs-de-lassemblee-nationale-informations-et-statistiques/',
 	// Open data officiel du Sénat (ODSEN). CSV latin1, préambule en lignes « % »,
 	// contient tous les sénateurs depuis 1959 (filtrer État = ACTIF) avec une
 	// colonne « Courrier électronique » publique.
@@ -255,36 +261,99 @@ function reconcileEmail(sourced, pattern) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Normalisation des sources
+// Députés : CSV « députés actifs » (data.gouv, législature en cours)
 // ─────────────────────────────────────────────────────────────────────────────
 
-function normalizeDepute(entry) {
-	const d = entry.depute || entry
-	const prenom = d.prenom || ''
-	const nom = d.nom_de_famille || (d.nom || '').replace(prenom, '').trim()
-	const sourced = []
-	if (Array.isArray(d.emails)) sourced.push(...d.emails.map((e) => e.email || e))
-	if (d.email) sourced.push(d.email)
-	const pattern = institutionalEmail(prenom, nom, 'assemblee-nationale.fr')
-	const { email, confidence, emailSources, conflict } = reconcileEmail(sourced, pattern)
-
-	const dept = String(d.num_deptmt ?? d.num_departement ?? '').trim()
-	const circo = Number(d.num_circo)
-
-	return {
-		id: d.slug || slugifyName(d.nom),
-		nom: d.nom || `${prenom} ${nom}`.trim(),
-		role: 'depute',
-		departement: dept,
-		circo: Number.isFinite(circo) ? circo : null,
-		nomCirco: d.nom_circo || null,
-		groupe: d.groupe_sigle || d.parti_ratt_financier || null,
-		email,
-		emailConfidence: confidence,
-		emailSources,
-		contactUrl: d.url_an || (d.slug ? `https://www.nosdeputes.fr/${d.slug}` : null),
-		...(conflict ? { _conflict: conflict } : {})
+/** Parse complet d'un CSV (gère les champs entre guillemets contenant des virgules). */
+function parseCsvRows(text) {
+	const rows = []
+	let field = ''
+	let record = []
+	let inQuotes = false
+	for (let i = 0; i < text.length; i++) {
+		const ch = text[i]
+		if (inQuotes) {
+			if (ch === '"') {
+				if (text[i + 1] === '"') {
+					field += '"'
+					i++
+				} else inQuotes = false
+			} else field += ch
+		} else if (ch === '"') {
+			inQuotes = true
+		} else if (ch === ',') {
+			record.push(field)
+			field = ''
+		} else if (ch === '\r') {
+			// ignoré
+		} else if (ch === '\n') {
+			record.push(field)
+			rows.push(record)
+			record = []
+			field = ''
+		} else field += ch
 	}
+	if (field !== '' || record.length) {
+		record.push(field)
+		rows.push(record)
+	}
+	return rows
+}
+
+/** Numéro de circonscription → libellé ordinal (« 1re circonscription », « 4e… »). */
+function circoLabel(deptNom, circo) {
+	if (!deptNom || !Number.isFinite(circo)) return null
+	return `${deptNom} (${circo}${circo === 1 ? 're' : 'e'} circonscription)`
+}
+
+/** Télécharge le CSV des députés en exercice et le normalise. */
+async function fetchDeputes() {
+	// Résout l'URL du CSV via l'API data.gouv (évite de dépendre d'une URL datée).
+	const meta = await fetchJson(SOURCES.deputes)
+	const res = (meta.resources || []).find(
+		(r) => r.format === 'csv' && /deputes-active/i.test(`${r.url || ''}${r.title || ''}`)
+	)
+	if (!res) throw new Error('Ressource CSV « deputes-active » introuvable sur data.gouv')
+	const rows = parseCsvRows(await fetchText(res.latest || res.url))
+	if (rows.length < 2) return []
+	const header = rows[0].map((h) => h.trim())
+	const idx = Object.fromEntries(header.map((h, i) => [h, i]))
+	const get = (r, name) => (r[idx[name]] ?? '').trim()
+
+	const out = []
+	for (const r of rows.slice(1)) {
+		const nom = get(r, 'nom')
+		const prenom = get(r, 'prenom')
+		if (!nom) continue
+
+		const mail = get(r, 'mail')
+		const pattern = institutionalEmail(prenom, nom, 'assemblee-nationale.fr')
+		const { email, confidence, emailSources, conflict } = reconcileEmail(
+			mail ? [mail] : [],
+			pattern
+		)
+
+		let dept = get(r, 'departementCode')
+		if (/^\d$/.test(dept)) dept = `0${dept}` // 1 → 01
+		const circo = Number(get(r, 'circo'))
+		const anId = get(r, 'id')
+
+		out.push({
+			id: anId || slugifyName(`${prenom} ${nom}`),
+			nom: `${prenom} ${nom}`.trim(),
+			role: 'depute',
+			departement: dept,
+			circo: Number.isFinite(circo) ? circo : null,
+			nomCirco: circoLabel(get(r, 'departementNom'), circo),
+			groupe: get(r, 'groupeAbrev') || get(r, 'groupe') || null,
+			email,
+			emailConfidence: confidence,
+			emailSources,
+			contactUrl: anId ? `https://www.assemblee-nationale.fr/dyn/deputes/${anId}` : null,
+			...(conflict ? { _conflict: conflict } : {})
+		})
+	}
+	return out
 }
 
 // ── Sénateurs : open data du Sénat (ODSEN) ──
@@ -459,9 +528,8 @@ async function fetchSenateurs() {
 			email,
 			emailConfidence: email ? 'high' : 'none',
 			emailSources: email ? ['senat'] : [],
-			contactUrl: mat
-				? `https://www.senat.fr/senateur/${mat}.html`
-				: 'https://www.senat.fr/vos-senateurs.html'
+			// Pas de fiche par matricule fiable : on pointe l'annuaire officiel.
+			contactUrl: 'https://www.senat.fr/vos-senateurs.html'
 		})
 	}
 	if (unmappedDept) {
@@ -475,9 +543,8 @@ async function fetchSenateurs() {
 // ─────────────────────────────────────────────────────────────────────────────
 
 async function main() {
-	console.log('→ Téléchargement des députés…')
-	const rawDeputes = await fetchJson(SOURCES.deputes)
-	const deputes = (rawDeputes.deputes || rawDeputes).map(normalizeDepute)
+	console.log('→ Téléchargement des députés (data.gouv, AN)…')
+	const deputes = await fetchDeputes()
 
 	console.log('→ Téléchargement des sénateurs (Sénat open data)…')
 	const senateurs = await fetchSenateurs()
