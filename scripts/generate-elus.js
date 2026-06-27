@@ -35,7 +35,7 @@
  * `normalizeSenateur` ci-dessous. Le reste du pipeline est agnostique.
  */
 
-import { writeFile, mkdir } from 'node:fs/promises'
+import { writeFile, readFile, mkdir } from 'node:fs/promises'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -324,6 +324,11 @@ async function main() {
 	const rawSenateurs = await fetchJson(SOURCES.senateurs)
 	const senateurs = (rawSenateurs.senateurs || rawSenateurs).map(normalizeSenateur)
 
+	// Tri déterministe : la sortie ne dépend pas de l'ordre des sources, donc le
+	// fichier ne change que si un contact change réellement (pas de PR inutile).
+	deputes.sort((a, b) => a.id.localeCompare(b.id))
+	senateurs.sort((a, b) => a.id.localeCompare(b.id))
+
 	const data = {
 		generatedAt: new Date().toISOString().slice(0, 10),
 		sources: SOURCES,
@@ -338,8 +343,7 @@ async function main() {
 	}
 
 	await mkdir(OUT_DIR, { recursive: true })
-	await writeFile(OUT_FILE, JSON.stringify(data, null, '\t') + '\n')
-	console.log(`✓ Écrit ${OUT_FILE}`)
+	await writeStableJson(OUT_FILE, data, 'generatedAt')
 	console.log(`  ${deputes.length} députés, ${senateurs.length} sénateurs`)
 
 	// Table code postal → circonscription (géocodage fin, optionnel).
@@ -348,11 +352,58 @@ async function main() {
 		return null
 	})
 	if (cpToCirco) {
-		await writeFile(CP_FILE, JSON.stringify(cpToCirco) + '\n')
-		console.log(`✓ Écrit ${CP_FILE}`)
+		await writeStableJson(CP_FILE, cpToCirco)
 	}
 
 	if (REPORT) printReport(deputes, senateurs)
+}
+
+/** Sérialise en JSON canonique (clés triées) pour une sortie reproductible. */
+function canonicalStringify(obj, indent) {
+	return JSON.stringify(
+		obj,
+		(_k, v) =>
+			v && typeof v === 'object' && !Array.isArray(v)
+				? Object.fromEntries(
+						Object.keys(v)
+							.sort()
+							.map((k) => [k, v[k]])
+					)
+				: v,
+		indent
+	)
+}
+
+/**
+ * Écrit `data` en JSON canonique, mais seulement si le contenu réel a changé.
+ * `volatileKey` (ex. "generatedAt") est ignoré dans la comparaison et conserve
+ * sa valeur précédente quand rien d'autre n'a bougé → aucun diff, donc aucune PR
+ * tant que les contacts n'ont pas changé.
+ */
+async function writeStableJson(file, data, volatileKey) {
+	let previous = null
+	try {
+		previous = JSON.parse(await readFile(file, 'utf8'))
+	} catch {
+		previous = null
+	}
+
+	if (previous && volatileKey) {
+		const withoutVolatile = (o) => canonicalStringify({ ...o, [volatileKey]: null })
+		if (withoutVolatile(data) === withoutVolatile(previous)) {
+			// Contenu identique : on garde l'ancienne valeur volatile → fichier inchangé.
+			data = { ...data, [volatileKey]: previous[volatileKey] }
+		}
+	}
+
+	const next = canonicalStringify(data, '\t') + '\n'
+	const current = previous ? canonicalStringify(previous, '\t') + '\n' : null
+	if (next === current) {
+		console.log(`= ${file} inchangé`)
+		return
+	}
+	await writeFile(file, next)
+	console.log(`✓ Écrit ${file}`)
 }
 
 function groupBy(arr, keyFn) {

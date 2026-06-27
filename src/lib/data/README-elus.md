@@ -5,6 +5,11 @@ députés et sénateurs par code postal, avec email pré-rempli.
 
 ## Mise à jour automatique
 
+La génération est **idempotente** : sortie JSON canonique (clés triées, ordre
+stable) et `generatedAt` conservé tant que le contenu ne bouge pas. Le fichier
+ne change donc **que si un contact change réellement**, et une PR n'est ouverte
+que dans ce cas (pas de PR hebdomadaire à vide).
+
 Deux mécanismes possibles (en choisir un) :
 
 ### a) GitHub Actions (sans serveur)
