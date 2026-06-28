@@ -595,37 +595,36 @@
 				</p>
 			{/if}
 
-			<!-- Réglages compacts -->
-			<div class="msg-toolbar">
-				<div class="segmented" role="group" aria-label={isEn ? 'Length' : 'Longueur'}>
-					<button class:active={version === 'short'} on:click={() => (version = 'short')}>
-						{isEn ? 'Short' : 'Courte'}
-					</button>
-					<button class:active={version === 'long'} on:click={() => (version = 'long')}>
-						{isEn ? 'Detailed' : 'Détaillée'}
-					</button>
+			<!-- Réglages compacts : sujet et longueur sur une même ligne -->
+			<div class="msg-controls">
+				<div class="control">
+					<span class="control-label">{isEn ? 'Focus' : 'Sujet principal'}</span>
+					<div class="theme-chips" role="group" aria-label={isEn ? 'Focus' : 'Sujet principal'}>
+						{#each angles as a}
+							<button class="chip" class:active={angle === a.id} on:click={() => (angle = a.id)}>
+								{isEn ? a.en : a.fr}
+							</button>
+						{/each}
+					</div>
 				</div>
-			</div>
-
-			<div class="angle-row">
-				<span class="angle-label">
-					{isEn ? 'What worries you most:' : 'Ce qui vous préoccupe le plus :'}
-				</span>
-				<div class="theme-chips">
-					{#each angles as a}
-						<button class="chip" class:active={angle === a.id} on:click={() => (angle = a.id)}>
-							{isEn ? a.en : a.fr}
+				<div class="control">
+					<span class="control-label">{isEn ? 'Length' : 'Longueur'}</span>
+					<div class="segmented" role="group" aria-label={isEn ? 'Length' : 'Longueur'}>
+						<button class:active={version === 'short'} on:click={() => (version = 'short')}>
+							{isEn ? 'Short' : 'Courte'}
 						</button>
-					{/each}
+						<button class:active={version === 'long'} on:click={() => (version = 'long')}>
+							{isEn ? 'Detailed' : 'Détaillée'}
+						</button>
+					</div>
 				</div>
 			</div>
 
 			<label class="perso-field">
-				<span
-					>{isEn
-						? 'Add a personal sentence (optional)'
-						: 'Ajoutez une phrase personnelle (facultatif)'}</span
-				>
+				<span class="perso-label">
+					{isEn ? 'Add a personal sentence' : 'Ajoutez une phrase personnelle'}
+					<em>{isEn ? 'recommended' : 'recommandé'}</em>
+				</span>
 				<textarea
 					class="perso-input"
 					rows="2"
@@ -1058,12 +1057,26 @@
 	}
 
 	/* Toolbar message */
-	.msg-toolbar {
+	.msg-controls {
 		display: flex;
-		align-items: center;
-		gap: 0.75rem;
 		flex-wrap: wrap;
-		margin-bottom: 1rem;
+		gap: 1.1rem 2rem;
+		align-items: flex-start;
+		margin-bottom: 1.25rem;
+	}
+
+	.control {
+		display: flex;
+		flex-direction: column;
+		gap: 0.45rem;
+	}
+
+	.control-label {
+		font-size: 0.72rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		color: var(--text-secondary);
 	}
 
 	.segmented {
@@ -1111,29 +1124,27 @@
 		color: #1a1a1a;
 	}
 
-	.angle-row {
-		margin-bottom: 1rem;
-	}
-
-	.angle-label {
-		display: block;
-		font-size: 0.8rem;
-		font-weight: 600;
-		color: var(--text-2);
-		margin-bottom: 0.5rem;
-	}
-
 	.perso-field {
 		display: block;
 		margin-bottom: 1rem;
 	}
 
-	.perso-field span {
+	.perso-label {
 		display: block;
 		font-size: 0.8rem;
 		font-weight: 600;
 		color: var(--text-2);
 		margin-bottom: 0.4rem;
+	}
+
+	.perso-label em {
+		font-style: normal;
+		font-size: 0.7rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.03em;
+		color: var(--brand-subtle);
+		margin-left: 0.4rem;
 	}
 
 	.perso-input {
