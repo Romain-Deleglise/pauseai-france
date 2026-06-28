@@ -124,6 +124,17 @@
 		}
 	}
 
+	// Remet à zéro la progression (les coches « Écrit ✓ »), stockée localement.
+	// N'efface pas le nom / la ville saisis.
+	function resetProgress() {
+		sent = new Set()
+		try {
+			localStorage.removeItem('elus-contactes')
+		} catch {
+			/* localStorage indisponible : on ignore */
+		}
+	}
+
 	// Journalise l'intention d'envoi côté serveur, sans donnée personnelle.
 	// `sendBeacon` est conçu pour survivre à la navigation immédiate vers le
 	// client mail (un simple fetch serait annulé). Aucune preuve d'envoi réel :
@@ -283,9 +294,28 @@
 		})
 	}
 
-	$: subject = isEn
-		? 'Governing the most powerful AI systems'
-		: 'Encadrer le développement des IA les plus puissantes'
+	// Plusieurs objets : un est tiré au hasard par visiteur, pour éviter qu'un
+	// objet identique se répète dans toutes les boites parlementaires.
+	const SUBJECTS = [
+		{
+			fr: 'Encadrer le développement des IA les plus puissantes',
+			en: 'Governing the most powerful AI systems'
+		},
+		{
+			fr: "Mettre en pause l'IA la plus avancée tant qu'elle n'est pas sous contrôle",
+			en: 'Pausing the most advanced AI until it is under control'
+		},
+		{
+			fr: "Préoccupation d'un électeur sur les risques de l'IA",
+			en: "A constituent's concern about the risks of AI"
+		},
+		{
+			fr: "Pour une gouvernance démocratique de l'intelligence artificielle",
+			en: 'For democratic governance of artificial intelligence'
+		}
+	]
+	let subjectIndex = Math.floor(Math.random() * SUBJECTS.length)
+	$: subject = isEn ? SUBJECTS[subjectIndex].en : SUBJECTS[subjectIndex].fr
 
 	$: eluGroups = result
 		? [
@@ -455,6 +485,11 @@
 						</div>
 					{/if}
 				{/each}
+				{#if sentCount > 0}
+					<button class="reset-link" on:click={resetProgress}>
+						{isEn ? 'Reset my progress' : 'Réinitialiser ma progression'}
+					</button>
+				{/if}
 			{/if}
 
 			{#if searched && !result}
@@ -601,7 +636,12 @@
 					<span class="control-label">{isEn ? 'Focus' : 'Sujet principal'}</span>
 					<div class="theme-chips" role="group" aria-label={isEn ? 'Focus' : 'Sujet principal'}>
 						{#each angles as a}
-							<button class="chip" class:active={angle === a.id} on:click={() => (angle = a.id)}>
+							<button
+								class="chip"
+								class:active={angle === a.id}
+								aria-pressed={angle === a.id}
+								on:click={() => (angle = a.id)}
+							>
 								{isEn ? a.en : a.fr}
 							</button>
 						{/each}
@@ -610,10 +650,18 @@
 				<div class="control">
 					<span class="control-label">{isEn ? 'Length' : 'Longueur'}</span>
 					<div class="segmented" role="group" aria-label={isEn ? 'Length' : 'Longueur'}>
-						<button class:active={version === 'short'} on:click={() => (version = 'short')}>
+						<button
+							class:active={version === 'short'}
+							aria-pressed={version === 'short'}
+							on:click={() => (version = 'short')}
+						>
 							{isEn ? 'Short' : 'Courte'}
 						</button>
-						<button class:active={version === 'long'} on:click={() => (version = 'long')}>
+						<button
+							class:active={version === 'long'}
+							aria-pressed={version === 'long'}
+							on:click={() => (version = 'long')}
+						>
 							{isEn ? 'Detailed' : 'Détaillée'}
 						</button>
 					</div>
@@ -660,6 +708,20 @@
 				<p class="notice notice--warn">{confidenceNote(selectedElu)}</p>
 			{/if}
 
+			{#if !selectedElu.email}
+				<p class="notice notice--info">
+					{#if selectedElu.contactUrl}
+						{isEn
+							? 'This representative does not publish an email address. Copy the text above, open their contact form, and paste it there.'
+							: "Cet élu ne publie pas d'adresse email. Copiez le texte ci-dessus, ouvrez son formulaire de contact, puis collez-le."}
+					{:else}
+						{isEn
+							? 'No public email or contact form was found for this representative. Copy the text above and reach them via their official profile.'
+							: "Aucun email ni formulaire public n'a été trouvé pour cet élu. Copiez le texte ci-dessus et contactez-le via sa fiche officielle."}
+					{/if}
+				</p>
+			{/if}
+
 			<div class="send-row">
 				{#if selectedElu.email}
 					<Button on:click={openMail}>{isEn ? 'Open my email' : 'Ouvrir mon email'}</Button>
@@ -677,16 +739,18 @@
 				</Button>
 			</div>
 
-			<p class="deliverability">
-				{isEn
-					? 'Send from your personal mailbox: an email from a real constituent carries far more weight than a form. Check the recipient before sending.'
-					: 'Envoyez depuis votre messagerie personnelle : un email d’un vrai électeur a bien plus de poids qu’un formulaire. Vérifiez le destinataire avant l’envoi.'}
-			</p>
+			{#if selectedElu.email}
+				<p class="deliverability">
+					{isEn
+						? 'Send from your personal mailbox: an email from a real constituent carries far more weight than a form. Check the recipient before sending.'
+						: 'Envoyez depuis votre messagerie personnelle : un email d’un vrai électeur a bien plus de poids qu’un formulaire. Vérifiez le destinataire avant l’envoi.'}
+				</p>
 
-			<p class="bcc-hint">
-				{isEn ? 'BCC' : 'CCI'} <code>{BCC}</code>
-				{isEn ? '(helps us count letters sent)' : '(pour compter les emails envoyés)'}
-			</p>
+				<p class="bcc-hint">
+					{isEn ? 'BCC' : 'CCI'} <code>{BCC}</code>
+					{isEn ? '(helps us count letters sent)' : '(pour compter les emails envoyés)'}
+				</p>
+			{/if}
 
 			{#if sent.has(selectedElu.id)}
 				<div class="after-send">
@@ -853,6 +917,29 @@
 		color: #c0392b;
 		background: #fdecee;
 		border: 1px solid #f6c6cc;
+	}
+
+	.notice--info {
+		color: var(--text-2);
+		background: var(--bg-card);
+		border: 1px solid var(--border);
+	}
+
+	/* Lien discret « Réinitialiser ma progression » */
+	.reset-link {
+		display: inline-block;
+		margin-top: 1.25rem;
+		padding: 0;
+		background: none;
+		border: none;
+		font-size: 0.82rem;
+		color: var(--text-secondary);
+		text-decoration: underline;
+		cursor: pointer;
+	}
+
+	.reset-link:hover {
+		color: var(--brand-subtle);
 	}
 
 	.results-hint {
