@@ -249,8 +249,8 @@
 		}
 	}
 	const POLL = {
-		fr: "Cette préoccupation est largement partagée : selon un sondage OpinionWay pour le CeSIA en 2026, seuls 8 % des Français souhaitent accélérer le développement de l'IA, et près de huit sur dix sont favorables à des accords internationaux interdisant les capacités d'IA qui menacent la vie humaine ou les droits fondamentaux.",
-		en: 'This concern is widely shared: according to an OpinionWay poll for CeSIA in 2026, only 8% of French people want to accelerate AI development, and nearly eight in ten support international agreements banning AI capabilities that threaten human life or fundamental rights.'
+		fr: "Cette préoccupation est largement partagée : selon un récent sondage, seuls 8 % des Français souhaitent accélérer le développement de l'IA, et près de huit sur dix sont favorables à des accords internationaux interdisant les capacités d'IA qui menacent la vie humaine ou les droits fondamentaux.",
+		en: 'This concern is widely shared: according to a recent poll, only 8% of French people want to accelerate AI development, and nearly eight in ten support international agreements banning AI capabilities that threaten human life or fundamental rights.'
 	}
 	// Reconnaissance des bénéfices : désamorce le « catastrophisme » et rend le
 	// message plus crédible. Présent dans toutes les versions, juste avant l'appel.

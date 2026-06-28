@@ -107,14 +107,14 @@ les envois identiques.
 
 ### B.6 Sondage (version détaillée uniquement)
 
-> Cette préoccupation est largement partagée : selon un sondage OpinionWay pour
-> le CeSIA en 2026, seuls 8 % des Français souhaitent accélérer le développement
-> de l'IA, et près de huit sur dix sont favorables à des accords internationaux
-> interdisant les capacités d'IA qui menacent la vie humaine ou les droits
-> fondamentaux.
+> Cette préoccupation est largement partagée : selon un récent sondage, seuls
+> 8 % des Français souhaitent accélérer le développement de l'IA, et près de huit
+> sur dix sont favorables à des accords internationaux interdisant les capacités
+> d'IA qui menacent la vie humaine ou les droits fondamentaux.
 
-> ⚠️ À surveiller : la date « 2026 » vieillira. À maintenir à jour ou à rendre
-> intemporelle.
+> ℹ️ Formulation volontairement intemporelle (« un récent sondage »). Les
+> chiffres proviennent d'un sondage OpinionWay pour le CeSIA (2026) ; à
+> actualiser si une enquête plus récente devient disponible.
 
 ### B.7 Phrase personnelle (facultative)
 
@@ -205,11 +205,10 @@ Texte libre saisi par l'utilisateur, inséré tel quel.
 > autonomes. Tous appellent la même prudence, celle de prendre le temps de
 > comprendre avant de déployer.
 >
-> Cette préoccupation est largement partagée : selon un sondage OpinionWay pour
-> le CeSIA en 2026, seuls 8 % des Français souhaitent accélérer le développement
-> de l'IA, et près de huit sur dix sont favorables à des accords internationaux
-> interdisant les capacités d'IA qui menacent la vie humaine ou les droits
-> fondamentaux.
+> Cette préoccupation est largement partagée : selon un récent sondage, seuls
+> 8 % des Français souhaitent accélérer le développement de l'IA, et près de huit
+> sur dix sont favorables à des accords internationaux interdisant les capacités
+> d'IA qui menacent la vie humaine ou les droits fondamentaux.
 >
 > _(phrase personnelle de l'utilisateur, par ex. :)_ En tant que parent, je
 > m'inquiète du monde que nous laisserons à nos enfants.
