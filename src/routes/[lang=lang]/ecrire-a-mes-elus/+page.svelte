@@ -1,56 +1,292 @@
 <script lang="ts">
 	import PostMeta from '$components/PostMeta.svelte'
-	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
-	import Button from '$lib/components/Button.svelte'
+	import Button from '$components/Button.svelte'
+	import Accordion from '$components/Accordion.svelte'
+	import { onMount } from 'svelte'
+	import { lookupElus, isSampleData, type Elu, type LookupResult } from '$lib/data/elus'
 	import type { PageData } from './$types'
 
 	export let data: PageData
 	$: lang = data.lang
 	$: isEn = lang === 'en'
 
-	type Theme = 'individus' | 'societe' | 'economie' | 'humanite'
+	const BCC = 'campagne@pauseia.fr'
 
-	const themes: { id: Theme; label: string; labelEn: string }[] = [
-		{ id: 'individus', label: 'Vie privée et surveillance', labelEn: 'Privacy and surveillance' },
-		{
-			id: 'societe',
-			label: 'Désinformation et démocratie',
-			labelEn: 'Disinformation and democracy'
-		},
-		{ id: 'economie', label: "Perte d'emploi", labelEn: 'Job losses' },
-		{ id: 'humanite', label: 'Risques existentiels', labelEn: 'Existential risks' }
-	]
+	// ── Étape du parcours : 1 = trouver ses élus, 2 = rédiger le mail ──
+	let step: 1 | 2 = 1
+	let selectedElu: Elu | null = null
 
-	let selectedThemes = new Set<Theme>(['individus', 'societe', 'economie', 'humanite'])
+	// ── Recherche des élus par code postal ──
+	let codePostal = ''
+	let result: LookupResult | null = null
+	let searched = false
+	let searchError: 'format' | 'notfound' | null = null
 
-	function toggleTheme(theme: Theme) {
-		const next = new Set(selectedThemes)
-		if (next.has(theme)) {
-			if (next.size > 1) next.delete(theme)
-		} else {
-			next.add(theme)
+	function search() {
+		searched = true
+		const clean = codePostal.replace(/\s/g, '')
+		if (!/^\d{5}$/.test(clean)) {
+			result = null
+			searchError = 'format'
+			return
 		}
-		selectedThemes = next
+		result = lookupElus(clean)
+		searchError = result ? null : 'notfound'
 	}
+
+	function choose(elu: Elu) {
+		selectedElu = elu
+		step = 2
+		if (typeof window !== 'undefined') window.scrollTo({ top: 0 })
+	}
+
+	function back() {
+		step = 1
+		if (typeof window !== 'undefined') window.scrollTo({ top: 0 })
+	}
+
+	// Formule d'appel personnalisée (civilité + titre selon le rôle).
+	function salutation(elu: Elu): string {
+		if (isEn) return `Dear ${elu.nom},`
+		const titre = elu.role === 'depute' ? 'Député' : 'Sénateur'
+		if (elu.civ === 'Mme') return `Madame la ${titre === 'Député' ? 'Députée' : 'Sénatrice'},`
+		if (elu.civ === 'M') return `Monsieur le ${titre},`
+		return `Madame, Monsieur le ${titre},`
+	}
+
+	// Localité de l'élu (circonscription pour un député, département pour un sénateur).
+	function localite(elu: Elu): string {
+		return elu.role === 'depute'
+			? (elu.nomCirco ?? `${isEn ? 'department' : 'département'} ${elu.departement}`)
+			: (elu.nomDept ?? `${isEn ? 'department' : 'département'} ${elu.departement}`)
+	}
+
+	// 1re phrase : ouverture naturelle qui signale « je suis votre électeur ».
+	// La localité précise figure dans la signature (comme une vraie lettre), on
+	// évite donc le « : Savoie » un peu mécanique dans le corps du message.
+	// `name` est passé explicitement pour que Svelte recalcule l'aperçu à la frappe.
+	function introLine(elu: Elu, name: string): string {
+		const nom = name.trim() || (isEn ? '[your name]' : '[votre nom]')
+		if (isEn) {
+			return elu.role === 'depute'
+				? `My name is ${nom}, and I am writing to you as one of your constituents.`
+				: `My name is ${nom}, and I am writing to you as a resident of your department.`
+		}
+		return elu.role === 'depute'
+			? `Je m'appelle ${nom} et je vous écris en tant qu'habitant de votre circonscription.`
+			: `Je m'appelle ${nom} et je vous écris en tant qu'habitant de votre département.`
+	}
+
+	// L'aperçu (#email-body) est déjà personnalisé pour l'élu choisi : il suffit
+	// d'en prendre le texte brut.
+	function buildBody(): string {
+		const el = document.getElementById('email-body')
+		return el ? el.innerText : ''
+	}
+
+	function mailtoHref(elu: Elu): string {
+		const params = new URLSearchParams({ subject, bcc: BCC, body: buildBody() })
+		// URLSearchParams encode les espaces en "+", à reconvertir en %20 pour mailto.
+		return `mailto:${elu.email ?? ''}?${params.toString().replace(/\+/g, '%20')}`
+	}
+
+	// ── Infos utilisateur pour personnaliser le mail (jamais envoyées à un serveur,
+	// seulement injectées dans le brouillon et mémorisées localement) ──
+	let userName = ''
+	let userVille = ''
+	function saveUser() {
+		try {
+			localStorage.setItem('elus-user', JSON.stringify({ userName, userVille, personalSentence }))
+		} catch {
+			/* localStorage indisponible */
+		}
+	}
+
+	// ── Suivi de progression : élus déjà contactés (mémorisé localement) ──
+	let sent = new Set<string>()
+	onMount(() => {
+		try {
+			sent = new Set(JSON.parse(localStorage.getItem('elus-contactes') ?? '[]'))
+			const u = JSON.parse(localStorage.getItem('elus-user') ?? '{}')
+			userName = u.userName ?? ''
+			userVille = u.userVille ?? ''
+			personalSentence = u.personalSentence ?? ''
+		} catch {
+			sent = new Set()
+		}
+	})
+	function markSent(id: string) {
+		sent = new Set(sent).add(id)
+		try {
+			localStorage.setItem('elus-contactes', JSON.stringify([...sent]))
+		} catch {
+			/* localStorage indisponible : on ignore */
+		}
+	}
+
+	// Remet à zéro la progression (les coches « Écrit ✓ »), stockée localement.
+	// N'efface pas le nom / la ville saisis.
+	function resetProgress() {
+		sent = new Set()
+		try {
+			localStorage.removeItem('elus-contactes')
+		} catch {
+			/* localStorage indisponible : on ignore */
+		}
+	}
+
+	// Journalise l'intention d'envoi côté serveur, sans donnée personnelle.
+	// `sendBeacon` est conçu pour survivre à la navigation immédiate vers le
+	// client mail (un simple fetch serait annulé). Aucune preuve d'envoi réel :
+	// c'est le clic, pas l'email. Le compteur fiable reste le BCC.
+	function logIntent(elu: Elu) {
+		if (typeof navigator === 'undefined' || !navigator.sendBeacon) return
+		try {
+			const payload = JSON.stringify({
+				eluId: elu.id,
+				eluNom: elu.nom,
+				role: elu.role,
+				departement: elu.departement,
+				circo: elu.circo ?? null,
+				angle,
+				version
+			})
+			navigator.sendBeacon('/api/log-intent', new Blob([payload], { type: 'application/json' }))
+		} catch {
+			/* journalisation best-effort : on ignore toute erreur */
+		}
+	}
+
+	function openMail() {
+		if (!selectedElu) return
+		markSent(selectedElu.id)
+		logIntent(selectedElu)
+		window.location.href = mailtoHref(selectedElu)
+	}
+
+	function confidenceNote(elu: Elu): string | null {
+		if (elu.emailConfidence === 'high' || elu.emailConfidence === 'medium') return null
+		if (isEn) return 'Please double-check this address before sending.'
+		return "Vérifiez l'adresse avant l'envoi."
+	}
+
+	// Masque une photo qui ne charge pas (404) → les initiales restent visibles.
+	function hideImg(e: Event) {
+		;(e.currentTarget as HTMLImageElement).style.display = 'none'
+	}
+
+	function initials(elu: Elu): string {
+		const parts = elu.nom.trim().split(/\s+/)
+		const first = parts[0]?.[0] ?? ''
+		const last = parts.length > 1 ? parts[parts.length - 1][0] : ''
+		return (first + last).toUpperCase()
+	}
+
+	function eluSubtitle(elu: Elu): string {
+		const base =
+			elu.role === 'depute'
+				? (elu.nomCirco ?? `${isEn ? 'Dept.' : 'Dépt.'} ${elu.departement}`)
+				: (elu.nomDept ?? `${isEn ? 'Dept.' : 'Dépt.'} ${elu.departement}`)
+		return elu.groupe && elu.groupe !== '—' ? `${base} · ${elu.groupe}` : base
+	}
+
+	// ── Angle principal du message (1 choix) ──
+	type Angle = 'ensemble' | 'existentiel' | 'societe'
+	const angles: { id: Angle; fr: string; en: string }[] = [
+		{ id: 'ensemble', fr: "Vue d'ensemble", en: 'Overview' },
+		{ id: 'existentiel', fr: 'Risque existentiel', en: 'Existential risk' },
+		{ id: 'societe', fr: 'Risques pour la société', en: 'Risks to society' }
+	]
+	let angle: Angle = 'ensemble'
+	let personalSentence = ''
 
 	type Version = 'short' | 'long'
 	let version: Version = 'short'
 
-	let copiedBcc = false
-	function copyBcc() {
-		navigator.clipboard.writeText('campagne@pauseia.fr').then(() => {
-			copiedBcc = true
-			setTimeout(() => {
-				copiedBcc = false
-			}, 2500)
-		})
+	// ── Contenu du mail (modulaire, sans tirets longs) ──
+	// Registre volontairement humain : on écrit à la première personne, on
+	// reconnaît les bénéfices de l'IA, et on évite l'empilement de citations.
+	// Plusieurs accroches : une est tirée au hasard par visiteur, pour diversifier
+	// les envois (anti « copier-coller » repéré par les équipes parlementaires).
+	const HOOKS = [
+		{
+			fr: "Je vous écris parce que je suis préoccupé par la vitesse à laquelle se développent les intelligences artificielles les plus puissantes. Ce qui m'inquiète n'est pas la science-fiction : ce sont les dirigeants de ces laboratoires eux-mêmes qui reconnaissent publiquement que leurs systèmes pourraient, à terme, échapper à notre contrôle.",
+			en: 'I am writing because I am worried about the speed at which the most powerful artificial intelligence systems are being developed. What concerns me is not science fiction: it is the leaders of these very labs who publicly acknowledge that their systems could, in time, escape our control.'
+		},
+		{
+			fr: "Je suis un citoyen inquiet de la tournure que prend le développement de l'intelligence artificielle. En mai 2023, des centaines de chercheurs et les dirigeants des principaux laboratoires d'IA ont signé une même phrase : « Atténuer le risque d'extinction lié à l'IA devrait être une priorité mondiale, au même titre que les pandémies ou la guerre nucléaire. » Quand ceux qui construisent cette technologie lancent eux-mêmes une telle alerte, il me semble que nous devons l'écouter.",
+			en: 'I am a citizen worried about the direction AI development is taking. In May 2023, hundreds of researchers and the leaders of the main AI labs signed a single sentence: "Mitigating the risk of extinction from AI should be a global priority, alongside other societal-scale risks such as pandemics and nuclear war." When the very people building this technology raise such a warning, it seems to me we should listen.'
+		},
+		{
+			fr: "Comme beaucoup, j'observe avec un mélange d'enthousiasme et d'inquiétude les progrès rapides de l'intelligence artificielle. L'inquiétude l'emporte quand des scientifiques parmi les plus respectés, comme les prix Turing Yoshua Bengio et Geoffrey Hinton, expliquent que personne ne sait aujourd'hui garantir le contrôle des systèmes les plus avancés.",
+			en: 'Like many people, I watch the rapid progress of artificial intelligence with a mix of enthusiasm and concern. Concern wins out when some of the most respected scientists, such as Turing laureates Yoshua Bengio and Geoffrey Hinton, explain that no one today knows how to guarantee control of the most advanced systems.'
+		}
+	]
+	// Tirée à l'initialisation (avant le 1er rendu côté client).
+	let hookIndex = Math.floor(Math.random() * HOOKS.length)
+	const FOCUS: Record<Angle, { fr: string; en: string }> = {
+		ensemble: {
+			fr: 'Ces dangers ne sont pas tous lointains : certains sont déjà là, comme la désinformation de masse ou la surveillance, tandis que la course à des systèmes toujours plus autonomes fait planer un risque bien plus grave encore.',
+			en: 'These dangers are not all distant: some are already here, such as mass disinformation or surveillance, while the race toward ever more autonomous systems raises an even graver risk.'
+		},
+		existentiel: {
+			fr: "Ce qui me préoccupe le plus est le risque le plus extrême : en construisant des machines plus intelligentes que nous sans savoir les maîtriser, nous prenons un pari dont l'humanité pourrait ne jamais se relever. Ce n'est plus une crainte marginale, mais une inquiétude partagée au plus haut niveau de la recherche.",
+			en: 'What worries me most is the most extreme risk: by building machines more intelligent than us without knowing how to control them, we are taking a gamble humanity might never recover from. This is no longer a fringe fear, but a concern shared at the highest levels of research.'
+		},
+		societe: {
+			fr: "Au-delà du long terme, ces systèmes fragilisent déjà notre société : deepfakes et désinformation qui minent le débat démocratique, surveillance et profilage qui menacent la vie privée, automatisation qui déstabilise l'emploi et risque d'aggraver les inégalités.",
+			en: 'Beyond the long term, these systems are already straining our society: deepfakes and disinformation that erode democratic debate, surveillance and profiling that threaten privacy, and automation that destabilises jobs and could deepen inequality.'
+		}
 	}
+	const COMPLEMENT = {
+		wide: {
+			fr: "Ce risque n'efface pas les autres : vie privée, désinformation, emploi, armes autonomes. Tous appellent la même prudence, celle de prendre le temps de comprendre avant de déployer.",
+			en: 'This risk does not erase the others: privacy, disinformation, jobs, autonomous weapons. They all call for the same caution, that of taking the time to understand before deploying.'
+		},
+		exist: {
+			fr: "Et même en mettant de côté ces effets immédiats, une question demeure : nous nous apprêtons à créer des intelligences supérieures à la nôtre sans aucune garantie de pouvoir les garder sous contrôle. C'est ce pari que je trouve déraisonnable.",
+			en: 'And even setting aside these immediate effects, one question remains: we are about to create intelligences greater than our own with no guarantee of keeping them under control. It is this gamble that I find unreasonable.'
+		}
+	}
+	const POLL = {
+		fr: "Cette préoccupation est largement partagée : selon un récent sondage, seuls 8 % des Français souhaitent accélérer le développement de l'IA, et près de huit sur dix sont favorables à des accords internationaux interdisant les capacités d'IA qui menacent la vie humaine ou les droits fondamentaux.",
+		en: 'This concern is widely shared: according to a recent poll, only 8% of French people want to accelerate AI development, and nearly eight in ten support international agreements banning AI capabilities that threaten human life or fundamental rights.'
+	}
+	// Reconnaissance des bénéfices : désamorce le « catastrophisme » et rend le
+	// message plus crédible. Présent dans toutes les versions, juste avant l'appel.
+	const BALANCE = {
+		fr: "Je ne suis pas opposé au progrès : l'IA peut rendre d'immenses services, en médecine, dans la recherche ou au quotidien. C'est précisément parce que cette technologie est puissante qu'elle mérite d'être développée avec prudence et sous contrôle démocratique.",
+		en: 'I am not against progress: AI can bring immense benefits, in medicine, research and everyday life. It is precisely because this technology is so powerful that it deserves to be developed with caution and under democratic oversight.'
+	}
+	const ASK = {
+		fr: "C'est pourquoi je vous demande de soutenir publiquement une gouvernance internationale visant à mettre en pause l'entraînement des modèles d'IA les plus avancés, tant que leur sûreté et leur contrôle démocratique ne sont pas démontrés, et de porter cette position aux niveaux français et européen. L'association Pause IA (pauseia.fr) se tient à votre disposition, ainsi que celle de votre équipe, pour en échanger.",
+		en: 'That is why I ask you to publicly support international governance aimed at pausing the training of the most advanced AI models, until their safety and democratic control are demonstrated, and to carry this position at the French and European level. The Pause AI association (pauseia.fr) would be glad to discuss this with you or your team.'
+	}
+
+	// Compose les paragraphes du corps selon l'angle, la longueur et la phrase perso.
+	function buildParagraphs(a: Angle, v: Version, personal: string): string[] {
+		const L = isEn ? 'en' : 'fr'
+		const paras = [HOOKS[hookIndex][L], FOCUS[a][L]]
+		if (v === 'long') {
+			// On approfondit : l'angle existentiel s'élargit aux autres risques,
+			// les autres angles pointent vers le risque existentiel.
+			paras.push(a === 'existentiel' ? COMPLEMENT.wide[L] : COMPLEMENT.exist[L])
+			paras.push(POLL[L])
+		}
+		if (personal.trim()) paras.push(personal.trim())
+		paras.push(BALANCE[L])
+		paras.push(ASK[L])
+		return paras
+	}
+
+	// ── Suite après envoi : on invite simplement à rejoindre Pause IA ──
+	$: joinHref = isEn ? '/en/rejoindre' : '/fr/rejoindre'
 
 	let copied = false
 	function copyEmail() {
 		const el = document.getElementById('email-body')
 		if (!el) return
-		navigator.clipboard.writeText(el.innerText).then(() => {
+		void navigator.clipboard.writeText(el.innerText).then(() => {
 			copied = true
 			setTimeout(() => {
 				copied = false
@@ -58,600 +294,684 @@
 		})
 	}
 
-	$: subject = isEn
-		? 'AI risks: concern from a constituent'
-		: "Risques liés aux systèmes d'IA avancés"
+	// Plusieurs objets : un est tiré au hasard par visiteur, pour éviter qu'un
+	// objet identique se répète dans toutes les boites parlementaires.
+	const SUBJECTS = [
+		{
+			fr: 'Encadrer le développement des IA les plus puissantes',
+			en: 'Governing the most powerful AI systems'
+		},
+		{
+			fr: "Mettre en pause l'IA la plus avancée tant qu'elle n'est pas sous contrôle",
+			en: 'Pausing the most advanced AI until it is under control'
+		},
+		{
+			fr: "Préoccupation d'un électeur sur les risques de l'IA",
+			en: "A constituent's concern about the risks of AI"
+		},
+		{
+			fr: "Pour une gouvernance démocratique de l'intelligence artificielle",
+			en: 'For democratic governance of artificial intelligence'
+		}
+	]
+	let subjectIndex = Math.floor(Math.random() * SUBJECTS.length)
+	$: subject = isEn ? SUBJECTS[subjectIndex].en : SUBJECTS[subjectIndex].fr
+
+	$: eluGroups = result
+		? [
+				{ list: result.senateurs, title: isEn ? 'Your senators' : 'Vos sénateurs' },
+				{
+					list: result.deputes,
+					title: !result.exactDeputes
+						? isEn
+							? 'The MPs of your department'
+							: 'Les députés de votre département'
+						: result.deputes.length > 1
+							? isEn
+								? 'Your MPs (your city)'
+								: 'Vos députés (votre ville)'
+							: isEn
+								? 'Your MP'
+								: 'Votre député'
+				}
+			]
+		: []
+
+	$: allElus = result ? [...result.senateurs, ...result.deputes] : []
+	$: sentCount = allElus.filter((e) => sent.has(e.id)).length
 </script>
 
 <PostMeta
 	title={isEn ? 'Write to your representatives | Pause AI' : 'Écrivez à vos élus | Pause IA'}
 	description={isEn
-		? 'Take 5 minutes to write to your MP and senator about the risks of advanced AI systems. Use our email template to get started.'
-		: "Prenez 5 minutes pour écrire à votre député et à votre sénateur sur les risques des systèmes d'IA avancés."}
+		? 'Take 2 minutes to write to your MP and senator about the risks of advanced AI systems. Enter your postal code and send a ready-made email.'
+		: "Prenez 2 minutes pour écrire à votre député et à votre sénateur sur les risques des systèmes d'IA. Entrez votre code postal et envoyez un email prêt à l'emploi."}
 />
 
 <article>
-	<section class="hero">
-		<UnderlinedTitle as="h1">
-			{isEn ? 'Write to your representatives' : 'Écrivez à vos élus'}
-		</UnderlinedTitle>
-	</section>
-
-	<!-- ── Pourquoi écrire ── -->
-	<section class="content-section">
-		<h2>{isEn ? 'Why write?' : 'Pourquoi écrire ?'}</h2>
-		{#if isEn}
-			<p>
-				The most powerful AI systems are being developed without independent oversight or an
-				adequate regulatory framework. Companies self-assess. No thresholds define what is too
-				dangerous to deploy. This needs to change, and elected officials are the ones who can act.
-			</p>
-			<p>
-				<strong>Email is more powerful than it seems.</strong> MPs and senators are required to respond
-				to their constituents. A personal email, especially a brief and sincere one, carries real weight:
-				it lands in a human inbox, it gets read, and it signals that a voter in their constituency cares
-				about this issue. Unlike a petition or a social media post, it demands a response.
-			</p>
-			<div class="highlight-callout">
-				A personal email to your MP or senator is one of the most effective ways to put this issue
-				on their agenda. It takes five minutes.
-			</div>
-			<p>
-				<strong>Email is more powerful than it seems.</strong> MPs and senators are required to respond
-				to their constituents. A personal email, especially a brief and sincere one, carries real weight:
-				it lands in a human inbox, it gets read, and it signals that a voter in their constituency cares
-				about this issue. Unlike a petition or a social media post, it demands a response.
-			</p>
-			<p>
-				A handful of emails from real citizens is often enough to get a topic onto a committee's
-				agenda.
-			</p>
-		{:else}
-			<p>
-				Les systèmes d'IA les plus puissants se développent sans supervision indépendante ni cadre
-				réglementaire adapté. Les entreprises s'auto-évaluent. Aucun seuil ne définit ce qui est
-				trop dangereux pour être déployé. C'est aux élus d'agir.
-			</p>
-			<div class="highlight-callout">
-				Un email personnel à votre député ou sénateur reste l'un des moyens les plus efficaces pour
-				inscrire ce sujet à leur agenda. Cela prend cinq minutes.
-			</div>
-			<p>
-				<strong>L'email est un outil plus puissant qu'on ne le croit.</strong> Les députés et sénateurs
-				ont l'obligation de répondre à leurs concitoyens. Un email personnel, court et sincère, a un
-				vrai impact : il arrive dans une boite mail humaine, il est lu, et il signale qu'un électeur
-				de leur circonscription se préoccupe du sujet. Contrairement à une pétition ou à un post sur
-				les réseaux, il appelle une réponse.
-			</p>
-			<p>
-				Une poignée d'emails de vrais citoyens suffit souvent à inscrire un sujet à l'ordre du jour
-				d'une commission.
-			</p>
-		{/if}
-	</section>
-
-	<!-- ── Comment faire ── -->
-	<section class="content-section">
-		<h2>{isEn ? 'How to do it' : 'Comment faire'}</h2>
-
-		<!-- Étape 1 -->
-		<div class="step">
-			<div class="step-number">1</div>
-			<div class="step-content">
-				<h3>{isEn ? 'Find your representatives' : 'Trouvez vos représentants'}</h3>
-				{#if isEn}
-					<p>
-						Use these links to find your MP (deputy) and senator(s) for your area. Note that each
-						department has at least one senator, sometimes several.
-					</p>
-				{:else}
-					<p>
-						Utilisez ces liens pour trouver votre député et votre (ou vos) sénateurs. Chaque
-						département compte au moins un sénateur, parfois plusieurs selon la population.
-					</p>
-				{/if}
-				<div class="find-links">
-					<a
-						class="find-btn"
-						href="https://www.assemblee-nationale.fr/dyn/vos-deputes/carte-departements"
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						<span class="find-icon">🏛️</span>
-						<span>
-							<strong>{isEn ? 'Find my MP' : 'Trouver mon député'}</strong>
-							<small>assemblee-nationale.fr</small>
-						</span>
-					</a>
-					<a
-						class="find-btn"
-						href="https://www.senat.fr/vos-senateurs.html"
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						<span class="find-icon">🏛️</span>
-						<span>
-							<strong>{isEn ? 'Find my senator(s)' : 'Trouver mon/mes sénateurs'}</strong>
-							<small>senat.fr</small>
-						</span>
-					</a>
-				</div>
-			</div>
-		</div>
-
-		<!-- Étape 2 -->
-		<div class="step">
-			<div class="step-number">2</div>
-			<div class="step-content">
-				<h3>{isEn ? 'Send your email' : 'Envoyez votre email'}</h3>
-
-				<!-- Conseils compacts -->
-				<div class="tips-box">
+	{#if step === 1}
+		<!-- ════════ Étape 1 : trouver ses élus ════════ -->
+		<header class="hero-band">
+			<div class="hero-inner">
+				<h1>{isEn ? 'Write to your representatives' : 'Écrivez à vos élus'}</h1>
+				<p class="hero-sub">
 					{#if isEn}
-						<ul>
-							<li>
-								<strong>Add a personal sentence</strong>: an authentic email carries far more weight
-								than a copy-paste.
-							</li>
-							<li>
-								<strong>Mention your full name and town</strong> (teams sort by constituency).
-							</li>
-						</ul>
+						The most powerful AI is being built with no real safeguards. Your representatives can
+						change that. Write to them: it takes two minutes.
 					{:else}
-						<ul>
-							<li>
-								<strong>Ajoutez une phrase personnelle</strong> : un email authentique pèse bien plus
-								lourd qu'un copier-coller.
-							</li>
-							<li>
-								<strong>Mentionnez votre nom complet et ville</strong> (les équipes trient par circonscription).
-							</li>
-						</ul>
+						Les IA les plus puissantes se développent sans véritable garde-fou. Vos élus peuvent
+						changer ça. Écrivez-leur : cela prend deux minutes.
 					{/if}
-					<div class="bcc-block">
-						<span class="bcc-label">{isEn ? 'BCC (blind copy):' : 'CCI (copie cachée) :'}</span>
-						<code class="bcc-email">campagne@pauseia.fr</code>
-						<button class="bcc-copy-btn" class:copied={copiedBcc} on:click={copyBcc}>
-							{copiedBcc ? '✓' : isEn ? 'Copy' : 'Copier'}
-						</button>
-						<span class="bcc-desc">
-							{isEn ? 'helps us count letters sent' : 'pour nous aider à compter les mails envoyés'}
-						</span>
-					</div>
-					<p class="personalise-reminder">
-						{#if isEn}
-							Remember to replace <strong>[Deputy/Senator name]</strong> with their actual name, and
-							fill in your <strong>[full name]</strong> and <strong>[department]</strong> at the start
-							and end of the email.
-						{:else}
-							N'oubliez pas de remplacer <strong>[Nom de votre député / sénateur]</strong> par leur
-							vrai nom, et d'indiquer votre <strong>[Nom complet]</strong> et votre
-							<strong>[département]</strong> en début et en fin de mail.
-						{/if}
-					</p>
-				</div>
+				</p>
+			</div>
+		</header>
 
-				<!-- Sélecteur de version -->
-				<div class="version-tabs">
-					<button
-						class="tab-btn"
-						class:active={version === 'short'}
-						on:click={() => (version = 'short')}
-					>
-						{isEn ? 'Short version' : 'Version courte'}
-					</button>
-					<button
-						class="tab-btn"
-						class:active={version === 'long'}
-						on:click={() => (version = 'long')}
-					>
-						{isEn ? 'Full version' : 'Version complète'}
-					</button>
-				</div>
+		<section class="card">
+			<h2>
+				<span class="step-num">1</span>{isEn ? 'Find your representatives' : 'Trouvez vos élus'}
+			</h2>
 
-				<!-- Chips risques (version complète) -->
-				{#if version === 'long'}
-					<div class="theme-chips-row">
-						<span class="chips-label">
-							{isEn ? 'Risks to include:' : 'Risques à inclure :'}
-						</span>
-						<div class="theme-chips">
-							{#each themes as theme}
-								<button
-									class="chip"
-									class:active={selectedThemes.has(theme.id)}
-									on:click={() => toggleTheme(theme.id)}
-								>
-									{isEn ? theme.labelEn : theme.label}
-								</button>
-							{/each}
-						</div>
-					</div>
+			<form class="cp-form" on:submit|preventDefault={search}>
+				<input
+					class="cp-input"
+					type="text"
+					inputmode="numeric"
+					maxlength="5"
+					placeholder={isEn ? 'Your postal code (e.g. 75011)' : 'Votre code postal (ex. 75011)'}
+					bind:value={codePostal}
+					aria-label={isEn ? 'Postal code' : 'Code postal'}
+				/>
+				<Button type="submit">{isEn ? 'Find' : 'Rechercher'}</Button>
+			</form>
+
+			<!-- Vos infos : saisies une seule fois, elles remplissent chaque mail
+			     (jamais envoyées à un serveur, mémorisées sur votre appareil). -->
+			<div class="user-fields">
+				<input
+					class="user-input"
+					type="text"
+					placeholder={isEn ? 'Your full name' : 'Votre nom complet'}
+					autocomplete="name"
+					bind:value={userName}
+					on:input={saveUser}
+				/>
+				<input
+					class="user-input"
+					type="text"
+					placeholder={isEn ? 'Your town' : 'Votre ville'}
+					bind:value={userVille}
+					on:input={saveUser}
+				/>
+			</div>
+
+			{#if isSampleData}
+				<p class="notice notice--warn">
+					{isEn
+						? 'Demo data. Run the generation script to load real representatives and emails.'
+						: "Données d'exemple. Lancez le script de génération pour charger les vrais élus et emails."}
+				</p>
+			{/if}
+
+			{#if searchError === 'format'}
+				<p class="notice notice--error">
+					{isEn
+						? 'A French postal code has 5 digits (e.g. 75011). Please check what you typed.'
+						: 'Un code postal français comporte 5 chiffres (ex. 75011). Vérifiez votre saisie.'}
+				</p>
+			{:else if searchError === 'notfound'}
+				<p class="notice notice--error">
+					{isEn
+						? 'No representative found for this postal code. Double-check it, or use the official directories below.'
+						: 'Aucun élu trouvé pour ce code postal. Vérifiez-le, ou utilisez les annuaires officiels ci-dessous.'}
+				</p>
+			{/if}
+
+			{#if result}
+				<p class="results-hint" class:done-all={sentCount > 0 && sentCount >= allElus.length}>
+					{#if sentCount >= allElus.length && allElus.length > 0}
+						🎉 {isEn
+							? `Done! You've written to all ${allElus.length} of your representatives. Thank you, this really helps.`
+							: `Bravo ! Vous avez écrit à vos ${allElus.length} élus. Merci, votre geste compte vraiment.`}
+					{:else if sentCount > 0}
+						<strong>{sentCount}/{allElus.length}</strong>
+						{isEn ? 'contacted.' : 'contactés.'}
+						{isEn
+							? 'Keep going with the others, each message counts.'
+							: 'Continuez avec les autres, chaque message compte.'}
+					{:else}
+						{isEn
+							? 'Write to each of your representatives: one personal email each.'
+							: 'Écrivez à chacun de vos élus : un email personnel pour chaque.'}
+					{/if}
+				</p>
+				{#if sentCount >= allElus.length && allElus.length > 0}
+					<a class="join-link join-link--block" href={joinHref}>
+						{isEn
+							? 'Want to do more? Join Pause AI ↗'
+							: 'Envie d’aller plus loin ? Rejoignez Pause IA ↗'}
+					</a>
 				{/if}
+				{#each eluGroups as group}
+					{#if group.list.length}
+						<div class="elu-group">
+							<h3>{group.title}</h3>
+							<ul class="elu-list">
+								{#each group.list as elu (elu.id)}
+									<li class="elu-card" class:done={sent.has(elu.id)}>
+										<div class="elu-left">
+											<span class="avatar">
+												{initials(elu)}
+												{#if elu.photo}
+													<img src={elu.photo} alt="" loading="lazy" on:error={hideImg} />
+												{/if}
+											</span>
+											<div class="elu-info">
+												<strong>
+													{#if sent.has(elu.id)}<span class="done-check">✓</span>{/if}{elu.nom}
+												</strong>
+												<small>{eluSubtitle(elu)}</small>
+											</div>
+										</div>
+										<Button alt={sent.has(elu.id)} on:click={() => choose(elu)}>
+											{#if sent.has(elu.id)}
+												{isEn ? 'Written ✓' : 'Écrit ✓'}
+											{:else}
+												{isEn ? 'Write' : 'Écrire'}
+											{/if}
+										</Button>
+									</li>
+								{/each}
+							</ul>
+						</div>
+					{/if}
+				{/each}
+				{#if sentCount > 0}
+					<button class="reset-link" on:click={resetProgress}>
+						{isEn ? 'Reset my progress' : 'Réinitialiser ma progression'}
+					</button>
+				{/if}
+			{/if}
 
-				<!-- Modèle d'email -->
-				<div class="email-preview">
-					<div class="email-subject-line">
-						<span class="subject-label">{isEn ? 'Subject:' : 'Objet :'}</span>
-						<span>{subject}</span>
+			{#if searched && !result}
+				<details class="manual-fallback" open>
+					<summary>
+						{isEn ? 'Official directories' : 'Annuaires officiels'}
+					</summary>
+					<div class="find-links">
+						<a
+							class="find-btn"
+							href="https://www.assemblee-nationale.fr/dyn/vos-deputes/carte-departements"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							🏛️ {isEn ? 'Find my MP' : 'Trouver mon député'} · assemblee-nationale.fr
+						</a>
+						<a
+							class="find-btn"
+							href="https://www.senat.fr/vos-senateurs.html"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							🏛️ {isEn ? 'Find my senator(s)' : 'Trouver mon/mes sénateurs'} · senat.fr
+						</a>
 					</div>
-					<div class="email-body" id="email-body">
-						{#if version === 'short'}
-							{#if isEn}
-								<p>Dear [Deputy/Senator name],</p>
-								<p>My name is [your name] and I am a resident of [your town/constituency].</p>
-								<p>
-									I am writing to draw your attention to the rapid development of increasingly
-									autonomous artificial intelligence systems. The leaders of the world's largest AI
-									labs acknowledge that these technologies could pose a serious threat to
-									civilisation if their development is not properly governed. An international
-									report led by Turing Prize winner Yoshua Bengio, backed by 30 countries, confirms
-									that no current safety method is reliable.
-								</p>
-								<p>
-									There is currently no legal framework requiring independent safety evaluations
-									before these systems are developed or deployed. Companies self-regulate.
-								</p>
-								<p>
-									I ask you to put this issue on your committee's agenda and to support measures
-									requiring independent safety evaluations for the most powerful AI systems.
-								</p>
-								<p>
-									The Pause AI association (pauseia.fr) would be happy to provide a briefing to you
-									or your team.
-								</p>
-								<p>
-									Yours sincerely,<br />
-									[Your full name]<br />
-									[Your town / constituency]
-								</p>
-							{:else}
-								<p>Madame/Monsieur le Député / le Sénateur [nom],</p>
-								<p>Je suis [votre nom], habitant de [votre commune].</p>
-								<p>
-									Je vous contacte au sujet du développement rapide de systèmes d'intelligence
-									artificielle de plus en plus autonomes et puissants. Les dirigeants des plus
-									grands laboratoires d'IA reconnaissent eux-mêmes que ces technologies pourraient
-									représenter une menace sérieuse pour la civilisation si leur développement n'est
-									pas correctement encadré. Un rapport international dirigé par le prix Turing
-									Yoshua Bengio, soutenu par 30 pays, confirme qu'aucune méthode de sécurité
-									actuelle n'est fiable.
-								</p>
-								<p>
-									Il n'existe aujourd'hui aucun cadre juridique exigeant des évaluations de sécurité
-									indépendantes avant que ces systèmes ne soient développés ou déployés. Les
-									entreprises s'auto-évaluent.
-								</p>
-								<p>
-									Je vous demande d'inscrire ce sujet à l'ordre du jour de votre commission et de
-									soutenir des mesures imposant des évaluations de sécurité indépendantes pour les
-									systèmes d'IA les plus puissants.
-								</p>
-								<p>
-									L'association Pause IA (pauseia.fr) serait heureuse de vous fournir un briefing, à
-									vous ou à votre équipe.
-								</p>
-								<p>
-									Cordialement,<br />
-									[Votre nom complet]<br />
-									[Votre commune / circonscription]
-								</p>
-							{/if}
-						{:else}
-							<!-- Version longue -->
-							{#if isEn}
-								<p>Dear [Deputy/Senator name],</p>
-								<p>My name is [your name], a resident of [your town/constituency].</p>
-								<p>
-									I am writing about the rapid development of increasingly powerful AI systems
-									without any adequate regulatory framework. The leaders of the main AI labs
-									acknowledge that their systems could pose a serious threat to civilisation if not
-									properly governed.
-								</p>
-								{#if selectedThemes.has('individus')}
-									<p>
-										<strong>Privacy and surveillance.</strong> AI systems already enable mass surveillance
-										and individual profiling on an unprecedented scale, often without people's knowledge
-										or any possibility of redress.
-									</p>
-								{/if}
-								{#if selectedThemes.has('societe')}
-									<p>
-										<strong>Disinformation and democracy.</strong> Content generation tools now produce
-										disinformation at scale (videos and texts indistinguishable from reality), undermining
-										democratic processes and trust in institutions.
-									</p>
-								{/if}
-								{#if selectedThemes.has('economie')}
-									<p>
-										<strong>Job losses.</strong> Tens of millions of jobs in Europe could be significantly
-										affected by 2030, across transport, accounting, legal and medical services, with
-										no adaptation policy deployed at the scale required.
-									</p>
-								{/if}
-								{#if selectedThemes.has('humanite')}
-									<p>
-										<strong>Existential risks.</strong> The International AI Safety Report 2025, led
-										by Turing Prize winner Yoshua Bengio and backed by 30 countries, concludes that no
-										current safety method can reliably guarantee safe behaviour.
-									</p>
-								{/if}
-								<p>
-									Today, no legal framework requires independent safety evaluations before deploying
-									AI systems with potentially dangerous capabilities. Companies self-assess.
-								</p>
-								<p>
-									I ask you to raise this issue with the relevant committee and support measures
-									requiring independent safety evaluations for the most powerful AI systems. The
-									Pause AI association (pauseia.fr) would be happy to provide a briefing.
-								</p>
-								<p>
-									Yours sincerely,<br />
-									[Your full name]<br />
-									[Your town / constituency]
-								</p>
-							{:else}
-								<p>Madame/Monsieur le Député / le Sénateur [nom],</p>
-								<p>Je suis [votre nom], habitant de [votre commune/circonscription].</p>
-								<p>
-									Je vous écris au sujet du développement rapide de systèmes d'IA de plus en plus
-									puissants, sans cadre réglementaire adapté. Les dirigeants des principaux
-									laboratoires reconnaissent eux-mêmes que ces technologies pourraient représenter
-									une menace sérieuse pour la civilisation.
-								</p>
-								{#if selectedThemes.has('individus')}
-									<p>
-										<strong>Vie privée et surveillance.</strong> Les systèmes d'IA permettent déjà une
-										surveillance de masse et un profilage individuel sans précédent, souvent sans consentement
-										ni recours possible.
-									</p>
-								{/if}
-								{#if selectedThemes.has('societe')}
-									<p>
-										<strong>Désinformation et démocratie.</strong> Les outils d'IA produisent de la désinformation
-										à grande échelle (vidéos et textes indiscernables du réel), fragilisant les processus
-										démocratiques et la confiance dans les institutions.
-									</p>
-								{/if}
-								{#if selectedThemes.has('economie')}
-									<p>
-										<strong>Perte d'emploi.</strong> Des dizaines de millions d'emplois en Europe pourraient
-										être affectés d'ici 2030, des transports aux services juridiques et médicaux, sans
-										politique d'adaptation à la hauteur.
-									</p>
-								{/if}
-								{#if selectedThemes.has('humanite')}
-									<p>
-										<strong>Risques existentiels.</strong> Le rapport international dirigé par le prix
-										Turing Yoshua Bengio, soutenu par 30 pays, conclut qu'aucune méthode actuelle ne
-										garantit des comportements sûrs de manière fiable.
-									</p>
-								{/if}
-								<p>
-									Aujourd'hui, aucun cadre juridique n'exige d'évaluation de sécurité indépendante
-									avant le déploiement de systèmes aux capacités potentiellement dangereuses. Les
-									entreprises s'auto-évaluent.
-								</p>
-								<p>
-									Je vous demande d'inscrire ce sujet à l'ordre du jour d'une commission compétente
-									et de soutenir des évaluations de sécurité indépendantes pour les systèmes d'IA
-									les plus puissants. L'association Pause IA (pauseia.fr) serait heureuse de vous
-									fournir un briefing.
-								</p>
-								<p>
-									Cordialement,<br />
-									[Votre nom complet]<br />
-									[Votre commune / circonscription]
-								</p>
-							{/if}
-						{/if}
+				</details>
+			{/if}
+		</section>
+
+		<!-- Pourquoi c'est important -->
+		<section class="card prose">
+			<h2>{isEn ? 'Why it matters' : "Pourquoi c'est important"}</h2>
+			{#if isEn}
+				<p>
+					MPs and senators take their constituents' messages into account. A personal email (even a
+					short, sincere one) lands in a human inbox, gets read, and signals that a voter cares
+					about this issue. Unlike a petition or a social media post, it carries real weight. A
+					handful of emails from real citizens is often enough to put a topic on a committee's
+					agenda.
+				</p>
+			{:else}
+				<p>
+					Les députés et sénateurs prennent en compte les messages de leurs électeurs. Un email
+					personnel (même court et sincère) arrive dans une boite mail humaine, il est lu, et il
+					signale qu'un électeur se préoccupe du sujet. Contrairement à une pétition ou à un post
+					sur les réseaux, il a un vrai poids. Une poignée d'emails de vrais citoyens suffit souvent
+					à inscrire un sujet à l'ordre du jour d'une commission.
+				</p>
+			{/if}
+		</section>
+
+		<!-- FAQ -->
+		<section class="card faq">
+			<h2>{isEn ? 'FAQ' : 'Questions fréquentes'}</h2>
+			<Accordion id="faq-difference" noHash>
+				<span slot="head">
+					{isEn
+						? 'Does contacting a representative really make a difference?'
+						: 'Est-ce que contacter un élu change vraiment quelque chose ?'}
+				</span>
+				<p slot="details">
+					{isEn
+						? 'Yes! Representatives track how many constituents raise an issue, and it shapes what they prioritise. A few sincere emails can be enough to get a topic onto a committee’s agenda.'
+						: "Oui ! Les élus comptabilisent le nombre d'électeurs qui soulèvent un sujet, et cela oriente leurs priorités. Quelques emails sincères peuvent suffire à inscrire un sujet à l'ordre du jour d'une commission."}
+				</p>
+			</Accordion>
+			<Accordion id="faq-duree" noHash>
+				<span slot="head">{isEn ? 'How long does it take?' : 'Combien de temps ça prend ?'}</span>
+				<p slot="details">
+					{isEn
+						? 'About two minutes. Enter your postal code and your name, pick a representative, and send.'
+						: 'Environ deux minutes. Entrez votre code postal et votre nom, choisissez un élu, puis envoyez.'}
+				</p>
+			</Accordion>
+			<Accordion id="faq-donnees" noHash>
+				<span slot="head">
+					{isEn ? 'What about my data?' : 'Et mes données ?'}
+				</span>
+				<p slot="details">
+					{isEn
+						? 'Your name and town stay on your device and are never sent to a server: they only fill the draft. The email leaves from your own mailbox. A blind copy (BCC) reaches us at campagne@pauseia.fr to count the campaign; you can remove it before sending if you prefer.'
+						: "Votre nom et votre ville restent sur votre appareil et ne sont jamais envoyés à un serveur : ils servent seulement à remplir le brouillon. L'email part de votre propre messagerie. Une copie cachée (CCI) nous parvient à campagne@pauseia.fr pour mesurer la campagne ; vous pouvez la retirer avant l'envoi si vous le préférez."}
+				</p>
+			</Accordion>
+			<Accordion id="faq-relance" noHash>
+				<span slot="head">
+					{isEn ? "What if I don't get a reply?" : "Et si je n'ai pas de réponse ?"}
+				</span>
+				<p slot="details">
+					{isEn
+						? "That's common, and not a reason to give up. Follow up politely after about three weeks: a reminder shows the topic matters to you and often prompts a reply. You can also ask for a short meeting at their local office."
+						: "C'est fréquent, et ce n'est pas une raison d'abandonner. Relancez poliment après environ trois semaines : une relance montre que le sujet vous tient à cœur et débloque souvent une réponse. Vous pouvez aussi demander un rendez-vous à leur permanence."}
+				</p>
+			</Accordion>
+		</section>
+	{:else if selectedElu}
+		<!-- ════════ Étape 2 : rédiger le mail ════════ -->
+		<button class="back-link" on:click={back}>
+			← {isEn ? 'Back to my representatives' : 'Retour à mes élus'}
+		</button>
+
+		<section class="card">
+			<h2>
+				<span class="step-num">2</span>{isEn ? 'Your message' : 'Votre message'}
+			</h2>
+
+			<div class="recipient">
+				<span class="avatar avatar--lg">
+					{initials(selectedElu)}
+					{#if selectedElu.photo}
+						<img src={selectedElu.photo} alt="" on:error={hideImg} />
+					{/if}
+				</span>
+				<div>
+					<span class="recipient-label">{isEn ? 'To:' : 'À :'}</span>
+					<strong>{selectedElu.nom}</strong>
+					<small>{eluSubtitle(selectedElu)}</small>
+					{#if selectedElu.contactUrl}
+						<a
+							class="profile-link"
+							href={selectedElu.contactUrl}
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							{isEn ? 'View official profile ↗' : 'Voir sa fiche officielle ↗'}
+						</a>
+					{/if}
+				</div>
+			</div>
+
+			{#if !userName.trim()}
+				<p class="card-intro">
+					{#if isEn}
+						Tip: add your name and town in step 1 and the email writes itself in full.
+					{:else}
+						Astuce : indiquez votre nom et votre ville à l'étape 1 et l'email se rédige entièrement.
+					{/if}
+				</p>
+			{/if}
+
+			<!-- Réglages compacts : sujet et longueur sur une même ligne -->
+			<div class="msg-controls">
+				<div class="control">
+					<span class="control-label">{isEn ? 'Focus' : 'Sujet principal'}</span>
+					<div class="theme-chips" role="group" aria-label={isEn ? 'Focus' : 'Sujet principal'}>
+						{#each angles as a}
+							<button
+								class="chip"
+								class:active={angle === a.id}
+								aria-pressed={angle === a.id}
+								on:click={() => (angle = a.id)}
+							>
+								{isEn ? a.en : a.fr}
+							</button>
+						{/each}
 					</div>
-					<div class="email-actions">
-						<button class="copy-btn" class:copied on:click={copyEmail}>
-							{#if copied}
-								{isEn ? '✓ Copied!' : '✓ Copié !'}
-							{:else}
-								{isEn ? 'Copy email' : "Copier l'email"}
-							{/if}
+				</div>
+				<div class="control">
+					<span class="control-label">{isEn ? 'Length' : 'Longueur'}</span>
+					<div class="segmented" role="group" aria-label={isEn ? 'Length' : 'Longueur'}>
+						<button
+							class:active={version === 'short'}
+							aria-pressed={version === 'short'}
+							on:click={() => (version = 'short')}
+						>
+							{isEn ? 'Short' : 'Courte'}
+						</button>
+						<button
+							class:active={version === 'long'}
+							aria-pressed={version === 'long'}
+							on:click={() => (version = 'long')}
+						>
+							{isEn ? 'Detailed' : 'Détaillée'}
 						</button>
 					</div>
 				</div>
 			</div>
-		</div>
-	</section>
+
+			<label class="perso-field">
+				<span class="perso-label">
+					{isEn ? 'Add a personal sentence' : 'Ajoutez une phrase personnelle'}
+					<em>{isEn ? 'recommended' : 'recommandé'}</em>
+				</span>
+				<textarea
+					class="perso-input"
+					rows="2"
+					placeholder={isEn
+						? 'Why this matters to you. An authentic line carries far more weight.'
+						: 'Pourquoi cela vous touche. Une phrase sincère pèse bien plus lourd.'}
+					bind:value={personalSentence}
+					on:input={saveUser}
+				></textarea>
+			</label>
+
+			<!-- Aperçu de l'email -->
+			<div class="email-preview">
+				<div class="email-subject-line">
+					<span class="subject-label">{isEn ? 'Subject:' : 'Objet :'}</span>
+					<span>{subject}</span>
+				</div>
+				<div class="email-body" id="email-body">
+					<p>{salutation(selectedElu)}</p>
+					<p>{introLine(selectedElu, userName)}</p>
+					{#each buildParagraphs(angle, version, personalSentence) as para}
+						<p>{para}</p>
+					{/each}
+					<p>
+						{isEn ? 'Yours sincerely,' : 'Cordialement,'}<br />
+						{userName.trim() || (isEn ? '[Your full name]' : '[Votre nom complet]')}<br />
+						{userVille.trim() || localite(selectedElu)}
+					</p>
+				</div>
+			</div>
+
+			{#if confidenceNote(selectedElu)}
+				<p class="notice notice--warn">{confidenceNote(selectedElu)}</p>
+			{/if}
+
+			{#if !selectedElu.email}
+				<p class="notice notice--info">
+					{#if selectedElu.contactUrl}
+						{isEn
+							? 'This representative does not publish an email address. Copy the text above, open their contact form, and paste it there.'
+							: "Cet élu ne publie pas d'adresse email. Copiez le texte ci-dessus, ouvrez son formulaire de contact, puis collez-le."}
+					{:else}
+						{isEn
+							? 'No public email or contact form was found for this representative. Copy the text above and reach them via their official profile.'
+							: "Aucun email ni formulaire public n'a été trouvé pour cet élu. Copiez le texte ci-dessus et contactez-le via sa fiche officielle."}
+					{/if}
+				</p>
+			{/if}
+
+			<div class="send-row">
+				{#if selectedElu.email}
+					<Button on:click={openMail}>{isEn ? 'Open my email' : 'Ouvrir mon email'}</Button>
+				{:else if selectedElu.contactUrl}
+					<Button href={selectedElu.contactUrl} target="_blank" rel="noopener noreferrer">
+						{isEn ? 'Open contact form' : 'Ouvrir le formulaire'}
+					</Button>
+				{/if}
+				<Button alt on:click={copyEmail}>
+					{#if copied}
+						{isEn ? '✓ Copied' : '✓ Copié'}
+					{:else}
+						{isEn ? 'Copy text' : 'Copier le texte'}
+					{/if}
+				</Button>
+			</div>
+
+			{#if selectedElu.email}
+				<p class="deliverability">
+					{isEn
+						? 'Send from your personal mailbox: an email from a real constituent carries far more weight than a form. Check the recipient before sending.'
+						: 'Envoyez depuis votre messagerie personnelle : un email d’un vrai électeur a bien plus de poids qu’un formulaire. Vérifiez le destinataire avant l’envoi.'}
+				</p>
+
+				<p class="bcc-hint">
+					{isEn ? 'BCC' : 'CCI'} <code>{BCC}</code>
+					{isEn ? '(helps us count letters sent)' : '(pour compter les emails envoyés)'}
+				</p>
+			{/if}
+
+			{#if sent.has(selectedElu.id)}
+				<div class="after-send">
+					<p>
+						{isEn
+							? 'Message ready! Go back to write to your other representatives.'
+							: 'Message prêt ! Revenez en arrière pour écrire à vos autres élus.'}
+					</p>
+					<a class="join-link" href={joinHref}>
+						{isEn
+							? 'Want to do more? Join Pause AI ↗'
+							: 'Envie d’aller plus loin ? Rejoignez Pause IA ↗'}
+					</a>
+				</div>
+			{/if}
+		</section>
+	{/if}
 </article>
 
 <style>
 	article {
-		max-inline-size: 60rem;
+		max-inline-size: 50rem;
 		margin-inline: auto;
-		margin-top: 3rem;
-		padding: 0 2rem;
-		padding-bottom: 5rem;
+		margin-top: 2.5rem;
+		padding: 0 1.25rem 5rem;
 	}
 
-	.hero {
-		margin-bottom: 3rem;
+	/* Hero coloré pleine largeur (full-bleed : déborde de la largeur de l'article) */
+	.hero-band {
+		width: 100vw;
+		margin-left: calc(50% - 50vw);
+		margin-top: -2.5rem; /* annule le margin-top de l'article */
+		margin-bottom: 2.75rem;
+		padding: 3.5rem 1.25rem 3.25rem;
+		background: var(--brand);
+		text-align: center;
 	}
 
-	.content-section {
-		margin-bottom: 3rem;
+	.hero-inner {
+		max-inline-size: 44rem;
+		margin-inline: auto;
 	}
 
-	.content-section h2 {
-		font-size: 1.5rem;
+	.hero-band h1 {
+		font-size: clamp(2rem, 6vw, 3rem);
+		font-weight: 800;
+		line-height: 1.05;
+		margin: 0 0 1rem;
+		color: #1a1a1a;
+	}
+
+	.hero-sub {
+		font-size: clamp(1rem, 2.2vw, 1.2rem);
+		line-height: 1.5;
+		margin: 0 auto;
+		max-inline-size: 36rem;
+		color: #3a2600;
+		font-weight: 500;
+	}
+
+	/* Cards */
+	.card {
+		background: var(--bg);
+		border: 1px solid var(--border);
+		border-radius: 14px;
+		padding: 1.75rem;
+		margin-bottom: 1.5rem;
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+	}
+
+	.card h2 {
+		display: flex;
+		align-items: center;
+		gap: 0.6rem;
+		font-size: 1.25rem;
 		font-weight: 700;
-		margin-bottom: 1.25rem;
-		padding-bottom: 0.5rem;
-		border-bottom: 2px solid var(--color-primary, #e63946);
+		margin: 0 0 1rem;
 	}
 
-	.content-section p {
-		line-height: 1.7;
-		margin-bottom: 1rem;
-	}
-
-	.highlight-callout {
-		font-size: 1.1rem;
-		font-weight: 600;
-		line-height: 1.6;
-		color: var(--brand-subtle, #c96900);
-		border-left: 4px solid var(--brand, #ff9416);
-		padding: 0.6rem 1rem;
-		margin: 1.25rem 0;
-		background: var(--brand-light, #fff5e8);
-		border-radius: 0 6px 6px 0;
-	}
-
-	/* Steps */
-	.step {
-		display: flex;
-		gap: 1.25rem;
-		margin-bottom: 2.5rem;
-		align-items: flex-start;
-	}
-
-	.step-number {
-		flex-shrink: 0;
-		width: 2rem;
-		height: 2rem;
-		border-radius: 50%;
-		background: var(--color-primary, #e63946);
-		color: white;
-		display: flex;
+	.step-num {
+		display: inline-flex;
 		align-items: center;
 		justify-content: center;
+		inline-size: 1.7rem;
+		block-size: 1.7rem;
+		border-radius: 50%;
+		background: var(--brand);
+		color: #1a1a1a;
+		font-size: 0.95rem;
 		font-weight: 700;
-		font-size: 0.9rem;
-		margin-top: 0.2rem;
+		flex-shrink: 0;
 	}
 
-	.step-content {
-		flex: 1;
+	.card-intro {
+		font-size: 0.95rem;
+		line-height: 1.6;
+		color: var(--text-2);
+		margin-bottom: 1.25rem;
 	}
 
-	.step-content h3 {
-		font-size: 1.15rem;
-		font-weight: 700;
-		margin-top: 0;
-		margin-bottom: 0.75rem;
-	}
-
-	.step-content p {
-		line-height: 1.7;
-		margin-bottom: 0.75rem;
-	}
-
-	/* Find links */
-	.find-links {
+	/* Champs nom / commune */
+	.user-fields {
 		display: flex;
-		gap: 1rem;
-		flex-wrap: wrap;
-		margin-top: 1rem;
-	}
-
-	.find-btn {
-		display: flex;
-		align-items: center;
-		gap: 0.75rem;
-		padding: 0.75rem 1.25rem;
-		border: 2px solid var(--color-primary, #e63946);
-		border-radius: 8px;
-		text-decoration: none;
-		color: inherit;
-		background: white;
-		transition:
-			background 0.15s,
-			color 0.15s;
-		min-width: 200px;
-	}
-
-	.find-btn:hover {
-		background: var(--color-primary, #e63946);
-		color: white;
-	}
-
-	.find-icon {
-		font-size: 1.4rem;
-	}
-
-	.find-btn span {
-		display: flex;
-		flex-direction: column;
-	}
-
-	.find-btn strong {
-		font-size: 0.9rem;
-		line-height: 1.3;
-	}
-
-	.find-btn small {
-		font-size: 0.75rem;
-		opacity: 0.7;
-	}
-
-	/* Theme chips */
-	.theme-chips {
-		display: flex;
-		flex-wrap: wrap;
 		gap: 0.5rem;
+		flex-wrap: wrap;
 		margin-top: 0.75rem;
 	}
 
-	.chip {
-		padding: 0.45rem 1rem;
-		border-radius: 999px;
-		border: 2px solid #ccc;
-		background: #f5f5f5;
-		font-size: 0.85rem;
-		cursor: pointer;
-		transition: all 0.15s;
-		color: #555;
+	.user-input {
+		flex: 1;
+		min-inline-size: 180px;
+		padding: 0.7rem 0.9rem;
+		border: 2px solid var(--border);
+		border-radius: 9px;
+		font-size: 0.95rem;
+		background: var(--bg);
+		color: var(--text);
 	}
 
-	.chip.active {
-		border-color: var(--color-primary, #e63946);
-		background: var(--color-primary, #e63946);
-		color: white;
-		font-weight: 600;
+	.user-input:focus {
+		outline: none;
+		border-color: var(--brand);
 	}
 
-	.theme-chips-row {
+	/* Recherche code postal */
+	.cp-form {
 		display: flex;
-		align-items: center;
 		gap: 0.5rem;
 		flex-wrap: wrap;
-		padding: 0.6rem 0;
-		margin-bottom: 0;
+		align-items: center;
 	}
 
-	.chips-label {
+	.cp-input {
+		flex: 1;
+		min-inline-size: 200px;
+		padding: 0.85rem 1rem;
+		border: 2px solid var(--border);
+		border-radius: 10px;
+		font-size: 1.05rem;
+		background: var(--bg);
+		color: var(--text);
+	}
+
+	.cp-input:focus {
+		outline: none;
+		border-color: var(--brand);
+	}
+
+	/* Notices */
+	.notice {
+		font-size: 0.9rem;
+		border-radius: 8px;
+		padding: 0.6rem 0.85rem;
+		margin-top: 0.85rem;
+	}
+
+	.notice--warn {
+		color: var(--brand-subtle);
+		background: var(--brand-light);
+		border: 1px solid var(--brand);
+	}
+
+	.notice--error {
+		color: #c0392b;
+		background: #fdecee;
+		border: 1px solid #f6c6cc;
+	}
+
+	.notice--info {
+		color: var(--text-2);
+		background: var(--bg-card);
+		border: 1px solid var(--border);
+	}
+
+	/* Lien discret « Réinitialiser ma progression » */
+	.reset-link {
+		display: inline-block;
+		margin-top: 1.25rem;
+		padding: 0;
+		background: none;
+		border: none;
 		font-size: 0.82rem;
+		color: var(--text-secondary);
+		text-decoration: underline;
+		cursor: pointer;
+	}
+
+	.reset-link:hover {
+		color: var(--brand-subtle);
+	}
+
+	.results-hint {
+		margin-top: 1.25rem;
+		font-size: 0.9rem;
+		color: var(--text-2);
+	}
+
+	.results-hint.done-all {
+		font-size: 1rem;
 		font-weight: 600;
-		color: #555;
-		white-space: nowrap;
+		color: var(--brand-subtle);
+		background: var(--brand-light);
+		border-radius: 8px;
+		padding: 0.6rem 0.85rem;
 	}
 
-	/* Tips box */
-	.tips-box {
-		background: #fafafa;
-		border: 1px solid #e8e8e8;
-		border-left: 4px solid var(--color-primary, #e63946);
-		border-radius: 0 8px 8px 0;
-		padding: 1.25rem 1.5rem;
-		margin-bottom: 1.5rem;
+	/* Élus */
+	.elu-group {
+		margin-top: 1rem;
 	}
 
-	.tips-box h4 {
-		font-size: 0.95rem;
+	.elu-group h3 {
+		font-size: 0.8rem;
 		font-weight: 700;
-		margin-bottom: 0.75rem;
 		text-transform: uppercase;
-		letter-spacing: 0.04em;
-		color: var(--color-primary, #e63946);
+		letter-spacing: 0.05em;
+		color: var(--text-secondary);
+		margin: 0 0 0.5rem;
 	}
 
-	.tips-box ul {
+	.elu-list {
 		list-style: none;
 		padding: 0;
 		margin: 0;
@@ -660,206 +980,395 @@
 		gap: 0.5rem;
 	}
 
-	.tips-box li {
-		font-size: 0.9rem;
-		line-height: 1.5;
-		padding-left: 1rem;
-		position: relative;
-	}
-
-	.tips-box li::before {
-		content: '→';
-		position: absolute;
-		left: 0;
-		color: var(--color-primary, #e63946);
-	}
-
-	.tips-box code {
-		background: #eee;
-		padding: 0.1em 0.4em;
-		border-radius: 4px;
-		font-size: 0.85em;
-	}
-
-	.bcc-block {
+	.elu-card {
 		display: flex;
 		align-items: center;
-		gap: 0.5rem;
-		margin-top: 1.25rem;
-		padding: 0.6rem 0.875rem;
-		background: #f5f7ff;
-		border: 1px solid #c5cef0;
-		border-radius: 6px;
-		font-size: 0.85rem;
-		flex-wrap: wrap;
+		justify-content: space-between;
+		gap: 1rem;
+		padding: 0.8rem 1rem;
+		border: 1px solid var(--border);
+		border-radius: 10px;
+		background: var(--bg-card);
+		transition: opacity 0.15s;
 	}
 
-	.bcc-label {
+	.elu-card.done {
+		opacity: 0.7;
+		background: var(--brand-light);
+		border-color: var(--brand);
+	}
+
+	.done-check {
+		color: #2a9d5c;
 		font-weight: 700;
-		color: #444;
+		margin-right: 0.35rem;
 	}
 
-	.bcc-email {
-		background: none;
-		padding: 0;
+	/* Avatar (photo ou initiales) */
+	.elu-left {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+		min-inline-size: 0;
+	}
+
+	.avatar {
+		position: relative;
+		flex-shrink: 0;
+		inline-size: 2.6rem;
+		block-size: 2.6rem;
+		border-radius: 50%;
+		background: var(--brand-light);
+		color: var(--brand-subtle);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 0.85rem;
+		font-weight: 700;
+		overflow: hidden;
+	}
+
+	.avatar img {
+		position: absolute;
+		inset: 0;
+		inline-size: 100%;
+		block-size: 100%;
+		object-fit: cover;
+	}
+
+	.avatar--lg {
+		inline-size: 3.4rem;
+		block-size: 3.4rem;
+		font-size: 1.05rem;
+	}
+
+	.elu-info {
+		display: flex;
+		flex-direction: column;
+		gap: 0.1rem;
+	}
+
+	.elu-info strong {
+		font-size: 1rem;
+	}
+
+	.elu-info small {
+		font-size: 0.8rem;
+		color: var(--text-secondary);
+	}
+
+	/* Repli annuaires */
+	.manual-fallback {
+		margin-top: 1.5rem;
 		font-size: 0.9rem;
-		font-weight: 700;
-		color: var(--color-primary, #e63946);
-		font-family: monospace;
 	}
 
-	.bcc-desc {
-		color: #666;
-		font-style: italic;
+	.manual-fallback summary {
+		cursor: pointer;
+		color: var(--text-2);
 	}
 
-	.personalise-reminder {
-		margin-top: 0.75rem;
-		font-size: 0.85rem;
-		color: #555;
-		line-height: 1.5;
+	.find-links {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		margin-top: 0.85rem;
 	}
 
-	.bcc-copy-btn {
-		padding: 0.15rem 0.6rem;
-		border: 1px solid #c5cef0;
-		border-radius: 4px;
-		background: white;
-		font-size: 0.78rem;
+	.find-btn {
+		display: block;
+		padding: 0.65rem 0.9rem;
+		border: 1px solid var(--border);
+		border-radius: 8px;
+		text-decoration: none;
+		color: var(--text);
+		background: var(--bg-card);
+		font-size: 0.88rem;
+	}
+
+	.find-btn:hover {
+		border-color: var(--brand);
+	}
+
+	/* Retour */
+	.back-link {
+		background: none;
+		border: none;
+		color: var(--brand-subtle);
+		font-size: 0.95rem;
 		font-weight: 600;
 		cursor: pointer;
-		color: var(--color-primary, #e63946);
-		transition: all 0.15s;
+		padding: 0;
+		margin-bottom: 1rem;
 	}
 
-	.bcc-copy-btn:hover {
-		background: var(--color-primary, #e63946);
-		color: white;
-		border-color: var(--color-primary, #e63946);
+	.back-link:hover {
+		text-decoration: underline;
 	}
 
-	.bcc-copy-btn.copied {
-		background: #2a9d5c;
-		color: white;
-		border-color: #2a9d5c;
-	}
-
-	/* Version tabs */
-	.version-tabs {
+	/* Destinataire */
+	.recipient {
 		display: flex;
-		gap: 0;
-		margin-bottom: 0;
-		border-bottom: 2px solid #e0e0e0;
+		align-items: center;
+		gap: 0.75rem;
+		padding: 0.85rem 1rem;
+		background: var(--brand-light);
+		border-radius: 10px;
+		margin-bottom: 1.25rem;
 	}
 
-	.tab-btn {
-		padding: 0.6rem 1.4rem;
-		border: none;
-		background: none;
-		font-size: 0.9rem;
-		cursor: pointer;
-		color: #888;
-		border-bottom: 3px solid transparent;
-		margin-bottom: -2px;
-		transition: all 0.15s;
-		font-weight: 500;
-	}
-
-	.tab-btn.active {
-		color: var(--color-primary, #e63946);
-		border-bottom-color: var(--color-primary, #e63946);
+	.recipient-label {
+		font-size: 0.72rem;
 		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--brand-subtle);
 	}
 
-	/* Email preview */
+	.recipient > div {
+		display: flex;
+		flex-direction: column;
+		gap: 0.05rem;
+	}
+
+	.recipient small {
+		font-size: 0.8rem;
+		color: var(--text-2);
+	}
+
+	.profile-link {
+		font-size: 0.78rem;
+		color: var(--brand-subtle);
+		margin-top: 0.15rem;
+		width: fit-content;
+	}
+
+	/* Toolbar message */
+	.msg-controls {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1.1rem 2rem;
+		align-items: flex-start;
+		margin-bottom: 1.25rem;
+	}
+
+	.control {
+		display: flex;
+		flex-direction: column;
+		gap: 0.45rem;
+	}
+
+	.control-label {
+		font-size: 0.72rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		color: var(--text-secondary);
+	}
+
+	.segmented {
+		display: inline-flex;
+		border: 1px solid var(--border);
+		border-radius: 8px;
+		overflow: hidden;
+	}
+
+	.segmented button {
+		padding: 0.45rem 1rem;
+		border: none;
+		background: var(--bg);
+		font-size: 0.88rem;
+		cursor: pointer;
+		color: var(--text-2);
+	}
+
+	.segmented button.active {
+		background: var(--brand);
+		color: #1a1a1a;
+		font-weight: 600;
+	}
+
+	.theme-chips {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.4rem;
+	}
+
+	.chip {
+		padding: 0.35rem 0.8rem;
+		border-radius: 999px;
+		border: 1px solid var(--border);
+		background: var(--bg);
+		font-size: 0.8rem;
+		cursor: pointer;
+		color: var(--text-2);
+		transition: all 0.15s;
+	}
+
+	.chip.active {
+		border-color: var(--brand);
+		background: var(--brand);
+		color: #1a1a1a;
+	}
+
+	.perso-field {
+		display: block;
+		margin-bottom: 1rem;
+	}
+
+	.perso-label {
+		display: block;
+		font-size: 0.8rem;
+		font-weight: 600;
+		color: var(--text-2);
+		margin-bottom: 0.4rem;
+	}
+
+	.perso-label em {
+		font-style: normal;
+		font-size: 0.7rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.03em;
+		color: var(--brand-subtle);
+		margin-left: 0.4rem;
+	}
+
+	.perso-input {
+		width: 100%;
+		padding: 0.6rem 0.8rem;
+		border: 2px solid var(--border);
+		border-radius: 9px;
+		font-size: 0.9rem;
+		font-family: inherit;
+		line-height: 1.5;
+		background: var(--bg);
+		color: var(--text);
+		resize: vertical;
+	}
+
+	.perso-input:focus {
+		outline: none;
+		border-color: var(--brand);
+	}
+
+	/* Aperçu email */
 	.email-preview {
-		border: 1px solid #ddd;
-		border-radius: 0 8px 8px 8px;
+		border: 1px solid var(--border);
+		border-radius: 10px;
 		overflow: hidden;
 	}
 
 	.email-subject-line {
-		background: #f0f0f0;
-		padding: 0.6rem 1.25rem;
+		background: var(--bg-card);
+		padding: 0.65rem 1.1rem;
 		font-size: 0.85rem;
-		border-bottom: 1px solid #ddd;
+		border-bottom: 1px solid var(--border);
 	}
 
 	.subject-label {
 		font-weight: 700;
-		margin-right: 0.5rem;
-		color: #555;
+		margin-right: 0.4rem;
+		color: var(--text-2);
 	}
 
 	.email-body {
-		padding: 1.5rem 1.75rem;
+		padding: 1.4rem 1.6rem;
 		font-size: 0.9rem;
 		line-height: 1.7;
-		background: white;
+		background: var(--bg);
+		max-block-size: 22rem;
+		overflow-y: auto;
 	}
 
-	.email-body p {
+	.email-body :global(p) {
 		margin-bottom: 1em;
 	}
 
-	.email-body ol {
-		padding-left: 1.5rem;
-		margin-bottom: 1em;
-	}
-
-	.email-body ol li {
-		margin-bottom: 0.5em;
-		line-height: 1.6;
-	}
-
-	.email-body strong {
-		font-weight: 700;
-	}
-
-	.email-actions {
-		padding: 0.75rem 1.25rem;
-		background: #f9f9f9;
-		border-top: 1px solid #eee;
+	.send-row {
 		display: flex;
-		justify-content: flex-end;
+		gap: 0.75rem;
+		flex-wrap: wrap;
+		margin-top: 1.25rem;
 	}
 
-	.copy-btn {
-		padding: 0.5rem 1.25rem;
-		background: var(--color-primary, #e63946);
-		color: white;
-		border: none;
-		border-radius: 6px;
+	.deliverability {
+		font-size: 0.82rem;
+		line-height: 1.6;
+		color: var(--text-2);
+		margin-top: 1rem;
+	}
+
+	.bcc-hint {
+		font-size: 0.78rem;
+		color: var(--text-secondary);
+		margin-top: 0.85rem;
+	}
+
+	/* Suite après envoi */
+	.after-send {
+		margin-top: 1.5rem;
+		padding: 1.1rem 1.25rem;
+		border: 1px solid var(--brand);
+		background: var(--brand-light);
+		border-radius: 12px;
+	}
+
+	.after-send p {
 		font-size: 0.9rem;
+		margin: 0 0 0.5rem;
+	}
+
+	.join-link {
+		display: inline-block;
+		font-size: 0.88rem;
 		font-weight: 600;
-		cursor: pointer;
-		transition: all 0.15s;
+		color: var(--brand-subtle);
 	}
 
-	.copy-btn:hover {
-		opacity: 0.88;
+	.join-link--block {
+		margin-top: 1rem;
 	}
 
-	.copy-btn.copied {
-		background: #2a9d5c;
+	.bcc-hint code {
+		background: var(--bg-card);
+		padding: 0.05em 0.35em;
+		border-radius: 4px;
+		color: var(--brand-subtle);
+		font-weight: 600;
+	}
+
+	/* Prose + FAQ (en boxes blanches comme les cartes d'étape) */
+	.prose h2,
+	.faq h2 {
+		font-size: 1.3rem;
+		font-weight: 700;
+		margin: 0 0 1rem;
+	}
+
+	.prose p {
+		line-height: 1.7;
+		color: var(--text-2);
+		margin: 0;
+	}
+
+	/* L'accordéon partagé gère son propre titre : on neutralise la marge h3 */
+	.faq :global(.accordion .title) {
+		font-size: 1.05rem;
+	}
+
+	.faq :global(.accordion .header) {
+		padding: 1.1rem 0;
 	}
 
 	@media (max-width: 600px) {
-		.find-links {
+		.card {
+			padding: 1.25rem;
+		}
+
+		.elu-card {
 			flex-direction: column;
-		}
-
-		.find-btn {
-			min-width: unset;
-		}
-
-		.step {
-			flex-direction: column;
-			gap: 0.75rem;
-		}
-
-		.step-number {
-			margin-top: 0;
+			align-items: stretch;
 		}
 	}
 </style>
