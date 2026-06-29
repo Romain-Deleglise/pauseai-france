@@ -119,6 +119,43 @@ export interface PressCoverage {
 	visible: boolean
 }
 
+// Événements / actions des groupes locaux (manifestations, tractages…)
+export interface LocalEvent {
+	id: string
+	title: string
+	/** Date de l'action (YYYY-MM-DD). */
+	date: string
+	city: string
+	/** Type d'action (Manifestation, Tractage, Conférence…). Facultatif. */
+	type: string
+	/** Lien d'inscription pour un événement à venir, ou article de presse pour une action passée. Facultatif. */
+	url: string
+	/** Heure (texte libre, ex. « 18h »). Affichée pour les actions à venir. */
+	time: string
+	/** Lieu précis (ex. « Turbine.Coop »). Affiché pour les actions à venir. */
+	place: string
+	description: string
+	/** Une ou plusieurs photos (la colonne Notion « Image » accepte plusieurs fichiers). */
+	images: string[]
+	/** Action « à la une » : affichée plus grande, avec galerie. */
+	featured: boolean
+	/** Nombre de bénévoles présents (facultatif, affiché si > 0). */
+	volunteers: number
+	visible: boolean
+}
+
+function isValidLocalEvent(e: LocalEvent): boolean {
+	if (!e.title) {
+		console.warn(`Invalid event: missing title`)
+		return false
+	}
+	if (!e.date) {
+		console.warn(`Invalid event: missing date for "${e.title}"`)
+		return false
+	}
+	return true
+}
+
 // Helper to extract text from Notion rich_text or title
 function getText(property: NotionProperty | undefined): string {
 	if (!property) return ''
@@ -171,6 +208,14 @@ function getFileUrl(property: NotionProperty | undefined): string {
 		if (file.type === 'external' && file.external?.url) return file.external.url
 	}
 	return property.url || ''
+}
+
+// Helper to extract ALL file URLs (Notion "files" property with several files)
+function getFileUrls(property: NotionProperty | undefined): string[] {
+	if (!property || !property.files) return []
+	return property.files
+		.map((f) => (f.type === 'file' ? (f.file?.url ?? '') : (f.external?.url ?? '')))
+		.filter((u) => u !== '')
 }
 
 // Validation helpers
@@ -724,6 +769,40 @@ export async function getPressCoverage(): Promise<PressCoverage[]> {
 	)
 
 	return items.filter((pc): pc is PressCoverage => pc !== null)
+}
+
+export async function getLocalEvents(): Promise<LocalEvent[]> {
+	const databaseId = env.NOTION_EVENTS_DATABASE_ID
+	if (!databaseId) return []
+
+	const events = await queryDatabase<LocalEvent | null>(
+		databaseId,
+		(page) => {
+			const visible = getCheckbox(page.properties['Visible'])
+			if (!visible) return null
+
+			const event: LocalEvent = {
+				id: page.id,
+				title: getText(page.properties['Titre']),
+				date: getDate(page.properties['Date']),
+				city: getText(page.properties['Ville']),
+				type: getSelect(page.properties['Type']),
+				url: getUrl(page.properties['URL']),
+				time: getText(page.properties['Heure']),
+				place: getText(page.properties['Lieu']),
+				description: getText(page.properties['Description']),
+				images: getFileUrls(page.properties['Image']),
+				featured: getCheckbox(page.properties['À la une']),
+				volunteers: getNumber(page.properties['Bénévoles']),
+				visible
+			}
+
+			return isValidLocalEvent(event) ? event : null
+		},
+		{ sortBy: 'Date', sortDirection: 'ascending' }
+	)
+
+	return events.filter((e): e is LocalEvent => e !== null)
 }
 
 // Team members

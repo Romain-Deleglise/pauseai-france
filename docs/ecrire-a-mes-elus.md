@@ -45,6 +45,15 @@ La progression (« Écrit ✓ ») et les infos personnelles sont mémorisées
 - **Garde-fous** : seuils sur le nombre d'élus / d'emails ; en cas d'anomalie,
   le script jette une erreur, n'écrit rien, et sort en code 1 (déclenche une
   alerte).
+- **Photos** : par défaut, le portrait officiel (Assemblée / Sénat) est construit
+  par motif d'URL ; si une photo est cassée, la page bascule proprement sur les
+  initiales (`on:error`). Pour en récupérer davantage, lancer
+  `node scripts/generate-elus.js --check-photos` (ou `CHECK_PHOTOS=1` avec le
+  runner serveur) : chaque portrait est vérifié et, **uniquement s'il est cassé**,
+  remplacé par une photo Wikimedia Commons via Wikidata (appariement strict :
+  humain + nationalité française + politique + libellé exact + résultat unique,
+  pour éviter les homonymes). Les valeurs ainsi validées sont **préservées** par
+  les exécutions suivantes (pas de réécrasement).
 
 ### Mise à jour automatique
 
@@ -60,6 +69,13 @@ La progression (« Écrit ✓ ») et les infos personnelles sont mémorisées
 ---
 
 ## 3. Contenu des mails
+
+Le contenu et la cible de chaque campagne vivent dans **`src/lib/data/elu-actions.ts`**
+(« moteur d'actions »). La page sélectionne une action via `?action=<id>` ; sans
+paramètre, c'est l'action `default` (message générique vers les élus de
+l'utilisateur). Une action peut cibler **les élus de l'utilisateur** (par code
+postal) **ou une liste de destinataires précis** (un ministre, une commission).
+Voir `docs/ecrire-a-mes-elus-actions.md` pour créer une action ciblée.
 
 Le corps est **modulaire** et assemblé côté client (`buildParagraphs`). Voir le
 document séparé `docs/ecrire-a-mes-elus-textes.md` pour le texte complet destiné
@@ -123,6 +139,14 @@ au rafraîchissement et à la fermeture. Aucune synchronisation serveur.
   C'est le seul compteur fiable. La FAQ informe que ce BCC peut être retiré
   avant l'envoi.
 
+### Capture newsletter (opt-in)
+
+À l'étape 2, une case **non cochée par défaut** propose « Tenez-moi informé des
+prochaines actions ». Si l'utilisateur la coche et saisit son email, on l'inscrit
+à la newsletter via `/api/subscribe` (groupe Newsletter + Call to Action), avec
+`source: ecrire-a-mes-elus[:<action>]`. C'est le **seul** cas où un email quitte
+l'appareil, et toujours sur **consentement explicite**.
+
 ---
 
 ## 6. Accessibilité / mobile
@@ -147,20 +171,22 @@ Si l'élu ne publie pas d'email :
 
 ## 8. Fichiers principaux
 
-| Fichier                                                 | Rôle                                |
-| ------------------------------------------------------- | ----------------------------------- |
-| `src/routes/[lang=lang]/ecrire-a-mes-elus/+page.svelte` | Page (UI + contenu des mails)       |
-| `src/routes/api/log-intent/+server.ts`                  | Journalisation des intentions       |
-| `src/lib/data/elus.ts`                                  | Résolution code postal → élus       |
-| `src/lib/data/elus.json`                                | Données générées (élus + emails)    |
-| `src/lib/data/code-postal-circo.json`                   | Géocodage code postal → circo       |
-| `src/lib/data/commune-circo.json`                       | Table commune → circonscription     |
-| `scripts/generate-elus.js`                              | Génération des données              |
-| `scripts/build-commune-circo.py`                        | Construction de la table communes   |
-| `scripts/update-elus-server.sh`                         | Runner serveur (PR + alerte)        |
-| `scripts/systemd/update-elus.{service,timer}`           | Planification serveur               |
-| `.github/workflows/update-elus.yml`                     | Filet de secours manuel (GitHub)    |
-| `docs/ecrire-a-mes-elus-textes.md`                      | Textes des mails (validation comm') |
+| Fichier                                                 | Rôle                                 |
+| ------------------------------------------------------- | ------------------------------------ |
+| `src/routes/[lang=lang]/ecrire-a-mes-elus/+page.svelte` | Page (UI + contenu des mails)        |
+| `src/lib/data/elu-actions.ts`                           | Moteur d'actions (contenu + ciblage) |
+| `src/routes/api/log-intent/+server.ts`                  | Journalisation des intentions        |
+| `src/lib/data/elus.ts`                                  | Résolution code postal → élus        |
+| `src/lib/data/elus.json`                                | Données générées (élus + emails)     |
+| `src/lib/data/code-postal-circo.json`                   | Géocodage code postal → circo        |
+| `src/lib/data/commune-circo.json`                       | Table commune → circonscription      |
+| `scripts/generate-elus.js`                              | Génération des données               |
+| `scripts/build-commune-circo.py`                        | Construction de la table communes    |
+| `scripts/update-elus-server.sh`                         | Runner serveur (PR + alerte)         |
+| `scripts/systemd/update-elus.{service,timer}`           | Planification serveur                |
+| `.github/workflows/update-elus.yml`                     | Filet de secours manuel (GitHub)     |
+| `docs/ecrire-a-mes-elus-textes.md`                      | Textes des mails (validation comm')  |
+| `docs/ecrire-a-mes-elus-actions.md`                     | Guide : créer une action ciblée      |
 
 ---
 
