@@ -116,10 +116,17 @@
 		// défilement, ce qui évite l'attente du transcodage à froid de Netlify.
 		if (typeof Image !== 'undefined') {
 			for (const e of events) {
-				const first = e.images?.[0]
-				if (!first) continue
-				const pre = new Image()
-				pre.src = cdnImg(first, e.featured ? 1100 : 400)
+				if (!e.images?.length) continue
+				if (e.featured) {
+					// Toutes les photos du carrousel : la navigation devient instantanée.
+					for (const img of e.images) {
+						const pre = new Image()
+						pre.src = cdnImg(img, 1100)
+					}
+				} else {
+					const pre = new Image()
+					pre.src = cdnImg(e.images[0], 400)
+				}
 			}
 		}
 	})
@@ -388,7 +395,7 @@
 								{#if e.featured}<svelte:component this={typeIcon(e.type)} size="0.85em" />{/if}
 							</span>
 						</div>
-						<article class="tl-card">
+						<div class="tl-card">
 							{#if e.featured && e.images.length}
 								<div class="feature-main">
 									<div
@@ -494,7 +501,7 @@
 									</a>
 								{/if}
 							</div>
-						</article>
+						</div>
 					</div>
 				{/each}
 			</div>
@@ -810,15 +817,33 @@
 
 	/* ── Frise chronologique ──────────────────────────────────────────── */
 	.timeline {
+		position: relative;
 		margin-top: 1.5rem;
+	}
+
+	/* Ligne verticale continue : tracée une seule fois sur le conteneur, à
+	   l'aplomb du centre de la colonne des nœuds (rail 6.5rem + gap 1rem +
+	   demi-colonne 0.875rem). Indépendante de la hauteur des cartes. */
+	.timeline::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: calc(6.5rem + 1rem + 0.875rem);
+		inline-size: 2px;
+		transform: translateX(-50%);
+		background: var(--border);
 	}
 
 	/* Une entrée = date (rail gauche) · nœud · carte. Les actions « à la une »
 	   portent la classe .featured (nœud plus gros, carte enrichie). */
+	/* Flex (et non grid) : le rail et la colonne du nœud s'étirent exactement à
+	   la hauteur de la carte, donc le point centré tombe pile au milieu de la
+	   carte (le sizing de ligne de grid ajoutait une hauteur parasite). */
 	.tl-item {
-		display: grid;
-		grid-template-columns: 6.5rem 1.75rem minmax(0, 1fr);
-		column-gap: 1rem;
+		display: flex;
+		align-items: center;
+		gap: 1rem;
 		padding-bottom: 1.4rem;
 		position: relative;
 	}
@@ -828,6 +853,7 @@
 	}
 
 	.tl-rail {
+		flex: 0 0 6.5rem;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
@@ -850,27 +876,8 @@
 	/* Colonne du nœud : une ligne verticale continue, avec le point centré
 	   verticalement par rapport à la carte (donc face à la photo). */
 	.tl-marker {
+		flex: 0 0 1.75rem;
 		position: relative;
-	}
-
-	.tl-marker::before {
-		content: '';
-		position: absolute;
-		top: 0;
-		bottom: -1.4rem;
-		left: 50%;
-		inline-size: 2px;
-		transform: translateX(-50%);
-		background: var(--border);
-	}
-
-	/* La ligne s'arrête au premier et au dernier point (pas de moignon). */
-	.tl-item:first-child .tl-marker::before {
-		top: 50%;
-	}
-
-	.tl-item:last-child .tl-marker::before {
-		bottom: 50%;
 	}
 
 	.tl-dot {
@@ -901,6 +908,8 @@
 
 	/* Carte */
 	.tl-card {
+		flex: 1 1 auto;
+		min-inline-size: 0;
 		border: 1px solid var(--border);
 		border-radius: 14px;
 		overflow: hidden;
@@ -1045,8 +1054,11 @@
 	}
 
 	@media (max-width: 640px) {
+		.timeline::before {
+			display: none;
+		}
+
 		.tl-item {
-			grid-template-columns: 1fr;
 			padding-bottom: 1.5rem;
 		}
 
