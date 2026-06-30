@@ -92,6 +92,18 @@
 		} catch {
 			/* agenda indisponible : la page reste fonctionnelle */
 		}
+		// Préchargement : on déclenche les transformations du CDN d'images dès que
+		// l'agenda est connu, pendant que l'utilisateur lit le haut de page. Les
+		// photos (et leur fond flou, même URL) sont ainsi en cache au moment du
+		// défilement, ce qui évite l'attente du transcodage à froid de Netlify.
+		if (typeof Image !== 'undefined') {
+			for (const e of events) {
+				const first = e.images?.[0]
+				if (!first) continue
+				const pre = new Image()
+				pre.src = cdnImg(first, e.featured ? 1100 : 400)
+			}
+		}
 	})
 
 	const startOfToday = new Date()
@@ -732,9 +744,9 @@
 	.tl-rail {
 		display: flex;
 		flex-direction: column;
+		justify-content: center;
 		gap: 0.1rem;
 		text-align: right;
-		padding-top: 0.15rem;
 		transition: color 0.18s;
 	}
 
@@ -749,17 +761,16 @@
 		color: var(--text-secondary);
 	}
 
-	/* Colonne du nœud : un point sur une ligne verticale continue. */
+	/* Colonne du nœud : une ligne verticale continue, avec le point centré
+	   verticalement par rapport à la carte (donc face à la photo). */
 	.tl-marker {
 		position: relative;
-		display: flex;
-		justify-content: center;
 	}
 
 	.tl-marker::before {
 		content: '';
 		position: absolute;
-		top: 0.55rem;
+		top: 0;
 		bottom: -1.4rem;
 		left: 50%;
 		inline-size: 2px;
@@ -767,14 +778,22 @@
 		background: var(--border);
 	}
 
+	/* La ligne s'arrête au premier et au dernier point (pas de moignon). */
+	.tl-item:first-child .tl-marker::before {
+		top: 50%;
+	}
+
 	.tl-item:last-child .tl-marker::before {
-		display: none;
+		bottom: 50%;
 	}
 
 	.tl-dot {
-		margin-top: 0.3rem;
-		inline-size: 0.85rem;
-		block-size: 0.85rem;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		inline-size: 0.9rem;
+		block-size: 0.9rem;
 		border-radius: 50%;
 		background: var(--border);
 		box-shadow: 0 0 0 3px var(--bg-card);
@@ -785,10 +804,9 @@
 	}
 
 	.tl-item.featured .tl-dot {
-		inline-size: 1.7rem;
-		block-size: 1.7rem;
-		margin-top: 0.1rem;
-		display: inline-flex;
+		inline-size: 1.8rem;
+		block-size: 1.8rem;
+		display: flex;
 		align-items: center;
 		justify-content: center;
 		background: var(--brand);
@@ -827,7 +845,7 @@
 	}
 
 	.tl-item:hover .tl-dot {
-		transform: scale(1.25);
+		transform: translate(-50%, -50%) scale(1.22);
 	}
 
 	.tl-item:hover .tl-rail,
