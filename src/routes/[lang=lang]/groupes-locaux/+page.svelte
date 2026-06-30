@@ -354,7 +354,7 @@
 								<div class="feature-main">
 									<div
 										class="feature-main-bg"
-										style="background-image:url('{cdnImg(e.images[gi], 48)}')"
+										style="background-image:url('{cdnImg(e.images[gi], 1100)}')"
 									></div>
 									<img
 										src={cdnImg(e.images[gi], 1100)}
@@ -408,7 +408,7 @@
 									{#if e.images.length}
 										<div
 											class="tl-thumb-bg"
-											style="background-image:url('{cdnImg(e.images[0], 48)}')"
+											style="background-image:url('{cdnImg(e.images[0], 320)}')"
 										></div>
 										<img
 											class="tl-thumb-img"
@@ -725,7 +725,7 @@
 		display: grid;
 		grid-template-columns: 6.5rem 1.75rem minmax(0, 1fr);
 		column-gap: 1rem;
-		padding-bottom: 2.25rem;
+		padding-bottom: 1.4rem;
 		position: relative;
 	}
 
@@ -764,7 +764,7 @@
 		content: '';
 		position: absolute;
 		top: 0.55rem;
-		bottom: -2.25rem;
+		bottom: -1.4rem;
 		left: 50%;
 		inline-size: 2px;
 		transform: translateX(-50%);
@@ -849,8 +849,8 @@
 	   photo (image entière sur fond flou), avec repli sur l'icône du type. */
 	.tl-thumb {
 		position: relative;
-		inline-size: 5.5rem;
-		block-size: 5.5rem;
+		inline-size: 7rem;
+		block-size: 7rem;
 		margin: 0.65rem;
 		border-radius: 10px;
 		overflow: hidden;
@@ -973,8 +973,8 @@
 		}
 
 		.tl-thumb {
-			inline-size: 4.5rem;
-			block-size: 4.5rem;
+			inline-size: 5.5rem;
+			block-size: 5.5rem;
 		}
 	}
 
