@@ -85,7 +85,25 @@
 		return CalendarDays
 	}
 	let events: LocalEvent[] = []
+	// Carte chargée en différé, mais suffisamment en avance (grande marge) pour
+	// qu'elle soit déjà prête quand l'utilisateur arrive dessus.
+	let mapSection: HTMLElement
+	let showMap = false
 	onMount(async () => {
+		if (mapSection && 'IntersectionObserver' in window) {
+			const io = new IntersectionObserver(
+				(entries) => {
+					if (entries.some((e) => e.isIntersecting)) {
+						showMap = true
+						io.disconnect()
+					}
+				},
+				{ rootMargin: '800px' }
+			)
+			io.observe(mapSection)
+		} else {
+			showMap = true
+		}
 		try {
 			const res = await fetch('/api/events')
 			if (res.ok) events = await res.json()
@@ -159,6 +177,11 @@
 				dynamique dans votre ville.
 			{/if}
 		</p>
+		<div class="hero-actions">
+			<Button href="https://pauseia.notion.site/2e128fc94b7780fd94b6d35c35b2f0ac">
+				{isEn ? 'Join a group' : 'Rejoindre un groupe'}
+			</Button>
+		</div>
 	</section>
 
 	<section class="impact-section">
@@ -279,7 +302,7 @@
 		</div>
 	</section>
 
-	<section class="map-section">
+	<section class="map-section" bind:this={mapSection}>
 		<div class="map-header">
 			<div class="map-title-row">
 				<MapPin size="1.2em" class="map-pin-icon" />
@@ -311,7 +334,11 @@
 				>
 			</div>
 		</div>
-		<LocalGroupsMap />
+		{#if showMap}
+			<LocalGroupsMap />
+		{:else}
+			<div class="map-placeholder" aria-hidden="true"></div>
+		{/if}
 
 		<ul class="city-list" aria-label={isEn ? 'Cities with a group' : 'Villes avec un groupe'}>
 			{#each sortedGroups as group}
@@ -372,7 +399,9 @@
 										src={cdnImg(e.images[gi], 1100)}
 										data-raw={e.images[gi]}
 										on:error={cdnFallback}
-										alt=""
+										alt={e.images.length > 1
+											? `${e.title} (${gi + 1}/${e.images.length})`
+											: e.title}
 										loading="lazy"
 										decoding="async"
 									/>
@@ -401,7 +430,7 @@
 												class="feature-thumb"
 												class:active={idx === gi}
 												on:click={() => (galleryIdx = { ...galleryIdx, [e.id]: idx })}
-												aria-label={`Photo ${idx + 1}`}
+												aria-label={`${e.title}, photo ${idx + 1}`}
 											>
 												<img
 													src={cdnImg(src, 240, 'cover')}
@@ -423,7 +452,7 @@
 											src={cdnImg(e.images[0], 400)}
 											data-raw={e.images[0]}
 											on:error={cdnFallback}
-											alt=""
+											alt={e.title}
 											loading="lazy"
 											decoding="async"
 										/>
@@ -507,36 +536,93 @@
 		max-inline-size: 48rem;
 	}
 
+	.hero-actions {
+		margin-top: 1.5rem;
+	}
+
+	/* Carte chargée en différé : réserve la place pour éviter tout saut de mise
+	   en page, avec une légère animation d'attente. */
+	.map-placeholder {
+		height: 500px;
+		border-radius: 16px;
+		background: linear-gradient(
+			100deg,
+			var(--brand-light) 30%,
+			color-mix(in srgb, var(--brand) 12%, var(--bg)) 50%,
+			var(--brand-light) 70%
+		);
+		background-size: 200% 100%;
+		animation: map-shimmer 1.4s ease-in-out infinite;
+	}
+
+	@keyframes map-shimmer {
+		from {
+			background-position: 200% 0;
+		}
+		to {
+			background-position: -200% 0;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.map-placeholder {
+			animation: none;
+		}
+	}
+
 	.stats-band {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 1.5rem 3.5rem;
+		gap: 1rem 0;
 		justify-content: center;
-		padding: 1.5rem 1.75rem;
+		padding: 1.75rem 1.5rem;
 		margin-bottom: 2.5rem;
-		border: 1px solid var(--border);
-		border-radius: 16px;
-		background: color-mix(in srgb, var(--brand) 7%, var(--bg));
+		border: 1px solid color-mix(in srgb, var(--brand) 25%, var(--border));
+		border-radius: 18px;
+		background: color-mix(in srgb, var(--brand) 10%, var(--bg));
+		box-shadow: 0 6px 22px color-mix(in srgb, var(--brand) 14%, transparent);
 	}
 
 	.stat {
+		flex: 1 1 0;
+		min-inline-size: 8rem;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		text-align: center;
+		padding-inline: 1.5rem;
+	}
+
+	/* Séparateurs verticaux entre les statistiques. */
+	.stat + .stat {
+		border-inline-start: 1px solid color-mix(in srgb, var(--brand) 22%, transparent);
 	}
 
 	.stat-num {
-		font-size: 2.1rem;
+		font-size: clamp(2.4rem, 5vw, 3rem);
 		font-weight: 800;
 		line-height: 1;
 		color: var(--brand);
+		letter-spacing: -0.02em;
 	}
 
 	.stat-label {
-		font-size: 0.85rem;
+		font-size: 0.8rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
 		color: var(--text-secondary);
-		margin-top: 0.3rem;
+		margin-top: 0.45rem;
+	}
+
+	@media (max-width: 520px) {
+		.stat {
+			flex-basis: 40%;
+		}
+
+		.stat:nth-child(odd) {
+			border-inline-start: none;
+		}
 	}
 
 	/* ── Impact (ce que font les groupes) ────────────────────────────── */
