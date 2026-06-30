@@ -85,32 +85,69 @@
 		return CalendarDays
 	}
 	let events: LocalEvent[] = []
+	// Carte chargée en différé, mais suffisamment en avance (grande marge) pour
+	// qu'elle soit déjà prête quand l'utilisateur arrive dessus.
+	let mapSection: HTMLElement
+	let showMap = false
 	onMount(async () => {
+		if (mapSection && 'IntersectionObserver' in window) {
+			const io = new IntersectionObserver(
+				(entries) => {
+					if (entries.some((e) => e.isIntersecting)) {
+						showMap = true
+						io.disconnect()
+					}
+				},
+				{ rootMargin: '800px' }
+			)
+			io.observe(mapSection)
+		} else {
+			showMap = true
+		}
 		try {
 			const res = await fetch('/api/events')
 			if (res.ok) events = await res.json()
 		} catch {
 			/* agenda indisponible : la page reste fonctionnelle */
 		}
+		// Préchargement : on déclenche les transformations du CDN d'images dès que
+		// l'agenda est connu, pendant que l'utilisateur lit le haut de page. Les
+		// photos (et leur fond flou, même URL) sont ainsi en cache au moment du
+		// défilement, ce qui évite l'attente du transcodage à froid de Netlify.
+		if (typeof Image !== 'undefined') {
+			for (const e of events) {
+				if (!e.images?.length) continue
+				if (e.featured) {
+					// Toutes les photos du carrousel : la navigation devient instantanée.
+					for (const img of e.images) {
+						const pre = new Image()
+						pre.src = cdnImg(img, 1100)
+					}
+				} else {
+					const pre = new Image()
+					pre.src = cdnImg(e.images[0], 400)
+				}
+			}
+		}
 	})
 
 	const startOfToday = new Date()
 	startOfToday.setHours(0, 0, 0, 0)
 	$: upcoming = events.filter((e) => new Date(e.date) >= startOfToday)
-	// Actions passées : les plus récentes d'abord.
+	// Actions passées : les plus récentes d'abord (tri explicite pour une frise
+	// toujours chronologique, indépendamment de l'ordre de la source).
 	$: pastAll = events
 		.filter((e) => new Date(e.date) < startOfToday)
 		.slice()
-		.reverse()
-	// Les actions « à la une » sont mises en avant (grandes, avec galerie) ;
-	// les autres vont dans la grille compacte (6 visibles + bouton « tout voir »).
-	$: pastFeatured = pastAll.filter((e) => e.featured)
-	$: pastNormal = pastAll.filter((e) => !e.featured)
+		.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 	// Total de bénévoles mobilisés (sur les actions qui renseignent ce nombre).
 	$: totalVolunteers = pastAll.reduce((sum, e) => sum + (e.volunteers || 0), 0)
-	const PAST_PREVIEW = 6
+	// Frise chronologique unifiée : toutes les actions sur un même rail, les
+	// actions « à la une » formant de plus grands nœuds. On affiche d'abord les
+	// plus récentes, puis un bouton déroule le reste.
+	const PAST_PREVIEW = 8
 	let showAllPast = false
-	$: pastNormalShown = showAllPast ? pastNormal : pastNormal.slice(0, PAST_PREVIEW)
+	$: pastShown = showAllPast ? pastAll : pastAll.slice(0, PAST_PREVIEW)
 
 	function fmtDate(d: string): string {
 		const dt = new Date(d)
@@ -147,6 +184,11 @@
 				dynamique dans votre ville.
 			{/if}
 		</p>
+		<div class="hero-actions">
+			<Button href="https://pauseia.notion.site/2e128fc94b7780fd94b6d35c35b2f0ac">
+				{isEn ? 'Join a group' : 'Rejoindre un groupe'}
+			</Button>
+		</div>
 	</section>
 
 	<section class="impact-section">
@@ -267,7 +309,7 @@
 		</div>
 	</section>
 
-	<section class="map-section">
+	<section class="map-section" bind:this={mapSection}>
 		<div class="map-header">
 			<div class="map-title-row">
 				<MapPin size="1.2em" class="map-pin-icon" />
@@ -299,7 +341,11 @@
 				>
 			</div>
 		</div>
-		<LocalGroupsMap />
+		{#if showMap}
+			<LocalGroupsMap />
+		{:else}
+			<div class="map-placeholder" aria-hidden="true"></div>
+		{/if}
 
 		<ul class="city-list" aria-label={isEn ? 'Cities with a group' : 'Villes avec un groupe'}>
 			{#each sortedGroups as group}
@@ -335,166 +381,141 @@
 				<h2>{isEn ? 'Recent actions' : 'Actions passées'}</h2>
 			</div>
 
-			<!-- Actions « à la une » : grandes cartes, orientation alternée -->
-			{#each pastFeatured as e, i (e.id)}
-				{@const gi = galleryIdx[e.id] ?? 0}
-				<article class="feature-card" class:reverse={i % 2 === 1}>
-					{#if e.images.length}
-						<div class="feature-media">
-							<div class="feature-main">
-								<div
-									class="feature-main-bg"
-									style="background-image:url('{cdnImg(e.images[gi], 48)}')"
-								></div>
-								<img
-									src={cdnImg(e.images[gi], 1100)}
-									data-raw={e.images[gi]}
-									on:error={cdnFallback}
-									alt=""
-									loading="lazy"
-									decoding="async"
-								/>
-								{#if e.images.length > 1}
-									<button
-										class="gallery-nav prev"
-										on:click={() => galStep(e.id, e.images.length, -1)}
-										aria-label={isEn ? 'Previous photo' : 'Photo précédente'}
-									>
-										<ChevronLeft size="1.2em" />
-									</button>
-									<button
-										class="gallery-nav next"
-										on:click={() => galStep(e.id, e.images.length, 1)}
-										aria-label={isEn ? 'Next photo' : 'Photo suivante'}
-									>
-										<ChevronRight size="1.2em" />
-									</button>
-									<span class="gallery-counter">{gi + 1}/{e.images.length}</span>
-								{/if}
-							</div>
-							{#if e.images.length > 1}
-								<div class="feature-thumbs">
-									{#each e.images.slice(0, 5) as src, idx}
-										<button
-											class="feature-thumb"
-											class:active={idx === gi}
-											on:click={() => (galleryIdx = { ...galleryIdx, [e.id]: idx })}
-											aria-label={`${isEn ? 'Photo' : 'Photo'} ${idx + 1}`}
-										>
-											<img
-												src={cdnImg(src, 240, 'cover')}
-												data-raw={src}
-												on:error={cdnFallback}
-												alt=""
-												loading="lazy"
-												decoding="async"
-											/>
-										</button>
-									{/each}
-								</div>
-							{/if}
+			<!-- Frise chronologique : un rail unique, les actions « à la une » en grands nœuds -->
+			<div class="timeline">
+				{#each pastShown as e (e.id)}
+					{@const gi = galleryIdx[e.id] ?? 0}
+					<div class="tl-item" class:featured={e.featured}>
+						<div class="tl-rail">
+							<time class="tl-date" datetime={e.date}>{fmtDate(e.date)}</time>
+							{#if e.city}<span class="tl-city">{e.city}</span>{/if}
 						</div>
-					{/if}
-					<div class="feature-body">
-						<span class="feature-meta">
-							{#if e.type}
-								<span class="feature-tag">
-									<svelte:component this={typeIcon(e.type)} size="0.8em" />
-									{e.type}
-								</span>
-							{/if}
-							{fmtDate(e.date)}{e.city ? ` · ${e.city}` : ''}
-						</span>
-						<h3>{e.title}</h3>
-						{#if e.volunteers > 0}
-							<span class="volunteers">
-								<Users size="0.95em" />
-								{e.volunteers}
-								{isEn ? (e.volunteers > 1 ? 'volunteers' : 'volunteer') : 'bénévoles'}
+						<div class="tl-marker" aria-hidden="true">
+							<span class="tl-dot">
+								{#if e.featured}<svelte:component this={typeIcon(e.type)} size="0.85em" />{/if}
 							</span>
-						{/if}
-						{#if e.description}<p>{e.description}</p>{/if}
-						{#if e.url}
-							<a
-								class="feature-link"
-								href={e.url}
-								target="_blank"
-								rel="noopener noreferrer"
-								aria-label={`${isEn ? 'Read more' : 'En savoir plus'} : ${e.title}`}
-							>
-								{isEn ? 'Read more ↗' : 'En savoir plus ↗'}
-							</a>
-						{/if}
-					</div>
-				</article>
-			{/each}
-
-			<!-- Autres actions : grille de cartes -->
-			{#if pastNormal.length}
-				<ul class="past-grid">
-					{#each pastNormalShown as e (e.id)}
-						<li class="past-card">
-							<div class="past-card-media">
-								{#if e.images.length}
+						</div>
+						<div class="tl-card">
+							{#if e.featured && e.images.length}
+								<div class="feature-main">
 									<div
-										class="past-card-bg"
-										style="background-image:url('{cdnImg(e.images[0], 48)}')"
+										class="feature-main-bg"
+										style="background-image:url('{cdnImg(e.images[gi], 1100)}')"
 									></div>
 									<img
-										src={cdnImg(e.images[0], 600)}
-										data-raw={e.images[0]}
+										src={cdnImg(e.images[gi], 1100)}
+										data-raw={e.images[gi]}
 										on:error={cdnFallback}
-										alt=""
+										alt={e.images.length > 1
+											? `${e.title} (${gi + 1}/${e.images.length})`
+											: e.title}
 										loading="lazy"
 										decoding="async"
 									/>
-								{:else}
-									<div class="past-card-noimg"><Megaphone size="1.7rem" /></div>
-								{/if}
-								{#if e.type}
-									<span class="past-card-tag">
-										<svelte:component this={typeIcon(e.type)} size="0.78em" />
-										{e.type}
-									</span>
-								{/if}
-							</div>
-							<div class="past-card-body">
-								<span class="past-card-meta">{fmtDate(e.date)}{e.city ? ` · ${e.city}` : ''}</span>
-								<strong class="past-card-title">{e.title}</strong>
-								<div class="past-card-foot">
-									{#if e.volunteers > 0}
-										<span class="past-card-vol">
-											<Users size="0.85em" />
-											{e.volunteers}
-										</span>
-									{/if}
-									{#if e.url}
-										<a
-											class="past-card-link"
-											href={e.url}
-											target="_blank"
-											rel="noopener noreferrer"
-											aria-label={`${isEn ? 'Read more' : 'En savoir plus'} : ${e.title}`}
+									{#if e.images.length > 1}
+										<button
+											class="gallery-nav prev"
+											on:click={() => galStep(e.id, e.images.length, -1)}
+											aria-label={isEn ? 'Previous photo' : 'Photo précédente'}
 										>
-											{isEn ? 'Read more ↗' : 'En savoir plus ↗'}
-										</a>
+											<ChevronLeft size="1.2em" />
+										</button>
+										<button
+											class="gallery-nav next"
+											on:click={() => galStep(e.id, e.images.length, 1)}
+											aria-label={isEn ? 'Next photo' : 'Photo suivante'}
+										>
+											<ChevronRight size="1.2em" />
+										</button>
+										<span class="gallery-counter">{gi + 1}/{e.images.length}</span>
 									{/if}
 								</div>
+								{#if e.images.length > 1}
+									<div class="feature-thumbs">
+										{#each e.images.slice(0, 5) as src, idx}
+											<button
+												class="feature-thumb"
+												class:active={idx === gi}
+												on:click={() => (galleryIdx = { ...galleryIdx, [e.id]: idx })}
+												aria-label={`${e.title}, photo ${idx + 1}`}
+											>
+												<img
+													src={cdnImg(src, 240, 'cover')}
+													data-raw={src}
+													on:error={cdnFallback}
+													alt=""
+													loading="lazy"
+													decoding="async"
+												/>
+											</button>
+										{/each}
+									</div>
+								{/if}
+							{:else if !e.featured}
+								<div class="tl-thumb">
+									{#if e.images.length}
+										<img
+											class="tl-thumb-img"
+											src={cdnImg(e.images[0], 400)}
+											data-raw={e.images[0]}
+											on:error={cdnFallback}
+											alt={e.title}
+											loading="lazy"
+											decoding="async"
+										/>
+									{:else}
+										<span class="tl-thumb-icon" aria-hidden="true">
+											<svelte:component this={typeIcon(e.type)} size="1.6rem" />
+										</span>
+									{/if}
+								</div>
+							{/if}
+							<div class="tl-body">
+								<span class="tl-meta">
+									{#if e.type}
+										<span class="tl-tag">
+											<svelte:component this={typeIcon(e.type)} size="0.78em" />
+											{e.type}
+										</span>
+									{/if}
+									<span class="tl-when">{fmtDate(e.date)}{e.city ? ` · ${e.city}` : ''}</span>
+								</span>
+								<h3 class="tl-title">{e.title}</h3>
+								{#if e.volunteers > 0}
+									<span class="volunteers">
+										<Users size="0.9em" />
+										{e.volunteers}
+										{isEn ? (e.volunteers > 1 ? 'volunteers' : 'volunteer') : 'bénévoles'}
+									</span>
+								{/if}
+								{#if e.featured && e.description}<p class="tl-desc">{e.description}</p>{/if}
+								{#if e.url}
+									<a
+										class="tl-link"
+										href={e.url}
+										target="_blank"
+										rel="noopener noreferrer"
+										aria-label={`${isEn ? 'Read more' : 'En savoir plus'} : ${e.title}`}
+									>
+										{isEn ? 'Read more ↗' : 'En savoir plus ↗'}
+									</a>
+								{/if}
 							</div>
-						</li>
-					{/each}
-				</ul>
-				{#if pastNormal.length > PAST_PREVIEW}
-					<button class="show-all-btn" on:click={() => (showAllPast = !showAllPast)}>
-						{#if showAllPast}
-							{isEn ? 'Show less' : 'Voir moins'}
-						{:else}
-							{isEn
-								? `See all actions (${pastNormal.length})`
-								: `Voir toutes les actions (${pastNormal.length})`}
-						{/if}
-					</button>
-				{/if}
+						</div>
+					</div>
+				{/each}
+			</div>
+
+			{#if pastAll.length > PAST_PREVIEW}
+				<button class="show-all-btn" on:click={() => (showAllPast = !showAllPast)}>
+					{#if showAllPast}
+						{isEn ? 'Show less' : 'Voir moins'}
+					{:else}
+						{isEn
+							? `See all actions (${pastAll.length})`
+							: `Voir toutes les actions (${pastAll.length})`}
+					{/if}
+				</button>
 			{/if}
 		</section>
 	{/if}
@@ -522,36 +543,93 @@
 		max-inline-size: 48rem;
 	}
 
+	.hero-actions {
+		margin-top: 1.5rem;
+	}
+
+	/* Carte chargée en différé : réserve la place pour éviter tout saut de mise
+	   en page, avec une légère animation d'attente. */
+	.map-placeholder {
+		height: 500px;
+		border-radius: 16px;
+		background: linear-gradient(
+			100deg,
+			var(--brand-light) 30%,
+			color-mix(in srgb, var(--brand) 12%, var(--bg)) 50%,
+			var(--brand-light) 70%
+		);
+		background-size: 200% 100%;
+		animation: map-shimmer 1.4s ease-in-out infinite;
+	}
+
+	@keyframes map-shimmer {
+		from {
+			background-position: 200% 0;
+		}
+		to {
+			background-position: -200% 0;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.map-placeholder {
+			animation: none;
+		}
+	}
+
 	.stats-band {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 1.5rem 3.5rem;
+		gap: 1rem 0;
 		justify-content: center;
-		padding: 1.5rem 1.75rem;
+		padding: 1.75rem 1.5rem;
 		margin-bottom: 2.5rem;
-		border: 1px solid var(--border);
-		border-radius: 16px;
-		background: color-mix(in srgb, var(--brand) 7%, var(--bg));
+		border: 1px solid color-mix(in srgb, var(--brand) 25%, var(--border));
+		border-radius: 18px;
+		background: color-mix(in srgb, var(--brand) 10%, var(--bg));
+		box-shadow: 0 6px 22px color-mix(in srgb, var(--brand) 14%, transparent);
 	}
 
 	.stat {
+		flex: 1 1 0;
+		min-inline-size: 8rem;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		text-align: center;
+		padding-inline: 1.5rem;
+	}
+
+	/* Séparateurs verticaux entre les statistiques. */
+	.stat + .stat {
+		border-inline-start: 1px solid color-mix(in srgb, var(--brand) 22%, transparent);
 	}
 
 	.stat-num {
-		font-size: 2.1rem;
+		font-size: clamp(2.4rem, 5vw, 3rem);
 		font-weight: 800;
 		line-height: 1;
 		color: var(--brand);
+		letter-spacing: -0.02em;
 	}
 
 	.stat-label {
-		font-size: 0.85rem;
+		font-size: 0.8rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
 		color: var(--text-secondary);
-		margin-top: 0.3rem;
+		margin-top: 0.45rem;
+	}
+
+	@media (max-width: 520px) {
+		.stat {
+			flex-basis: 40%;
+		}
+
+		.stat:nth-child(odd) {
+			border-inline-start: none;
+		}
 	}
 
 	/* ── Impact (ce que font les groupes) ────────────────────────────── */
@@ -737,29 +815,286 @@
 		margin-bottom: 5rem;
 	}
 
-	/* Action « à la une » : grande carte, orientation alternée photo / texte */
-	.feature-card {
-		display: grid;
-		grid-template-columns: 1.05fr 1fr;
-		border: 1px solid var(--border);
-		border-radius: 18px;
-		overflow: hidden;
-		background: var(--bg-card);
-		margin-bottom: 1.5rem;
-		box-shadow: 0 2px 14px rgba(0, 0, 0, 0.05);
+	/* ── Frise chronologique ──────────────────────────────────────────── */
+	.timeline {
+		position: relative;
+		margin-top: 1.5rem;
 	}
 
-	.feature-card.reverse .feature-media {
-		order: 2;
+	/* Ligne verticale continue : tracée une seule fois sur le conteneur, à
+	   l'aplomb du centre de la colonne des nœuds (rail 6.5rem + gap 1rem +
+	   demi-colonne 0.875rem). Indépendante de la hauteur des cartes. */
+	.timeline::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: calc(6.5rem + 1rem + 0.875rem);
+		inline-size: 2px;
+		transform: translateX(-50%);
+		background: var(--border);
 	}
 
-	/* Média : photo principale + bande de vignettes */
-	.feature-media {
+	/* Une entrée = date (rail gauche) · nœud · carte. Les actions « à la une »
+	   portent la classe .featured (nœud plus gros, carte enrichie). */
+	/* Flex (et non grid) : le rail et la colonne du nœud s'étirent exactement à
+	   la hauteur de la carte, donc le point centré tombe pile au milieu de la
+	   carte (le sizing de ligne de grid ajoutait une hauteur parasite). */
+	.tl-item {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		padding-bottom: 1.4rem;
+		position: relative;
+	}
+
+	.tl-item:last-child {
+		padding-bottom: 0;
+	}
+
+	.tl-rail {
+		flex: 0 0 6.5rem;
 		display: flex;
 		flex-direction: column;
+		justify-content: center;
+		gap: 0.1rem;
+		text-align: right;
+		transition: color 0.18s;
+	}
+
+	.tl-date {
+		font-weight: 700;
+		font-size: 0.9rem;
+		line-height: 1.2;
+	}
+
+	.tl-city {
+		font-size: 0.78rem;
+		color: var(--text-secondary);
+	}
+
+	/* Colonne du nœud : une ligne verticale continue, avec le point centré
+	   verticalement par rapport à la carte (donc face à la photo). */
+	.tl-marker {
+		flex: 0 0 1.75rem;
+		position: relative;
+	}
+
+	.tl-dot {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		inline-size: 0.9rem;
+		block-size: 0.9rem;
+		border-radius: 50%;
+		background: var(--border);
+		box-shadow: 0 0 0 3px var(--bg-card);
+		z-index: 1;
+		transition:
+			transform 0.18s,
+			background 0.18s;
+	}
+
+	.tl-item.featured .tl-dot {
+		inline-size: 1.8rem;
+		block-size: 1.8rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: var(--brand);
+		color: #1a1a1a;
+	}
+
+	/* Carte */
+	.tl-card {
+		flex: 1 1 auto;
+		min-inline-size: 0;
+		border: 1px solid var(--border);
+		border-radius: 14px;
+		overflow: hidden;
+		background: var(--bg-card);
+		transition:
+			transform 0.18s,
+			box-shadow 0.18s,
+			border-color 0.18s;
+	}
+
+	/* Carte compacte (action normale) : vignette carrée + texte côte à côte. */
+	.tl-item:not(.featured) .tl-card {
+		display: grid;
+		grid-template-columns: auto minmax(0, 1fr);
+		align-items: center;
+	}
+
+	.tl-item.featured .tl-card {
+		box-shadow: 0 2px 14px rgba(0, 0, 0, 0.05);
+		padding: 0.6rem 0.6rem 0;
+	}
+
+	/* Survol = finition décorative uniquement (l'info reste toujours visible). */
+	.tl-item:hover .tl-card {
+		transform: translateX(4px);
+		box-shadow: 0 6px 20px rgba(0, 0, 0, 0.09);
+		border-color: var(--brand);
+	}
+
+	.tl-item:hover .tl-dot {
+		transform: translate(-50%, -50%) scale(1.22);
+	}
+
+	.tl-item:hover .tl-rail,
+	.tl-item:hover .tl-date {
+		color: var(--brand-subtle);
+	}
+
+	@media (hover: none) {
+		.tl-item:hover .tl-card {
+			transform: none;
+		}
+	}
+
+	/* Vignette carrée de taille fixe : remplissage net (cover) sur un carré, donc
+	   propre quelle que soit la forme de la photo, sans attente de flou. Repli
+	   sur l'icône du type quand il n'y a pas de photo. */
+	.tl-thumb {
+		position: relative;
+		inline-size: 8rem;
+		block-size: 8rem;
+		margin: 0.65rem;
+		border-radius: 10px;
+		overflow: hidden;
+		background: var(--brand-light);
+		flex-shrink: 0;
+	}
+
+	.tl-thumb-img {
+		inline-size: 100%;
+		block-size: 100%;
+		object-fit: cover;
+		display: block;
+	}
+
+	.tl-thumb-icon {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: var(--brand);
+		opacity: 0.5;
+	}
+
+	.tl-body {
+		display: flex;
+		flex-direction: column;
+		gap: 0.4rem;
+		padding: 0.85rem 1rem;
+	}
+
+	.tl-item.featured .tl-body {
+		padding: 0.9rem 1.1rem 1.2rem;
+	}
+
+	.tl-meta {
+		display: flex;
+		align-items: center;
 		gap: 0.5rem;
-		min-block-size: 17rem;
-		padding: 0.6rem;
+		font-size: 0.8rem;
+		font-weight: 600;
+		color: var(--text-secondary);
+	}
+
+	.tl-tag {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.3rem;
+		background: var(--brand);
+		color: #1a1a1a;
+		padding: 0.12rem 0.55rem;
+		border-radius: 999px;
+		font-size: 0.7rem;
+		text-transform: uppercase;
+		letter-spacing: 0.03em;
+	}
+
+	/* La date est déjà sur le rail à gauche : on la masque dans la carte sur
+	   grand écran, et on la réaffiche sur mobile (rail replié). */
+	.tl-when {
+		display: none;
+	}
+
+	.tl-title {
+		margin: 0;
+		line-height: 1.25;
+		font-size: 1.05rem;
+	}
+
+	.tl-item.featured .tl-title {
+		font-size: clamp(1.2rem, 2.4vw, 1.55rem);
+	}
+
+	.tl-desc {
+		margin: 0;
+		line-height: 1.6;
+		color: var(--text-2);
+	}
+
+	.tl-link {
+		align-self: flex-start;
+		margin-top: 0.15rem;
+		font-size: 0.88rem;
+		font-weight: 700;
+		color: var(--brand-subtle);
+		white-space: nowrap;
+	}
+
+	.tl-link:hover {
+		text-decoration: underline;
+	}
+
+	@media (max-width: 640px) {
+		.timeline::before {
+			display: none;
+		}
+
+		.tl-item {
+			padding-bottom: 1.5rem;
+		}
+
+		.tl-rail,
+		.tl-marker {
+			display: none;
+		}
+
+		.tl-when {
+			display: inline;
+		}
+
+		.tl-card {
+			border-left: 3px solid var(--brand);
+		}
+
+		.tl-thumb {
+			inline-size: 6rem;
+			block-size: 6rem;
+		}
+	}
+
+	/* Carrousel d'une action « à la une » dans la frise : hauteur fixe. */
+	.tl-item.featured .feature-main {
+		block-size: 18rem;
+	}
+
+	.tl-item.featured .feature-thumbs {
+		margin-top: 0.5rem;
+		margin-bottom: 0.6rem;
+	}
+
+	@media (max-width: 640px) {
+		.tl-item.featured .feature-main {
+			block-size: 13rem;
+		}
 	}
 
 	/* Photo principale adaptative : l'image est montrée en entier (contain),
@@ -863,42 +1198,6 @@
 		display: block;
 	}
 
-	.feature-body {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		gap: 0.55rem;
-		padding: 2rem 2.25rem;
-	}
-
-	.feature-meta {
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-		font-size: 0.82rem;
-		font-weight: 600;
-		color: var(--text-secondary);
-	}
-
-	.feature-tag {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.3rem;
-		background: var(--brand);
-		color: #1a1a1a;
-		padding: 0.12rem 0.55rem;
-		border-radius: 999px;
-		font-size: 0.72rem;
-		text-transform: uppercase;
-		letter-spacing: 0.03em;
-	}
-
-	.feature-body h3 {
-		margin: 0;
-		font-size: clamp(1.3rem, 2.5vw, 1.7rem);
-		line-height: 1.15;
-	}
-
 	.volunteers {
 		align-self: flex-start;
 		display: inline-flex;
@@ -910,174 +1209,6 @@
 		background: var(--brand-light);
 		padding: 0.2rem 0.6rem;
 		border-radius: 999px;
-	}
-
-	.feature-body p {
-		margin: 0;
-		line-height: 1.65;
-		color: var(--text-2);
-	}
-
-	.feature-link {
-		align-self: flex-start;
-		margin-top: 0.35rem;
-		font-size: 0.92rem;
-		font-weight: 700;
-		color: var(--brand-subtle);
-	}
-
-	.feature-link:hover {
-		text-decoration: underline;
-	}
-
-	@media (max-width: 760px) {
-		.feature-card,
-		.feature-card.reverse {
-			grid-template-columns: 1fr;
-		}
-
-		.feature-card.reverse .feature-media {
-			order: 0;
-		}
-
-		.feature-media {
-			min-block-size: 0;
-		}
-
-		.feature-main {
-			block-size: 13rem;
-		}
-
-		.feature-body {
-			padding: 1.4rem 1.5rem 1.6rem;
-		}
-	}
-
-	/* Autres actions : cartes avec image en bandeau */
-	.past-grid {
-		list-style: none;
-		padding: 0;
-		margin: 0;
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-		gap: 1.25rem;
-	}
-
-	.past-card {
-		display: flex;
-		flex-direction: column;
-		border: 1px solid var(--border);
-		border-radius: 14px;
-		overflow: hidden;
-		background: var(--bg-card);
-		transition:
-			transform 0.18s,
-			box-shadow 0.18s;
-	}
-
-	.past-card:hover {
-		transform: translateY(-3px);
-		box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-	}
-
-	.past-card-media {
-		position: relative;
-		block-size: 9.5rem;
-		margin: 0.5rem 0.5rem 0;
-		border-radius: 10px;
-		overflow: hidden;
-		background: var(--brand-light);
-	}
-
-	.past-card-bg {
-		position: absolute;
-		inset: -8%;
-		background-size: cover;
-		background-position: center;
-		filter: blur(16px) brightness(0.9);
-	}
-
-	.past-card-media img {
-		position: relative;
-		z-index: 1;
-		inline-size: 100%;
-		block-size: 100%;
-		object-fit: contain;
-	}
-
-	.past-card-noimg {
-		position: absolute;
-		inset: 0;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		color: var(--brand);
-		opacity: 0.55;
-	}
-
-	.past-card-tag {
-		position: absolute;
-		z-index: 2;
-		top: 0.6rem;
-		left: 0.6rem;
-		display: inline-flex;
-		align-items: center;
-		gap: 0.28rem;
-		background: var(--brand);
-		color: #1a1a1a;
-		padding: 0.15rem 0.6rem;
-		border-radius: 999px;
-		font-size: 0.7rem;
-		font-weight: 700;
-		text-transform: uppercase;
-		letter-spacing: 0.03em;
-	}
-
-	.past-card-body {
-		display: flex;
-		flex-direction: column;
-		gap: 0.35rem;
-		padding: 0.9rem 1rem 1rem;
-		flex: 1;
-	}
-
-	.past-card-meta {
-		font-size: 0.78rem;
-		color: var(--text-secondary);
-	}
-
-	.past-card-title {
-		font-size: 1rem;
-		line-height: 1.3;
-	}
-
-	.past-card-foot {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		gap: 0.5rem;
-		margin-top: auto;
-		padding-top: 0.4rem;
-	}
-
-	.past-card-vol {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.25rem;
-		font-size: 0.8rem;
-		font-weight: 600;
-		color: var(--text-2);
-	}
-
-	.past-card-link {
-		font-size: 0.82rem;
-		font-weight: 700;
-		color: var(--brand-subtle);
-		white-space: nowrap;
-	}
-
-	.past-card-link:hover {
-		text-decoration: underline;
 	}
 
 	.show-all-btn {
