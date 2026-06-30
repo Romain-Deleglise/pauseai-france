@@ -406,13 +406,9 @@
 							{:else if !e.featured}
 								<div class="tl-thumb">
 									{#if e.images.length}
-										<div
-											class="tl-thumb-bg"
-											style="background-image:url('{cdnImg(e.images[0], 320)}')"
-										></div>
 										<img
 											class="tl-thumb-img"
-											src={cdnImg(e.images[0], 320)}
+											src={cdnImg(e.images[0], 400)}
 											data-raw={e.images[0]}
 											on:error={cdnFallback}
 											alt=""
@@ -421,7 +417,7 @@
 										/>
 									{:else}
 										<span class="tl-thumb-icon" aria-hidden="true">
-											<svelte:component this={typeIcon(e.type)} size="1.5rem" />
+											<svelte:component this={typeIcon(e.type)} size="1.6rem" />
 										</span>
 									{/if}
 								</div>
@@ -845,12 +841,13 @@
 		}
 	}
 
-	/* Vignette carrée de taille fixe : robuste quelle que soit la forme de la
-	   photo (image entière sur fond flou), avec repli sur l'icône du type. */
+	/* Vignette carrée de taille fixe : remplissage net (cover) sur un carré, donc
+	   propre quelle que soit la forme de la photo, sans attente de flou. Repli
+	   sur l'icône du type quand il n'y a pas de photo. */
 	.tl-thumb {
 		position: relative;
-		inline-size: 7rem;
-		block-size: 7rem;
+		inline-size: 8rem;
+		block-size: 8rem;
 		margin: 0.65rem;
 		border-radius: 10px;
 		overflow: hidden;
@@ -858,20 +855,10 @@
 		flex-shrink: 0;
 	}
 
-	.tl-thumb-bg {
-		position: absolute;
-		inset: -8%;
-		background-size: cover;
-		background-position: center;
-		filter: blur(14px) brightness(0.9);
-	}
-
 	.tl-thumb-img {
-		position: relative;
-		z-index: 1;
 		inline-size: 100%;
 		block-size: 100%;
-		object-fit: contain;
+		object-fit: cover;
 		display: block;
 	}
 
@@ -973,8 +960,8 @@
 		}
 
 		.tl-thumb {
-			inline-size: 5.5rem;
-			block-size: 5.5rem;
+			inline-size: 6rem;
+			block-size: 6rem;
 		}
 	}
 
