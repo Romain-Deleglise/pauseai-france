@@ -349,7 +349,7 @@
 								{#if e.featured}<svelte:component this={typeIcon(e.type)} size="0.85em" />{/if}
 							</span>
 						</div>
-						<article class="tl-card" class:has-media={!e.featured && e.images.length}>
+						<article class="tl-card">
 							{#if e.featured && e.images.length}
 								<div class="feature-main">
 									<div
@@ -403,16 +403,27 @@
 										{/each}
 									</div>
 								{/if}
-							{:else if !e.featured && e.images.length}
+							{:else if !e.featured}
 								<div class="tl-thumb">
-									<img
-										src={cdnImg(e.images[0], 240, 'cover')}
-										data-raw={e.images[0]}
-										on:error={cdnFallback}
-										alt=""
-										loading="lazy"
-										decoding="async"
-									/>
+									{#if e.images.length}
+										<div
+											class="tl-thumb-bg"
+											style="background-image:url('{cdnImg(e.images[0], 48)}')"
+										></div>
+										<img
+											class="tl-thumb-img"
+											src={cdnImg(e.images[0], 320)}
+											data-raw={e.images[0]}
+											on:error={cdnFallback}
+											alt=""
+											loading="lazy"
+											decoding="async"
+										/>
+									{:else}
+										<span class="tl-thumb-icon" aria-hidden="true">
+											<svelte:component this={typeIcon(e.type)} size="1.5rem" />
+										</span>
+									{/if}
 								</div>
 							{/if}
 							<div class="tl-body">
@@ -800,10 +811,11 @@
 			border-color 0.18s;
 	}
 
-	/* Carte compacte (action normale) avec vignette : image + texte côte à côte. */
-	.tl-card.has-media {
+	/* Carte compacte (action normale) : vignette carrée + texte côte à côte. */
+	.tl-item:not(.featured) .tl-card {
 		display: grid;
-		grid-template-columns: 5.5rem minmax(0, 1fr);
+		grid-template-columns: auto minmax(0, 1fr);
+		align-items: center;
 	}
 
 	.tl-item.featured .tl-card {
@@ -833,17 +845,44 @@
 		}
 	}
 
+	/* Vignette carrée de taille fixe : robuste quelle que soit la forme de la
+	   photo (image entière sur fond flou), avec repli sur l'icône du type. */
 	.tl-thumb {
 		position: relative;
+		inline-size: 5.5rem;
+		block-size: 5.5rem;
+		margin: 0.65rem;
+		border-radius: 10px;
 		overflow: hidden;
 		background: var(--brand-light);
+		flex-shrink: 0;
 	}
 
-	.tl-thumb img {
+	.tl-thumb-bg {
+		position: absolute;
+		inset: -8%;
+		background-size: cover;
+		background-position: center;
+		filter: blur(14px) brightness(0.9);
+	}
+
+	.tl-thumb-img {
+		position: relative;
+		z-index: 1;
 		inline-size: 100%;
 		block-size: 100%;
-		object-fit: cover;
+		object-fit: contain;
 		display: block;
+	}
+
+	.tl-thumb-icon {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: var(--brand);
+		opacity: 0.5;
 	}
 
 	.tl-body {
@@ -933,8 +972,9 @@
 			border-left: 3px solid var(--brand);
 		}
 
-		.tl-card.has-media {
-			grid-template-columns: 4.5rem minmax(0, 1fr);
+		.tl-thumb {
+			inline-size: 4.5rem;
+			block-size: 4.5rem;
 		}
 	}
 
