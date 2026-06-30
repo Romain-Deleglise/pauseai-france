@@ -97,20 +97,20 @@
 	const startOfToday = new Date()
 	startOfToday.setHours(0, 0, 0, 0)
 	$: upcoming = events.filter((e) => new Date(e.date) >= startOfToday)
-	// Actions passées : les plus récentes d'abord.
+	// Actions passées : les plus récentes d'abord (tri explicite pour une frise
+	// toujours chronologique, indépendamment de l'ordre de la source).
 	$: pastAll = events
 		.filter((e) => new Date(e.date) < startOfToday)
 		.slice()
-		.reverse()
-	// Les actions « à la une » sont mises en avant (grandes, avec galerie) ;
-	// les autres vont dans la grille compacte (6 visibles + bouton « tout voir »).
-	$: pastFeatured = pastAll.filter((e) => e.featured)
-	$: pastNormal = pastAll.filter((e) => !e.featured)
+		.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 	// Total de bénévoles mobilisés (sur les actions qui renseignent ce nombre).
 	$: totalVolunteers = pastAll.reduce((sum, e) => sum + (e.volunteers || 0), 0)
-	const PAST_PREVIEW = 6
+	// Frise chronologique unifiée : toutes les actions sur un même rail, les
+	// actions « à la une » formant de plus grands nœuds. On affiche d'abord les
+	// plus récentes, puis un bouton déroule le reste.
+	const PAST_PREVIEW = 8
 	let showAllPast = false
-	$: pastNormalShown = showAllPast ? pastNormal : pastNormal.slice(0, PAST_PREVIEW)
+	$: pastShown = showAllPast ? pastAll : pastAll.slice(0, PAST_PREVIEW)
 
 	function fmtDate(d: string): string {
 		const dt = new Date(d)
@@ -335,166 +335,132 @@
 				<h2>{isEn ? 'Recent actions' : 'Actions passées'}</h2>
 			</div>
 
-			<!-- Actions « à la une » : grandes cartes, orientation alternée -->
-			{#each pastFeatured as e, i (e.id)}
-				{@const gi = galleryIdx[e.id] ?? 0}
-				<article class="feature-card" class:reverse={i % 2 === 1}>
-					{#if e.images.length}
-						<div class="feature-media">
-							<div class="feature-main">
-								<div
-									class="feature-main-bg"
-									style="background-image:url('{cdnImg(e.images[gi], 48)}')"
-								></div>
-								<img
-									src={cdnImg(e.images[gi], 1100)}
-									data-raw={e.images[gi]}
-									on:error={cdnFallback}
-									alt=""
-									loading="lazy"
-									decoding="async"
-								/>
-								{#if e.images.length > 1}
-									<button
-										class="gallery-nav prev"
-										on:click={() => galStep(e.id, e.images.length, -1)}
-										aria-label={isEn ? 'Previous photo' : 'Photo précédente'}
-									>
-										<ChevronLeft size="1.2em" />
-									</button>
-									<button
-										class="gallery-nav next"
-										on:click={() => galStep(e.id, e.images.length, 1)}
-										aria-label={isEn ? 'Next photo' : 'Photo suivante'}
-									>
-										<ChevronRight size="1.2em" />
-									</button>
-									<span class="gallery-counter">{gi + 1}/{e.images.length}</span>
-								{/if}
-							</div>
-							{#if e.images.length > 1}
-								<div class="feature-thumbs">
-									{#each e.images.slice(0, 5) as src, idx}
-										<button
-											class="feature-thumb"
-											class:active={idx === gi}
-											on:click={() => (galleryIdx = { ...galleryIdx, [e.id]: idx })}
-											aria-label={`${isEn ? 'Photo' : 'Photo'} ${idx + 1}`}
-										>
-											<img
-												src={cdnImg(src, 240, 'cover')}
-												data-raw={src}
-												on:error={cdnFallback}
-												alt=""
-												loading="lazy"
-												decoding="async"
-											/>
-										</button>
-									{/each}
-								</div>
-							{/if}
+			<!-- Frise chronologique : un rail unique, les actions « à la une » en grands nœuds -->
+			<div class="timeline">
+				{#each pastShown as e (e.id)}
+					{@const gi = galleryIdx[e.id] ?? 0}
+					<div class="tl-item" class:featured={e.featured}>
+						<div class="tl-rail">
+							<time class="tl-date" datetime={e.date}>{fmtDate(e.date)}</time>
+							{#if e.city}<span class="tl-city">{e.city}</span>{/if}
 						</div>
-					{/if}
-					<div class="feature-body">
-						<span class="feature-meta">
-							{#if e.type}
-								<span class="feature-tag">
-									<svelte:component this={typeIcon(e.type)} size="0.8em" />
-									{e.type}
-								</span>
-							{/if}
-							{fmtDate(e.date)}{e.city ? ` · ${e.city}` : ''}
-						</span>
-						<h3>{e.title}</h3>
-						{#if e.volunteers > 0}
-							<span class="volunteers">
-								<Users size="0.95em" />
-								{e.volunteers}
-								{isEn ? (e.volunteers > 1 ? 'volunteers' : 'volunteer') : 'bénévoles'}
+						<div class="tl-marker" aria-hidden="true">
+							<span class="tl-dot">
+								{#if e.featured}<svelte:component this={typeIcon(e.type)} size="0.85em" />{/if}
 							</span>
-						{/if}
-						{#if e.description}<p>{e.description}</p>{/if}
-						{#if e.url}
-							<a
-								class="feature-link"
-								href={e.url}
-								target="_blank"
-								rel="noopener noreferrer"
-								aria-label={`${isEn ? 'Read more' : 'En savoir plus'} : ${e.title}`}
-							>
-								{isEn ? 'Read more ↗' : 'En savoir plus ↗'}
-							</a>
-						{/if}
-					</div>
-				</article>
-			{/each}
-
-			<!-- Autres actions : grille de cartes -->
-			{#if pastNormal.length}
-				<ul class="past-grid">
-					{#each pastNormalShown as e (e.id)}
-						<li class="past-card">
-							<div class="past-card-media">
-								{#if e.images.length}
+						</div>
+						<article class="tl-card" class:has-media={!e.featured && e.images.length}>
+							{#if e.featured && e.images.length}
+								<div class="feature-main">
 									<div
-										class="past-card-bg"
-										style="background-image:url('{cdnImg(e.images[0], 48)}')"
+										class="feature-main-bg"
+										style="background-image:url('{cdnImg(e.images[gi], 48)}')"
 									></div>
 									<img
-										src={cdnImg(e.images[0], 600)}
+										src={cdnImg(e.images[gi], 1100)}
+										data-raw={e.images[gi]}
+										on:error={cdnFallback}
+										alt=""
+										loading="lazy"
+										decoding="async"
+									/>
+									{#if e.images.length > 1}
+										<button
+											class="gallery-nav prev"
+											on:click={() => galStep(e.id, e.images.length, -1)}
+											aria-label={isEn ? 'Previous photo' : 'Photo précédente'}
+										>
+											<ChevronLeft size="1.2em" />
+										</button>
+										<button
+											class="gallery-nav next"
+											on:click={() => galStep(e.id, e.images.length, 1)}
+											aria-label={isEn ? 'Next photo' : 'Photo suivante'}
+										>
+											<ChevronRight size="1.2em" />
+										</button>
+										<span class="gallery-counter">{gi + 1}/{e.images.length}</span>
+									{/if}
+								</div>
+								{#if e.images.length > 1}
+									<div class="feature-thumbs">
+										{#each e.images.slice(0, 5) as src, idx}
+											<button
+												class="feature-thumb"
+												class:active={idx === gi}
+												on:click={() => (galleryIdx = { ...galleryIdx, [e.id]: idx })}
+												aria-label={`Photo ${idx + 1}`}
+											>
+												<img
+													src={cdnImg(src, 240, 'cover')}
+													data-raw={src}
+													on:error={cdnFallback}
+													alt=""
+													loading="lazy"
+													decoding="async"
+												/>
+											</button>
+										{/each}
+									</div>
+								{/if}
+							{:else if !e.featured && e.images.length}
+								<div class="tl-thumb">
+									<img
+										src={cdnImg(e.images[0], 240, 'cover')}
 										data-raw={e.images[0]}
 										on:error={cdnFallback}
 										alt=""
 										loading="lazy"
 										decoding="async"
 									/>
-								{:else}
-									<div class="past-card-noimg"><Megaphone size="1.7rem" /></div>
-								{/if}
-								{#if e.type}
-									<span class="past-card-tag">
-										<svelte:component this={typeIcon(e.type)} size="0.78em" />
-										{e.type}
-									</span>
-								{/if}
-							</div>
-							<div class="past-card-body">
-								<span class="past-card-meta">{fmtDate(e.date)}{e.city ? ` · ${e.city}` : ''}</span>
-								<strong class="past-card-title">{e.title}</strong>
-								<div class="past-card-foot">
-									{#if e.volunteers > 0}
-										<span class="past-card-vol">
-											<Users size="0.85em" />
-											{e.volunteers}
+								</div>
+							{/if}
+							<div class="tl-body">
+								<span class="tl-meta">
+									{#if e.type}
+										<span class="tl-tag">
+											<svelte:component this={typeIcon(e.type)} size="0.78em" />
+											{e.type}
 										</span>
 									{/if}
-									{#if e.url}
-										<a
-											class="past-card-link"
-											href={e.url}
-											target="_blank"
-											rel="noopener noreferrer"
-											aria-label={`${isEn ? 'Read more' : 'En savoir plus'} : ${e.title}`}
-										>
-											{isEn ? 'Read more ↗' : 'En savoir plus ↗'}
-										</a>
-									{/if}
-								</div>
+									<span class="tl-when">{fmtDate(e.date)}{e.city ? ` · ${e.city}` : ''}</span>
+								</span>
+								<h3 class="tl-title">{e.title}</h3>
+								{#if e.volunteers > 0}
+									<span class="volunteers">
+										<Users size="0.9em" />
+										{e.volunteers}
+										{isEn ? (e.volunteers > 1 ? 'volunteers' : 'volunteer') : 'bénévoles'}
+									</span>
+								{/if}
+								{#if e.featured && e.description}<p class="tl-desc">{e.description}</p>{/if}
+								{#if e.url}
+									<a
+										class="tl-link"
+										href={e.url}
+										target="_blank"
+										rel="noopener noreferrer"
+										aria-label={`${isEn ? 'Read more' : 'En savoir plus'} : ${e.title}`}
+									>
+										{isEn ? 'Read more ↗' : 'En savoir plus ↗'}
+									</a>
+								{/if}
 							</div>
-						</li>
-					{/each}
-				</ul>
-				{#if pastNormal.length > PAST_PREVIEW}
-					<button class="show-all-btn" on:click={() => (showAllPast = !showAllPast)}>
-						{#if showAllPast}
-							{isEn ? 'Show less' : 'Voir moins'}
-						{:else}
-							{isEn
-								? `See all actions (${pastNormal.length})`
-								: `Voir toutes les actions (${pastNormal.length})`}
-						{/if}
-					</button>
-				{/if}
+						</article>
+					</div>
+				{/each}
+			</div>
+
+			{#if pastAll.length > PAST_PREVIEW}
+				<button class="show-all-btn" on:click={() => (showAllPast = !showAllPast)}>
+					{#if showAllPast}
+						{isEn ? 'Show less' : 'Voir moins'}
+					{:else}
+						{isEn
+							? `See all actions (${pastAll.length})`
+							: `Voir toutes les actions (${pastAll.length})`}
+					{/if}
+				</button>
 			{/if}
 		</section>
 	{/if}
@@ -737,29 +703,255 @@
 		margin-bottom: 5rem;
 	}
 
-	/* Action « à la une » : grande carte, orientation alternée photo / texte */
-	.feature-card {
+	/* ── Frise chronologique ──────────────────────────────────────────── */
+	.timeline {
+		margin-top: 1.5rem;
+	}
+
+	/* Une entrée = date (rail gauche) · nœud · carte. Les actions « à la une »
+	   portent la classe .featured (nœud plus gros, carte enrichie). */
+	.tl-item {
 		display: grid;
-		grid-template-columns: 1.05fr 1fr;
-		border: 1px solid var(--border);
-		border-radius: 18px;
-		overflow: hidden;
-		background: var(--bg-card);
-		margin-bottom: 1.5rem;
-		box-shadow: 0 2px 14px rgba(0, 0, 0, 0.05);
+		grid-template-columns: 6.5rem 1.75rem minmax(0, 1fr);
+		column-gap: 1rem;
+		padding-bottom: 2.25rem;
+		position: relative;
 	}
 
-	.feature-card.reverse .feature-media {
-		order: 2;
+	.tl-item:last-child {
+		padding-bottom: 0;
 	}
 
-	/* Média : photo principale + bande de vignettes */
-	.feature-media {
+	.tl-rail {
 		display: flex;
 		flex-direction: column;
+		gap: 0.1rem;
+		text-align: right;
+		padding-top: 0.15rem;
+		transition: color 0.18s;
+	}
+
+	.tl-date {
+		font-weight: 700;
+		font-size: 0.9rem;
+		line-height: 1.2;
+	}
+
+	.tl-city {
+		font-size: 0.78rem;
+		color: var(--text-secondary);
+	}
+
+	/* Colonne du nœud : un point sur une ligne verticale continue. */
+	.tl-marker {
+		position: relative;
+		display: flex;
+		justify-content: center;
+	}
+
+	.tl-marker::before {
+		content: '';
+		position: absolute;
+		top: 0.55rem;
+		bottom: -2.25rem;
+		left: 50%;
+		inline-size: 2px;
+		transform: translateX(-50%);
+		background: var(--border);
+	}
+
+	.tl-item:last-child .tl-marker::before {
+		display: none;
+	}
+
+	.tl-dot {
+		margin-top: 0.3rem;
+		inline-size: 0.85rem;
+		block-size: 0.85rem;
+		border-radius: 50%;
+		background: var(--border);
+		box-shadow: 0 0 0 3px var(--bg-card);
+		z-index: 1;
+		transition:
+			transform 0.18s,
+			background 0.18s;
+	}
+
+	.tl-item.featured .tl-dot {
+		inline-size: 1.7rem;
+		block-size: 1.7rem;
+		margin-top: 0.1rem;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		background: var(--brand);
+		color: #1a1a1a;
+	}
+
+	/* Carte */
+	.tl-card {
+		border: 1px solid var(--border);
+		border-radius: 14px;
+		overflow: hidden;
+		background: var(--bg-card);
+		transition:
+			transform 0.18s,
+			box-shadow 0.18s,
+			border-color 0.18s;
+	}
+
+	/* Carte compacte (action normale) avec vignette : image + texte côte à côte. */
+	.tl-card.has-media {
+		display: grid;
+		grid-template-columns: 5.5rem minmax(0, 1fr);
+	}
+
+	.tl-item.featured .tl-card {
+		box-shadow: 0 2px 14px rgba(0, 0, 0, 0.05);
+		padding: 0.6rem 0.6rem 0;
+	}
+
+	/* Survol = finition décorative uniquement (l'info reste toujours visible). */
+	.tl-item:hover .tl-card {
+		transform: translateX(4px);
+		box-shadow: 0 6px 20px rgba(0, 0, 0, 0.09);
+		border-color: var(--brand);
+	}
+
+	.tl-item:hover .tl-dot {
+		transform: scale(1.25);
+	}
+
+	.tl-item:hover .tl-rail,
+	.tl-item:hover .tl-date {
+		color: var(--brand-subtle);
+	}
+
+	@media (hover: none) {
+		.tl-item:hover .tl-card {
+			transform: none;
+		}
+	}
+
+	.tl-thumb {
+		position: relative;
+		overflow: hidden;
+		background: var(--brand-light);
+	}
+
+	.tl-thumb img {
+		inline-size: 100%;
+		block-size: 100%;
+		object-fit: cover;
+		display: block;
+	}
+
+	.tl-body {
+		display: flex;
+		flex-direction: column;
+		gap: 0.4rem;
+		padding: 0.85rem 1rem;
+	}
+
+	.tl-item.featured .tl-body {
+		padding: 0.9rem 1.1rem 1.2rem;
+	}
+
+	.tl-meta {
+		display: flex;
+		align-items: center;
 		gap: 0.5rem;
-		min-block-size: 17rem;
-		padding: 0.6rem;
+		font-size: 0.8rem;
+		font-weight: 600;
+		color: var(--text-secondary);
+	}
+
+	.tl-tag {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.3rem;
+		background: var(--brand);
+		color: #1a1a1a;
+		padding: 0.12rem 0.55rem;
+		border-radius: 999px;
+		font-size: 0.7rem;
+		text-transform: uppercase;
+		letter-spacing: 0.03em;
+	}
+
+	/* La date est déjà sur le rail à gauche : on la masque dans la carte sur
+	   grand écran, et on la réaffiche sur mobile (rail replié). */
+	.tl-when {
+		display: none;
+	}
+
+	.tl-title {
+		margin: 0;
+		line-height: 1.25;
+		font-size: 1.05rem;
+	}
+
+	.tl-item.featured .tl-title {
+		font-size: clamp(1.2rem, 2.4vw, 1.55rem);
+	}
+
+	.tl-desc {
+		margin: 0;
+		line-height: 1.6;
+		color: var(--text-2);
+	}
+
+	.tl-link {
+		align-self: flex-start;
+		margin-top: 0.15rem;
+		font-size: 0.88rem;
+		font-weight: 700;
+		color: var(--brand-subtle);
+		white-space: nowrap;
+	}
+
+	.tl-link:hover {
+		text-decoration: underline;
+	}
+
+	@media (max-width: 640px) {
+		.tl-item {
+			grid-template-columns: 1fr;
+			padding-bottom: 1.5rem;
+		}
+
+		.tl-rail,
+		.tl-marker {
+			display: none;
+		}
+
+		.tl-when {
+			display: inline;
+		}
+
+		.tl-card {
+			border-left: 3px solid var(--brand);
+		}
+
+		.tl-card.has-media {
+			grid-template-columns: 4.5rem minmax(0, 1fr);
+		}
+	}
+
+	/* Carrousel d'une action « à la une » dans la frise : hauteur fixe. */
+	.tl-item.featured .feature-main {
+		block-size: 18rem;
+	}
+
+	.tl-item.featured .feature-thumbs {
+		margin-top: 0.5rem;
+		margin-bottom: 0.6rem;
+	}
+
+	@media (max-width: 640px) {
+		.tl-item.featured .feature-main {
+			block-size: 13rem;
+		}
 	}
 
 	/* Photo principale adaptative : l'image est montrée en entier (contain),
@@ -863,42 +1055,6 @@
 		display: block;
 	}
 
-	.feature-body {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		gap: 0.55rem;
-		padding: 2rem 2.25rem;
-	}
-
-	.feature-meta {
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-		font-size: 0.82rem;
-		font-weight: 600;
-		color: var(--text-secondary);
-	}
-
-	.feature-tag {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.3rem;
-		background: var(--brand);
-		color: #1a1a1a;
-		padding: 0.12rem 0.55rem;
-		border-radius: 999px;
-		font-size: 0.72rem;
-		text-transform: uppercase;
-		letter-spacing: 0.03em;
-	}
-
-	.feature-body h3 {
-		margin: 0;
-		font-size: clamp(1.3rem, 2.5vw, 1.7rem);
-		line-height: 1.15;
-	}
-
 	.volunteers {
 		align-self: flex-start;
 		display: inline-flex;
@@ -910,174 +1066,6 @@
 		background: var(--brand-light);
 		padding: 0.2rem 0.6rem;
 		border-radius: 999px;
-	}
-
-	.feature-body p {
-		margin: 0;
-		line-height: 1.65;
-		color: var(--text-2);
-	}
-
-	.feature-link {
-		align-self: flex-start;
-		margin-top: 0.35rem;
-		font-size: 0.92rem;
-		font-weight: 700;
-		color: var(--brand-subtle);
-	}
-
-	.feature-link:hover {
-		text-decoration: underline;
-	}
-
-	@media (max-width: 760px) {
-		.feature-card,
-		.feature-card.reverse {
-			grid-template-columns: 1fr;
-		}
-
-		.feature-card.reverse .feature-media {
-			order: 0;
-		}
-
-		.feature-media {
-			min-block-size: 0;
-		}
-
-		.feature-main {
-			block-size: 13rem;
-		}
-
-		.feature-body {
-			padding: 1.4rem 1.5rem 1.6rem;
-		}
-	}
-
-	/* Autres actions : cartes avec image en bandeau */
-	.past-grid {
-		list-style: none;
-		padding: 0;
-		margin: 0;
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-		gap: 1.25rem;
-	}
-
-	.past-card {
-		display: flex;
-		flex-direction: column;
-		border: 1px solid var(--border);
-		border-radius: 14px;
-		overflow: hidden;
-		background: var(--bg-card);
-		transition:
-			transform 0.18s,
-			box-shadow 0.18s;
-	}
-
-	.past-card:hover {
-		transform: translateY(-3px);
-		box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-	}
-
-	.past-card-media {
-		position: relative;
-		block-size: 9.5rem;
-		margin: 0.5rem 0.5rem 0;
-		border-radius: 10px;
-		overflow: hidden;
-		background: var(--brand-light);
-	}
-
-	.past-card-bg {
-		position: absolute;
-		inset: -8%;
-		background-size: cover;
-		background-position: center;
-		filter: blur(16px) brightness(0.9);
-	}
-
-	.past-card-media img {
-		position: relative;
-		z-index: 1;
-		inline-size: 100%;
-		block-size: 100%;
-		object-fit: contain;
-	}
-
-	.past-card-noimg {
-		position: absolute;
-		inset: 0;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		color: var(--brand);
-		opacity: 0.55;
-	}
-
-	.past-card-tag {
-		position: absolute;
-		z-index: 2;
-		top: 0.6rem;
-		left: 0.6rem;
-		display: inline-flex;
-		align-items: center;
-		gap: 0.28rem;
-		background: var(--brand);
-		color: #1a1a1a;
-		padding: 0.15rem 0.6rem;
-		border-radius: 999px;
-		font-size: 0.7rem;
-		font-weight: 700;
-		text-transform: uppercase;
-		letter-spacing: 0.03em;
-	}
-
-	.past-card-body {
-		display: flex;
-		flex-direction: column;
-		gap: 0.35rem;
-		padding: 0.9rem 1rem 1rem;
-		flex: 1;
-	}
-
-	.past-card-meta {
-		font-size: 0.78rem;
-		color: var(--text-secondary);
-	}
-
-	.past-card-title {
-		font-size: 1rem;
-		line-height: 1.3;
-	}
-
-	.past-card-foot {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		gap: 0.5rem;
-		margin-top: auto;
-		padding-top: 0.4rem;
-	}
-
-	.past-card-vol {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.25rem;
-		font-size: 0.8rem;
-		font-weight: 600;
-		color: var(--text-2);
-	}
-
-	.past-card-link {
-		font-size: 0.82rem;
-		font-weight: 700;
-		color: var(--brand-subtle);
-		white-space: nowrap;
-	}
-
-	.past-card-link:hover {
-		text-decoration: underline;
 	}
 
 	.show-all-btn {
