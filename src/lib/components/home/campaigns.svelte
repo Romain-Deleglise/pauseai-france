@@ -11,7 +11,7 @@
 	$: t = getT(lang)
 	$: prefix = lang === 'en' ? '/en' : '/fr'
 	$: activeCampaigns = getSortedCampaigns()
-		.filter((c) => c.status === 'active')
+		.filter((c) => c.status === 'active' && !c.homeHidden)
 		.slice(0, 3)
 
 	// With 3 campaigns: 1 featured + 2 secondary in a grid.

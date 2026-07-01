@@ -40,6 +40,8 @@ export interface Campaign {
 	image?: string
 	/** Summary shown in a popup when the ended campaign card is clicked */
 	summary?: CampaignSummary
+	/** Temporarily hide this campaign from the homepage section (still listed on /campagnes). */
+	homeHidden?: boolean
 	fr: {
 		title: string
 		description: string
@@ -75,6 +77,35 @@ export interface Campaign {
  * Order: newest first within each status group.
  */
 export const campaigns: Campaign[] = [
+	{
+		slug: 'geneve-2026',
+		status: 'active',
+		startDate: '2026-07',
+		// Déposer l'image dans static/campaigns/geneve-2026.jpg (CC0 / domaine public).
+		image: '/campaigns/geneve-2026.jpg',
+		fr: {
+			title: 'Genève 2026 : soutenir un traité international sur l’IA',
+			homeTitle: 'Demandez à la France de soutenir un traité international sur l’IA',
+			description:
+				'Les 6 et 7 juillet 2026, l’ONU réunit à Genève le Dialogue mondial sur la gouvernance de l’IA. Écrivez à la délégation française pour lui demander de soutenir un traité instaurant une pause sur les modèles d’IA les plus avancés.',
+			shortDescription:
+				'L’ONU réunit à Genève le Dialogue mondial sur la gouvernance de l’IA. Demandez à la délégation française de soutenir un traité international sur l’IA.',
+			cta: 'Écrire à la délégation française',
+			homeCta: 'Écrire à la délégation',
+			progress: 'Avant le sommet de Genève (6-7 juillet 2026)'
+		},
+		en: {
+			title: 'Geneva 2026: support an international AI treaty',
+			homeTitle: 'Ask France to support an international AI treaty',
+			description:
+				'On 6-7 July 2026, the UN convenes the Global Dialogue on AI Governance in Geneva. Write to the French delegation to ask it to support a treaty pausing the development of the most advanced AI models.',
+			shortDescription:
+				'The UN convenes the Global Dialogue on AI Governance in Geneva. Ask the French delegation to support an international AI treaty.',
+			cta: 'Write to the French delegation',
+			homeCta: 'Write to the delegation',
+			progress: 'Before the Geneva summit (6-7 July 2026)'
+		}
+	},
 	{
 		slug: 'g7-2026',
 		status: 'ended',
@@ -182,6 +213,9 @@ export const campaigns: Campaign[] = [
 		slug: 'emploi-ia',
 		status: 'active',
 		startDate: '2026-04',
+		// Temporairement masquée de la section campagnes de la page d'accueil
+		// (reste accessible sur /campagnes et dans le menu).
+		homeHidden: true,
 		image: '/campaigns/DSC08648_r.webp',
 		fr: {
 			title: "L'IA ne détruira pas QUE votre emploi",
