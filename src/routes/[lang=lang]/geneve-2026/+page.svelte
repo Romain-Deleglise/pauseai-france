@@ -115,9 +115,6 @@
 				international treaty establishing a pause on the development of advanced general-purpose
 				artificial intelligence models.
 			</p>
-			<p class="cta-row">
-				<a class="cta" href="#agir">Write to the French delegation</a>
-			</p>
 		{:else}
 			<p>
 				Les 6 et 7 juillet 2026, l’Organisation des Nations Unies réunit à Genève des
@@ -167,11 +164,12 @@
 				l’appel à un traité international instaurant une pause sur le développement des modèles
 				avancés d’intelligence artificielle générale.
 			</p>
-			<p class="cta-row">
-				<a class="cta" href="#agir">J’écris à la délégation française</a>
-			</p>
 		{/if}
 	</section>
+
+	<h2 class="embed-title">
+		{isEn ? 'Write to the French delegation' : 'J’écris à la délégation française'}
+	</h2>
 
 	<section class="embed-section" id="agir">
 		<div id="av-embed-container"></div>
@@ -257,27 +255,9 @@
 		width: 12rem;
 	}
 
-	.cta-row {
-		margin-top: 1.75rem;
-	}
-
-	.cta {
-		display: inline-block;
-		background: var(--brand, #ff9416);
-		color: #fff;
-		font-weight: 700;
-		text-decoration: none;
-		padding: 0.8rem 1.5rem;
-		border-radius: 10px;
-		transition:
-			opacity 0.2s ease,
-			transform 0.2s ease;
-	}
-
-	.cta:hover,
-	.cta:focus-visible {
-		opacity: 0.92;
-		transform: translateY(-1px);
+	.embed-title {
+		margin: 0 0 1rem;
+		font-size: 1.5rem;
 	}
 
 	.embed-section {
