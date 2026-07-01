@@ -81,6 +81,8 @@ export const campaigns: Campaign[] = [
 		slug: 'geneve-2026',
 		status: 'active',
 		startDate: '2026-07',
+		// Déposer l'image dans static/campaigns/geneve-2026.jpg (CC0 / domaine public).
+		image: '/campaigns/geneve-2026.jpg',
 		fr: {
 			title: 'Genève 2026 : soutenir un traité international sur l’IA',
 			homeTitle: 'Demandez à la France de soutenir un traité international sur l’IA',
