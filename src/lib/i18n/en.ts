@@ -14,6 +14,7 @@ export default {
 		comment_agir: 'How to act?',
 		groupes_locaux: 'Local groups',
 		toutes_campagnes: 'All our campaigns',
+		geneve_2026: 'Geneva 2026',
 		ecrire_elus: 'Write to my representatives',
 		emploi_ia: 'Employment & AI',
 		g7_2026: 'G7 2026',

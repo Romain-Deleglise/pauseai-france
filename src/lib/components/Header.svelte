@@ -98,6 +98,7 @@
 			label: t.nav.campagnes,
 			items: [
 				{ href: `${prefix}/campagnes`, label: t.nav.toutes_campagnes },
+				{ href: `${prefix}/geneve-2026`, label: t.nav.geneve_2026 },
 				{ href: `${prefix}/ecrire-a-mes-elus`, label: t.nav.ecrire_elus },
 				{ href: `${prefix}/emploi-ia`, label: t.nav.emploi_ia }
 			]
