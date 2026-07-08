@@ -488,7 +488,7 @@
 										{isEn ? (e.volunteers > 1 ? 'volunteers' : 'volunteer') : 'bénévoles'}
 									</span>
 								{/if}
-								{#if e.featured && e.description}<p class="tl-desc">{e.description}</p>{/if}
+								{#if e.description}<p class="tl-desc">{e.description}</p>{/if}
 								{#if e.url}
 									<a
 										class="tl-link"
@@ -1038,6 +1038,17 @@
 		margin: 0;
 		line-height: 1.6;
 		color: var(--text-2);
+	}
+
+	/* Action non « à la une » : description compacte, tronquée à 2 lignes pour
+	   ne pas alourdir la frise. */
+	.tl-item:not(.featured) .tl-desc {
+		font-size: 0.85rem;
+		line-height: 1.45;
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
 	}
 
 	.tl-link {
