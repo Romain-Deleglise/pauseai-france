@@ -14,10 +14,10 @@
 		.filter((c) => c.status === 'active' && !c.homeHidden)
 		.slice(0, 3)
 
-	// First campaign (highest priority) is featured; the rest show smaller
-	// in a grid below. With a single active campaign, no featured card.
-	$: featured = activeCampaigns.length >= 2 ? activeCampaigns[0] : null
-	$: secondary = activeCampaigns.length >= 2 ? activeCampaigns.slice(1) : activeCampaigns
+	// With 3 campaigns: 1 featured + 2 secondary in a grid.
+	// With 1-2 campaigns: show them side-by-side (same size), ordered by priority.
+	$: featured = activeCampaigns.length >= 3 ? activeCampaigns[0] : null
+	$: secondary = activeCampaigns.length >= 3 ? activeCampaigns.slice(1) : activeCampaigns
 
 	const label_id = 'home-campaigns-title'
 </script>
@@ -68,7 +68,7 @@
 		{/if}
 
 		{#if secondary.length > 0}
-			<div class="grid" class:single={secondary.length === 1}>
+			<div class="grid">
 				{#each secondary as campaign}
 					{@const info = lang === 'en' ? campaign.en : campaign.fr}
 					{@const href = campaign.url ?? `${prefix}/${campaign.slug}`}
@@ -307,11 +307,6 @@
 	@media (min-width: 640px) {
 		.grid {
 			grid-template-columns: repeat(2, 1fr);
-		}
-
-		.grid.single {
-			grid-template-columns: 1fr;
-			max-width: 26rem;
 		}
 	}
 
