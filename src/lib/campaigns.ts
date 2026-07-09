@@ -79,10 +79,29 @@ export interface Campaign {
 export const campaigns: Campaign[] = [
 	{
 		slug: 'geneve-2026',
-		status: 'active',
+		status: 'ended',
 		startDate: '2026-07',
+		endDate: '2026-07',
 		// Déposer l'image dans static/campaigns/geneve-2026.jpg (CC0 / domaine public).
 		image: '/campaigns/geneve-2026.jpg',
+		summary: {
+			fr: {
+				text: "Les 6 et 7 juillet 2026, l'ONU a réuni à Genève la première session du Dialogue mondial sur la gouvernance de l'intelligence artificielle. Pause IA a interpellé la délégation française pour lui demander de soutenir un traité international instaurant une pause sur les modèles d'IA les plus avancés : plus de 1 000 mails lui ont été adressés pendant la campagne. Le 6 juillet, le Groupe scientifique international indépendant sur l'IA (37 scientifiques, présidé par Yoshua Bengio et Maria Ressa) a présenté son premier rapport, confirmant que « les capacités de l'intelligence artificielle évoluent plus rapidement que notre aptitude à les évaluer ou à les maîtriser ». Pause IA a salué ces travaux tout en appelant à agir sans délai : « la sécurité des citoyens, la souveraineté démocratique et l'avenir de nos sociétés doivent primer sur les intérêts d'une minorité d'acteurs privés », a déclaré Clémence Peyrot, directrice exécutive de Pause IA.",
+				results: [
+					{ label: 'Mails envoyés à la délégation française', value: '+1 000' },
+					{ label: 'Rapport scientifique cité', value: '37 scientifiques (Bengio, Ressa)' },
+					{ label: 'Sondage OpinionWay cité', value: '8 % favorables à une accélération' }
+				]
+			},
+			en: {
+				text: 'On 6-7 July 2026, the UN convened the first session of the Global Dialogue on AI Governance in Geneva. Pause AI called on the French delegation to support an international treaty establishing a pause on the most advanced AI models: more than 1,000 emails were sent to it during the campaign. On 6 July, the International Independent Scientific Panel on AI (37 scientists, chaired by Yoshua Bengio and Maria Ressa) presented its first report, confirming that "AI capabilities are advancing faster than our ability to evaluate or control them." Pause AI welcomed this work while calling for immediate action: "the safety of citizens, democratic sovereignty and the future of our societies must come before the interests of a minority of private actors," said Clémence Peyrot, Executive Director of Pause AI.',
+				results: [
+					{ label: 'Emails sent to the French delegation', value: '1,000+' },
+					{ label: 'Scientific report cited', value: '37 scientists (Bengio, Ressa)' },
+					{ label: 'OpinionWay poll cited', value: '8% in favour of acceleration' }
+				]
+			}
+		},
 		fr: {
 			title: 'Genève 2026 : soutenir un traité international sur l’IA',
 			homeTitle: 'Demandez à la France de soutenir un traité international sur l’IA',
@@ -213,9 +232,6 @@ export const campaigns: Campaign[] = [
 		slug: 'emploi-ia',
 		status: 'active',
 		startDate: '2026-04',
-		// Temporairement masquée de la section campagnes de la page d'accueil
-		// (reste accessible sur /campagnes et dans le menu).
-		homeHidden: true,
 		image: '/campaigns/DSC08648_r.webp',
 		fr: {
 			title: "L'IA ne détruira pas QUE votre emploi",
