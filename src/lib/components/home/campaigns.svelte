@@ -15,7 +15,7 @@
 		.slice(0, 3)
 
 	// With 3 campaigns: 1 featured + 2 secondary in a grid.
-	// With 2 campaigns: show both side-by-side, no featured.
+	// With 1-2 campaigns: show them side-by-side (same size), ordered by priority.
 	$: featured = activeCampaigns.length >= 3 ? activeCampaigns[0] : null
 	$: secondary = activeCampaigns.length >= 3 ? activeCampaigns.slice(1) : activeCampaigns
 
