@@ -83,11 +83,19 @@ document séparé `docs/ecrire-a-mes-elus-textes.md` pour le texte complet desti
 
 Structure d'un mail :
 
-1. **Salutation** genrée selon la civilité et le rôle
+1. **Salutation** genrée selon la civilité **du destinataire** et son rôle
    (« Madame la Députée », « Monsieur le Sénateur », repli neutre).
-2. **Phrase d'introduction** : « Je m'appelle X et je vous écris en tant
-   qu'habitant de votre circonscription/département. » (la localité précise est
-   dans la signature).
+2. **Phrase d'introduction** : « Je m'appelle X et je vous écris car je réside
+   dans votre circonscription/ville/département. » Formulation **neutre (non
+   genrée)** côté expéditeur : on emploie des verbes plutôt que des adjectifs
+   accordés (« je réside », « me préoccupe »), pour ne pas présumer le genre de
+   l'expéditeur et éviter d'avoir à demander sa civilité.
+   La **localité affirmée pour un député dépend de la fiabilité du géocodage** :
+   « votre circonscription » seulement quand le code postal désigne une seule
+   circonscription ; « votre ville » quand il en couvre plusieurs (grandes villes
+   comme Toulouse) ; « votre département » en repli. Cela évite d'affirmer à tort
+   « votre circonscription » à des députés dont l'utilisateur n'est pas
+   nécessairement un administré.
 3. **Accroche** (`HOOKS`) : tirée au hasard parmi 3 par visiteur.
 4. **Focus** (`FOCUS`) : selon l'angle choisi (3 angles).
 5. _(version détaillée)_ **Complément** (`COMPLEMENT`) + **Sondage** (`POLL`).

@@ -37,25 +37,30 @@ les envois identiques.
 
 ### B.2 Introduction
 
-- Député : « Je m'appelle **[Prénom Nom]** et je vous écris en tant qu'habitant
-  de votre circonscription. »
-- Sénateur : « Je m'appelle **[Prénom Nom]** et je vous écris en tant
-  qu'habitant de votre département. »
+Formulation **neutre (non genrée)** de l'expéditeur, et localité adaptée à la
+fiabilité du géocodage pour les députés :
+
+- Député, circonscription certaine (1 seul député) : « Je m'appelle
+  **[Prénom Nom]** et je vous écris car je réside dans votre circonscription. »
+- Député, code postal couvrant plusieurs circonscriptions (grandes villes) :
+  « … car je réside dans votre ville. »
+- Député en repli départemental / Sénateur : « … car je réside dans votre
+  département. »
 
 ### B.3 Accroches (3, tirées au hasard)
 
 **Accroche 1**
 
-> Je vous écris parce que je suis préoccupé par la vitesse à laquelle se
-> développent les intelligences artificielles les plus puissantes. Ce qui
-> m'inquiète n'est pas la science-fiction : ce sont les dirigeants de ces
+> Je vous écris parce que la vitesse à laquelle se développent les intelligences
+> artificielles les plus puissantes me préoccupe. Ce qui m'inquiète n'est pas la
+> science-fiction : ce sont les dirigeants de ces
 > laboratoires eux-mêmes qui reconnaissent publiquement que leurs systèmes
 > pourraient, à terme, échapper à notre contrôle.
 
 **Accroche 2**
 
-> Je suis un citoyen inquiet de la tournure que prend le développement de
-> l'intelligence artificielle. En mai 2023, des centaines de chercheurs et les
+> La tournure que prend le développement de l'intelligence artificielle
+> m'inquiète. En mai 2023, des centaines de chercheurs et les
 > dirigeants des principaux laboratoires d'IA ont signé une même phrase :
 > « Atténuer le risque d'extinction lié à l'IA devrait être une priorité
 > mondiale, au même titre que les pandémies ou la guerre nucléaire. » Quand ceux
@@ -122,7 +127,7 @@ Texte libre saisi par l'utilisateur, inséré tel quel.
 
 ### B.8 Reconnaissance des bénéfices (toujours présente, avant l'appel)
 
-> Je ne suis pas opposé au progrès : l'IA peut rendre d'immenses services, en
+> Je ne m'oppose pas au progrès : l'IA peut rendre d'immenses services, en
 > médecine, dans la recherche ou au quotidien. C'est précisément parce que cette
 > technologie est puissante qu'elle mérite d'être développée avec prudence et
 > sous contrôle démocratique.
@@ -151,12 +156,12 @@ Texte libre saisi par l'utilisateur, inséré tel quel.
 >
 > Madame la Députée,
 >
-> Je m'appelle Jeanne Dupont et je vous écris en tant qu'habitant de votre
+> Je m'appelle Jeanne Dupont et je vous écris car je réside dans votre
 > circonscription.
 >
-> Je vous écris parce que je suis préoccupé par la vitesse à laquelle se
-> développent les intelligences artificielles les plus puissantes. Ce qui
-> m'inquiète n'est pas la science-fiction : ce sont les dirigeants de ces
+> Je vous écris parce que la vitesse à laquelle se développent les intelligences
+> artificielles les plus puissantes me préoccupe. Ce qui m'inquiète n'est pas la
+> science-fiction : ce sont les dirigeants de ces
 > laboratoires eux-mêmes qui reconnaissent publiquement que leurs systèmes
 > pourraient, à terme, échapper à notre contrôle.
 >
@@ -164,7 +169,7 @@ Texte libre saisi par l'utilisateur, inséré tel quel.
 > désinformation de masse ou la surveillance, tandis que la course à des
 > systèmes toujours plus autonomes fait planer un risque bien plus grave encore.
 >
-> Je ne suis pas opposé au progrès : l'IA peut rendre d'immenses services, en
+> Je ne m'oppose pas au progrès : l'IA peut rendre d'immenses services, en
 > médecine, dans la recherche ou au quotidien. C'est précisément parce que cette
 > technologie est puissante qu'elle mérite d'être développée avec prudence et
 > sous contrôle démocratique.
@@ -186,7 +191,7 @@ Texte libre saisi par l'utilisateur, inséré tel quel.
 >
 > Monsieur le Sénateur,
 >
-> Je m'appelle Marc Martin et je vous écris en tant qu'habitant de votre
+> Je m'appelle Marc Martin et je vous écris car je réside dans votre
 > département.
 >
 > Comme beaucoup, j'observe avec un mélange d'enthousiasme et d'inquiétude les
@@ -213,7 +218,7 @@ Texte libre saisi par l'utilisateur, inséré tel quel.
 > _(phrase personnelle de l'utilisateur, par ex. :)_ En tant que parent, je
 > m'inquiète du monde que nous laisserons à nos enfants.
 >
-> Je ne suis pas opposé au progrès : l'IA peut rendre d'immenses services, en
+> Je ne m'oppose pas au progrès : l'IA peut rendre d'immenses services, en
 > médecine, dans la recherche ou au quotidien. C'est précisément parce que cette
 > technologie est puissante qu'elle mérite d'être développée avec prudence et
 > sous contrôle démocratique.

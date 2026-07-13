@@ -67,6 +67,10 @@
 		photo: string | null
 		subtitle: string
 		introKind: 'depute' | 'senateur' | 'generic'
+		// Pour les députés : précision de la localité selon la fiabilité du géocodage.
+		// 'circonscription' (1 seul député certain), 'ville' (code postal couvrant
+		// plusieurs circonscriptions), 'departement' (repli). Voir deputeScope.
+		deputeScope?: 'circonscription' | 'ville' | 'departement'
 		signatureLocality: string
 		salutationOverride?: string
 		emailConfidence: 'high' | 'medium' | 'low' | 'none'
@@ -150,6 +154,19 @@
 				? 'Your MP'
 				: 'Votre député'
 
+	// Portée géographique certaine pour les députés (voir introLine) :
+	//  - repli département : on ne connaît pas la circonscription → 'departement'
+	//  - un code postal couvrant plusieurs circonscriptions (grandes villes) : on
+	//    sait seulement que l'utilisateur habite la ville → 'ville'
+	//  - un seul député pour ce code postal : circonscription certaine.
+	$: deputeScope = (
+		!result?.exactDeputes
+			? 'departement'
+			: (result?.deputes.length ?? 0) > 1
+				? 'ville'
+				: 'circonscription'
+	) as 'circonscription' | 'ville' | 'departement'
+
 	$: recipientGroups =
 		action.targeting === 'fixed'
 			? action.fixedTargets && action.fixedTargets.length
@@ -172,7 +189,10 @@
 							title: isEn ? 'Your senators' : 'Vos sénateurs',
 							list: result.senateurs.map(fromElu)
 						},
-						{ title: deputeTitle, list: result.deputes.map(fromElu) }
+						{
+							title: deputeTitle,
+							list: result.deputes.map((e) => ({ ...fromElu(e), deputeScope }))
+						}
 					]
 				: []
 
@@ -214,21 +234,41 @@
 
 	// 1re phrase : ouverture naturelle qui signale le lien avec le destinataire.
 	// `name` est passé explicitement pour que Svelte recalcule l'aperçu à la frappe.
+	// Formulations neutres (non genrées) : on utilise des verbes plutôt que des
+	// noms/adjectifs accordés ("je réside", "me préoccupe") pour que le message
+	// convienne à tout le monde sans avoir à demander la civilité de l'expéditeur.
 	function introLine(r: Recipient, name: string): string {
 		const nom = name.trim() || (isEn ? '[your name]' : '[votre nom]')
 		if (r.introKind === 'generic') {
 			return isEn
-				? `My name is ${nom}, and I am writing to you as a concerned French citizen.`
-				: `Je m'appelle ${nom} et je vous écris en tant que citoyen préoccupé.`
+				? `My name is ${nom}, and I am writing to you because I am worried about the development of AI.`
+				: `Je m'appelle ${nom} et je vous écris car le développement de l'IA me préoccupe.`
 		}
+		if (r.introKind === 'senateur') {
+			return isEn
+				? `My name is ${nom}, and I am writing to you as a resident of your department.`
+				: `Je m'appelle ${nom} et je vous écris car je réside dans votre département.`
+		}
+		// Députés : la localité affirmée dépend de la fiabilité du géocodage, pour
+		// ne pas prétendre « votre circonscription » quand le code postal en couvre
+		// plusieurs (grandes villes) ou qu'on est en repli départemental.
+		const scope = r.deputeScope ?? 'circonscription'
 		if (isEn) {
-			return r.introKind === 'depute'
-				? `My name is ${nom}, and I am writing to you as one of your constituents.`
-				: `My name is ${nom}, and I am writing to you as a resident of your department.`
+			const where =
+				scope === 'circonscription'
+					? 'as one of your constituents'
+					: scope === 'ville'
+						? 'as a resident of your city'
+						: 'as a resident of your department'
+			return `My name is ${nom}, and I am writing to you ${where}.`
 		}
-		return r.introKind === 'depute'
-			? `Je m'appelle ${nom} et je vous écris en tant qu'habitant de votre circonscription.`
-			: `Je m'appelle ${nom} et je vous écris en tant qu'habitant de votre département.`
+		const lieu =
+			scope === 'circonscription'
+				? 'votre circonscription'
+				: scope === 'ville'
+					? 'votre ville'
+					: 'votre département'
+		return `Je m'appelle ${nom} et je vous écris car je réside dans ${lieu}.`
 	}
 
 	// Compose les paragraphes du corps selon l'angle, la longueur et la phrase perso.
