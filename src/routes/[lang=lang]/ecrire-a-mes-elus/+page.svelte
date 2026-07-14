@@ -40,15 +40,24 @@
 		}
 	}
 
-	// Indices tirés au hasard une fois par action (objet + accroche tournants).
+	// Indices tirés au hasard une fois par action (objet + accroche + variantes de
+	// paragraphes). Un grand nombre aléatoire, ramené par modulo à la taille du
+	// pool concerné au moment de l'usage : diversifie les emails pour éviter le
+	// spam sans avoir à connaître ici la taille de chaque pool.
 	let hookIndex = 0
 	let subjectIndex = 0
+	let focusIndex = 0
+	let balanceIndex = 0
+	let askIndex = 0
 	let angle = ''
 	let seededFor = ''
 	$: if (action.id !== seededFor) {
 		seededFor = action.id
 		hookIndex = Math.floor(Math.random() * action.hooks.length)
 		subjectIndex = Math.floor(Math.random() * action.subjects.length)
+		focusIndex = Math.floor(Math.random() * 997)
+		balanceIndex = Math.floor(Math.random() * 997)
+		askIndex = Math.floor(Math.random() * 997)
 		angle = action.angles[0].id
 	}
 
@@ -136,7 +145,9 @@
 			role: ft.role,
 			email: ft.email,
 			contactUrl: ft.contactUrl ?? null,
-			photo: ft.photo ?? null,
+			// Logo via le service d'icônes de DuckDuckGo (respectueux de la vie
+			// privée), avec repli sur les initiales si l'image ne charge pas.
+			photo: ft.photo ?? (ft.domain ? `https://icons.duckduckgo.com/ip3/${ft.domain}.ico` : null),
 			subtitle: ft.fonction ? (isEn ? ft.fonction.en : ft.fonction.fr) : '',
 			introKind: 'generic',
 			signatureLocality: 'France',
@@ -366,14 +377,22 @@
 		const L = isEn ? 'en' : 'fr'
 		const ang = action.angles.find((a) => a.id === angleId) ?? action.angles[0]
 		const hook = action.hooks[hookIndex] ?? action.hooks[0]
-		const paras = [hook[L], ang.focus[L]]
+		// Pools = valeur de base + variantes éventuelles ; on en tire une par
+		// modulo sur l'index seed (stable jusqu'au changement d'action).
+		const focusPool = [ang.focus, ...(ang.focusVariants ?? [])]
+		const focus = focusPool[focusIndex % focusPool.length]
+		const balancePool = [action.balance, ...(action.balances ?? [])]
+		const balance = balancePool[balanceIndex % balancePool.length]
+		const askPool = [action.ask, ...(action.asks ?? [])]
+		const ask = askPool[askIndex % askPool.length]
+		const paras = [hook[L], focus[L]]
 		if (v === 'long') {
 			if (ang.complementLong) paras.push(ang.complementLong[L])
 			if (action.poll) paras.push(action.poll[L])
 		}
 		if (personal.trim()) paras.push(personal.trim())
-		paras.push(action.balance[L])
-		paras.push(action.ask[L])
+		paras.push(balance[L])
+		paras.push(ask[L])
 		return paras
 	}
 

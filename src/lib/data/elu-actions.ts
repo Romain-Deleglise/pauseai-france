@@ -26,6 +26,9 @@ export interface FixedTarget {
 	email: string | null
 	contactUrl?: string | null
 	photo?: string | null
+	/** Domaine du média (ex. « lemonde.fr ») : sert à afficher le logo via le
+	 * service d'icônes de DuckDuckGo, avec repli sur les initiales. */
+	domain?: string
 	/** Fonction affichée sous le nom (ex. « Ministre chargé du Numérique »). */
 	fonction?: Bilingual
 	/** Formule d'appel sur mesure (ex. « Monsieur le Premier ministre, »). */
@@ -37,6 +40,9 @@ export interface ActionAngle {
 	label: Bilingual
 	/** Paragraphe « focus » du message pour cet angle. */
 	focus: Bilingual
+	/** Variantes du paragraphe « focus », tirées au hasard à la place de `focus`
+	 * quand elles existent (diversifie les messages pour éviter le spam). */
+	focusVariants?: Bilingual[]
 	/** Paragraphe ajouté en version détaillée (facultatif). */
 	complementLong?: Bilingual
 }
@@ -66,8 +72,12 @@ export interface EluAction {
 	poll?: Bilingual
 	/** Reconnaissance des bénéfices, juste avant l'appel (toujours présent). */
 	balance: Bilingual
+	/** Variantes de `balance`, tirées au hasard quand elles existent. */
+	balances?: Bilingual[]
 	/** L'appel à l'action (toujours présent). */
 	ask: Bilingual
+	/** Variantes de `ask`, tirées au hasard quand elles existent. */
+	asks?: Bilingual[]
 	/** Proposer le choix courte / détaillée ? */
 	hasDetailed: boolean
 }
@@ -267,6 +277,7 @@ const MEDIAS: EluAction = {
 		{
 			id: 'le-monde',
 			nom: 'Le Monde',
+			domain: 'lemonde.fr',
 			role: 'autre',
 			email: 'courrier-des-lecteurs@lemonde.fr',
 			fonction: COURRIER_LECTEURS
@@ -274,6 +285,7 @@ const MEDIAS: EluAction = {
 		{
 			id: 'le-figaro',
 			nom: 'Le Figaro',
+			domain: 'lefigaro.fr',
 			role: 'autre',
 			email: 'redaction@lefigaro.fr',
 			fonction: QUOTIDIEN
@@ -281,6 +293,7 @@ const MEDIAS: EluAction = {
 		{
 			id: 'le-parisien',
 			nom: 'Le Parisien',
+			domain: 'leparisien.fr',
 			role: 'autre',
 			email: 'redaction@leparisien.fr',
 			fonction: QUOTIDIEN
@@ -288,6 +301,7 @@ const MEDIAS: EluAction = {
 		{
 			id: 'liberation',
 			nom: 'Libération',
+			domain: 'liberation.fr',
 			role: 'autre',
 			email: null,
 			contactUrl: 'https://www.liberation.fr/contact/',
@@ -296,6 +310,7 @@ const MEDIAS: EluAction = {
 		{
 			id: 'les-echos',
 			nom: 'Les Échos',
+			domain: 'lesechos.fr',
 			role: 'autre',
 			email: 'redaction@lesechos.fr',
 			fonction: ECO
@@ -303,6 +318,7 @@ const MEDIAS: EluAction = {
 		{
 			id: 'la-tribune',
 			nom: 'La Tribune',
+			domain: 'latribune.fr',
 			role: 'autre',
 			email: 'latribunelibre@latribune.fr',
 			fonction: ECO
@@ -310,6 +326,7 @@ const MEDIAS: EluAction = {
 		{
 			id: 'la-croix',
 			nom: 'La Croix',
+			domain: 'la-croix.com',
 			role: 'autre',
 			email: null,
 			contactUrl: 'https://www.la-croix.com/contactez-nous',
@@ -318,6 +335,7 @@ const MEDIAS: EluAction = {
 		{
 			id: 'le-point',
 			nom: 'Le Point',
+			domain: 'lepoint.fr',
 			role: 'autre',
 			email: 'redaction@lepoint.fr',
 			fonction: HEBDO
@@ -325,6 +343,7 @@ const MEDIAS: EluAction = {
 		{
 			id: 'marianne',
 			nom: 'Marianne',
+			domain: 'marianne.net',
 			role: 'autre',
 			email: 'redaction@marianne.net',
 			fonction: HEBDO
@@ -332,6 +351,7 @@ const MEDIAS: EluAction = {
 		{
 			id: 'le-jdd',
 			nom: 'Le Journal du Dimanche',
+			domain: 'lejdd.fr',
 			role: 'autre',
 			email: 'redaction@lejdd.fr',
 			fonction: HEBDO
@@ -339,6 +359,7 @@ const MEDIAS: EluAction = {
 		{
 			id: 'courrier-international',
 			nom: 'Courrier international',
+			domain: 'courrierinternational.com',
 			role: 'autre',
 			email: 'redaction@courrierinternational.com',
 			fonction: HEBDO
@@ -346,6 +367,7 @@ const MEDIAS: EluAction = {
 		{
 			id: 'le-canard-enchaine',
 			nom: 'Le Canard enchaîné',
+			domain: 'lecanardenchaine.fr',
 			role: 'autre',
 			email: 'redaction@lecanardenchaine.fr',
 			fonction: HEBDO
@@ -353,6 +375,7 @@ const MEDIAS: EluAction = {
 		{
 			id: 'le-monde-diplomatique',
 			nom: 'Le Monde diplomatique',
+			domain: 'monde-diplomatique.fr',
 			role: 'autre',
 			email: 'secretariat@monde-diplomatique.fr',
 			fonction: HEBDO
@@ -360,6 +383,7 @@ const MEDIAS: EluAction = {
 		{
 			id: 'mediapart',
 			nom: 'Mediapart',
+			domain: 'mediapart.fr',
 			role: 'autre',
 			email: 'contact@mediapart.fr',
 			fonction: PURE_PLAYER
@@ -367,6 +391,7 @@ const MEDIAS: EluAction = {
 		{
 			id: 'slate',
 			nom: 'Slate',
+			domain: 'slate.fr',
 			role: 'autre',
 			email: 'infos@slate.fr',
 			fonction: PURE_PLAYER
@@ -374,6 +399,7 @@ const MEDIAS: EluAction = {
 		{
 			id: 'brut',
 			nom: 'Brut',
+			domain: 'brut.media',
 			role: 'autre',
 			email: 'hello@brut.media',
 			fonction: PURE_PLAYER
@@ -381,6 +407,7 @@ const MEDIAS: EluAction = {
 		{
 			id: 'afp',
 			nom: 'AFP',
+			domain: 'afp.com',
 			role: 'autre',
 			email: 'contact@afp.com',
 			fonction: AGENCE
@@ -388,6 +415,7 @@ const MEDIAS: EluAction = {
 		{
 			id: 'france-culture',
 			nom: 'France Culture',
+			domain: 'franceculture.fr',
 			role: 'autre',
 			email: 'auditeurfranceculture@radiofrance.com',
 			fonction: RADIO_TV
@@ -395,6 +423,7 @@ const MEDIAS: EluAction = {
 		{
 			id: 'rmc-bfm',
 			nom: 'RMC / BFMTV',
+			domain: 'bfmtv.com',
 			role: 'autre',
 			email: 'bfmtvetvous@bfmtv.fr',
 			fonction: RADIO_TV
@@ -402,6 +431,7 @@ const MEDIAS: EluAction = {
 		{
 			id: 'public-senat',
 			nom: 'Public Sénat',
+			domain: 'publicsenat.fr',
 			role: 'autre',
 			email: 'bonjour@publicsenat.fr',
 			fonction: RADIO_TV
@@ -409,6 +439,7 @@ const MEDIAS: EluAction = {
 		{
 			id: 'sciences-et-avenir',
 			nom: 'Sciences et Avenir',
+			domain: 'sciencesetavenir.fr',
 			role: 'autre',
 			email: 'redaction@sciencesetavenir.fr',
 			fonction: SCIENCE
@@ -416,6 +447,7 @@ const MEDIAS: EluAction = {
 		{
 			id: 'the-conversation',
 			nom: 'The Conversation France',
+			domain: 'theconversation.com',
 			role: 'autre',
 			email: 'editorial@theconversation.fr',
 			fonction: PURE_PLAYER
@@ -438,24 +470,60 @@ const MEDIAS: EluAction = {
 			en: 'The media cover what their readers want to read. In a few minutes, ask your newspaper to give more coverage to the risks of AI.'
 		}
 	},
+	// Objets tournants (un tiré au hasard par visiteur). Variés dans le ton
+	// (constat, question, suggestion) pour éviter des sujets d'email identiques.
 	subjects: [
 		{
-			fr: "Demande de couverture : le risque existentiel lié à l'IA",
-			en: 'Request for coverage: existential risk from AI'
+			fr: "Demande de couverture : les risques de l'intelligence artificielle",
+			en: 'Request for coverage: the risks of artificial intelligence'
 		},
 		{
 			fr: "Pour une couverture à la hauteur des enjeux de l'IA",
 			en: 'For coverage that matches what is at stake with AI'
 		},
 		{
-			fr: "Un lecteur vous demande de traiter davantage les risques de l'IA",
-			en: 'A reader asking you to cover the risks of AI more'
+			fr: 'Un lecteur aimerait vous lire davantage sur les risques de l’IA',
+			en: 'A reader would like to read you more on the risks of AI'
 		},
 		{
-			fr: "Mieux couvrir la sécurité de l'intelligence artificielle",
-			en: 'Covering the safety of artificial intelligence more fully'
+			fr: "Et si vous enquêtiez davantage sur l'intelligence artificielle ?",
+			en: 'What if you investigated artificial intelligence further?'
+		},
+		{
+			fr: "Suggestion de sujet : la sécurité de l'intelligence artificielle",
+			en: 'Story suggestion: the safety of artificial intelligence'
+		},
+		{
+			fr: "Un angle mort de l'actualité : les dangers de l'IA",
+			en: 'A blind spot in the news: the dangers of AI'
+		},
+		{
+			fr: "L'IA mérite plus de place dans vos pages",
+			en: 'AI deserves more space in your pages'
+		},
+		{
+			fr: "Couvrir l'IA autrement, au-delà de l'emballement",
+			en: 'Covering AI differently, beyond the hype'
+		},
+		{
+			fr: "Message d'un lecteur : parlons vraiment des risques de l'IA",
+			en: "A reader's message: let's really talk about the risks of AI"
+		},
+		{
+			fr: "L'intelligence artificielle, un sujet encore trop peu traité ?",
+			en: 'Artificial intelligence: a topic still too rarely covered?'
+		},
+		{
+			fr: "Votre regard sur les risques de l'IA nous manque",
+			en: 'Your perspective on the risks of AI is missing'
+		},
+		{
+			fr: "Sécurité de l'IA : un enjeu de société à ne pas manquer",
+			en: 'AI safety: a societal issue not to be missed'
 		}
 	],
+	// Accroches tournantes (une tirée au hasard). Chacune ouvre sous un angle
+	// « lecteur » différent : constat personnel, fait marquant, paradoxe…
 	hooks: [
 		{
 			fr: "En tant que lecteur attentif de votre journal, je suis frappé par l'écart entre l'ampleur des risques liés à l'intelligence artificielle et la place, encore modeste, qu'ils occupent dans le débat public. Ce qui m'alerte n'est pas de la science-fiction : ce sont les dirigeants mêmes des grands laboratoires d'IA qui reconnaissent publiquement que leurs systèmes pourraient, à terme, échapper à notre contrôle.",
@@ -468,8 +536,26 @@ const MEDIAS: EluAction = {
 		{
 			fr: "Un sujet me paraît largement sous-traité au regard de son importance. Des scientifiques parmi les plus respectés, comme les prix Turing Yoshua Bengio et Geoffrey Hinton, alertent sur le fait que personne ne sait aujourd'hui garantir le contrôle des systèmes d'IA les plus avancés. J'aimerais lire, dans votre titre, des enquêtes à la hauteur de cet enjeu.",
 			en: 'One topic seems to me largely under-covered given its importance. Some of the most respected scientists, such as Turing laureates Yoshua Bengio and Geoffrey Hinton, warn that no one today knows how to guarantee control of the most advanced AI systems. I would like to read, in your paper, investigations that match what is at stake.'
+		},
+		{
+			fr: "Je vous écris simplement comme un citoyen qui vous lit. J'ai le sentiment que l'intelligence artificielle est partout dans l'actualité pour ses prouesses, mais presque jamais pour les risques que ses propres concepteurs décrivent. Cet angle mort m'inquiète, et je crois que votre rédaction a les moyens de le combler.",
+			en: 'I am writing simply as a citizen who reads you. I feel that artificial intelligence is everywhere in the news for its feats, but almost never for the risks its own designers describe. This blind spot worries me, and I believe your newsroom has the means to fill it.'
+		},
+		{
+			fr: "Il est rare que les dirigeants d'une industrie réclament eux-mêmes d'être encadrés. C'est pourtant ce que font plusieurs responsables de l'IA, qui comparent les risques de leur technologie à ceux des pandémies ou du nucléaire. Ce paradoxe mériterait, je crois, toute l'attention de votre rédaction.",
+			en: 'It is rare for the leaders of an industry to call for their own regulation. Yet that is what several AI executives are doing, comparing the risks of their technology to those of pandemics or nuclear weapons. This paradox deserves, I believe, the full attention of your newsroom.'
+		},
+		{
+			fr: "Des sommes colossales sont investies pour créer des IA plus intelligentes que l'humain, parfois par les mêmes personnes qui en redoutent les conséquences. Comme lecteur, j'aimerais mieux comprendre cette course, et je me tourne vers vous parce que je fais confiance à votre travail d'enquête.",
+			en: 'Colossal sums are being invested to build AI more intelligent than humans, sometimes by the very people who fear its consequences. As a reader, I would like to understand this race better, and I turn to you because I trust your investigative work.'
+		},
+		{
+			fr: "Je ne suis ni chercheur ni militant, seulement un lecteur préoccupé. Plus je m'informe sur l'intelligence artificielle, plus je constate un décalage entre l'emballement médiatique et les alertes, très sérieuses, de scientifiques de premier plan. J'aimerais que votre journal aide à y voir clair.",
+			en: 'I am neither a researcher nor an activist, only a concerned reader. The more I learn about artificial intelligence, the more I notice a gap between the media excitement and the very serious warnings of leading scientists. I would like your paper to help make sense of it.'
 		}
 	],
+	// Sujet abordé : l'utilisateur en choisit UN. Chaque angle propose plusieurs
+	// variantes de paragraphe (focusVariants), tirées au hasard pour diversifier.
 	angles: [
 		{
 			id: 'couverture',
@@ -478,6 +564,16 @@ const MEDIAS: EluAction = {
 				fr: "Je ne vous demande pas d'épouser une opinion, mais d'enquêter et d'informer : donner la parole aux chercheurs qui alertent comme à ceux qui rassurent, expliquer ce qu'est la course à des systèmes toujours plus autonomes, et éclairer ce que font (ou ne font pas) les pouvoirs publics face à ces risques.",
 				en: 'I am not asking you to take a side, but to investigate and inform: to give a voice both to the researchers who warn and to those who reassure, to explain the race toward ever more autonomous systems, and to shed light on what public authorities are doing (or not doing) about these risks.'
 			},
+			focusVariants: [
+				{
+					fr: "Ce que j'attends d'un grand titre comme le vôtre, ce n'est pas un parti pris mais un travail d'enquête : confronter les promesses de l'IA aux mises en garde de ses propres créateurs, et suivre dans la durée un sujet trop souvent réduit à ses gadgets.",
+					en: 'What I expect from a major title like yours is not a stance but investigative work: weighing the promises of AI against the warnings of its own creators, and following over time a topic too often reduced to its gadgets.'
+				},
+				{
+					fr: "J'aimerais lire, sous votre plume, moins de fascination pour les prouesses techniques et davantage d'analyse : qui décide, qui finance, quels garde-fous existent, et lesquels manquent.",
+					en: 'I would like to read, from you, less fascination with technical feats and more analysis: who decides, who funds, which safeguards exist, and which are missing.'
+				}
+			],
 			complementLong: {
 				fr: "Une couverture régulière et rigoureuse aide vos lecteurs à se forger une opinion éclairée sur ce qui pourrait être la transformation la plus lourde de conséquences de ce siècle. C'est précisément le rôle d'un grand journal.",
 				en: 'Regular, rigorous coverage helps your readers form an informed opinion on what could be the most consequential transformation of this century. That is precisely the role of a great newspaper.'
@@ -490,6 +586,16 @@ const MEDIAS: EluAction = {
 				fr: "Ce qui me préoccupe le plus est le risque le plus extrême : en construisant des machines plus intelligentes que nous sans savoir les maîtriser, nous prenons un pari dont l'humanité pourrait ne jamais se relever. Ce n'est plus une crainte marginale, mais une inquiétude partagée au plus haut niveau de la recherche, et vos lecteurs gagneraient à en mesurer la portée.",
 				en: 'What worries me most is the most extreme risk: by building machines more intelligent than us without knowing how to control them, we are taking a gamble humanity might never recover from. This is no longer a fringe fear but a concern shared at the highest levels of research, and your readers would benefit from grasping its scale.'
 			},
+			focusVariants: [
+				{
+					fr: "Le scénario qui m'inquiète le plus n'est pas un film : c'est l'hypothèse, prise au sérieux par des chercheurs de premier plan, que nous perdions le contrôle de systèmes plus intelligents que nous. J'aimerais que ce risque soit expliqué à vos lecteurs, calmement, faits à l'appui.",
+					en: 'The scenario that worries me most is not a movie: it is the hypothesis, taken seriously by leading researchers, that we might lose control of systems more intelligent than us. I would like this risk explained to your readers, calmly, with the facts.'
+				},
+				{
+					fr: "On parle beaucoup de ce que l'IA peut faire, rarement de ce qui se passerait si nous ne parvenions plus à la diriger. Ce risque extrême, longtemps cantonné aux cercles spécialisés, est aujourd'hui débattu au plus haut niveau : il mérite d'être exposé au grand public.",
+					en: 'We hear a lot about what AI can do, rarely about what would happen if we could no longer steer it. This extreme risk, long confined to specialist circles, is now debated at the highest level: it deserves to be laid out for the general public.'
+				}
+			],
 			complementLong: {
 				fr: "Ce risque n'efface pas les autres, plus immédiats : désinformation, surveillance, emploi, armes autonomes. Tous méritent une couverture attentive.",
 				en: 'This risk does not erase the others, more immediate ones: disinformation, surveillance, jobs, autonomous weapons. They all deserve careful coverage.'
@@ -502,9 +608,41 @@ const MEDIAS: EluAction = {
 				fr: "Un angle vous concerne directement : ces systèmes fragilisent déjà le débat démocratique. Deepfakes et désinformation de masse brouillent la frontière entre le vrai et le faux, au moment même où la confiance dans l'information est fragile. En tant que média, vous êtes en première ligne pour l'expliquer.",
 				en: 'One angle concerns you directly: these systems are already straining democratic debate. Deepfakes and mass disinformation blur the line between true and false, at the very moment when trust in information is fragile. As a media outlet, you are on the front line to explain it.'
 			},
+			focusVariants: [
+				{
+					fr: "Votre métier est directement visé : quand n'importe quelle image, voix ou vidéo peut être fabriquée de toutes pièces, c'est la confiance dans l'information elle-même qui vacille. J'aimerais que vous racontiez à vos lecteurs comment l'IA transforme, déjà, la fabrique du vrai et du faux.",
+					en: 'Your profession is directly in the firing line: when any image, voice or video can be fabricated from scratch, it is trust in information itself that wavers. I would like you to tell your readers how AI is already reshaping the making of true and false.'
+				},
+				{
+					fr: "Deepfakes, faux témoignages, propagande automatisée : l'IA donne des outils inédits à ceux qui veulent manipuler l'opinion. Peu de sujets sont aussi vitaux pour une démocratie, et peu de rédactions sont aussi bien placées que la vôtre pour l'expliquer.",
+					en: 'Deepfakes, fake testimonies, automated propaganda: AI hands unprecedented tools to those who want to manipulate opinion. Few topics are as vital for a democracy, and few newsrooms are as well placed as yours to explain it.'
+				}
+			],
 			complementLong: {
 				fr: 'Et derrière ces effets immédiats demeure une question de fond : nous nous apprêtons à créer des intelligences supérieures à la nôtre sans garantie de pouvoir les garder sous contrôle.',
 				en: 'And behind these immediate effects lies a deeper question: we are about to create intelligences greater than our own with no guarantee of keeping them under control.'
+			}
+		},
+		{
+			id: 'emploi',
+			label: { fr: 'Emploi et société', en: 'Jobs and society' },
+			focus: {
+				fr: "Un aspect touche concrètement vos lecteurs : l'automatisation accélérée de métiers entiers, y compris qualifiés. Derrière les promesses de productivité se posent des questions de salaires, de reconversion et d'inégalités que le débat public effleure à peine. J'aimerais que votre rédaction s'en empare.",
+				en: 'One aspect concretely affects your readers: the accelerating automation of entire professions, including skilled ones. Behind the promises of productivity lie questions of wages, retraining and inequality that public debate barely touches. I would like your newsroom to take them on.'
+			},
+			focusVariants: [
+				{
+					fr: "On nous promet que l'IA va « augmenter » le travail ; on parle beaucoup moins de celles et ceux dont le métier pourrait disparaître, ni de qui décidera comment répartir ces gains. Ce sont pourtant des questions de société majeures, et vos lecteurs sont en première ligne.",
+					en: 'We are promised that AI will "augment" work; far less is said about those whose jobs could disappear, or about who will decide how to share the gains. Yet these are major societal questions, and your readers are on the front line.'
+				},
+				{
+					fr: "Au-delà de la prouesse technique, l'IA soulève des choix de société : quels emplois, quelles protections, quelle place pour l'humain. J'aimerais lire dans votre titre une couverture qui prenne ces questions au sérieux, sans catastrophisme ni angélisme.",
+					en: 'Beyond the technical feat, AI raises societal choices: which jobs, which protections, what place for humans. I would like to read in your title coverage that takes these questions seriously, without doom-mongering or naivety.'
+				}
+			],
+			complementLong: {
+				fr: "Et derrière ces bouleversements se pose une question plus vaste : nous déployons ces systèmes à grande échelle avant même d'en comprendre les effets. Prendre le temps de les mesurer, c'est aussi le rôle de la presse.",
+				en: 'And behind these upheavals lies a broader question: we are deploying these systems at scale before we even understand their effects. Taking the time to measure them is also the role of the press.'
 			}
 		}
 	],
@@ -516,10 +654,30 @@ const MEDIAS: EluAction = {
 		fr: "Je mesure l'exigence et l'indépendance de votre travail, et ma démarche n'est pas une critique. C'est la demande d'un lecteur qui souhaite voir ce sujet, décisif pour l'avenir, traité à sa juste mesure.",
 		en: 'I recognise the rigour and independence of your work, and this is not a criticism. It is the request of a reader who wishes to see this topic, decisive for the future, covered as fully as it deserves.'
 	},
+	balances: [
+		{
+			fr: "Je sais que votre rédaction traite déjà, parfois, ces questions, et je ne remets pas en cause votre sérieux. Je souhaite simplement, comme lecteur, que ce sujet gagne la place régulière qu'il mérite.",
+			en: 'I know your newsroom already covers these questions at times, and I do not question your rigour. I simply wish, as a reader, that this topic gained the regular place it deserves.'
+		},
+		{
+			fr: "Je ne cherche pas à vous dicter une ligne : votre indépendance fait votre valeur. Je vous adresse seulement le souhait d'un lecteur, convaincu que ce sujet compte pour l'avenir de tous.",
+			en: 'I am not trying to dictate an editorial line: your independence is your worth. I am only sharing a reader’s wish, convinced this topic matters for everyone’s future.'
+		}
+	],
 	ask: {
 		fr: "C'est pourquoi je vous demande d'accorder à ce sujet une couverture plus régulière et approfondie : enquêtes, entretiens avec les chercheurs concernés, décryptage des décisions politiques en cours. L'association Pause IA (pauseia.fr) se tient à votre disposition pour vous orienter vers des sources et des spécialistes francophones.",
 		en: 'That is why I ask you to give this topic more regular and in-depth coverage: investigations, interviews with the researchers involved, analysis of the political decisions under way. The Pause AI association (pauseia.fr) would be glad to point you toward French-speaking sources and experts.'
 	},
+	asks: [
+		{
+			fr: "Je vous invite donc à donner plus de place à ce sujet : un article de fond, une enquête, un entretien avec les chercheurs qui alertent. Si cela peut aider, l'association Pause IA (pauseia.fr) peut vous orienter vers des spécialistes francophones.",
+			en: 'I therefore invite you to give this topic more space: an in-depth article, an investigation, an interview with the researchers who are sounding the alarm. If it helps, the Pause AI association (pauseia.fr) can point you toward French-speaking experts.'
+		},
+		{
+			fr: "Ma demande est simple : que ce sujet trouve, dans vos pages, la place régulière qu'appelle son importance. L'équipe de Pause IA (pauseia.fr) est à votre disposition pour partager sources, données et contacts d'experts.",
+			en: 'My request is simple: that this topic finds, in your pages, the regular place its importance calls for. The Pause AI team (pauseia.fr) is available to share sources, data and expert contacts.'
+		}
+	],
 	hasDetailed: true
 }
 
