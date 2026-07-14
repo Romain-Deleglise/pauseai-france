@@ -233,11 +233,13 @@
 		</div>
 	</section>
 
-	<section id="revue" aria-labelledby="revue-heading">
-		<h2 id="revue-heading">{t.emploi_ia.press_section_title}</h2>
-		<p>{t.emploi_ia.press_section_text}</p>
-		<ArticleShowcase articles={articleShowcaseItems} {lang} />
-	</section>
+	{#if articleShowcaseItems.length}
+		<section id="revue" aria-labelledby="revue-heading">
+			<h2 id="revue-heading">{t.emploi_ia.press_section_title}</h2>
+			<p>{t.emploi_ia.press_section_text}</p>
+			<ArticleShowcase articles={articleShowcaseItems} {lang} />
+		</section>
+	{/if}
 </article>
 
 <style>

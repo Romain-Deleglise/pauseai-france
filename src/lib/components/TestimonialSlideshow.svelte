@@ -2,26 +2,43 @@
 	import CarouselNavigation from '$components/CarouselNavigation.svelte'
 	import type { Lang } from '$lib/i18n'
 	import { getT } from '$lib/i18n'
+	import { temoignagesEmploi, type TemoignageEmploi } from '$lib/data/temoignages-emploi'
 
 	export let lang: Lang = 'fr'
 
 	$: t = getT(lang)
 
 	// Diaporama des témoignages illustrés (préparés pour les réseaux sociaux).
-	// Pour ajouter un témoignage : déposez simplement le fichier image dans
-	// src/assets/emploi-ia/temoignages/ — il est repris automatiquement ici,
-	// trié par nom de fichier (préfixez par 01-, 02-, … pour ordonner).
+	// Pour ajouter un témoignage : déposez le fichier image dans
+	// src/assets/emploi-ia/temoignages/ (repris automatiquement, trié par nom),
+	// et ajoutez ses métadonnées dans src/lib/data/temoignages-emploi.ts pour
+	// que la citation soit accessible (lecteurs d'écran) et indexable (SEO).
 	const modules = import.meta.glob<string>(
 		'../../assets/emploi-ia/temoignages/*.{svg,png,jpg,jpeg,webp,avif}',
 		{ eager: true, import: 'default' }
 	)
 
-	const slides: string[] = Object.keys(modules)
+	interface Slide {
+		url: string
+		meta?: TemoignageEmploi
+	}
+
+	const metaByFile = new Map(temoignagesEmploi.map((item) => [item.file, item]))
+
+	const slides: Slide[] = Object.keys(modules)
 		.sort()
-		.map((path) => modules[path])
+		.map((path) => ({
+			url: modules[path],
+			meta: metaByFile.get(path.split('/').pop() ?? '')
+		}))
 
 	let current = 0
 	let zoomed = false
+
+	$: currentSlide = slides[current]
+	$: currentAlt = currentSlide?.meta
+		? `« ${currentSlide.meta.quote} » — ${currentSlide.meta.name}, ${currentSlide.meta.role}`
+		: `${t.emploi_ia.slideshow_alt} ${current + 1}`
 
 	const goTo = (index: number) => {
 		if (!slides.length) return
@@ -74,14 +91,17 @@
 				on:click={openZoom}
 				title={t.emploi_ia.slideshow_zoom}
 			>
-				<img
-					src={slides[current]}
-					alt={`${t.emploi_ia.slideshow_alt} ${current + 1}`}
-					decoding="async"
-				/>
+				<img src={currentSlide.url} alt={currentAlt} decoding="async" />
 				<span class="zoom-hint" aria-hidden="true">⤢ {t.emploi_ia.slideshow_zoom}</span>
 			</button>
-			<figcaption class="counter">{current + 1} / {slides.length}</figcaption>
+			<figcaption class="slide-caption">
+				{#if currentSlide.meta}
+					<span class="attribution">
+						{currentSlide.meta.name}, {currentSlide.meta.age} ans — {currentSlide.meta.role}
+					</span>
+				{/if}
+				<span class="counter">{current + 1} / {slides.length}</span>
+			</figcaption>
 		</figure>
 
 		<CarouselNavigation
@@ -136,12 +156,7 @@
 		{/if}
 
 		<!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
-		<img
-			class="lightbox-img"
-			src={slides[current]}
-			alt={`${t.emploi_ia.slideshow_alt} ${current + 1}`}
-			on:click|stopPropagation
-		/>
+		<img class="lightbox-img" src={currentSlide.url} alt={currentAlt} on:click|stopPropagation />
 
 		{#if slides.length > 1}
 			<button
@@ -213,6 +228,20 @@
 	.zoom-trigger:hover .zoom-hint,
 	.zoom-trigger:focus-visible .zoom-hint {
 		opacity: 1;
+	}
+
+	.slide-caption {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.25rem;
+		text-align: center;
+	}
+
+	.attribution {
+		font-size: 0.95rem;
+		font-weight: 600;
+		color: var(--brand-subtle, #c96900);
 	}
 
 	.counter {

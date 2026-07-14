@@ -1,6 +1,5 @@
 import { Client } from '@notionhq/client'
 import type { PageObjectResponse } from '@notionhq/client'
-import { error as svelteKitError } from '@sveltejs/kit'
 import {
 	getCheckbox,
 	getRichTextContent,
@@ -45,10 +44,15 @@ export async function load() {
 			articleShowcaseItems: articleShowcaseItems
 		}
 	} catch (err) {
-		console.error('Error loading emploi-ia page data:', {
+		// Dégradation propre : si Notion est indisponible, on n'affiche pas la
+		// revue de presse mais le reste de la page reste accessible (au lieu de
+		// renvoyer une erreur 500 sur toute la page).
+		console.error('Error loading emploi-ia press review from Notion:', {
 			error: err instanceof Error ? err.message : String(err),
 			timestamp: new Date().toISOString()
 		})
-		throw svelteKitError(500, 'Unable to load page data. Please try again later.')
+		return {
+			articleShowcaseItems: []
+		}
 	}
 }
