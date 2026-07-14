@@ -587,6 +587,8 @@ export default {
 		slideshow_prev: 'Témoignage précédent',
 		slideshow_next: 'Témoignage suivant',
 		slideshow_item: 'un autre témoignage',
-		slideshow_alt: 'Témoignage illustré'
+		slideshow_alt: 'Témoignage illustré',
+		slideshow_zoom: 'Agrandir',
+		slideshow_close: 'Fermer'
 	}
 }

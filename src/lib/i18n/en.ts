@@ -582,6 +582,8 @@ export default {
 		slideshow_prev: 'Previous testimonial',
 		slideshow_next: 'Next testimonial',
 		slideshow_item: 'another testimonial',
-		slideshow_alt: 'Illustrated testimonial'
+		slideshow_alt: 'Illustrated testimonial',
+		slideshow_zoom: 'Enlarge',
+		slideshow_close: 'Close'
 	}
 }
