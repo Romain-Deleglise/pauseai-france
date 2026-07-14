@@ -76,7 +76,7 @@ export default {
 		meta_desc: "Don't let AI destroy us, let's act now.",
 		hero_title: 'To keep AI under control,',
 		hero_highlight: "let's act now",
-		hero_cta: 'Join us',
+		hero_cta: 'Take action',
 		campaigns_title: 'Our active campaigns',
 		campaigns_subtitle: 'Speak up, write, testify: every action counts.',
 		campaigns_cta: 'Take part',
