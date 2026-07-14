@@ -359,16 +359,50 @@
 		return paras
 	}
 
-	// L'aperçu (#email-body) est déjà personnalisé : on en prend le texte brut.
-	function buildBody(): string {
-		const el = document.getElementById('email-body')
-		return el ? el.innerText : ''
+	// Bloc de signature (mêmes valeurs que l'aperçu, mais en texte brut).
+	function signatureBlock(r: Recipient): string {
+		const name = userName.trim() || (isEn ? '[Your full name]' : '[Votre nom complet]')
+		const ville = userVille.trim() || r.signatureLocality
+		return `${isEn ? 'Yours sincerely,' : 'Cordialement,'}\n${name}\n${ville}`
+	}
+
+	// Corps de l'email, reconstruit à partir des MÊMES fonctions que l'aperçu
+	// (#email-body). On ne lit plus le DOM : le texte est donc fiable même si
+	// l'aperçu est scrollé/tronqué, et l'envoi ne dépend plus d'un élément d'UI.
+	function buildBodyText(r: Recipient): string {
+		return [
+			salutation(r),
+			introLine(r, userName),
+			...buildParagraphs(angle, version, personalSentence),
+			signatureBlock(r)
+		].join('\n\n')
 	}
 
 	function mailtoHref(r: Recipient): string {
-		const params = new URLSearchParams({ subject, bcc: BCC, body: buildBody() })
+		const params = new URLSearchParams({ subject, bcc: BCC, body: buildBodyText(r) })
 		// URLSearchParams encode les espaces en "+", à reconvertir en %20 pour mailto.
 		return `mailto:${r.email ?? ''}?${params.toString().replace(/\+/g, '%20')}`
+	}
+
+	// Liens de composition des webmails (fallback quand le client mailto: n'est pas
+	// configuré). Chacun accepte to/subject/bcc/body en query string.
+	function webmailHref(service: 'gmail' | 'outlook' | 'yahoo', r: Recipient): string {
+		const to = encodeURIComponent(r.email ?? '')
+		const su = encodeURIComponent(subject)
+		const bcc = encodeURIComponent(BCC)
+		const body = encodeURIComponent(buildBodyText(r))
+		if (service === 'gmail')
+			return `https://mail.google.com/mail/?view=cm&fs=1&to=${to}&su=${su}&bcc=${bcc}&body=${body}`
+		if (service === 'outlook')
+			return `https://outlook.live.com/mail/0/deeplink/compose?to=${to}&subject=${su}&bcc=${bcc}&body=${body}`
+		return `https://compose.mail.yahoo.com/?to=${to}&subject=${su}&bcc=${bcc}&body=${body}`
+	}
+
+	function openWebmail(service: 'gmail' | 'outlook' | 'yahoo') {
+		if (!selectedRecipient) return
+		markSent(selectedRecipient.id)
+		logIntent(selectedRecipient)
+		window.open(webmailHref(service, selectedRecipient), '_blank', 'noopener')
 	}
 
 	// ── Infos utilisateur. Nom, ville et phrase ne quittent jamais l'appareil
@@ -515,9 +549,8 @@
 
 	let copied = false
 	function copyEmail() {
-		const el = document.getElementById('email-body')
-		if (!el) return
-		void navigator.clipboard.writeText(el.innerText).then(() => {
+		if (!selectedRecipient) return
+		void navigator.clipboard.writeText(buildBodyText(selectedRecipient)).then(() => {
 			copied = true
 			setTimeout(() => {
 				copied = false
@@ -985,6 +1018,24 @@
 			</div>
 
 			{#if selectedRecipient.email}
+				<details class="webmail-fallback">
+					<summary>
+						{isEn
+							? 'Nothing opened? Open in a webmail instead'
+							: "Rien ne s'est ouvert ? Ouvrir dans un webmail"}
+					</summary>
+					<div class="webmail-links">
+						<button class="webmail-btn" on:click={() => openWebmail('gmail')}>Gmail</button>
+						<button class="webmail-btn" on:click={() => openWebmail('outlook')}>Outlook</button>
+						<button class="webmail-btn" on:click={() => openWebmail('yahoo')}>Yahoo</button>
+					</div>
+					<p class="webmail-note">
+						{isEn
+							? 'Opens a pre-filled draft in your browser. The blind copy (BCC) is included.'
+							: 'Ouvre un brouillon pré-rempli dans votre navigateur. La copie cachée (CCI) est incluse.'}
+					</p>
+				</details>
+
 				<p class="deliverability">
 					{isEn
 						? 'Send from your personal mailbox: an email from a real constituent carries far more weight than a form. Check the recipient before sending.'
@@ -1655,6 +1706,46 @@
 		gap: 0.75rem;
 		flex-wrap: wrap;
 		margin-top: 1.25rem;
+	}
+
+	/* Fallback webmail (client mailto: non configuré) */
+	.webmail-fallback {
+		margin-top: 1rem;
+		font-size: 0.85rem;
+	}
+
+	.webmail-fallback summary {
+		cursor: pointer;
+		color: var(--text-2);
+	}
+
+	.webmail-links {
+		display: flex;
+		gap: 0.5rem;
+		flex-wrap: wrap;
+		margin-top: 0.75rem;
+	}
+
+	.webmail-btn {
+		padding: 0.5rem 1rem;
+		border: 1px solid var(--border);
+		border-radius: 8px;
+		background: var(--bg-card);
+		color: var(--text);
+		font-size: 0.88rem;
+		font-weight: 600;
+		cursor: pointer;
+	}
+
+	.webmail-btn:hover {
+		border-color: var(--brand);
+	}
+
+	.webmail-note {
+		margin: 0.6rem 0 0;
+		font-size: 0.78rem;
+		color: var(--text-secondary);
+		line-height: 1.5;
 	}
 
 	.deliverability {
