@@ -26,6 +26,7 @@
 	// Les campagnes ponctuelles (Genève, gouvernement…) gardent leur propre page :
 	// on n'affiche les onglets que pour ces deux actions « primaires ».
 	$: isPrimaryAction = action.id === 'default' || action.id === 'medias'
+	$: isPress = action.id === 'medias'
 	function selectTool(id: 'default' | 'medias') {
 		if (action.id === id) return
 		actionId = id
@@ -604,30 +605,44 @@
 <article>
 	{#if step === 1}
 		<!-- ════════ Étape 1 : choisir le destinataire ════════ -->
-		{#if isPrimaryAction}
-			<nav class="tool-tabs" aria-label={isEn ? 'Choose a tool' : 'Choisir un outil'}>
-				<button
-					class:active={action.id === 'default'}
-					aria-pressed={action.id === 'default'}
-					on:click={() => selectTool('default')}
-				>
-					{isEn ? '🏛️ My representatives' : '🏛️ Mes élus'}
-				</button>
-				<button
-					class:active={action.id === 'medias'}
-					aria-pressed={action.id === 'medias'}
-					on:click={() => selectTool('medias')}
-				>
-					{isEn ? '📰 The press' : '📰 La presse'}
-				</button>
-			</nav>
-		{/if}
-		<header class="hero-band" class:has-tabs={isPrimaryAction}>
+		<header class="hero-band">
 			<div class="hero-inner">
 				<h1>{isEn ? action.hero.title.en : action.hero.title.fr}</h1>
 				<p class="hero-sub">{isEn ? action.hero.subtitle.en : action.hero.subtitle.fr}</p>
 			</div>
 		</header>
+
+		{#if isPrimaryAction}
+			<div class="tool-switch">
+				<span class="tool-switch-label"
+					>{isEn ? 'What do you want to do?' : 'Que voulez-vous faire ?'}</span
+				>
+				<div
+					class="tool-tabs"
+					role="tablist"
+					aria-label={isEn ? 'Choose a tool' : 'Choisir un outil'}
+				>
+					<button
+						role="tab"
+						class:active={action.id === 'default'}
+						aria-selected={action.id === 'default'}
+						on:click={() => selectTool('default')}
+					>
+						<span class="tab-emoji" aria-hidden="true">🏛️</span>
+						{isEn ? 'Write to my representatives' : 'Écrire à mes élus'}
+					</button>
+					<button
+						role="tab"
+						class:active={action.id === 'medias'}
+						aria-selected={action.id === 'medias'}
+						on:click={() => selectTool('medias')}
+					>
+						<span class="tab-emoji" aria-hidden="true">📰</span>
+						{isEn ? 'Write to the press' : 'Écrire à la presse'}
+					</button>
+				</div>
+			</div>
+		{/if}
 
 		<section class="card">
 			<h2>
@@ -855,7 +870,25 @@
 		<!-- Pourquoi c'est important -->
 		<section class="card prose">
 			<h2>{isEn ? 'Why it matters' : "Pourquoi c'est important"}</h2>
-			{#if isEn}
+			{#if isPress}
+				{#if isEn}
+					<p>
+						Newsrooms cover, first and foremost, what interests their readers. A sincere message to
+						the readers' desk or the newsroom signals that a topic matters to the public, and it
+						weighs on editorial choices. Unlike a comment on social media, it lands in an inbox the
+						team reads. A handful of reader messages is sometimes enough to inspire an article or an
+						investigation.
+					</p>
+				{:else}
+					<p>
+						Les rédactions couvrent d'abord ce qui intéresse leurs lecteurs. Un message sincère au
+						courrier des lecteurs ou à la rédaction signale qu'un sujet compte pour le public, et il
+						pèse sur les choix éditoriaux. Contrairement à un commentaire sur les réseaux, il arrive
+						dans une boite lue par l'équipe. Une poignée de messages de lecteurs suffit parfois à
+						inspirer un article ou une enquête.
+					</p>
+				{/if}
+			{:else if isEn}
 				<p>
 					MPs and senators take their constituents' messages into account. A personal email (even a
 					short, sincere one) lands in a human inbox, gets read, and signals that a voter cares
@@ -877,18 +910,65 @@
 		<!-- FAQ -->
 		<section class="card faq">
 			<h2>{isEn ? 'FAQ' : 'Questions fréquentes'}</h2>
-			<Accordion id="faq-difference" noHash>
-				<span slot="head">
-					{isEn
-						? 'Does contacting a representative really make a difference?'
-						: 'Est-ce que contacter un élu change vraiment quelque chose ?'}
-				</span>
-				<p slot="details">
-					{isEn
-						? 'Yes! Representatives track how many constituents raise an issue, and it shapes what they prioritise. A few sincere emails can be enough to get a topic onto a committee’s agenda.'
-						: "Oui ! Les élus comptabilisent le nombre d'électeurs qui soulèvent un sujet, et cela oriente leurs priorités. Quelques emails sincères peuvent suffire à inscrire un sujet à l'ordre du jour d'une commission."}
-				</p>
-			</Accordion>
+			{#if isPress}
+				<Accordion id="faq-p-difference" noHash>
+					<span slot="head">
+						{isEn
+							? 'Does writing to a newspaper really change anything?'
+							: 'Est-ce qu’écrire à un journal change vraiment quelque chose ?'}
+					</span>
+					<p slot="details">
+						{isEn
+							? 'Yes. Newsrooms pay attention to what their readers ask for: the readers’ desk and reader feedback help shape which topics get covered. A few sincere messages can be enough to inspire an article or nudge an editor to dig further.'
+							: 'Oui. Les rédactions sont attentives à ce que leurs lecteurs réclament : le courrier des lecteurs et les retours orientent les sujets traités. Quelques messages sincères peuvent suffire à inspirer un article ou à pousser une rédaction à creuser le sujet.'}
+					</p>
+				</Accordion>
+				<Accordion id="faq-p-who" noHash>
+					<span slot="head">
+						{isEn ? 'Who receives my message?' : 'À qui arrive mon message ?'}
+					</span>
+					<p slot="details">
+						{isEn
+							? 'A general newsroom or readers’ desk address (not a particular journalist). It is the right channel for a reader asking for more coverage: your message reaches the team, not one reporter’s personal inbox.'
+							: "Une adresse générale de rédaction ou de courrier des lecteurs (pas un journaliste en particulier). C'est le bon canal pour un lecteur qui demande plus de couverture : votre message arrive à l'équipe, pas dans la boite personnelle d'un reporter."}
+					</p>
+				</Accordion>
+				<Accordion id="faq-p-reply" noHash>
+					<span slot="head">
+						{isEn
+							? 'What if the paper does not reply or publish it?'
+							: 'Et si le journal ne répond pas ou ne le publie pas ?'}
+					</span>
+					<p slot="details">
+						{isEn
+							? 'That’s normal, and not a failure. The goal is to signal reader interest: even unpublished, your message counts among the feedback a newsroom weighs. Writing to the outlet you actually read, with a sincere personal line, is what makes it land.'
+							: "C'est normal, et ce n'est pas un échec. Le but est de signaler l'intérêt des lecteurs : même non publié, votre message compte parmi les retours qu'une rédaction prend en compte. Écrire au titre que vous lisez vraiment, avec une phrase personnelle sincère, est ce qui fait la différence."}
+					</p>
+				</Accordion>
+			{:else}
+				<Accordion id="faq-difference" noHash>
+					<span slot="head">
+						{isEn
+							? 'Does contacting a representative really make a difference?'
+							: 'Est-ce que contacter un élu change vraiment quelque chose ?'}
+					</span>
+					<p slot="details">
+						{isEn
+							? 'Yes! Representatives track how many constituents raise an issue, and it shapes what they prioritise. A few sincere emails can be enough to get a topic onto a committee’s agenda.'
+							: "Oui ! Les élus comptabilisent le nombre d'électeurs qui soulèvent un sujet, et cela oriente leurs priorités. Quelques emails sincères peuvent suffire à inscrire un sujet à l'ordre du jour d'une commission."}
+					</p>
+				</Accordion>
+				<Accordion id="faq-relance" noHash>
+					<span slot="head">
+						{isEn ? "What if I don't get a reply?" : "Et si je n'ai pas de réponse ?"}
+					</span>
+					<p slot="details">
+						{isEn
+							? "That's common, and not a reason to give up. Follow up politely after about three weeks: a reminder shows the topic matters to you and often prompts a reply. You can also ask for a short meeting at their local office."
+							: "C'est fréquent, et ce n'est pas une raison d'abandonner. Relancez poliment après environ trois semaines : une relance montre que le sujet vous tient à cœur et débloque souvent une réponse. Vous pouvez aussi demander un rendez-vous à leur permanence."}
+					</p>
+				</Accordion>
+			{/if}
 			<Accordion id="faq-duree" noHash>
 				<span slot="head">{isEn ? 'How long does it take?' : 'Combien de temps ça prend ?'}</span>
 				<p slot="details">
@@ -905,16 +985,6 @@
 					{isEn
 						? 'Your name and town stay on your device and are never sent to a server: they only fill the draft. The email leaves from your own mailbox. A blind copy (BCC) reaches us at campagne@pauseia.fr to count the campaign; you can remove it before sending if you prefer. Your email address is only sent to us if you tick the newsletter box yourself, to subscribe you.'
 						: "Votre nom et votre ville restent sur votre appareil et ne sont jamais envoyés à un serveur : ils servent seulement à remplir le brouillon. L'email part de votre propre messagerie. Une copie cachée (CCI) nous parvient à campagne@pauseia.fr pour mesurer la campagne ; vous pouvez la retirer avant l'envoi si vous le préférez. Votre adresse email ne nous est transmise que si vous cochez vous-même l'inscription à la newsletter, pour vous y abonner."}
-				</p>
-			</Accordion>
-			<Accordion id="faq-relance" noHash>
-				<span slot="head">
-					{isEn ? "What if I don't get a reply?" : "Et si je n'ai pas de réponse ?"}
-				</span>
-				<p slot="details">
-					{isEn
-						? "That's common, and not a reason to give up. Follow up politely after about three weeks: a reminder shows the topic matters to you and often prompts a reply. You can also ask for a short meeting at their local office."
-						: "C'est fréquent, et ce n'est pas une raison d'abandonner. Relancez poliment après environ trois semaines : une relance montre que le sujet vous tient à cœur et débloque souvent une réponse. Vous pouvez aussi demander un rendez-vous à leur permanence."}
 				</p>
 			</Accordion>
 		</section>
@@ -1179,37 +1249,75 @@
 		padding: 0 1.25rem 5rem;
 	}
 
-	/* Onglets outils (élus / presse) */
-	.tool-tabs {
+	/* Sélecteur d'outil (élus / presse) : un vrai commutateur, sous le hero */
+	.tool-switch {
+		max-inline-size: 40rem;
+		margin: -1.25rem auto 2.25rem;
 		display: flex;
-		gap: 0.5rem;
-		justify-content: center;
-		margin-bottom: 1.5rem;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.6rem;
+	}
+
+	.tool-switch-label {
+		font-size: 0.75rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		color: var(--text-secondary);
+	}
+
+	.tool-tabs {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 0.4rem;
+		inline-size: 100%;
+		padding: 0.35rem;
+		border: 1px solid var(--border);
+		border-radius: 14px;
+		background: var(--bg-card);
 	}
 
 	.tool-tabs button {
-		padding: 0.6rem 1.4rem;
-		border: 1.5px solid var(--border);
-		border-radius: 2rem;
-		background: var(--bg-card);
-		font-size: 0.95rem;
-		font-weight: 600;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5rem;
+		padding: 0.85rem 1rem;
+		border: none;
+		border-radius: 10px;
+		background: transparent;
+		font-family: inherit;
+		font-size: 1rem;
+		font-weight: 700;
 		color: var(--text-2);
 		cursor: pointer;
 		transition:
 			background-color 0.15s ease,
 			color 0.15s ease,
-			border-color 0.15s ease;
+			box-shadow 0.15s ease;
 	}
 
 	.tool-tabs button.active {
 		background: var(--brand);
-		border-color: var(--brand);
 		color: #1a1a1a;
+		box-shadow: 0 2px 8px rgba(255, 148, 22, 0.35);
 	}
 
 	.tool-tabs button:not(.active):hover {
-		border-color: var(--brand);
+		background: var(--brand-light);
+		color: var(--brand-subtle);
+	}
+
+	.tab-emoji {
+		font-size: 1.1rem;
+	}
+
+	@media (max-width: 520px) {
+		.tool-tabs button {
+			font-size: 0.9rem;
+			padding: 0.75rem 0.5rem;
+		}
 	}
 
 	/* Hero coloré pleine largeur (full-bleed : déborde de la largeur de l'article) */
@@ -1221,11 +1329,6 @@
 		padding: 3.5rem 1.25rem 3.25rem;
 		background: var(--brand);
 		text-align: center;
-	}
-
-	/* Quand les onglets sont présents, le hero suit les onglets (pas de remontée). */
-	.hero-band.has-tabs {
-		margin-top: 0;
 	}
 
 	.hero-inner {
