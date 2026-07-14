@@ -261,7 +261,6 @@ const ECO: Bilingual = { fr: 'Quotidien économique', en: 'Business daily' }
 const HEBDO: Bilingual = { fr: 'Hebdomadaire', en: 'Weekly' }
 const PURE_PLAYER: Bilingual = { fr: 'Média en ligne', en: 'Online outlet' }
 const RADIO_TV: Bilingual = { fr: 'Radio / télévision', en: 'Radio / television' }
-const AGENCE: Bilingual = { fr: 'Agence de presse', en: 'News agency' }
 const SCIENCE: Bilingual = { fr: 'Magazine scientifique', en: 'Science magazine' }
 
 const MEDIAS: EluAction = {
@@ -405,14 +404,6 @@ const MEDIAS: EluAction = {
 			fonction: PURE_PLAYER
 		},
 		{
-			id: 'afp',
-			nom: 'AFP',
-			domain: 'afp.com',
-			role: 'autre',
-			email: 'contact@afp.com',
-			fonction: AGENCE
-		},
-		{
 			id: 'france-culture',
 			nom: 'France Culture',
 			domain: 'franceculture.fr',
@@ -429,28 +420,12 @@ const MEDIAS: EluAction = {
 			fonction: RADIO_TV
 		},
 		{
-			id: 'public-senat',
-			nom: 'Public Sénat',
-			domain: 'publicsenat.fr',
-			role: 'autre',
-			email: 'bonjour@publicsenat.fr',
-			fonction: RADIO_TV
-		},
-		{
 			id: 'sciences-et-avenir',
 			nom: 'Sciences et Avenir',
 			domain: 'sciencesetavenir.fr',
 			role: 'autre',
 			email: 'redaction@sciencesetavenir.fr',
 			fonction: SCIENCE
-		},
-		{
-			id: 'the-conversation',
-			nom: 'The Conversation France',
-			domain: 'theconversation.com',
-			role: 'autre',
-			email: 'editorial@theconversation.fr',
-			fonction: PURE_PLAYER
 		}
 	],
 	meta: {
@@ -526,7 +501,7 @@ const MEDIAS: EluAction = {
 	// « lecteur » différent : constat personnel, fait marquant, paradoxe…
 	hooks: [
 		{
-			fr: "En tant que lecteur attentif de votre journal, je suis frappé par l'écart entre l'ampleur des risques liés à l'intelligence artificielle et la place, encore modeste, qu'ils occupent dans le débat public. Ce qui m'alerte n'est pas de la science-fiction : ce sont les dirigeants mêmes des grands laboratoires d'IA qui reconnaissent publiquement que leurs systèmes pourraient, à terme, échapper à notre contrôle.",
+			fr: "En lisant régulièrement votre journal, je suis frappé par l'écart entre l'ampleur des risques liés à l'intelligence artificielle et la place, encore modeste, qu'ils occupent dans le débat public. Ce qui m'alerte n'est pas de la science-fiction : ce sont les dirigeants mêmes des grands laboratoires d'IA qui reconnaissent publiquement que leurs systèmes pourraient, à terme, échapper à notre contrôle.",
 			en: 'As an attentive reader of your paper, I am struck by the gap between the scale of the risks linked to artificial intelligence and the still modest place they hold in public debate. What alarms me is not science fiction: it is the very leaders of the major AI labs who publicly acknowledge that their systems could, in time, escape our control.'
 		},
 		{
@@ -538,20 +513,20 @@ const MEDIAS: EluAction = {
 			en: 'One topic seems to me largely under-covered given its importance. Some of the most respected scientists, such as Turing laureates Yoshua Bengio and Geoffrey Hinton, warn that no one today knows how to guarantee control of the most advanced AI systems. I would like to read, in your paper, investigations that match what is at stake.'
 		},
 		{
-			fr: "Je vous écris simplement comme un citoyen qui vous lit. J'ai le sentiment que l'intelligence artificielle est partout dans l'actualité pour ses prouesses, mais presque jamais pour les risques que ses propres concepteurs décrivent. Cet angle mort m'inquiète, et je crois que votre rédaction a les moyens de le combler.",
-			en: 'I am writing simply as a citizen who reads you. I feel that artificial intelligence is everywhere in the news for its feats, but almost never for the risks its own designers describe. This blind spot worries me, and I believe your newsroom has the means to fill it.'
+			fr: "Je m'adresse à vous simplement comme quelqu'un qui vous lit. J'ai le sentiment que l'intelligence artificielle est partout dans l'actualité pour ses prouesses, mais presque jamais pour les risques que ses propres concepteurs décrivent. Cet angle mort m'inquiète, et je crois que votre rédaction a les moyens de le combler.",
+			en: 'I am reaching out simply as someone who reads you. I feel that artificial intelligence is everywhere in the news for its feats, but almost never for the risks its own designers describe. This blind spot worries me, and I believe your newsroom has the means to fill it.'
 		},
 		{
 			fr: "Il est rare que les dirigeants d'une industrie réclament eux-mêmes d'être encadrés. C'est pourtant ce que font plusieurs responsables de l'IA, qui comparent les risques de leur technologie à ceux des pandémies ou du nucléaire. Ce paradoxe mériterait, je crois, toute l'attention de votre rédaction.",
 			en: 'It is rare for the leaders of an industry to call for their own regulation. Yet that is what several AI executives are doing, comparing the risks of their technology to those of pandemics or nuclear weapons. This paradox deserves, I believe, the full attention of your newsroom.'
 		},
 		{
-			fr: "Des sommes colossales sont investies pour créer des IA plus intelligentes que l'humain, parfois par les mêmes personnes qui en redoutent les conséquences. Comme lecteur, j'aimerais mieux comprendre cette course, et je me tourne vers vous parce que je fais confiance à votre travail d'enquête.",
-			en: 'Colossal sums are being invested to build AI more intelligent than humans, sometimes by the very people who fear its consequences. As a reader, I would like to understand this race better, and I turn to you because I trust your investigative work.'
+			fr: "Des sommes colossales sont investies pour créer des IA plus intelligentes que l'humain, parfois par les mêmes personnes qui en redoutent les conséquences. J'aimerais mieux comprendre cette course, et je me tourne vers vous parce que je fais confiance à votre travail d'enquête.",
+			en: 'Colossal sums are being invested to build AI more intelligent than humans, sometimes by the very people who fear its consequences. I would like to understand this race better, and I turn to you because I trust your investigative work.'
 		},
 		{
-			fr: "Je ne suis ni chercheur ni militant, seulement un lecteur préoccupé. Plus je m'informe sur l'intelligence artificielle, plus je constate un décalage entre l'emballement médiatique et les alertes, très sérieuses, de scientifiques de premier plan. J'aimerais que votre journal aide à y voir clair.",
-			en: 'I am neither a researcher nor an activist, only a concerned reader. The more I learn about artificial intelligence, the more I notice a gap between the media excitement and the very serious warnings of leading scientists. I would like your paper to help make sense of it.'
+			fr: "Je n'ai aucune expertise particulière sur le sujet, je suis seulement quelqu'un de préoccupé qui vous lit. Plus je m'informe sur l'intelligence artificielle, plus je constate un décalage entre l'emballement médiatique et les alertes, très sérieuses, de scientifiques de premier plan. J'aimerais que votre journal aide à y voir clair.",
+			en: 'I have no particular expertise on this topic, only a concerned person who reads you. The more I learn about artificial intelligence, the more I notice a gap between the media excitement and the very serious warnings of leading scientists. I would like your paper to help make sense of it.'
 		}
 	],
 	// Sujet abordé : l'utilisateur en choisit UN. Chaque angle propose plusieurs
@@ -651,17 +626,17 @@ const MEDIAS: EluAction = {
 		en: 'This topic matters to your readers: according to a recent poll, only 8% of French people want to accelerate AI development, and nearly eight in ten support international agreements banning AI capabilities that threaten human life or fundamental rights.'
 	},
 	balance: {
-		fr: "Je mesure l'exigence et l'indépendance de votre travail, et ma démarche n'est pas une critique. C'est la demande d'un lecteur qui souhaite voir ce sujet, décisif pour l'avenir, traité à sa juste mesure.",
-		en: 'I recognise the rigour and independence of your work, and this is not a criticism. It is the request of a reader who wishes to see this topic, decisive for the future, covered as fully as it deserves.'
+		fr: "Je mesure l'exigence et l'indépendance de votre travail, et ma démarche n'est pas une critique. C'est le souhait d'une personne qui vous lit et voudrait voir ce sujet, décisif pour l'avenir, traité à sa juste mesure.",
+		en: 'I recognise the rigour and independence of your work, and this is not a criticism. It is the wish of someone who reads you and would like to see this topic, decisive for the future, covered as fully as it deserves.'
 	},
 	balances: [
 		{
-			fr: "Je sais que votre rédaction traite déjà, parfois, ces questions, et je ne remets pas en cause votre sérieux. Je souhaite simplement, comme lecteur, que ce sujet gagne la place régulière qu'il mérite.",
-			en: 'I know your newsroom already covers these questions at times, and I do not question your rigour. I simply wish, as a reader, that this topic gained the regular place it deserves.'
+			fr: "Je sais que votre rédaction traite déjà, parfois, ces questions, et je ne remets pas en cause votre sérieux. Je souhaite simplement, en vous lisant, que ce sujet reçoive l'attention suivie qu'il mérite.",
+			en: 'I know your newsroom already covers these questions at times, and I do not question your rigour. As one of your readers, I simply wish this topic received the sustained attention it deserves.'
 		},
 		{
-			fr: "Je ne cherche pas à vous dicter une ligne : votre indépendance fait votre valeur. Je vous adresse seulement le souhait d'un lecteur, convaincu que ce sujet compte pour l'avenir de tous.",
-			en: 'I am not trying to dictate an editorial line: your independence is your worth. I am only sharing a reader’s wish, convinced this topic matters for everyone’s future.'
+			fr: "Je ne cherche pas à vous dicter une ligne : votre indépendance fait votre valeur. Je vous adresse seulement le souhait d'une personne qui vous lit et reste convaincue que ce sujet compte pour l'avenir de tous.",
+			en: 'I am not trying to dictate an editorial line: your independence is your worth. I am only sharing the wish of someone who reads you and remains convinced this topic matters for everyone’s future.'
 		}
 	],
 	ask: {

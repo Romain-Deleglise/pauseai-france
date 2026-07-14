@@ -95,7 +95,7 @@
 		contactUrl: string | null
 		photo: string | null
 		subtitle: string
-		introKind: 'depute' | 'senateur' | 'generic'
+		introKind: 'depute' | 'senateur' | 'generic' | 'media'
 		// Pour les députés : précision de la localité selon la fiabilité du géocodage.
 		// 'circonscription' (1 seul député certain), 'ville' (code postal couvrant
 		// plusieurs circonscriptions), 'departement' (repli). Voir deputeScope.
@@ -150,7 +150,7 @@
 			// privée), avec repli sur les initiales si l'image ne charge pas.
 			photo: ft.photo ?? (ft.domain ? `https://icons.duckduckgo.com/ip3/${ft.domain}.ico` : null),
 			subtitle: ft.fonction ? (isEn ? ft.fonction.en : ft.fonction.fr) : '',
-			introKind: 'generic',
+			introKind: isPress ? 'media' : 'generic',
 			signatureLocality: 'France',
 			salutationOverride: ft.salutation ? (isEn ? ft.salutation.en : ft.salutation.fr) : undefined,
 			emailConfidence: ft.email ? 'high' : 'none'
@@ -350,6 +350,13 @@
 			return isEn
 				? `My name is ${nom}, and I am writing to you as a resident of your department.`
 				: `Je m'appelle ${nom} et je vous écris car je réside dans votre département.`
+		}
+		// Presse : intro sobre qui pose le cadre (la couverture de l'IA) sans faire
+		// doublon avec l'accroche « lecteur » qui suit, et sans marque de genre.
+		if (r.introKind === 'media') {
+			return isEn
+				? `My name is ${nom}, and I am writing to you about your coverage of artificial intelligence.`
+				: `Je m'appelle ${nom} et je vous écris au sujet de votre couverture de l'intelligence artificielle.`
 		}
 		// Députés : la localité affirmée dépend de la fiabilité du géocodage, pour
 		// ne pas prétendre « votre circonscription » quand le code postal en couvre
