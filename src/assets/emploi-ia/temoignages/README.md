@@ -1,34 +1,34 @@
 # Témoignages illustrés — diaporama
 
-Déposez ici les visuels de témoignages préparés pour les réseaux sociaux.
-Formats acceptés : **SVG** (recommandé, vectoriel donc net à toute taille),
-PNG, JPG, WEBP, AVIF.
+Les 19 visuels de témoignages (préparés sur Canva pour les réseaux sociaux)
+vivent ici au format **WebP** (`01.webp` … `19.webp`), repris automatiquement
+dans le diaporama de la page `/emploi-ia` (composant `TestimonialSlideshow.svelte`),
+triés par **nom de fichier**.
 
-Ils sont repris **automatiquement** dans le diaporama de la page
-`/emploi-ia` (composant `TestimonialSlideshow.svelte`), triés par **nom de
-fichier**. Préfixez donc les fichiers par un numéro à deux chiffres pour
-contrôler l'ordre :
+## Ajouter ou remplacer un visuel
+
+Déposez un fichier image dans ce dossier — c'est tout, il apparaît dans le
+diaporama. Formats acceptés : **WebP** (recommandé), SVG, PNG, JPG, AVIF.
+
+Nommez avec un numéro à deux chiffres pour contrôler l'ordre :
 
 ```
-01-temoignage.svg
-02-temoignage.svg
+01.webp
+02.webp
 …
-19-temoignage.svg
+19.webp
 ```
 
 > ⚠️ Utilisez bien `01`, `02`, … `09` (et non `1`, `2`, … `9`), sinon l'ordre
 > serait 1, 10, 11, 2, 3… (tri alphabétique).
 
-Aucun autre changement de code n'est nécessaire : ajouter un fichier ici
-suffit à l'ajouter au diaporama.
+## Poids des fichiers
 
-## À propos des SVG exportés depuis Canva
+Les exports SVG de Canva étaient très lourds (~4,5 Mo pièce, image raster
+embarquée). Ils ont été convertis en WebP ~1080 px (~70 Ko pièce, texte net) :
+85 Mo → 1,3 Mo au total. Si vous ajoutez de nouveaux visuels, exportez-les
+idéalement déjà en WebP/PNG raisonnable, ou signalez-le pour conversion.
 
-- Sur la page, chaque visuel s'affiche dans le diaporama et un **clic dessus
-  l'ouvre en plein écran** (utile car les cartes contiennent beaucoup de texte).
-- Le SVG étant vectoriel, il reste net à toute taille — la lisibilité dépend
-  donc de la taille du texte dans la carte, pas de la résolution.
-- Si un visuel apparaît avec une police différente de l'originale, c'est que
-  Canva a exporté le texte en tant que texte (et non vectorisé). Dans ce cas,
-  ré-exportez en cochant l'option qui aplatit / vectorise le texte, ou
-  exportez en PNG haute résolution.
+Sur la page, chaque visuel s'affiche dans le diaporama et **un clic l'ouvre en
+plein écran** (utile car les cartes contiennent beaucoup de texte, notamment
+le paragraphe secondaire, plus petit sur mobile).
