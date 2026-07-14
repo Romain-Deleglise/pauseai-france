@@ -49,6 +49,9 @@ export interface EluAction {
 	fixedTargets?: FixedTarget[]
 	/** Intitulé du groupe de destinataires en mode 'fixed' (ex. « Le gouvernement »). */
 	targetsHeading?: Bilingual
+	/** Remplace la phrase d'accroche par défaut au-dessus de la liste (ex. pour
+	 * inviter à choisir un destinataire plutôt qu'à tous les contacter). */
+	recipientsIntro?: Bilingual
 	/** Métadonnées SEO de la page. */
 	meta: { title: Bilingual; description: Bilingual }
 	/** Bandeau d'en-tête. */
@@ -227,26 +230,39 @@ const EXEMPLE_GOUVERNEMENT: EluAction = {
 // davantage les risques de l'IA. Cible fixe (targeting: 'fixed'), ton « lecteur
 // qui demande plus de couverture » (et non « citoyen qui écrit à son élu »).
 //
-// ⚠️ CONTACTS À VÉRIFIER AVANT LANCEMENT (com) : les canaux ci-dessous ne sont
-// certains que pour Le Monde (email public « courrier des lecteurs ») et
-// Libération (formulaire de contact officiel). Pour les autres titres, le lien
-// pointe vers la page de contact/assistance officielle mais doit être confirmé,
-// et un email direct « courrier des lecteurs » peut être ajouté s'il est public.
-// Tant qu'un email n'est pas renseigné, l'outil propose « copier le texte » +
-// ouverture du formulaire, ce qui reste parfaitement fonctionnel.
+// Contacts issus du groupe « Presse nationale » du CiviCRM de Pause IA, filtrés
+// sur deux critères : (1) email NON invalidé (colonne « Invalidée » = Non, donc
+// qui ne rebondit pas), (2) adresse de RÉDACTION institutionnelle (jamais un
+// journaliste individuel : ces contacts servent aux relations presse de
+// l'équipe, pas à un outil citoyen de masse). Les titres dont l'email générique
+// rebondit (Libération, La Croix, Ouest-France, France Inter…) passent par leur
+// formulaire de contact officiel (email null → l'outil propose « copier le
+// texte » + ouverture du formulaire). On se limite aux grands généralistes à
+// large audience ; la presse tech/pro, qui couvre déjà l'IA, est écartée.
 //
 // Remarque efficacité : tout le monde écrit aux MÊMES adresses. Des messages
-// quasi identiques sont vite repérés et perdent tout poids. La phrase
-// personnelle (proposée à l'étape 2) est donc ici essentielle, pas optionnelle.
+// quasi identiques sont vite repérés et perdent tout poids. On invite donc à
+// choisir le(s) titre(s) qu'on lit (recipientsIntro), et la phrase personnelle
+// (étape 2) est ici essentielle, pas optionnelle.
 // ──────────────────────────────────────────────────────────────────────────
 const COURRIER_LECTEURS: Bilingual = { fr: 'Courrier des lecteurs', en: 'Readers’ letters' }
-const REDACTION: Bilingual = { fr: 'Rédaction', en: 'Newsroom' }
+const QUOTIDIEN: Bilingual = { fr: 'Quotidien national', en: 'National daily' }
+const ECO: Bilingual = { fr: 'Quotidien économique', en: 'Business daily' }
+const HEBDO: Bilingual = { fr: 'Hebdomadaire', en: 'Weekly' }
+const PURE_PLAYER: Bilingual = { fr: 'Média en ligne', en: 'Online outlet' }
+const RADIO_TV: Bilingual = { fr: 'Radio / télévision', en: 'Radio / television' }
+const AGENCE: Bilingual = { fr: 'Agence de presse', en: 'News agency' }
+const SCIENCE: Bilingual = { fr: 'Magazine scientifique', en: 'Science magazine' }
 
 const MEDIAS: EluAction = {
 	id: 'medias',
 	status: 'active',
 	targeting: 'fixed',
-	targetsHeading: { fr: 'Les grandes rédactions nationales', en: 'Major national newsrooms' },
+	targetsHeading: { fr: 'Choisissez un titre', en: 'Choose an outlet' },
+	recipientsIntro: {
+		fr: "Écrivez au journal que vous lisez le plus : un message ciblé et sincère a bien plus de poids qu'un envoi à tous. Vous pouvez bien sûr en contacter plusieurs.",
+		en: 'Write to the paper you read most: one targeted, sincere message carries far more weight than writing to everyone. You can of course contact several.'
+	},
 	fixedTargets: [
 		{
 			id: 'le-monde',
@@ -256,44 +272,40 @@ const MEDIAS: EluAction = {
 			fonction: COURRIER_LECTEURS
 		},
 		{
-			id: 'liberation',
-			nom: 'Libération',
-			role: 'autre',
-			email: null,
-			contactUrl: 'https://www.liberation.fr/contact/',
-			fonction: REDACTION
-		},
-		{
 			id: 'le-figaro',
 			nom: 'Le Figaro',
 			role: 'autre',
-			email: null,
-			contactUrl: 'https://www.lefigaro.fr/assistance',
-			fonction: REDACTION
+			email: 'redaction@lefigaro.fr',
+			fonction: QUOTIDIEN
 		},
 		{
 			id: 'le-parisien',
 			nom: 'Le Parisien',
 			role: 'autre',
-			email: null,
-			contactUrl: 'https://www.leparisien.fr/services/contactez-nous/',
-			fonction: REDACTION
+			email: 'redaction@leparisien.fr',
+			fonction: QUOTIDIEN
 		},
 		{
-			id: 'ouest-france',
-			nom: 'Ouest-France',
+			id: 'liberation',
+			nom: 'Libération',
 			role: 'autre',
 			email: null,
-			contactUrl: 'https://www.ouest-france.fr/services/contact/',
-			fonction: REDACTION
+			contactUrl: 'https://www.liberation.fr/contact/',
+			fonction: QUOTIDIEN
 		},
 		{
 			id: 'les-echos',
 			nom: 'Les Échos',
 			role: 'autre',
-			email: null,
-			contactUrl: 'https://www.lesechos.fr/pages-utiles/contacts',
-			fonction: REDACTION
+			email: 'redaction@lesechos.fr',
+			fonction: ECO
+		},
+		{
+			id: 'la-tribune',
+			nom: 'La Tribune',
+			role: 'autre',
+			email: 'latribunelibre@latribune.fr',
+			fonction: ECO
 		},
 		{
 			id: 'la-croix',
@@ -301,15 +313,112 @@ const MEDIAS: EluAction = {
 			role: 'autre',
 			email: null,
 			contactUrl: 'https://www.la-croix.com/contactez-nous',
-			fonction: REDACTION
+			fonction: QUOTIDIEN
+		},
+		{
+			id: 'le-point',
+			nom: 'Le Point',
+			role: 'autre',
+			email: 'redaction@lepoint.fr',
+			fonction: HEBDO
+		},
+		{
+			id: 'marianne',
+			nom: 'Marianne',
+			role: 'autre',
+			email: 'redaction@marianne.net',
+			fonction: HEBDO
+		},
+		{
+			id: 'le-jdd',
+			nom: 'Le Journal du Dimanche',
+			role: 'autre',
+			email: 'redaction@lejdd.fr',
+			fonction: HEBDO
+		},
+		{
+			id: 'courrier-international',
+			nom: 'Courrier international',
+			role: 'autre',
+			email: 'redaction@courrierinternational.com',
+			fonction: HEBDO
+		},
+		{
+			id: 'le-canard-enchaine',
+			nom: 'Le Canard enchaîné',
+			role: 'autre',
+			email: 'redaction@lecanardenchaine.fr',
+			fonction: HEBDO
+		},
+		{
+			id: 'le-monde-diplomatique',
+			nom: 'Le Monde diplomatique',
+			role: 'autre',
+			email: 'secretariat@monde-diplomatique.fr',
+			fonction: HEBDO
 		},
 		{
 			id: 'mediapart',
 			nom: 'Mediapart',
 			role: 'autre',
-			email: null,
-			contactUrl: 'https://www.mediapart.fr/contact',
-			fonction: REDACTION
+			email: 'contact@mediapart.fr',
+			fonction: PURE_PLAYER
+		},
+		{
+			id: 'slate',
+			nom: 'Slate',
+			role: 'autre',
+			email: 'infos@slate.fr',
+			fonction: PURE_PLAYER
+		},
+		{
+			id: 'brut',
+			nom: 'Brut',
+			role: 'autre',
+			email: 'hello@brut.media',
+			fonction: PURE_PLAYER
+		},
+		{
+			id: 'afp',
+			nom: 'AFP',
+			role: 'autre',
+			email: 'contact@afp.com',
+			fonction: AGENCE
+		},
+		{
+			id: 'france-culture',
+			nom: 'France Culture',
+			role: 'autre',
+			email: 'auditeurfranceculture@radiofrance.com',
+			fonction: RADIO_TV
+		},
+		{
+			id: 'rmc-bfm',
+			nom: 'RMC / BFMTV',
+			role: 'autre',
+			email: 'bfmtvetvous@bfmtv.fr',
+			fonction: RADIO_TV
+		},
+		{
+			id: 'public-senat',
+			nom: 'Public Sénat',
+			role: 'autre',
+			email: 'bonjour@publicsenat.fr',
+			fonction: RADIO_TV
+		},
+		{
+			id: 'sciences-et-avenir',
+			nom: 'Sciences et Avenir',
+			role: 'autre',
+			email: 'redaction@sciencesetavenir.fr',
+			fonction: SCIENCE
+		},
+		{
+			id: 'the-conversation',
+			nom: 'The Conversation France',
+			role: 'autre',
+			email: 'editorial@theconversation.fr',
+			fonction: PURE_PLAYER
 		}
 	],
 	meta: {

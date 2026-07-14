@@ -654,6 +654,8 @@
 						{isEn
 							? 'Keep going with the others, each message counts.'
 							: 'Continuez avec les autres, chaque message compte.'}
+					{:else if action.recipientsIntro}
+						{isEn ? action.recipientsIntro.en : action.recipientsIntro.fr}
 					{:else}
 						{isEn
 							? `Write to each of your ${targetNoun}: one personal email each.`
