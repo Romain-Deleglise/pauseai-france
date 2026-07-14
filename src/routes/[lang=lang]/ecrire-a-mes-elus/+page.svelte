@@ -5,6 +5,7 @@
 	import { onMount } from 'svelte'
 	import { lookupElus, isSampleData, type Elu, type LookupResult } from '$lib/data/elus'
 	import { getEluAction, type FixedTarget } from '$lib/data/elu-actions'
+	import { resolveCirco } from '$lib/data/circo-geo'
 	import type { PageData } from './$types'
 
 	export let data: PageData
@@ -67,6 +68,13 @@
 		photo: string | null
 		subtitle: string
 		introKind: 'depute' | 'senateur' | 'generic'
+		// Pour les députés : précision de la localité selon la fiabilité du géocodage.
+		// 'circonscription' (1 seul député certain), 'ville' (code postal couvrant
+		// plusieurs circonscriptions), 'departement' (repli). Voir deputeScope.
+		deputeScope?: 'circonscription' | 'ville' | 'departement'
+		// Vrai pour le député dont l'utilisateur est certainement l'administré
+		// (circonscription résolue via son adresse) → à contacter en priorité.
+		priority?: boolean
 		signatureLocality: string
 		salutationOverride?: string
 		emailConfidence: 'high' | 'medium' | 'low' | 'none'
@@ -127,6 +135,7 @@
 
 	function search() {
 		searched = true
+		resetPriority()
 		const clean = codePostal.replace(/\s/g, '')
 		if (!/^\d{5}$/.test(clean)) {
 			result = null
@@ -135,6 +144,46 @@
 		}
 		result = lookupElus(clean)
 		searchError = result ? null : 'notfound'
+	}
+
+	// ── Géocodage fin (cas ambigu : un code postal, plusieurs circonscriptions) ──
+	// Progressive enhancement : si l'utilisateur précise son adresse, on identifie
+	// sa circonscription exacte (BAN + point-in-polygon) pour marquer SON député
+	// comme prioritaire. Tout échec retombe sur le comportement par défaut.
+	let addressQuery = ''
+	let geoStatus: 'idle' | 'loading' | 'found' | 'notfound' | 'error' = 'idle'
+	let priorityCirco: number | null = null
+	let priorityDept: string | null = null
+	let priorityNom = ''
+
+	function resetPriority() {
+		addressQuery = ''
+		geoStatus = 'idle'
+		priorityCirco = null
+		priorityDept = null
+		priorityNom = ''
+	}
+
+	async function findMyDepute() {
+		if (!addressQuery.trim() || !result) return
+		geoStatus = 'loading'
+		try {
+			const match = await resolveCirco(addressQuery, codePostal, deputeDepartements)
+			if (match) {
+				priorityCirco = match.circo
+				priorityDept = match.dept
+				priorityNom =
+					result.deputes.find((e) => e.circo === match.circo && e.departement === match.dept)
+						?.nom ?? ''
+				geoStatus = 'found'
+			} else {
+				priorityCirco = null
+				priorityDept = null
+				geoStatus = 'notfound'
+			}
+		} catch {
+			geoStatus = 'error'
+		}
 	}
 
 	// ── Groupes de destinataires affichés (commun aux deux modes) ──
@@ -150,11 +199,49 @@
 				? 'Your MP'
 				: 'Votre député'
 
+	// Portée géographique certaine pour les députés (voir introLine) :
+	//  - repli département : on ne connaît pas la circonscription → 'departement'
+	//  - un code postal couvrant plusieurs circonscriptions (grandes villes) : on
+	//    sait seulement que l'utilisateur habite la ville → 'ville'
+	//  - un seul député pour ce code postal : circonscription certaine.
+	$: deputeScope = (
+		!result?.exactDeputes
+			? 'departement'
+			: (result?.deputes.length ?? 0) > 1
+				? 'ville'
+				: 'circonscription'
+	) as 'circonscription' | 'ville' | 'departement'
+
+	// Départements couvrant le code postal (en général un seul) : sert au
+	// géocodage fin dans le cas ambigu.
+	$: deputeDepartements = result ? [...new Set(result.deputes.map((e) => e.departement))] : []
+
+	// Députés du code postal, avec la circonscription prioritaire marquée si
+	// l'utilisateur a précisé son adresse (voir géocodage plus bas).
+	$: deputeRecipients = result
+		? (() => {
+				const items = result.deputes.map((e) => {
+					const isPriority =
+						priorityCirco != null && e.circo === priorityCirco && e.departement === priorityDept
+					return {
+						...fromElu(e),
+						deputeScope: (isPriority ? 'circonscription' : deputeScope) as Recipient['deputeScope'],
+						priority: isPriority
+					}
+				})
+				// Le député prioritaire remonte en tête de liste.
+				return priorityCirco != null
+					? [...items].sort((a, b) => Number(b.priority) - Number(a.priority))
+					: items
+			})()
+		: []
+
 	$: recipientGroups =
 		action.targeting === 'fixed'
 			? action.fixedTargets && action.fixedTargets.length
 				? [
 						{
+							kind: 'fixed' as const,
 							title: action.targetsHeading
 								? isEn
 									? action.targetsHeading.en
@@ -169,10 +256,15 @@
 			: result
 				? [
 						{
+							kind: 'senateurs' as const,
 							title: isEn ? 'Your senators' : 'Vos sénateurs',
 							list: result.senateurs.map(fromElu)
 						},
-						{ title: deputeTitle, list: result.deputes.map(fromElu) }
+						{
+							kind: 'deputes' as const,
+							title: deputeTitle,
+							list: deputeRecipients
+						}
 					]
 				: []
 
@@ -214,21 +306,41 @@
 
 	// 1re phrase : ouverture naturelle qui signale le lien avec le destinataire.
 	// `name` est passé explicitement pour que Svelte recalcule l'aperçu à la frappe.
+	// Formulations neutres (non genrées) : on utilise des verbes plutôt que des
+	// noms/adjectifs accordés ("je réside", "me préoccupe") pour que le message
+	// convienne à tout le monde sans avoir à demander la civilité de l'expéditeur.
 	function introLine(r: Recipient, name: string): string {
 		const nom = name.trim() || (isEn ? '[your name]' : '[votre nom]')
 		if (r.introKind === 'generic') {
 			return isEn
-				? `My name is ${nom}, and I am writing to you as a concerned French citizen.`
-				: `Je m'appelle ${nom} et je vous écris en tant que citoyen préoccupé.`
+				? `My name is ${nom}, and I am writing to you because I am worried about the development of AI.`
+				: `Je m'appelle ${nom} et je vous écris car le développement de l'IA me préoccupe.`
 		}
+		if (r.introKind === 'senateur') {
+			return isEn
+				? `My name is ${nom}, and I am writing to you as a resident of your department.`
+				: `Je m'appelle ${nom} et je vous écris car je réside dans votre département.`
+		}
+		// Députés : la localité affirmée dépend de la fiabilité du géocodage, pour
+		// ne pas prétendre « votre circonscription » quand le code postal en couvre
+		// plusieurs (grandes villes) ou qu'on est en repli départemental.
+		const scope = r.deputeScope ?? 'circonscription'
 		if (isEn) {
-			return r.introKind === 'depute'
-				? `My name is ${nom}, and I am writing to you as one of your constituents.`
-				: `My name is ${nom}, and I am writing to you as a resident of your department.`
+			const where =
+				scope === 'circonscription'
+					? 'as one of your constituents'
+					: scope === 'ville'
+						? 'as a resident of your city'
+						: 'as a resident of your department'
+			return `My name is ${nom}, and I am writing to you ${where}.`
 		}
-		return r.introKind === 'depute'
-			? `Je m'appelle ${nom} et je vous écris en tant qu'habitant de votre circonscription.`
-			: `Je m'appelle ${nom} et je vous écris en tant qu'habitant de votre département.`
+		const lieu =
+			scope === 'circonscription'
+				? 'votre circonscription'
+				: scope === 'ville'
+					? 'votre ville'
+					: 'votre département'
+		return `Je m'appelle ${nom} et je vous écris car je réside dans ${lieu}.`
 	}
 
 	// Compose les paragraphes du corps selon l'angle, la longueur et la phrase perso.
@@ -247,16 +359,50 @@
 		return paras
 	}
 
-	// L'aperçu (#email-body) est déjà personnalisé : on en prend le texte brut.
-	function buildBody(): string {
-		const el = document.getElementById('email-body')
-		return el ? el.innerText : ''
+	// Bloc de signature (mêmes valeurs que l'aperçu, mais en texte brut).
+	function signatureBlock(r: Recipient): string {
+		const name = userName.trim() || (isEn ? '[Your full name]' : '[Votre nom complet]')
+		const ville = userVille.trim() || r.signatureLocality
+		return `${isEn ? 'Yours sincerely,' : 'Cordialement,'}\n${name}\n${ville}`
+	}
+
+	// Corps de l'email, reconstruit à partir des MÊMES fonctions que l'aperçu
+	// (#email-body). On ne lit plus le DOM : le texte est donc fiable même si
+	// l'aperçu est scrollé/tronqué, et l'envoi ne dépend plus d'un élément d'UI.
+	function buildBodyText(r: Recipient): string {
+		return [
+			salutation(r),
+			introLine(r, userName),
+			...buildParagraphs(angle, version, personalSentence),
+			signatureBlock(r)
+		].join('\n\n')
 	}
 
 	function mailtoHref(r: Recipient): string {
-		const params = new URLSearchParams({ subject, bcc: BCC, body: buildBody() })
+		const params = new URLSearchParams({ subject, bcc: BCC, body: buildBodyText(r) })
 		// URLSearchParams encode les espaces en "+", à reconvertir en %20 pour mailto.
 		return `mailto:${r.email ?? ''}?${params.toString().replace(/\+/g, '%20')}`
+	}
+
+	// Liens de composition des webmails (fallback quand le client mailto: n'est pas
+	// configuré). Chacun accepte to/subject/bcc/body en query string.
+	function webmailHref(service: 'gmail' | 'outlook' | 'yahoo', r: Recipient): string {
+		const to = encodeURIComponent(r.email ?? '')
+		const su = encodeURIComponent(subject)
+		const bcc = encodeURIComponent(BCC)
+		const body = encodeURIComponent(buildBodyText(r))
+		if (service === 'gmail')
+			return `https://mail.google.com/mail/?view=cm&fs=1&to=${to}&su=${su}&bcc=${bcc}&body=${body}`
+		if (service === 'outlook')
+			return `https://outlook.live.com/mail/0/deeplink/compose?to=${to}&subject=${su}&bcc=${bcc}&body=${body}`
+		return `https://compose.mail.yahoo.com/?to=${to}&subject=${su}&bcc=${bcc}&body=${body}`
+	}
+
+	function openWebmail(service: 'gmail' | 'outlook' | 'yahoo') {
+		if (!selectedRecipient) return
+		markSent(selectedRecipient.id)
+		logIntent(selectedRecipient)
+		window.open(webmailHref(service, selectedRecipient), '_blank', 'noopener')
 	}
 
 	// ── Infos utilisateur. Nom, ville et phrase ne quittent jamais l'appareil
@@ -403,9 +549,8 @@
 
 	let copied = false
 	function copyEmail() {
-		const el = document.getElementById('email-body')
-		if (!el) return
-		void navigator.clipboard.writeText(el.innerText).then(() => {
+		if (!selectedRecipient) return
+		void navigator.clipboard.writeText(buildBodyText(selectedRecipient)).then(() => {
 			copied = true
 			setTimeout(() => {
 				copied = false
@@ -526,9 +671,62 @@
 					{#if group.list.length}
 						<div class="elu-group">
 							<h3>{group.title}</h3>
+							{#if group.kind === 'deputes' && deputeScope === 'ville'}
+								<div class="circo-finder">
+									<p class="circo-hint">
+										{isEn
+											? 'Your postal code covers several constituencies. Enter your address to find your own MP, the one to write to first.'
+											: 'Votre code postal couvre plusieurs circonscriptions. Indiquez votre adresse pour trouver votre député, celui à contacter en priorité.'}
+									</p>
+									<div class="circo-row">
+										<input
+											class="circo-input"
+											type="text"
+											bind:value={addressQuery}
+											on:keydown={(e) => e.key === 'Enter' && findMyDepute()}
+											placeholder={isEn ? 'Number and street' : 'Numéro et rue'}
+											autocomplete="street-address"
+											aria-label={isEn ? 'Your address' : 'Votre adresse'}
+										/>
+										<Button on:click={findMyDepute}>
+											{geoStatus === 'loading'
+												? isEn
+													? 'Searching…'
+													: 'Recherche…'
+												: isEn
+													? 'Find my MP'
+													: 'Trouver mon député'}
+										</Button>
+									</div>
+									{#if geoStatus === 'found' && priorityNom}
+										<p class="circo-msg circo-ok">
+											{isEn
+												? `Your MP: ${priorityNom}. Highlighted below, write to them first.`
+												: `Votre député : ${priorityNom}. Mis en avant ci-dessous, à contacter en priorité.`}
+										</p>
+									{:else if geoStatus === 'notfound'}
+										<p class="circo-msg circo-warn">
+											{isEn
+												? 'Address not found. You can still write to all the MPs below.'
+												: 'Adresse introuvable. Vous pouvez tout de même écrire à tous les députés ci-dessous.'}
+										</p>
+									{:else if geoStatus === 'error'}
+										<p class="circo-msg circo-warn">
+											{isEn
+												? 'Lookup unavailable right now. You can still write to all the MPs below.'
+												: 'Service indisponible pour le moment. Vous pouvez tout de même écrire à tous les députés ci-dessous.'}
+										</p>
+									{/if}
+									<p class="circo-privacy">
+										{isEn
+											? 'Your address is sent to the French National Address Base (public service) only to find your constituency, and is never stored by us.'
+											: 'Votre adresse est envoyée à la Base Adresse Nationale (service public) uniquement pour trouver votre circonscription, et n’est jamais conservée par nous.'}
+									</p>
+								</div>
+							{/if}
 							<ul class="elu-list">
 								{#each group.list as r (r.id)}
-									<li class="elu-card" class:done={sent.has(r.id)}>
+									<li class="elu-card" class:done={sent.has(r.id)} class:priority={r.priority}>
 										<div class="elu-left">
 											<span class="avatar">
 												{initials(r)}
@@ -541,6 +739,13 @@
 													{#if sent.has(r.id)}<span class="done-check">✓</span>{/if}{r.nom}
 												</strong>
 												{#if r.subtitle}<small>{r.subtitle}</small>{/if}
+												{#if r.priority}
+													<span class="priority-badge"
+														>{isEn
+															? '★ Your MP · write first'
+															: '★ Votre député · à contacter en priorité'}</span
+													>
+												{/if}
 											</div>
 										</div>
 										<Button alt={sent.has(r.id)} on:click={() => choose(r)}>
@@ -813,6 +1018,24 @@
 			</div>
 
 			{#if selectedRecipient.email}
+				<details class="webmail-fallback">
+					<summary>
+						{isEn
+							? 'Nothing opened? Open in a webmail instead'
+							: "Rien ne s'est ouvert ? Ouvrir dans un webmail"}
+					</summary>
+					<div class="webmail-links">
+						<button class="webmail-btn" on:click={() => openWebmail('gmail')}>Gmail</button>
+						<button class="webmail-btn" on:click={() => openWebmail('outlook')}>Outlook</button>
+						<button class="webmail-btn" on:click={() => openWebmail('yahoo')}>Yahoo</button>
+					</div>
+					<p class="webmail-note">
+						{isEn
+							? 'Opens a pre-filled draft in your browser. The blind copy (BCC) is included.'
+							: 'Ouvre un brouillon pré-rempli dans votre navigateur. La copie cachée (CCI) est incluse.'}
+					</p>
+				</details>
+
 				<p class="deliverability">
 					{isEn
 						? 'Send from your personal mailbox: an email from a real constituent carries far more weight than a form. Check the recipient before sending.'
@@ -1119,6 +1342,78 @@
 		border-color: var(--brand);
 	}
 
+	/* Député prioritaire (circonscription confirmée via l'adresse) */
+	.elu-card.priority {
+		border-width: 2px;
+		border-color: var(--brand);
+		background: var(--brand-light);
+	}
+
+	.priority-badge {
+		display: inline-block;
+		margin-top: 0.2rem;
+		font-size: 0.72rem;
+		font-weight: 700;
+		color: var(--brand-subtle);
+		background: color-mix(in srgb, var(--brand) 16%, transparent);
+		padding: 0.1rem 0.5rem;
+		border-radius: 999px;
+	}
+
+	/* Recherche fine de la circonscription (cas ambigu : grandes villes) */
+	.circo-finder {
+		margin-bottom: 1rem;
+		padding: 0.9rem 1rem;
+		border: 1px dashed var(--brand);
+		border-radius: 10px;
+		background: color-mix(in srgb, var(--brand) 5%, var(--bg));
+	}
+
+	.circo-hint {
+		margin: 0 0 0.6rem;
+		font-size: 0.9rem;
+		color: var(--text-2);
+	}
+
+	.circo-row {
+		display: flex;
+		gap: 0.5rem;
+		flex-wrap: wrap;
+	}
+
+	.circo-input {
+		flex: 1;
+		min-inline-size: 12rem;
+		padding: 0.6rem 0.8rem;
+		border: 1px solid var(--border);
+		border-radius: 8px;
+		font-size: 0.95rem;
+		font-family: inherit;
+		background: var(--bg);
+		color: var(--text);
+	}
+
+	.circo-msg {
+		margin: 0.6rem 0 0;
+		font-size: 0.88rem;
+		font-weight: 600;
+	}
+
+	.circo-ok {
+		color: var(--brand-subtle);
+	}
+
+	.circo-warn {
+		color: var(--text-secondary);
+	}
+
+	.circo-privacy {
+		margin: 0.5rem 0 0;
+		font-size: 0.75rem;
+		color: var(--text-secondary);
+		line-height: 1.4;
+	}
+
 	.done-check {
 		color: #2a9d5c;
 		font-weight: 700;
@@ -1411,6 +1706,46 @@
 		gap: 0.75rem;
 		flex-wrap: wrap;
 		margin-top: 1.25rem;
+	}
+
+	/* Fallback webmail (client mailto: non configuré) */
+	.webmail-fallback {
+		margin-top: 1rem;
+		font-size: 0.85rem;
+	}
+
+	.webmail-fallback summary {
+		cursor: pointer;
+		color: var(--text-2);
+	}
+
+	.webmail-links {
+		display: flex;
+		gap: 0.5rem;
+		flex-wrap: wrap;
+		margin-top: 0.75rem;
+	}
+
+	.webmail-btn {
+		padding: 0.5rem 1rem;
+		border: 1px solid var(--border);
+		border-radius: 8px;
+		background: var(--bg-card);
+		color: var(--text);
+		font-size: 0.88rem;
+		font-weight: 600;
+		cursor: pointer;
+	}
+
+	.webmail-btn:hover {
+		border-color: var(--brand);
+	}
+
+	.webmail-note {
+		margin: 0.6rem 0 0;
+		font-size: 0.78rem;
+		color: var(--text-secondary);
+		line-height: 1.5;
 	}
 
 	.deliverability {
