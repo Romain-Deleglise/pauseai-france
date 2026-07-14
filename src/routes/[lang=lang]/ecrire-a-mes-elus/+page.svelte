@@ -22,6 +22,24 @@
 	let actionId: string | null = null
 	$: action = getEluAction(actionId)
 
+	// Deux outils principaux présentés en onglets sur la même page (élus / presse).
+	// Les campagnes ponctuelles (Genève, gouvernement…) gardent leur propre page :
+	// on n'affiche les onglets que pour ces deux actions « primaires ».
+	$: isPrimaryAction = action.id === 'default' || action.id === 'medias'
+	function selectTool(id: 'default' | 'medias') {
+		if (action.id === id) return
+		actionId = id
+		step = 1
+		selectedRecipient = null
+		// Met l'URL à jour pour que l'onglet actif soit partageable / rechargeable.
+		if (typeof window !== 'undefined') {
+			const u = new URL(window.location.href)
+			if (id === 'default') u.searchParams.delete('action')
+			else u.searchParams.set('action', id)
+			window.history.replaceState(window.history.state, '', u)
+		}
+	}
+
 	// Indices tirés au hasard une fois par action (objet + accroche tournants).
 	let hookIndex = 0
 	let subjectIndex = 0
@@ -567,7 +585,25 @@
 <article>
 	{#if step === 1}
 		<!-- ════════ Étape 1 : choisir le destinataire ════════ -->
-		<header class="hero-band">
+		{#if isPrimaryAction}
+			<nav class="tool-tabs" aria-label={isEn ? 'Choose a tool' : 'Choisir un outil'}>
+				<button
+					class:active={action.id === 'default'}
+					aria-pressed={action.id === 'default'}
+					on:click={() => selectTool('default')}
+				>
+					{isEn ? '🏛️ My representatives' : '🏛️ Mes élus'}
+				</button>
+				<button
+					class:active={action.id === 'medias'}
+					aria-pressed={action.id === 'medias'}
+					on:click={() => selectTool('medias')}
+				>
+					{isEn ? '📰 The press' : '📰 La presse'}
+				</button>
+			</nav>
+		{/if}
+		<header class="hero-band" class:has-tabs={isPrimaryAction}>
 			<div class="hero-inner">
 				<h1>{isEn ? action.hero.title.en : action.hero.title.fr}</h1>
 				<p class="hero-sub">{isEn ? action.hero.subtitle.en : action.hero.subtitle.fr}</p>
@@ -1124,6 +1160,39 @@
 		padding: 0 1.25rem 5rem;
 	}
 
+	/* Onglets outils (élus / presse) */
+	.tool-tabs {
+		display: flex;
+		gap: 0.5rem;
+		justify-content: center;
+		margin-bottom: 1.5rem;
+	}
+
+	.tool-tabs button {
+		padding: 0.6rem 1.4rem;
+		border: 1.5px solid var(--border);
+		border-radius: 2rem;
+		background: var(--bg-card);
+		font-size: 0.95rem;
+		font-weight: 600;
+		color: var(--text-2);
+		cursor: pointer;
+		transition:
+			background-color 0.15s ease,
+			color 0.15s ease,
+			border-color 0.15s ease;
+	}
+
+	.tool-tabs button.active {
+		background: var(--brand);
+		border-color: var(--brand);
+		color: #1a1a1a;
+	}
+
+	.tool-tabs button:not(.active):hover {
+		border-color: var(--brand);
+	}
+
 	/* Hero coloré pleine largeur (full-bleed : déborde de la largeur de l'article) */
 	.hero-band {
 		width: 100vw;
@@ -1133,6 +1202,11 @@
 		padding: 3.5rem 1.25rem 3.25rem;
 		background: var(--brand);
 		text-align: center;
+	}
+
+	/* Quand les onglets sont présents, le hero suit les onglets (pas de remontée). */
+	.hero-band.has-tabs {
+		margin-top: 0;
 	}
 
 	.hero-inner {
