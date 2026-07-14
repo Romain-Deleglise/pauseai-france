@@ -521,9 +521,11 @@ export default {
 		intro_text:
 			'General-purpose AI systems can now perform an ever-growing number of tasks at a speed and cost that make mass replacement of human work possible across many sectors. Nothing guarantees that destroyed jobs will be compensated by new ones, and nothing has been seriously prepared to absorb a social shock of this magnitude.',
 		// Manual update needed: fetch latest numbers from jobloss.ai
-		stat_number: '128,648',
+		stat_number: '125,000+',
 		stat_label: 'documented AI-linked job losses since January 2025',
-		stat_source: 'Source: jobloss.ai, updated Apr 15, 2026',
+		stat_source: 'Source: jobloss.ai — continuously updated',
+		hero_cta_label: 'Write to my representatives',
+		hero_cta_sub: 'An email to your MP and senators. Five minutes, real weight.',
 		survey_section_title: 'You too, take part in the major survey on AI at work!',
 		survey_section_text:
 			'How is AI impacting your professional life? Pause AI is running a survey on AI and employment to assess and understand the impact of AI on the world of work.',

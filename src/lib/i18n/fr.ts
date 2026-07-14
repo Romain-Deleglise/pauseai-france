@@ -524,10 +524,14 @@ export default {
 			"L'IA ne menace pas seulement nos emplois : elle participe à une perte de contrôle croissante sur nos vies et sur nos sociétés.",
 		intro_text:
 			"Les systèmes d'IA généralistes sont capables d'accomplir un nombre croissant de tâches à une vitesse et à un coût qui rendent possible le remplacement massif de travail humain dans de nombreux secteurs. Rien ne garantit que les emplois détruits seront compensés par de nouveaux emplois, et rien n'a été sérieusement préparé pour absorber un choc social de cette ampleur.",
-		// Mise à jour manuelle nécessaire : récupérer les chiffres sur jobloss.ai
-		stat_number: '128 648',
+		// Chiffre volontairement arrondi vers le bas (plancher) : il reste vrai
+		// dans le temps puisque le total ne fait que croître, et évite d'afficher
+		// une date qui se périme. Le total exact et à jour est sur jobloss.ai.
+		stat_number: '125 000+',
 		stat_label: "emplois liés à l'IA supprimés documentés depuis janvier 2025",
-		stat_source: 'Source : jobloss.ai, mis à jour le 15 avr. 2026',
+		stat_source: 'Source : jobloss.ai — total actualisé en continu',
+		hero_cta_label: 'Écrire à mes élu·e·s',
+		hero_cta_sub: 'Un e-mail à vos parlementaires. Cinq minutes, un vrai poids.',
 		survey_section_title: "Vous aussi participez à la grande enquête sur l'IA au travail !",
 		survey_section_text:
 			"Comment l'IA impacte-t-elle votre vie professionnelle ? L'association Pause IA réalise une enquête sur l'IA et l'emploi pour évaluer et comprendre l'impact de l'IA sur le monde du travail.",

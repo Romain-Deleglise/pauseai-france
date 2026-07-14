@@ -152,6 +152,12 @@
 		</div>
 	</a>
 
+	<a class="primary-cta" href="#ecrire-elus">
+		<span class="primary-cta-label">{t.emploi_ia.hero_cta_label}</span>
+		<span class="primary-cta-sub">{t.emploi_ia.hero_cta_sub}</span>
+		<span class="primary-cta-arrow" aria-hidden="true">→</span>
+	</a>
+
 	<section id="temoignage" aria-labelledby="temoignage-heading">
 		<h2 id="temoignage-heading">{t.emploi_ia.testimonials_section_title}</h2>
 		<TestimonialSlideshow {lang} />
@@ -330,6 +336,52 @@
 		}
 	}
 
+	/* ── Primary CTA (action n°1 : écrire aux élus) ── */
+	.primary-cta {
+		display: flex;
+		flex-direction: column;
+		gap: 0.15rem;
+		position: relative;
+		background: var(--brand, #ff9416);
+		color: white;
+		text-decoration: none;
+		padding: 1.1rem 3rem 1.1rem 1.5rem;
+		border-radius: 12px;
+		margin: 0 0 3rem;
+		box-shadow: 0 2px 14px rgba(255, 148, 22, 0.28);
+		transition:
+			transform 0.15s,
+			box-shadow 0.2s,
+			background 0.2s;
+	}
+
+	.primary-cta:hover {
+		background: var(--brand-subtle, #c96900);
+		transform: translateY(-1px);
+		box-shadow: 0 4px 18px rgba(255, 148, 22, 0.35);
+	}
+
+	.primary-cta-label {
+		font-size: 1.15rem;
+		font-weight: 800;
+		line-height: 1.2;
+	}
+
+	.primary-cta-sub {
+		font-size: 0.9rem;
+		color: rgba(255, 255, 255, 0.9);
+		line-height: 1.3;
+	}
+
+	.primary-cta-arrow {
+		position: absolute;
+		right: 1.4rem;
+		top: 50%;
+		transform: translateY(-50%);
+		font-size: 1.5rem;
+		font-weight: 700;
+	}
+
 	/* ── Article cards ── */
 	.article-cards {
 		display: grid;
@@ -397,6 +449,8 @@
 		border-left: 4px solid var(--brand, #ff9416);
 		border-radius: 0 12px 12px 0;
 		padding: 2rem 2.25rem;
+		/* Décale l'ancre (#ecrire-elus) sous l'en-tête fixe lors du scroll. */
+		scroll-margin-top: 5.5rem;
 	}
 
 	:global([data-theme='dark']) .bigger-problem {
