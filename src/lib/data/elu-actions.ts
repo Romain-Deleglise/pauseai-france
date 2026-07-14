@@ -536,8 +536,8 @@ const MEDIAS: EluAction = {
 			id: 'couverture',
 			label: { fr: 'Plus de couverture', en: 'More coverage' },
 			focus: {
-				fr: "Je ne vous demande pas d'épouser une opinion, mais d'enquêter et d'informer : donner la parole aux chercheurs qui alertent comme à ceux qui rassurent, expliquer ce qu'est la course à des systèmes toujours plus autonomes, et éclairer ce que font (ou ne font pas) les pouvoirs publics face à ces risques.",
-				en: 'I am not asking you to take a side, but to investigate and inform: to give a voice both to the researchers who warn and to those who reassure, to explain the race toward ever more autonomous systems, and to shed light on what public authorities are doing (or not doing) about these risks.'
+				fr: "Je ne vous demande pas de prendre parti, mais d'enquêter et d'informer : donner la parole aux chercheurs qui alertent comme à ceux qui rassurent, expliquer la course à des systèmes toujours plus autonomes, et montrer ce que font (ou ne font pas) les pouvoirs publics face à ces risques.",
+				en: 'I am not asking you to take a side, but to investigate and inform: to give a voice both to the researchers who warn and to those who reassure, to explain the race toward ever more autonomous systems, and to show what public authorities are doing (or not doing) about these risks.'
 			},
 			focusVariants: [
 				{
@@ -545,8 +545,8 @@ const MEDIAS: EluAction = {
 					en: 'What I expect from a major title like yours is not a stance but investigative work: weighing the promises of AI against the warnings of its own creators, and following over time a topic too often reduced to its gadgets.'
 				},
 				{
-					fr: "J'aimerais lire, sous votre plume, moins de fascination pour les prouesses techniques et davantage d'analyse : qui décide, qui finance, quels garde-fous existent, et lesquels manquent.",
-					en: 'I would like to read, from you, less fascination with technical feats and more analysis: who decides, who funds, which safeguards exist, and which are missing.'
+					fr: "J'aimerais qu'on y parle un peu moins des prouesses techniques et un peu plus des vraies questions : qui décide, qui finance, quels garde-fous existent et lesquels manquent.",
+					en: 'I would like a bit less about the technical feats and a bit more about the real questions: who decides, who funds, which safeguards exist and which are missing.'
 				}
 			],
 			complementLong: {

@@ -720,31 +720,42 @@
 			{/if}
 
 			{#if recipientGroups.length}
-				<p class="results-hint" class:done-all={sentCount > 0 && sentCount >= allRecipients.length}>
+				<!-- Presse : pas de barre de progression (on choisit un titre, on ne
+				     « coche » pas une liste). Élus : compteur + encouragement. -->
+				{#if isPress}
+					<p class="results-hint">
+						{isEn ? action.recipientsIntro?.en : action.recipientsIntro?.fr}
+					</p>
+				{:else}
+					<p
+						class="results-hint"
+						class:done-all={sentCount > 0 && sentCount >= allRecipients.length}
+					>
+						{#if sentCount >= allRecipients.length && allRecipients.length > 0}
+							🎉 {isEn
+								? `Done! You've written to all ${allRecipients.length} ${targetNoun}. Thank you, this really helps.`
+								: `Bravo ! Vous avez écrit à vos ${allRecipients.length} ${targetNoun}. Merci, votre geste compte vraiment.`}
+						{:else if sentCount > 0}
+							<strong>{sentCount}/{allRecipients.length}</strong>
+							{isEn ? 'contacted.' : 'contactés.'}
+							{isEn
+								? 'Keep going with the others, each message counts.'
+								: 'Continuez avec les autres, chaque message compte.'}
+						{:else if action.recipientsIntro}
+							{isEn ? action.recipientsIntro.en : action.recipientsIntro.fr}
+						{:else}
+							{isEn
+								? `Write to each of your ${targetNoun}: one personal email each.`
+								: `Écrivez à chacun de vos ${targetNoun} : un email personnel pour chaque.`}
+						{/if}
+					</p>
 					{#if sentCount >= allRecipients.length && allRecipients.length > 0}
-						🎉 {isEn
-							? `Done! You've written to all ${allRecipients.length} ${targetNoun}. Thank you, this really helps.`
-							: `Bravo ! Vous avez écrit à vos ${allRecipients.length} ${targetNoun}. Merci, votre geste compte vraiment.`}
-					{:else if sentCount > 0}
-						<strong>{sentCount}/{allRecipients.length}</strong>
-						{isEn ? 'contacted.' : 'contactés.'}
-						{isEn
-							? 'Keep going with the others, each message counts.'
-							: 'Continuez avec les autres, chaque message compte.'}
-					{:else if action.recipientsIntro}
-						{isEn ? action.recipientsIntro.en : action.recipientsIntro.fr}
-					{:else}
-						{isEn
-							? `Write to each of your ${targetNoun}: one personal email each.`
-							: `Écrivez à chacun de vos ${targetNoun} : un email personnel pour chaque.`}
+						<a class="join-link join-link--block" href={joinHref}>
+							{isEn
+								? 'Want to do more? Join Pause AI ↗'
+								: 'Envie d’aller plus loin ? Rejoignez Pause IA ↗'}
+						</a>
 					{/if}
-				</p>
-				{#if sentCount >= allRecipients.length && allRecipients.length > 0}
-					<a class="join-link join-link--block" href={joinHref}>
-						{isEn
-							? 'Want to do more? Join Pause AI ↗'
-							: 'Envie d’aller plus loin ? Rejoignez Pause IA ↗'}
-					</a>
 				{/if}
 				{#each recipientGroups as group}
 					{#if group.list.length}
@@ -840,7 +851,7 @@
 						</div>
 					{/if}
 				{/each}
-				{#if sentCount > 0}
+				{#if !isPress && sentCount > 0}
 					<button class="reset-link" on:click={resetProgress}>
 						{isEn ? 'Reset my progress' : 'Réinitialiser ma progression'}
 					</button>
@@ -1094,6 +1105,13 @@
 					bind:value={personalSentence}
 					on:input={saveUser}
 				></textarea>
+				{#if !personalSentence.trim()}
+					<p class="perso-nudge">
+						{isEn
+							? 'Without a personal line, your message looks like many others and lands with less impact. One sincere sentence changes everything.'
+							: 'Sans phrase personnelle, votre message ressemble à beaucoup d’autres et a moins d’impact. Une phrase sincère change tout.'}
+					</p>
+				{/if}
 			</label>
 
 			<!-- Aperçu de l'email -->
@@ -1233,9 +1251,15 @@
 			{#if sent.has(selectedRecipient.id)}
 				<div class="after-send">
 					<p>
-						{isEn
-							? `Message ready! Go back to write to your other ${targetNoun}.`
-							: `Message prêt ! Revenez en arrière pour écrire à vos autres ${targetNoun}.`}
+						{#if isPress}
+							{isEn
+								? 'Message ready! Thank you, this really helps. One sincere message to the paper you read is exactly what counts.'
+								: 'Message prêt ! Merci, votre geste compte vraiment. Un message sincère au titre que vous lisez, c’est exactement ce qui pèse.'}
+						{:else}
+							{isEn
+								? `Message ready! Go back to write to your other ${targetNoun}.`
+								: `Message prêt ! Revenez en arrière pour écrire à vos autres ${targetNoun}.`}
+						{/if}
 					</p>
 					<a class="join-link" href={joinHref}>
 						{isEn
@@ -1871,6 +1895,14 @@
 	.perso-input:focus {
 		outline: none;
 		border-color: var(--brand);
+	}
+
+	/* Incitation douce (non bloquante) quand la phrase perso est vide */
+	.perso-nudge {
+		margin: 0.5rem 0 0;
+		font-size: 0.82rem;
+		line-height: 1.45;
+		color: var(--brand-subtle);
 	}
 
 	/* Aperçu email */

@@ -89,6 +89,7 @@
 			id: 'agir',
 			label: t.nav.agir,
 			items: [
+				{ href: `${prefix}/ecrire-a-mes-elus`, label: t.nav.ecrire_elus },
 				{ href: `${prefix}/agir`, label: t.nav.comment_agir },
 				{ href: `${prefix}/groupes-locaux`, label: t.nav.groupes_locaux }
 			]
@@ -98,7 +99,6 @@
 			label: t.nav.campagnes,
 			items: [
 				{ href: `${prefix}/campagnes`, label: t.nav.toutes_campagnes },
-				{ href: `${prefix}/ecrire-a-mes-elus`, label: t.nav.ecrire_elus },
 				{ href: `${prefix}/emploi-ia`, label: t.nav.emploi_ia }
 			]
 		},

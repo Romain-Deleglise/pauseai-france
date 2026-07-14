@@ -15,7 +15,7 @@ export default {
 		groupes_locaux: 'Groupes locaux',
 		toutes_campagnes: 'Toutes nos campagnes',
 		geneve_2026: 'Genève 2026',
-		ecrire_elus: 'Écrire à mes élus',
+		ecrire_elus: 'Écrire aux élus et à la presse',
 		emploi_ia: 'Emploi et IA',
 		g7_2026: 'G7 2026',
 		municipales: 'Municipales 2026',
