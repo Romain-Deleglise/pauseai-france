@@ -524,37 +524,23 @@ export default {
 		stat_number: '128,648',
 		stat_label: 'documented AI-linked job losses since January 2025',
 		stat_source: 'Source: jobloss.ai, updated Apr 15, 2026',
-		survey_section_title: 'I am taking part in the major survey on AI at work!',
+		survey_section_title: 'You too, take part in the major survey on AI at work!',
 		survey_section_text:
 			'How is AI impacting your professional life? Pause AI is running a survey on AI and employment to assess and understand the impact of AI on the world of work.',
 		survey_card_title: 'Survey',
 		survey_card_text: 'Answer our survey on AI and employment',
 		survey_card_title_attr: 'Pause AI Survey on AI and employment',
-		testimonials_section_title: 'Their stories',
-		testimonials_section_text_1:
-			'We regularly collect testimonials from people whose working lives have been impacted by AI. If you have been affected too, share your experience ',
-		testimonials_section_link: 'through our survey',
-		testimonials_section_text_2: '.',
-		bigger_problem_title: 'But the problem does not stop at employment.',
-		bigger_problem_text_1:
-			'Job destruction is not a separate topic from the major risks of AI: it is one of its first signals. When a system decides the value of a job, access to information or an educational track, our collective ability to understand and challenge those choices recedes. A technology deployed without democratic oversight, without safeguards or independent evaluation, is a technology we are progressively losing control of. And the more humanity loses control, the more vulnerable it becomes to the catastrophic risks posed by advanced AI systems.',
-		bigger_problem_text_2:
-			'That is why we demand that no frontier AI system be further developed or deployed until its designers have demonstrated, to independent evaluators, that it is safe on economic, social and political grounds. France cannot stop the global AI race alone, but it must take a stand, build international coalitions and push for a binding framework capable of leading to a pause in the development of the most dangerous systems.',
-		cta_transition:
-			'For France to take this turn, its elected officials must hear from citizens, and that is where you can act directly.',
-		cta_callout:
-			'An email to your MP or senator is one of the most direct levers to get this issue onto the political agenda.',
+		testimonials_section_title: 'Your testimonials',
+		bigger_problem_title: 'Write to your elected officials',
+		elus_intro:
+			'The consequences of deploying AI in the economy go beyond unemployment. It is urgent to act. Let your MP and senators know how worried you are. Tell them you are counting on them to act.',
+		elus_models: 'Our tool offers email templates that you can edit or send as they are.',
+		elus_example_label: 'An example (excerpt):',
+		elus_example_quote:
+			'You cannot ignore that a brutal rise in unemployment would jeopardise our social model, and probably our democracy, and ultimately our sovereignty. We are promised spectacular growth thanks to AI! But who will benefit when we are trapped in a dire dependence on Silicon Valley (if not China)?',
 		cta_callout_detail:
-			'Elected officials are required to listen to the concerns of citizens, and a personal message carries far more weight than a petition. It takes five minutes.',
-		cta_button: 'I write a message to politicians',
-		evolution_section_title: 'Evolution of job losses linked to artificial intelligence',
-		evolution_section_text_1: 'The website ',
-		evolution_strong: 'jobloss.ai',
-		evolution_section_text_2:
-			' tracks layoffs in which artificial intelligence or automation is cited as an important factor. The data comes from company announcements and reliable media reports.',
-		evolution_section_text_3:
-			'The interactive chart of this site allows you to observe the evolution of job losses attributed to AI over time and identify the sectors most affected by automation.',
-		evolution_link: 'See the interactive chart on jobloss.ai',
+			'Elected officials are required to listen to the concerns of citizens, and a personal message carries far more weight than a petition.',
+		elus_guide: 'It takes five minutes. Let us guide you!',
 		press_section_title: 'Press review: stay informed',
 		press_section_text:
 			'Many media outlets cover the impact of AI on the job market. We regularly collect press articles dealing with this topic.',
@@ -577,7 +563,7 @@ export default {
 		articles_lang_fr: 'French',
 		articles_lang_en: 'English',
 		analyses_section_title: 'Our analyses',
-		analyses_section_text: 'Two in-depth articles on AI and employment, written by our members.',
+		analyses_section_text: 'In-depth articles on AI and employment, written by our members.',
 		analyses_read: 'Read',
 		article1_title: 'Replacing humans is the goal',
 		article1_desc:
@@ -586,6 +572,16 @@ export default {
 		article2_title: 'France: no pilot in the cockpit',
 		article2_desc:
 			'Mass youth unemployment, a threatened welfare state, dependence on Silicon Valley: what our world could look like if we fail to act.',
-		article2_url: '/emploi-ia/pas-de-pilote'
+		article2_url: '/emploi-ia/pas-de-pilote',
+		article3_title: 'What AI is doing to work',
+		article3_desc:
+			'A qualitative review of our employment survey: loss of meaning, decisions imposed from above, uncertain adaptation — what around thirty witnesses shared with us.',
+		article3_url: '/emploi-ia/ce-que-lia-fait-au-travail',
+		slideshow_empty: 'Illustrated testimonials are coming soon.',
+		slideshow_nav_aria: 'Testimonials slideshow navigation',
+		slideshow_prev: 'Previous testimonial',
+		slideshow_next: 'Next testimonial',
+		slideshow_item: 'another testimonial',
+		slideshow_alt: 'Illustrated testimonial'
 	}
 }

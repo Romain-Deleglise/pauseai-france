@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
 	import EmploiForm from '$components/EmploiForm.svelte'
-	import TestimonialCarousel from '$components/TestimonialCarousel.svelte'
+	import TestimonialSlideshow from '$components/TestimonialSlideshow.svelte'
 	import ArticleShowcase from '$components/ArticleShowcase.svelte'
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
-	import type { Testimonial, ArticleShowcaseItem } from '$lib/types'
+	import type { ArticleShowcaseItem } from '$lib/types'
 	import type { Lang } from '$lib/i18n'
 	import { getT } from '$lib/i18n'
 
@@ -12,21 +12,13 @@
 
 	interface PageData {
 		lang: Lang
-		testimonials: Testimonial[]
 		articleShowcaseItems: ArticleShowcaseItem[]
 	}
 
 	$: t = getT(data.lang)
 	$: lang = data.lang
 
-	let testimonials = data.testimonials
 	let articleShowcaseItems = data.articleShowcaseItems
-
-	testimonials.sort((a, b) => {
-		const dateA = a.date ? new Date(a.date).getTime() : 0
-		const dateB = b.date ? new Date(b.date).getTime() : 0
-		return dateB - dateA
-	})
 
 	articleShowcaseItems.sort((a, b) => {
 		const dateA = a.date ? new Date(a.date).getTime() : 0
@@ -160,19 +152,14 @@
 		</div>
 	</a>
 
+	<section id="temoignage" aria-labelledby="temoignage-heading">
+		<h2 id="temoignage-heading">{t.emploi_ia.testimonials_section_title}</h2>
+		<TestimonialSlideshow {lang} />
+	</section>
+
 	<section id="enquete" aria-labelledby="enquete-heading">
 		<h2 id="enquete-heading">{t.emploi_ia.survey_section_title}</h2>
 		<EmploiForm {lang} />
-	</section>
-
-	<section id="temoignage" aria-labelledby="temoignage-heading">
-		<h2 id="temoignage-heading">{t.emploi_ia.testimonials_section_title}</h2>
-		<p>
-			{t.emploi_ia.testimonials_section_text_1}<a href="/{lang}/emploi-ia/questionnaire"
-				>{t.emploi_ia.testimonials_section_link}</a
-			>{t.emploi_ia.testimonials_section_text_2}
-		</p>
-		<TestimonialCarousel {testimonials} {lang} />
 	</section>
 
 	<section id="analyses" aria-labelledby="analyses-heading">
@@ -180,45 +167,41 @@
 		<p>{t.emploi_ia.analyses_section_text}</p>
 		<div class="article-cards">
 			<a class="article-card" href={t.emploi_ia.article1_url}>
-				<span class="card-meta">Article 1/2 &middot; 4 min</span>
+				<span class="card-meta">Article 1/3 &middot; 4 min</span>
 				<h3 class="article-card-title">{t.emploi_ia.article1_title}</h3>
 				<p class="article-card-desc">{t.emploi_ia.article1_desc}</p>
 				<span class="article-card-link">{t.emploi_ia.analyses_read} &rarr;</span>
 			</a>
 			<a class="article-card" href={t.emploi_ia.article2_url}>
-				<span class="card-meta">Article 2/2 &middot; 5 min</span>
+				<span class="card-meta">Article 2/3 &middot; 5 min</span>
 				<h3 class="article-card-title">{t.emploi_ia.article2_title}</h3>
 				<p class="article-card-desc">{t.emploi_ia.article2_desc}</p>
+				<span class="article-card-link">{t.emploi_ia.analyses_read} &rarr;</span>
+			</a>
+			<a class="article-card" href={t.emploi_ia.article3_url}>
+				<span class="card-meta">Article 3/3 &middot; 6 min</span>
+				<h3 class="article-card-title">{t.emploi_ia.article3_title}</h3>
+				<p class="article-card-desc">{t.emploi_ia.article3_desc}</p>
 				<span class="article-card-link">{t.emploi_ia.analyses_read} &rarr;</span>
 			</a>
 		</div>
 	</section>
 
-	<section id="bigger-problem" aria-labelledby="bigger-problem-heading" class="bigger-problem">
-		<h2 id="bigger-problem-heading">{t.emploi_ia.bigger_problem_title}</h2>
-		<p>{t.emploi_ia.bigger_problem_text_1}</p>
-		<p>{t.emploi_ia.bigger_problem_text_2}</p>
+	<section id="ecrire-elus" aria-labelledby="ecrire-elus-heading" class="bigger-problem">
+		<h2 id="ecrire-elus-heading">{t.emploi_ia.bigger_problem_title}</h2>
+		<p>{t.emploi_ia.elus_intro}</p>
 
-		<p class="cta-transition">{t.emploi_ia.cta_transition}</p>
+		<p class="cta-callout">{t.emploi_ia.elus_models}</p>
 
-		<p class="cta-callout">{t.emploi_ia.cta_callout}</p>
+		<figure class="elus-example">
+			<figcaption>{t.emploi_ia.elus_example_label}</figcaption>
+			<blockquote>{t.emploi_ia.elus_example_quote}</blockquote>
+		</figure>
+
 		<p class="cta-detail">{t.emploi_ia.cta_callout_detail}</p>
+		<p class="cta-guide">{t.emploi_ia.elus_guide}</p>
 
 		<div id="av-embed-container" class="av-embed"></div>
-	</section>
-
-	<section id="evolution" aria-labelledby="evolution-heading">
-		<h2 id="evolution-heading">{t.emploi_ia.evolution_section_title}</h2>
-		<p>
-			{t.emploi_ia.evolution_section_text_1}<strong>{t.emploi_ia.evolution_strong}</strong>{t
-				.emploi_ia.evolution_section_text_2}
-		</p>
-		<p>{t.emploi_ia.evolution_section_text_3}</p>
-		<p>
-			<a href="https://jobloss.ai/" target="_blank" rel="noopener noreferrer">
-				{t.emploi_ia.evolution_link}
-			</a>
-		</p>
 	</section>
 
 	<section id="presse-campagne" aria-labelledby="presse-campagne-heading">
@@ -422,13 +405,6 @@
 		margin-top: 0;
 	}
 
-	/* ── CTA transition ── */
-	.cta-transition {
-		font-style: italic;
-		color: var(--text-secondary, #555);
-		margin: 1.5rem 0 0;
-	}
-
 	/* ── CTA callout ── */
 	.cta-callout {
 		font-weight: 600;
@@ -444,6 +420,41 @@
 		font-size: 0.95rem;
 		color: var(--text-secondary, #555);
 		margin: 0 0 0.25rem;
+	}
+
+	.cta-guide {
+		font-weight: 700;
+		color: var(--brand-subtle, #c96900);
+		margin: 0.75rem 0 0.25rem;
+	}
+
+	/* ── Élus email example ── */
+	.elus-example {
+		margin: 1.25rem 0;
+	}
+
+	.elus-example figcaption {
+		font-size: 0.85rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		color: var(--text-secondary, #888);
+		margin-bottom: 0.4rem;
+	}
+
+	.elus-example blockquote {
+		margin: 0;
+		padding: 1rem 1.25rem;
+		border-left: 3px solid var(--brand, #ff9416);
+		background: var(--bg, #fff);
+		border-radius: 0 8px 8px 0;
+		font-style: italic;
+		line-height: 1.6;
+		color: var(--text, #111);
+	}
+
+	:global([data-theme='dark']) .elus-example blockquote {
+		background: rgba(255, 255, 255, 0.03);
 	}
 
 	/* ── Press list ── */

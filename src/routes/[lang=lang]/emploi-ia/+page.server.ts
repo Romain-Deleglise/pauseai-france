@@ -9,6 +9,8 @@ import {
 	getUrl,
 	getSelectName
 } from '$lib/notion-helpers'
+// Note : les témoignages illustrés du diaporama (composant TestimonialSlideshow)
+// proviennent désormais des images de src/assets/emploi-ia/temoignages/, plus de Notion.
 
 const notion = new Client({
 	auth: process.env.NOTION_TOKEN as string
@@ -22,30 +24,9 @@ export const prerender = false
 
 export async function load() {
 	try {
-		const testimonials_datasource = await notion.dataSources.query({
-			data_source_id: process.env.TESTIMONIALS_ID as string
-		})
-
 		const articleShowcase_datasource = await notion.dataSources.query({
 			data_source_id: process.env.ARTICLE_SHOWCASE_ID as string
 		})
-
-		const testimonials = testimonials_datasource.results
-			.filter(isPageWithProperties)
-			.filter(
-				(item) =>
-					getCheckbox(item.properties.Afficher) && getRichTextContent(item.properties.Témoignage)
-			)
-			.map((item) => ({
-				name:
-					getCheckbox(item.properties.Consentement) && getTitleContent(item.properties.Prenom)
-						? getTitleContent(item.properties.Prenom)
-						: undefined,
-				age: getRichTextContent(item.properties.Age),
-				job: getRichTextContent(item.properties.Profession),
-				date: getDateStart(item.properties.Date),
-				testimony: getRichTextContent(item.properties.Témoignage)
-			}))
 
 		const articleShowcaseItems = articleShowcase_datasource.results
 			.filter(isPageWithProperties)
@@ -61,7 +42,6 @@ export async function load() {
 			}))
 
 		return {
-			testimonials: testimonials,
 			articleShowcaseItems: articleShowcaseItems
 		}
 	} catch (err) {
