@@ -1,5 +1,4 @@
 <script lang="ts">
-	import CarouselNavigation from '$components/CarouselNavigation.svelte'
 	import type { Lang } from '$lib/i18n'
 	import { getT } from '$lib/i18n'
 	import { temoignagesEmploi, type TemoignageEmploi } from '$lib/data/temoignages-emploi'
@@ -37,7 +36,7 @@
 
 	$: currentSlide = slides[current]
 	$: currentAlt = currentSlide?.meta
-		? `« ${currentSlide.meta.quote} » — ${currentSlide.meta.name}, ${currentSlide.meta.role}`
+		? `${currentSlide.meta.name}, ${currentSlide.meta.role} : « ${currentSlide.meta.quote} »`
 		: `${t.emploi_ia.slideshow_alt} ${current + 1}`
 
 	const goTo = (index: number) => {
@@ -48,12 +47,6 @@
 
 	const previous = () => goTo(current - 1)
 	const next = () => goTo(current + 1)
-
-	$: navItems = slides.map(() => ({ label: t.emploi_ia.slideshow_item }))
-
-	const handleSelect = (event: CustomEvent<{ index: number }>) => {
-		goTo(event.detail.index)
-	}
 
 	const openZoom = () => (zoomed = true)
 	const closeZoom = () => (zoomed = false)
@@ -85,37 +78,47 @@
 <section class="slideshow" aria-roledescription="carousel">
 	{#if slides.length}
 		<figure class="slide" aria-live="polite">
-			<button
-				type="button"
-				class="zoom-trigger"
-				on:click={openZoom}
-				title={t.emploi_ia.slideshow_zoom}
-			>
-				<img src={currentSlide.url} alt={currentAlt} decoding="async" />
-				<span class="zoom-hint" aria-hidden="true">⤢ {t.emploi_ia.slideshow_zoom}</span>
-			</button>
+			<!-- svelte-ignore a11y-no-static-element-interactions -->
+			<div class="slide-frame" on:touchstart={onTouchStart} on:touchend={onTouchEnd}>
+				<button
+					type="button"
+					class="zoom-trigger"
+					on:click={openZoom}
+					title={t.emploi_ia.slideshow_zoom}
+				>
+					<img src={currentSlide.url} alt={currentAlt} decoding="async" />
+					<span class="zoom-hint" aria-hidden="true">⤢ {t.emploi_ia.slideshow_zoom}</span>
+				</button>
+
+				{#if slides.length > 1}
+					<button
+						type="button"
+						class="nav-arrow nav-prev"
+						on:click={previous}
+						aria-label={t.emploi_ia.slideshow_prev}
+					>
+						‹
+					</button>
+					<button
+						type="button"
+						class="nav-arrow nav-next"
+						on:click={next}
+						aria-label={t.emploi_ia.slideshow_next}
+					>
+						›
+					</button>
+				{/if}
+			</div>
+
 			<figcaption class="slide-caption">
 				{#if currentSlide.meta}
 					<span class="attribution">
-						{currentSlide.meta.name}, {currentSlide.meta.age} ans — {currentSlide.meta.role}
+						{currentSlide.meta.name}, {currentSlide.meta.age} ans · {currentSlide.meta.role}
 					</span>
 				{/if}
 				<span class="counter">{current + 1} / {slides.length}</span>
 			</figcaption>
 		</figure>
-
-		<CarouselNavigation
-			items={navItems}
-			{current}
-			ariaLabel={t.emploi_ia.slideshow_nav_aria}
-			previousLabel={t.emploi_ia.slideshow_prev}
-			nextLabel={t.emploi_ia.slideshow_next}
-			showArrows={slides.length > 1}
-			showDots={slides.length > 1}
-			on:previous={previous}
-			on:next={next}
-			on:select={handleSelect}
-		/>
 	{:else}
 		<p class="empty">{t.emploi_ia.slideshow_empty}</p>
 	{/if}
@@ -186,16 +189,69 @@
 		gap: 0.6rem;
 	}
 
+	.slide-frame {
+		position: relative;
+		width: 100%;
+		max-width: 640px;
+	}
+
 	.zoom-trigger {
 		display: block;
 		width: 100%;
-		max-width: 640px;
 		padding: 0;
 		border: 0;
 		background: none;
 		cursor: zoom-in;
 		position: relative;
 		border-radius: 14px;
+	}
+
+	/* Flèches de navigation, sur les bords de la carte + balayage tactile. */
+	.nav-arrow {
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		width: 2.75rem;
+		height: 2.75rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 1.9rem;
+		line-height: 1;
+		padding-bottom: 0.2rem;
+		color: var(--brand-subtle, #c96900);
+		background: rgba(255, 255, 255, 0.92);
+		border: 1px solid var(--border, #e5e7eb);
+		border-radius: 50%;
+		cursor: pointer;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+		transition:
+			background 0.15s,
+			color 0.15s,
+			transform 0.15s;
+	}
+
+	.nav-arrow:hover {
+		background: var(--brand, #ff9416);
+		color: white;
+		transform: translateY(-50%) scale(1.05);
+	}
+
+	.nav-prev {
+		left: -0.6rem;
+	}
+
+	.nav-next {
+		right: -0.6rem;
+	}
+
+	@media (max-width: 700px) {
+		.nav-prev {
+			left: 0.4rem;
+		}
+		.nav-next {
+			right: 0.4rem;
+		}
 	}
 
 	.zoom-trigger img {

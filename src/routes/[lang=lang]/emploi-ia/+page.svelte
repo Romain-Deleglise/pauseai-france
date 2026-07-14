@@ -77,7 +77,7 @@
 		},
 		{
 			title:
-				"« La question de la sécurité n'est pas posée » — le collectif Pause IA demande un moratoire sur le développement de l'intelligence artificielle",
+				"« La question de la sécurité n'est pas posée » : le collectif Pause IA demande un moratoire sur le développement de l'intelligence artificielle",
 			source: 'Dordogne Libre',
 			date: 'Mai 2026',
 			url: 'https://www.dordognelibre.fr/dordogne/la-question-de-la-securite-n-est-pas-posee-le-collectif-pause-ia-demande-un-moratoire-sur-le-developpement-de-l-intelligence-artificielle-28895566.php'
@@ -161,11 +161,11 @@
 	<section id="temoignage" aria-labelledby="temoignage-heading">
 		<h2 id="temoignage-heading">{t.emploi_ia.testimonials_section_title}</h2>
 		<TestimonialSlideshow {lang} />
-	</section>
 
-	<section id="enquete" aria-labelledby="enquete-heading">
-		<h2 id="enquete-heading">{t.emploi_ia.survey_section_title}</h2>
-		<EmploiForm {lang} />
+		<div id="enquete" class="survey-block">
+			<h3>{t.emploi_ia.survey_section_title}</h3>
+			<EmploiForm {lang} />
+		</div>
 	</section>
 
 	<section id="analyses" aria-labelledby="analyses-heading">
@@ -260,6 +260,19 @@
 
 	section:not(:last-child) {
 		margin-bottom: 5rem;
+	}
+
+	/* ── Bloc questionnaire, regroupé sous les témoignages ── */
+	.survey-block {
+		margin-top: 2.5rem;
+		padding-top: 1.75rem;
+		border-top: 1px solid var(--border, #e5e7eb);
+		scroll-margin-top: 5.5rem;
+	}
+
+	.survey-block h3 {
+		margin: 0 0 0.5rem;
+		font-size: 1.25rem;
 	}
 
 	/* ── Lead callout ── */
@@ -385,9 +398,15 @@
 	/* ── Article cards ── */
 	.article-cards {
 		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
-		gap: 1.25rem;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 1rem;
 		margin-top: 1.5rem;
+	}
+
+	@media (max-width: 640px) {
+		.article-cards {
+			grid-template-columns: 1fr;
+		}
 	}
 
 	.card-meta {
@@ -400,8 +419,8 @@
 	.article-card {
 		display: flex;
 		flex-direction: column;
-		gap: 0.6rem;
-		padding: 1.25rem 1.5rem;
+		gap: 0.5rem;
+		padding: 1.1rem 1.2rem;
 		border: 1px solid var(--border, #e5e7eb);
 		border-radius: 10px;
 		background: var(--bg-card, #fafafa);

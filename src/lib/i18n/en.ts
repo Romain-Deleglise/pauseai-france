@@ -523,7 +523,7 @@ export default {
 		// Manual update needed: fetch latest numbers from jobloss.ai
 		stat_number: '125,000+',
 		stat_label: 'documented AI-linked job losses since January 2025',
-		stat_source: 'Source: jobloss.ai — continuously updated',
+		stat_source: 'Source: jobloss.ai',
 		hero_cta_label: 'Write to my representatives',
 		hero_cta_sub: 'An email to your MP and senators. Five minutes, real weight.',
 		survey_section_title: 'You too, take part in the major survey on AI at work!',
@@ -569,7 +569,7 @@ export default {
 		analyses_read: 'Read',
 		article1_title: 'Replacing humans is the goal',
 		article1_desc:
-			'In a few years, AI has become capable of replacing humans in more and more tasks — 16% of work in France already automatable.',
+			'In a few years, AI has become capable of replacing humans in more and more tasks, 16% of work in France already automatable.',
 		article1_url: '/emploi-ia/remplacer-humain',
 		article2_title: 'France: no pilot in the cockpit',
 		article2_desc:
@@ -577,7 +577,7 @@ export default {
 		article2_url: '/emploi-ia/pas-de-pilote',
 		article3_title: 'What AI is doing to work',
 		article3_desc:
-			'A qualitative review of our employment survey: loss of meaning, decisions imposed from above, uncertain adaptation — what around thirty witnesses shared with us.',
+			'A qualitative review of our employment survey: loss of meaning, decisions imposed from above, uncertain adaptation, what around thirty witnesses shared with us.',
 		article3_url: '/emploi-ia/ce-que-lia-fait-au-travail',
 		slideshow_empty: 'Illustrated testimonials are coming soon.',
 		slideshow_nav_aria: 'Testimonials slideshow navigation',

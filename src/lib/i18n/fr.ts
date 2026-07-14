@@ -529,7 +529,7 @@ export default {
 		// une date qui se périme. Le total exact et à jour est sur jobloss.ai.
 		stat_number: '125 000+',
 		stat_label: "emplois liés à l'IA supprimés documentés depuis janvier 2025",
-		stat_source: 'Source : jobloss.ai — total actualisé en continu',
+		stat_source: 'Source : jobloss.ai',
 		hero_cta_label: 'Écrire à mes élu·e·s',
 		hero_cta_sub: 'Un e-mail à vos parlementaires. Cinq minutes, un vrai poids.',
 		survey_section_title: "Vous aussi participez à la grande enquête sur l'IA au travail !",
@@ -584,7 +584,7 @@ export default {
 		article2_url: '/emploi-ia/pas-de-pilote',
 		article3_title: 'Ce que l’IA fait au travail',
 		article3_desc:
-			"Bilan qualitatif de notre enquête sur l'emploi : perte de sens, décisions imposées, adaptation incertaine — ce qu'une trentaine de témoins nous ont confié.",
+			"Bilan qualitatif de notre enquête sur l'emploi : perte de sens, décisions imposées, adaptation incertaine, ce qu'une trentaine de témoins nous ont confié.",
 		article3_url: '/emploi-ia/ce-que-lia-fait-au-travail',
 		slideshow_empty: 'Les témoignages illustrés arrivent prochainement.',
 		slideshow_nav_aria: 'Navigation du diaporama des témoignages',

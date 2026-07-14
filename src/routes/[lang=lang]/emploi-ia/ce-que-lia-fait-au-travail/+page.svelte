@@ -9,7 +9,7 @@
 	<title>Ce que l'IA fait au travail | PauseAI France</title>
 	<meta
 		name="description"
-		content="Bilan qualitatif de l'enquête Pause IA sur l'emploi : perte de sens, décisions imposées, adaptation incertaine — ce qu'une trentaine de témoins nous ont confié au printemps 2026."
+		content="Bilan qualitatif de l'enquête Pause IA sur l'emploi : perte de sens, décisions imposées, adaptation incertaine, ce qu'une trentaine de témoins nous ont confié au printemps 2026."
 	/>
 	<meta name="robots" content="index, follow" />
 </svelte:head>
@@ -85,8 +85,8 @@
 	</p>
 
 	<p>
-		Une éditrice de presse est devenue « vérificatrice de tâches IA ». Son travail quotidien — lire,
-		choisir, reformuler, juger — a été aspiré, remplacé par la supervision d'une production qu'elle
+		Une éditrice de presse est devenue « vérificatrice de tâches IA ». Son travail quotidien (lire,
+		choisir, reformuler, juger) a été aspiré, remplacé par la supervision d'une production qu'elle
 		n'a pas faite. Une ingénieure pédagogique regarde les formations automatiques se multiplier, les
 		décrit comme « terribles et pauvres », alors même que ses commanditaires ne font plus la
 		différence.
