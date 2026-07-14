@@ -222,7 +222,199 @@ const EXEMPLE_GOUVERNEMENT: EluAction = {
 	}
 }
 
-export const eluActions: EluAction[] = [DEFAULT_ACTION, EXEMPLE_GOUVERNEMENT]
+// ──────────────────────────────────────────────────────────────────────────
+// Action « médias » : demander aux grandes rédactions nationales de couvrir
+// davantage les risques de l'IA. Cible fixe (targeting: 'fixed'), ton « lecteur
+// qui demande plus de couverture » (et non « citoyen qui écrit à son élu »).
+//
+// ⚠️ CONTACTS À VÉRIFIER AVANT LANCEMENT (com) : les canaux ci-dessous ne sont
+// certains que pour Le Monde (email public « courrier des lecteurs ») et
+// Libération (formulaire de contact officiel). Pour les autres titres, le lien
+// pointe vers la page de contact/assistance officielle mais doit être confirmé,
+// et un email direct « courrier des lecteurs » peut être ajouté s'il est public.
+// Tant qu'un email n'est pas renseigné, l'outil propose « copier le texte » +
+// ouverture du formulaire, ce qui reste parfaitement fonctionnel.
+//
+// Remarque efficacité : tout le monde écrit aux MÊMES adresses. Des messages
+// quasi identiques sont vite repérés et perdent tout poids. La phrase
+// personnelle (proposée à l'étape 2) est donc ici essentielle, pas optionnelle.
+// ──────────────────────────────────────────────────────────────────────────
+const COURRIER_LECTEURS: Bilingual = { fr: 'Courrier des lecteurs', en: 'Readers’ letters' }
+const REDACTION: Bilingual = { fr: 'Rédaction', en: 'Newsroom' }
+
+const MEDIAS: EluAction = {
+	id: 'medias',
+	status: 'active',
+	targeting: 'fixed',
+	targetsHeading: { fr: 'Les grandes rédactions nationales', en: 'Major national newsrooms' },
+	fixedTargets: [
+		{
+			id: 'le-monde',
+			nom: 'Le Monde',
+			role: 'autre',
+			email: 'courrier-des-lecteurs@lemonde.fr',
+			fonction: COURRIER_LECTEURS
+		},
+		{
+			id: 'liberation',
+			nom: 'Libération',
+			role: 'autre',
+			email: null,
+			contactUrl: 'https://www.liberation.fr/contact/',
+			fonction: REDACTION
+		},
+		{
+			id: 'le-figaro',
+			nom: 'Le Figaro',
+			role: 'autre',
+			email: null,
+			contactUrl: 'https://www.lefigaro.fr/assistance',
+			fonction: REDACTION
+		},
+		{
+			id: 'le-parisien',
+			nom: 'Le Parisien',
+			role: 'autre',
+			email: null,
+			contactUrl: 'https://www.leparisien.fr/services/contactez-nous/',
+			fonction: REDACTION
+		},
+		{
+			id: 'ouest-france',
+			nom: 'Ouest-France',
+			role: 'autre',
+			email: null,
+			contactUrl: 'https://www.ouest-france.fr/services/contact/',
+			fonction: REDACTION
+		},
+		{
+			id: 'les-echos',
+			nom: 'Les Échos',
+			role: 'autre',
+			email: null,
+			contactUrl: 'https://www.lesechos.fr/pages-utiles/contacts',
+			fonction: REDACTION
+		},
+		{
+			id: 'la-croix',
+			nom: 'La Croix',
+			role: 'autre',
+			email: null,
+			contactUrl: 'https://www.la-croix.com/contactez-nous',
+			fonction: REDACTION
+		},
+		{
+			id: 'mediapart',
+			nom: 'Mediapart',
+			role: 'autre',
+			email: null,
+			contactUrl: 'https://www.mediapart.fr/contact',
+			fonction: REDACTION
+		}
+	],
+	meta: {
+		title: {
+			fr: 'Écrire à la presse | Pause IA',
+			en: 'Write to the press | Pause AI'
+		},
+		description: {
+			fr: "Prenez 2 minutes pour demander à votre journal de mieux couvrir les risques de l'IA. Un email prêt à personnaliser vers les grandes rédactions.",
+			en: 'Take 2 minutes to ask your newspaper to better cover the risks of AI. A ready-to-personalise email to the major newsrooms.'
+		}
+	},
+	hero: {
+		title: { fr: 'Écrire à la presse', en: 'Write to the press' },
+		subtitle: {
+			fr: "Les médias couvrent ce que leurs lecteurs veulent lire. En quelques minutes, demandez à votre journal de traiter davantage les risques de l'IA.",
+			en: 'The media cover what their readers want to read. In a few minutes, ask your newspaper to give more coverage to the risks of AI.'
+		}
+	},
+	subjects: [
+		{
+			fr: "Demande de couverture : le risque existentiel lié à l'IA",
+			en: 'Request for coverage: existential risk from AI'
+		},
+		{
+			fr: "Pour une couverture à la hauteur des enjeux de l'IA",
+			en: 'For coverage that matches what is at stake with AI'
+		},
+		{
+			fr: "Un lecteur vous demande de traiter davantage les risques de l'IA",
+			en: 'A reader asking you to cover the risks of AI more'
+		},
+		{
+			fr: "Mieux couvrir la sécurité de l'intelligence artificielle",
+			en: 'Covering the safety of artificial intelligence more fully'
+		}
+	],
+	hooks: [
+		{
+			fr: "En tant que lecteur attentif de votre journal, je suis frappé par l'écart entre l'ampleur des risques liés à l'intelligence artificielle et la place, encore modeste, qu'ils occupent dans le débat public. Ce qui m'alerte n'est pas de la science-fiction : ce sont les dirigeants mêmes des grands laboratoires d'IA qui reconnaissent publiquement que leurs systèmes pourraient, à terme, échapper à notre contrôle.",
+			en: 'As an attentive reader of your paper, I am struck by the gap between the scale of the risks linked to artificial intelligence and the still modest place they hold in public debate. What alarms me is not science fiction: it is the very leaders of the major AI labs who publicly acknowledge that their systems could, in time, escape our control.'
+		},
+		{
+			fr: "Un avertissement récent mérite, selon moi, une place bien plus grande dans vos colonnes. En mai 2023, des centaines de chercheurs et les dirigeants des principaux laboratoires d'IA ont signé une même phrase : « Atténuer le risque d'extinction lié à l'IA devrait être une priorité mondiale, au même titre que les pandémies ou la guerre nucléaire. » Quand ceux qui construisent cette technologie lancent une telle alerte, le sujet me semble devoir être davantage traité.",
+			en: 'A recent warning deserves, in my view, far more space in your pages. In May 2023, hundreds of researchers and the leaders of the main AI labs signed a single sentence: "Mitigating the risk of extinction from AI should be a global priority, alongside other societal-scale risks such as pandemics and nuclear war." When the people building this technology raise such an alarm, the topic seems to me to deserve much more coverage.'
+		},
+		{
+			fr: "Un sujet me paraît largement sous-traité au regard de son importance. Des scientifiques parmi les plus respectés, comme les prix Turing Yoshua Bengio et Geoffrey Hinton, alertent sur le fait que personne ne sait aujourd'hui garantir le contrôle des systèmes d'IA les plus avancés. J'aimerais lire, dans votre titre, des enquêtes à la hauteur de cet enjeu.",
+			en: 'One topic seems to me largely under-covered given its importance. Some of the most respected scientists, such as Turing laureates Yoshua Bengio and Geoffrey Hinton, warn that no one today knows how to guarantee control of the most advanced AI systems. I would like to read, in your paper, investigations that match what is at stake.'
+		}
+	],
+	angles: [
+		{
+			id: 'couverture',
+			label: { fr: 'Plus de couverture', en: 'More coverage' },
+			focus: {
+				fr: "Je ne vous demande pas d'épouser une opinion, mais d'enquêter et d'informer : donner la parole aux chercheurs qui alertent comme à ceux qui rassurent, expliquer ce qu'est la course à des systèmes toujours plus autonomes, et éclairer ce que font (ou ne font pas) les pouvoirs publics face à ces risques.",
+				en: 'I am not asking you to take a side, but to investigate and inform: to give a voice both to the researchers who warn and to those who reassure, to explain the race toward ever more autonomous systems, and to shed light on what public authorities are doing (or not doing) about these risks.'
+			},
+			complementLong: {
+				fr: "Une couverture régulière et rigoureuse aide vos lecteurs à se forger une opinion éclairée sur ce qui pourrait être la transformation la plus lourde de conséquences de ce siècle. C'est précisément le rôle d'un grand journal.",
+				en: 'Regular, rigorous coverage helps your readers form an informed opinion on what could be the most consequential transformation of this century. That is precisely the role of a great newspaper.'
+			}
+		},
+		{
+			id: 'existentiel',
+			label: { fr: 'Risque existentiel', en: 'Existential risk' },
+			focus: {
+				fr: "Ce qui me préoccupe le plus est le risque le plus extrême : en construisant des machines plus intelligentes que nous sans savoir les maîtriser, nous prenons un pari dont l'humanité pourrait ne jamais se relever. Ce n'est plus une crainte marginale, mais une inquiétude partagée au plus haut niveau de la recherche, et vos lecteurs gagneraient à en mesurer la portée.",
+				en: 'What worries me most is the most extreme risk: by building machines more intelligent than us without knowing how to control them, we are taking a gamble humanity might never recover from. This is no longer a fringe fear but a concern shared at the highest levels of research, and your readers would benefit from grasping its scale.'
+			},
+			complementLong: {
+				fr: "Ce risque n'efface pas les autres, plus immédiats : désinformation, surveillance, emploi, armes autonomes. Tous méritent une couverture attentive.",
+				en: 'This risk does not erase the others, more immediate ones: disinformation, surveillance, jobs, autonomous weapons. They all deserve careful coverage.'
+			}
+		},
+		{
+			id: 'democratie',
+			label: { fr: 'Démocratie et information', en: 'Democracy and information' },
+			focus: {
+				fr: "Un angle vous concerne directement : ces systèmes fragilisent déjà le débat démocratique. Deepfakes et désinformation de masse brouillent la frontière entre le vrai et le faux, au moment même où la confiance dans l'information est fragile. En tant que média, vous êtes en première ligne pour l'expliquer.",
+				en: 'One angle concerns you directly: these systems are already straining democratic debate. Deepfakes and mass disinformation blur the line between true and false, at the very moment when trust in information is fragile. As a media outlet, you are on the front line to explain it.'
+			},
+			complementLong: {
+				fr: 'Et derrière ces effets immédiats demeure une question de fond : nous nous apprêtons à créer des intelligences supérieures à la nôtre sans garantie de pouvoir les garder sous contrôle.',
+				en: 'And behind these immediate effects lies a deeper question: we are about to create intelligences greater than our own with no guarantee of keeping them under control.'
+			}
+		}
+	],
+	poll: {
+		fr: "Ce sujet intéresse vos lecteurs : selon un récent sondage, seuls 8 % des Français souhaitent accélérer le développement de l'IA, et près de huit sur dix sont favorables à des accords internationaux interdisant les capacités d'IA qui menacent la vie humaine ou les droits fondamentaux.",
+		en: 'This topic matters to your readers: according to a recent poll, only 8% of French people want to accelerate AI development, and nearly eight in ten support international agreements banning AI capabilities that threaten human life or fundamental rights.'
+	},
+	balance: {
+		fr: "Je mesure l'exigence et l'indépendance de votre travail, et ma démarche n'est pas une critique. C'est la demande d'un lecteur qui souhaite voir ce sujet, décisif pour l'avenir, traité à sa juste mesure.",
+		en: 'I recognise the rigour and independence of your work, and this is not a criticism. It is the request of a reader who wishes to see this topic, decisive for the future, covered as fully as it deserves.'
+	},
+	ask: {
+		fr: "C'est pourquoi je vous demande d'accorder à ce sujet une couverture plus régulière et approfondie : enquêtes, entretiens avec les chercheurs concernés, décryptage des décisions politiques en cours. L'association Pause IA (pauseia.fr) se tient à votre disposition pour vous orienter vers des sources et des spécialistes francophones.",
+		en: 'That is why I ask you to give this topic more regular and in-depth coverage: investigations, interviews with the researchers involved, analysis of the political decisions under way. The Pause AI association (pauseia.fr) would be glad to point you toward French-speaking sources and experts.'
+	},
+	hasDetailed: true
+}
+
+export const eluActions: EluAction[] = [DEFAULT_ACTION, EXEMPLE_GOUVERNEMENT, MEDIAS]
 
 /** Renvoie l'action demandée, ou l'action par défaut si l'id est inconnu. */
 export function getEluAction(id: string | null | undefined): EluAction {
