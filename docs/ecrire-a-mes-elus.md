@@ -40,6 +40,38 @@ La progression (« Écrit ✓ ») et les infos personnelles sont mémorisées
   - **Sénateurs** : par département (toujours fiable).
   - **Députés** : par circonscription exacte si le code postal est connu,
     sinon repli sur tous les députés du département.
+
+### Ciblage fin de la circonscription (cas ambigu)
+
+Dans les grandes villes, **un code postal recouvre plusieurs circonscriptions**
+(ex. 31500 à Toulouse en couvre 5). On ne peut donc pas déduire la
+circonscription exacte du seul code postal, et l'outil affiche alors « Vos
+députés (votre ville) ».
+
+En **amélioration progressive**, l'utilisateur peut préciser son adresse pour
+identifier **son** député (celui dont il est réellement l'administré) :
+
+- **Géocodage** de l'adresse via la **Base Adresse Nationale** (BAN,
+  `api-adresse.data.gouv.fr`, service public sans clé) → coordonnées.
+- **Point-in-polygon** contre les **contours de circonscriptions** du seul
+  département concerné, chargés à la demande depuis `static/circo-geo/<dept>.json`
+  (`src/lib/data/circo-geo.ts`).
+- Le député trouvé est **remonté en tête**, marqué d'une **pastille prioritaire**,
+  et son mail passe en « je réside dans **votre circonscription** » (signal
+  « administré » plein) ; les autres restent en « votre ville ».
+- **Non bloquant** : tout échec (adresse introuvable, BAN indisponible) retombe
+  silencieusement sur le comportement par défaut.
+- **Vie privée** : l'adresse n'est envoyée qu'à la BAN (service public de l'État),
+  uniquement pour trouver la circonscription, jamais conservée par le site.
+- **Poids** : rien n'est chargé par défaut ; seulement le fichier d'**un**
+  département (~20 à 230 Ko) est récupéré, et uniquement dans le cas ambigu.
+
+Les fichiers `static/circo-geo/*.json` sont générés par
+`node scripts/build-circo-geo.js` à partir du GeoJSON source
+`scripts/data/circonscriptions-legislatives-p20.geojson` (jeu de données
+data.gouv « Contours géographiques des circonscriptions législatives », version
+p20). À **régénérer au prochain redécoupage** législatif.
+
 - **Génération idempotente** (`writeStableJson` : clés triées, `generatedAt`
   préservé) → une PR ne s'ouvre que si le contenu change réellement.
 - **Garde-fous** : seuils sur le nombre d'élus / d'emails ; en cas d'anomalie,
@@ -83,11 +115,19 @@ document séparé `docs/ecrire-a-mes-elus-textes.md` pour le texte complet desti
 
 Structure d'un mail :
 
-1. **Salutation** genrée selon la civilité et le rôle
+1. **Salutation** genrée selon la civilité **du destinataire** et son rôle
    (« Madame la Députée », « Monsieur le Sénateur », repli neutre).
-2. **Phrase d'introduction** : « Je m'appelle X et je vous écris en tant
-   qu'habitant de votre circonscription/département. » (la localité précise est
-   dans la signature).
+2. **Phrase d'introduction** : « Je m'appelle X et je vous écris car je réside
+   dans votre circonscription/ville/département. » Formulation **neutre (non
+   genrée)** côté expéditeur : on emploie des verbes plutôt que des adjectifs
+   accordés (« je réside », « me préoccupe »), pour ne pas présumer le genre de
+   l'expéditeur et éviter d'avoir à demander sa civilité.
+   La **localité affirmée pour un député dépend de la fiabilité du géocodage** :
+   « votre circonscription » seulement quand le code postal désigne une seule
+   circonscription ; « votre ville » quand il en couvre plusieurs (grandes villes
+   comme Toulouse) ; « votre département » en repli. Cela évite d'affirmer à tort
+   « votre circonscription » à des députés dont l'utilisateur n'est pas
+   nécessairement un administré.
 3. **Accroche** (`HOOKS`) : tirée au hasard parmi 3 par visiteur.
 4. **Focus** (`FOCUS`) : selon l'angle choisi (3 angles).
 5. _(version détaillée)_ **Complément** (`COMPLEMENT`) + **Sondage** (`POLL`).
