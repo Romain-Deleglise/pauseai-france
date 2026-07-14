@@ -43,6 +43,23 @@
 
 	const handleKeydown = (event: KeyboardEvent) => {
 		if (event.key === 'Escape') closeZoom()
+		else if (event.key === 'ArrowLeft') previous()
+		else if (event.key === 'ArrowRight') next()
+	}
+
+	// Balayage tactile (mobile) dans la vue plein écran.
+	let touchStartX: number | null = null
+	const onTouchStart = (event: TouchEvent) => {
+		touchStartX = event.changedTouches[0].clientX
+	}
+	const onTouchEnd = (event: TouchEvent) => {
+		if (touchStartX === null) return
+		const dx = event.changedTouches[0].clientX - touchStartX
+		if (Math.abs(dx) > 40) {
+			if (dx < 0) next()
+			else previous()
+		}
+		touchStartX = null
 	}
 </script>
 
@@ -50,20 +67,22 @@
 
 <section class="slideshow" aria-roledescription="carousel">
 	{#if slides.length}
-		{#key current}
-			<figure class="slide" aria-live="polite">
-				<button
-					type="button"
-					class="zoom-trigger"
-					on:click={openZoom}
-					title={t.emploi_ia.slideshow_zoom}
-				>
-					<img src={slides[current]} alt={`${t.emploi_ia.slideshow_alt} ${current + 1}`} />
-					<span class="zoom-hint" aria-hidden="true">⤢ {t.emploi_ia.slideshow_zoom}</span>
-				</button>
-				<figcaption class="counter">{current + 1} / {slides.length}</figcaption>
-			</figure>
-		{/key}
+		<figure class="slide" aria-live="polite">
+			<button
+				type="button"
+				class="zoom-trigger"
+				on:click={openZoom}
+				title={t.emploi_ia.slideshow_zoom}
+			>
+				<img
+					src={slides[current]}
+					alt={`${t.emploi_ia.slideshow_alt} ${current + 1}`}
+					decoding="async"
+				/>
+				<span class="zoom-hint" aria-hidden="true">⤢ {t.emploi_ia.slideshow_zoom}</span>
+			</button>
+			<figcaption class="counter">{current + 1} / {slides.length}</figcaption>
+		</figure>
 
 		<CarouselNavigation
 			items={navItems}
@@ -84,7 +103,8 @@
 
 {#if zoomed}
 	<!-- Vue plein écran pour lire les cartes chargées en texte.
-	     Fermeture au clic (fond ou image), via le bouton ×, ou avec Échap. -->
+	     Navigation : flèches ‹ ›, clavier ← →, balayage tactile.
+	     Fermeture : clic sur le fond, bouton ×, ou touche Échap. -->
 	<!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions a11y-no-noninteractive-element-interactions -->
 	<div
 		class="lightbox"
@@ -92,6 +112,8 @@
 		aria-modal="true"
 		aria-label={t.emploi_ia.slideshow_alt}
 		on:click={closeZoom}
+		on:touchstart={onTouchStart}
+		on:touchend={onTouchEnd}
 	>
 		<button
 			type="button"
@@ -101,11 +123,38 @@
 		>
 			×
 		</button>
+
+		{#if slides.length > 1}
+			<button
+				type="button"
+				class="lightbox-arrow lightbox-prev"
+				on:click|stopPropagation={previous}
+				aria-label={t.emploi_ia.slideshow_prev}
+			>
+				‹
+			</button>
+		{/if}
+
+		<!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
 		<img
 			class="lightbox-img"
 			src={slides[current]}
 			alt={`${t.emploi_ia.slideshow_alt} ${current + 1}`}
+			on:click|stopPropagation
 		/>
+
+		{#if slides.length > 1}
+			<button
+				type="button"
+				class="lightbox-arrow lightbox-next"
+				on:click|stopPropagation={next}
+				aria-label={t.emploi_ia.slideshow_next}
+			>
+				›
+			</button>
+		{/if}
+
+		<span class="lightbox-counter">{current + 1} / {slides.length}</span>
 	</div>
 {/if}
 
@@ -136,7 +185,11 @@
 
 	.zoom-trigger img {
 		width: 100%;
+		/* Les 19 visuels sont carrés (1080×1080). On réserve la place pour
+		   éviter que la mise en page ne saute pendant le chargement d'une image. */
+		aspect-ratio: 1 / 1;
 		height: auto;
+		object-fit: cover;
 		border-radius: 14px;
 		border: 1px solid var(--border, #d9c7b0);
 		display: block;
@@ -191,10 +244,11 @@
 	}
 
 	.lightbox-img {
-		max-width: 100%;
-		max-height: 95vh;
-		width: auto;
+		width: min(90vh, 100%);
+		aspect-ratio: 1 / 1;
 		height: auto;
+		max-height: 95vh;
+		object-fit: contain;
 		border-radius: 8px;
 		background: #fff;
 		cursor: default;
@@ -220,5 +274,49 @@
 
 	.lightbox-close:hover {
 		background: rgba(255, 255, 255, 0.3);
+	}
+
+	.lightbox-arrow {
+		position: fixed;
+		top: 50%;
+		transform: translateY(-50%);
+		width: 3rem;
+		height: 3rem;
+		font-size: 2rem;
+		line-height: 1;
+		color: white;
+		background: rgba(255, 255, 255, 0.15);
+		border: 0;
+		border-radius: 50%;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding-bottom: 0.2rem;
+	}
+
+	.lightbox-arrow:hover {
+		background: rgba(255, 255, 255, 0.3);
+	}
+
+	.lightbox-prev {
+		left: 0.75rem;
+	}
+
+	.lightbox-next {
+		right: 0.75rem;
+	}
+
+	.lightbox-counter {
+		position: fixed;
+		bottom: 1rem;
+		left: 50%;
+		transform: translateX(-50%);
+		color: white;
+		font-size: 0.9rem;
+		font-weight: 600;
+		background: rgba(0, 0, 0, 0.5);
+		padding: 0.35rem 0.8rem;
+		border-radius: 20px;
 	}
 </style>
