@@ -22,15 +22,43 @@
 	let actionId: string | null = null
 	$: action = getEluAction(actionId)
 
-	// Indices tirés au hasard une fois par action (objet + accroche tournants).
+	// Deux outils principaux présentés en onglets sur la même page (élus / presse).
+	// Les campagnes ponctuelles (Genève, gouvernement…) gardent leur propre page :
+	// on n'affiche les onglets que pour ces deux actions « primaires ».
+	$: isPrimaryAction = action.id === 'default' || action.id === 'medias'
+	$: isPress = action.id === 'medias'
+	function selectTool(id: 'default' | 'medias') {
+		if (action.id === id) return
+		actionId = id
+		step = 1
+		selectedRecipient = null
+		// Met l'URL à jour pour que l'onglet actif soit partageable / rechargeable.
+		if (typeof window !== 'undefined') {
+			const u = new URL(window.location.href)
+			if (id === 'default') u.searchParams.delete('action')
+			else u.searchParams.set('action', id)
+			window.history.replaceState(window.history.state, '', u)
+		}
+	}
+
+	// Indices tirés au hasard une fois par action (objet + accroche + variantes de
+	// paragraphes). Un grand nombre aléatoire, ramené par modulo à la taille du
+	// pool concerné au moment de l'usage : diversifie les emails pour éviter le
+	// spam sans avoir à connaître ici la taille de chaque pool.
 	let hookIndex = 0
 	let subjectIndex = 0
+	let focusIndex = 0
+	let balanceIndex = 0
+	let askIndex = 0
 	let angle = ''
 	let seededFor = ''
 	$: if (action.id !== seededFor) {
 		seededFor = action.id
 		hookIndex = Math.floor(Math.random() * action.hooks.length)
 		subjectIndex = Math.floor(Math.random() * action.subjects.length)
+		focusIndex = Math.floor(Math.random() * 997)
+		balanceIndex = Math.floor(Math.random() * 997)
+		askIndex = Math.floor(Math.random() * 997)
 		angle = action.angles[0].id
 	}
 
@@ -67,7 +95,7 @@
 		contactUrl: string | null
 		photo: string | null
 		subtitle: string
-		introKind: 'depute' | 'senateur' | 'generic'
+		introKind: 'depute' | 'senateur' | 'generic' | 'media'
 		// Pour les députés : précision de la localité selon la fiabilité du géocodage.
 		// 'circonscription' (1 seul député certain), 'ville' (code postal couvrant
 		// plusieurs circonscriptions), 'departement' (repli). Voir deputeScope.
@@ -118,9 +146,11 @@
 			role: ft.role,
 			email: ft.email,
 			contactUrl: ft.contactUrl ?? null,
-			photo: ft.photo ?? null,
+			// Logo via le service d'icônes de DuckDuckGo (respectueux de la vie
+			// privée), avec repli sur les initiales si l'image ne charge pas.
+			photo: ft.photo ?? (ft.domain ? `https://icons.duckduckgo.com/ip3/${ft.domain}.ico` : null),
 			subtitle: ft.fonction ? (isEn ? ft.fonction.en : ft.fonction.fr) : '',
-			introKind: 'generic',
+			introKind: isPress ? 'media' : 'generic',
 			signatureLocality: 'France',
 			salutationOverride: ft.salutation ? (isEn ? ft.salutation.en : ft.salutation.fr) : undefined,
 			emailConfidence: ft.email ? 'high' : 'none'
@@ -321,6 +351,13 @@
 				? `My name is ${nom}, and I am writing to you as a resident of your department.`
 				: `Je m'appelle ${nom} et je vous écris car je réside dans votre département.`
 		}
+		// Presse : intro sobre qui pose le cadre (la couverture de l'IA) sans faire
+		// doublon avec l'accroche « lecteur » qui suit, et sans marque de genre.
+		if (r.introKind === 'media') {
+			return isEn
+				? `My name is ${nom}, and I am writing to you about your coverage of artificial intelligence.`
+				: `Je m'appelle ${nom} et je vous écris au sujet de votre couverture de l'intelligence artificielle.`
+		}
 		// Députés : la localité affirmée dépend de la fiabilité du géocodage, pour
 		// ne pas prétendre « votre circonscription » quand le code postal en couvre
 		// plusieurs (grandes villes) ou qu'on est en repli départemental.
@@ -343,19 +380,47 @@
 		return `Je m'appelle ${nom} et je vous écris car je réside dans ${lieu}.`
 	}
 
-	// Compose les paragraphes du corps selon l'angle, la longueur et la phrase perso.
-	function buildParagraphs(angleId: string, v: Version, personal: string): string[] {
+	// Re-tire la FORMULATION (objet, accroche, variantes de paragraphe, appel) sans
+	// toucher aux choix de l'utilisateur (sujet abordé, longueur, nom, phrase perso).
+	// Donne le contrôle si un texte ne plaît pas, et diversifie encore les envois.
+	function shuffleWording() {
+		hookIndex = Math.floor(Math.random() * action.hooks.length)
+		subjectIndex = Math.floor(Math.random() * action.subjects.length)
+		focusIndex = Math.floor(Math.random() * 997)
+		balanceIndex = Math.floor(Math.random() * 997)
+		askIndex = Math.floor(Math.random() * 997)
+	}
+
+	// Compose les paragraphes du corps. Les index (accroche + variantes) sont passés
+	// en paramètres pour que l'aperçu Svelte se recalcule quand on « re-tire » le
+	// texte (shuffleWording), et pas seulement quand l'angle/la longueur changent.
+	function buildParagraphs(
+		angleId: string,
+		v: Version,
+		personal: string,
+		hIdx: number,
+		fIdx: number,
+		bIdx: number,
+		aIdx: number
+	): string[] {
 		const L = isEn ? 'en' : 'fr'
 		const ang = action.angles.find((a) => a.id === angleId) ?? action.angles[0]
-		const hook = action.hooks[hookIndex] ?? action.hooks[0]
-		const paras = [hook[L], ang.focus[L]]
+		const hook = action.hooks[hIdx] ?? action.hooks[0]
+		// Pools = valeur de base + variantes éventuelles ; on en tire une par modulo.
+		const focusPool = [ang.focus, ...(ang.focusVariants ?? [])]
+		const focus = focusPool[fIdx % focusPool.length]
+		const balancePool = [action.balance, ...(action.balances ?? [])]
+		const balance = balancePool[bIdx % balancePool.length]
+		const askPool = [action.ask, ...(action.asks ?? [])]
+		const ask = askPool[aIdx % askPool.length]
+		const paras = [hook[L], focus[L]]
 		if (v === 'long') {
 			if (ang.complementLong) paras.push(ang.complementLong[L])
 			if (action.poll) paras.push(action.poll[L])
 		}
 		if (personal.trim()) paras.push(personal.trim())
-		paras.push(action.balance[L])
-		paras.push(action.ask[L])
+		paras.push(balance[L])
+		paras.push(ask[L])
 		return paras
 	}
 
@@ -373,7 +438,15 @@
 		return [
 			salutation(r),
 			introLine(r, userName),
-			...buildParagraphs(angle, version, personalSentence),
+			...buildParagraphs(
+				angle,
+				version,
+				personalSentence,
+				hookIndex,
+				focusIndex,
+				balanceIndex,
+				askIndex
+			),
 			signatureBlock(r)
 		].join('\n\n')
 	}
@@ -574,6 +647,38 @@
 			</div>
 		</header>
 
+		{#if isPrimaryAction}
+			<div class="tool-switch">
+				<span class="tool-switch-label"
+					>{isEn ? 'What do you want to do?' : 'Que voulez-vous faire ?'}</span
+				>
+				<div
+					class="tool-tabs"
+					role="tablist"
+					aria-label={isEn ? 'Choose a tool' : 'Choisir un outil'}
+				>
+					<button
+						role="tab"
+						class:active={action.id === 'default'}
+						aria-selected={action.id === 'default'}
+						on:click={() => selectTool('default')}
+					>
+						<span class="tab-emoji" aria-hidden="true">🏛️</span>
+						{isEn ? 'Write to my representatives' : 'Écrire à mes élus'}
+					</button>
+					<button
+						role="tab"
+						class:active={action.id === 'medias'}
+						aria-selected={action.id === 'medias'}
+						on:click={() => selectTool('medias')}
+					>
+						<span class="tab-emoji" aria-hidden="true">📰</span>
+						{isEn ? 'Write to the press' : 'Écrire à la presse'}
+					</button>
+				</div>
+			</div>
+		{/if}
+
 		<section class="card">
 			<h2>
 				<span class="step-num">1</span>{#if action.targeting === 'fixed'}{isEn
@@ -643,29 +748,53 @@
 			{/if}
 
 			{#if recipientGroups.length}
-				<p class="results-hint" class:done-all={sentCount > 0 && sentCount >= allRecipients.length}>
+				<!-- Presse : pas de barre de progression (on choisit un titre, on ne
+				     « coche » pas une liste). Élus : compteur + encouragement. -->
+				{#if isPress}
+					<p class="results-hint">
+						{isEn ? action.recipientsIntro?.en : action.recipientsIntro?.fr}
+					</p>
+				{:else}
+					<p
+						class="results-hint"
+						class:done-all={sentCount > 0 && sentCount >= allRecipients.length}
+					>
+						{#if sentCount >= allRecipients.length && allRecipients.length > 0}
+							🎉 {isEn
+								? `Done! You've written to all ${allRecipients.length} ${targetNoun}. Thank you, this really helps.`
+								: `Bravo ! Vous avez écrit à vos ${allRecipients.length} ${targetNoun}. Merci, votre geste compte vraiment.`}
+						{:else if sentCount > 0}
+							<strong>{sentCount}/{allRecipients.length}</strong>
+							{isEn ? 'contacted.' : 'contactés.'}
+							{isEn
+								? 'Keep going with the others, each message counts.'
+								: 'Continuez avec les autres, chaque message compte.'}
+						{:else if action.recipientsIntro}
+							{isEn ? action.recipientsIntro.en : action.recipientsIntro.fr}
+						{:else}
+							{isEn
+								? `Write to each of your ${targetNoun}: one personal email each.`
+								: `Écrivez à chacun de vos ${targetNoun} : un email personnel pour chaque.`}
+						{/if}
+					</p>
 					{#if sentCount >= allRecipients.length && allRecipients.length > 0}
-						🎉 {isEn
-							? `Done! You've written to all ${allRecipients.length} ${targetNoun}. Thank you, this really helps.`
-							: `Bravo ! Vous avez écrit à vos ${allRecipients.length} ${targetNoun}. Merci, votre geste compte vraiment.`}
-					{:else if sentCount > 0}
-						<strong>{sentCount}/{allRecipients.length}</strong>
-						{isEn ? 'contacted.' : 'contactés.'}
-						{isEn
-							? 'Keep going with the others, each message counts.'
-							: 'Continuez avec les autres, chaque message compte.'}
-					{:else}
-						{isEn
-							? `Write to each of your ${targetNoun}: one personal email each.`
-							: `Écrivez à chacun de vos ${targetNoun} : un email personnel pour chaque.`}
+						<!-- Prolongement naturel : faire relayer le sujet par la presse. -->
+						<div class="next-tool">
+							<p>
+								{isEn
+									? 'Next step: ask the press to cover the issue. It takes two more minutes.'
+									: 'Étape suivante : demandez à la presse d’en parler. Deux minutes de plus.'}
+							</p>
+							<Button on:click={() => selectTool('medias')}>
+								{isEn ? '📰 Write to the press' : '📰 Écrire à la presse'}
+							</Button>
+						</div>
+						<a class="join-link join-link--block" href={joinHref}>
+							{isEn
+								? 'Want to do more? Join Pause AI ↗'
+								: 'Envie d’aller plus loin ? Rejoignez Pause IA ↗'}
+						</a>
 					{/if}
-				</p>
-				{#if sentCount >= allRecipients.length && allRecipients.length > 0}
-					<a class="join-link join-link--block" href={joinHref}>
-						{isEn
-							? 'Want to do more? Join Pause AI ↗'
-							: 'Envie d’aller plus loin ? Rejoignez Pause IA ↗'}
-					</a>
 				{/if}
 				{#each recipientGroups as group}
 					{#if group.list.length}
@@ -761,7 +890,7 @@
 						</div>
 					{/if}
 				{/each}
-				{#if sentCount > 0}
+				{#if !isPress && sentCount > 0}
 					<button class="reset-link" on:click={resetProgress}>
 						{isEn ? 'Reset my progress' : 'Réinitialiser ma progression'}
 					</button>
@@ -798,7 +927,25 @@
 		<!-- Pourquoi c'est important -->
 		<section class="card prose">
 			<h2>{isEn ? 'Why it matters' : "Pourquoi c'est important"}</h2>
-			{#if isEn}
+			{#if isPress}
+				{#if isEn}
+					<p>
+						Newsrooms cover, first and foremost, what interests their readers. A sincere message to
+						the readers' desk or the newsroom signals that a topic matters to the public, and it
+						weighs on editorial choices. Unlike a comment on social media, it lands in an inbox the
+						team reads. A handful of reader messages is sometimes enough to inspire an article or an
+						investigation.
+					</p>
+				{:else}
+					<p>
+						Les rédactions couvrent d'abord ce qui intéresse leurs lecteurs. Un message sincère au
+						courrier des lecteurs ou à la rédaction signale qu'un sujet compte pour le public, et il
+						pèse sur les choix éditoriaux. Contrairement à un commentaire sur les réseaux, il arrive
+						dans une boite lue par l'équipe. Une poignée de messages de lecteurs suffit parfois à
+						inspirer un article ou une enquête.
+					</p>
+				{/if}
+			{:else if isEn}
 				<p>
 					MPs and senators take their constituents' messages into account. A personal email (even a
 					short, sincere one) lands in a human inbox, gets read, and signals that a voter cares
@@ -820,18 +967,65 @@
 		<!-- FAQ -->
 		<section class="card faq">
 			<h2>{isEn ? 'FAQ' : 'Questions fréquentes'}</h2>
-			<Accordion id="faq-difference" noHash>
-				<span slot="head">
-					{isEn
-						? 'Does contacting a representative really make a difference?'
-						: 'Est-ce que contacter un élu change vraiment quelque chose ?'}
-				</span>
-				<p slot="details">
-					{isEn
-						? 'Yes! Representatives track how many constituents raise an issue, and it shapes what they prioritise. A few sincere emails can be enough to get a topic onto a committee’s agenda.'
-						: "Oui ! Les élus comptabilisent le nombre d'électeurs qui soulèvent un sujet, et cela oriente leurs priorités. Quelques emails sincères peuvent suffire à inscrire un sujet à l'ordre du jour d'une commission."}
-				</p>
-			</Accordion>
+			{#if isPress}
+				<Accordion id="faq-p-difference" noHash>
+					<span slot="head">
+						{isEn
+							? 'Does writing to a newspaper really change anything?'
+							: 'Est-ce qu’écrire à un journal change vraiment quelque chose ?'}
+					</span>
+					<p slot="details">
+						{isEn
+							? 'Yes. Newsrooms pay attention to what their readers ask for: the readers’ desk and reader feedback help shape which topics get covered. A few sincere messages can be enough to inspire an article or nudge an editor to dig further.'
+							: 'Oui. Les rédactions sont attentives à ce que leurs lecteurs réclament : le courrier des lecteurs et les retours orientent les sujets traités. Quelques messages sincères peuvent suffire à inspirer un article ou à pousser une rédaction à creuser le sujet.'}
+					</p>
+				</Accordion>
+				<Accordion id="faq-p-who" noHash>
+					<span slot="head">
+						{isEn ? 'Who receives my message?' : 'À qui arrive mon message ?'}
+					</span>
+					<p slot="details">
+						{isEn
+							? 'A general newsroom or readers’ desk address (not a particular journalist). It is the right channel for a reader asking for more coverage: your message reaches the team, not one reporter’s personal inbox.'
+							: "Une adresse générale de rédaction ou de courrier des lecteurs (pas un journaliste en particulier). C'est le bon canal pour un lecteur qui demande plus de couverture : votre message arrive à l'équipe, pas dans la boite personnelle d'un reporter."}
+					</p>
+				</Accordion>
+				<Accordion id="faq-p-reply" noHash>
+					<span slot="head">
+						{isEn
+							? 'What if the paper does not reply or publish it?'
+							: 'Et si le journal ne répond pas ou ne le publie pas ?'}
+					</span>
+					<p slot="details">
+						{isEn
+							? 'That’s normal, and not a failure. The goal is to signal reader interest: even unpublished, your message counts among the feedback a newsroom weighs. Writing to the outlet you actually read, with a sincere personal line, is what makes it land.'
+							: "C'est normal, et ce n'est pas un échec. Le but est de signaler l'intérêt des lecteurs : même non publié, votre message compte parmi les retours qu'une rédaction prend en compte. Écrire au titre que vous lisez vraiment, avec une phrase personnelle sincère, est ce qui fait la différence."}
+					</p>
+				</Accordion>
+			{:else}
+				<Accordion id="faq-difference" noHash>
+					<span slot="head">
+						{isEn
+							? 'Does contacting a representative really make a difference?'
+							: 'Est-ce que contacter un élu change vraiment quelque chose ?'}
+					</span>
+					<p slot="details">
+						{isEn
+							? 'Yes! Representatives track how many constituents raise an issue, and it shapes what they prioritise. A few sincere emails can be enough to get a topic onto a committee’s agenda.'
+							: "Oui ! Les élus comptabilisent le nombre d'électeurs qui soulèvent un sujet, et cela oriente leurs priorités. Quelques emails sincères peuvent suffire à inscrire un sujet à l'ordre du jour d'une commission."}
+					</p>
+				</Accordion>
+				<Accordion id="faq-relance" noHash>
+					<span slot="head">
+						{isEn ? "What if I don't get a reply?" : "Et si je n'ai pas de réponse ?"}
+					</span>
+					<p slot="details">
+						{isEn
+							? "That's common, and not a reason to give up. Follow up politely after about three weeks: a reminder shows the topic matters to you and often prompts a reply. You can also ask for a short meeting at their local office."
+							: "C'est fréquent, et ce n'est pas une raison d'abandonner. Relancez poliment après environ trois semaines : une relance montre que le sujet vous tient à cœur et débloque souvent une réponse. Vous pouvez aussi demander un rendez-vous à leur permanence."}
+					</p>
+				</Accordion>
+			{/if}
 			<Accordion id="faq-duree" noHash>
 				<span slot="head">{isEn ? 'How long does it take?' : 'Combien de temps ça prend ?'}</span>
 				<p slot="details">
@@ -848,16 +1042,6 @@
 					{isEn
 						? 'Your name and town stay on your device and are never sent to a server: they only fill the draft. The email leaves from your own mailbox. A blind copy (BCC) reaches us at campagne@pauseia.fr to count the campaign; you can remove it before sending if you prefer. Your email address is only sent to us if you tick the newsletter box yourself, to subscribe you.'
 						: "Votre nom et votre ville restent sur votre appareil et ne sont jamais envoyés à un serveur : ils servent seulement à remplir le brouillon. L'email part de votre propre messagerie. Une copie cachée (CCI) nous parvient à campagne@pauseia.fr pour mesurer la campagne ; vous pouvez la retirer avant l'envoi si vous le préférez. Votre adresse email ne nous est transmise que si vous cochez vous-même l'inscription à la newsletter, pour vous y abonner."}
-				</p>
-			</Accordion>
-			<Accordion id="faq-relance" noHash>
-				<span slot="head">
-					{isEn ? "What if I don't get a reply?" : "Et si je n'ai pas de réponse ?"}
-				</span>
-				<p slot="details">
-					{isEn
-						? "That's common, and not a reason to give up. Follow up politely after about three weeks: a reminder shows the topic matters to you and often prompts a reply. You can also ask for a short meeting at their local office."
-						: "C'est fréquent, et ce n'est pas une raison d'abandonner. Relancez poliment après environ trois semaines : une relance montre que le sujet vous tient à cœur et débloque souvent une réponse. Vous pouvez aussi demander un rendez-vous à leur permanence."}
 				</p>
 			</Accordion>
 		</section>
@@ -960,9 +1144,22 @@
 					bind:value={personalSentence}
 					on:input={saveUser}
 				></textarea>
+				{#if !personalSentence.trim()}
+					<p class="perso-nudge">
+						{isEn
+							? 'Without a personal line, your message looks like many others and lands with less impact. One sincere sentence changes everything.'
+							: 'Sans phrase personnelle, votre message ressemble à beaucoup d’autres et a moins d’impact. Une phrase sincère change tout.'}
+					</p>
+				{/if}
 			</label>
 
 			<!-- Aperçu de l'email -->
+			<div class="preview-head">
+				<span class="preview-label">{isEn ? 'Preview' : 'Aperçu'}</span>
+				<button class="shuffle-btn" type="button" on:click={shuffleWording}>
+					{isEn ? '🔀 Suggest another version' : '🔀 Proposer une autre version'}
+				</button>
+			</div>
 			<div class="email-preview">
 				<div class="email-subject-line">
 					<span class="subject-label">{isEn ? 'Subject:' : 'Objet :'}</span>
@@ -971,7 +1168,7 @@
 				<div class="email-body" id="email-body">
 					<p>{salutation(selectedRecipient)}</p>
 					<p>{introLine(selectedRecipient, userName)}</p>
-					{#each buildParagraphs(angle, version, personalSentence) as para}
+					{#each buildParagraphs(angle, version, personalSentence, hookIndex, focusIndex, balanceIndex, askIndex) as para}
 						<p>{para}</p>
 					{/each}
 					<p>
@@ -1099,9 +1296,15 @@
 			{#if sent.has(selectedRecipient.id)}
 				<div class="after-send">
 					<p>
-						{isEn
-							? `Message ready! Go back to write to your other ${targetNoun}.`
-							: `Message prêt ! Revenez en arrière pour écrire à vos autres ${targetNoun}.`}
+						{#if isPress}
+							{isEn
+								? 'Message ready! Thank you, this really helps. One sincere message to the paper you read is exactly what counts.'
+								: 'Message prêt ! Merci, votre geste compte vraiment. Un message sincère au titre que vous lisez, c’est exactement ce qui pèse.'}
+						{:else}
+							{isEn
+								? `Message ready! Go back to write to your other ${targetNoun}.`
+								: `Message prêt ! Revenez en arrière pour écrire à vos autres ${targetNoun}.`}
+						{/if}
 					</p>
 					<a class="join-link" href={joinHref}>
 						{isEn
@@ -1120,6 +1323,77 @@
 		margin-inline: auto;
 		margin-top: 2.5rem;
 		padding: 0 1.25rem 5rem;
+	}
+
+	/* Sélecteur d'outil (élus / presse) : un vrai commutateur, sous le hero */
+	.tool-switch {
+		max-inline-size: 40rem;
+		margin: -1.25rem auto 2.25rem;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.6rem;
+	}
+
+	.tool-switch-label {
+		font-size: 0.75rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		color: var(--text-secondary);
+	}
+
+	.tool-tabs {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 0.4rem;
+		inline-size: 100%;
+		padding: 0.35rem;
+		border: 1px solid var(--border);
+		border-radius: 14px;
+		background: var(--bg-card);
+	}
+
+	.tool-tabs button {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5rem;
+		padding: 0.85rem 1rem;
+		border: none;
+		border-radius: 10px;
+		background: transparent;
+		font-family: inherit;
+		font-size: 1rem;
+		font-weight: 700;
+		color: var(--text-2);
+		cursor: pointer;
+		transition:
+			background-color 0.15s ease,
+			color 0.15s ease,
+			box-shadow 0.15s ease;
+	}
+
+	.tool-tabs button.active {
+		background: var(--brand);
+		color: #1a1a1a;
+		box-shadow: 0 2px 8px rgba(255, 148, 22, 0.35);
+	}
+
+	.tool-tabs button:not(.active):hover {
+		background: var(--brand-light);
+		color: var(--brand-subtle);
+	}
+
+	.tab-emoji {
+		font-size: 1.1rem;
+	}
+
+	@media (max-width: 520px) {
+		.tool-tabs button {
+			font-size: 0.9rem;
+			padding: 0.75rem 0.5rem;
+		}
 	}
 
 	/* Hero coloré pleine largeur (full-bleed : déborde de la largeur de l'article) */
@@ -1668,6 +1942,50 @@
 		border-color: var(--brand);
 	}
 
+	/* Incitation douce (non bloquante) quand la phrase perso est vide */
+	.perso-nudge {
+		margin: 0.5rem 0 0;
+		font-size: 0.82rem;
+		line-height: 1.45;
+		color: var(--brand-subtle);
+	}
+
+	/* En-tête de l'aperçu : label + bouton « autre version » */
+	.preview-head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.75rem;
+		margin-bottom: 0.5rem;
+	}
+
+	.preview-label {
+		font-size: 0.72rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--text-secondary);
+	}
+
+	.shuffle-btn {
+		border: 1px solid var(--border);
+		background: var(--bg-card);
+		color: var(--brand-subtle);
+		font-size: 0.82rem;
+		font-weight: 600;
+		padding: 0.4rem 0.8rem;
+		border-radius: 999px;
+		cursor: pointer;
+		transition:
+			background-color 0.15s ease,
+			border-color 0.15s ease;
+	}
+
+	.shuffle-btn:hover {
+		border-color: var(--brand);
+		background: var(--brand-light);
+	}
+
 	/* Aperçu email */
 	.email-preview {
 		border: 1px solid var(--border);
@@ -1844,6 +2162,25 @@
 
 	.join-link--block {
 		margin-top: 1rem;
+	}
+
+	/* Passerelle élus → presse en fin de parcours */
+	.next-tool {
+		margin-top: 1.1rem;
+		padding: 1rem 1.25rem;
+		border: 1px solid var(--brand);
+		border-radius: 12px;
+		background: var(--brand-light);
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 0.75rem;
+	}
+
+	.next-tool p {
+		margin: 0;
+		font-size: 0.95rem;
+		font-weight: 600;
 	}
 
 	.bcc-hint code {
