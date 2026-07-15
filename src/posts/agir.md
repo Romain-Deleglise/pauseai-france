@@ -50,7 +50,7 @@ Pas besoin d'y consacrer votre vie : voici les actions les plus utiles, de cinq 
     <strong>Faire un don</strong>
     <small>Chaque euro nous aide à agir plus et plus vite.</small>
   </a>
-  <a class="action-card" href="/{lang}/recrutement">
+  <a class="action-card" href="/recrutement">
     <span class="ac-emoji">🗣️</span>
     <strong>Convaincre votre entourage</strong>
     <small>Nos guides pour mobiliser efficacement autour de vous.</small>
@@ -63,6 +63,8 @@ Pas besoin d'y consacrer votre vie : voici les actions les plus utiles, de cinq 
 </div>
 
 ## Aller plus loin
+
+<div class="acc-list">
 
 <Accordion id="agir-faire-connaitre">
 <span slot="head">Faire connaître le sujet</span>
@@ -146,6 +148,8 @@ Gardez ceci à l'esprit : toute autre action reviendrait à aligner les transats
 
 </div>
 </Accordion>
+
+</div>
 
 <style>
   .lead-action {
@@ -236,5 +240,39 @@ Gardez ceci à l'esprit : toute autre action reviendrait à aligner les transats
     font-size: 0.88rem;
     line-height: 1.5;
     color: var(--text-2);
+  }
+
+  /* Accordéons « Aller plus loin » présentés en cartes blanches détachées du fond */
+  .acc-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .acc-list :global(.accordion) {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 0 1.25rem 0.25rem;
+  }
+
+  .acc-list :global(.accordion .header) {
+    padding: 1.1rem 0;
+  }
+
+  /* Le contenu ouvert n'a plus son propre encadré (évite la carte dans la carte) */
+  .acc-list :global(.accordion .details) {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    margin: 0;
+    padding: 0 0 0.75rem;
+    text-align: left;
+  }
+
+  /* Neutralise le séparateur inter-accordéons du composant (chaque carte a son bord) */
+  .acc-list :global(div.inView:not(:last-child) > .accordion) {
+    border-bottom: 1px solid var(--border);
   }
 </style>
