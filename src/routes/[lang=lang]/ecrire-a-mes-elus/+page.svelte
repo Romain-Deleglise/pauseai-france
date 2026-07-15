@@ -750,6 +750,17 @@
 						{/if}
 					</p>
 					{#if sentCount >= allRecipients.length && allRecipients.length > 0}
+						<!-- Prolongement naturel : faire relayer le sujet par la presse. -->
+						<div class="next-tool">
+							<p>
+								{isEn
+									? 'Next step: ask the press to cover the issue. It takes two more minutes.'
+									: 'Étape suivante : demandez à la presse d’en parler. Deux minutes de plus.'}
+							</p>
+							<Button on:click={() => selectTool('medias')}>
+								{isEn ? '📰 Write to the press' : '📰 Écrire à la presse'}
+							</Button>
+						</div>
 						<a class="join-link join-link--block" href={joinHref}>
 							{isEn
 								? 'Want to do more? Join Pause AI ↗'
@@ -2081,6 +2092,25 @@
 
 	.join-link--block {
 		margin-top: 1rem;
+	}
+
+	/* Passerelle élus → presse en fin de parcours */
+	.next-tool {
+		margin-top: 1.1rem;
+		padding: 1rem 1.25rem;
+		border: 1px solid var(--brand);
+		border-radius: 12px;
+		background: var(--brand-light);
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 0.75rem;
+	}
+
+	.next-tool p {
+		margin: 0;
+		font-size: 0.95rem;
+		font-weight: 600;
 	}
 
 	.bcc-hint code {
