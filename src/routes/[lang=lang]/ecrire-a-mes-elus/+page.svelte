@@ -380,19 +380,39 @@
 		return `Je m'appelle ${nom} et je vous écris car je réside dans ${lieu}.`
 	}
 
-	// Compose les paragraphes du corps selon l'angle, la longueur et la phrase perso.
-	function buildParagraphs(angleId: string, v: Version, personal: string): string[] {
+	// Re-tire la FORMULATION (objet, accroche, variantes de paragraphe, appel) sans
+	// toucher aux choix de l'utilisateur (sujet abordé, longueur, nom, phrase perso).
+	// Donne le contrôle si un texte ne plaît pas, et diversifie encore les envois.
+	function shuffleWording() {
+		hookIndex = Math.floor(Math.random() * action.hooks.length)
+		subjectIndex = Math.floor(Math.random() * action.subjects.length)
+		focusIndex = Math.floor(Math.random() * 997)
+		balanceIndex = Math.floor(Math.random() * 997)
+		askIndex = Math.floor(Math.random() * 997)
+	}
+
+	// Compose les paragraphes du corps. Les index (accroche + variantes) sont passés
+	// en paramètres pour que l'aperçu Svelte se recalcule quand on « re-tire » le
+	// texte (shuffleWording), et pas seulement quand l'angle/la longueur changent.
+	function buildParagraphs(
+		angleId: string,
+		v: Version,
+		personal: string,
+		hIdx: number,
+		fIdx: number,
+		bIdx: number,
+		aIdx: number
+	): string[] {
 		const L = isEn ? 'en' : 'fr'
 		const ang = action.angles.find((a) => a.id === angleId) ?? action.angles[0]
-		const hook = action.hooks[hookIndex] ?? action.hooks[0]
-		// Pools = valeur de base + variantes éventuelles ; on en tire une par
-		// modulo sur l'index seed (stable jusqu'au changement d'action).
+		const hook = action.hooks[hIdx] ?? action.hooks[0]
+		// Pools = valeur de base + variantes éventuelles ; on en tire une par modulo.
 		const focusPool = [ang.focus, ...(ang.focusVariants ?? [])]
-		const focus = focusPool[focusIndex % focusPool.length]
+		const focus = focusPool[fIdx % focusPool.length]
 		const balancePool = [action.balance, ...(action.balances ?? [])]
-		const balance = balancePool[balanceIndex % balancePool.length]
+		const balance = balancePool[bIdx % balancePool.length]
 		const askPool = [action.ask, ...(action.asks ?? [])]
-		const ask = askPool[askIndex % askPool.length]
+		const ask = askPool[aIdx % askPool.length]
 		const paras = [hook[L], focus[L]]
 		if (v === 'long') {
 			if (ang.complementLong) paras.push(ang.complementLong[L])
@@ -418,7 +438,15 @@
 		return [
 			salutation(r),
 			introLine(r, userName),
-			...buildParagraphs(angle, version, personalSentence),
+			...buildParagraphs(
+				angle,
+				version,
+				personalSentence,
+				hookIndex,
+				focusIndex,
+				balanceIndex,
+				askIndex
+			),
 			signatureBlock(r)
 		].join('\n\n')
 	}
@@ -1126,6 +1154,12 @@
 			</label>
 
 			<!-- Aperçu de l'email -->
+			<div class="preview-head">
+				<span class="preview-label">{isEn ? 'Preview' : 'Aperçu'}</span>
+				<button class="shuffle-btn" type="button" on:click={shuffleWording}>
+					{isEn ? '🔀 Suggest another version' : '🔀 Proposer une autre version'}
+				</button>
+			</div>
 			<div class="email-preview">
 				<div class="email-subject-line">
 					<span class="subject-label">{isEn ? 'Subject:' : 'Objet :'}</span>
@@ -1134,7 +1168,7 @@
 				<div class="email-body" id="email-body">
 					<p>{salutation(selectedRecipient)}</p>
 					<p>{introLine(selectedRecipient, userName)}</p>
-					{#each buildParagraphs(angle, version, personalSentence) as para}
+					{#each buildParagraphs(angle, version, personalSentence, hookIndex, focusIndex, balanceIndex, askIndex) as para}
 						<p>{para}</p>
 					{/each}
 					<p>
@@ -1914,6 +1948,42 @@
 		font-size: 0.82rem;
 		line-height: 1.45;
 		color: var(--brand-subtle);
+	}
+
+	/* En-tête de l'aperçu : label + bouton « autre version » */
+	.preview-head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.75rem;
+		margin-bottom: 0.5rem;
+	}
+
+	.preview-label {
+		font-size: 0.72rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--text-secondary);
+	}
+
+	.shuffle-btn {
+		border: 1px solid var(--border);
+		background: var(--bg-card);
+		color: var(--brand-subtle);
+		font-size: 0.82rem;
+		font-weight: 600;
+		padding: 0.4rem 0.8rem;
+		border-radius: 999px;
+		cursor: pointer;
+		transition:
+			background-color 0.15s ease,
+			border-color 0.15s ease;
+	}
+
+	.shuffle-btn:hover {
+		border-color: var(--brand);
+		background: var(--brand-light);
 	}
 
 	/* Aperçu email */
