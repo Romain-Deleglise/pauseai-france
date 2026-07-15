@@ -501,48 +501,46 @@ const MEDIAS: EluAction = {
 	// « lecteur » différent : constat personnel, fait marquant, paradoxe…
 	hooks: [
 		{
-			fr: "En lisant régulièrement votre journal, je suis frappé par l'écart entre l'ampleur des risques liés à l'intelligence artificielle et la place, encore modeste, qu'ils occupent dans le débat public. Ce qui m'alerte n'est pas de la science-fiction : ce sont les dirigeants mêmes des grands laboratoires d'IA qui reconnaissent publiquement que leurs systèmes pourraient, à terme, échapper à notre contrôle.",
-			en: 'As an attentive reader of your paper, I am struck by the gap between the scale of the risks linked to artificial intelligence and the still modest place they hold in public debate. What alarms me is not science fiction: it is the very leaders of the major AI labs who publicly acknowledge that their systems could, in time, escape our control.'
+			fr: "En vous lisant régulièrement, je suis frappé de voir à quel point on parle peu des risques de l'intelligence artificielle, alors qu'ils sont énormes. Et ce ne sont pas des peurs de science-fiction : ce sont les patrons des grands laboratoires d'IA eux-mêmes qui reconnaissent que leurs systèmes pourraient un jour nous échapper.",
+			en: 'Reading you regularly, I am struck by how little we hear about the risks of artificial intelligence, even though they are huge. And these are not science-fiction fears: the heads of the big AI labs themselves admit that their systems could one day slip out of our control.'
 		},
 		{
-			fr: "Un avertissement récent mérite, selon moi, une place bien plus grande dans vos colonnes. En mai 2023, des centaines de chercheurs et les dirigeants des principaux laboratoires d'IA ont signé une même phrase : « Atténuer le risque d'extinction lié à l'IA devrait être une priorité mondiale, au même titre que les pandémies ou la guerre nucléaire. » Quand ceux qui construisent cette technologie lancent une telle alerte, le sujet me semble devoir être davantage traité.",
-			en: 'A recent warning deserves, in my view, far more space in your pages. In May 2023, hundreds of researchers and the leaders of the main AI labs signed a single sentence: "Mitigating the risk of extinction from AI should be a global priority, alongside other societal-scale risks such as pandemics and nuclear war." When the people building this technology raise such an alarm, the topic seems to me to deserve much more coverage.'
+			fr: "Un avertissement récent mérite, je crois, beaucoup plus d'attention. En mai 2023, des centaines de chercheurs et les dirigeants des principaux laboratoires d'IA ont signé une même phrase : « Atténuer le risque d'extinction lié à l'IA devrait être une priorité mondiale, au même titre que les pandémies ou la guerre nucléaire. » Quand les gens qui construisent cette technologie lancent eux-mêmes une telle alerte, j'ai du mal à comprendre qu'on n'en parle pas davantage.",
+			en: 'A recent warning deserves, I think, far more attention. In May 2023, hundreds of researchers and the heads of the main AI labs signed a single sentence: "Mitigating the risk of extinction from AI should be a global priority, alongside other societal-scale risks such as pandemics and nuclear war." When the very people building this technology raise such an alarm, I find it hard to understand why we do not talk about it more.'
 		},
 		{
-			fr: "Un sujet me paraît largement sous-traité au regard de son importance. Des scientifiques parmi les plus respectés, comme les prix Turing Yoshua Bengio et Geoffrey Hinton, alertent sur le fait que personne ne sait aujourd'hui garantir le contrôle des systèmes d'IA les plus avancés. J'aimerais lire, dans votre titre, des enquêtes à la hauteur de cet enjeu.",
-			en: 'One topic seems to me largely under-covered given its importance. Some of the most respected scientists, such as Turing laureates Yoshua Bengio and Geoffrey Hinton, warn that no one today knows how to guarantee control of the most advanced AI systems. I would like to read, in your paper, investigations that match what is at stake.'
+			fr: "Un sujet me semble vraiment trop peu traité vu son importance. Des scientifiques parmi les plus respectés, comme les prix Turing Yoshua Bengio et Geoffrey Hinton, préviennent que personne, aujourd'hui, ne sait garantir qu'on gardera le contrôle des IA les plus avancées. J'aimerais lire chez vous des enquêtes à la hauteur de ce que ça représente.",
+			en: 'One topic seems to me really under-covered given how important it is. Some of the most respected scientists, such as Turing laureates Yoshua Bengio and Geoffrey Hinton, warn that no one today can guarantee we will keep control of the most advanced AI. I would like to read investigations from you that match what this means.'
 		},
 		{
-			fr: "Je m'adresse à vous simplement comme quelqu'un qui vous lit. J'ai le sentiment que l'intelligence artificielle est partout dans l'actualité pour ses prouesses, mais presque jamais pour les risques que ses propres concepteurs décrivent. Cet angle mort m'inquiète, et je crois que votre rédaction a les moyens de le combler.",
-			en: 'I am reaching out simply as someone who reads you. I feel that artificial intelligence is everywhere in the news for its feats, but almost never for the risks its own designers describe. This blind spot worries me, and I believe your newsroom has the means to fill it.'
+			fr: "Je m'adresse à vous simplement comme quelqu'un qui vous lit. J'ai l'impression que l'intelligence artificielle est partout dans l'actualité pour ses exploits, mais presque jamais pour les risques que ses propres concepteurs décrivent. Ce manque m'inquiète, et je crois que votre rédaction peut y remédier.",
+			en: 'I am reaching out simply as someone who reads you. I feel that artificial intelligence is everywhere in the news for its achievements, but almost never for the risks its own designers describe. This gap worries me, and I believe your newsroom can help close it.'
 		},
 		{
-			fr: "Il est rare que les dirigeants d'une industrie réclament eux-mêmes d'être encadrés. C'est pourtant ce que font plusieurs responsables de l'IA, qui comparent les risques de leur technologie à ceux des pandémies ou du nucléaire. Ce paradoxe mériterait, je crois, toute l'attention de votre rédaction.",
-			en: 'It is rare for the leaders of an industry to call for their own regulation. Yet that is what several AI executives are doing, comparing the risks of their technology to those of pandemics or nuclear weapons. This paradox deserves, I believe, the full attention of your newsroom.'
+			fr: "Il est rare que les patrons d'une industrie demandent eux-mêmes à être encadrés. C'est pourtant ce que font plusieurs responsables de l'IA, qui comparent les risques de leur technologie à ceux des pandémies ou du nucléaire. Ce paradoxe mériterait, je crois, qu'on s'y arrête sérieusement.",
+			en: 'It is rare for the bosses of an industry to ask to be regulated themselves. Yet that is what several AI leaders are doing, comparing the risks of their technology to those of pandemics or nuclear weapons. This paradox deserves, I think, to be taken seriously.'
 		},
 		{
-			fr: "Des sommes colossales sont investies pour créer des IA plus intelligentes que l'humain, parfois par les mêmes personnes qui en redoutent les conséquences. J'aimerais mieux comprendre cette course, et je me tourne vers vous parce que je fais confiance à votre travail d'enquête.",
-			en: 'Colossal sums are being invested to build AI more intelligent than humans, sometimes by the very people who fear its consequences. I would like to understand this race better, and I turn to you because I trust your investigative work.'
+			fr: "Des milliards sont investis pour créer des IA plus intelligentes que l'humain, parfois par les mêmes personnes qui en redoutent les conséquences. J'aimerais mieux comprendre cette course, et je me tourne vers vous parce que je fais confiance à votre travail d'enquête.",
+			en: 'Billions are being invested to build AI more intelligent than humans, sometimes by the very people who fear its consequences. I would like to understand this race better, and I turn to you because I trust your investigative work.'
 		},
 		{
-			fr: "Je n'ai aucune expertise particulière sur le sujet, je suis seulement quelqu'un de préoccupé qui vous lit. Plus je m'informe sur l'intelligence artificielle, plus je constate un décalage entre l'emballement médiatique et les alertes, très sérieuses, de scientifiques de premier plan. J'aimerais que votre journal aide à y voir clair.",
-			en: 'I have no particular expertise on this topic, only a concerned person who reads you. The more I learn about artificial intelligence, the more I notice a gap between the media excitement and the very serious warnings of leading scientists. I would like your paper to help make sense of it.'
+			fr: "Je n'ai pas de compétence particulière sur le sujet, je suis seulement quelqu'un de préoccupé qui vous lit. Plus je m'informe sur l'intelligence artificielle, plus je vois un décalage entre tout l'enthousiasme qu'on entend et les alertes, très sérieuses, de grands scientifiques. J'aimerais que votre journal aide à y voir clair.",
+			en: 'I have no particular expertise on this; I am just a concerned person who reads you. The more I learn about artificial intelligence, the more I see a gap between all the excitement we hear and the very serious warnings from leading scientists. I would like your paper to help make it clearer.'
 		}
 	],
-	// Sujet abordé : l'utilisateur en choisit UN. Chaque angle propose plusieurs
-	// variantes de paragraphe (focusVariants), tirées au hasard pour diversifier.
 	angles: [
 		{
 			id: 'couverture',
 			label: { fr: 'Plus de couverture', en: 'More coverage' },
 			focus: {
-				fr: "Je ne vous demande pas de prendre parti, mais d'enquêter et d'informer : donner la parole aux chercheurs qui alertent comme à ceux qui rassurent, expliquer la course à des systèmes toujours plus autonomes, et montrer ce que font (ou ne font pas) les pouvoirs publics face à ces risques.",
-				en: 'I am not asking you to take a side, but to investigate and inform: to give a voice both to the researchers who warn and to those who reassure, to explain the race toward ever more autonomous systems, and to show what public authorities are doing (or not doing) about these risks.'
+				fr: "Je ne vous demande pas de prendre parti, mais d'enquêter et d'informer : donner la parole aux chercheurs qui alertent comme à ceux qui rassurent, expliquer cette course à des systèmes de plus en plus autonomes, et montrer ce que font, ou ne font pas, les pouvoirs publics.",
+				en: 'I am not asking you to take a side, but to investigate and inform: to give a voice both to the researchers who warn and to those who reassure, to explain this race toward more and more autonomous systems, and to show what the authorities are doing, or not doing.'
 			},
 			focusVariants: [
 				{
-					fr: "Ce que j'attends d'un grand titre comme le vôtre, ce n'est pas un parti pris mais un travail d'enquête : confronter les promesses de l'IA aux mises en garde de ses propres créateurs, et suivre dans la durée un sujet trop souvent réduit à ses gadgets.",
-					en: 'What I expect from a major title like yours is not a stance but investigative work: weighing the promises of AI against the warnings of its own creators, and following over time a topic too often reduced to its gadgets.'
+					fr: "Ce que j'attends d'un journal comme le vôtre, ce n'est pas qu'il prenne parti, mais qu'il enquête : mettre les promesses de l'IA face aux mises en garde de ceux qui la conçoivent, et suivre le sujet dans la durée au lieu de s'arrêter aux gadgets.",
+					en: 'What I expect from a paper like yours is not that it takes sides, but that it investigates: putting the promises of AI up against the warnings of those who build it, and following the story over time instead of stopping at the gadgets.'
 				},
 				{
 					fr: "J'aimerais qu'on y parle un peu moins des prouesses techniques et un peu plus des vraies questions : qui décide, qui finance, quels garde-fous existent et lesquels manquent.",
@@ -550,107 +548,107 @@ const MEDIAS: EluAction = {
 				}
 			],
 			complementLong: {
-				fr: "Une couverture régulière et rigoureuse aide vos lecteurs à se forger une opinion éclairée sur ce qui pourrait être la transformation la plus lourde de conséquences de ce siècle. C'est précisément le rôle d'un grand journal.",
-				en: 'Regular, rigorous coverage helps your readers form an informed opinion on what could be the most consequential transformation of this century. That is precisely the role of a great newspaper.'
+				fr: "Une couverture régulière et sérieuse aiderait vos lecteurs à se faire un avis éclairé sur ce qui pourrait être le plus grand bouleversement du siècle. C'est justement le rôle d'un grand journal.",
+				en: 'Regular, serious coverage would help your readers form an informed view on what could be the biggest upheaval of the century. That is exactly the role of a great newspaper.'
 			}
 		},
 		{
 			id: 'existentiel',
 			label: { fr: 'Risque existentiel', en: 'Existential risk' },
 			focus: {
-				fr: "Ce qui me préoccupe le plus est le risque le plus extrême : en construisant des machines plus intelligentes que nous sans savoir les maîtriser, nous prenons un pari dont l'humanité pourrait ne jamais se relever. Ce n'est plus une crainte marginale, mais une inquiétude partagée au plus haut niveau de la recherche, et vos lecteurs gagneraient à en mesurer la portée.",
-				en: 'What worries me most is the most extreme risk: by building machines more intelligent than us without knowing how to control them, we are taking a gamble humanity might never recover from. This is no longer a fringe fear but a concern shared at the highest levels of research, and your readers would benefit from grasping its scale.'
+				fr: "Ce qui me préoccupe le plus, c'est le risque le plus grave : en construisant des machines plus intelligentes que nous sans savoir les contrôler, nous prenons un pari dont l'humanité pourrait ne jamais se relever. Ce n'est plus la crainte de quelques marginaux : des chercheurs très reconnus la partagent, et vos lecteurs devraient pouvoir en prendre la mesure.",
+				en: 'What worries me most is the most serious risk: by building machines more intelligent than us without knowing how to control them, we are taking a gamble humanity might never recover from. This is no longer a fringe fear: highly respected researchers share it, and your readers should be able to grasp it.'
 			},
 			focusVariants: [
 				{
-					fr: "Le scénario qui m'inquiète le plus n'est pas un film : c'est l'hypothèse, prise au sérieux par des chercheurs de premier plan, que nous perdions le contrôle de systèmes plus intelligents que nous. J'aimerais que ce risque soit expliqué à vos lecteurs, calmement, faits à l'appui.",
-					en: 'The scenario that worries me most is not a movie: it is the hypothesis, taken seriously by leading researchers, that we might lose control of systems more intelligent than us. I would like this risk explained to your readers, calmly, with the facts.'
+					fr: "Le scénario qui m'inquiète le plus n'est pas un film : c'est l'idée, prise au sérieux par de grands chercheurs, que nous perdions le contrôle de systèmes plus intelligents que nous. J'aimerais que ce risque soit expliqué à vos lecteurs, calmement, faits à l'appui.",
+					en: 'The scenario that worries me most is not a movie: it is the idea, taken seriously by leading researchers, that we could lose control of systems more intelligent than us. I would like this risk explained to your readers, calmly, with the facts.'
 				},
 				{
-					fr: "On parle beaucoup de ce que l'IA peut faire, rarement de ce qui se passerait si nous ne parvenions plus à la diriger. Ce risque extrême, longtemps cantonné aux cercles spécialisés, est aujourd'hui débattu au plus haut niveau : il mérite d'être exposé au grand public.",
-					en: 'We hear a lot about what AI can do, rarely about what would happen if we could no longer steer it. This extreme risk, long confined to specialist circles, is now debated at the highest level: it deserves to be laid out for the general public.'
+					fr: "On parle beaucoup de ce que l'IA sait faire, mais rarement de ce qui arriverait si nous ne pouvions plus la diriger. Ce risque, longtemps réservé aux spécialistes, est aujourd'hui discuté au plus haut niveau : il mérite d'être expliqué au grand public.",
+					en: 'We hear a lot about what AI can do, but rarely about what would happen if we could no longer steer it. This risk, long left to specialists, is now discussed at the highest level: it deserves to be explained to the general public.'
 				}
 			],
 			complementLong: {
-				fr: "Ce risque n'efface pas les autres, plus immédiats : désinformation, surveillance, emploi, armes autonomes. Tous méritent une couverture attentive.",
-				en: 'This risk does not erase the others, more immediate ones: disinformation, surveillance, jobs, autonomous weapons. They all deserve careful coverage.'
+				fr: "Ce risque n'efface pas les autres, plus immédiats : désinformation, surveillance, emploi, armes autonomes. Tous méritent qu'on s'y intéresse.",
+				en: 'This risk does not erase the others, more immediate ones: disinformation, surveillance, jobs, autonomous weapons. They all deserve attention.'
 			}
 		},
 		{
 			id: 'democratie',
 			label: { fr: 'Démocratie et information', en: 'Democracy and information' },
 			focus: {
-				fr: "Un angle vous concerne directement : ces systèmes fragilisent déjà le débat démocratique. Deepfakes et désinformation de masse brouillent la frontière entre le vrai et le faux, au moment même où la confiance dans l'information est fragile. En tant que média, vous êtes en première ligne pour l'expliquer.",
-				en: 'One angle concerns you directly: these systems are already straining democratic debate. Deepfakes and mass disinformation blur the line between true and false, at the very moment when trust in information is fragile. As a media outlet, you are on the front line to explain it.'
+				fr: "Un angle vous concerne directement : ces systèmes fragilisent déjà le débat démocratique. Deepfakes et fausses informations en masse brouillent la frontière entre le vrai et le faux, au moment où la confiance dans l'info est déjà fragile. Comme média, vous êtes en première ligne pour l'expliquer.",
+				en: 'One angle concerns you directly: these systems are already weakening democratic debate. Deepfakes and mass fake news blur the line between true and false, at a time when trust in the news is already fragile. As a media outlet, you are on the front line to explain it.'
 			},
 			focusVariants: [
 				{
-					fr: "Votre métier est directement visé : quand n'importe quelle image, voix ou vidéo peut être fabriquée de toutes pièces, c'est la confiance dans l'information elle-même qui vacille. J'aimerais que vous racontiez à vos lecteurs comment l'IA transforme, déjà, la fabrique du vrai et du faux.",
-					en: 'Your profession is directly in the firing line: when any image, voice or video can be fabricated from scratch, it is trust in information itself that wavers. I would like you to tell your readers how AI is already reshaping the making of true and false.'
+					fr: "Votre métier est directement touché : quand n'importe quelle image, voix ou vidéo peut être fabriquée de toutes pièces, c'est la confiance dans l'information qui vacille. J'aimerais que vous expliquiez à vos lecteurs comment l'IA change déjà la façon de distinguer le vrai du faux.",
+					en: 'Your work is directly affected: when any image, voice or video can be fabricated from scratch, it is trust in information that wavers. I would like you to explain to your readers how AI is already changing how we tell true from false.'
 				},
 				{
-					fr: "Deepfakes, faux témoignages, propagande automatisée : l'IA donne des outils inédits à ceux qui veulent manipuler l'opinion. Peu de sujets sont aussi vitaux pour une démocratie, et peu de rédactions sont aussi bien placées que la vôtre pour l'expliquer.",
-					en: 'Deepfakes, fake testimonies, automated propaganda: AI hands unprecedented tools to those who want to manipulate opinion. Few topics are as vital for a democracy, and few newsrooms are as well placed as yours to explain it.'
+					fr: "Deepfakes, faux témoignages, propagande automatisée : l'IA donne des outils inédits à ceux qui veulent manipuler l'opinion. Peu de sujets sont aussi importants pour une démocratie, et peu de rédactions sont aussi bien placées que la vôtre pour l'expliquer.",
+					en: 'Deepfakes, fake testimonies, automated propaganda: AI hands unprecedented tools to those who want to manipulate opinion. Few topics are as important for a democracy, and few newsrooms are as well placed as yours to explain it.'
 				}
 			],
 			complementLong: {
-				fr: 'Et derrière ces effets immédiats demeure une question de fond : nous nous apprêtons à créer des intelligences supérieures à la nôtre sans garantie de pouvoir les garder sous contrôle.',
-				en: 'And behind these immediate effects lies a deeper question: we are about to create intelligences greater than our own with no guarantee of keeping them under control.'
+				fr: 'Et derrière ces effets immédiats, il y a une question de fond : nous sommes en train de créer des intelligences plus fortes que la nôtre sans être sûrs de pouvoir les garder sous contrôle.',
+				en: 'And behind these immediate effects lies a deeper question: we are creating intelligences greater than our own without being sure we can keep them under control.'
 			}
 		},
 		{
 			id: 'emploi',
 			label: { fr: 'Emploi et société', en: 'Jobs and society' },
 			focus: {
-				fr: "Un aspect touche concrètement vos lecteurs : l'automatisation accélérée de métiers entiers, y compris qualifiés. Derrière les promesses de productivité se posent des questions de salaires, de reconversion et d'inégalités que le débat public effleure à peine. J'aimerais que votre rédaction s'en empare.",
-				en: 'One aspect concretely affects your readers: the accelerating automation of entire professions, including skilled ones. Behind the promises of productivity lie questions of wages, retraining and inequality that public debate barely touches. I would like your newsroom to take them on.'
+				fr: "Un aspect touche concrètement vos lecteurs : l'automatisation de plus en plus rapide de métiers entiers, y compris qualifiés. Derrière les promesses de productivité, il y a des questions de salaires, de reconversion et d'inégalités dont on parle encore trop peu. J'aimerais que votre rédaction s'en empare.",
+				en: 'One aspect concretely affects your readers: the faster and faster automation of entire professions, including skilled ones. Behind the promises of productivity are questions of wages, retraining and inequality that we still talk about too little. I would like your newsroom to take them on.'
 			},
 			focusVariants: [
 				{
-					fr: "On nous promet que l'IA va « augmenter » le travail ; on parle beaucoup moins de celles et ceux dont le métier pourrait disparaître, ni de qui décidera comment répartir ces gains. Ce sont pourtant des questions de société majeures, et vos lecteurs sont en première ligne.",
-					en: 'We are promised that AI will "augment" work; far less is said about those whose jobs could disappear, or about who will decide how to share the gains. Yet these are major societal questions, and your readers are on the front line.'
+					fr: "On nous promet que l'IA va « aider » au travail ; on parle beaucoup moins de celles et ceux dont le métier pourrait disparaître, ni de qui décidera comment partager les gains. Ce sont pourtant des questions de société majeures, et vos lecteurs sont les premiers concernés.",
+					en: 'We are promised that AI will "help" with work; far less is said about those whose jobs could disappear, or about who will decide how to share the gains. Yet these are major societal questions, and your readers are the first affected.'
 				},
 				{
-					fr: "Au-delà de la prouesse technique, l'IA soulève des choix de société : quels emplois, quelles protections, quelle place pour l'humain. J'aimerais lire dans votre titre une couverture qui prenne ces questions au sérieux, sans catastrophisme ni angélisme.",
-					en: 'Beyond the technical feat, AI raises societal choices: which jobs, which protections, what place for humans. I would like to read in your title coverage that takes these questions seriously, without doom-mongering or naivety.'
+					fr: "Au-delà de la performance technique, l'IA pose des choix de société : quels emplois, quelles protections, quelle place pour l'humain. J'aimerais lire chez vous une couverture qui prenne ces questions au sérieux, sans exagérer ni minimiser.",
+					en: 'Beyond the technical performance, AI raises societal choices: which jobs, which protections, what place for humans. I would like to read coverage from you that takes these questions seriously, without exaggerating or downplaying.'
 				}
 			],
 			complementLong: {
-				fr: "Et derrière ces bouleversements se pose une question plus vaste : nous déployons ces systèmes à grande échelle avant même d'en comprendre les effets. Prendre le temps de les mesurer, c'est aussi le rôle de la presse.",
-				en: 'And behind these upheavals lies a broader question: we are deploying these systems at scale before we even understand their effects. Taking the time to measure them is also the role of the press.'
+				fr: "Et derrière tout ça, une question plus large : on déploie ces systèmes partout avant même d'en comprendre les effets. Prendre le temps de les mesurer, c'est aussi le rôle de la presse.",
+				en: 'And behind all this, a broader question: we are rolling out these systems everywhere before we even understand their effects. Taking the time to measure them is also the role of the press.'
 			}
 		}
 	],
 	poll: {
-		fr: "Ce sujet intéresse vos lecteurs : selon un récent sondage, seuls 8 % des Français souhaitent accélérer le développement de l'IA, et près de huit sur dix sont favorables à des accords internationaux interdisant les capacités d'IA qui menacent la vie humaine ou les droits fondamentaux.",
-		en: 'This topic matters to your readers: according to a recent poll, only 8% of French people want to accelerate AI development, and nearly eight in ten support international agreements banning AI capabilities that threaten human life or fundamental rights.'
+		fr: "Ce sujet intéresse vos lecteurs : selon un récent sondage, seuls 8 % des Français veulent accélérer le développement de l'IA, et près de huit sur dix sont pour des accords internationaux interdisant les IA qui menacent la vie humaine ou les droits fondamentaux.",
+		en: 'This topic matters to your readers: according to a recent poll, only 8% of French people want to speed up AI development, and nearly eight in ten support international agreements banning AI that threatens human life or fundamental rights.'
 	},
 	balance: {
-		fr: "Je mesure l'exigence et l'indépendance de votre travail, et ma démarche n'est pas une critique. C'est le souhait d'une personne qui vous lit et voudrait voir ce sujet, décisif pour l'avenir, traité à sa juste mesure.",
-		en: 'I recognise the rigour and independence of your work, and this is not a criticism. It is the wish of someone who reads you and would like to see this topic, decisive for the future, covered as fully as it deserves.'
+		fr: "Je connais le sérieux et l'indépendance de votre travail, et ma démarche n'est pas une critique. C'est juste le souhait d'une personne qui vous lit et aimerait voir ce sujet, si important pour l'avenir, traité comme il le mérite.",
+		en: 'I know the seriousness and independence of your work, and this is not a criticism. It is just the wish of someone who reads you and would like to see this topic, so important for the future, covered as it deserves.'
 	},
 	balances: [
 		{
-			fr: "Je sais que votre rédaction traite déjà, parfois, ces questions, et je ne remets pas en cause votre sérieux. Je souhaite simplement, en vous lisant, que ce sujet reçoive l'attention suivie qu'il mérite.",
-			en: 'I know your newsroom already covers these questions at times, and I do not question your rigour. As one of your readers, I simply wish this topic received the sustained attention it deserves.'
+			fr: "Je sais que votre rédaction traite déjà, parfois, ces questions, et je ne mets pas en doute votre sérieux. Je souhaite simplement, en vous lisant, que ce sujet reçoive vraiment l'attention qu'il mérite.",
+			en: 'I know your newsroom already covers these questions at times, and I do not doubt your seriousness. As one of your readers, I simply wish this topic really got the attention it deserves.'
 		},
 		{
-			fr: "Je ne cherche pas à vous dicter une ligne : votre indépendance fait votre valeur. Je vous adresse seulement le souhait d'une personne qui vous lit et reste convaincue que ce sujet compte pour l'avenir de tous.",
-			en: 'I am not trying to dictate an editorial line: your independence is your worth. I am only sharing the wish of someone who reads you and remains convinced this topic matters for everyone’s future.'
+			fr: "Je n'ai pas à vous dicter votre ligne : votre indépendance fait votre valeur. Je vous adresse seulement le souhait d'une personne qui vous lit et reste convaincue que ce sujet compte pour l'avenir de tous.",
+			en: "It is not for me to dictate your editorial line: your independence is your worth. I am only sharing the wish of someone who reads you and remains convinced this topic matters for everyone's future."
 		}
 	],
 	ask: {
-		fr: "C'est pourquoi je vous demande d'accorder à ce sujet une couverture plus régulière et approfondie : enquêtes, entretiens avec les chercheurs concernés, décryptage des décisions politiques en cours. L'association Pause IA (pauseia.fr) se tient à votre disposition pour vous orienter vers des sources et des spécialistes francophones.",
-		en: 'That is why I ask you to give this topic more regular and in-depth coverage: investigations, interviews with the researchers involved, analysis of the political decisions under way. The Pause AI association (pauseia.fr) would be glad to point you toward French-speaking sources and experts.'
+		fr: "C'est pourquoi je vous demande d'en parler plus souvent et plus en profondeur : des enquêtes, des entretiens avec les chercheurs concernés, un vrai décryptage des décisions politiques en cours. L'association Pause IA (pauseia.fr) est à votre disposition pour vous orienter vers des sources et des spécialistes francophones.",
+		en: 'That is why I ask you to cover it more often and in more depth: investigations, interviews with the researchers involved, real analysis of the political decisions under way. The Pause AI association (pauseia.fr) is available to point you toward French-speaking sources and experts.'
 	},
 	asks: [
 		{
-			fr: "Je vous invite donc à donner plus de place à ce sujet : un article de fond, une enquête, un entretien avec les chercheurs qui alertent. Si cela peut aider, l'association Pause IA (pauseia.fr) peut vous orienter vers des spécialistes francophones.",
-			en: 'I therefore invite you to give this topic more space: an in-depth article, an investigation, an interview with the researchers who are sounding the alarm. If it helps, the Pause AI association (pauseia.fr) can point you toward French-speaking experts.'
+			fr: "Je vous invite donc à donner plus de place à ce sujet : un article de fond, une enquête, un entretien avec les chercheurs qui alertent. Si ça peut aider, l'association Pause IA (pauseia.fr) peut vous orienter vers des spécialistes francophones.",
+			en: 'So I invite you to give this topic more space: an in-depth article, an investigation, an interview with the researchers sounding the alarm. If it helps, the Pause AI association (pauseia.fr) can point you toward French-speaking experts.'
 		},
 		{
-			fr: "Ma demande est simple : que ce sujet trouve, dans vos pages, la place régulière qu'appelle son importance. L'équipe de Pause IA (pauseia.fr) est à votre disposition pour partager sources, données et contacts d'experts.",
-			en: 'My request is simple: that this topic finds, in your pages, the regular place its importance calls for. The Pause AI team (pauseia.fr) is available to share sources, data and expert contacts.'
+			fr: "Ma demande est simple : que ce sujet ait, dans vos pages, la place que son importance mérite. L'équipe de Pause IA (pauseia.fr) est à votre disposition pour partager sources, données et contacts d'experts.",
+			en: 'My request is simple: that this topic gets, in your pages, the place its importance deserves. The Pause AI team (pauseia.fr) is available to share sources, data and expert contacts.'
 		}
 	],
 	hasDetailed: true
