@@ -55,10 +55,10 @@ Pas besoin d'y consacrer votre vie : voici les actions les plus utiles, de cinq 
     <strong>Convaincre votre entourage</strong>
     <small>Nos guides pour mobiliser efficacement autour de vous.</small>
   </a>
-  <a class="action-card" href="/{lang}/dangers">
+  <a class="action-card" href="/{lang}/ressources">
     <span class="ac-emoji">📚</span>
     <strong>Vous informer</strong>
-    <small>Comprendre les risques et les solutions pour en parler juste.</small>
+    <small>Articles, vidéos et liens pour comprendre les risques et en parler juste.</small>
   </a>
 </div>
 

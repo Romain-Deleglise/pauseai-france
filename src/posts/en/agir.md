@@ -52,10 +52,10 @@ You don't need to devote your life to it: here are the most useful actions, from
     <strong>Convince those around you</strong>
     <small>Our guides to mobilise people effectively.</small>
   </a>
-  <a class="action-card" href="/{lang}/dangers">
+  <a class="action-card" href="/{lang}/ressources">
     <span class="ac-emoji">📚</span>
     <strong>Inform yourself</strong>
-    <small>Understand the risks and solutions so you can speak accurately.</small>
+    <small>Articles, videos and links to understand the risks and speak accurately.</small>
   </a>
 </div>
 
