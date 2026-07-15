@@ -123,6 +123,22 @@ const DEFAULT_ACTION: EluAction = {
 		{
 			fr: "Pour une gouvernance démocratique de l'intelligence artificielle",
 			en: 'For democratic governance of artificial intelligence'
+		},
+		{
+			fr: "L'IA avance trop vite, les règles trop lentement",
+			en: 'AI is moving too fast, the rules too slowly'
+		},
+		{
+			fr: "Un citoyen vous alerte sur les risques de l'IA",
+			en: 'A citizen alerting you to the risks of AI'
+		},
+		{
+			fr: "Agir maintenant sur la sécurité de l'intelligence artificielle",
+			en: 'Acting now on the safety of artificial intelligence'
+		},
+		{
+			fr: "Demande d'action face aux dangers de l'IA",
+			en: 'A call to act on the dangers of AI'
 		}
 	],
 	hooks: [
@@ -137,6 +153,18 @@ const DEFAULT_ACTION: EluAction = {
 		{
 			fr: "Comme beaucoup, j'observe avec un mélange d'enthousiasme et d'inquiétude les progrès rapides de l'intelligence artificielle. L'inquiétude l'emporte quand des scientifiques parmi les plus respectés, comme les prix Turing Yoshua Bengio et Geoffrey Hinton, expliquent que personne ne sait aujourd'hui garantir le contrôle des systèmes les plus avancés.",
 			en: 'Like many people, I watch the rapid progress of artificial intelligence with a mix of enthusiasm and concern. Concern wins out when some of the most respected scientists, such as Turing laureates Yoshua Bengio and Geoffrey Hinton, explain that no one today knows how to guarantee control of the most advanced systems.'
+		},
+		{
+			fr: "Je vous écris en tant qu'électeur inquiet. L'intelligence artificielle progresse à une vitesse que même ses créateurs disent ne pas totalement maîtriser, et j'aimerais que mes représentants s'emparent sérieusement du sujet avant qu'il ne soit trop tard.",
+			en: 'I am writing to you as a worried voter. Artificial intelligence is advancing at a speed that even its creators say they do not fully control, and I would like my representatives to take the issue seriously before it is too late.'
+		},
+		{
+			fr: "Il est rare qu'une industrie demande elle-même à être régulée. C'est pourtant ce que font plusieurs dirigeants de l'IA, qui comparent les risques de leur technologie à ceux des pandémies ou du nucléaire. Face à une telle alerte, l'inaction politique me paraît difficile à justifier.",
+			en: 'It is rare for an industry to ask to be regulated. Yet that is what several AI leaders are doing, comparing the risks of their technology to those of pandemics or nuclear weapons. Faced with such a warning, political inaction seems hard to justify to me.'
+		},
+		{
+			fr: "Je ne suis ni spécialiste ni militant, seulement un citoyen attentif. Plus je me renseigne sur l'intelligence artificielle, plus je constate que les garde-fous démocratiques sont très en retard sur la vitesse de cette technologie. C'est à des élus comme vous qu'il revient de corriger cela.",
+			en: 'I am neither an expert nor an activist, just an attentive citizen. The more I learn about artificial intelligence, the more I see that democratic safeguards lag far behind the speed of this technology. It falls to elected officials like you to fix that.'
 		}
 	],
 	angles: [
@@ -147,6 +175,16 @@ const DEFAULT_ACTION: EluAction = {
 				fr: 'Ces dangers ne sont pas tous lointains : certains sont déjà là, comme la désinformation de masse ou la surveillance, tandis que la course à des systèmes toujours plus autonomes fait planer un risque bien plus grave encore.',
 				en: 'These dangers are not all distant: some are already here, such as mass disinformation or surveillance, while the race toward ever more autonomous systems raises an even graver risk.'
 			},
+			focusVariants: [
+				{
+					fr: "Certains de ces dangers sont déjà là, comme la désinformation de masse ou la surveillance ; d'autres, liés à des systèmes de plus en plus autonomes, pourraient être bien plus graves. Les deux méritent qu'on s'en occupe maintenant, pas quand il sera trop tard.",
+					en: 'Some of these dangers are already here, like mass disinformation or surveillance; others, tied to increasingly autonomous systems, could be far more serious. Both deserve attention now, not once it is too late.'
+				},
+				{
+					fr: "Ce qui me frappe, c'est qu'on développe ces systèmes bien plus vite qu'on ne met en place les règles pour les encadrer. Cet écart entre la technologie et la loi est exactement ce que le politique devrait combler.",
+					en: 'What strikes me is that we build these systems far faster than we put rules in place to govern them. This gap between technology and law is exactly what politics should close.'
+				}
+			],
 			complementLong: {
 				fr: "Et même en mettant de côté ces effets immédiats, une question demeure : nous nous apprêtons à créer des intelligences supérieures à la nôtre sans aucune garantie de pouvoir les garder sous contrôle. C'est ce pari que je trouve déraisonnable.",
 				en: 'And even setting aside these immediate effects, one question remains: we are about to create intelligences greater than our own with no guarantee of keeping them under control. It is this gamble that I find unreasonable.'
@@ -159,6 +197,16 @@ const DEFAULT_ACTION: EluAction = {
 				fr: "Ce qui me préoccupe le plus est le risque le plus extrême : en construisant des machines plus intelligentes que nous sans savoir les maîtriser, nous prenons un pari dont l'humanité pourrait ne jamais se relever. Ce n'est plus une crainte marginale, mais une inquiétude partagée au plus haut niveau de la recherche.",
 				en: 'What worries me most is the most extreme risk: by building machines more intelligent than us without knowing how to control them, we are taking a gamble humanity might never recover from. This is no longer a fringe fear, but a concern shared at the highest levels of research.'
 			},
+			focusVariants: [
+				{
+					fr: "Le risque qui m'inquiète le plus n'est pas de la science-fiction : c'est l'idée, prise au sérieux par de grands chercheurs, que nous perdions le contrôle de machines plus intelligentes que nous. Un tel enjeu justifie amplement une action politique déterminée.",
+					en: 'The risk that worries me most is not science fiction: it is the idea, taken seriously by leading researchers, that we could lose control of machines more intelligent than us. Such a stake fully justifies determined political action.'
+				},
+				{
+					fr: "On parle beaucoup de ce que l'IA permet, très peu de ce qui arriverait si nous ne pouvions plus la diriger. Ce risque extrême est aujourd'hui débattu au plus haut niveau scientifique ; il devrait l'être aussi au niveau politique.",
+					en: 'We hear a lot about what AI enables, very little about what would happen if we could no longer steer it. This extreme risk is now debated at the highest scientific level; it should be at the political level too.'
+				}
+			],
 			complementLong: {
 				fr: "Ce risque n'efface pas les autres : vie privée, désinformation, emploi, armes autonomes. Tous appellent la même prudence, celle de prendre le temps de comprendre avant de déployer.",
 				en: 'This risk does not erase the others: privacy, disinformation, jobs, autonomous weapons. They all call for the same caution, that of taking the time to understand before deploying.'
@@ -171,6 +219,16 @@ const DEFAULT_ACTION: EluAction = {
 				fr: "Au-delà du long terme, ces systèmes fragilisent déjà notre société : deepfakes et désinformation qui minent le débat démocratique, surveillance et profilage qui menacent la vie privée, automatisation qui déstabilise l'emploi et risque d'aggraver les inégalités.",
 				en: 'Beyond the long term, these systems are already straining our society: deepfakes and disinformation that erode democratic debate, surveillance and profiling that threaten privacy, and automation that destabilises jobs and could deepen inequality.'
 			},
+			focusVariants: [
+				{
+					fr: "Ces systèmes fragilisent déjà notre société : deepfakes qui minent le débat public, surveillance qui menace la vie privée, automatisation qui déstabilise l'emploi. Vos électeurs en subissent déjà les effets et attendent une réponse politique.",
+					en: 'These systems are already straining our society: deepfakes that undermine public debate, surveillance that threatens privacy, automation that destabilises jobs. Your constituents already feel the effects and expect a political response.'
+				},
+				{
+					fr: "Derrière les promesses, ces technologies posent des questions très concrètes pour vos électeurs : leur emploi, leurs données, la fiabilité de l'information qu'ils reçoivent. Ce sont des sujets dont la politique doit s'emparer.",
+					en: 'Behind the promises, these technologies raise very concrete questions for your constituents: their jobs, their data, the reliability of the information they receive. These are issues politics must take up.'
+				}
+			],
 			complementLong: {
 				fr: "Et même en mettant de côté ces effets immédiats, une question demeure : nous nous apprêtons à créer des intelligences supérieures à la nôtre sans aucune garantie de pouvoir les garder sous contrôle. C'est ce pari que je trouve déraisonnable.",
 				en: 'And even setting aside these immediate effects, one question remains: we are about to create intelligences greater than our own with no guarantee of keeping them under control. It is this gamble that I find unreasonable.'
@@ -185,10 +243,30 @@ const DEFAULT_ACTION: EluAction = {
 		fr: "Je ne m'oppose pas au progrès : l'IA peut rendre d'immenses services, en médecine, dans la recherche ou au quotidien. C'est précisément parce que cette technologie est puissante qu'elle mérite d'être développée avec prudence et sous contrôle démocratique.",
 		en: 'I am not against progress: AI can bring immense benefits, in medicine, research and everyday life. It is precisely because this technology is so powerful that it deserves to be developed with caution and under democratic oversight.'
 	},
+	balances: [
+		{
+			fr: "Je ne suis pas hostile à la technologie : bien encadrée, l'IA peut rendre d'immenses services. C'est justement parce qu'elle est puissante qu'elle a besoin de règles claires et d'un contrôle démocratique.",
+			en: 'I am not hostile to technology: well governed, AI can bring immense benefits. It is precisely because it is powerful that it needs clear rules and democratic oversight.'
+		},
+		{
+			fr: "Mon propos n'est pas de freiner le progrès, mais de le rendre sûr. Une technologie aussi puissante devrait être développée avec les mêmes précautions que celles qu'on exige dans la santé ou le nucléaire.",
+			en: 'My point is not to slow progress, but to make it safe. A technology this powerful should be developed with the same precautions we require in health or nuclear energy.'
+		}
+	],
 	ask: {
 		fr: "C'est pourquoi je vous demande de soutenir publiquement une gouvernance internationale visant à mettre en pause l'entraînement des modèles d'IA les plus avancés, tant que leur sûreté et leur contrôle démocratique ne sont pas démontrés, et de porter cette position aux niveaux français et européen. L'association Pause IA (pauseia.fr) se tient à votre disposition, ainsi que celle de votre équipe, pour en échanger.",
 		en: 'That is why I ask you to publicly support international governance aimed at pausing the training of the most advanced AI models, until their safety and democratic control are demonstrated, and to carry this position at the French and European level. The Pause AI association (pauseia.fr) would be glad to discuss this with you or your team.'
 	},
+	asks: [
+		{
+			fr: "Concrètement, je vous demande de porter ce sujet là où vous siégez : en soutenant une gouvernance internationale qui mette en pause les modèles d'IA les plus avancés tant que leur sûreté n'est pas démontrée, et en relayant cette exigence aux niveaux français et européen. L'association Pause IA (pauseia.fr) reste à votre disposition.",
+			en: 'Concretely, I ask you to raise this issue where you sit: by supporting international governance that pauses the most advanced AI models until their safety is demonstrated, and by relaying this demand at the French and European level. The Pause AI association (pauseia.fr) remains at your disposal.'
+		},
+		{
+			fr: "Je vous demande simplement de vous saisir du sujet : vous informer, interpeller le gouvernement, et soutenir des règles contraignantes sur les IA les plus puissantes. L'association Pause IA (pauseia.fr) peut vous fournir sources et contacts d'experts si besoin.",
+			en: 'I simply ask you to take up the issue: to inform yourself, to question the government, and to support binding rules on the most powerful AI. The Pause AI association (pauseia.fr) can provide sources and expert contacts if needed.'
+		}
+	],
 	hasDetailed: true
 }
 
