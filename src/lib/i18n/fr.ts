@@ -584,7 +584,7 @@ export default {
 		article2_url: '/emploi-ia/pas-de-pilote',
 		article3_title: 'Ce que l’IA fait au travail',
 		article3_desc:
-			"Bilan qualitatif de notre enquête sur l'emploi : perte de sens, décisions imposées, adaptation incertaine, ce qu'une trentaine de témoins nous ont confié.",
+			"Bilan qualitatif de notre enquête sur l'emploi : perte de sens, décisions imposées, adaptation reportée sur les individus, ce qu'une trentaine de témoins nous ont confié.",
 		article3_url: '/emploi-ia/ce-que-lia-fait-au-travail',
 		slideshow_empty: 'Les témoignages illustrés arrivent prochainement.',
 		slideshow_nav_aria: 'Navigation du diaporama des témoignages',

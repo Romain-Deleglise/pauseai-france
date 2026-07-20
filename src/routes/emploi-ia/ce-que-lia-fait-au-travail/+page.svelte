@@ -6,7 +6,7 @@
 	<title>Ce que l'IA fait au travail | PauseAI France</title>
 	<meta
 		name="description"
-		content="Bilan qualitatif de l'enquête Pause IA sur l'emploi : perte de sens, décisions imposées, adaptation incertaine, ce qu'une trentaine de témoins nous ont confié au printemps 2026."
+		content="Bilan qualitatif de l'enquête Pause IA sur l'emploi : perte de sens, décisions imposées, adaptation reportée sur les individus, ce qu'une trentaine de témoins nous ont confié au printemps 2026."
 	/>
 	<meta name="robots" content="index, follow" />
 </svelte:head>
@@ -21,7 +21,7 @@
 		<span class="meta-sep">·</span>
 		<span class="meta-series">Article 3/3</span>
 		<span class="meta-sep">·</span>
-		<span class="meta-reading">6 min de lecture</span>
+		<span class="meta-reading">7 min de lecture</span>
 	</div>
 
 	<hgroup>
@@ -29,12 +29,14 @@
 	</hgroup>
 
 	<p class="intro">
-		Au printemps 2026, Pause IA a recueilli une trentaine de témoignages libres (au sein d'une
-		centaine de réponses à un questionnaire) sur l'impact de l'IA dans la vie professionnelle.
+		L'IA ne supprime pas seulement des emplois. Elle transforme déjà des métiers jusqu'à les rendre
+		méconnaissables pour celles et ceux qui les exercent.
 	</p>
 
 	<p>
-		Les répondant·es sont majoritairement diplômé·es, actif·ves entre 30 et 50 ans, avec une
+		Au printemps 2026, Pause IA a recueilli une trentaine de témoignages libres (au sein d'une
+		centaine de réponses à un questionnaire) sur l'impact de l'IA dans la vie professionnelle. Les
+		répondant·es sont majoritairement diplômé·es, actif·ves entre 30 et 50 ans, avec une
 		surreprésentation des indépendant·es et des métiers du numérique. Ces personnes, déjà concernées
 		et souvent impactées, ne forment pas un échantillon représentatif de la population française. Ce
 		biais de sélection est assumé : c'est précisément ce qu'elles ont à dire qui nous intéresse, et
@@ -42,9 +44,15 @@
 	</p>
 
 	<p>
+		Cette enquête n'a pas vocation à mesurer la fréquence de ces expériences dans l'ensemble de la
+		population française. Elle permet en revanche de documenter le plus fidèlement possible ce que
+		vivent des personnes déjà confrontées à ces transformations.
+	</p>
+
+	<p>
 		Ce qu'elles expriment tourne autour de trois réalités : la perte de sens de leur travail, un
 		déploiement de l'IA qui s'est imposé sans qu'elles aient eu leur mot à dire, et une adaptation
-		dont personne ne garantit qu'elle suffira.
+		individuelle dont personne ne garantit qu'elle suffira.
 	</p>
 
 	<h2>À quoi sert encore ce que je fais ?</h2>
@@ -68,17 +76,14 @@
 	</p>
 
 	<p>
-		Une enseignante : « je me sentirai dépossédée de mon travail ». Son poste est intact, mais elle
-		a perdu l'illusion que ce qu'elle transmet ne peut venir que d'une relation, d'une présence. Un
-		enseignant observe que « certains élèves n'apprennent plus ».
+		De l'enseignement à la recherche, plusieurs répondant·es craignent également que l'usage
+		systématique de l'IA affaiblisse l'apprentissage et la valeur accordée au raisonnement humain.
 	</p>
 
 	<p>
-		Un chercheur en mathématiques craint que les maths n'aient « plus de sens pour les humains »
-		parce que l'acte de penser par soi-même s'atrophie. Un étudiant en médecine parle de « question
-		existentielle et identitaire » : si le diagnostic peut être posé par une machine, que reste-t-il
-		de la vocation ? Un étudiant en informatique a arrêté ses études. Le diplôme lui semble une
-		fiction et il n'y croit plus assez pour continuer.
+		Un étudiant en médecine parle de « question existentielle et identitaire » : si le diagnostic
+		peut être posé par une machine, que reste-t-il de la vocation ? Un étudiant en informatique a
+		arrêté ses études. Le diplôme lui semble une fiction et il n'y croit plus assez pour continuer.
 	</p>
 
 	<p>
@@ -90,9 +95,9 @@
 	</p>
 
 	<p>
-		Un développeur est <em>super user</em> d'IA. Il ne code presque plus. Son emploi tient, mais il s'est
-		tellement éloigné de ce qu'il aimait faire qu'il envisage une reconversion. Une cheffe de projet
-		numérique n'a pas attendu : elle a démissionné face au non-sens.
+		Un développeur est « <em>super user</em> d'IA ». Il ne code presque plus. Son emploi tient, mais
+		il s'est tellement éloigné de ce qu'il aimait faire qu'il envisage une reconversion. Une cheffe de
+		projet numérique n'a pas attendu : elle a démissionné face au non-sens.
 	</p>
 
 	<p>
@@ -103,7 +108,8 @@
 	<p>
 		Au fond, ce que ces témoignages partagent dépasse la peur du chômage. L'irruption de l'IA vient
 		rompre le contrat implicite entre une personne et son travail : l'effort perd sa valeur, la
-		compétence n'est plus reconnue, ce qu'on produit devient remplaçable.
+		compétence n'est plus reconnue, ce qu'on produit devient remplaçable. La personne conserve
+		parfois son emploi, mais perd progressivement la maîtrise de ce qui en faisait un métier.
 	</p>
 
 	<h2>Une décision déjà prise</h2>
@@ -118,9 +124,10 @@
 		anonymisation. Personne n'a posé de règle. Un autre est convoqué à une réunion pour « identifier
 		les cas d'usage », autrement dit les postes que l'on peut supprimer. Un troisième a refusé de
 		cartographier les postes remplaçables dans son équipe pour ne pas « scier la branche » de ses
-		collègues. Son refus n'a pas changé le processus. Il s'est juste exclu de sa mise en œuvre. Une
-		fonctionnaire utilise au quotidien un outil d'IA américain sans protection sérieuse des données.
-		Elle est en pleine « dissonance cognitive » : « j'adore ça, et je suis terrorisée ».
+		collègues. Le déploiement de l'IA repose ainsi en partie sur le travail de celles et ceux qui
+		pourraient ensuite en subir les conséquences. Une fonctionnaire utilise au quotidien un outil
+		d'IA américain sans protection sérieuse des données. Elle est en pleine « dissonance cognitive »
+		: « j'adore ça, et je suis terrorisée ».
 	</p>
 
 	<p>
@@ -130,20 +137,33 @@
 	</p>
 
 	<p>
-		Pour les indépendants, la disruption est encore plus rude. Une traductrice juridique a vu son
-		chiffre d'affaires chuter de 40&nbsp;% à 50&nbsp;%. Il ne lui reste que la post-édition :
+		Pour les indépendants, le bouleversement est encore plus rude. Une traductrice juridique a vu
+		son chiffre d'affaires chuter de 40&nbsp;% à 50&nbsp;%. Il ne lui reste que la post-édition :
 		vérifier et corriger les traductions automatiques, un travail « chronophage et sous-payé ». Une
 		sous-titreuse ayant traversé trois mois sans revenu parle de « projets de vie en péril ». Une
-		conceptrice-rédactrice a vu tous ses clients la quitter brutalement dès 2023.
+		conceptrice-rédactrice a vu tous ses clients la quitter brutalement dès 2023. La concurrence ne
+		porte plus seulement sur la qualité du travail, mais sur la capacité à s'aligner sur le prix et
+		la vitesse de productions automatisées. Même lorsque leur intervention reste indispensable, elle
+		est reléguée à la fin de la chaîne, sous la forme de correction ou de post-édition, avec des
+		tarifs souvent plus faibles.
 	</p>
 
 	<p>
-		Ce qui frappe dans ces récits, c'est l'absence de toute préparation. Personne n'a prévenu.
-		Personne n'a formé. On a appris en faisant, ou en subissant, souvent les deux à la fois, sans
-		filet et sans temps pour souffler.
+		Dans de nombreux témoignages, personne n'avait réellement préparé les personnes concernées ni
+		organisé de formation à la hauteur des changements demandés. On a appris en faisant, ou en
+		subissant, souvent les deux à la fois, sans filet et sans temps pour souffler.
 	</p>
 
-	<h2>Une adaptation incertaine</h2>
+	<p>
+		Ces récits font apparaître un mécanisme commun : les bénéfices attendus de l'IA sont concentrés
+		du côté des organisations qui la déploient, tandis que les risques sont reportés sur les
+		individus. Les salarié·es doivent apprendre de nouveaux outils, accepter une transformation de
+		leur métier et assumer les erreurs finales. Les indépendant·es doivent baisser leurs tarifs ou
+		se repositionner. Et lorsque les gains de productivité permettent de réduire les effectifs, les
+		personnes concernées disposent rarement d'un véritable pouvoir de décision.
+	</p>
+
+	<h2>Une responsabilité de l'adaptation reportée sur les individus</h2>
 
 	<p>
 		La menace d'une généralisation de l'IA dans le monde du travail est réelle. Mais quand ? Dans
@@ -168,8 +188,9 @@
 
 	<p>
 		Une sous-titreuse va plus loin : elle parle de « technofascisme », de psychose collective,
-		d'addiction. Les mots disent quelque chose du niveau de pression que certains ressentent,
-		au-delà de leur emploi, sur leur capacité même à penser la situation.
+		d'addiction. Ces expressions ne constituent pas une analyse partagée par l'ensemble des
+		participant·es, mais elles témoignent de l'intensité de l'angoisse ressentie par certaines
+		personnes.
 	</p>
 
 	<p>
@@ -186,6 +207,15 @@
 			de temps encore on pourra tenir.
 		</p>
 	</blockquote>
+
+	<p>
+		Ces récits ne montrent pas seulement que certains métiers sont menacés. Ils montrent surtout que
+		des transformations profondes du travail sont déjà engagées sans choix collectif explicite. Des
+		outils conçus par quelques entreprises redéfinissent la valeur des compétences, l'organisation
+		des équipes et les conditions d'accès à l'emploi, alors que les personnes concernées disposent
+		de très peu de moyens pour contester ces décisions. Reprendre le contrôle sur l'IA commence donc
+		aussi dans le monde du travail.
+	</p>
 
 	<nav class="back-nav">
 		<a href="/emploi-ia">← Retour à la campagne Emploi &amp; IA</a>

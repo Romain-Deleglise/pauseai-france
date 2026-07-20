@@ -577,7 +577,7 @@ export default {
 		article2_url: '/emploi-ia/pas-de-pilote',
 		article3_title: 'What AI is doing to work',
 		article3_desc:
-			'A qualitative review of our employment survey: loss of meaning, decisions imposed from above, uncertain adaptation, what around thirty witnesses shared with us.',
+			'A qualitative review of our employment survey: loss of meaning, decisions imposed from above, adaptation shifted onto individuals, what around thirty witnesses shared with us.',
 		article3_url: '/emploi-ia/ce-que-lia-fait-au-travail',
 		slideshow_empty: 'Illustrated testimonials are coming soon.',
 		slideshow_nav_aria: 'Testimonials slideshow navigation',
