@@ -1,86 +1,278 @@
 ---
 title: Passez à l’action
-description: Moyens d'aider à suspendre le développement de l'IAG.
+description: Les actions les plus utiles pour aider à garder l'IA sous contrôle, de 5 minutes à un engagement durable.
 original:
   title: Take action
   url: https://github.com/PauseAI/pauseai-website/blob/95be1d5327015a2c41f5c518d92812d7f6c79bda/src/posts/action.md
 ---
 
 <script lang="ts">
+  import Accordion from '$components/Accordion.svelte'
   import { page } from '$app/stores'
   $: lang = $page.params.lang ?? 'fr'
 </script>
 
-Le nombre de personnes conscientes des risques liés à l'IA est encore restreint.
+Le nombre de personnes conscientes des risques liés à l'IA est encore restreint. Vous en faites désormais partie, et **vos actions ont plus de poids que vous ne l'imaginez.**
 
-Vous en faites désormais partie.
+Pas besoin d'y consacrer votre vie : voici les actions les plus utiles, de cinq minutes à un engagement plus durable.
 
-**Vos actions ont plus de poids que vous ne l’imaginez.**
+## L'action la plus utile, en 5 minutes
 
-## Ce que vous pouvez faire dès maintenant
+<a class="lead-action" href="/{lang}/ecrire-a-mes-elus">
+  <span class="lead-emoji">✉️</span>
+  <span class="lead-text">
+    <strong>Écrire à mes élus et à la presse</strong>
+    <small>Un email prêt à personnaliser pour votre député, votre sénateur ou une grande rédaction. C'est court, et bien plus efficace qu'une pétition : un message d'un vrai citoyen est lu et compté.</small>
+  </span>
+  <span class="lead-arrow" aria-hidden="true">→</span>
+</a>
 
-- **[Rejoignez Pause IA](/rejoindre)** et aidez-nous à prendre de l’ampleur.
-- **[Faites un don](/dons) à Pause IA** ou achetez des produits dérivés dans la boutique en ligne de PauseAI Global.
-- **Signez des pétitions** :
-  - [Traité international sur l'IA](https://aitreaty.org/)
-  - [Interdire la superintelligence](https://www.change.org/p/ban-superintelligence-stop-ai-driven-human-extinction-risk?utm_content=cl_sharecopy_37871653_en-US%3A4&recruited_by_id=91d3fbf0-cc46-11ee-911b-5975de1bf878&utm_source=share_petition&utm_medium=copylink&utm_campaign=psf_combo_share_initial&share_bandit_exp=initial-37871653-en-US)
-  - [Exiger une IA responsable](https://www.change.org/p/artificial-intelligence-time-is-running-out-for-responsible-ai-development-2a2f1a13-b63a-4d8c-979b-b144bded2f48)
-- **Participez à notre enquête sur l’emploi & l’IA** :
-  - <a href="/{lang}/emploi-ia/questionnaire">Impact de l’intelligence artificielle sur votre profession</a>
-- **[Informez-vous](/dangers)** sur l'alignement de l'IA et les risques qui nous menacent.
-- **[Devenez recruteur pour Pause IA](/recrutement)** : Apprenez à mobiliser efficacement votre entourage avec nos guides et techniques de recrutement relationnel. Chaque personne recrutée peut en rallier d'autres, créant un effet multiplicateur puissant.
-- **Suivez nos chaînes** sur les réseaux sociaux et restez informés : [Discord](https://discord.gg/vyXGd7AeGc), [Twitter](https://twitter.com/pause_ia), [Facebook](https://www.facebook.com/Pause.IA), [TikTok](https://www.tiktok.com/@pause_ia), [LinkedIn](https://www.linkedin.com/company/pause-ia/), [Instagram](https://www.instagram.com/pause_ia), [Threads](https://www.threads.net/@pause_ia), [YouTube](https://www.youtube.com/@Pause_IA)
-- **Ajoutez Pause IA à LinkedIn et activez « partagez ces mises à jour du profil avec votre réseau ».** C'est un moyen simple de faire connaître nos efforts à de nombreuses personnes.
-- **Échangez** sur les risques de l'IA sur les réseaux sociaux.
-- **<a href="/{lang}/ecrire-a-mes-elus">Écrivez à vos élus</a>** : un email prêt à personnaliser pour votre député et votre sénateur. Les emails sont très efficaces, vous pourriez être surpris !
-- **[Faites du lobbying](https://pauseai.info/lobby-tips)** : Persuadez votre gouvernement d'œuvrer pour un moratoire international sur l’IA.
-- **[Manifestez](https://pauseai.info/protests)** : Rejoignez une des [manifestations](https://pauseai.info/protests) en France et dans le monde.
+## Les actions qui comptent le plus
 
-## Et si...
+<div class="action-grid">
+  <a class="action-card" href="/{lang}/rejoindre">
+    <span class="ac-emoji">✊</span>
+    <strong>Rejoindre Pause IA</strong>
+    <small>Rejoignez le mouvement et aidez-nous à prendre de l'ampleur.</small>
+  </a>
+  <a class="action-card" href="/{lang}/groupes-locaux">
+    <span class="ac-emoji">📍</span>
+    <strong>Agir près de chez vous</strong>
+    <small>Rejoignez ou lancez un groupe local.</small>
+  </a>
+  <a class="action-card" href="https://pauseai.info/protests" target="_blank" rel="noopener noreferrer">
+    <span class="ac-emoji">📢</span>
+    <strong>Manifester</strong>
+    <small>Participez à une manifestation en France ou dans le monde.</small>
+  </a>
+  <a class="action-card" href="/{lang}/dons">
+    <span class="ac-emoji">💶</span>
+    <strong>Faire un don</strong>
+    <small>Chaque euro nous aide à agir plus et plus vite.</small>
+  </a>
+  <a class="action-card" href="/recrutement">
+    <span class="ac-emoji">🗣️</span>
+    <strong>Convaincre votre entourage</strong>
+    <small>Nos guides pour mobiliser efficacement autour de vous.</small>
+  </a>
+  <a class="action-card" href="/{lang}/ressources">
+    <span class="ac-emoji">📚</span>
+    <strong>Vous informer</strong>
+    <small>Articles, vidéos et liens pour comprendre les risques et en parler juste.</small>
+  </a>
+</div>
 
-### Vous êtes un bon orateur
+## Aller plus loin
 
-- **Tentez de convaincre un membre du gouvernement de travailler sur un moratoire international.** C'est la chose la plus importante que vous puissiez faire.
-- **Tentez de convaincre des journalistes** d'écrire sur la question de la sécurité de l'IA.
-- **Contactez des influenceurs pour les inciter à aborder** et faire des vidéos sur la sécurité de l'IA.
-- **Demandez à la direction** de l’organisme officiel auquel vous appartenez, si tel est le cas, de prendre position sur ce sujet au niveau institutionnel.
+<div class="acc-list">
 
-### Vous êtes un politique ou travaillez pour le gouvernement
+<Accordion id="agir-faire-connaitre">
+<span slot="head">Faire connaître le sujet</span>
+<div slot="details">
 
-- **Renseignez-vous sur le [problème](/dangers) et ses [solutions](/propositions).**
-- **Formez des coalitions avec d'autres pays.**
-- **Invitez les dirigeants des laboratoires d'IA** à des auditions parlementaires pour qu'ils exposent la façon dont ils appréhendent et ont l’intention d’anticiper les potentiels risques catastrophiques liés à l’IA, et selon quel calendrier.
-- **Mettez en place une commission** pour étudier les [risques de l'IA](/dangers).
+- **Suivez et relayez Pause IA** sur les réseaux : [Discord](https://discord.gg/vyXGd7AeGc), [Twitter/X](https://twitter.com/pause_ia), [Facebook](https://www.facebook.com/Pause.IA), [TikTok](https://www.tiktok.com/@pause_ia), [LinkedIn](https://www.linkedin.com/company/pause-ia/), [Instagram](https://www.instagram.com/pause_ia), [Threads](https://www.threads.net/@pause_ia), [YouTube](https://www.youtube.com/@Pause_IA).
+- **Sur LinkedIn**, ajoutez Pause IA et activez « partager ces mises à jour du profil avec votre réseau » : un moyen simple de toucher beaucoup de monde.
+- **Échangez** sur les risques de l'IA autour de vous et sur les réseaux : une conversation sincère vaut mieux qu'un long discours.
+- **Créez et partagez du contenu** (articles, vidéos, images) pour expliquer le sujet.
+- **Participez à notre enquête emploi & IA** : <a href="/{lang}/emploi-ia/questionnaire">l'impact de l'IA sur votre profession</a>.
 
-### Vous connaissez le droit (ou le droit international)
+</div>
+</Accordion>
 
-- **Aidez à rédiger des lois** : [Proposez des exemples de textes](https://www.campaignforaisafety.org/celebrating-the-winners-law-student-moratorium-treaty-competition/). ([exemples](https://futureoflife.org/wp-content/uploads/2023/04/FLI_Policymaking_In_The_Pause.pdf)[de propositions](https://www.openphilanthropy.org/research/12-tentative-ideas-for-us-ai-policy/))
-- **Participez au débat** si le gouvernement sollicite l’avis des citoyens sur les politiques touchant à l’IA.
+<Accordion id="agir-signer">
+<span slot="head">Signer les textes de référence</span>
+<div slot="details">
 
-### Vous savez produire du contenu web
+Quelques textes majeurs qui pèsent par le nombre de signatures :
 
-- [Améliorez le site web.](https://github.com/moiri-gamboni/pauseai-france)
+- [Déclaration publique de Pause IA](https://pauseai.info/statement)
+- [Déclaration sur les risques de l'IA](https://www.safe.ai/work/statement-on-ai-risk) (dirigeants et chercheurs des grands laboratoires)
+- [Pour un traité international sur l'IA](https://aitreaty.org/)
+- [Interdire la superintelligence](https://www.change.org/p/ban-superintelligence-stop-ai-driven-human-extinction-risk)
 
-### Vous travaillez dans le secteur de l'IA
+</div>
+</Accordion>
 
-- **Ne travaillez pas sur une superintelligence** : Si vous avez une nouvelle idée révolutionnaire pour multiplier par dix la vitesse des systèmes d’IA, s'il vous plaît, ne la développez pas, ne la diffusez pas et n'en parlez pas. Nous devons ralentir le développement de l'IA, pas l'accélérer.
-- **Parlez à votre direction et à vos collègues des risques de l'IA** : Poussez-les à prendre position sur ce sujet à un niveau institutionnel.
-- **Organisez un séminaire** sur la sécurité de l'IA sur votre lieu de travail. Si vous cherchez de l'inspiration, [regardez ces vidéos](https://pauseai.info/learn#videos).
-- **Signez** la [Déclaration sur les risques de l'IA](https://www.safe.ai/work/statement-on-ai-risk).
+<Accordion id="agir-profil">
+<span slot="head">Agir selon votre profil</span>
+<div slot="details">
 
-### Vous travaillez dans le secteur de la sécurité de l'IA
+**Vous êtes à l'aise à l'oral**
 
-Si vous débutez en matière d’alignement de l'IA, à moins d'être extrêmement qualifié ou d’avoir un éclair de génie dans le domaine, **réfléchissez sérieusement à la possibilité de changer de camp et de militer plutôt pour une pause**. Sans un moratoire, vous n'aurez tout simplement pas le temps de faire évoluer votre carrière dans le secteur de l'alignement au point de pouvoir percer dans le domaine et vous rendre véritablement utile.
+- Tentez de convaincre un membre du gouvernement de travailler sur un moratoire international : c'est l'une des choses les plus utiles que vous puissiez faire.
+- Incitez des journalistes et des influenceurs à traiter la sécurité de l'IA.
+- Demandez à l'organisation à laquelle vous appartenez de prendre position.
 
-Si vous êtes déjà une personnalité reconnue dans le domaine de l'alignement, pourquoi ne pas envisager de faire davantage [entendre votre voix dans l’espace public](https://twitter.com/TrustlessState/status/1651538022360285187) et accepter d’associer votre nom aux appels au moratoire et la réglementation du secteur ?
+**Vous êtes élu·e ou travaillez pour le secteur public**
 
-### La thématique de l’emploi vous tient à cœur
+- Renseignez-vous sur le [problème](/{lang}/dangers) et ses [solutions](/{lang}/propositions).
+- Formez des coalitions avec d'autres pays.
+- Invitez les dirigeants des laboratoires d'IA à des auditions parlementaires.
+- Mettez en place une commission pour étudier les [risques de l'IA](/{lang}/dangers).
 
-<a href="/{lang}/emploi-ia">Découvrez Emploi IA</a>, un groupe de travail de Pause IA dédié à l’analyse des transformations du marché du travail face à l’intelligence artificielle. Notre mission est d’étudier l’impact de l’IA sur les métiers et les compétences, d’accompagner les personnes dont le parcours professionnel a été affecté par ces évolutions, et d’assurer une veille active sur les changements économiques et sociaux liés à cette révolution technologique.
+**Vous connaissez le droit**
 
-## Conseils pour être efficace
+- Aidez à rédiger des textes : voir des [exemples de propositions](https://futureoflife.org/wp-content/uploads/2023/04/FLI_Policymaking_In_The_Pause.pdf).
+- Participez aux consultations publiques sur les politiques touchant à l'IA.
 
-- **Montrez-vous courageux et soyez direct lors de vos prises de parole publique sur les risques** : Évitez d'adopter un langage édulcoré. Votre premier réflexe ne doit pas être d'émettre des réserves. Vous pourrez les formuler si on vous interroge mais ne donnez pas l’impression de ne pas être vraiment inquiet si vous l’êtes.
-- **Soyez moins exigeant avec vous-même** : Appliquez [le principe de Pareto](https://fr.wikipedia.org/wiki/Principe_de_Pareto). Évitez la classique erreur des passionnés d'informatique qui consiste à passer des mois à peaufiner un document Google avec d'interminables ré-écritures. Lancez votre projet publiquement et vous vous adapterez au fur et à mesure. Il n'y a pas de temps à perdre.
+**Vous savez produire du contenu web**
 
-Gardez ceci à l’esprit : Toute autre action entreprise serait l’équivalent de vouloir aligner les transats sur le pont du Titanic. Nous devons courir vers la passerelle, saisir la barre et nous éloigner de l'iceberg. Nous n'avons peut-être pas beaucoup de temps, mais nous pouvons essayer. Nous pouvons y arriver !
+- [Améliorez ce site](https://github.com/moiri-gamboni/pauseai-france).
+
+**Vous travaillez dans l'IA**
+
+- Ne travaillez pas à accélérer les capacités des systèmes de pointe.
+- Parlez des risques à votre direction et à vos collègues, poussez à une prise de position.
+- Organisez un séminaire sur la sécurité de l'IA sur votre lieu de travail ([vidéos utiles](https://pauseai.info/learn#videos)).
+- Signez la [Déclaration sur les risques de l'IA](https://www.safe.ai/work/statement-on-ai-risk).
+
+**Vous travaillez dans la sécurité de l'IA**
+
+Si vous débutez en alignement, envisagez sérieusement de militer plutôt pour une pause : sans moratoire, le temps risque de manquer pour que votre travail porte ses fruits. Si vous êtes déjà reconnu·e dans le domaine, faites [entendre votre voix publiquement](https://twitter.com/TrustlessState/status/1651538022360285187) et associez votre nom aux appels au moratoire.
+
+**La question de l'emploi vous tient à cœur**
+
+<a href="/{lang}/emploi-ia">Découvrez Emploi IA</a>, le groupe de travail de Pause IA dédié à l'impact de l'intelligence artificielle sur les métiers et les compétences.
+
+</div>
+</Accordion>
+
+<Accordion id="agir-conseils">
+<span slot="head">Conseils pour être efficace</span>
+<div slot="details">
+
+- **Soyez direct et courageux** dans vos prises de parole. Évitez le langage édulcoré : si vous êtes inquiet, dites-le clairement. Vous formulerez vos réserves si on vous les demande.
+- **Ne visez pas la perfection.** Appliquez [le principe de Pareto](https://fr.wikipedia.org/wiki/Principe_de_Pareto) : lancez votre action publiquement et ajustez ensuite. Il n'y a pas de temps à perdre.
+
+Gardez ceci à l'esprit : toute autre action reviendrait à aligner les transats sur le pont du Titanic. Mieux vaut courir vers la barre et s'éloigner de l'iceberg. Nous n'avons peut-être pas beaucoup de temps, mais nous pouvons essayer, et nous pouvons y arriver.
+
+</div>
+</Accordion>
+
+</div>
+
+<style>
+  .lead-action {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem;
+    border: 2px solid var(--brand);
+    border-radius: 16px;
+    background: var(--brand-light);
+    text-decoration: none;
+    color: var(--text);
+    transition:
+      transform 0.15s ease,
+      box-shadow 0.15s ease;
+  }
+
+  .lead-action:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  .lead-emoji {
+    font-size: 2rem;
+    flex-shrink: 0;
+  }
+
+  .lead-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .lead-text strong {
+    font-size: 1.15rem;
+  }
+
+  .lead-text small {
+    font-size: 0.92rem;
+    line-height: 1.5;
+    color: var(--text-2);
+  }
+
+  .lead-arrow {
+    margin-left: auto;
+    font-size: 1.5rem;
+    color: var(--brand-subtle);
+    flex-shrink: 0;
+  }
+
+  .action-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+    gap: 1rem;
+  }
+
+  .action-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 1.1rem 1.25rem;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--bg-card);
+    text-decoration: none;
+    color: var(--text);
+    transition:
+      transform 0.15s ease,
+      border-color 0.15s ease,
+      box-shadow 0.15s ease;
+  }
+
+  .action-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--brand);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+  }
+
+  .ac-emoji {
+    font-size: 1.6rem;
+  }
+
+  .action-card strong {
+    font-size: 1.02rem;
+  }
+
+  .action-card small {
+    font-size: 0.88rem;
+    line-height: 1.5;
+    color: var(--text-2);
+  }
+
+  /* Accordéons « Aller plus loin » présentés en cartes blanches détachées du fond */
+  .acc-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .acc-list :global(.accordion) {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 0 1.25rem 0.25rem;
+  }
+
+  .acc-list :global(.accordion .header) {
+    padding: 1.1rem 0;
+  }
+
+  /* Le contenu ouvert n'a plus son propre encadré (évite la carte dans la carte) */
+  .acc-list :global(.accordion .details) {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    margin: 0;
+    padding: 0 0 0.75rem;
+    text-align: left;
+  }
+
+  /* Neutralise le séparateur inter-accordéons du composant (chaque carte a son bord) */
+  .acc-list :global(div.inView:not(:last-child) > .accordion) {
+    border-bottom: 1px solid var(--border);
+  }
+</style>
