@@ -465,8 +465,7 @@
 	/* ── Bigger-problem section ── */
 	.bigger-problem {
 		background: var(--bg-subtle, #f7f7f5);
-		border-left: 4px solid var(--brand, #ff9416);
-		border-radius: 0 12px 12px 0;
+		border-radius: 12px;
 		padding: 2rem 2.25rem;
 		/* Décale l'ancre (#ecrire-elus) sous l'en-tête fixe lors du scroll. */
 		scroll-margin-top: 5.5rem;

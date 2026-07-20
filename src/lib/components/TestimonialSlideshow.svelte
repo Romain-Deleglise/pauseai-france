@@ -192,7 +192,7 @@
 	.slide-frame {
 		position: relative;
 		width: 100%;
-		max-width: 640px;
+		max-width: 500px;
 	}
 
 	.zoom-trigger {
