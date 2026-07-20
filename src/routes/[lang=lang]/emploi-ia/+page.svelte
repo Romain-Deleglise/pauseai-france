@@ -184,8 +184,9 @@
 				<p class="article-card-desc">{t.emploi_ia.article2_desc}</p>
 				<span class="article-card-link">{t.emploi_ia.analyses_read} &rarr;</span>
 			</a>
-			<a class="article-card" href={t.emploi_ia.article3_url}>
-				<span class="card-meta">Article 3/3 &middot; 6 min</span>
+			<a class="article-card article-card-featured" href={t.emploi_ia.article3_url}>
+				<span class="article-badge">{t.emploi_ia.article3_badge}</span>
+				<span class="card-meta">Article 3/3 &middot; 7 min</span>
 				<h3 class="article-card-title">{t.emploi_ia.article3_title}</h3>
 				<p class="article-card-desc">{t.emploi_ia.article3_desc}</p>
 				<span class="article-card-link">{t.emploi_ia.analyses_read} &rarr;</span>
@@ -434,6 +435,30 @@
 	.article-card:hover {
 		border-color: var(--brand, #ff9416);
 		box-shadow: 0 2px 12px rgba(255, 148, 22, 0.12);
+	}
+
+	/* ── Carte mise en avant : le bilan de la campagne ── */
+	.article-card-featured {
+		border-color: var(--brand, #ff9416);
+		border-width: 2px;
+		background: var(--brand-light, #fff5e8);
+		box-shadow: 0 2px 12px rgba(255, 148, 22, 0.14);
+	}
+
+	:global([data-theme='dark']) .article-card-featured {
+		background: rgba(255, 148, 22, 0.08);
+	}
+
+	.article-badge {
+		align-self: flex-start;
+		font-size: 0.65rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		color: white;
+		background: var(--brand, #ff9416);
+		padding: 0.2rem 0.5rem;
+		border-radius: 4px;
 	}
 
 	.article-card-title {

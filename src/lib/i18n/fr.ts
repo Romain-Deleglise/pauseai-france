@@ -586,6 +586,7 @@ export default {
 		article3_desc:
 			"Bilan qualitatif de notre enquête sur l'emploi : perte de sens, décisions imposées, adaptation reportée sur les individus, ce qu'une trentaine de témoins nous ont confié.",
 		article3_url: '/emploi-ia/ce-que-lia-fait-au-travail',
+		article3_badge: 'Bilan de la campagne',
 		slideshow_empty: 'Les témoignages illustrés arrivent prochainement.',
 		slideshow_nav_aria: 'Navigation du diaporama des témoignages',
 		slideshow_prev: 'Témoignage précédent',

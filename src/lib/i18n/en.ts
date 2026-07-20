@@ -579,6 +579,7 @@ export default {
 		article3_desc:
 			'A qualitative review of our employment survey: loss of meaning, decisions imposed from above, adaptation shifted onto individuals, what around thirty witnesses shared with us.',
 		article3_url: '/emploi-ia/ce-que-lia-fait-au-travail',
+		article3_badge: 'Campaign review',
 		slideshow_empty: 'Illustrated testimonials are coming soon.',
 		slideshow_nav_aria: 'Testimonials slideshow navigation',
 		slideshow_prev: 'Previous testimonial',
