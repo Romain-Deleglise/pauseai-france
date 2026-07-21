@@ -44,7 +44,7 @@ No, quite the opposite. We believe that real innovation is controlled innovation
 
 ### How can AI be dangerous?
 
-Today's AI is already used to spread disinformation at scale, to influence elections, to carry out cyberattacks and to weaken entire sectors of employment. The future is even more worrying: the labs of the tech giants are building ever more powerful systems that they themselves admit they cannot control. The risk goes as far as biological attacks made easier by AI, or even a loss of control that could threaten humanity as a whole.
+Today's AI is already used to spread disinformation at scale, to influence elections, to carry out cyberattacks and to weaken entire sectors of employment. The future is even more worrying: the labs of the tech giants are building ever more powerful systems that they themselves [admit they cannot control](https://internationalaisafetyreport.org/). The risk goes as far as biological attacks made easier by AI, or even a loss of control that could threaten humanity as a whole.
 
 Learn more: [The dangers of AI](/en/dangers).
 
@@ -54,7 +54,7 @@ AI can be of great service in medicine, for the climate or in research, we do no
 
 ### When will these risks materialise?
 
-A lot of damage is already here: mass disinformation, cyberattacks, breaches of privacy, psychological and cognitive strain, the first job losses. The most serious dangers, such as engineered pandemics or the loss of control of autonomous systems, could become real within a few years. The leaders of the big AI companies themselves are announcing human-level artificial intelligence within 4 to 5 years.
+A lot of damage is already here: mass disinformation, cyberattacks, breaches of privacy, psychological and cognitive strain, the first job losses. The most serious dangers, such as engineered pandemics or the loss of control of autonomous systems, could become real within a few years. The leaders of the big AI companies themselves are [announcing](https://darioamodei.com/essay/machines-of-loving-grace) human-level artificial intelligence within a few years.
 
 ### Do serious scientists share your concerns?
 
@@ -74,7 +74,7 @@ No. Our demand concerns the training of the next generations of AI, far more pow
 
 ### Is a global moratorium really realistic?
 
-Humanity has already managed to coordinate to establish global moratoriums, notably on biological weapons, human cloning or nuclear testing. And in practice, Pause IA is not starting from scratch: the UN, the G7 and UNESCO have already set out principles and codes of conduct on AI, while experts have drawn up concrete proposals to govern these systems. Moreover, the idea of a moratorium is far from marginal: in France ([CeSIA / OpinionWay survey](https://cesia.org/fr/publications/sondage-ia-2026/)) as in the United States ([Future of Life Institute survey](https://futureoflife.org/recent-news/americans-want-regulation-or-prohibition-of-superhuman-ai/)), a large majority of the population wants to slow down or better regulate the development of AI, while only a tiny minority supports the current pace.
+Humanity has already managed to coordinate to establish global moratoriums, notably on biological weapons, human cloning or nuclear testing. And in practice, Pause IA is not starting from scratch: the [UN](https://www.un.org/global-dialogue-ai-governance/en), the [G7](https://www.soumu.go.jp/hiroshimaaiprocess/en/index.html) and [UNESCO](https://www.unesco.org/en/articles/unescos-recommendation-ethics-artificial-intelligence-key-facts) have already set out principles and codes of conduct on AI, while experts have drawn up concrete proposals to govern these systems. Moreover, the idea of a moratorium is far from marginal: in France ([CeSIA / OpinionWay survey](https://cesia.org/fr/publications/sondage-ia-2026/)) as in the United States ([Future of Life Institute survey](https://futureoflife.org/recent-news/americans-want-regulation-or-prohibition-of-superhuman-ai/)), a large majority of the population wants to slow down or better regulate the development of AI, while only a tiny minority supports the current pace.
 
 ## How can I get involved?
 

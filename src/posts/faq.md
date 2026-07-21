@@ -44,7 +44,7 @@ Non, au contraire. Nous pensons qu'une vraie innovation est une innovation maît
 
 ### En quoi l'IA peut-elle être dangereuse ?
 
-Les IA actuelles servent déjà à diffuser de la désinformation à grande échelle, à influencer des élections, à mener des cyberattaques et à fragiliser des emplois entiers. L'avenir est encore plus inquiétant : les laboratoires des géants de la tech développent des systèmes toujours plus puissants qu'eux-mêmes admettent ne pas savoir contrôler. Le risque va jusqu'à des attaques biologiques facilitées par l'IA, voire une perte de contrôle qui pourrait menacer l'humanité dans son ensemble.
+Les IA actuelles servent déjà à diffuser de la désinformation à grande échelle, à influencer des élections, à mener des cyberattaques et à fragiliser des emplois entiers. L'avenir est encore plus inquiétant : les laboratoires des géants de la tech développent des systèmes toujours plus puissants qu'[eux-mêmes admettent ne pas savoir contrôler](https://internationalaisafetyreport.org/). Le risque va jusqu'à des attaques biologiques facilitées par l'IA, voire une perte de contrôle qui pourrait menacer l'humanité dans son ensemble.
 
 Pour en savoir plus : [Les dangers de l'IA](/fr/dangers).
 
@@ -54,7 +54,7 @@ L'IA peut rendre de grands services en médecine, pour le climat ou dans la rech
 
 ### Ces risques, c'est pour quand ?
 
-Beaucoup de dégâts sont déjà là : désinformation massive, cyberattaques, atteintes à la vie privée, fragilisation psychologique et cognitive, premières destructions d'emplois. Les dangers les plus graves, comme des pandémies provoquées ou la perte de contrôle de systèmes autonomes, pourraient devenir réels d'ici quelques années. Les dirigeants des grandes entreprises d'IA eux-mêmes annoncent une intelligence artificielle de niveau humain d'ici 4 à 5 ans.
+Beaucoup de dégâts sont déjà là : désinformation massive, cyberattaques, atteintes à la vie privée, fragilisation psychologique et cognitive, premières destructions d'emplois. Les dangers les plus graves, comme des pandémies provoquées ou la perte de contrôle de systèmes autonomes, pourraient devenir réels d'ici quelques années. Les dirigeants des grandes entreprises d'IA eux-mêmes [annoncent](https://darioamodei.com/essay/machines-of-loving-grace) une intelligence artificielle de niveau humain d'ici quelques années.
 
 ### Est-ce que des scientifiques sérieux partagent vos inquiétudes ?
 
@@ -74,7 +74,7 @@ Non. Notre demande porte sur l'entraînement des prochaines générations d'IA, 
 
 ### Un moratoire mondial est-il vraiment réaliste ?
 
-L'humanité a déjà réussi à se coordonner pour instaurer des moratoires mondiaux, notamment sur les armes biologiques, le clonage humain ou les essais nucléaires. Et en pratique, Pause IA ne part pas de rien : l'ONU, le G7 et l'UNESCO ont déjà posé des principes et des codes de conduite concernant l'IA, tandis que des experts ont élaboré des propositions concrètes pour encadrer ces systèmes. Par ailleurs, l'idée d'un moratoire est loin d'être marginale : en France ([enquête CeSIA / OpinionWay](https://cesia.org/fr/publications/sondage-ia-2026/)) comme aux États-Unis ([enquête du Future of Life Institute](https://futureoflife.org/recent-news/americans-want-regulation-or-prohibition-of-superhuman-ai/)), une large majorité de la population souhaite ralentir ou mieux encadrer le développement de l'IA, tandis qu'une infime minorité soutient le rythme actuel.
+L'humanité a déjà réussi à se coordonner pour instaurer des moratoires mondiaux, notamment sur les armes biologiques, le clonage humain ou les essais nucléaires. Et en pratique, Pause IA ne part pas de rien : l'[ONU](https://www.un.org/global-dialogue-ai-governance/fr), le [G7](https://www.soumu.go.jp/hiroshimaaiprocess/en/index.html) et l'[UNESCO](https://www.unesco.org/en/articles/unescos-recommendation-ethics-artificial-intelligence-key-facts) ont déjà posé des principes et des codes de conduite concernant l'IA, tandis que des experts ont élaboré des propositions concrètes pour encadrer ces systèmes. Par ailleurs, l'idée d'un moratoire est loin d'être marginale : en France ([enquête CeSIA / OpinionWay](https://cesia.org/fr/publications/sondage-ia-2026/)) comme aux États-Unis ([enquête du Future of Life Institute](https://futureoflife.org/recent-news/americans-want-regulation-or-prohibition-of-superhuman-ai/)), une large majorité de la population souhaite ralentir ou mieux encadrer le développement de l'IA, tandis qu'une infime minorité soutient le rythme actuel.
 
 ## Comment s'impliquer ?
 
