@@ -47,7 +47,7 @@ Nous comptons aujourd'hui 126 adhérents. La cotisation la plus fréquente est d
 
 ## Ce que nous ne cachons pas
 
-Nos ressources restent concentrées sur un petit nombre de contributeurs. Lors de notre premier exercice, un seul donateur représentait près de la moitié de nos recettes ; aujourd'hui, deux personnes en représentent encore environ un tiers. Réduire cette dépendance en élargissant notre base d'adhérents est un objectif explicite de notre stratégie financière, et c'est l'une des raisons pour lesquelles nous encourageons l'adhésion plutôt que le don ponctuel.
+Par souci de transparence, nous préférons le dire : nos ressources reposent encore sur un nombre restreint de contributeurs. Lors de notre premier exercice, un seul donateur représentait plus d'un tiers de nos recettes ; aujourd'hui, quelques personnes en représentent encore environ un tiers. Réduire progressivement cette dépendance en élargissant notre base d'adhérents est un objectif explicite de notre stratégie financière, et c'est l'une des raisons pour lesquelles nous encourageons l'adhésion plutôt que le don ponctuel.
 
 ## À quoi sert l'argent
 
@@ -59,8 +59,10 @@ L'association a fonctionné entièrement grâce au bénévolat pendant ses dix-h
 
 Nos comptes sont présentés et validés chaque année en assemblée générale. Le rapport de notre premier exercice, validé le 17 décembre 2025, est consultable intégralement :
 
-- [Consulter le rapport financier 2024-2025 en ligne](/rapport-financier-2024-2025.html)
-- [Télécharger le rapport financier 2024-2025 (PDF)](/pause-ia-rapport-financier-2024-2025.pdf)
+<ul>
+  <li><a href="/rapport-financier-2024-2025.html" data-sveltekit-reload>Consulter le rapport financier 2024-2025 en ligne</a></li>
+  <li><a href="/pause-ia-rapport-financier-2024-2025.pdf" data-sveltekit-reload>Télécharger le rapport financier 2024-2025 (PDF)</a></li>
+</ul>
 
 <div class="cta">
   <Button href="/dons">Faire un don</Button>

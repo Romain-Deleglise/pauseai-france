@@ -37,7 +37,7 @@ We currently have 126 members. The most common membership fee is €2 per month:
 
 ## What we do not hide
 
-Our resources remain concentrated among a small number of contributors. During our first financial year, a single donor accounted for nearly half of our income; today, two people still represent around a third of it. Reducing this dependence by broadening our membership base is an explicit goal of our financial strategy, and it is one of the reasons we encourage membership rather than one-off donations.
+In the interest of transparency, we would rather say it plainly: our resources still rest on a limited number of contributors. During our first financial year, a single donor accounted for more than a third of our income; today, a few people still represent around a third of it. Gradually reducing this dependence by broadening our membership base is an explicit goal of our financial strategy, and it is one of the reasons we encourage membership rather than one-off donations.
 
 ## What the money is used for
 
@@ -49,8 +49,10 @@ The association ran entirely on volunteering for its first eighteen months. It h
 
 Our accounts are presented and approved each year at a general assembly. The report for our first financial year, approved on 17 December 2025, can be consulted in full:
 
-- [Read the 2024-2025 financial report online](/rapport-financier-2024-2025.html)
-- [Download the 2024-2025 financial report (PDF)](/pause-ia-rapport-financier-2024-2025.pdf)
+<ul>
+  <li><a href="/rapport-financier-2024-2025.html" data-sveltekit-reload>Read the 2024-2025 financial report online</a></li>
+  <li><a href="/pause-ia-rapport-financier-2024-2025.pdf" data-sveltekit-reload>Download the 2024-2025 financial report (PDF)</a></li>
+</ul>
 
 <div class="cta">
   <Button href="/dons">Make a donation</Button>
