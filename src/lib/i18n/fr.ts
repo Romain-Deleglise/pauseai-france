@@ -6,6 +6,7 @@ export default {
 		evenements: 'Événements',
 		apropos: 'À propos',
 		dangers: "Les dangers de l'IA",
+		faq: 'FAQ',
 		carte: "Carte de l'écosystème",
 		liens_utiles: 'Ressources',
 		newsletter: 'Newsletter',

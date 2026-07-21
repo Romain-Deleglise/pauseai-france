@@ -95,6 +95,13 @@
 <ProgressBar color="var(--brand)" />
 
 <style>
+	/* Réserve la place de la barre de défilement en permanence : évite que le
+	   contenu centré se décale horizontalement quand un scroll apparaît
+	   (ex. en dépliant un accordéon de la FAQ). */
+	:global(html) {
+		scrollbar-gutter: stable;
+	}
+
 	/* @import url('$lib/reset.css');
 	@import url('$lib/theme.css'); */
 
