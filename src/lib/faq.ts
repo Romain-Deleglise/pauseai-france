@@ -24,11 +24,16 @@ function escapeHtml(s: string): string {
 	return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
 }
 
-/** Rendu markdown minimal suffisant pour nos réponses : gras et liens. */
+/** Rendu markdown minimal suffisant pour nos réponses : gras et liens. Les liens
+ * externes (sources) s'ouvrent dans un nouvel onglet. */
 function renderInline(s: string): string {
 	return escapeHtml(s)
 		.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-		.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
+		.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_m, text, href) => {
+			const external = /^https?:\/\//.test(href)
+			const attrs = external ? ' target="_blank" rel="noopener noreferrer"' : ''
+			return `<a href="${href}"${attrs}>${text}</a>`
+		})
 }
 
 function renderAnswerHtml(md: string): string {

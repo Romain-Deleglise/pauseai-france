@@ -16,7 +16,7 @@ Des questions ? Voici les réponses aux interrogations les plus fréquentes de n
 
 ### Qu'est-ce que Pause IA ?
 
-Pause IA est une association française de bénévoles qui alerte les citoyens et les pouvoirs publics sur les dangers d'une intelligence artificielle développée trop vite, sans garde-fous. Nous demandons une pause mondiale et coordonnée sur l'entraînement des IA les plus puissantes, le temps que nous sachions les rendre sûres et démocratiquement contrôlées. Nous sommes la représentation française du mouvement international PauseAI, présent dans une quinzaine de pays.
+Pause IA est une association française de bénévoles qui alerte les citoyens et les pouvoirs publics sur les dangers d'une intelligence artificielle développée trop vite, sans garde-fous. Nous demandons une pause mondiale et coordonnée sur l'entraînement des IA les plus puissantes, le temps que nous sachions les rendre sûres et démocratiquement contrôlées. Nous sommes la représentation française du mouvement international [PauseAI](https://pauseai.info/), présent dans une quinzaine de pays.
 
 ### Qui sont les membres de Pause IA ?
 
@@ -58,7 +58,7 @@ Beaucoup de dégâts sont déjà là : désinformation massive, cyberattaques, a
 
 ### Est-ce que des scientifiques sérieux partagent vos inquiétudes ?
 
-Oui, et depuis longtemps. En 2023, plus de 600 chercheurs et dirigeants de l'IA, dont les responsables des trois principaux laboratoires (OpenAI, Google DeepMind et Anthropic), ont signé une déclaration affirmant que le risque d'extinction lié à l'IA doit être une priorité mondiale, au même titre que les pandémies ou la guerre nucléaire. Depuis, les mises en garde n'ont fait que se multiplier. En septembre 2025, l'appel mondial à établir des « lignes rouges » pour l'IA a réuni plus de 300 personnalités de premier plan, dont d'anciens chefs d'État, des prix Nobel et des pionniers de l'IA récompensés par le prix Turing. Et en 2026, le Rapport international sur la sécurité de l'IA, présidé par Yoshua Bengio (prix Turing) et bâti sur le modèle du GIEC, a confirmé ces dangers. Ce ne sont pas des craintes marginales : c'est un consensus scientifique qui s'élargit d'année en année.
+Oui, et depuis longtemps. En 2023, plus de 600 chercheurs et dirigeants de l'IA, dont les responsables des trois principaux laboratoires (OpenAI, Google DeepMind et Anthropic), ont signé une [déclaration](https://www.safe.ai/work/statement-on-ai-risk) affirmant que le risque d'extinction lié à l'IA doit être une priorité mondiale, au même titre que les pandémies ou la guerre nucléaire. Depuis, les mises en garde n'ont fait que se multiplier. En septembre 2025, l'[appel mondial à établir des « lignes rouges »](https://red-lines.ai/) pour l'IA, lancé à l'ONU, a réuni plus de 300 personnalités de premier plan, dont d'anciens chefs d'État, des prix Nobel et des pionniers de l'IA récompensés par le prix Turing. Et en 2026, le [Rapport international sur la sécurité de l'IA](https://internationalaisafetyreport.org/), présidé par Yoshua Bengio (prix Turing) et bâti sur le modèle du GIEC, a confirmé ces dangers. Ce ne sont pas des craintes marginales : c'est un consensus scientifique qui s'élargit d'année en année.
 
 ## Que demandez-vous concrètement ?
 
@@ -74,7 +74,7 @@ Non. Notre demande porte sur l'entraînement des prochaines générations d'IA, 
 
 ### Un moratoire mondial est-il vraiment réaliste ?
 
-L'humanité a déjà réussi à se coordonner pour instaurer des moratoires mondiaux, notamment sur les armes biologiques, le clonage humain ou les essais nucléaires. Et en pratique, Pause IA ne part pas de rien : l'ONU, le G7 et l'UNESCO ont déjà posé des principes et des codes de conduite concernant l'IA, tandis que des experts ont élaboré des propositions concrètes pour encadrer ces systèmes. Par ailleurs, l'idée d'un moratoire est loin d'être marginale : en France comme aux États-Unis, une large majorité de la population souhaite ralentir ou mieux encadrer le développement de l'IA, tandis qu'une infime minorité soutient le rythme actuel.
+L'humanité a déjà réussi à se coordonner pour instaurer des moratoires mondiaux, notamment sur les armes biologiques, le clonage humain ou les essais nucléaires. Et en pratique, Pause IA ne part pas de rien : l'ONU, le G7 et l'UNESCO ont déjà posé des principes et des codes de conduite concernant l'IA, tandis que des experts ont élaboré des propositions concrètes pour encadrer ces systèmes. Par ailleurs, l'idée d'un moratoire est loin d'être marginale : en France ([enquête CeSIA / OpinionWay](https://cesia.org/fr/publications/sondage-ia-2026/)) comme aux États-Unis ([enquête du Future of Life Institute](https://futureoflife.org/recent-news/americans-want-regulation-or-prohibition-of-superhuman-ai/)), une large majorité de la population souhaite ralentir ou mieux encadrer le développement de l'IA, tandis qu'une infime minorité soutient le rythme actuel.
 
 ## Comment s'impliquer ?
 

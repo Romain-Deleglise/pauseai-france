@@ -16,7 +16,7 @@ Have questions? Here are the answers to the questions most often asked by our vi
 
 ### What is Pause IA?
 
-Pause IA is a French non-profit run by volunteers that warns citizens and public authorities about the dangers of an artificial intelligence developed too fast, without safeguards. We call for a global, coordinated pause on the training of the most powerful AI systems, until we know how to make them safe and democratically controlled. We are the French branch of the international movement PauseAI, present in around fifteen countries.
+Pause IA is a French non-profit run by volunteers that warns citizens and public authorities about the dangers of an artificial intelligence developed too fast, without safeguards. We call for a global, coordinated pause on the training of the most powerful AI systems, until we know how to make them safe and democratically controlled. We are the French branch of the international movement [PauseAI](https://pauseai.info/), present in around fifteen countries.
 
 ### Who are Pause IA's members?
 
@@ -58,7 +58,7 @@ A lot of damage is already here: mass disinformation, cyberattacks, breaches of 
 
 ### Do serious scientists share your concerns?
 
-Yes, and for a long time. In 2023, more than 600 researchers and AI executives, including the heads of the three main labs (OpenAI, Google DeepMind and Anthropic), signed a statement affirming that the risk of extinction from AI should be a global priority, alongside pandemics and nuclear war. Since then, the warnings have only multiplied. In September 2025, the global call to set "red lines" for AI brought together more than 300 leading figures, including former heads of state, Nobel laureates and AI pioneers awarded the Turing Prize. And in 2026, the International AI Safety Report, chaired by Yoshua Bengio (Turing Prize) and modelled on the IPCC, confirmed these dangers. These are not fringe fears: it is a scientific consensus that broadens year after year.
+Yes, and for a long time. In 2023, more than 600 researchers and AI executives, including the heads of the three main labs (OpenAI, Google DeepMind and Anthropic), signed a [statement](https://www.safe.ai/work/statement-on-ai-risk) affirming that the risk of extinction from AI should be a global priority, alongside pandemics and nuclear war. Since then, the warnings have only multiplied. In September 2025, the [global call to set "red lines"](https://red-lines.ai/) for AI, launched at the UN, brought together more than 300 leading figures, including former heads of state, Nobel laureates and AI pioneers awarded the Turing Prize. And in 2026, the [International AI Safety Report](https://internationalaisafetyreport.org/), chaired by Yoshua Bengio (Turing Prize) and modelled on the IPCC, confirmed these dangers. These are not fringe fears: it is a scientific consensus that broadens year after year.
 
 ## What exactly are you asking for?
 
@@ -74,7 +74,7 @@ No. Our demand concerns the training of the next generations of AI, far more pow
 
 ### Is a global moratorium really realistic?
 
-Humanity has already managed to coordinate to establish global moratoriums, notably on biological weapons, human cloning or nuclear testing. And in practice, Pause IA is not starting from scratch: the UN, the G7 and UNESCO have already set out principles and codes of conduct on AI, while experts have drawn up concrete proposals to govern these systems. Moreover, the idea of a moratorium is far from marginal: in France as in the United States, a large majority of the population wants to slow down or better regulate the development of AI, while only a tiny minority supports the current pace.
+Humanity has already managed to coordinate to establish global moratoriums, notably on biological weapons, human cloning or nuclear testing. And in practice, Pause IA is not starting from scratch: the UN, the G7 and UNESCO have already set out principles and codes of conduct on AI, while experts have drawn up concrete proposals to govern these systems. Moreover, the idea of a moratorium is far from marginal: in France ([CeSIA / OpinionWay survey](https://cesia.org/fr/publications/sondage-ia-2026/)) as in the United States ([Future of Life Institute survey](https://futureoflife.org/recent-news/americans-want-regulation-or-prohibition-of-superhuman-ai/)), a large majority of the population wants to slow down or better regulate the development of AI, while only a tiny minority supports the current pace.
 
 ## How can I get involved?
 
