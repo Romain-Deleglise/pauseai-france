@@ -45,7 +45,7 @@ Le salaire de notre directrice exécutive, recrutée en décembre 2025, a été 
 
 Nous comptons aujourd'hui 126 adhérents. La cotisation la plus fréquente est de 2 € par mois : nous avons fait le choix d'une adhésion accessible à tous plutôt que d'un montant minimum élevé. Cette base d'adhérents, lancée en septembre 2025, est notre principal levier d'indépendance et elle s'élargit régulièrement.
 
-## Ce que nous ne cachons pas
+## Nos points de vigilance
 
 Par souci de transparence, nous préférons le dire : nos ressources reposent encore sur un nombre restreint de contributeurs. Lors de notre premier exercice, un seul donateur représentait plus d'un tiers de nos recettes ; aujourd'hui, quelques personnes en représentent encore environ un tiers. Réduire progressivement cette dépendance en élargissant notre base d'adhérents est un objectif explicite de notre stratégie financière, et c'est l'une des raisons pour lesquelles nous encourageons l'adhésion plutôt que le don ponctuel.
 

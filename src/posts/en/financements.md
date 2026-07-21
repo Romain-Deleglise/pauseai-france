@@ -35,7 +35,7 @@ The salary of our executive director, hired in December 2025, was covered during
 
 We currently have 126 members. The most common membership fee is €2 per month: we chose to make membership accessible to everyone rather than setting a high minimum amount. This membership base, launched in September 2025, is our main lever of independence and it is steadily growing.
 
-## What we do not hide
+## Our points of vigilance
 
 In the interest of transparency, we would rather say it plainly: our resources still rest on a limited number of contributors. During our first financial year, a single donor accounted for more than a third of our income; today, a few people still represent around a third of it. Gradually reducing this dependence by broadening our membership base is an explicit goal of our financial strategy, and it is one of the reasons we encourage membership rather than one-off donations.
 
