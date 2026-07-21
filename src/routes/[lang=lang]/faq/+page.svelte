@@ -111,7 +111,6 @@
 		font-size: 1.05rem;
 		line-height: 1.6;
 		color: var(--text-2);
-		max-width: 46rem;
 		margin: 0 0 1.75rem;
 	}
 
