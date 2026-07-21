@@ -3,43 +3,12 @@ title: FAQ
 description: Questions fréquentes sur Pause IA, les risques de l'intelligence artificielle et ce que nous demandons.
 ---
 
-<!-- ↓↓↓ NE PAS TOUCHER ↓↓↓ -->
+<!-- Le faqPlugin transforme les ### en accordéons (Accordion) quand ce fichier
+     est compilé comme composant : l'import doit rester. La page /faq et l'accueil
+     lisent ce fichier en ?raw et ignorent ce bloc. -->
 <script lang="ts">
-  import Accordion from '$components/Accordion.svelte'
-	import { page } from '$app/stores'
-
-  $: toc = $page.url.pathname === '/faq'
-
+	import Accordion from '$components/Accordion.svelte'
 </script>
-
-{#if toc}
-
-<!-- ↑↑↑ NE PAS TOUCHER ↑↑↑ -->
-
-## Sommaire
-
-- [Qu'est-ce que Pause IA ?](#accordion1)
-- [Qui sont les membres de Pause IA ?](#accordion2)
-- [Qui finance votre association ?](#accordion3)
-- [Êtes-vous liés à un parti politique ou à une entreprise ?](#accordion4)
-- [Pause IA existe-t-elle dans d'autres pays ?](#accordion5)
-- [Êtes-vous contre l'innovation ?](#accordion6)
-- [En quoi l'IA peut-elle être dangereuse ?](#accordion7)
-- [L'IA n'apporte-t-elle pas surtout des bénéfices ?](#accordion8)
-- [Ces risques, c'est pour quand ?](#accordion9)
-- [Est-ce que des scientifiques sérieux partagent vos inquiétudes ?](#accordion10)
-- [Qu'est-ce qu'un moratoire sur l'IA ?](#accordion11)
-- [Voulez-vous interdire ChatGPT et les IA que j'utilise déjà ?](#accordion12)
-- [Un moratoire mondial est-il vraiment réaliste ?](#accordion13)
-- [Comment puis-je aider ?](#accordion14)
-- [Faut-il être expert en IA pour vous rejoindre ?](#accordion15)
-- [Est-ce qu'il faut payer pour devenir membre ?](#accordion16)
-
-<!-- ↓↓↓ NE PAS TOUCHER ↓↓↓ -->
-
-{/if}
-
-<!-- ↑↑↑ NE PAS TOUCHER ↑↑↑ -->
 
 Des questions ? Voici les réponses aux interrogations les plus fréquentes de nos visiteurs, journalistes et soutiens.
 
@@ -51,7 +20,7 @@ Pause IA est une association française de bénévoles qui alerte les citoyens e
 
 ### Qui sont les membres de Pause IA ?
 
-Pause IA rassemble une équipe dirigeante d'une dizaine de personnes — emmenée par Maxime Fournes (président et co-fondateur) et Clémence Peyrot (directrice exécutive) — et plus d'une centaine de bénévoles. Nos profils sont variés : ingénieurs, enseignants, chercheurs, juristes, psychologues, étudiants, retraités. Ce qui nous réunit, c'est une inquiétude partagée face à la trajectoire actuelle de l'IA, et la conviction que les citoyens ont leur mot à dire.
+Pause IA rassemble une équipe dirigeante d'une dizaine de personnes, emmenée par Maxime Fournes (président et co-fondateur) et Clémence Peyrot (directrice exécutive), ainsi que plus d'une centaine de bénévoles. Nos profils sont variés : ingénieurs, enseignants, chercheurs, juristes, psychologues, étudiants, retraités. Ce qui nous réunit, c'est une inquiétude partagée face à la trajectoire actuelle de l'IA, et la conviction que les citoyens ont leur mot à dire.
 
 Pour en savoir plus : [Qui sommes-nous](/fr/qui-sommes-nous).
 

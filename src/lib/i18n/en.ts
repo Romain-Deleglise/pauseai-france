@@ -6,6 +6,7 @@ export default {
 		evenements: 'Events',
 		apropos: 'About',
 		dangers: 'Dangers of AI',
+		faq: 'FAQ',
 		carte: 'Ecosystem map',
 		liens_utiles: 'Resources',
 		newsletter: 'Newsletter',

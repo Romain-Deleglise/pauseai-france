@@ -1,130 +1,44 @@
 <script lang="ts">
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
-	import Accordion from '$components/Accordion.svelte'
+	import FaqList from '$components/FaqList.svelte'
 	import Fly from '$components/Fly.svelte'
+	import { parseFaq } from '$lib/faq'
 	import type { Lang } from '$lib/i18n'
 	// @ts-ignore - Vite raw import
 	import faqRaw from '$posts/faq.md?raw'
+	// @ts-ignore - Vite raw import
+	import faqRawEn from '$posts/en/faq.md?raw'
 
 	export let lang: Lang = 'fr'
 
 	const label_id = 'faq-title'
-
-	interface FaqItem {
-		id: string
-		question: string
-		answer: string
-		category: string
-	}
-
-	// Extract FAQ Q&A pairs from raw markdown for JSON-LD (SEO) and the teaser.
-	function extractFaqData(raw: string): FaqItem[] {
-		const lines = raw.split('\n')
-		const faqs: FaqItem[] = []
-		let currentQuestion = ''
-		let currentAnswer = ''
-		let currentCategory = ''
-		let count = 0
-		const push = () => {
-			if (!currentQuestion) return
-			count++
-			faqs.push({
-				id: `accordion${count}`,
-				question: currentQuestion,
-				answer: stripMarkdown(currentAnswer.trim()),
-				category: currentCategory
-			})
-		}
-		for (const line of lines) {
-			if (line.startsWith('## ')) {
-				push()
-				currentQuestion = ''
-				currentAnswer = ''
-				currentCategory = line.replace('## ', '')
-			} else if (line.startsWith('### ')) {
-				push()
-				currentQuestion = line.replace('### ', '')
-				currentAnswer = ''
-			} else if (currentQuestion) {
-				currentAnswer += line + '\n'
-			}
-		}
-		push()
-		return faqs
-	}
-
-	function stripMarkdown(text: string) {
-		return text
-			.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
-			.replace(/\*\*([^*]+)\*\*/g, '$1')
-			.replace(/_([^_]+)_/g, '$1')
-			.replace(/^- /gm, '• ')
-			.replace(/\n{3,}/g, '\n\n')
-			.trim()
-	}
-
-	const faqData = extractFaqData(faqRaw)
-
-	// JSON-LD reste sur l'INTÉGRALITÉ des questions (SEO : Google peut afficher
-	// des « rich snippets »), même si l'accueil n'en montre qu'une sélection.
-	const jsonLd = JSON.stringify({
-		'@context': 'https://schema.org',
-		'@type': 'FAQPage',
-		mainEntity: faqData.map((item) => ({
-			'@type': 'Question',
-			name: item.question,
-			acceptedAnswer: { '@type': 'Answer', text: item.answer }
-		}))
-	})
-
-	// Sélection des questions les plus utiles pour un visiteur qui arrive
-	// (identité, crédibilité, objections courantes, passage à l'action).
-	const featuredIds = [
-		'accordion1',
-		'accordion3',
-		'accordion6',
-		'accordion7',
-		'accordion12',
-		'accordion14'
-	]
-	$: featured = featuredIds
-		.map((id) => faqData.find((f) => f.id === id))
-		.filter((f): f is FaqItem => Boolean(f))
+	$: isEn = lang === 'en'
+	$: categories = parseFaq(isEn ? faqRawEn : faqRaw)
 </script>
 
-<svelte:head>
-	{@html `<script type="application/ld+json">${jsonLd}</script>`}
-</svelte:head>
+<section class="faq" aria-labelledby={label_id}>
+	<Fly>
+		<UnderlinedTitle id={label_id}>F.A.Q.</UnderlinedTitle>
+	</Fly>
 
-{#if lang !== 'en'}
-	<section class="faq" aria-labelledby={label_id}>
-		<Fly>
-			<UnderlinedTitle id={label_id}>F.A.Q.</UnderlinedTitle>
-		</Fly>
-
-		<p class="faq-intro">
+	<p class="faq-intro">
+		{#if isEn}
+			Have questions? Here are the answers to the questions most often asked by our visitors,
+			journalists and supporters.
+		{:else}
 			Des questions ? Voici les réponses aux interrogations les plus fréquentes de nos visiteurs,
 			journalistes et soutiens.
-		</p>
+		{/if}
+	</p>
 
-		<div class="faq-content">
-			{#each featured as item (item.id)}
-				<Accordion id={item.id} noHash>
-					<span slot="head">{item.question}</span>
-					<div slot="details">
-						{#each item.answer.split('\n\n') as para}
-							<p>{para}</p>
-						{/each}
-					</div>
-				</Accordion>
-			{/each}
-		</div>
+	<FaqList {categories} />
 
-		<div class="faq-more">
-			<a class="faq-more-link" href="/fr/faq">Voir toutes les questions →</a>
-		</div>
-	</section>
-{/if}
+	<div class="faq-more">
+		<a class="faq-more-link" href={isEn ? '/en/faq' : '/fr/faq'}>
+			{isEn ? 'Open the FAQ (with search) →' : 'Ouvrir la FAQ (avec recherche) →'}
+		</a>
+	</div>
+</section>
 
 <style>
 	.faq-intro {
