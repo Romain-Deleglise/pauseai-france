@@ -24,9 +24,9 @@ Pause IA brings together a leadership team of about ten people, led by Maxime Fo
 
 Learn more: [Who we are](/en/qui-sommes-nous).
 
-### Who funds your organisation?
+### Who funds Pause IA?
 
-Pause IA runs on donations from individuals and a few grants from independent foundations committed to AI safety. We receive no funding from artificial intelligence companies, their investors, or the states racing to build AI. Most of our work relies on volunteers.
+Our resources come, to date, almost exclusively from individuals. We receive no funding from artificial intelligence companies or from the states engaged in the race for AI. Some of our individual donors have long been committed to AI safety; none of them, whoever they may be, has any say over our positions, our campaigns or our public statements. The full detail of our resources, how they are used and our limitations is published on our [Our funding](/en/financements) page.
 
 ### Are you linked to a political party or a company?
 

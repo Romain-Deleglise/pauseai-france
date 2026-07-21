@@ -24,9 +24,9 @@ Pause IA rassemble une équipe dirigeante d'une dizaine de personnes, emmenée p
 
 Pour en savoir plus : [Qui sommes-nous](/fr/qui-sommes-nous).
 
-### Qui finance votre association ?
+### Qui finance Pause IA ?
 
-Pause IA fonctionne grâce aux dons de particuliers et à quelques subventions de fondations indépendantes engagées pour la sécurité de l'IA. Nous ne recevons aucun financement de la part des entreprises d'intelligence artificielle, de leurs investisseurs, ou des États qui font la course à l'IA. L'essentiel de notre travail repose sur le bénévolat.
+Nos ressources proviennent, à ce jour, presque exclusivement de particuliers. Nous ne recevons aucun financement d'entreprises d'intelligence artificielle ni des États engagés dans la course à l'IA. Certains de nos donateurs individuels sont engagés de longue date dans la sécurité de l'IA ; aucun, quel qu'il soit, n'a de droit de regard sur nos positions, nos campagnes ou nos prises de parole. Le détail de nos ressources, de leur usage et de nos limites est publié sur notre page [Nos financements](/financements).
 
 ### Êtes-vous liés à un parti politique ou à une entreprise ?
 
