@@ -6,3 +6,4 @@
 /publications /newsletters 301!
 /publications/* /newsletters/:splat 301!
 /ressources /fr/ressources 301!
+/faq /fr/faq 301!

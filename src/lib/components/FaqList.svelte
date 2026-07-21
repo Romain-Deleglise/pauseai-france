@@ -1,9 +1,27 @@
 <script lang="ts">
+	import { onMount } from 'svelte'
 	import type { FaqCategory } from '$lib/faq'
 
 	export let categories: FaqCategory[]
 	// Ouvre tous les items (utile pendant une recherche).
 	export let open = false
+
+	// Deep-linking : ouvre et fait défiler vers la question ciblée par le hash de
+	// l'URL (les <details> natifs ne s'ouvrent pas tout seuls sur une ancre).
+	function openFromHash() {
+		const id = decodeURIComponent(location.hash.slice(1))
+		if (!id) return
+		const el = document.getElementById(id)
+		if (el instanceof HTMLDetailsElement) {
+			el.open = true
+			el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+		}
+	}
+	onMount(() => {
+		openFromHash()
+		window.addEventListener('hashchange', openFromHash)
+		return () => window.removeEventListener('hashchange', openFromHash)
+	})
 </script>
 
 <div class="faq-list">
@@ -89,7 +107,6 @@
 
 	.faq-answer {
 		padding: 0 0 1.35rem;
-		max-width: 52rem;
 	}
 
 	.faq-answer :global(p) {

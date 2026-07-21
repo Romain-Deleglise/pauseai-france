@@ -32,12 +32,6 @@
 	</p>
 
 	<FaqList {categories} />
-
-	<div class="faq-more">
-		<a class="faq-more-link" href={isEn ? '/en/faq' : '/fr/faq'}>
-			{isEn ? 'Open the FAQ (with search) →' : 'Ouvrir la FAQ (avec recherche) →'}
-		</a>
-	</div>
 </section>
 
 <style>
@@ -47,28 +41,5 @@
 		line-height: 1.6;
 		color: var(--text-2);
 		max-width: 46rem;
-	}
-
-	.faq-more {
-		margin-top: 2rem;
-		text-align: center;
-	}
-
-	.faq-more-link {
-		display: inline-block;
-		padding: 0.8rem 1.6rem;
-		border: 2px solid var(--brand);
-		border-radius: 0.625rem;
-		font-weight: 600;
-		color: var(--brand-subtle);
-		text-decoration: none;
-		transition:
-			background-color 0.15s ease,
-			color 0.15s ease;
-	}
-
-	.faq-more-link:hover {
-		background: var(--brand);
-		color: #1a1a1a;
 	}
 </style>

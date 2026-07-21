@@ -39,6 +39,17 @@ function renderAnswerHtml(md: string): string {
 		.join('\n')
 }
 
+/** Identifiant stable dérivé du texte de la question (pour les ancres #). */
+function slugify(s: string): string {
+	return s
+		.toLowerCase()
+		.normalize('NFD')
+		.replace(/[\u0300-\u036f]/g, '')
+		.replace(/[^a-z0-9]+/g, '-')
+		.replace(/^-+|-+$/g, '')
+		.slice(0, 60)
+}
+
 function stripMarkdown(md: string): string {
 	return md
 		.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
@@ -57,13 +68,20 @@ export function parseFaq(raw: string): FaqCategory[] {
 	let current: FaqCategory | null = null
 	let question = ''
 	let answer = ''
-	let count = 0
+	const usedIds = new Set<string>()
 
 	const flush = () => {
 		if (!question || !current) return
-		count++
+		// Id stable dérivé du texte (ancres #), avec suffixe en cas de doublon.
+		let id = slugify(question) || 'question'
+		if (usedIds.has(id)) {
+			let n = 2
+			while (usedIds.has(`${id}-${n}`)) n++
+			id = `${id}-${n}`
+		}
+		usedIds.add(id)
 		current.items.push({
-			id: `accordion${count}`,
+			id,
 			question,
 			answerMd: answer.trim(),
 			answerHtml: renderAnswerHtml(answer),
