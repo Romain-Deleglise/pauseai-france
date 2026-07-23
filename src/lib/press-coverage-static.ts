@@ -10,6 +10,49 @@ import type { PressCoverage } from '$lib/notion'
  * docs/espace-presse.md), pas par ce fichier.
  */
 export const staticPressCoverage: PressCoverage[] = [
+	// ── Fresque de la sécurité de l'IA / suites G7 (juillet 2026) ───────────
+	{
+		id: 'static-placegrenet-ministre-2026-07-08',
+		title:
+			"Anne Le Hénanff, ministre déléguée chargée de l'intelligence artificielle et du numérique, attendue en Isère",
+		source: "Place Gre'net",
+		date: '2026-07-08',
+		url: 'https://www.placegrenet.fr/2026/07/08/anne-le-henanff-ministre-deleguee-chargee-de-lintelligence-artificielle-et-du-numerique-attendue-en-isere/685311',
+		order: 0,
+		visible: true
+	},
+	{
+		id: 'static-placegrenet-fresque-2026-07-07',
+		title:
+			"Une fresque de la sécurité de l'IA organisée à Grenoble pour décrypter les risques liés à l'intelligence artificielle",
+		source: "Place Gre'net",
+		date: '2026-07-07',
+		url: 'https://www.placegrenet.fr/2026/07/07/une-fresque-de-la-securite-de-lia-organisee-a-grenoble-pour-decrypter-les-risques-lies-a-lintelligence-artificielle/685211',
+		order: 0,
+		visible: true
+	},
+	{
+		id: 'static-nouvelobs-fournes-2026-07-10',
+		title:
+			'« Nous finirons par perdre le contrôle de l’IA ! » : Maxime Fournes, l’ingénieur militant qui veut éviter un scénario à la Terminator',
+		source: 'Le Nouvel Obs',
+		date: '2026-07-10',
+		url: 'https://www.nouvelobs.com/economie/20260710.OBS116554/nous-finirons-par-perdre-le-controle-de-l-ia-maxime-fournes-l-ingenieur-militant-qui-veut-eviter-un-scenario-a-la-terminator.html',
+		order: 0,
+		visible: true
+	},
+
+	// ── Alternatives Économiques (juin 2026) ────────────────────────────────
+	{
+		id: 'static-alternatives-eco-2026-06-30',
+		title: 'Comment résister intelligemment à l’IA ?',
+		source: 'Alternatives Économiques',
+		date: '2026-06-30',
+		url: 'https://www.alternatives-economiques.fr/comment-resister-intelligemment-a-l-ia',
+		order: 0,
+		visible: true
+	},
+
 	// ── G7 2026 / Emploi & IA (juin 2026) ───────────────────────────────────
 	{
 		id: 'static-channelnews-g7-2026-06-17',
