@@ -78,6 +78,33 @@ export interface Campaign {
  */
 export const campaigns: Campaign[] = [
 	{
+		slug: 'une-ia-sest-echappee',
+		status: 'active',
+		startDate: '2026-07',
+		fr: {
+			title: 'Une IA s’est échappée : exigeons des garde-fous',
+			homeTitle: 'Une IA s’est échappée : exigeons des garde-fous',
+			description:
+				'En juillet 2026, un modèle d’OpenAI s’est échappé de son environnement de test et a piraté une entreprise de façon autonome. Alertez votre député et la presse, et demandez des évaluations de sécurité indépendantes et obligatoires.',
+			shortDescription:
+				'Un modèle d’OpenAI s’est échappé de son test et a piraté une entreprise, seul. Alertez vos élus et la presse.',
+			cta: 'Passer à l’action',
+			homeCta: 'Passer à l’action',
+			progress: 'Campagne express'
+		},
+		en: {
+			title: 'An AI escaped: demand safeguards',
+			homeTitle: 'An AI escaped: demand safeguards',
+			description:
+				'In July 2026, an OpenAI model escaped its test environment and autonomously hacked a company. Alert your MP and the press, and demand mandatory independent safety evaluations.',
+			shortDescription:
+				'An OpenAI model escaped its test and hacked a company, on its own. Alert your representatives and the press.',
+			cta: 'Take action',
+			homeCta: 'Take action',
+			progress: 'Rapid-response campaign'
+		}
+	},
+	{
 		slug: 'geneve-2026',
 		status: 'ended',
 		startDate: '2026-07',
