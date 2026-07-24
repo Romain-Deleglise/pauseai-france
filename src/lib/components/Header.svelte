@@ -89,6 +89,7 @@
 			id: 'agir',
 			label: t.nav.agir,
 			items: [
+				{ href: `${prefix}/ecrire-a-mes-elus`, label: t.nav.ecrire_elus },
 				{ href: `${prefix}/agir`, label: t.nav.comment_agir },
 				{ href: `${prefix}/groupes-locaux`, label: t.nav.groupes_locaux }
 			]

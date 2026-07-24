@@ -231,7 +231,7 @@
 					{/if}
 					<div class="buttons">
 						<div in:fly={{ y: 20, duration: 300, delay: 700 }}>
-							<Button href="{prefix}/rejoindre">{t.home.hero_cta}</Button>
+							<Button href="{prefix}/agir">{t.home.hero_cta}</Button>
 						</div>
 					</div>
 				</div>

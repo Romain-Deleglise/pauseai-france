@@ -6,6 +6,7 @@ export default {
 		evenements: 'Événements',
 		apropos: 'À propos',
 		dangers: "Les dangers de l'IA",
+		faq: 'FAQ',
 		carte: "Carte de l'écosystème",
 		liens_utiles: 'Ressources',
 		newsletter: 'Newsletter',
@@ -15,7 +16,7 @@ export default {
 		groupes_locaux: 'Groupes locaux',
 		toutes_campagnes: 'Toutes nos campagnes',
 		geneve_2026: 'Genève 2026',
-		ecrire_elus: 'Écrire à mes élus',
+		ecrire_elus: 'Écrire aux élus et à la presse',
 		emploi_ia: 'Emploi et IA',
 		g7_2026: 'G7 2026',
 		municipales: 'Municipales 2026',
@@ -76,7 +77,7 @@ export default {
 		meta_desc: "Ne laissons pas l'IA nous détruire, agissons maintenant.",
 		hero_title: "Pour garder l'IA sous contrôle,",
 		hero_highlight: 'agissons maintenant',
-		hero_cta: 'Rejoindre',
+		hero_cta: 'Passer à l’action',
 		campaigns_title: 'Nos campagnes en cours',
 		campaigns_subtitle: 'Interpellez, écrivez, témoignez : chaque action compte.',
 		campaigns_cta: 'Participer',
@@ -524,41 +525,32 @@ export default {
 			"L'IA ne menace pas seulement nos emplois : elle participe à une perte de contrôle croissante sur nos vies et sur nos sociétés.",
 		intro_text:
 			"Les systèmes d'IA généralistes sont capables d'accomplir un nombre croissant de tâches à une vitesse et à un coût qui rendent possible le remplacement massif de travail humain dans de nombreux secteurs. Rien ne garantit que les emplois détruits seront compensés par de nouveaux emplois, et rien n'a été sérieusement préparé pour absorber un choc social de cette ampleur.",
-		// Mise à jour manuelle nécessaire : récupérer les chiffres sur jobloss.ai
-		stat_number: '128 648',
+		// Chiffre volontairement arrondi vers le bas (plancher) : il reste vrai
+		// dans le temps puisque le total ne fait que croître, et évite d'afficher
+		// une date qui se périme. Le total exact et à jour est sur jobloss.ai.
+		stat_number: '125 000+',
 		stat_label: "emplois liés à l'IA supprimés documentés depuis janvier 2025",
-		stat_source: 'Source : jobloss.ai, mis à jour le 15 avr. 2026',
-		survey_section_title: "Je participe à la grande enquête sur l'IA au travail !",
+		stat_source: 'Source : jobloss.ai',
+		hero_cta_label: 'Écrire à mes élu·e·s',
+		hero_cta_sub: 'Un e-mail à vos parlementaires. Cinq minutes, un vrai poids.',
+		survey_section_title: "Vous aussi participez à la grande enquête sur l'IA au travail !",
 		survey_section_text:
 			"Comment l'IA impacte-t-elle votre vie professionnelle ? L'association Pause IA réalise une enquête sur l'IA et l'emploi pour évaluer et comprendre l'impact de l'IA sur le monde du travail.",
 		survey_card_title: 'Questionnaire',
 		survey_card_text: "Répondez à notre questionnaire sur l'IA et l'emploi",
 		survey_card_title_attr: "Questionnaire sur l'IA et l'emploi de Pause IA",
-		testimonials_section_title: 'Ils témoignent',
-		testimonials_section_text_1:
-			"Nous recueillons régulièrement des témoignages de personnes dont la vie professionnelle a été impactée par l'IA. Si vous aussi avez été concerné, partagez votre expérience ",
-		testimonials_section_link: 'via notre questionnaire',
-		testimonials_section_text_2: '.',
-		bigger_problem_title: "Mais le problème ne s'arrête pas à l'emploi.",
-		bigger_problem_text_1:
-			"La destruction d'emplois n'est pas un sujet séparé des risques majeurs de l'IA : elle en constitue l'un des premiers signaux. Lorsqu'un système décide de la valeur d'un travail, de l'accès à une information ou d'une orientation scolaire, notre capacité collective à comprendre et contester ces choix recule. Une technologie déployée sans contrôle démocratique, sans garde-fous ni évaluation indépendante est une technologie dont nous perdons progressivement le contrôle. Et plus l'humanité perd le contrôle, plus elle devient vulnérable aux risques catastrophiques posés par les systèmes d'IA avancés.",
-		bigger_problem_text_2:
-			"C'est pourquoi nous demandons qu'aucun système d'IA de pointe ne soit développé ou déployé davantage tant que ses concepteurs n'ont pas démontré, à des évaluateurs indépendants, qu'il est sûr sur le plan économique, social et politique. La France ne peut pas arrêter seule la course mondiale à l'IA, mais elle doit prendre position, construire des coalitions internationales et défendre un cadre contraignant capable de mener à une pause du développement des systèmes les plus dangereux.",
-		cta_transition:
-			"Pour que la France prenne ce virage, ses élus doivent entendre leurs citoyens, et c'est là que vous pouvez agir directement.",
-		cta_callout:
-			"Un email à votre député ou sénateur est l'un des leviers les plus directs pour que ce sujet entre à l'agenda politique.",
+		testimonials_section_title: 'Vos témoignages',
+		bigger_problem_title: 'Écrivez à vos élu•e•s',
+		elus_intro:
+			"Les conséquences du déploiement de l'IA dans l'économie vont au-delà du chômage. Il est urgent d'agir. Faites savoir votre inquiétude à votre député•e et à vos sénateurs•rices. Dites-leur que vous comptez sur leur action.",
+		elus_models:
+			"Notre outil vous propose des modèles d'e-mail que vous pouvez retoucher ou envoyer tels quels.",
+		elus_example_label: 'Un exemple (extrait) :',
+		elus_example_quote:
+			"Vous ne pouvez ignorer qu'une hausse brutale du chômage mettrait en jeu notre modèle social, et probablement notre démocratie, et enfin notre souveraineté. On nous promet une croissance mirobolante grâce à l'IA ! Mais qui en profitera quand nous serons piégés dans une dépendance gravissime vis-à-vis de la Silicon Valley (sinon de la Chine) ?",
 		cta_callout_detail:
-			"Les élus sont tenus d'être à l'écoute des préoccupations des citoyens, et un message personnel pèse bien plus lourd qu'une pétition. Cela prend cinq minutes.",
-		cta_button: "J'écris un message à des politiques",
-		evolution_section_title: "Évolution des pertes d'emploi liées à l'intelligence artificielle",
-		evolution_section_text_1: 'Le site ',
-		evolution_strong: 'jobloss.ai',
-		evolution_section_text_2:
-			" suit les licenciements dans lesquels l'intelligence artificielle ou l'automatisation est citée comme facteur important. Les données proviennent d'annonces d'entreprises et de reportages de médias fiables.",
-		evolution_section_text_3:
-			"Le graphique de ce site permet d'observer l'évolution des pertes d'emploi attribuées à l'IA au fil du temps et d'identifier les secteurs les plus touchés par l'automatisation.",
-		evolution_link: 'Voir le graphique interactif sur jobloss.ai',
+			"Les élus sont tenus d'être à l'écoute des préoccupations des citoyens, et un message personnel pèse bien plus lourd qu'une pétition.",
+		elus_guide: 'Cela prend cinq minutes. Laissez-vous guider !',
 		press_section_title: 'Revue de presse : je reste informé',
 		press_section_text:
 			"De nombreux médias abordent l'impact de l'IA sur le marché du travail. Nous collectons régulièrement des articles de presse traitant de ce sujet.",
@@ -581,7 +573,7 @@ export default {
 		articles_lang_fr: 'Français',
 		articles_lang_en: 'Anglais',
 		analyses_section_title: 'Nos analyses',
-		analyses_section_text: "Deux articles de fond sur l'IA et l'emploi, rédigés par nos membres.",
+		analyses_section_text: "Des articles de fond sur l'IA et l'emploi, rédigés par nos membres.",
 		analyses_read: 'Lire',
 		article1_title: "Remplacer l'humain, tel est l'objectif",
 		article1_desc:
@@ -590,6 +582,19 @@ export default {
 		article2_title: "Pas de pilote dans l'avion France",
 		article2_desc:
 			'Chômage massif des jeunes, modèle social fragilisé, dépendance à la Silicon Valley : à quoi ressemblera notre monde si nous ne réagissons pas.',
-		article2_url: '/emploi-ia/pas-de-pilote'
+		article2_url: '/emploi-ia/pas-de-pilote',
+		article3_title: 'Ce que l’IA fait au travail',
+		article3_desc:
+			"Bilan qualitatif de notre enquête sur l'emploi : perte de sens, décisions imposées, adaptation reportée sur les individus, ce qu'une trentaine de témoins nous ont confié.",
+		article3_url: '/emploi-ia/ce-que-lia-fait-au-travail',
+		article3_badge: 'Bilan de la campagne',
+		slideshow_empty: 'Les témoignages illustrés arrivent prochainement.',
+		slideshow_nav_aria: 'Navigation du diaporama des témoignages',
+		slideshow_prev: 'Témoignage précédent',
+		slideshow_next: 'Témoignage suivant',
+		slideshow_item: 'un autre témoignage',
+		slideshow_alt: 'Témoignage illustré',
+		slideshow_zoom: 'Agrandir',
+		slideshow_close: 'Fermer'
 	}
 }

@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
 	import EmploiForm from '$components/EmploiForm.svelte'
-	import TestimonialCarousel from '$components/TestimonialCarousel.svelte'
+	import TestimonialSlideshow from '$components/TestimonialSlideshow.svelte'
 	import ArticleShowcase from '$components/ArticleShowcase.svelte'
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
-	import type { Testimonial, ArticleShowcaseItem } from '$lib/types'
+	import type { ArticleShowcaseItem } from '$lib/types'
 	import type { Lang } from '$lib/i18n'
 	import { getT } from '$lib/i18n'
 
@@ -12,21 +12,13 @@
 
 	interface PageData {
 		lang: Lang
-		testimonials: Testimonial[]
 		articleShowcaseItems: ArticleShowcaseItem[]
 	}
 
 	$: t = getT(data.lang)
 	$: lang = data.lang
 
-	let testimonials = data.testimonials
 	let articleShowcaseItems = data.articleShowcaseItems
-
-	testimonials.sort((a, b) => {
-		const dateA = a.date ? new Date(a.date).getTime() : 0
-		const dateB = b.date ? new Date(b.date).getTime() : 0
-		return dateB - dateA
-	})
 
 	articleShowcaseItems.sort((a, b) => {
 		const dateA = a.date ? new Date(a.date).getTime() : 0
@@ -85,7 +77,7 @@
 		},
 		{
 			title:
-				"« La question de la sécurité n'est pas posée » — le collectif Pause IA demande un moratoire sur le développement de l'intelligence artificielle",
+				"« La question de la sécurité n'est pas posée » : le collectif Pause IA demande un moratoire sur le développement de l'intelligence artificielle",
 			source: 'Dordogne Libre',
 			date: 'Mai 2026',
 			url: 'https://www.dordognelibre.fr/dordogne/la-question-de-la-securite-n-est-pas-posee-le-collectif-pause-ia-demande-un-moratoire-sur-le-developpement-de-l-intelligence-artificielle-28895566.php'
@@ -160,19 +152,20 @@
 		</div>
 	</a>
 
-	<section id="enquete" aria-labelledby="enquete-heading">
-		<h2 id="enquete-heading">{t.emploi_ia.survey_section_title}</h2>
-		<EmploiForm {lang} />
-	</section>
+	<a class="primary-cta" href="#ecrire-elus">
+		<span class="primary-cta-label">{t.emploi_ia.hero_cta_label}</span>
+		<span class="primary-cta-sub">{t.emploi_ia.hero_cta_sub}</span>
+		<span class="primary-cta-arrow" aria-hidden="true">→</span>
+	</a>
 
 	<section id="temoignage" aria-labelledby="temoignage-heading">
 		<h2 id="temoignage-heading">{t.emploi_ia.testimonials_section_title}</h2>
-		<p>
-			{t.emploi_ia.testimonials_section_text_1}<a href="/{lang}/emploi-ia/questionnaire"
-				>{t.emploi_ia.testimonials_section_link}</a
-			>{t.emploi_ia.testimonials_section_text_2}
-		</p>
-		<TestimonialCarousel {testimonials} {lang} />
+		<TestimonialSlideshow {lang} />
+
+		<div id="enquete" class="survey-block">
+			<h3>{t.emploi_ia.survey_section_title}</h3>
+			<EmploiForm {lang} />
+		</div>
 	</section>
 
 	<section id="analyses" aria-labelledby="analyses-heading">
@@ -180,45 +173,42 @@
 		<p>{t.emploi_ia.analyses_section_text}</p>
 		<div class="article-cards">
 			<a class="article-card" href={t.emploi_ia.article1_url}>
-				<span class="card-meta">Article 1/2 &middot; 4 min</span>
+				<span class="card-meta">Article 1/3 &middot; 4 min</span>
 				<h3 class="article-card-title">{t.emploi_ia.article1_title}</h3>
 				<p class="article-card-desc">{t.emploi_ia.article1_desc}</p>
 				<span class="article-card-link">{t.emploi_ia.analyses_read} &rarr;</span>
 			</a>
 			<a class="article-card" href={t.emploi_ia.article2_url}>
-				<span class="card-meta">Article 2/2 &middot; 5 min</span>
+				<span class="card-meta">Article 2/3 &middot; 5 min</span>
 				<h3 class="article-card-title">{t.emploi_ia.article2_title}</h3>
 				<p class="article-card-desc">{t.emploi_ia.article2_desc}</p>
+				<span class="article-card-link">{t.emploi_ia.analyses_read} &rarr;</span>
+			</a>
+			<a class="article-card article-card-featured" href={t.emploi_ia.article3_url}>
+				<span class="article-badge">{t.emploi_ia.article3_badge}</span>
+				<span class="card-meta">Article 3/3 &middot; 7 min</span>
+				<h3 class="article-card-title">{t.emploi_ia.article3_title}</h3>
+				<p class="article-card-desc">{t.emploi_ia.article3_desc}</p>
 				<span class="article-card-link">{t.emploi_ia.analyses_read} &rarr;</span>
 			</a>
 		</div>
 	</section>
 
-	<section id="bigger-problem" aria-labelledby="bigger-problem-heading" class="bigger-problem">
-		<h2 id="bigger-problem-heading">{t.emploi_ia.bigger_problem_title}</h2>
-		<p>{t.emploi_ia.bigger_problem_text_1}</p>
-		<p>{t.emploi_ia.bigger_problem_text_2}</p>
+	<section id="ecrire-elus" aria-labelledby="ecrire-elus-heading" class="bigger-problem">
+		<h2 id="ecrire-elus-heading">{t.emploi_ia.bigger_problem_title}</h2>
+		<p>{t.emploi_ia.elus_intro}</p>
 
-		<p class="cta-transition">{t.emploi_ia.cta_transition}</p>
+		<p class="cta-callout">{t.emploi_ia.elus_models}</p>
 
-		<p class="cta-callout">{t.emploi_ia.cta_callout}</p>
+		<figure class="elus-example">
+			<figcaption>{t.emploi_ia.elus_example_label}</figcaption>
+			<blockquote>{t.emploi_ia.elus_example_quote}</blockquote>
+		</figure>
+
 		<p class="cta-detail">{t.emploi_ia.cta_callout_detail}</p>
+		<p class="cta-guide">{t.emploi_ia.elus_guide}</p>
 
 		<div id="av-embed-container" class="av-embed"></div>
-	</section>
-
-	<section id="evolution" aria-labelledby="evolution-heading">
-		<h2 id="evolution-heading">{t.emploi_ia.evolution_section_title}</h2>
-		<p>
-			{t.emploi_ia.evolution_section_text_1}<strong>{t.emploi_ia.evolution_strong}</strong>{t
-				.emploi_ia.evolution_section_text_2}
-		</p>
-		<p>{t.emploi_ia.evolution_section_text_3}</p>
-		<p>
-			<a href="https://jobloss.ai/" target="_blank" rel="noopener noreferrer">
-				{t.emploi_ia.evolution_link}
-			</a>
-		</p>
 	</section>
 
 	<section id="presse-campagne" aria-labelledby="presse-campagne-heading">
@@ -250,11 +240,13 @@
 		</div>
 	</section>
 
-	<section id="revue" aria-labelledby="revue-heading">
-		<h2 id="revue-heading">{t.emploi_ia.press_section_title}</h2>
-		<p>{t.emploi_ia.press_section_text}</p>
-		<ArticleShowcase articles={articleShowcaseItems} {lang} />
-	</section>
+	{#if articleShowcaseItems.length}
+		<section id="revue" aria-labelledby="revue-heading">
+			<h2 id="revue-heading">{t.emploi_ia.press_section_title}</h2>
+			<p>{t.emploi_ia.press_section_text}</p>
+			<ArticleShowcase articles={articleShowcaseItems} {lang} />
+		</section>
+	{/if}
 </article>
 
 <style>
@@ -269,6 +261,19 @@
 
 	section:not(:last-child) {
 		margin-bottom: 5rem;
+	}
+
+	/* ── Bloc questionnaire, regroupé sous les témoignages ── */
+	.survey-block {
+		margin-top: 2.5rem;
+		padding-top: 1.75rem;
+		border-top: 1px solid var(--border, #e5e7eb);
+		scroll-margin-top: 5.5rem;
+	}
+
+	.survey-block h3 {
+		margin: 0 0 0.5rem;
+		font-size: 1.25rem;
 	}
 
 	/* ── Lead callout ── */
@@ -345,12 +350,64 @@
 		}
 	}
 
+	/* ── Primary CTA (action n°1 : écrire aux élus) ── */
+	.primary-cta {
+		display: flex;
+		flex-direction: column;
+		gap: 0.15rem;
+		position: relative;
+		background: var(--brand, #ff9416);
+		color: white;
+		text-decoration: none;
+		padding: 1.1rem 3rem 1.1rem 1.5rem;
+		border-radius: 12px;
+		margin: 0 0 3rem;
+		box-shadow: 0 2px 14px rgba(255, 148, 22, 0.28);
+		transition:
+			transform 0.15s,
+			box-shadow 0.2s,
+			background 0.2s;
+	}
+
+	.primary-cta:hover {
+		background: var(--brand-subtle, #c96900);
+		transform: translateY(-1px);
+		box-shadow: 0 4px 18px rgba(255, 148, 22, 0.35);
+	}
+
+	.primary-cta-label {
+		font-size: 1.15rem;
+		font-weight: 800;
+		line-height: 1.2;
+	}
+
+	.primary-cta-sub {
+		font-size: 0.9rem;
+		color: rgba(255, 255, 255, 0.9);
+		line-height: 1.3;
+	}
+
+	.primary-cta-arrow {
+		position: absolute;
+		right: 1.4rem;
+		top: 50%;
+		transform: translateY(-50%);
+		font-size: 1.5rem;
+		font-weight: 700;
+	}
+
 	/* ── Article cards ── */
 	.article-cards {
 		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
-		gap: 1.25rem;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 1rem;
 		margin-top: 1.5rem;
+	}
+
+	@media (max-width: 640px) {
+		.article-cards {
+			grid-template-columns: 1fr;
+		}
 	}
 
 	.card-meta {
@@ -363,8 +420,8 @@
 	.article-card {
 		display: flex;
 		flex-direction: column;
-		gap: 0.6rem;
-		padding: 1.25rem 1.5rem;
+		gap: 0.5rem;
+		padding: 1.1rem 1.2rem;
 		border: 1px solid var(--border, #e5e7eb);
 		border-radius: 10px;
 		background: var(--bg-card, #fafafa);
@@ -378,6 +435,30 @@
 	.article-card:hover {
 		border-color: var(--brand, #ff9416);
 		box-shadow: 0 2px 12px rgba(255, 148, 22, 0.12);
+	}
+
+	/* ── Carte mise en avant : le bilan de la campagne ── */
+	.article-card-featured {
+		border-color: var(--brand, #ff9416);
+		border-width: 2px;
+		background: var(--brand-light, #fff5e8);
+		box-shadow: 0 2px 12px rgba(255, 148, 22, 0.14);
+	}
+
+	:global([data-theme='dark']) .article-card-featured {
+		background: rgba(255, 148, 22, 0.08);
+	}
+
+	.article-badge {
+		align-self: flex-start;
+		font-size: 0.65rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		color: white;
+		background: var(--brand, #ff9416);
+		padding: 0.2rem 0.5rem;
+		border-radius: 4px;
 	}
 
 	.article-card-title {
@@ -409,9 +490,10 @@
 	/* ── Bigger-problem section ── */
 	.bigger-problem {
 		background: var(--bg-subtle, #f7f7f5);
-		border-left: 4px solid var(--brand, #ff9416);
-		border-radius: 0 12px 12px 0;
+		border-radius: 12px;
 		padding: 2rem 2.25rem;
+		/* Décale l'ancre (#ecrire-elus) sous l'en-tête fixe lors du scroll. */
+		scroll-margin-top: 5.5rem;
 	}
 
 	:global([data-theme='dark']) .bigger-problem {
@@ -420,13 +502,6 @@
 
 	.bigger-problem h2 {
 		margin-top: 0;
-	}
-
-	/* ── CTA transition ── */
-	.cta-transition {
-		font-style: italic;
-		color: var(--text-secondary, #555);
-		margin: 1.5rem 0 0;
 	}
 
 	/* ── CTA callout ── */
@@ -444,6 +519,41 @@
 		font-size: 0.95rem;
 		color: var(--text-secondary, #555);
 		margin: 0 0 0.25rem;
+	}
+
+	.cta-guide {
+		font-weight: 700;
+		color: var(--brand-subtle, #c96900);
+		margin: 0.75rem 0 0.25rem;
+	}
+
+	/* ── Élus email example ── */
+	.elus-example {
+		margin: 1.25rem 0;
+	}
+
+	.elus-example figcaption {
+		font-size: 0.85rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		color: var(--text-secondary, #888);
+		margin-bottom: 0.4rem;
+	}
+
+	.elus-example blockquote {
+		margin: 0;
+		padding: 1rem 1.25rem;
+		border-left: 3px solid var(--brand, #ff9416);
+		background: var(--bg, #fff);
+		border-radius: 0 8px 8px 0;
+		font-style: italic;
+		line-height: 1.6;
+		color: var(--text, #111);
+	}
+
+	:global([data-theme='dark']) .elus-example blockquote {
+		background: rgba(255, 255, 255, 0.03);
 	}
 
 	/* ── Press list ── */
