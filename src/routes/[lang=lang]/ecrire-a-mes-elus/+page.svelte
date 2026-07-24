@@ -26,7 +26,7 @@
 	// Les campagnes ponctuelles (Genève, gouvernement…) gardent leur propre page :
 	// on n'affiche les onglets que pour ces deux actions « primaires ».
 	$: isPrimaryAction = action.id === 'default' || action.id === 'medias'
-	$: isPress = action.id === 'medias'
+	$: isPress = !!action.press
 	function selectTool(id: 'default' | 'medias') {
 		if (action.id === id) return
 		actionId = id
