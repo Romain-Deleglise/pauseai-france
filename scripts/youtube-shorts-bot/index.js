@@ -3,18 +3,22 @@
  * Bot YouTube Shorts Pause IA.
  *
  * À chaque exécution (déclenchée par cron sur le serveur Hetzner) :
- *   1. Liste les vidéos du dossier Drive surveillé (« À publier »).
- *   2. Pour chacune (jusqu'à MAX_PER_RUN) :
- *        a. Télécharge la vidéo depuis Drive.
- *        b. L'uploade sur la chaîne YouTube (titre = nom du fichier).
- *        c. Déplace le fichier Drive vers le dossier « Publié ».
+ *   1. Liste les SOUS-DOSSIERS du dossier Drive surveillé (« À publier »).
+ *      Chaque sous-dossier = un short (ex. « 34.44 On ne comprend pas nos
+ *      systèmes d'IA »), avec la vidéo à l'intérieur.
+ *   2. Pour chacun (jusqu'à MAX_PER_RUN), dans l'ordre de numérotation :
+ *        a. Trouve la vidéo dans le sous-dossier et la télécharge.
+ *        b. L'uploade sur la chaîne YouTube (titre = nom du sous-dossier,
+ *           le préfixe de numérotation « 34.44 » étant retiré par défaut).
+ *        c. Déplace le SOUS-DOSSIER entier vers « Publiés sur YouTube ».
  *   3. Journalise le résultat.
  *
  * Garde-fous :
  *   - Le bot ne touche QU'AU dossier surveillé : rien n'est publié par accident.
  *   - MAX_PER_RUN limite le nombre d'uploads (et reste sous le quota YouTube).
  *   - Un fichier de verrou empêche deux exécutions simultanées.
- *   - Si l'upload échoue, le fichier n'est PAS déplacé → il sera retenté.
+ *   - Si l'upload échoue, le sous-dossier n'est PAS déplacé → il sera retenté.
+ *   - Un sous-dossier sans vidéo est simplement ignoré (et laissé en place).
  *
  * Déploiement Hetzner — voir README.md.
  * CRON exemple :
@@ -41,9 +45,13 @@ const {
 	PRIVACY_STATUS = 'public',
 	DEFAULT_DESCRIPTION = '#Shorts',
 	YOUTUBE_CATEGORY_ID = '25',
-	DEFAULT_LANGUAGE = 'fr'
+	DEFAULT_LANGUAGE = 'fr',
+	// Retire le préfixe de numérotation (« 34.44 ») du titre YouTube.
+	// Mettre à 'false' pour garder le nom du sous-dossier tel quel.
+	STRIP_NUMBER_PREFIX = 'true'
 } = process.env
 
+const FOLDER_MIME = 'application/vnd.google-apps.folder'
 const LOCK_FILE = path.join(os.tmpdir(), 'youtube-shorts-bot.lock')
 const maxPerRun = Math.max(1, parseInt(MAX_PER_RUN, 10) || 5)
 
@@ -109,22 +117,44 @@ function getAuth() {
 	return oauth2
 }
 
-/** Titre YouTube = nom du fichier sans extension, tronqué à 100 caractères. */
-function titleFromFilename(name) {
-	const base = name.replace(/\.[^.]+$/, '').trim()
+/**
+ * Titre YouTube = nom du sous-dossier, sans le préfixe de numérotation
+ * (« 34.44 », « 34 », « 34.44 - »…), tronqué à 100 caractères.
+ */
+function titleFromFolderName(name) {
+	let base = String(name).trim()
+	if (STRIP_NUMBER_PREFIX !== 'false') {
+		base = base.replace(/^\s*\d+(?:\.\d+)*\s*[-–—.)]?\s+/, '').trim()
+	}
 	return base.slice(0, 100) || 'Short'
 }
 
-async function listPendingVideos(drive) {
+/** Sous-dossiers de « À publier », triés dans l'ordre de numérotation. */
+async function listPendingFolders(drive) {
 	const res = await drive.files.list({
-		q: `'${DRIVE_SOURCE_FOLDER_ID}' in parents and mimeType contains 'video/' and trashed = false`,
-		fields: 'files(id, name, mimeType, size, createdTime)',
-		orderBy: 'createdTime', // les plus anciennes d'abord (FIFO)
+		q: `'${DRIVE_SOURCE_FOLDER_ID}' in parents and mimeType = '${FOLDER_MIME}' and trashed = false`,
+		fields: 'files(id, name, createdTime)',
 		pageSize: 100,
 		supportsAllDrives: true,
 		includeItemsFromAllDrives: true
 	})
-	return res.data.files ?? []
+	const folders = res.data.files ?? []
+	// Tri numérique naturel : 34.44 < 34.45 < … < 34.100.
+	folders.sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' }))
+	return folders
+}
+
+/** Première vidéo trouvée dans un sous-dossier (ou null). */
+async function findVideoInFolder(drive, folderId) {
+	const res = await drive.files.list({
+		q: `'${folderId}' in parents and mimeType contains 'video/' and trashed = false`,
+		fields: 'files(id, name, mimeType, size)',
+		orderBy: 'name',
+		pageSize: 10,
+		supportsAllDrives: true,
+		includeItemsFromAllDrives: true
+	})
+	return (res.data.files ?? [])[0] ?? null
 }
 
 async function downloadToTemp(drive, file) {
@@ -138,12 +168,12 @@ async function downloadToTemp(drive, file) {
 	return tmpPath
 }
 
-async function uploadToYouTube(youtube, file, tmpPath) {
+async function uploadToYouTube(youtube, title, tmpPath) {
 	const res = await youtube.videos.insert({
 		part: ['snippet', 'status'],
 		requestBody: {
 			snippet: {
-				title: titleFromFilename(file.name),
+				title,
 				description: DEFAULT_DESCRIPTION,
 				categoryId: YOUTUBE_CATEGORY_ID,
 				defaultLanguage: DEFAULT_LANGUAGE,
@@ -159,9 +189,10 @@ async function uploadToYouTube(youtube, file, tmpPath) {
 	return res.data
 }
 
-async function moveToPublished(drive, file) {
+/** Déplace le sous-dossier entier (vidéo comprise) vers « Publiés sur YouTube ». */
+async function moveFolderToPublished(drive, folder) {
 	await drive.files.update({
-		fileId: file.id,
+		fileId: folder.id,
 		addParents: DRIVE_PUBLISHED_FOLDER_ID,
 		removeParents: DRIVE_SOURCE_FOLDER_ID,
 		fields: 'id, parents',
@@ -185,30 +216,44 @@ async function main() {
 
 	let published = 0
 	let errors = 0
+	let skipped = 0
 
 	try {
-		const videos = await listPendingVideos(drive)
-		log(`${videos.length} vidéo(s) en attente dans le dossier surveillé.`)
+		const folders = await listPendingFolders(drive)
+		log(`${folders.length} short(s) en attente (sous-dossiers) dans « À publier ».`)
 
-		const batch = videos.slice(0, maxPerRun)
-		if (videos.length > batch.length) {
-			log(`Limite MAX_PER_RUN=${maxPerRun} : ${videos.length - batch.length} reportée(s) à la prochaine exécution.`)
+		const batch = folders.slice(0, maxPerRun)
+		if (folders.length > batch.length) {
+			log(
+				`Limite MAX_PER_RUN=${maxPerRun} : ${folders.length - batch.length} short(s) reporté(s) à la prochaine exécution.`
+			)
 		}
 
-		for (const file of batch) {
+		for (const folder of batch) {
 			let tmpPath
 			try {
-				log(`▶️  Traitement : "${file.name}" (${file.id})`)
-				tmpPath = await downloadToTemp(drive, file)
-				const uploaded = await uploadToYouTube(youtube, file, tmpPath)
+				log(`▶️  Short : "${folder.name}" (${folder.id})`)
+
+				const video = await findVideoInFolder(drive, folder.id)
+				if (!video) {
+					skipped++
+					fail(`Aucune vidéo dans "${folder.name}" — ignoré (laissé dans « À publier »).`)
+					continue
+				}
+
+				tmpPath = await downloadToTemp(drive, video)
+				const title = titleFromFolderName(folder.name)
+				const uploaded = await uploadToYouTube(youtube, title, tmpPath)
 				log(`✅ Publié sur YouTube : https://youtu.be/${uploaded.id} (« ${uploaded.snippet?.title} »)`)
-				await moveToPublished(drive, file)
-				log(`📁 Déplacé vers le dossier « Publié ».`)
+				await moveFolderToPublished(drive, folder)
+				log('📁 Sous-dossier déplacé vers « Publiés sur YouTube ».')
 				published++
 			} catch (err) {
 				errors++
 				const detail = err?.errors?.[0]?.reason || err.message
-				fail(`Échec sur "${file.name}" : ${detail}. Le fichier reste dans le dossier surveillé (retry au prochain run).`)
+				fail(
+					`Échec sur "${folder.name}" : ${detail}. Le sous-dossier reste dans « À publier » (retry au prochain run).`
+				)
 				// Si le quota YouTube est épuisé, inutile de continuer ce run.
 				if (detail === 'quotaExceeded' || detail === 'uploadLimitExceeded') {
 					fail('Quota YouTube atteint — arrêt du run, reprise demain.')
@@ -231,7 +276,9 @@ async function main() {
 		releaseLock()
 	}
 
-	log(`========== FIN : ${published} publiée(s), ${errors} erreur(s) ==========`)
+	log(
+		`========== FIN : ${published} publié(s), ${skipped} ignoré(s), ${errors} erreur(s) ==========`
+	)
 	if (errors > 0) process.exitCode = 1
 }
 

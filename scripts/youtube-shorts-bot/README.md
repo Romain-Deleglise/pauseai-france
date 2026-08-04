@@ -5,10 +5,18 @@ dans un dossier Google Drive.
 
 ## Comment ça marche
 
-1. Vous déposez vos Shorts dans un dossier Drive dédié, **« À publier »**.
+1. Dans le dossier Drive **« À publier »**, vous créez **un sous-dossier par
+   short**, nommé avec votre numérotation, ex. **« 34.44 On ne comprend pas nos
+   systèmes d'IA »**. Vous y déposez la vidéo du short.
 2. Un cron sur le serveur Hetzner exécute le bot régulièrement (ex. toutes les heures).
-3. Le bot prend chaque nouvelle vidéo, l'**uploade sur YouTube** (le titre est le
-   nom du fichier), puis **déplace** le fichier vers un dossier **« Publié »**.
+3. Le bot traite les sous-dossiers dans l'ordre de numérotation : il **uploade la
+   vidéo sur YouTube** (le titre est le **nom du sous-dossier**, le préfixe
+   « 34.44 » étant retiré), puis **déplace le sous-dossier entier** (vidéo
+   comprise) vers **« Publiés sur YouTube »**.
+
+> 🗂️ Un sous-dossier **sans vidéo** est simplement ignoré et laissé en place.
+> Si un sous-dossier contient plusieurs vidéos, la première (ordre alphabétique)
+> est publiée.
 
 > 💡 **Pour qu'une vidéo soit reconnue comme Short**, elle doit être **verticale
 > (9:16)** et durer **≤ 3 minutes**. Le bot ajoute `#Shorts` dans la description
@@ -114,11 +122,12 @@ tail -f /var/log/youtube-shorts-bot.log
 | `GOOGLE_CLIENT_ID`          | ID client OAuth (application de bureau)                   |
 | `GOOGLE_CLIENT_SECRET`      | Secret client OAuth                                       |
 | `GOOGLE_REFRESH_TOKEN`      | Token obtenu via `npm run auth`                          |
-| `DRIVE_SOURCE_FOLDER_ID`    | Dossier surveillé « À publier »                          |
-| `DRIVE_PUBLISHED_FOLDER_ID` | Dossier « Publié » (destination après upload)            |
+| `DRIVE_SOURCE_FOLDER_ID`    | Dossier surveillé « À publier » (contient les sous-dossiers) |
+| `DRIVE_PUBLISHED_FOLDER_ID` | Dossier « Publiés sur YouTube » (destination après upload) |
 | `MAX_PER_RUN`               | Max d'uploads par exécution (défaut 5)                   |
 | `PRIVACY_STATUS`            | `public` \| `unlisted` \| `private` (défaut `public`)    |
 | `DEFAULT_DESCRIPTION`       | Description de chaque Short (défaut `#Shorts`)            |
+| `STRIP_NUMBER_PREFIX`       | Retirer le préfixe « 34.44 » du titre (défaut `true`)    |
 | `YOUTUBE_CATEGORY_ID`       | Catégorie YouTube (défaut 25 = News & Politics)          |
 | `DEFAULT_LANGUAGE`          | Langue des métadonnées (défaut `fr`)                     |
 
