@@ -534,9 +534,23 @@
 		return `mailto:${r.email ?? ''}?${params.toString().replace(/\+/g, '%20')}`
 	}
 
-	// Liens de composition des webmails (fallback quand le client mailto: n'est pas
-	// configuré). Chacun accepte to/subject/bcc/body en query string.
-	function webmailHref(service: 'gmail' | 'outlook' | 'yahoo', r: Recipient): string {
+	// Webmails proposés en fallback quand le client mailto: n'est pas configuré.
+	// L'ordre est celui affiché sous le mail généré.
+	const WEBMAILS = [
+		{ id: 'gmail', label: 'Gmail' },
+		{ id: 'outlook', label: 'Outlook' },
+		{ id: 'proton', label: 'Proton Mail' },
+		{ id: 'yahoo', label: 'Yahoo' },
+		{ id: 'zoho', label: 'Zoho Mail' }
+	] as const
+	type Webmail = (typeof WEBMAILS)[number]['id']
+
+	// Liens de composition des webmails. Gmail/Outlook/Yahoo/Zoho acceptent
+	// to/subject/bcc/body en query string. Proton Mail n'expose pas de paramètres
+	// propres : il déclare un gestionnaire `mailto:` et attend l'URL mailto
+	// complète dans le paramètre `mailto` (c'est l'URL qu'il enregistre via
+	// registerProtocolHandler), ce qui préserve destinataire, objet, CCI et corps.
+	function webmailHref(service: Webmail, r: Recipient): string {
 		const to = encodeURIComponent(r.email ?? '')
 		const su = encodeURIComponent(subject)
 		const bcc = encodeURIComponent(BCC)
@@ -545,10 +559,14 @@
 			return `https://mail.google.com/mail/?view=cm&fs=1&to=${to}&su=${su}&bcc=${bcc}&body=${body}`
 		if (service === 'outlook')
 			return `https://outlook.live.com/mail/0/deeplink/compose?to=${to}&subject=${su}&bcc=${bcc}&body=${body}`
+		if (service === 'proton')
+			return `https://mail.proton.me/u/0/inbox?mailto=${encodeURIComponent(mailtoHref(r))}`
+		if (service === 'zoho')
+			return `https://mail.zoho.com/zm/#mail/compose?to=${to}&subject=${su}&bcc=${bcc}&body=${body}`
 		return `https://compose.mail.yahoo.com/?to=${to}&subject=${su}&bcc=${bcc}&body=${body}`
 	}
 
-	function openWebmail(service: 'gmail' | 'outlook' | 'yahoo') {
+	function openWebmail(service: Webmail) {
 		if (!selectedRecipient) return
 		markSent(selectedRecipient.id)
 		logIntent(selectedRecipient)
@@ -1358,9 +1376,9 @@
 							: "Rien ne s'est ouvert ? Envoyez-le autrement"}
 					</summary>
 					<div class="webmail-links">
-						<button class="webmail-btn" on:click={() => openWebmail('gmail')}>Gmail</button>
-						<button class="webmail-btn" on:click={() => openWebmail('outlook')}>Outlook</button>
-						<button class="webmail-btn" on:click={() => openWebmail('yahoo')}>Yahoo</button>
+						{#each WEBMAILS as wm}
+							<button class="webmail-btn" on:click={() => openWebmail(wm.id)}>{wm.label}</button>
+						{/each}
 					</div>
 					<p class="webmail-note">
 						{isEn

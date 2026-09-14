@@ -32,7 +32,6 @@ export default {
 		nous_rejoindre: 'Nous rejoindre'
 	},
 	footer: {
-		tagline: "Pour une IA alignée sur l'humanité.",
 		newsletter_title: 'Newsletter',
 		newsletter_desc: "L'essentiel de l'actualité IA décrypté chaque mois",
 		newsletter_placeholder: 'votre@email.com',
@@ -53,11 +52,6 @@ export default {
 		donner: 'Donner',
 		rejoindre: 'Nous rejoindre',
 		qui_sommes_nous: 'Qui sommes-nous ?',
-		dangers_title: 'Dangers',
-		dangers_eco: 'Économiques et matériels',
-		dangers_individus: 'Pour les individus',
-		dangers_societe: 'Pour la société',
-		dangers_humanite: "Pour l'humanité",
 		act_title: 'Agir',
 		join_pauseia: 'Rejoindre Pause IA',
 		how_to_help: 'Comment pouvez-vous aider ?',
@@ -67,6 +61,7 @@ export default {
 		jobs: "Offres d'emploi",
 		other_title: 'Autres',
 		press: 'Presse',
+		funding: 'Financements',
 		legal: 'Mentions légales',
 		privacy: 'Politique de confidentialité',
 		values: 'Charte des valeurs',

@@ -233,7 +233,10 @@ export const POST: RequestHandler = async ({ request }) => {
 			}
 		})
 
-		return json({ success: true })
+		// La référence doit remonter au donateur : c'est elle qu'il reporte dans le
+		// libellé du virement, et c'est sur elle que le webhook Wise rapproche le
+		// virement de la contribution Pending.
+		return json({ success: true, reference })
 	} catch (error) {
 		console.error('[don-virement] error:', error)
 		return json(

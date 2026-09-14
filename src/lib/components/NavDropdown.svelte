@@ -241,14 +241,14 @@
 	}
 
 	.menu a.muted {
-		color: rgba(255, 255, 255, 0.35);
-		font-size: 0.8rem;
+		color: rgba(255, 255, 255, 0.62);
+		font-size: 0.85rem;
 		font-style: italic;
 	}
 
 	.menu a.muted:hover {
 		background-color: rgba(255, 255, 255, 0.04);
-		color: rgba(255, 255, 255, 0.5);
+		color: rgba(255, 255, 255, 0.85);
 	}
 
 	.ext-icon {

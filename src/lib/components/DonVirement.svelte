@@ -9,7 +9,7 @@
 
 	const PRESETS = [20, 50, 100, 200]
 
-	let step: 1 | 2 = 1
+	let step: 1 | 2 | 3 = 1
 	let prenom = ''
 	let nom = ''
 	let email = ''
@@ -17,6 +17,7 @@
 	let selectedPreset: number | null = 50
 	let isLoading = false
 	let errorMessage = ''
+	let reference = ''
 
 	let copiedField: string | null = null
 
@@ -32,6 +33,7 @@
 		selectedPreset = 50
 		errorMessage = ''
 		copiedField = null
+		reference = ''
 	}
 
 	$: if (typeof document !== 'undefined') {
@@ -112,8 +114,9 @@
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ prenom: prenom.trim(), nom: nom.trim(), email, montant })
 			})
-			const data = (await res.json()) as { success: boolean; error?: string }
+			const data = (await res.json()) as { success: boolean; error?: string; reference?: string }
 			if (data.success) {
+				reference = data.reference ?? ''
 				step = 2
 			} else {
 				errorMessage = data.error ?? 'Une erreur est survenue.'
@@ -226,7 +229,7 @@
 					{isLoading ? 'Chargement...' : 'Continuer'}
 				</button>
 			</form>
-		{:else}
+		{:else if step === 2}
 			<div class="confirmation" aria-live="polite">
 				<div class="success-icon" aria-hidden="true">✅</div>
 				<h2 id="modal-title" class="modal-title">Merci, {prenom}&nbsp;!</h2>
@@ -272,12 +275,53 @@
 							{copiedField === 'bic' ? '✓' : '📋'}
 						</button>
 					</div>
+					{#if reference}
+						<div class="rib-row">
+							<span class="rib-label">Référence</span>
+							<span class="rib-value mono reference-value">{reference}</span>
+							<button
+								type="button"
+								class="copy-inline"
+								on:click={() => copyToClipboard(reference, 'reference')}
+								aria-label="Copier la référence"
+							>
+								{copiedField === 'reference' ? '✓' : '📋'}
+							</button>
+						</div>
+					{/if}
 				</div>
 
-				<button type="button" class="done-btn" on:click={close}>
+				{#if reference}
+					<p class="reference-hint">
+						Indiquez bien la référence <strong>{reference}</strong> dans le libellé ou le motif du virement&nbsp;:
+						c'est elle qui nous permet de rattacher votre virement à votre don.
+					</p>
+				{/if}
+
+				<button type="button" class="done-btn" on:click={() => (step = 3)}>
 					C'est fait, j'ai viré {montant}&nbsp;€
 				</button>
 				<button type="button" class="close-link" on:click={close}>Fermer</button>
+			</div>
+		{:else}
+			<div class="confirmation" aria-live="polite">
+				<div class="success-icon" aria-hidden="true">🙏</div>
+				<h2 id="modal-title" class="modal-title">Merci infiniment, {prenom}&nbsp;!</h2>
+				<p class="confirm-text">
+					Votre don de <strong>{montant}&nbsp;€</strong> compte énormément pour nous. Il finance directement
+					notre travail de plaidoyer pour une IA sous contrôle.
+				</p>
+				<p class="confirm-text">
+					Dès que votre virement nous parviendra (comptez quelques jours ouvrés), nous vous
+					enverrons votre <strong>reçu fiscal</strong> à l'adresse <strong>{email}</strong>. Il vous
+					permettra de déduire <strong>66&nbsp;%</strong> de votre don de vos impôts.
+				</p>
+				<p class="confirm-note">
+					Vous ne recevez rien sous une dizaine de jours&nbsp;? Écrivez-nous à
+					<a href="mailto:contact@pauseia.fr">contact@pauseia.fr</a>{#if reference}
+						en indiquant la référence <strong>{reference}</strong>{/if}.
+				</p>
+				<button type="button" class="done-btn" on:click={close}>Fermer</button>
 			</div>
 		{/if}
 	</div>
@@ -555,6 +599,25 @@
 	.rib-value.mono {
 		font-family: 'IBM Plex Mono', 'Courier New', monospace;
 		letter-spacing: 0.04em;
+	}
+
+	.reference-value {
+		font-weight: 700;
+		letter-spacing: 0.04em;
+	}
+
+	.reference-hint {
+		margin: 1rem 0 0;
+		font-size: 0.9rem;
+		line-height: 1.5;
+		color: var(--text-secondary, #676e7a);
+	}
+
+	.confirm-note {
+		margin: 1.25rem 0 1.5rem;
+		font-size: 0.85rem;
+		line-height: 1.5;
+		color: var(--text-secondary, #676e7a);
 	}
 
 	/* Inline copy buttons */

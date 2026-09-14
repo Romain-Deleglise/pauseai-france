@@ -79,10 +79,13 @@
 			id: 'comprendre',
 			label: t.nav.comprendre,
 			items: [
-				{ href: `${prefix}/dangers`, label: t.nav.dangers },
+				{ href: `${prefix}/faq`, label: t.nav.faq },
 				{ href: `${prefix}/ressources`, label: t.nav.liens_utiles },
 				{ href: `${prefix}/newsletters`, label: t.nav.newsletter },
-				{ href: 'https://pauseia.substack.com/', label: t.nav.blog, external: true }
+				{ href: 'https://pauseia.substack.com/', label: t.nav.blog, external: true },
+				// Contenu « dangers » volontairement dépriorisé (affiché en retrait, en fin de
+				// liste) le temps de retravailler le discours autour des risques catastrophiques.
+				{ href: `${prefix}/dangers`, label: t.nav.dangers, muted: true }
 			]
 		},
 		{
@@ -331,6 +334,7 @@
 										on:click={closeMenu}
 										target={item.external ? '_blank' : undefined}
 										rel={item.external ? 'noopener noreferrer' : undefined}
+										class:muted={item.muted}
 										class:active={!item.href.startsWith('http') &&
 											($page.url.pathname === item.href ||
 												$page.url.pathname.startsWith(item.href + '/'))}
@@ -905,6 +909,12 @@
 		transition:
 			background 0.1s,
 			color 0.1s;
+	}
+
+	.sidebar-subsection a.muted {
+		opacity: 0.62;
+		font-size: 0.9em;
+		font-style: italic;
 	}
 
 	.sidebar-subsection a:hover,

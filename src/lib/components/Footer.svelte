@@ -79,7 +79,6 @@
 				/>
 			</div>
 		</a>
-		<p>{t.footer.tagline}</p>
 	</div>
 	<div id="newsletter" class="newsletter-section">
 		<h2>{t.footer.newsletter_title}</h2>
@@ -122,13 +121,6 @@
 			<a href="{prefix}/qui-sommes-nous">{t.footer.qui_sommes_nous}</a>
 		</div>
 		<div class="column">
-			<h2>{t.footer.dangers_title}</h2>
-			<a href="{prefix}/dangers/economiques-et-materiels">{t.footer.dangers_eco}</a>
-			<a href="{prefix}/dangers/pour-les-individus">{t.footer.dangers_individus}</a>
-			<a href="{prefix}/dangers/pour-la-societe">{t.footer.dangers_societe}</a>
-			<a href="{prefix}/dangers/pour-l'humanite">{t.footer.dangers_humanite}</a>
-		</div>
-		<div class="column">
 			<h2>{t.footer.act_title}</h2>
 			<a href="{prefix}/rejoindre">{t.footer.join_pauseia}</a>
 			<a href="{prefix}/agir">{t.footer.how_to_help}</a>
@@ -142,6 +134,7 @@
 		<div class="column">
 			<h2>{t.footer.other_title}</h2>
 			<a href="{prefix}/presse">{t.footer.press}</a>
+			<a href="{prefix}/financements">{t.footer.funding}</a>
 			<a href="{prefix}/mentions-legales">{t.footer.legal}</a>
 			<a href="{prefix}/politique-de-confidentialite">{t.footer.privacy}</a>
 			<a href="{prefix}/charte-des-valeurs">{t.footer.values}</a>
@@ -208,13 +201,6 @@
 
 	.footer-links :global(a:hover) {
 		text-decoration: underline;
-	}
-
-	.brand p {
-		margin-top: 1rem;
-		margin-bottom: 0;
-		text-align: left;
-		font-style: italic;
 	}
 
 	/* Newsletter section styles */
