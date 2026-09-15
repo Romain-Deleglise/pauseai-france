@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Landmark, Newspaper } from 'lucide-svelte'
+	import { goto } from '$app/navigation'
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
 	import Fly from '$components/Fly.svelte'
 	import type { Lang } from '$lib/i18n'
@@ -9,50 +9,79 @@
 	$: prefix = lang === 'fr' ? '/fr' : '/en'
 
 	const label_id = 'home-write-action-title'
+
+	// Le code postal saisi ici est transmis à l'outil via ?cp= : le visiteur
+	// arrive avec son député déjà identifié plutôt que sur un formulaire vide.
+	// Les données des élus (1,3 Mo) ne sont pas chargées ici, c'est l'outil qui
+	// résout le code postal.
+	let codePostal = ''
+	let error = false
+
+	function submit() {
+		const clean = codePostal.replace(/\s/g, '')
+		if (!/^\d{5}$/.test(clean)) {
+			error = true
+			return
+		}
+		error = false
+		void goto(`${prefix}/ecrire-a-mes-elus?cp=${clean}`)
+	}
 </script>
 
 <!--
-	Action permanente, et non campagne ponctuelle : écrire à ses élus et à la
-	presse reste l'action la plus rapide et la plus utile du site. Elle est donc
-	posée au-dessus des campagnes du moment.
+	Action permanente, et non campagne ponctuelle : écrire à ses élus reste
+	l'action la plus rapide et la plus utile du site. Elle est donc posée
+	au-dessus des campagnes du moment.
 
-	La section suit la même charpente que les autres sections de l'accueil
-	(UnderlinedTitle + sous-titre + Fly) : pas d'encadré de couleur, qui ferait
-	doublon visuel avec le bloc « groupes locaux » juste en dessous.
+	Une seule voie proposée : un menu à deux entrées oblige à trancher avant
+	d'agir. La presse reste accessible, en retrait.
 -->
 <section class="write-action" aria-labelledby={label_id}>
 	<Fly>
 		<UnderlinedTitle id={label_id} as="h2">
-			{isEn ? 'Write to your representatives and the press' : 'Écrivez à vos élus et à la presse'}
+			{isEn ? 'Write to your MP' : 'Écrire à mon député'}
 		</UnderlinedTitle>
 	</Fly>
 
 	<Fly>
-		<div class="wa-links">
-			<a class="wa-card" href="{prefix}/ecrire-a-mes-elus">
-				<span class="wa-icon"><Landmark size="1.3rem" aria-hidden="true" /></span>
-				<span class="wa-text">
-					<span class="wa-title">{isEn ? 'Write to my MP' : 'Écrire à mes élu·e·s'}</span>
-					<span class="wa-sub">
-						{isEn
-							? 'An email from a real constituent carries far more weight than a petition.'
-							: 'Un email d’un vrai électeur pèse bien plus lourd qu’une pétition.'}
-					</span>
-				</span>
-			</a>
+		<form class="wa-form" on:submit|preventDefault={submit}>
+			<div class="wa-field">
+				<label for="wa-cp">
+					{isEn ? 'Your postal code' : 'Votre code postal'}
+				</label>
+				<input
+					id="wa-cp"
+					type="text"
+					inputmode="numeric"
+					autocomplete="postal-code"
+					maxlength="5"
+					placeholder={isEn ? 'e.g. 75011' : 'ex. 75011'}
+					bind:value={codePostal}
+					on:input={() => (error = false)}
+					aria-invalid={error}
+					aria-describedby={error ? 'wa-cp-error' : undefined}
+				/>
+			</div>
+			<button type="submit">
+				{isEn ? 'See my MP' : 'Voir mon député'}
+			</button>
+		</form>
+	</Fly>
 
-			<a class="wa-card" href="{prefix}/ecrire-a-mes-elus?action=medias">
-				<span class="wa-icon"><Newspaper size="1.3rem" aria-hidden="true" /></span>
-				<span class="wa-text">
-					<span class="wa-title">{isEn ? 'Write to the press' : 'Écrire à la presse'}</span>
-					<span class="wa-sub">
-						{isEn
-							? 'Journalists read the messages their readers send them.'
-							: 'Les journalistes lisent les messages de leurs lecteurs.'}
-					</span>
-				</span>
+	{#if error}
+		<p class="wa-error" id="wa-cp-error" role="alert">
+			{isEn
+				? 'A French postal code has five digits (e.g. 75011).'
+				: 'Un code postal français comporte cinq chiffres (ex. 75011).'}
+		</p>
+	{/if}
+
+	<Fly>
+		<p class="wa-aside">
+			<a href="{prefix}/ecrire-a-mes-elus?action=medias">
+				{isEn ? 'Write to the press instead' : 'Écrire à la presse plutôt'}
 			</a>
-		</div>
+		</p>
 	</Fly>
 </section>
 
@@ -61,58 +90,85 @@
 		margin: 1rem 0 2rem;
 	}
 
-	.wa-links {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
-		gap: 1.25rem;
-	}
-
-	.wa-card {
+	.wa-form {
 		display: flex;
-		align-items: flex-start;
-		gap: 0.85rem;
-		padding: 1.35rem 1.4rem;
-		background: var(--bg-card);
-		border: 1px solid var(--border);
-		border-radius: 14px;
-		text-decoration: none;
-		color: inherit;
-		transition:
-			border-color 0.15s ease,
-			box-shadow 0.15s ease;
+		flex-wrap: wrap;
+		align-items: flex-end;
+		gap: 0.75rem;
+		margin-top: 1.25rem;
 	}
 
-	.wa-card:hover,
-	.wa-card:focus-visible {
-		border-color: var(--brand);
-		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-	}
-
-	.wa-icon {
-		flex: none;
-		display: grid;
-		place-items: center;
-		inline-size: 2.4rem;
-		block-size: 2.4rem;
-		border-radius: 50%;
-		background: color-mix(in srgb, var(--brand) 16%, transparent);
-		color: var(--brand);
-	}
-
-	.wa-text {
+	.wa-field {
 		display: flex;
 		flex-direction: column;
-		gap: 0.3rem;
+		gap: 0.35rem;
 	}
 
-	.wa-title {
-		font-weight: 700;
-		line-height: 1.3;
-	}
-
-	.wa-sub {
-		font-size: 0.92rem;
-		line-height: 1.55;
+	.wa-field label {
+		font-size: 0.9rem;
+		font-weight: 600;
 		color: var(--text-2);
+	}
+
+	.wa-field input {
+		inline-size: 9rem;
+		height: 48px;
+		padding: 0 0.9rem;
+		font-size: 1.05rem;
+		font-family: var(--font-body);
+		color: var(--text);
+		background: var(--bg);
+		border: 1px solid var(--border);
+		border-radius: 0.625rem;
+	}
+
+	.wa-field input:focus-visible {
+		outline: 2px solid var(--brand);
+		outline-offset: 1px;
+	}
+
+	.wa-field input[aria-invalid='true'] {
+		border-color: #c0392b;
+	}
+
+	.wa-form button {
+		height: 48px;
+		padding: 0 1.4rem;
+		font-family: var(--font-body);
+		font-weight: bold;
+		color: var(--text);
+		background-color: var(--brand);
+		border: none;
+		border-radius: 0.625rem;
+		cursor: pointer;
+	}
+
+	.wa-form button:hover {
+		filter: brightness(0.94);
+	}
+
+	.wa-error {
+		margin: 0.6rem 0 0;
+		font-size: 0.9rem;
+		color: #c0392b;
+		text-align: left;
+	}
+
+	.wa-aside {
+		margin: 1rem 0 0;
+		font-size: 0.95rem;
+		text-align: left;
+	}
+
+	.wa-aside a {
+		color: var(--brand-subtle);
+	}
+
+	@media (max-width: 480px) {
+		.wa-field,
+		.wa-field input,
+		.wa-form button {
+			inline-size: 100%;
+		}
 	}
 </style>

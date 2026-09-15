@@ -636,7 +636,16 @@
 	let sent = new Set<string>()
 	let mounted = false
 	onMount(() => {
-		if (!forcedActionId) actionId = new URLSearchParams(window.location.search).get('action')
+		const qs = new URLSearchParams(window.location.search)
+		if (!forcedActionId) actionId = qs.get('action')
+		// ?cp=75011 : le code postal saisi ailleurs (bande d'accueil) arrive
+		// pré-rempli et la recherche est lancée, pour que le visiteur voie
+		// directement son député au lieu de retaper ce qu'il vient de taper.
+		const cp = (qs.get('cp') ?? '').replace(/\s/g, '')
+		if (/^\d{5}$/.test(cp)) {
+			codePostal = cp
+			search()
+		}
 		try {
 			const u = JSON.parse(localStorage.getItem('elus-user') ?? '{}')
 			userName = u.userName ?? ''
