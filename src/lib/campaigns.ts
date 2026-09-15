@@ -89,8 +89,7 @@ export const campaigns: Campaign[] = [
 			shortDescription:
 				'L’IA dépasse les humains en sécurité informatique et échappe au contrôle de ceux qui la construisent. Relayez l’appel à un moratoire mondial sur les IA de pointe.',
 			cta: 'Passer à l’action',
-			homeCta: 'Je passe à l’action',
-			progress: 'Action urgente'
+			homeCta: 'Je passe à l’action'
 		},
 		en: {
 			title: 'We are on the brink of losing control: let’s react',
@@ -100,8 +99,7 @@ export const campaigns: Campaign[] = [
 			shortDescription:
 				'AI outperforms humans at computer security and is escaping the control of those who build it. Relay the call for a global moratorium on frontier AI.',
 			cta: 'Take action',
-			homeCta: 'I’m taking action',
-			progress: 'Urgent action'
+			homeCta: 'I’m taking action'
 		}
 	},
 	{
@@ -116,8 +114,7 @@ export const campaigns: Campaign[] = [
 			shortDescription:
 				'Pour la première fois, une IA s’est échappée de son test et a piraté une entreprise, de sa propre initiative. Aidez-nous à en faire un sujet : écrivez à vos élus et à la presse en deux minutes.',
 			cta: 'Passer à l’action',
-			homeCta: 'Je passe à l’action',
-			progress: 'Action urgente'
+			homeCta: 'Je passe à l’action'
 		},
 		en: {
 			title: 'An AI escaped: demand safeguards',
@@ -127,8 +124,7 @@ export const campaigns: Campaign[] = [
 			shortDescription:
 				'For the first time, an AI escaped its test and hacked a company on its own initiative. Help make it a story: write to your representatives and the press in two minutes.',
 			cta: 'Take action',
-			homeCta: 'I’m taking action',
-			progress: 'Urgent action'
+			homeCta: 'I’m taking action'
 		}
 	},
 	{

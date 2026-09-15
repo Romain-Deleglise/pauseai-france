@@ -271,8 +271,8 @@
 		>
 			<p>
 				{isEn
-					? 'Representatives take their constituents’ messages into account, and newsrooms cover what their readers ask for. Our tool finds yours and drafts the email — you personalise it and send it from your own mailbox.'
-					: 'Les parlementaires tiennent compte des messages de leurs électeurs, et les rédactions couvrent ce que leurs lecteurs réclament. Notre outil identifie les vôtres et rédige l’email : vous le personnalisez et l’envoyez depuis votre propre messagerie.'}
+					? 'An MP reads what their constituents send them, and a newsroom covers what its readers ask it to cover. We find the right people and draft the email; you read it over and send it yourself.'
+					: 'Un député lit ce que lui écrivent ses électeurs, et une rédaction couvre ce que ses lecteurs lui demandent de couvrir. On trouve les bons destinataires et on prépare le brouillon ; vous relisez et vous envoyez.'}
 			</p>
 			<!--
 				L'outil est un formulaire multi-étapes très haut : replié, il ne coûte
