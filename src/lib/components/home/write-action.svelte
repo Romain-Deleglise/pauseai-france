@@ -48,7 +48,7 @@
 		</UnderlinedTitle>
 	</Fly>
 
-	<div class="wa-grid">
+	<div class="wa-panel">
 		<div class="wa-main">
 			<Fly>
 				<p class="wa-why">
@@ -110,32 +110,41 @@
 		margin: 1rem 0 2rem;
 	}
 
-	.wa-grid {
+	/* Un panneau unique plutôt que quatre éléments posés côte à côte sur le
+	   fond : le contenu occupe la moitié gauche, la photo remplit la moitié
+	   droite jusqu'au bord, sans gouttière entre les deux. */
+	.wa-panel {
 		display: grid;
-		/* Colonnes proportionnelles : en largeur fixe, la photo restait minuscule
-		   sur grand écran et laissait un trou entre elle et le texte. */
-		grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr);
-		gap: 2.5rem;
+		grid-template-columns: minmax(0, 1fr) minmax(0, 0.85fr);
 		align-items: stretch;
+		background: var(--bg-card);
+		border: 1px solid var(--border);
+		border-radius: 16px;
+		overflow: hidden;
+		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
 	}
 
-	/* Texte en haut, formulaire en bas : les deux colonnes se calent sur la
-	   même hauteur au lieu de laisser le formulaire flotter au milieu. */
 	.wa-main {
 		display: flex;
 		flex-direction: column;
-		justify-content: space-between;
+		justify-content: center;
 		gap: 1.5rem;
+		padding: 2rem;
 	}
 
-	/* La photo se cale sur la hauteur de la colonne de texte et ne l'augmente
-	   jamais : c'est la colonne de gauche qui commande. */
+	.wa-why {
+		margin: 0;
+		font-size: 1.05rem;
+		line-height: 1.65;
+		text-align: left;
+		color: var(--text-2);
+	}
+
+	/* La photo tapisse sa moitié : c'est la colonne de contenu qui fixe la
+	   hauteur, l'image s'y adapte sans jamais l'augmenter. */
 	.wa-media {
 		position: relative;
 		min-block-size: 100%;
-		border-radius: 12px;
-		overflow: hidden;
-		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
 	}
 
 	.wa-media img {
@@ -144,103 +153,24 @@
 		inline-size: 100%;
 		block-size: 100%;
 		object-fit: cover;
-		/* Cadrage sur le fronton plutôt que sur le ciel. */
-		object-position: center 62%;
+		object-position: center;
 		display: block;
 	}
 
-	.wa-why {
-		/* Pas de plafond de largeur ici : la colonne joue déjà ce rôle. */
-		margin: 0;
-		font-size: 1.05rem;
-		line-height: 1.65;
-		text-align: left;
-		color: var(--text-2);
-	}
-
-	.wa-form {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: flex-end;
-		gap: 0.75rem;
-		margin: 0;
-	}
-
-	.wa-field {
-		display: flex;
-		flex-direction: column;
-		gap: 0.35rem;
-	}
-
-	.wa-field label {
-		font-size: 0.9rem;
-		font-weight: 600;
-		color: var(--text-2);
-	}
-
-	.wa-field input {
-		inline-size: 9rem;
-		height: 48px;
-		padding: 0 0.9rem;
-		font-size: 1.05rem;
-		font-family: var(--font-body);
-		color: var(--text);
-		background: var(--bg);
-		border: 1px solid var(--border);
-		border-radius: 0.625rem;
-	}
-
-	.wa-field input:focus-visible {
-		outline: 0.25rem solid var(--btn-focus-border);
-		outline-offset: 1px;
-	}
-
-	.wa-field input[aria-invalid='true'] {
-		border-color: #c0392b;
-	}
-
-	.wa-form button {
-		height: 48px;
-		padding: 0 1.4rem;
-		font-family: var(--font-body);
-		font-weight: bold;
-		color: var(--text);
-		background-color: var(--btn-bg);
-		border: none;
-		border-radius: 0.625rem;
-		cursor: pointer;
-	}
-
-	.wa-form button:hover {
-		background-color: var(--btn-hover-bg);
-	}
-
-	.wa-form button:active {
-		background-color: var(--btn-active-bg);
-	}
-
-	.wa-form button:focus-visible {
-		outline: 0.25rem solid var(--btn-focus-border);
-		outline-offset: 1px;
-	}
-
-	.wa-error {
-		margin: 0.6rem 0 0;
-		font-size: 0.9rem;
-		color: #c0392b;
-		text-align: left;
-	}
-
 	@media (max-width: 820px) {
-		.wa-grid {
+		.wa-panel {
 			grid-template-columns: 1fr;
-			gap: 1.5rem;
 		}
 
-		/* Empilée, la photo est plafonnée pour ne pas allonger la page. */
+		/* Empilée, la photo passe au-dessus et reste plafonnée. */
 		.wa-media {
+			order: -1;
 			min-block-size: 0;
 			block-size: 9rem;
+		}
+
+		.wa-main {
+			padding: 1.5rem;
 		}
 	}
 
