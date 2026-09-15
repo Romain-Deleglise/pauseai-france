@@ -257,43 +257,25 @@
 		</p>
 	</CampaignSection>
 
-	<!-- ── Action 2 · Écrire à ses parlementaires ────────────── -->
-	<CampaignSection
-		id="elus"
-		variant="card"
-		title={isEn ? 'Write to your representatives' : 'Écrivez à vos parlementaires'}
-	>
-		<p>
-			{isEn
-				? 'Representatives take their constituents’ messages into account. Our tool identifies yours and gives you a ready-to-personalise email.'
-				: 'Les parlementaires tiennent compte des messages de leurs électeurs. Notre outil identifie le vôtre et vous fournit un email prêt à personnaliser.'}
-		</p>
-		<p class="cta-row">
-			<Button href="{prefix}/ecrire-a-mes-elus">
-				{isEn ? 'Write to my representative' : 'Écrire à mon élu·e'}
-			</Button>
-		</p>
-	</CampaignSection>
-
-	<!-- ── Action 3 · Mobiliser la presse (outil intégré) ────── -->
+	<!-- ── Action 2 · Écrire à ses élus et à la presse ───────── -->
+	<!--
+		Une seule section : l'outil gère lui-même le basculement entre « élus » et
+		« presse » via ses onglets. Le sortir en deux blocs faisait doublon.
+	-->
 	<div bind:this={pressSection}>
 		<CampaignSection
-			id="presse"
+			id="ecrire"
 			variant="card"
-			title={isEn ? 'Mobilise the press' : 'Mobilisez la presse'}
+			title={isEn
+				? 'Write to your representatives and the press'
+				: 'Écrivez à vos élus et à la presse'}
 		>
 			<p>
 				{isEn
-					? 'Newsrooms cover what their readers ask for. Choose the newspaper you read and send it an email, directly here.'
-					: 'Les rédactions couvrent ce que leurs lecteurs réclament. Choisissez le journal que vous lisez et envoyez-lui un email, directement ici.'}
+					? 'Representatives take their constituents’ messages into account, and newsrooms cover what their readers ask for. Our tool finds yours and drafts the email — you personalise it and send it from your own mailbox.'
+					: 'Les parlementaires tiennent compte des messages de leurs électeurs, et les rédactions couvrent ce que leurs lecteurs réclament. Notre outil identifie les vôtres et rédige l’email : vous le personnalisez et l’envoyez depuis votre propre messagerie.'}
 			</p>
-			<EcrireOutil
-				lang={data.lang}
-				forcedActionId="medias"
-				embedded
-				requireName
-				on:navigate={scrollToPress}
-			/>
+			<EcrireOutil lang={data.lang} embedded requireName on:navigate={scrollToPress} />
 		</CampaignSection>
 	</div>
 </CampaignPage>

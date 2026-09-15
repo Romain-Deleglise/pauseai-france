@@ -40,6 +40,9 @@
 	$: isPrimaryAction = action.id === 'default' || action.id === 'medias'
 	$: isPress = !!action.press
 	function selectTool(id: 'default' | 'medias') {
+		// Une instance imposée par la page ne change pas d'outil : sans ce garde,
+		// on réécrirait l'URL de la page hôte sans que l'outil bouge.
+		if (forcedActionId) return
 		if (action.id === id) return
 		actionId = id
 		step = 1
@@ -758,7 +761,9 @@
 			</header>
 		{/if}
 
-		{#if isPrimaryAction}
+		<!-- Onglets masqués quand la page impose l'action (forcedActionId) : le
+		     clic serait sans effet, `action` étant calculé sur forcedActionId. -->
+		{#if isPrimaryAction && !forcedActionId}
 			<div class="tool-switch">
 				<span class="tool-switch-label"
 					>{isEn ? 'What do you want to do?' : 'Que voulez-vous faire ?'}</span
