@@ -318,7 +318,7 @@
 				</p>
 				<p class="confirm-note">
 					Vous ne recevez rien sous une dizaine de jours&nbsp;? Écrivez-nous à
-					<a href="mailto:contact@pauseia.fr">contact@pauseia.fr</a>{#if reference}
+					<a href="mailto:dons@pauseia.fr">dons@pauseia.fr</a>{#if reference}
 						en indiquant la référence <strong>{reference}</strong>{/if}.
 				</p>
 				<button type="button" class="done-btn" on:click={close}>Fermer</button>
