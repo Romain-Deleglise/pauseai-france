@@ -73,7 +73,7 @@
 			: 'Nous demandons l’arrêt de la course à la superintelligence, tant que personne ne sait construire ces systèmes sans danger. Aucun gouvernement ne bougera là-dessus si le sujet reste réservé aux initiés.'}
 	>
 		<!-- Un visiteur déjà convaincu doit pouvoir agir sans traverser la page. -->
-		<Button href="#ecrire">{isEn ? 'Take action now' : 'Passer à l’action'}</Button>
+		<Button href="#ecrire">{isEn ? 'Write to my MP' : 'Écrire à mon député'}</Button>
 	</CampaignHero>
 
 	<!-- ── Le constat ───────────────────────────────────────── -->
@@ -276,7 +276,7 @@
 			-->
 			<details class="tool-details" bind:open={toolOpen}>
 				<summary>
-					{isEn ? 'Open the tool and write my email' : 'Ouvrir l’outil et rédiger mon email'}
+					{isEn ? 'Write my email' : 'Rédiger mon email'}
 				</summary>
 				<div class="tool-body">
 					<EcrireOutil
