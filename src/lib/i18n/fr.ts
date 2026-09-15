@@ -16,6 +16,7 @@ export default {
 		groupes_locaux: 'Groupes locaux',
 		toutes_campagnes: 'Toutes nos campagnes',
 		geneve_2026: 'Genève 2026',
+		perte_de_controle: 'Perte de contrôle',
 		warning_shot: 'Une IA s’est échappée',
 		ecrire_elus: 'Écrire aux élus et à la presse',
 		emploi_ia: 'Emploi et IA',

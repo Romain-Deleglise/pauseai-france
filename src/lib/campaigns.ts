@@ -78,6 +78,33 @@ export interface Campaign {
  */
 export const campaigns: Campaign[] = [
 	{
+		slug: 'perte-de-controle',
+		status: 'active',
+		startDate: '2026-09',
+		fr: {
+			title: 'Nous sommes au bord de la perte de contrôle : réagissons',
+			homeTitle: 'Nous sommes au bord de la perte de contrôle : réagissons',
+			description:
+				'L’IA dépasse désormais les humains en sécurité informatique, et les chercheurs qui les entraînent ne les maîtrisent plus suffisamment. Relayez l’appel à un moratoire mondial sur le développement des IA de pointe.',
+			shortDescription:
+				'L’IA dépasse les humains en sécurité informatique et échappe au contrôle de ceux qui la construisent. Relayez l’appel à un moratoire mondial sur les IA de pointe.',
+			cta: 'Passer à l’action',
+			homeCta: 'Je passe à l’action',
+			progress: 'Action urgente'
+		},
+		en: {
+			title: 'We are on the brink of losing control: let’s react',
+			homeTitle: 'We are on the brink of losing control: let’s react',
+			description:
+				'AI now outperforms humans at computer security, and the researchers who train these systems no longer control them well enough. Relay the call for a global moratorium on frontier AI development.',
+			shortDescription:
+				'AI outperforms humans at computer security and is escaping the control of those who build it. Relay the call for a global moratorium on frontier AI.',
+			cta: 'Take action',
+			homeCta: 'I’m taking action',
+			progress: 'Urgent action'
+		}
+	},
+	{
 		slug: 'une-ia-sest-echappee',
 		status: 'active',
 		startDate: '2026-07',
