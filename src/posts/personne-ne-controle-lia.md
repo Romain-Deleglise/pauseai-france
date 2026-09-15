@@ -60,7 +60,7 @@ Dépasser les capacités humaines : nous n’en sommes plus très loin. C’est 
 
 Depuis cette déclaration de 2023 signée par plus de 600 experts et personnalités du domaine de l’IA, les alertes se multiplient et de très nombreux spécialistes estiment qu’un point de non-retour pourrait être atteint avant 2030.
 
-Il faut certes un peu d’imagination pour se représenter l’humanité en voie d’extinction tandis qu’une intelligence artificielle supérieure — différente de la nôtre mais plus puissante — domine désormais la planète Terre. Mais posons-nous la question : ces agents que nous ne contrôlons pas, ou pas assez bien, qu’est-ce qui les empêchera de nous dominer, et plus probablement de nous éliminer, dans un monde devenu presque entièrement gouverné par l’alliance des données et de la puissance de calcul ?
+Il faut certes un peu d’imagination pour se représenter l’humanité en voie d’extinction tandis qu’une intelligence artificielle supérieure – différente de la nôtre mais plus puissante – domine désormais la planète Terre. Mais posons-nous la question : ces agents que nous ne contrôlons pas, ou pas assez bien, qu’est-ce qui les empêchera de nous dominer, et plus probablement de nous éliminer, dans un monde devenu presque entièrement gouverné par l’alliance des données et de la puissance de calcul ?
 
 ## C’est le moment de dire « Stop ! »
 

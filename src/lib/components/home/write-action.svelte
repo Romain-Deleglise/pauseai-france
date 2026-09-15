@@ -29,8 +29,8 @@
 	<Fly>
 		<p class="subtitle">
 			{isEn
-				? 'A tool for writing to your MP or to a journalist without starting from a blank page.'
-				: 'Un outil pour écrire à votre député ou à un journaliste sans partir de la page blanche.'}
+				? 'The hard part is knowing who to write to and how to start. That is the part the tool handles.'
+				: 'Le plus dur, c’est de savoir à qui écrire et par quoi commencer. L’outil fait ces deux-là.'}
 		</p>
 	</Fly>
 

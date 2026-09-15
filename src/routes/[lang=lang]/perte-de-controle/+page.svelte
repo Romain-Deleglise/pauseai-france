@@ -69,8 +69,8 @@
 			: 'Nous sommes au bord de la perte de contrôle : réagissons !'}
 		eyebrow={isEn ? 'Campaign under way' : 'Campagne en cours'}
 		lede={isEn
-			? 'We are asking for a global moratorium on frontier AI development, for as long as nobody knows how to make these systems safe. Getting one means elected officials and journalists have to hear about it.'
-			: 'Nous demandons un moratoire mondial sur le développement des IA de pointe, tant que personne ne sait les rendre sûres. Pour l’obtenir, il faut que les élus et les journalistes en entendent parler.'}
+			? 'We are asking for the race to superintelligence to stop, for as long as nobody knows how to build these systems safely. No government will move on this while it stays a subject for insiders.'
+			: 'Nous demandons l’arrêt de la course à la superintelligence, tant que personne ne sait construire ces systèmes sans danger. Aucun gouvernement ne bougera là-dessus si le sujet reste réservé aux initiés.'}
 	>
 		<!-- Un visiteur déjà convaincu doit pouvoir agir sans traverser la page. -->
 		<Button href="#ecrire">{isEn ? 'Take action now' : 'Passer à l’action'}</Button>
@@ -271,8 +271,8 @@
 		>
 			<p>
 				{isEn
-					? 'The tool finds your recipients and suggests a starting text. You change whatever you want before sending it from your own mailbox.'
-					: 'L’outil trouve vos destinataires et propose un texte de départ. Vous modifiez ce que vous voulez avant de l’envoyer depuis votre messagerie.'}
+					? 'The email goes out from your own mailbox, under your name, with whatever text you approved. All the tool spares you is hunting for an address and facing a blank page.'
+					: 'Le mail part de votre propre messagerie, sous votre nom, avec le texte que vous aurez validé. L’outil vous évite seulement la recherche d’adresse et la page blanche.'}
 			</p>
 			<!--
 				L'outil est un formulaire multi-étapes très haut : replié, il ne coûte
