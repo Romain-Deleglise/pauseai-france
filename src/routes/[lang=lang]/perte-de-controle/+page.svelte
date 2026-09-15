@@ -8,6 +8,7 @@
 	} from '$components/campaign'
 	import EcrireOutil from '$components/EcrireOutil.svelte'
 	import Button from '$components/Button.svelte'
+	import { onMount } from 'svelte'
 	import type { PageData } from './$types'
 
 	export let data: PageData
@@ -17,9 +18,23 @@
 	// Recentre la vue sur la section presse quand l'outil intégré change d'étape
 	// (choix d'un journal / retour), au lieu de remonter en haut de la page.
 	let pressSection: HTMLElement
+	// Déplié via l'ancre #ecrire (bouton du hero ou lien partagé).
+	let toolOpen = false
 	function scrollToPress() {
 		pressSection?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 	}
+
+	// Le bouton du hero pointe sur #ecrire. Button ne relaie pas le clic sur sa
+	// variante lien, donc on écoute le hash : l'outil se déplie aussi bien au
+	// clic du bouton que sur un lien partagé /perte-de-controle#ecrire.
+	onMount(() => {
+		const sync = () => {
+			if (window.location.hash === '#ecrire') toolOpen = true
+		}
+		sync()
+		window.addEventListener('hashchange', sync)
+		return () => window.removeEventListener('hashchange', sync)
+	})
 
 	const VIDEO_ID = 'WhQViEjkg7s'
 	// Calendrier Luma des actions militantes (agrège aussi les événements créés
@@ -27,13 +42,11 @@
 	const LUMA_CALENDAR_ID = 'cal-5ZNtr1GO7aUSyiY'
 
 	// ── À COMPLÉTER avant mise en ligne ───────────────────────────────────────
-	// Les articles de blog de la campagne « Perte de contrôle » ne sont pas encore
-	// publiés : tant que l'URL est vide, la carte s'affiche sans lien plutôt que
-	// de pointer dans le vide.
-	const BLOG_CONTROLE_URL = ''
-	const BLOG_MORATOIRE_URL = ''
 	// Dates du temps fort militant, à renseigner (ex. « du 12 au 19 octobre »).
 	const MOBILISATION_DATES = ''
+	// Second volet de l'analyse, pas encore publié : la carte correspondante
+	// n'apparaîtra qu'une fois cette URL renseignée.
+	const BLOG_MORATOIRE_URL = ''
 	// ──────────────────────────────────────────────────────────────────────────
 
 	$: title = isEn
@@ -58,7 +71,13 @@
 			? 'We are on the brink of losing control: let’s react!'
 			: 'Nous sommes au bord de la perte de contrôle : réagissons !'}
 		eyebrow={isEn ? 'Campaign under way' : 'Campagne en cours'}
-	/>
+		lede={isEn
+			? 'AI now beats the best human experts at computer security, and the labs that build it can no longer control the autonomous agents they create. We are calling for a global moratorium on frontier AI — write to your representatives and the press in two minutes.'
+			: 'L’IA bat désormais les meilleurs experts humains en sécurité informatique, et les laboratoires qui la construisent ne contrôlent plus les agents autonomes qu’ils créent. Nous appelons à un moratoire mondial sur les IA de pointe : écrivez à vos élus et à la presse en deux minutes.'}
+	>
+		<!-- Un visiteur déjà convaincu doit pouvoir agir sans traverser la page. -->
+		<Button href="#ecrire">{isEn ? 'Take action now' : 'Passer à l’action'}</Button>
+	</CampaignHero>
 
 	<!-- ── Le constat ───────────────────────────────────────── -->
 	<CampaignSection>
@@ -155,29 +174,25 @@
 						? 'When AI masters computing better than the world’s best experts, we humans enter a zone of great danger.'
 						: 'Quand l’IA maîtrise l’informatique mieux que les meilleurs experts du monde, nous, humains, entrons dans une zone de grand danger.'}
 				</p>
-				{#if BLOG_CONTROLE_URL}
-					<p class="analysis-link">
-						<a href={BLOG_CONTROLE_URL} target="_blank" rel="noopener noreferrer">
-							{isEn ? 'Read the article' : 'Lire l’article'} ↗
-						</a>
-					</p>
-				{/if}
+				<p class="analysis-link">
+					<a href="{prefix}/personne-ne-controle-lia">
+						{isEn ? 'Read the article' : 'Lire l’article'}
+					</a>
+				</p>
 			</div>
 
-			<div class="analysis">
-				<h3>
-					{isEn
-						? 'Let’s stop frontier AI development before it is too late'
-						: 'Stoppons le développement de l’IA de pointe avant qu’il ne soit trop tard'}
-				</h3>
-				{#if BLOG_MORATOIRE_URL}
+			{#if BLOG_MORATOIRE_URL}
+				<div class="analysis">
+					<h3>
+						{isEn
+							? 'Let’s stop frontier AI development before it is too late'
+							: 'Stoppons le développement de l’IA de pointe avant qu’il ne soit trop tard'}
+					</h3>
 					<p class="analysis-link">
-						<a href={BLOG_MORATOIRE_URL} target="_blank" rel="noopener noreferrer">
-							{isEn ? 'Read the article' : 'Lire l’article'} ↗
-						</a>
+						<a href={BLOG_MORATOIRE_URL}>{isEn ? 'Read the article' : 'Lire l’article'}</a>
 					</p>
-				{/if}
-			</div>
+				</div>
+			{/if}
 		</div>
 	</CampaignSection>
 
@@ -275,7 +290,25 @@
 					? 'Representatives take their constituents’ messages into account, and newsrooms cover what their readers ask for. Our tool finds yours and drafts the email — you personalise it and send it from your own mailbox.'
 					: 'Les parlementaires tiennent compte des messages de leurs électeurs, et les rédactions couvrent ce que leurs lecteurs réclament. Notre outil identifie les vôtres et rédige l’email : vous le personnalisez et l’envoyez depuis votre propre messagerie.'}
 			</p>
-			<EcrireOutil lang={data.lang} embedded requireName on:navigate={scrollToPress} />
+			<!--
+				L'outil est un formulaire multi-étapes très haut : replié, il ne coûte
+				qu'une ligne au bas de page et s'ouvre en un clic. headingLevel=h3
+				pour qu'il s'imbrique sous le h2 de la section au lieu de le doubler.
+			-->
+			<details class="tool-details" bind:open={toolOpen}>
+				<summary>
+					{isEn ? 'Open the tool and write my email' : 'Ouvrir l’outil et rédiger mon email'}
+				</summary>
+				<div class="tool-body">
+					<EcrireOutil
+						lang={data.lang}
+						embedded
+						requireName
+						headingLevel="h3"
+						on:navigate={scrollToPress}
+					/>
+				</div>
+			</details>
 		</CampaignSection>
 	</div>
 </CampaignPage>
@@ -331,5 +364,16 @@
 
 	.cta-row {
 		margin-top: 1.5rem;
+	}
+
+	.tool-details > summary {
+		cursor: pointer;
+		font-weight: 700;
+		padding: 0.5rem 0;
+		color: var(--brand-subtle);
+	}
+
+	.tool-body {
+		margin-top: 1.25rem;
 	}
 </style>

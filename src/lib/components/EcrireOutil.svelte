@@ -15,6 +15,13 @@
 	export let embedded = false
 	// Gate souple : exige un nom avant de composer le mail (auto-complétion).
 	export let requireName = false
+	/**
+	 * Niveau des titres internes de l'outil. Sur sa page dédiée il ouvre la
+	 * hiérarchie sous le h1 et reste en h2 ; imbriqué dans une section qui a
+	 * déjà son h2 (page campagne), le passer en h3 évite un plan de document
+	 * où « Trouvez vos élus » devient frère du titre de la section hôte.
+	 */
+	export let headingLevel: 'h2' | 'h3' = 'h2'
 	$: isEn = lang === 'en'
 
 	const dispatch = createEventDispatcher()
@@ -796,13 +803,13 @@
 		{/if}
 
 		<section class="card">
-			<h2>
+			<svelte:element this={headingLevel} class="tool-heading">
 				<span class="step-num">1</span>{#if action.targeting === 'fixed'}{isEn
 						? 'Your recipients'
 						: 'Vos destinataires'}{:else}{isEn
 						? 'Find your representatives'
 						: 'Trouvez vos élus'}{/if}
-			</h2>
+			</svelte:element>
 
 			{#if action.targeting !== 'fixed'}
 				<form class="cp-form" on:submit|preventDefault={search}>
@@ -1043,7 +1050,9 @@
 		{#if !embedded}
 			<!-- Pourquoi c'est important -->
 			<section class="card prose">
-				<h2>{isEn ? 'Why it matters' : "Pourquoi c'est important"}</h2>
+				<svelte:element this={headingLevel} class="tool-heading"
+					>{isEn ? 'Why it matters' : "Pourquoi c'est important"}</svelte:element
+				>
 				{#if isPress}
 					{#if isEn}
 						<p>
@@ -1083,7 +1092,9 @@
 
 			<!-- FAQ -->
 			<section class="card faq">
-				<h2>{isEn ? 'FAQ' : 'Questions fréquentes'}</h2>
+				<svelte:element this={headingLevel} class="tool-heading"
+					>{isEn ? 'FAQ' : 'Questions fréquentes'}</svelte:element
+				>
 				{#if isPress}
 					<Accordion id="faq-p-difference" noHash>
 						<span slot="head">
@@ -1170,9 +1181,9 @@
 		</button>
 
 		<section class="card">
-			<h2>
+			<svelte:element this={headingLevel} class="tool-heading">
 				<span class="step-num">2</span>{isEn ? 'Your message' : 'Votre message'}
-			</h2>
+			</svelte:element>
 
 			<div class="recipient">
 				<span class="avatar avatar--lg">
@@ -1606,7 +1617,7 @@
 		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 	}
 
-	.card h2 {
+	.card :global(.tool-heading) {
 		display: flex;
 		align-items: center;
 		gap: 0.6rem;
@@ -2393,8 +2404,8 @@
 	}
 
 	/* Prose + FAQ (en boxes blanches comme les cartes d'étape) */
-	.prose h2,
-	.faq h2 {
+	.prose :global(.tool-heading),
+	.faq :global(.tool-heading) {
 		font-size: 1.3rem;
 		font-weight: 700;
 		margin: 0 0 1rem;
