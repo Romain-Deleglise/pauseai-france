@@ -113,15 +113,36 @@
 	/* Un panneau unique plutôt que quatre éléments posés côte à côte sur le
 	   fond : le contenu occupe la moitié gauche, la photo remplit la moitié
 	   droite jusqu'au bord, sans gouttière entre les deux. */
+	.wa-why {
+		margin: 0;
+		font-size: 1.05rem;
+		line-height: 1.65;
+		text-align: left;
+		color: var(--text-2);
+	}
+
+	/* Même idiome que les cartes de campagne juste en dessous : fond --bg,
+	   bordure 2px, rayon 0.875rem et filet orange de 4px en haut. */
 	.wa-panel {
+		position: relative;
 		display: grid;
 		grid-template-columns: minmax(0, 1fr) minmax(0, 0.85fr);
 		align-items: stretch;
-		background: var(--bg-card);
-		border: 1px solid var(--border);
-		border-radius: 16px;
+		background-color: var(--bg);
+		border: 2px solid var(--border);
+		border-radius: 0.875rem;
 		overflow: hidden;
-		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+	}
+
+	.wa-panel::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 4px;
+		background: var(--brand);
+		z-index: 1;
 	}
 
 	.wa-main {
@@ -129,15 +150,7 @@
 		flex-direction: column;
 		justify-content: center;
 		gap: 1.5rem;
-		padding: 2rem;
-	}
-
-	.wa-why {
-		margin: 0;
-		font-size: 1.05rem;
-		line-height: 1.65;
-		text-align: left;
-		color: var(--text-2);
+		padding: 2.25rem 2rem;
 	}
 
 	/* La photo tapisse sa moitié : c'est la colonne de contenu qui fixe la
@@ -155,6 +168,80 @@
 		object-fit: cover;
 		object-position: center;
 		display: block;
+	}
+
+	.wa-form {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: flex-end;
+		gap: 0.75rem;
+		margin: 0;
+	}
+
+	.wa-field {
+		display: flex;
+		flex-direction: column;
+		gap: 0.35rem;
+	}
+
+	.wa-field label {
+		font-size: 0.9rem;
+		font-weight: 600;
+		color: var(--text-2);
+	}
+
+	.wa-field input {
+		inline-size: 9rem;
+		height: 48px;
+		padding: 0 0.9rem;
+		font-size: 1.05rem;
+		font-family: var(--font-body);
+		color: var(--text);
+		background: var(--bg);
+		border: 1px solid var(--border);
+		border-radius: 0.625rem;
+	}
+
+	.wa-field input:focus-visible {
+		outline: 0.25rem solid var(--btn-focus-border);
+		outline-offset: 1px;
+	}
+
+	.wa-field input[aria-invalid='true'] {
+		border-color: #c0392b;
+	}
+
+	.wa-form button {
+		height: 48px;
+		padding: 0 1.4rem;
+		font-family: var(--font-body);
+		font-size: 1rem;
+		font-weight: bold;
+		color: var(--text);
+		background-color: var(--btn-bg);
+		border: none;
+		border-radius: 0.625rem;
+		cursor: pointer;
+	}
+
+	.wa-form button:hover {
+		background-color: var(--btn-hover-bg);
+	}
+
+	.wa-form button:active {
+		background-color: var(--btn-active-bg);
+	}
+
+	.wa-form button:focus-visible {
+		outline: 0.25rem solid var(--btn-focus-border);
+		outline-offset: 1px;
+	}
+
+	.wa-error {
+		margin: 0;
+		font-size: 0.9rem;
+		color: #c0392b;
+		text-align: left;
 	}
 
 	@media (max-width: 820px) {
