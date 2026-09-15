@@ -29,8 +29,8 @@
 	<Fly>
 		<p class="subtitle">
 			{isEn
-				? 'We find your MP, or the right newsroom, and draft the email. You read it over and send it from your own inbox. About two minutes.'
-				: 'On trouve votre député ou le bon journaliste, et on prépare le brouillon. Vous relisez, vous envoyez depuis votre messagerie. Comptez deux minutes.'}
+				? 'A tool for writing to your MP or to a journalist without starting from a blank page.'
+				: 'Un outil pour écrire à votre député ou à un journaliste sans partir de la page blanche.'}
 		</p>
 	</Fly>
 
@@ -54,8 +54,8 @@
 					<span class="wa-title">{isEn ? 'Write to the press' : 'Écrire à la presse'}</span>
 					<span class="wa-sub">
 						{isEn
-							? 'A newsroom covers what its readers ask it to cover.'
-							: 'Une rédaction couvre ce que ses lecteurs lui demandent de couvrir.'}
+							? 'Journalists read the messages their readers send them.'
+							: 'Les journalistes lisent les messages de leurs lecteurs.'}
 					</span>
 				</span>
 			</a>

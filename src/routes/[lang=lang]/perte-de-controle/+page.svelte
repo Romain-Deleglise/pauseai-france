@@ -69,8 +69,8 @@
 			: 'Nous sommes au bord de la perte de contrôle : réagissons !'}
 		eyebrow={isEn ? 'Campaign under way' : 'Campagne en cours'}
 		lede={isEn
-			? 'AI now beats the best human experts at computer security, and the labs that build it can no longer control the autonomous agents they create. We are calling for a global moratorium on frontier AI — write to your representatives and the press in two minutes.'
-			: 'L’IA bat désormais les meilleurs experts humains en sécurité informatique, et les laboratoires qui la construisent ne contrôlent plus les agents autonomes qu’ils créent. Nous appelons à un moratoire mondial sur les IA de pointe : écrivez à vos élus et à la presse en deux minutes.'}
+			? 'We are asking for a global moratorium on frontier AI development, for as long as nobody knows how to make these systems safe. Getting one means elected officials and journalists have to hear about it.'
+			: 'Nous demandons un moratoire mondial sur le développement des IA de pointe, tant que personne ne sait les rendre sûres. Pour l’obtenir, il faut que les élus et les journalistes en entendent parler.'}
 	>
 		<!-- Un visiteur déjà convaincu doit pouvoir agir sans traverser la page. -->
 		<Button href="#ecrire">{isEn ? 'Take action now' : 'Passer à l’action'}</Button>
@@ -271,8 +271,8 @@
 		>
 			<p>
 				{isEn
-					? 'An MP reads what their constituents send them, and a newsroom covers what its readers ask it to cover. We find the right people and draft the email; you read it over and send it yourself.'
-					: 'Un député lit ce que lui écrivent ses électeurs, et une rédaction couvre ce que ses lecteurs lui demandent de couvrir. On trouve les bons destinataires et on prépare le brouillon ; vous relisez et vous envoyez.'}
+					? 'The tool finds your recipients and suggests a starting text. You change whatever you want before sending it from your own mailbox.'
+					: 'L’outil trouve vos destinataires et propose un texte de départ. Vous modifiez ce que vous voulez avant de l’envoyer depuis votre messagerie.'}
 			</p>
 			<!--
 				L'outil est un formulaire multi-étapes très haut : replié, il ne coûte
