@@ -269,11 +269,6 @@
 				? 'Write to your representatives and the press'
 				: 'Écrivez à vos élus et à la presse'}
 		>
-			<p>
-				{isEn
-					? 'The email goes out from your own mailbox, under your name, with whatever text you approved. All the tool spares you is hunting for an address and facing a blank page.'
-					: 'Le mail part de votre propre messagerie, sous votre nom, avec le texte que vous aurez validé. L’outil vous évite seulement la recherche d’adresse et la page blanche.'}
-			</p>
 			<!--
 				L'outil est un formulaire multi-étapes très haut : replié, il ne coûte
 				qu'une ligne au bas de page et s'ouvre en un clic. headingLevel=h3

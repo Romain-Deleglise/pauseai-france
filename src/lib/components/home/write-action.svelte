@@ -26,13 +26,6 @@
 			{isEn ? 'Write to your representatives and the press' : 'Écrivez à vos élus et à la presse'}
 		</UnderlinedTitle>
 	</Fly>
-	<Fly>
-		<p class="subtitle">
-			{isEn
-				? 'The hard part is knowing who to write to and how to start. That is the part the tool handles.'
-				: 'Le plus dur, c’est de savoir à qui écrire et par quoi commencer. L’outil fait ces deux-là.'}
-		</p>
-	</Fly>
 
 	<Fly>
 		<div class="wa-links">
@@ -66,16 +59,6 @@
 <style>
 	.write-action {
 		margin: 1rem 0 2rem;
-	}
-
-	/* Repris à l'identique de la section « campagnes » pour que les deux
-	   sous-titres s'alignent. */
-	.subtitle {
-		font-size: 1.05rem;
-		line-height: 1.6;
-		color: var(--text-2);
-		max-width: 42rem;
-		margin: 0.5rem 0 2rem;
 	}
 
 	.wa-links {
