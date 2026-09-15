@@ -44,9 +44,6 @@
 	// ── À COMPLÉTER avant mise en ligne ───────────────────────────────────────
 	// Dates du temps fort militant, à renseigner (ex. « du 12 au 19 octobre »).
 	const MOBILISATION_DATES = ''
-	// Second volet de l'analyse, pas encore publié : la carte correspondante
-	// n'apparaîtra qu'une fois cette URL renseignée.
-	const BLOG_MORATOIRE_URL = ''
 	// ──────────────────────────────────────────────────────────────────────────
 
 	$: title = isEn
@@ -180,19 +177,6 @@
 					</a>
 				</p>
 			</div>
-
-			{#if BLOG_MORATOIRE_URL}
-				<div class="analysis">
-					<h3>
-						{isEn
-							? 'Let’s stop frontier AI development before it is too late'
-							: 'Stoppons le développement de l’IA de pointe avant qu’il ne soit trop tard'}
-					</h3>
-					<p class="analysis-link">
-						<a href={BLOG_MORATOIRE_URL}>{isEn ? 'Read the article' : 'Lire l’article'}</a>
-					</p>
-				</div>
-			{/if}
 		</div>
 	</CampaignSection>
 

@@ -71,7 +71,3 @@ Ainsi, non seulement les agents IA échappent au contrôle de leurs créateurs, 
 Jacob Coxon est devenu célèbre le 9 septembre dernier. Son annonce sur X a fait l’effet d’une bombe, bien au-delà de la communauté professionnelle de l’IA :
 
 > « J’ai démissionné d’Anthropic aujourd’hui. J’ai passé ces trois dernières années à mener des recherches sur le pré-entraînement, tant chez OpenAI que chez Anthropic. Aucune de ces deux entreprises n’agit de manière responsable. Elles se précipitent tête baissée vers une superintelligence capable de s’auto-améliorer et jouent avec nos vies. »
-
-<aside class="note-lecture">
-	<strong>À suivre</strong> — second volet de cette analyse : « Nous n’avons d’autre choix que d’agir, maintenant ».
-</aside>
