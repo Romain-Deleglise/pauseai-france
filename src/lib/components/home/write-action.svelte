@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation'
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
-	import CampaignStats from '$components/campaign/CampaignStats.svelte'
 	import Fly from '$components/Fly.svelte'
 	import type { Lang } from '$lib/i18n'
 
@@ -15,17 +14,6 @@
 	// arrive avec son député déjà identifié plutôt que sur un formulaire vide.
 	// Les données des élus (1,3 Mo) ne sont pas chargées ici, c'est l'outil qui
 	// résout le code postal.
-	// Comptés dans src/lib/data/elus.json — le fichier que l'outil interroge —
-	// et non saisis à la main : deputes.length = 577, senateurs.length = 348.
-	// Figés ici pour ne pas charger 892 Ko sur l'accueil.
-	$: stats = [
-		{
-			value: '577',
-			label: isEn ? 'MPs in the National Assembly' : 'députés à l’Assemblée nationale'
-		},
-		{ value: '348', label: isEn ? 'senators' : 'sénateurs' }
-	]
-
 	let codePostal = ''
 	let error = false
 
@@ -65,8 +53,8 @@
 			<Fly>
 				<p class="wa-why">
 					{isEn
-						? 'Unlike a petition or a social media post, a personal email lands in a human inbox, gets read, and signals that a voter cares about this issue. A handful of emails from real citizens is often enough to put a topic on a committee’s agenda.'
-						: 'Contrairement à une pétition ou à un post sur les réseaux, un email personnel arrive dans une boite mail humaine, il est lu, et il signale qu’un électeur se préoccupe du sujet. Une poignée d’emails de vrais citoyens suffit souvent à inscrire un sujet à l’ordre du jour d’une commission.'}
+						? 'Unlike a petition, a personal email gets read, and a handful of them is often enough to put a topic on a committee’s agenda.'
+						: 'Contrairement à une pétition, un email personnel est lu, et quelques-uns suffisent souvent à inscrire un sujet à l’ordre du jour d’une commission.'}
 				</p>
 			</Fly>
 
@@ -104,12 +92,16 @@
 			{/if}
 		</div>
 
-		<aside class="wa-side">
-			<CampaignStats {stats} />
-			<p class="wa-side-note">
-				{isEn ? 'All reachable by email.' : 'Tous joignables par email.'}
-			</p>
-		</aside>
+		<div class="wa-media">
+			<img
+				src="/campaigns/960px-Palais_Bourbon.jpg"
+				alt={isEn
+					? 'The Palais Bourbon, seat of the French National Assembly'
+					: 'Le Palais Bourbon, siège de l’Assemblée nationale'}
+				loading="lazy"
+				decoding="async"
+			/>
+		</div>
 	</div>
 </section>
 
@@ -120,17 +112,28 @@
 
 	.wa-grid {
 		display: grid;
-		grid-template-columns: minmax(0, 1fr) 15rem;
+		grid-template-columns: minmax(0, 1fr) 18rem;
 		gap: 2rem;
-		align-items: start;
+		align-items: stretch;
 	}
 
-	.wa-side-note {
-		margin: 0.75rem 0 0;
-		font-size: 0.85rem;
-		line-height: 1.4;
-		text-align: center;
-		color: var(--text-2);
+	/* La photo se cale sur la hauteur de la colonne de texte et ne l'augmente
+	   jamais : c'est la colonne de gauche qui commande. */
+	.wa-media {
+		position: relative;
+		min-block-size: 100%;
+		border-radius: 12px;
+		overflow: hidden;
+		border: 1px solid var(--border);
+	}
+
+	.wa-media img {
+		position: absolute;
+		inset: 0;
+		inline-size: 100%;
+		block-size: 100%;
+		object-fit: cover;
+		display: block;
 	}
 
 	.wa-why {
@@ -218,6 +221,12 @@
 		.wa-grid {
 			grid-template-columns: 1fr;
 			gap: 1.5rem;
+		}
+
+		/* Empilée, la photo est plafonnée pour ne pas allonger la page. */
+		.wa-media {
+			min-block-size: 0;
+			block-size: 9rem;
 		}
 	}
 
