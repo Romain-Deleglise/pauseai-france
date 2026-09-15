@@ -2,6 +2,7 @@
 	import PostMeta from '$components/PostMeta.svelte'
 	import EcrireOutil from '$components/EcrireOutil.svelte'
 	import YouTubeEmbed from '$components/YouTubeEmbed.svelte'
+	import LumaCalendar from '$components/LumaCalendar.svelte'
 	import { Landmark, Newspaper, Users, MoveUpRight, Share2 } from 'lucide-svelte'
 	import type { PageData } from './$types'
 
@@ -17,6 +18,9 @@
 	}
 
 	const VIDEO_ID = 'WhQViEjkg7s'
+	// Calendrier Luma des actions militantes (agrège aussi les événements créés
+	// par d'autres organisateurs).
+	const LUMA_CALENDAR_ID = 'cal-5ZNtr1GO7aUSyiY'
 
 	// ── À COMPLÉTER avant mise en ligne ───────────────────────────────────────
 	// Les articles de blog de la campagne « Perte de contrôle » ne sont pas encore
@@ -259,6 +263,14 @@
 					? 'Local groups hold street actions, public talks and stands all over France. Find the one closest to you and join the mobilisation.'
 					: 'Les groupes locaux organisent des actions de rue, des conférences et des stands partout en France. Trouvez celui le plus proche de chez vous et rejoignez la mobilisation.'}
 			</p>
+			<div class="action-calendar">
+				<LumaCalendar
+					calendarId={LUMA_CALENDAR_ID}
+					title={isEn ? 'Upcoming Pause IA events' : 'Prochains événements Pause IA'}
+					collapsible
+					summary={isEn ? 'See upcoming dates' : 'Voir les prochaines dates'}
+				/>
+			</div>
 			<a class="action-cta" href="{prefix}/groupes-locaux">
 				{isEn ? 'Find my local group' : 'Trouver mon groupe local'}
 			</a>
@@ -476,6 +488,10 @@
 
 	.action-cta:hover {
 		filter: brightness(0.94);
+	}
+
+	.action-calendar {
+		margin-block: 0 1.25rem;
 	}
 
 	.press-tool {
