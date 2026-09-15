@@ -33,14 +33,27 @@
 	l'action la plus rapide et la plus utile du site. Elle est donc posée
 	au-dessus des campagnes du moment.
 
-	Une seule voie proposée : un menu à deux entrées oblige à trancher avant
-	d'agir. La presse reste accessible, en retrait.
+	Une seule voie proposée : écrire à ses élus est nettement plus utile que
+	d'écrire à la presse, et un menu à deux entrées oblige à trancher avant
+	d'agir. L'outil presse reste accessible par le menu « Agir » et depuis les
+	pages campagne.
+
+	L'argumentaire est repris du bloc « Pourquoi c'est important » d'EcrireOutil
+	pour que les deux disent la même chose.
 -->
 <section class="write-action" aria-labelledby={label_id}>
 	<Fly>
 		<UnderlinedTitle id={label_id} as="h2">
-			{isEn ? 'Write to your MP' : 'Écrire à mon député'}
+			{isEn ? 'Write to my representatives' : 'Écrire à mes élus'}
 		</UnderlinedTitle>
+	</Fly>
+
+	<Fly>
+		<p class="wa-why">
+			{isEn
+				? 'Unlike a petition or a social media post, a personal email lands in a human inbox, gets read, and signals that a voter cares about this issue. A handful of emails from real citizens is often enough to put a topic on a committee’s agenda.'
+				: 'Contrairement à une pétition ou à un post sur les réseaux, un email personnel arrive dans une boite mail humaine, il est lu, et il signale qu’un électeur se préoccupe du sujet. Une poignée d’emails de vrais citoyens suffit souvent à inscrire un sujet à l’ordre du jour d’une commission.'}
+		</p>
 	</Fly>
 
 	<Fly>
@@ -63,7 +76,7 @@
 				/>
 			</div>
 			<button type="submit">
-				{isEn ? 'See my MP' : 'Voir mon député'}
+				{isEn ? 'See my representatives' : 'Voir mes élus'}
 			</button>
 		</form>
 	</Fly>
@@ -75,19 +88,19 @@
 				: 'Un code postal français comporte cinq chiffres (ex. 75011).'}
 		</p>
 	{/if}
-
-	<Fly>
-		<p class="wa-aside">
-			<a href="{prefix}/ecrire-a-mes-elus?action=medias">
-				{isEn ? 'Write to the press instead' : 'Écrire à la presse plutôt'}
-			</a>
-		</p>
-	</Fly>
 </section>
 
 <style>
 	.write-action {
 		margin: 1rem 0 2rem;
+	}
+
+	.wa-why {
+		margin: 1.25rem 0 0;
+		max-inline-size: 44rem;
+		line-height: 1.65;
+		text-align: left;
+		color: var(--text-2);
 	}
 
 	.wa-form {
@@ -161,16 +174,6 @@
 		font-size: 0.9rem;
 		color: #c0392b;
 		text-align: left;
-	}
-
-	.wa-aside {
-		margin: 1rem 0 0;
-		font-size: 0.95rem;
-		text-align: left;
-	}
-
-	.wa-aside a {
-		color: var(--brand-subtle);
 	}
 
 	@media (max-width: 480px) {

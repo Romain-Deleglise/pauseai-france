@@ -14,6 +14,11 @@ jamais des valeurs en dur — c'est ce qui garantit le fonctionnement du mode so
 | `--brand-light`  | `#fff5e8` | `#2a1f0a` | Fond orangé très clair                      |
 | `--brand-subtle` | `#c96900` | `#ffab40` | Orange foncé, lisible en texte et en lien   |
 
+> Le fond de page est `--bg-subtle` (crème `#fff5e8`) sur **toutes les pages sauf
+> l'accueil**, qui seule passe en blanc (`bgWhite` dans `src/routes/+layout.svelte`).
+> `--bg-card` est donc un blanc cassé _chaud_, et non un gris : un gris froid posé
+> sur ce crème se voit immédiatement.
+
 > `--brand` (#ff9416) n'a pas un contraste suffisant pour du texte sur fond blanc.
 > Pour un lien ou un chiffre, utiliser `--brand-subtle`. `--brand` reste réservé
 > aux aplats (boutons, filets, puces, bordures).
@@ -24,7 +29,7 @@ jamais des valeurs en dur — c'est ce qui garantit le fonctionnement du mode so
 | ------------------ | --------- | --------- | -------------------------------------- |
 | `--bg`             | blanc     | `#272727` | Fond de page                           |
 | `--bg-subtle`      | `#fff5e8` | `#312e29` | Fond de mise en avant (callout, stats) |
-| `--bg-card`        | `#fafafa` | `#303030` | Fond de carte / encadré                |
+| `--bg-card`        | `#fffcf8` | `#35322c` | Fond de carte / encadré                |
 | `--text`           | noir      | `#f0f0f0` | Texte courant                          |
 | `--text-2`         | `#555`    | `#a0a8b4` | Texte secondaire, chapô, légendes      |
 | `--text-secondary` | `#676e7a` | `#a0a8b4` | Alias UI (`--text-muted` idem)         |

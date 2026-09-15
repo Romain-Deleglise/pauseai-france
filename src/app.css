@@ -18,8 +18,9 @@
 	--border: #e5e7eb;
 	--text-secondary: #676e7a;
 	--text-muted: #676e7a; /* alias de text-secondary */
-	--bg-card: #fafafa;
-	--bg-secondary: #f9f9f9;
+	--bg-card: #fffcf8; /* blanc cassé chaud : lisible sur le crème --bg-subtle
+	                       des pages intérieures comme sur le blanc de l'accueil */
+	--bg-secondary: #fdfaf6;
 
 	/* Buttons */
 	--btn-bg: var(--brand);
@@ -43,7 +44,7 @@
 	--black: #f0f0f0;
 	--bg: #272727;
 	--bg-subtle: #312e29;
-	--bg-card: #303030;
+	--bg-card: #35322c; /* pendant sombre : chaud, comme --bg-subtle #312e29 */
 	--text: #f0f0f0;
 	--text-2: #a0a8b4;
 	--text-secondary: #a0a8b4;
