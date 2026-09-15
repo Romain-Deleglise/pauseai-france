@@ -2,6 +2,7 @@
 	import PostMeta from '$components/PostMeta.svelte'
 	import Button from '$components/Button.svelte'
 	import Accordion from '$components/Accordion.svelte'
+	import { Landmark, Newspaper } from 'lucide-svelte'
 	import { onMount, createEventDispatcher } from 'svelte'
 	import { lookupElus, isSampleData, type Elu, type LookupResult } from '$lib/data/elus'
 	import { getEluAction, type FixedTarget } from '$lib/data/elu-actions'
@@ -781,9 +782,6 @@
 		     clic serait sans effet, `action` étant calculé sur forcedActionId. -->
 		{#if isPrimaryAction && !forcedActionId}
 			<div class="tool-switch">
-				<span class="tool-switch-label"
-					>{isEn ? 'What do you want to do?' : 'Que voulez-vous faire ?'}</span
-				>
 				<div
 					class="tool-tabs"
 					role="tablist"
@@ -795,7 +793,7 @@
 						aria-selected={action.id === 'default'}
 						on:click={() => selectTool('default')}
 					>
-						<span class="tab-emoji" aria-hidden="true">🏛️</span>
+						<span class="tab-icon"><Landmark size="1em" aria-hidden="true" /></span>
 						{isEn ? 'Write to my representatives' : 'Écrire à mes élus'}
 					</button>
 					<button
@@ -804,7 +802,7 @@
 						aria-selected={action.id === 'medias'}
 						on:click={() => selectTool('medias')}
 					>
-						<span class="tab-emoji" aria-hidden="true">📰</span>
+						<span class="tab-icon"><Newspaper size="1em" aria-hidden="true" /></span>
 						{isEn ? 'Write to the press' : 'Écrire à la presse'}
 					</button>
 				</div>
@@ -918,7 +916,8 @@
 									: 'Étape suivante : demandez à la presse d’en parler. Deux minutes de plus.'}
 							</p>
 							<Button on:click={() => selectTool('medias')}>
-								{isEn ? '📰 Write to the press' : '📰 Écrire à la presse'}
+								<Newspaper size="1em" aria-hidden="true" />
+								{isEn ? 'Write to the press' : 'Écrire à la presse'}
 							</Button>
 						</div>
 						<a class="join-link join-link--block" href={joinHref}>
@@ -1041,7 +1040,8 @@
 							target="_blank"
 							rel="noopener noreferrer"
 						>
-							🏛️ {isEn ? 'Find my MP' : 'Trouver mon député'} · assemblee-nationale.fr
+							<Landmark size="1em" aria-hidden="true" />
+							{isEn ? 'Find my MP' : 'Trouver mon député'} · assemblee-nationale.fr
 						</a>
 						<a
 							class="find-btn"
@@ -1049,57 +1049,60 @@
 							target="_blank"
 							rel="noopener noreferrer"
 						>
-							🏛️ {isEn ? 'Find my senator(s)' : 'Trouver mon/mes sénateurs'} · senat.fr
+							<Landmark size="1em" aria-hidden="true" />
+							{isEn ? 'Find my senator(s)' : 'Trouver mon/mes sénateurs'} · senat.fr
 						</a>
 					</div>
 				</details>
 			{/if}
 		</section>
 
-		{#if !embedded}
-			<!-- Pourquoi c'est important -->
-			<section class="card prose">
-				<svelte:element this={headingLevel} class="tool-heading"
-					>{isEn ? 'Why it matters' : "Pourquoi c'est important"}</svelte:element
-				>
-				{#if isPress}
-					{#if isEn}
-						<p>
-							Newsrooms cover, first and foremost, what interests their readers. A sincere message
-							to the readers' desk or the newsroom signals that a topic matters to the public, and
-							it weighs on editorial choices. Unlike a comment on social media, it lands in an inbox
-							the team reads. A handful of reader messages is sometimes enough to inspire an article
-							or an investigation.
-						</p>
-					{:else}
-						<p>
-							Les rédactions couvrent d'abord ce qui intéresse leurs lecteurs. Un message sincère au
-							courrier des lecteurs ou à la rédaction signale qu'un sujet compte pour le public, et
-							il pèse sur les choix éditoriaux. Contrairement à un commentaire sur les réseaux, il
-							arrive dans une boite lue par l'équipe. Une poignée de messages de lecteurs suffit
-							parfois à inspirer un article ou une enquête.
-						</p>
-					{/if}
-				{:else if isEn}
+		<!-- Pourquoi c'est important. Affiché aussi en mode intégré : c'est ce qui
+		     justifie l'action, et sans lui la page campagne demande d'écrire sans
+		     dire pourquoi ça marche. -->
+		<section class="card prose">
+			<svelte:element this={headingLevel} class="tool-heading"
+				>{isEn ? 'Why it matters' : "Pourquoi c'est important"}</svelte:element
+			>
+			{#if isPress}
+				{#if isEn}
 					<p>
-						MPs and senators take their constituents' messages into account. A personal email (even
-						a short, sincere one) lands in a human inbox, gets read, and signals that a voter cares
-						about this issue. Unlike a petition or a social media post, it carries real weight. A
-						handful of emails from real citizens is often enough to put a topic on a committee's
-						agenda.
+						Newsrooms cover, first and foremost, what interests their readers. A sincere message to
+						the readers' desk or the newsroom signals that a topic matters to the public, and it
+						weighs on editorial choices. Unlike a comment on social media, it lands in an inbox the
+						team reads. A handful of reader messages is sometimes enough to inspire an article or an
+						investigation.
 					</p>
 				{:else}
 					<p>
-						Les députés et sénateurs prennent en compte les messages de leurs électeurs. Un email
-						personnel (même court et sincère) arrive dans une boite mail humaine, il est lu, et il
-						signale qu'un électeur se préoccupe du sujet. Contrairement à une pétition ou à un post
-						sur les réseaux, il a un vrai poids. Une poignée d'emails de vrais citoyens suffit
-						souvent à inscrire un sujet à l'ordre du jour d'une commission.
+						Les rédactions couvrent d'abord ce qui intéresse leurs lecteurs. Un message sincère au
+						courrier des lecteurs ou à la rédaction signale qu'un sujet compte pour le public, et il
+						pèse sur les choix éditoriaux. Contrairement à un commentaire sur les réseaux, il arrive
+						dans une boite lue par l'équipe. Une poignée de messages de lecteurs suffit parfois à
+						inspirer un article ou une enquête.
 					</p>
 				{/if}
-			</section>
+			{:else if isEn}
+				<p>
+					MPs and senators take their constituents' messages into account. A personal email (even a
+					short, sincere one) lands in a human inbox, gets read, and signals that a voter cares
+					about this issue. Unlike a petition or a social media post, it carries real weight. A
+					handful of emails from real citizens is often enough to put a topic on a committee's
+					agenda.
+				</p>
+			{:else}
+				<p>
+					Les députés et sénateurs prennent en compte les messages de leurs électeurs. Un email
+					personnel (même court et sincère) arrive dans une boite mail humaine, il est lu, et il
+					signale qu'un électeur se préoccupe du sujet. Contrairement à une pétition ou à un post
+					sur les réseaux, il a un vrai poids. Une poignée d'emails de vrais citoyens suffit souvent
+					à inscrire un sujet à l'ordre du jour d'une commission.
+				</p>
+			{/if}
+		</section>
 
-			<!-- FAQ -->
+		<!-- FAQ -->
+		{#if !embedded}
 			<section class="card faq">
 				<svelte:element this={headingLevel} class="tool-heading"
 					>{isEn ? 'FAQ' : 'Questions fréquentes'}</svelte:element
@@ -1522,14 +1525,6 @@
 		gap: 0.6rem;
 	}
 
-	.tool-switch-label {
-		font-size: 0.75rem;
-		font-weight: 700;
-		text-transform: uppercase;
-		letter-spacing: 0.06em;
-		color: var(--text-secondary);
-	}
-
 	.tool-tabs {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
@@ -1572,7 +1567,7 @@
 		color: var(--brand-subtle);
 	}
 
-	.tab-emoji {
+	.tab-icon {
 		font-size: 1.1rem;
 	}
 

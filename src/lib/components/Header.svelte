@@ -83,9 +83,10 @@
 				{ href: `${prefix}/ressources`, label: t.nav.liens_utiles },
 				{ href: `${prefix}/newsletters`, label: t.nav.newsletter },
 				{ href: 'https://pauseia.substack.com/', label: t.nav.blog, external: true },
-				// Contenu « dangers » volontairement dépriorisé (affiché en retrait, en fin de
-				// liste) le temps de retravailler le discours autour des risques catastrophiques.
-				{ href: `${prefix}/dangers`, label: t.nav.dangers, muted: true }
+				// Contenu « dangers » dépriorisé : placé en fin de liste le temps de
+				// retravailler le discours autour des risques catastrophiques, mais au même
+				// niveau visuel que les autres entrées.
+				{ href: `${prefix}/dangers`, label: t.nav.dangers }
 			]
 		},
 		{

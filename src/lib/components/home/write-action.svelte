@@ -123,7 +123,7 @@
 	}
 
 	.wa-field input:focus-visible {
-		outline: 2px solid var(--brand);
+		outline: 0.25rem solid var(--btn-focus-border);
 		outline-offset: 1px;
 	}
 
@@ -137,14 +137,23 @@
 		font-family: var(--font-body);
 		font-weight: bold;
 		color: var(--text);
-		background-color: var(--brand);
+		background-color: var(--btn-bg);
 		border: none;
 		border-radius: 0.625rem;
 		cursor: pointer;
 	}
 
 	.wa-form button:hover {
-		filter: brightness(0.94);
+		background-color: var(--btn-hover-bg);
+	}
+
+	.wa-form button:active {
+		background-color: var(--btn-active-bg);
+	}
+
+	.wa-form button:focus-visible {
+		outline: 0.25rem solid var(--btn-focus-border);
+		outline-offset: 1px;
 	}
 
 	.wa-error {

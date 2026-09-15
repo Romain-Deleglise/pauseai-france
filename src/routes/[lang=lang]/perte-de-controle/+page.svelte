@@ -6,9 +6,9 @@
 		CampaignEmbed,
 		LumaCalendar
 	} from '$components/campaign'
+	import ArticleCard from '$components/ArticleCard.svelte'
 	import EcrireOutil from '$components/EcrireOutil.svelte'
 	import Button from '$components/Button.svelte'
-	import { onMount } from 'svelte'
 	import type { PageData } from './$types'
 
 	export let data: PageData
@@ -18,23 +18,9 @@
 	// Recentre la vue sur la section presse quand l'outil intégré change d'étape
 	// (choix d'un journal / retour), au lieu de remonter en haut de la page.
 	let pressSection: HTMLElement
-	// Déplié via l'ancre #ecrire (bouton du hero ou lien partagé).
-	let toolOpen = false
 	function scrollToPress() {
 		pressSection?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 	}
-
-	// Le bouton du hero pointe sur #ecrire. Button ne relaie pas le clic sur sa
-	// variante lien, donc on écoute le hash : l'outil se déplie aussi bien au
-	// clic du bouton que sur un lien partagé /perte-de-controle#ecrire.
-	onMount(() => {
-		const sync = () => {
-			if (window.location.hash === '#ecrire') toolOpen = true
-		}
-		sync()
-		window.addEventListener('hashchange', sync)
-		return () => window.removeEventListener('hashchange', sync)
-	})
 
 	const VIDEO_ID = 'WhQViEjkg7s'
 	// Calendrier Luma des actions militantes (agrège aussi les événements créés
@@ -69,8 +55,8 @@
 			: 'Nous sommes au bord de la perte de contrôle : réagissons !'}
 		eyebrow={isEn ? 'Campaign under way' : 'Campagne en cours'}
 		lede={isEn
-			? 'We are asking for the race to superintelligence to stop, for as long as nobody knows how to build these systems safely. No government will move on this while it stays a subject for insiders.'
-			: 'Nous demandons l’arrêt de la course à la superintelligence, tant que personne ne sait construire ces systèmes sans danger. Aucun gouvernement ne bougera là-dessus si le sujet reste réservé aux initiés.'}
+			? 'We are asking for the race to superintelligence to stop, for as long as nobody knows how to build these systems safely.'
+			: 'Nous demandons l’arrêt de la course à la superintelligence, tant que personne ne sait construire ces systèmes sans danger.'}
 	>
 		<!-- Un visiteur déjà convaincu doit pouvoir agir sans traverser la page. -->
 		<Button href="#ecrire">{isEn ? 'Write to my MP' : 'Écrire à mon député'}</Button>
@@ -143,40 +129,35 @@
 	</CampaignSection>
 
 	<!-- ── Nos analyses ─────────────────────────────────────── -->
+	<!--
+		Deux médias différents, donc deux composants du site plutôt qu'une grille
+		de cartes maison : l'embed du module pour la vidéo (la vidéo a besoin de
+		toute la largeur), et ArticleCard, la carte d'article utilisée sur
+		l'accueil, pour le renvoi vers l'analyse.
+	-->
 	<CampaignSection id="analyses" title={isEn ? 'Our analyses' : 'Nos analyses'}>
-		<div class="analyses">
-			<div class="analysis">
-				<h3>{isEn ? '“It will soon be too late”.' : '« Il sera bientôt trop tard ».'}</h3>
-				<p class="byline">
-					{isEn
-						? 'Maxime Fournes, president of PauseAI global and of PauseIA France'
-						: 'Maxime Fournes, président de PauseAI global et de PauseIA France'}
-				</p>
-				<CampaignEmbed
-					src="https://www.youtube-nocookie.com/embed/{VIDEO_ID}"
-					title={isEn ? '“It will soon be too late”' : '« Il sera bientôt trop tard »'}
-					height={340}
-					mobileHeight={220}
-				/>
-			</div>
+		<CampaignEmbed
+			src="https://www.youtube-nocookie.com/embed/{VIDEO_ID}"
+			title={isEn ? '“It will soon be too late”' : '« Il sera bientôt trop tard »'}
+			height={380}
+			mobileHeight={220}
+			caption={isEn
+				? '“It will soon be too late”. Maxime Fournes, president of PauseAI global and of PauseIA France.'
+				: '« Il sera bientôt trop tard ». Maxime Fournes, président de PauseAI global et de PauseIA France.'}
+		/>
 
-			<div class="analysis">
-				<h3>
-					{isEn
-						? 'Nobody controls AI, the danger is imminent'
-						: 'Personne ne contrôle l’IA, le danger est imminent'}
-				</h3>
-				<p>
-					{isEn
-						? 'When AI masters computing better than the world’s best experts, we humans enter a zone of great danger.'
-						: 'Quand l’IA maîtrise l’informatique mieux que les meilleurs experts du monde, nous, humains, entrons dans une zone de grand danger.'}
-				</p>
-				<p class="analysis-link">
-					<a href="{prefix}/personne-ne-controle-lia">
-						{isEn ? 'Read the article' : 'Lire l’article'}
-					</a>
-				</p>
-			</div>
+		<div class="analysis-card">
+			<ArticleCard
+				title={isEn
+					? 'Nobody controls AI, the danger is imminent'
+					: 'Personne ne contrôle l’IA, le danger est imminent'}
+				blurb={isEn
+					? 'When AI masters computing better than the world’s best experts, we humans enter a zone of great danger.'
+					: 'Quand l’IA maîtrise l’informatique mieux que les meilleurs experts du monde, nous, humains, entrons dans une zone de grand danger.'}
+				category={isEn ? 'Analysis' : 'Analyse'}
+				url="{prefix}/personne-ne-controle-lia"
+				linkText={isEn ? 'Read the article' : 'Lire l’article'}
+			/>
 		</div>
 	</CampaignSection>
 
@@ -269,65 +250,21 @@
 				? 'Write to your representatives and the press'
 				: 'Écrivez à vos élus et à la presse'}
 		>
-			<!--
-				L'outil est un formulaire multi-étapes très haut : replié, il ne coûte
-				qu'une ligne au bas de page et s'ouvre en un clic. headingLevel=h3
-				pour qu'il s'imbrique sous le h2 de la section au lieu de le doubler.
-			-->
-			<details class="tool-details" bind:open={toolOpen}>
-				<summary>
-					{isEn ? 'Write my email' : 'Rédiger mon email'}
-				</summary>
-				<div class="tool-body">
-					<EcrireOutil
-						lang={data.lang}
-						embedded
-						requireName
-						headingLevel="h3"
-						on:navigate={scrollToPress}
-					/>
-				</div>
-			</details>
+			<!-- headingLevel=h3 : l'outil s'imbrique sous le h2 de la section. -->
+			<EcrireOutil
+				lang={data.lang}
+				embedded
+				requireName
+				headingLevel="h3"
+				on:navigate={scrollToPress}
+			/>
 		</CampaignSection>
 	</div>
 </CampaignPage>
 
 <style>
-	.analyses {
-		display: grid;
-		gap: 1.25rem;
-	}
-
-	.analysis {
-		padding: 1.5rem;
-		background: var(--bg-card);
-		border: 1px solid var(--border);
-		border-radius: 14px;
-	}
-
-	.analysis h3 {
-		margin: 0 0 0.6rem;
-		font-size: 1.15rem;
-		line-height: 1.35;
-	}
-
-	.analysis p {
-		margin: 0;
-	}
-
-	.byline {
-		color: var(--text-2);
-		font-size: 0.95rem;
-		margin-bottom: 1.25rem !important;
-	}
-
-	.analysis-link {
-		margin-top: 0.9rem !important;
-		font-weight: 600;
-	}
-
-	.analysis-link a {
-		color: var(--brand-subtle);
+	.analysis-card {
+		margin-top: 1.5rem;
 	}
 
 	.measures {
@@ -343,16 +280,5 @@
 
 	.cta-row {
 		margin-top: 1.5rem;
-	}
-
-	.tool-details > summary {
-		cursor: pointer;
-		font-weight: 700;
-		padding: 0.5rem 0;
-		color: var(--brand-subtle);
-	}
-
-	.tool-body {
-		margin-top: 1.25rem;
 	}
 </style>
