@@ -1515,6 +1515,13 @@
 		padding: 0;
 	}
 
+	/* Le retrait négatif de .tool-switch sert à le remonter sous le hero de la
+	   page dédiée. Intégré dans une section qui a déjà son titre, il collait au
+	   titre : on le neutralise. */
+	article.embedded .tool-switch {
+		margin-top: 0;
+	}
+
 	/* Sélecteur d'outil (élus / presse) : un vrai commutateur, sous le hero */
 	.tool-switch {
 		max-inline-size: 40rem;

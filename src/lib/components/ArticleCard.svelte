@@ -19,7 +19,7 @@
 	}
 </script>
 
-<a class="article-link" href={url}>
+<a class="article-link" href={url} draggable="false">
 	<article>
 		<div class="content">
 			<h3>{title}</h3>
@@ -41,6 +41,7 @@
 <style>
 	.article-link {
 		text-decoration: none;
+		-webkit-user-drag: none;
 		display: block;
 		height: 100%;
 		border-radius: 0.75rem;
@@ -68,8 +69,10 @@
 		display: flex;
 		flex-direction: column;
 		height: 100%;
-		background-color: var(--bg-subtle);
-		border: 2px solid transparent;
+		background-color: var(--bg-card);
+		border: 2px solid var(--border);
+		/* Le texte reste sélectionnable malgré le lien qui enveloppe la carte. */
+		user-select: text;
 		border-radius: 0.75rem;
 		transition: border-color 0.2s ease;
 	}

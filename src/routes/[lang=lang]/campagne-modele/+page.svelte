@@ -109,7 +109,7 @@
 				]
 			: [
 					{
-						title: 'Écrire à mon député',
+						title: 'Écrire à mes élus',
 						description: 'Deux minutes, avec un courrier pré-rédigé que vous pouvez modifier.',
 						cta: 'J’écris maintenant',
 						href: '/fr/ecrire-a-mes-elus',

@@ -59,7 +59,9 @@
 			: 'Nous demandons l’arrêt de la course à la superintelligence, tant que personne ne sait construire ces systèmes sans danger.'}
 	>
 		<!-- Un visiteur déjà convaincu doit pouvoir agir sans traverser la page. -->
-		<Button href="#ecrire">{isEn ? 'Write to my MP' : 'Écrire à mon député'}</Button>
+		<Button href="#ecrire">
+			{isEn ? 'Write to my representatives' : 'Écrire à mes élus'}
+		</Button>
 	</CampaignHero>
 
 	<!-- ── Le constat ───────────────────────────────────────── -->

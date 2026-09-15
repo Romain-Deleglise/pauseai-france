@@ -112,9 +112,20 @@
 
 	.wa-grid {
 		display: grid;
-		grid-template-columns: minmax(0, 1fr) 18rem;
-		gap: 2rem;
+		/* Colonnes proportionnelles : en largeur fixe, la photo restait minuscule
+		   sur grand écran et laissait un trou entre elle et le texte. */
+		grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr);
+		gap: 2.5rem;
 		align-items: stretch;
+	}
+
+	/* Texte en haut, formulaire en bas : les deux colonnes se calent sur la
+	   même hauteur au lieu de laisser le formulaire flotter au milieu. */
+	.wa-main {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		gap: 1.5rem;
 	}
 
 	/* La photo se cale sur la hauteur de la colonne de texte et ne l'augmente
@@ -124,7 +135,7 @@
 		min-block-size: 100%;
 		border-radius: 12px;
 		overflow: hidden;
-		border: 1px solid var(--border);
+		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
 	}
 
 	.wa-media img {
@@ -133,12 +144,15 @@
 		inline-size: 100%;
 		block-size: 100%;
 		object-fit: cover;
+		/* Cadrage sur le fronton plutôt que sur le ciel. */
+		object-position: center 62%;
 		display: block;
 	}
 
 	.wa-why {
-		margin: 1.25rem 0 0;
-		max-inline-size: 44rem;
+		/* Pas de plafond de largeur ici : la colonne joue déjà ce rôle. */
+		margin: 0;
+		font-size: 1.05rem;
 		line-height: 1.65;
 		text-align: left;
 		color: var(--text-2);
@@ -149,7 +163,7 @@
 		flex-wrap: wrap;
 		align-items: flex-end;
 		gap: 0.75rem;
-		margin-top: 1.25rem;
+		margin: 0;
 	}
 
 	.wa-field {
