@@ -248,33 +248,6 @@ export const campaigns: Campaign[] = [
 		}
 	},
 	{
-		slug: 'ecrire-a-mes-elus',
-		status: 'active',
-		startDate: '2026-04',
-		// Photo: Daniel Vorndran / DXR, public domain, via Wikimedia Commons
-		image: '/campaigns/960px-Palais_Bourbon.jpg',
-		fr: {
-			title: 'Écrivez à vos élus',
-			homeTitle: 'Écrivez à votre député·e et à votre sénateur·rice',
-			description:
-				"Envoyez un email à votre député et à votre sénateur pour mettre les risques de l'IA à leur agenda. Un modèle personnalisable et deux versions (courte et complète) sont disponibles.",
-			shortDescription:
-				"Un email prêt à personnaliser pour mettre les risques de l'IA à l'agenda de votre député et de votre sénateur.",
-			cta: 'Envoyer un email à mes élus',
-			homeCta: 'Envoyer mon email'
-		},
-		en: {
-			title: 'Write to your representatives',
-			homeTitle: 'Write to your MP and senator',
-			description:
-				'Send an email to your MP and senator to put AI risks on their agenda. A customisable template with both a short and a full version is available.',
-			shortDescription:
-				'A ready-to-personalise email to put AI risks on the agenda of your MP and senator.',
-			cta: 'Write to my representatives',
-			homeCta: 'Send my email'
-		}
-	},
-	{
 		slug: 'emploi-ia',
 		status: 'active',
 		startDate: '2026-04',

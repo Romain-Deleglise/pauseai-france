@@ -2,6 +2,7 @@
 	import PostMeta from '$components/PostMeta.svelte'
 	import Hero from '$components/home/hero.svelte'
 	import Lead from '$components/home/lead.svelte'
+	import WriteAction from '$components/home/write-action.svelte'
 	import Campaigns from '$components/home/campaigns.svelte'
 	import LocalGroups from '$components/home/local-groups.svelte'
 	import Risks from '$components/home/risks.svelte'
@@ -30,6 +31,8 @@
 <Hero {lang} />
 
 <Lead {lang} />
+
+<WriteAction {lang} />
 
 <Campaigns {lang} />
 
