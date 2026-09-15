@@ -12,8 +12,10 @@
 	$: prefix = lang === 'en' ? '/en' : '/fr'
 	$: activeCampaigns = getSortedCampaigns()
 		.filter((c) => c.status === 'active' && !c.homeHidden)
-		.slice(0, 3)
+		.slice(0, 2)
 
+	// Deux campagnes mises en avant au maximum : au-delà, l'accueil se disperse.
+	// La liste complète reste sur /campagnes.
 	// With 3 campaigns: 1 featured + 2 secondary in a grid.
 	// With 1-2 campaigns: show them side-by-side (same size), ordered by priority.
 	$: featured = activeCampaigns.length >= 3 ? activeCampaigns[0] : null
