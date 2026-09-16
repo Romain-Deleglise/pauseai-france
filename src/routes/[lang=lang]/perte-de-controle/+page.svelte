@@ -26,12 +26,6 @@
 	// Calendrier Luma des actions militantes (agrège aussi les événements créés
 	// par d'autres organisateurs).
 	const LUMA_CALENDAR_ID = 'cal-5ZNtr1GO7aUSyiY'
-	// Événement Luma mis en avant. S'il est rattaché au calendrier ci-dessus
-	// côté Luma, il apparaît déjà dans l'embed : ce lien le sort en évidence
-	// pour ceux qui ne déplient pas le calendrier.
-	// TODO : intitulé et date de l'événement à confirmer (luma.com est bloqué
-	// depuis l'environnement de développement, je n'ai pas pu lire la page).
-	const LUMA_EVENT_URL = 'https://luma.com/hyc9nnhe'
 
 	// ── À COMPLÉTER avant mise en ligne ───────────────────────────────────────
 	// Dates du temps fort militant, à renseigner (ex. « du 12 au 19 octobre »).
@@ -239,9 +233,6 @@
 			mobileHeight={520}
 		/>
 		<p class="cta-row">
-			<Button href={LUMA_EVENT_URL} target="_blank" rel="noopener noreferrer">
-				{isEn ? 'Sign up for the next event' : 'M’inscrire au prochain événement'}
-			</Button>
 			<Button href="{prefix}/groupes-locaux" alt>
 				{isEn ? 'Find my local group' : 'Trouver mon groupe local'}
 			</Button>
@@ -289,9 +280,6 @@
 	}
 
 	.cta-row {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.75rem;
 		margin-top: 1.5rem;
 	}
 </style>
