@@ -353,6 +353,21 @@ const RADIO_TV: Bilingual = { fr: 'Radio / télévision', en: 'Radio / televisio
 const SCIENCE: Bilingual = { fr: 'Magazine scientifique', en: 'Science magazine' }
 
 const MEDIAS: EluAction = {
+	// ── Adresses des rédactions ───────────────────────────────────────────────
+	// Deux provenances cohabitent dans la liste ci-dessous :
+	//   • des adresses dédiées au courrier des lecteurs, spécifiques et fiables
+	//     (courrier-des-lecteurs@lemonde.fr, lecteurs.lacroix@bayard-presse.com,
+	//     latribunelibre@latribune.fr, auditeurfranceculture@radiofrance.com,
+	//     bfmtvetvous@bfmtv.fr…) ;
+	//   • des adresses de forme « redaction@<domaine> », qui suivent un motif
+	//     générique et n'ont pas de source établie.
+	// Trois de ces dernières (Le Parisien, Libération, Les Échos) ont été
+	// signalées comme invalides et sont passées à null. Les autres du même motif
+	// — Le Figaro, Marianne, le JDD, Courrier international, Le Canard enchaîné,
+	// Sciences et Avenir — présentent le même risque et restent à vérifier.
+	// Une adresse qui rebondit est pire que pas d'adresse : l'expéditeur croit
+	// son message parti. En l'absence d'email, l'outil propose le texte rédigé
+	// et le bouton « Copier le texte ».
 	id: 'medias',
 	status: 'active',
 	targeting: 'fixed',
@@ -384,7 +399,7 @@ const MEDIAS: EluAction = {
 			nom: 'Le Parisien',
 			domain: 'leparisien.fr',
 			role: 'autre',
-			email: 'redaction@leparisien.fr',
+			email: null, // adresse redaction@ signalée invalide — à remplacer (voir note en tête de bloc)
 			fonction: QUOTIDIEN
 		},
 		{
@@ -392,7 +407,7 @@ const MEDIAS: EluAction = {
 			nom: 'Libération',
 			domain: 'liberation.fr',
 			role: 'autre',
-			email: 'redaction@liberation.fr',
+			email: null, // adresse redaction@ signalée invalide — à remplacer (voir note en tête de bloc)
 			fonction: QUOTIDIEN
 		},
 		{
@@ -400,7 +415,7 @@ const MEDIAS: EluAction = {
 			nom: 'Les Échos',
 			domain: 'lesechos.fr',
 			role: 'autre',
-			email: 'redaction@lesechos.fr',
+			email: null, // adresse redaction@ signalée invalide — à remplacer (voir note en tête de bloc)
 			fonction: ECO
 		},
 		{
