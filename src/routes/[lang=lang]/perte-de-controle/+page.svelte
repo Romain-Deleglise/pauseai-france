@@ -242,8 +242,8 @@
 	<CampaignSection id="evenements" variant="card" title={mobilisationTitle}>
 		<p>
 			{isEn
-				? 'Local groups hold street actions, public talks and stands all over France. Find the one closest to you and join the mobilisation.'
-				: 'Les groupes locaux organisent des actions de rue, des conférences et des stands partout en France. Trouvez celui le plus proche de chez vous et rejoignez la mobilisation.'}
+				? 'Local groups are holding street actions, talks and stands all over France.'
+				: 'Les groupes locaux organisent des actions de rue, des conférences et des stands partout en France.'}
 		</p>
 		<div id="fresque">
 			<div class="fresque">
@@ -260,8 +260,8 @@
 				<div class="fresque-text">
 					<p>
 						{isEn
-							? 'The AI Risks Fresk is a three-hour collective workshop to understand the risks of AI. Local groups are running their first sessions in cities across France.'
-							: 'La fresque des risques de l’IA est un atelier collectif de trois heures pour comprendre les risques de l’IA. Des groupes locaux organisent leurs premières sessions dans plusieurs villes de France.'}
+							? 'A three-hour collective workshop on the risks of AI, with first sessions opening in several cities.'
+							: 'Un atelier collectif de trois heures sur les risques de l’IA, dont les premières sessions ouvrent dans plusieurs villes.'}
 					</p>
 					<Button href="https://fresquedesrisquesdelia.org/" alt>
 						{isEn ? 'Discover the Fresk' : 'Découvrir la fresque'}
@@ -328,29 +328,29 @@
 	/* La section est déjà une carte : pas de carte dans la carte, un simple
 	   filet de séparation suffit. */
 	#fresque {
-		margin-bottom: 2rem;
-		padding-bottom: 2rem;
+		margin-bottom: 1.5rem;
+		padding-bottom: 1.5rem;
 		border-bottom: 1px solid var(--border);
 	}
 
 	.fresque {
 		display: grid;
 		grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-		gap: 2rem;
+		gap: 1.75rem;
 		align-items: center;
 	}
 
 	/* Éventail repris du hero de fresquedesrisquesdelia.org. */
 	.pile {
 		position: relative;
-		height: 13rem;
+		height: 9rem;
 	}
 
 	.carte {
 		position: absolute;
 		top: 50%;
 		left: 50%;
-		width: 58%;
+		width: 50%;
 		aspect-ratio: 1.41 / 1;
 		object-fit: cover;
 		border-radius: 0.5rem;
@@ -389,6 +389,6 @@
 	}
 
 	.cta-row {
-		margin-top: 1.5rem;
+		margin-top: 1rem;
 	}
 </style>
