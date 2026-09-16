@@ -27,6 +27,12 @@
 	// par d'autres organisateurs).
 	const LUMA_CALENDAR_ID = 'cal-5ZNtr1GO7aUSyiY'
 
+	// Photo de la fresque : déposer le fichier dans static/campaigns/ puis
+	// renseigner son chemin ici (ex. '/campaigns/fresque.jpg'). Tant que la
+	// chaîne est vide, le bloc s'affiche en texte seul plutôt qu'avec une
+	// image cassée.
+	const FRESQUE_PHOTO = ''
+
 	// ── À COMPLÉTER avant mise en ligne ───────────────────────────────────────
 	// Dates du temps fort militant, à renseigner (ex. « du 12 au 19 octobre »).
 	const MOBILISATION_DATES = ''
@@ -41,11 +47,11 @@
 
 	$: mobilisationTitle = isEn
 		? MOBILISATION_DATES
-			? `${MOBILISATION_DATES}, join the PauseIA activists near you`
-			: 'Join the PauseIA activists near you'
+			? `${MOBILISATION_DATES}: a week of action and a Fresk`
+			: 'We are launching a week of action and a Fresk'
 		: MOBILISATION_DATES
-			? `${MOBILISATION_DATES}, rejoignez les militants de PauseIA près de chez vous`
-			: 'Rejoignez les militants de PauseIA près de chez vous'
+			? `${MOBILISATION_DATES} : une semaine d’action et une fresque`
+			: 'Nous lançons une semaine d’action et une fresque'
 </script>
 
 <CampaignPage {title} {description}>
@@ -217,7 +223,11 @@
 		</ol>
 	</CampaignSection>
 
-	<!-- ── Action 1 · Mobilisation militante (calendrier Luma) ─ -->
+	<!-- ── Action 1 · Semaine d'action et fresque ─────────────── -->
+	<!--
+		Un seul bloc pour les deux lancements : le calendrier des actions et la
+		fresque. Le passage sur la fresque reste volontairement très court.
+	-->
 	<CampaignSection id="evenements" variant="card" title={mobilisationTitle}>
 		<p>
 			{isEn
@@ -237,6 +247,31 @@
 				{isEn ? 'Find my local group' : 'Trouver mon groupe local'}
 			</Button>
 		</p>
+
+		<div id="fresque">
+			<div class="fresque" class:no-photo={!FRESQUE_PHOTO}>
+				{#if FRESQUE_PHOTO}
+					<img
+						class="fresque-photo"
+						src={FRESQUE_PHOTO}
+						alt={isEn
+							? 'An AI Risks Fresk workshop'
+							: 'Un atelier de la fresque des risques de l’IA'}
+						loading="lazy"
+					/>
+				{/if}
+				<div class="fresque-text">
+					<p>
+						{isEn
+							? 'The AI Risks Fresk is a three-hour collective workshop to understand the risks of AI. Local groups are running their first sessions in cities across France.'
+							: 'La fresque des risques de l’IA est un atelier collectif de trois heures pour comprendre les risques de l’IA. Des groupes locaux organisent leurs premières sessions dans plusieurs villes de France.'}
+					</p>
+					<Button href="https://fresquedesrisquesdelia.org/" alt>
+						{isEn ? 'Discover the Fresk' : 'Découvrir la fresque'}
+					</Button>
+				</div>
+			</div>
+		</div>
 	</CampaignSection>
 
 	<!-- ── Action 2 · Écrire à ses élus et à la presse ───────── -->
@@ -277,6 +312,50 @@
 
 	.measures li {
 		line-height: 1.75;
+	}
+
+	/* La section est déjà une carte : pas de carte dans la carte, un simple
+	   filet de séparation suffit. */
+	#fresque {
+		margin-top: 2rem;
+		padding-top: 2rem;
+		border-top: 1px solid var(--border);
+	}
+
+	.fresque {
+		display: grid;
+		grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+		gap: 1.5rem;
+		align-items: center;
+	}
+
+	.fresque-photo {
+		width: 100%;
+		height: 100%;
+		min-height: 10rem;
+		object-fit: cover;
+		display: block;
+		border-radius: 0.625rem;
+	}
+
+	.fresque-text p {
+		margin: 0 0 1.25rem;
+	}
+
+	/* Sans photo, le bloc redevient une simple carte de texte. */
+	.fresque.no-photo {
+		grid-template-columns: 1fr;
+	}
+
+	@media (max-width: 820px) {
+		.fresque {
+			grid-template-columns: 1fr;
+		}
+
+		.fresque-photo {
+			min-height: 0;
+			max-height: 9rem;
+		}
 	}
 
 	.cta-row {
