@@ -1094,6 +1094,23 @@
 			"role": "depute"
 		},
 		{
+			"circo": 3,
+			"civ": "M",
+			"contactUrl": "https://www.assemblee-nationale.fr/dyn/deputes/PA642734",
+			"departement": "28",
+			"email": "eric.gerard@assemblee-nationale.fr",
+			"emailConfidence": "low",
+			"emailSources": [
+				"pattern"
+			],
+			"groupe": "NI",
+			"id": "PA642734",
+			"nom": "Eric Gerard",
+			"nomCirco": "Eure-et-Loir (3e circonscription)",
+			"photo": "https://www.assemblee-nationale.fr/dyn/static/tribun/17/photos/carre/642734.jpg",
+			"role": "depute"
+		},
+		{
 			"circo": 8,
 			"civ": "M",
 			"contactUrl": "https://www.assemblee-nationale.fr/dyn/deputes/PA642764",
@@ -8363,24 +8380,6 @@
 			"role": "depute"
 		},
 		{
-			"circo": 3,
-			"civ": "M",
-			"contactUrl": "https://www.assemblee-nationale.fr/dyn/deputes/PA841017",
-			"departement": "28",
-			"email": "harold.huwart@assemblee-nationale.fr",
-			"emailConfidence": "high",
-			"emailSources": [
-				"source",
-				"pattern"
-			],
-			"groupe": "LIOT",
-			"id": "PA841017",
-			"nom": "Harold Huwart",
-			"nomCirco": "Eure-et-Loir (3e circonscription)",
-			"photo": "https://www.assemblee-nationale.fr/dyn/static/tribun/17/photos/carre/841017.jpg",
-			"role": "depute"
-		},
-		{
 			"circo": 2,
 			"civ": "M",
 			"contactUrl": "https://www.assemblee-nationale.fr/dyn/deputes/PA841023",
@@ -11774,19 +11773,18 @@
 			{
 				"circo": 3,
 				"civ": "M",
-				"contactUrl": "https://www.assemblee-nationale.fr/dyn/deputes/PA841017",
+				"contactUrl": "https://www.assemblee-nationale.fr/dyn/deputes/PA642734",
 				"departement": "28",
-				"email": "harold.huwart@assemblee-nationale.fr",
-				"emailConfidence": "high",
+				"email": "eric.gerard@assemblee-nationale.fr",
+				"emailConfidence": "low",
 				"emailSources": [
-					"source",
 					"pattern"
 				],
-				"groupe": "LIOT",
-				"id": "PA841017",
-				"nom": "Harold Huwart",
+				"groupe": "NI",
+				"id": "PA642734",
+				"nom": "Eric Gerard",
 				"nomCirco": "Eure-et-Loir (3e circonscription)",
-				"photo": "https://www.assemblee-nationale.fr/dyn/static/tribun/17/photos/carre/841017.jpg",
+				"photo": "https://www.assemblee-nationale.fr/dyn/static/tribun/17/photos/carre/642734.jpg",
 				"role": "depute"
 			},
 			{
@@ -20915,7 +20913,7 @@
 			}
 		]
 	},
-	"generatedAt": "2026-09-07",
+	"generatedAt": "2026-09-14",
 	"senateurs": [
 		{
 			"civ": "M",
