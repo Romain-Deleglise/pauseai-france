@@ -48,7 +48,6 @@
 					remains a beneficial tool for humanity.
 				</p>
 				<div class="buttons" in:fly={{ y: 20, duration: 300, delay: 700 }}>
-					<Button href="{prefix}/dangers">Learn more</Button>
 					<Button href="{prefix}/rejoindre">Join us</Button>
 				</div>
 			{:else}
@@ -78,7 +77,6 @@
 					un futur où l'IA demeure un outil bénéfique pour l'humanité.
 				</p>
 				<div class="buttons" in:fly={{ y: 20, duration: 300, delay: 700 }}>
-					<Button href="/dangers">Informez-vous</Button>
 					<Button href="/rejoindre">Rejoignez-nous</Button>
 				</div>
 			{/if}

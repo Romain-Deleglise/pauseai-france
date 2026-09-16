@@ -83,11 +83,9 @@
 				{ href: `${prefix}/ressources`, label: t.nav.liens_utiles },
 				{ href: `${prefix}/newsletters`, label: t.nav.newsletter },
 				{ href: 'https://pauseia.substack.com/', label: t.nav.blog, external: true },
-				{ href: 'https://fresquedesrisquesdelia.org/', label: t.nav.fresque, external: true },
-				// Contenu « dangers » dépriorisé : placé en fin de liste le temps de
-				// retravailler le discours autour des risques catastrophiques, mais au même
-				// niveau visuel que les autres entrées.
-				{ href: `${prefix}/dangers`, label: t.nav.dangers }
+				{ href: 'https://fresquedesrisquesdelia.org/', label: t.nav.fresque, external: true }
+				// « Les dangers de l'IA » est retiré du menu le temps de retravailler le
+				// discours. La route reste en place : les liens existants fonctionnent.
 			]
 		},
 		{
