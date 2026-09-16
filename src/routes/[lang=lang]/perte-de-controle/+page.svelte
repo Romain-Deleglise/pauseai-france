@@ -27,10 +27,22 @@
 	// par d'autres organisateurs).
 	const LUMA_CALENDAR_ID = 'cal-5ZNtr1GO7aUSyiY'
 
-	// Photo d'atelier issue du dépôt de la fresque (Pause IA, CC BY-SA 4.0) :
-	// github.com/Romain-Deleglise/Fresque-des-risques-de-IA. Mettre la chaîne à
-	// vide fait retomber le bloc en texte seul, sans image cassée.
-	const FRESQUE_PHOTO = '/campaigns/fresque-atelier.jpg'
+	// Les trois cartes du hero de fresquedesrisquesdelia.org, en éventail.
+	// Visuels issus du dépôt de la fresque (Pause IA, CC BY-SA 4.0) :
+	// github.com/Romain-Deleglise/Fresque-des-risques-de-IA
+	const FRESQUE_CARTES = [
+		{ src: '/campaigns/fresque/14.webp', fr: 'Carte « Deepfake »', en: '“Deepfake” card' },
+		{
+			src: '/campaigns/fresque/08.webp',
+			fr: 'Carte « Génération d’images »',
+			en: '“Image generation” card'
+		},
+		{
+			src: '/campaigns/fresque/28.webp',
+			fr: 'Carte « Systèmes d’armes létales autonomes »',
+			en: '“Lethal autonomous weapons” card'
+		}
+	]
 
 	// ── À COMPLÉTER avant mise en ligne ───────────────────────────────────────
 	// Dates du temps fort militant, à renseigner (ex. « du 12 au 19 octobre »).
@@ -234,17 +246,17 @@
 				: 'Les groupes locaux organisent des actions de rue, des conférences et des stands partout en France. Trouvez celui le plus proche de chez vous et rejoignez la mobilisation.'}
 		</p>
 		<div id="fresque">
-			<div class="fresque" class:no-photo={!FRESQUE_PHOTO}>
-				{#if FRESQUE_PHOTO}
-					<img
-						class="fresque-photo"
-						src={FRESQUE_PHOTO}
-						alt={isEn
-							? 'Participants laying out and connecting the Fresk cards on a table.'
-							: 'Des participant·es disposent et relient les cartes de la fresque sur une table.'}
-						loading="lazy"
-					/>
-				{/if}
+			<div class="fresque">
+				<div class="pile" aria-hidden="false">
+					{#each FRESQUE_CARTES as carte, i}
+						<img
+							class="carte carte-{i}"
+							src={carte.src}
+							alt={isEn ? carte.en : carte.fr}
+							loading="lazy"
+						/>
+					{/each}
+				</div>
 				<div class="fresque-text">
 					<p>
 						{isEn
@@ -323,27 +335,43 @@
 
 	.fresque {
 		display: grid;
-		grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
-		gap: 1.5rem;
+		grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+		gap: 2rem;
 		align-items: center;
 	}
 
-	.fresque-photo {
-		width: 100%;
-		height: 100%;
-		min-height: 10rem;
+	/* Éventail repris du hero de fresquedesrisquesdelia.org. */
+	.pile {
+		position: relative;
+		height: 13rem;
+	}
+
+	.carte {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: 58%;
+		aspect-ratio: 1.41 / 1;
 		object-fit: cover;
-		display: block;
-		border-radius: 0.625rem;
+		border-radius: 0.5rem;
+		box-shadow:
+			0 2px 5px rgb(27 26 23 / 16%),
+			0 14px 28px -10px rgb(27 26 23 / 35%);
 	}
 
-	.fresque-text p {
-		margin: 0 0 1.25rem;
+	.carte-0 {
+		transform: translate(-50%, -50%) rotate(-8deg) translate(-28%, 9%);
+		z-index: 1;
 	}
 
-	/* Sans photo, le bloc redevient une simple carte de texte. */
-	.fresque.no-photo {
-		grid-template-columns: 1fr;
+	.carte-1 {
+		transform: translate(-50%, -50%) translateY(-8%);
+		z-index: 3;
+	}
+
+	.carte-2 {
+		transform: translate(-50%, -50%) rotate(8deg) translate(28%, 9%);
+		z-index: 2;
 	}
 
 	@media (max-width: 820px) {
@@ -351,9 +379,12 @@
 			grid-template-columns: 1fr;
 		}
 
-		.fresque-photo {
-			min-height: 0;
-			max-height: 9rem;
+		.pile {
+			height: 9.5rem;
+		}
+
+		.carte {
+			width: 54%;
 		}
 	}
 
