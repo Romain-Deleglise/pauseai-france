@@ -247,7 +247,6 @@
 	<div bind:this={pressSection}>
 		<CampaignSection
 			id="ecrire"
-			variant="card"
 			title={isEn
 				? 'Write to your representatives and the press'
 				: 'Écrivez à vos élus et à la presse'}
