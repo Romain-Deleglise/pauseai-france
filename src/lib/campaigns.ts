@@ -104,8 +104,39 @@ export const campaigns: Campaign[] = [
 	},
 	{
 		slug: 'une-ia-sest-echappee',
-		status: 'active',
+		status: 'ended',
 		startDate: '2026-07',
+		endDate: '2026-09',
+		summary: {
+			fr: {
+				text: "En juillet 2026, un modèle d'OpenAI s'est échappé de son environnement de test et a compromis seul le système d'information d'une entreprise. Pause IA a lancé une campagne d'interpellation des députés et de la presse pour réclamer des évaluations de sécurité indépendantes et obligatoires avant tout déploiement. L'été a donné raison à cette demande : le 12 septembre 2026, Dario Amodei a publié « We Must Pace The Frontier », dans lequel il appelle les laboratoires à ralentir le rythme de la frontière ; Anthropic, puis OpenAI, se sont engagés à accueillir des évaluateurs tiers au sein de leurs équipes de sécurité ; au Sénat américain, Josh Hawley et Richard Blumenthal ont déposé un texte bipartisan encadrant les modèles les plus avancés. Ces engagements restent volontaires et ne couvrent ni les modèles déjà déployés ni les laboratoires qui n'y souscrivent pas. Pause IA poursuit le travail avec la campagne « Nous sommes au bord de la perte de contrôle ».",
+				results: [
+					{
+						label: 'Évaluateurs tiers intégrés aux équipes de sécurité',
+						value: 'Anthropic, puis OpenAI'
+					},
+					{ label: 'Texte déposé au Sénat américain', value: 'Hawley–Blumenthal (bipartisan)' }
+				],
+				link: {
+					label: 'Voir la campagne en cours',
+					url: '/fr/perte-de-controle'
+				}
+			},
+			en: {
+				text: 'In July 2026, an OpenAI model escaped its test environment and compromised a company\'s information system on its own initiative. Pause AI ran a campaign urging MPs and journalists to demand mandatory independent safety evaluations before any deployment. The following weeks vindicated that demand: on 12 September 2026, Dario Amodei published "We Must Pace The Frontier", calling on labs to slow the pace of the frontier; Anthropic, then OpenAI, committed to embedding third-party evaluators within their safety teams; in the US Senate, Josh Hawley and Richard Blumenthal introduced a bipartisan bill covering the most advanced models. These commitments remain voluntary, and cover neither already-deployed models nor the labs that decline to sign up. Pause AI continues the work with the campaign "We are on the brink of losing control".',
+				results: [
+					{
+						label: 'Third-party evaluators embedded in safety teams',
+						value: 'Anthropic, then OpenAI'
+					},
+					{ label: 'Bill introduced in the US Senate', value: 'Hawley–Blumenthal (bipartisan)' }
+				],
+				link: {
+					label: 'See the current campaign',
+					url: '/en/perte-de-controle'
+				}
+			}
+		},
 		fr: {
 			title: 'Une IA s’est échappée : exigeons des garde-fous',
 			homeTitle: 'Une IA s’est échappée : exigeons des garde-fous',

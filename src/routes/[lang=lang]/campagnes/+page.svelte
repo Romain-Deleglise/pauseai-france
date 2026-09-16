@@ -197,7 +197,7 @@
 					rel="noopener noreferrer"
 					class="modal-link-btn"
 				>
-					{summary.link.label} ↗
+					{summary.link.label}{summary.link.url.startsWith('http') ? ' ↗' : ' →'}
 				</a>
 			{/if}
 		</div>
