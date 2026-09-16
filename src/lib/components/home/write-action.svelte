@@ -41,7 +41,16 @@
 	L'argumentaire est repris du bloc « Pourquoi c'est important » d'EcrireOutil
 	pour que les deux disent la même chose.
 -->
-<section class="write-action" aria-labelledby={label_id}>
+<section id="ecrire-elus" class="write-action" aria-labelledby={label_id}>
+	<Fly>
+		<!-- TODO copie : formulation à valider par Pause IA. -->
+		<p class="wa-kicker">
+			{isEn
+				? 'The most useful thing you can do in two minutes'
+				: 'Ce que vous pouvez faire de plus utile en deux minutes'}
+		</p>
+	</Fly>
+
 	<Fly>
 		<UnderlinedTitle id={label_id} as="h2">
 			{isEn ? 'Write to my representatives' : 'Écrire à mes élus'}
@@ -108,6 +117,17 @@
 <style>
 	.write-action {
 		margin: 1rem 0 2rem;
+		scroll-margin-top: 6rem;
+	}
+
+	.wa-kicker {
+		margin: 0 0 0.35rem;
+		font-size: 0.85rem;
+		font-weight: 700;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		text-align: left;
+		color: var(--brand-subtle);
 	}
 
 	/* Un panneau unique plutôt que quatre éléments posés côte à côte sur le

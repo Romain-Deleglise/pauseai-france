@@ -115,6 +115,9 @@
 			<a href="{prefix}/propositions">{t.footer.propositions}</a>
 			<a href="{prefix}/newsletters">{t.footer.newsletters}</a>
 			<a href="https://pauseia.substack.com/">{t.footer.blog}</a>
+			<ExternalLink href="https://fresquedesrisquesdelia.org/" target="_blank"
+				>{t.footer.fresque}</ExternalLink
+			>
 			<a href="{prefix}/agir">{t.footer.agir}</a>
 			<a href="{prefix}/dons">{t.footer.donner}</a>
 			<a href="{prefix}/rejoindre">{t.footer.rejoindre}</a>
