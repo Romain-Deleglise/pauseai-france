@@ -27,11 +27,10 @@
 	// par d'autres organisateurs).
 	const LUMA_CALENDAR_ID = 'cal-5ZNtr1GO7aUSyiY'
 
-	// Photo de la fresque : déposer le fichier dans static/campaigns/ puis
-	// renseigner son chemin ici (ex. '/campaigns/fresque.jpg'). Tant que la
-	// chaîne est vide, le bloc s'affiche en texte seul plutôt qu'avec une
-	// image cassée.
-	const FRESQUE_PHOTO = ''
+	// Photo d'atelier issue du dépôt de la fresque (Pause IA, CC BY-SA 4.0) :
+	// github.com/Romain-Deleglise/Fresque-des-risques-de-IA. Mettre la chaîne à
+	// vide fait retomber le bloc en texte seul, sans image cassée.
+	const FRESQUE_PHOTO = '/campaigns/fresque-atelier.jpg'
 
 	// ── À COMPLÉTER avant mise en ligne ───────────────────────────────────────
 	// Dates du temps fort militant, à renseigner (ex. « du 12 au 19 octobre »).
@@ -241,8 +240,8 @@
 						class="fresque-photo"
 						src={FRESQUE_PHOTO}
 						alt={isEn
-							? 'An AI Risks Fresk workshop'
-							: 'Un atelier de la fresque des risques de l’IA'}
+							? 'Participants laying out and connecting the Fresk cards on a table.'
+							: 'Des participant·es disposent et relient les cartes de la fresque sur une table.'}
 						loading="lazy"
 					/>
 				{/if}
