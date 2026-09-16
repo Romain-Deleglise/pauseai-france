@@ -234,20 +234,6 @@
 				? 'Local groups hold street actions, public talks and stands all over France. Find the one closest to you and join the mobilisation.'
 				: 'Les groupes locaux organisent des actions de rue, des conférences et des stands partout en France. Trouvez celui le plus proche de chez vous et rejoignez la mobilisation.'}
 		</p>
-		<LumaCalendar
-			calendarId={LUMA_CALENDAR_ID}
-			title={isEn ? 'Upcoming Pause IA events' : 'Prochains événements Pause IA'}
-			collapsible
-			summary={isEn ? 'See upcoming dates' : 'Voir les prochaines dates'}
-			height={420}
-			mobileHeight={520}
-		/>
-		<p class="cta-row">
-			<Button href="{prefix}/groupes-locaux" alt>
-				{isEn ? 'Find my local group' : 'Trouver mon groupe local'}
-			</Button>
-		</p>
-
 		<div id="fresque">
 			<div class="fresque" class:no-photo={!FRESQUE_PHOTO}>
 				{#if FRESQUE_PHOTO}
@@ -272,6 +258,20 @@
 				</div>
 			</div>
 		</div>
+
+		<LumaCalendar
+			calendarId={LUMA_CALENDAR_ID}
+			title={isEn ? 'Upcoming Pause IA events' : 'Prochains événements Pause IA'}
+			collapsible
+			summary={isEn ? 'See upcoming dates' : 'Voir les prochaines dates'}
+			height={420}
+			mobileHeight={520}
+		/>
+		<p class="cta-row">
+			<Button href="{prefix}/groupes-locaux" alt>
+				{isEn ? 'Find my local group' : 'Trouver mon groupe local'}
+			</Button>
+		</p>
 	</CampaignSection>
 
 	<!-- ── Action 2 · Écrire à ses élus et à la presse ───────── -->
@@ -317,9 +317,9 @@
 	/* La section est déjà une carte : pas de carte dans la carte, un simple
 	   filet de séparation suffit. */
 	#fresque {
-		margin-top: 2rem;
-		padding-top: 2rem;
-		border-top: 1px solid var(--border);
+		margin-bottom: 2rem;
+		padding-bottom: 2rem;
+		border-bottom: 1px solid var(--border);
 	}
 
 	.fresque {
