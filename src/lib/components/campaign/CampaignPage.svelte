@@ -20,6 +20,10 @@
 	   une seule gouttière, quel que soit le contenu. */
 	.campaign {
 		--campaign-gap: 3.5rem;
+		/* <main> est un conteneur flex : sans min-inline-size, cet item refuse
+		   de descendre sous la largeur intrinsèque de son contenu (les images
+		   de cartes font 560px de large) et la page défile horizontalement. */
+		min-inline-size: 0;
 		max-inline-size: 54rem;
 		margin-inline: auto;
 		margin-top: 2.5rem;

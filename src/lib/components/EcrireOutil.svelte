@@ -1749,8 +1749,12 @@
 			flex-wrap: nowrap;
 		}
 
+		/* inline-size: 0 (la croissance flex reprend la place) : sans ça, la
+		   largeur intrinsèque du champ fixait un min-content de ~394px à la
+		   ligne non enroulable, et toute la page débordait horizontalement. */
 		.cp-input {
 			min-inline-size: 0;
+			inline-size: 0;
 		}
 	}
 

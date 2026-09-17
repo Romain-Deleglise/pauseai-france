@@ -359,9 +359,12 @@
 	}
 
 	/* Éventail repris du hero de fresquedesrisquesdelia.org. */
+	/* La hauteur suit la largeur : les cartes sont positionnées en % de leur
+	   propre boîte, une hauteur fixe les laissait dépasser du bloc (et donc
+	   recouvrir le texte suivant) dès que la colonne se resserrait. */
 	.pile {
 		position: relative;
-		height: 12rem;
+		aspect-ratio: 1.35 / 1;
 		margin-top: 0.25rem;
 	}
 
@@ -400,7 +403,7 @@
 
 		.fresque .pile {
 			order: 0;
-			height: 9.5rem;
+			aspect-ratio: 1.78 / 1;
 		}
 
 		.carte {
