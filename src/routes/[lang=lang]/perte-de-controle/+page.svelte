@@ -25,7 +25,7 @@
 	const VIDEO_ID = 'WhQViEjkg7s'
 	// Calendrier Luma des actions militantes (agrège aussi les événements créés
 	// par d'autres organisateurs).
-	const LUMA_CALENDAR_ID = 'cal-5ZNtr1GO7aUSyiY'
+	const LUMA_CALENDAR_ID = 'cal-PLtig5in051g5mM'
 
 	// Les trois cartes du hero de fresquedesrisquesdelia.org, en éventail.
 	// Visuels issus du dépôt de la fresque (Pause IA, CC BY-SA 4.0) :
@@ -280,13 +280,14 @@
 			</div>
 		</div>
 
+		<!-- Calendrier affiché ouvert : pendant la semaine d'action, les dates
+		     sont le contenu le plus concret de la page, les replier derrière un
+		     lien les rendait invisibles. Luma gère son propre défilement. -->
 		<LumaCalendar
 			calendarId={LUMA_CALENDAR_ID}
 			title={isEn ? 'Upcoming Pause IA events' : 'Prochains événements Pause IA'}
-			collapsible
-			summary={isEn ? 'See the next actions!' : 'Voir les prochaines actions !'}
-			height={420}
-			mobileHeight={520}
+			height={520}
+			mobileHeight={560}
 		/>
 		<p class="cta-row">
 			<Button href="{prefix}/groupes-locaux" alt>

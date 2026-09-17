@@ -17,7 +17,7 @@
 	$: isEn = data.lang === 'en'
 
 	// Calendrier Luma de test partagé par l'équipe.
-	const LUMA_CALENDAR_ID = 'cal-5ZNtr1GO7aUSyiY'
+	const LUMA_CALENDAR_ID = 'cal-PLtig5in051g5mM'
 
 	$: title = isEn ? 'Campaign page template' : 'Page campagne — modèle'
 	$: description = isEn

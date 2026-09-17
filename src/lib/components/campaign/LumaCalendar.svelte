@@ -4,7 +4,7 @@
 	/**
 	 * Identifiant du calendrier Luma, visible dans l'URL d'intégration :
 	 * https://luma.com/embed/calendar/<calendarId>/events
-	 * ex. « cal-5ZNtr1GO7aUSyiY »
+	 * ex. « cal-PLtig5in051g5mM »
 	 */
 	export let calendarId: string
 	/** Titre accessible de l'iframe. */
