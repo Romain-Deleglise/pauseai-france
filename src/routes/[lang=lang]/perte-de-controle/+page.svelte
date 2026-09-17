@@ -242,8 +242,8 @@
 	<CampaignSection id="evenements" variant="card" title={mobilisationTitle}>
 		<p>
 			{isEn
-				? 'Local groups are holding street actions, talks and stands all over France.'
-				: 'Les groupes locaux organisent des actions de rue, des conférences et des stands partout en France.'}
+				? 'Local groups hold street actions, talks and stands. Several will also run our new educational workshop, the AI Risks Fresk.'
+				: 'Les groupes locaux organisent des actions de rue, des conférences et des stands. Plusieurs animeront aussi notre nouvel atelier pédagogique, la fresque des risques de l’IA.'}
 		</p>
 		<div id="fresque">
 			<div class="fresque">
@@ -260,11 +260,16 @@
 				<div class="fresque-text">
 					<p>
 						{isEn
-							? 'A three-hour collective workshop on the risks of AI, with first sessions opening in several cities.'
-							: 'Un atelier collectif de trois heures sur les risques de l’IA, dont les premières sessions ouvrent dans plusieurs villes.'}
+							? 'A collaborative workshop built around a deck of cards. Participants discuss, lay out the cards and connect them to one another. Everyone leaves with an overview of AI, its risks and the solutions.'
+							: 'Un atelier collaboratif construit autour d’un jeu de cartes. Les participants discutent, disposent les cartes et les relient entre elles. Chacun repart avec une vue d’ensemble de l’IA, de ses risques et des solutions.'}
+					</p>
+					<p>
+						{isEn
+							? 'The project was carried by our volunteers all summer; it is free and open-licensed. All the information is on the cards, so anyone can run it in turn. The website lets you schedule a workshop or sign up for one. We even built a tool to run it online.'
+							: 'Le projet a été porté par nos bénévoles tout l’été, il est gratuit et en licence libre. Toutes les informations sont sur les cartes, donc n’importe qui peut l’animer à son tour. Le site permet de programmer un atelier ou de s’y inscrire. Nous sommes même allés jusqu’à développer un outil pour l’animer en ligne.'}
 					</p>
 					<Button href="https://fresquedesrisquesdelia.org/" alt>
-						{isEn ? 'Discover the Fresk' : 'Découvrir la fresque'}
+						{isEn ? 'The AI Risks Fresk' : 'La fresque des risques de l’IA'}
 					</Button>
 				</div>
 			</div>
@@ -335,22 +340,31 @@
 
 	.fresque {
 		display: grid;
-		grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-		gap: 1.75rem;
-		align-items: center;
+		grid-template-columns: minmax(0, 1.45fr) minmax(0, 0.55fr);
+		gap: 2rem;
+		align-items: start;
+	}
+
+	.fresque .pile {
+		order: 2;
+	}
+
+	.fresque-text p {
+		margin: 0 0 1rem;
 	}
 
 	/* Éventail repris du hero de fresquedesrisquesdelia.org. */
 	.pile {
 		position: relative;
-		height: 9rem;
+		height: 12rem;
+		margin-top: 0.25rem;
 	}
 
 	.carte {
 		position: absolute;
 		top: 50%;
 		left: 50%;
-		width: 50%;
+		width: 72%;
 		aspect-ratio: 1.41 / 1;
 		object-fit: cover;
 		border-radius: 0.5rem;
@@ -379,7 +393,8 @@
 			grid-template-columns: 1fr;
 		}
 
-		.pile {
+		.fresque .pile {
+			order: 0;
 			height: 9.5rem;
 		}
 
