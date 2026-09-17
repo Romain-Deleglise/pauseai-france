@@ -8,7 +8,9 @@ export async function GET() {
 	const posts = getPosts('', 'fr')
 	const website = config.url
 
-	const staticRoutes = getStaticRoutes()
+	// La racine est émise à part ci-dessous : on l'enlève de la liste pour ne
+	// pas la déclarer deux fois.
+	const staticRoutes = getStaticRoutes().filter((route) => route !== '/')
 
 	const headers = { 'Content-Type': 'application/xml' }
 
