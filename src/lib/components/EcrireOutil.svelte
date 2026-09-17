@@ -825,7 +825,7 @@
 						type="text"
 						inputmode="numeric"
 						maxlength="5"
-						placeholder={isEn ? 'Your postal code (e.g. 75011)' : 'Votre code postal (ex. 75011)'}
+						placeholder={isEn ? 'Postal code (e.g. 75011)' : 'Code postal (ex. 75011)'}
 						bind:value={codePostal}
 						aria-label={isEn ? 'Postal code' : 'Code postal'}
 					/>
@@ -1738,6 +1738,20 @@
 	.cp-input:focus {
 		outline: none;
 		border-color: var(--brand);
+	}
+
+	/* Sur mobile, les 200px minimum du champ code postal le faisaient occuper
+	   toute la ligne et poussaient « Rechercher » à la ligne suivante : le
+	   bouton se retrouvait coincé entre la recherche et les champs nom /
+	   ville, comme s'il les validait. */
+	@media (max-width: 520px) {
+		.cp-form {
+			flex-wrap: nowrap;
+		}
+
+		.cp-input {
+			min-inline-size: 0;
+		}
 	}
 
 	/* Notices */
