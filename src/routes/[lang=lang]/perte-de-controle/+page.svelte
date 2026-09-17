@@ -45,9 +45,9 @@
 		}
 	]
 
-	// Dates du temps fort militant. Des actions démarrent quelques jours avant,
-	// d'où « à partir du » plutôt qu'une fourchette fermée dans le titre.
-	const MOBILISATION_DATES_FR = 'du 21 au 28 septembre'
+	// Dates du temps fort militant (des actions isolées démarrent la veille :
+	// le calendrier peut donc afficher une date antérieure au 21).
+	const MOBILISATION_DATES_FR = 'Du 21 au 28 septembre'
 	const MOBILISATION_DATES_EN = '21 to 28 September'
 
 	$: title = isEn
