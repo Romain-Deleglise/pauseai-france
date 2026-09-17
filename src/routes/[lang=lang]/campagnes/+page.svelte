@@ -175,13 +175,17 @@
 
 			{#if summary.articles?.length}
 				<div class="articles-section">
-					<h3 class="articles-title">{isEn ? 'Press coverage' : 'Couverture presse'}</h3>
+					<h3 class="articles-title">
+						{summary.articlesTitle ?? (isEn ? 'Press coverage' : 'Couverture presse')}
+					</h3>
 					<ul class="articles-list">
 						{#each summary.articles as article}
 							<li>
+								<!-- Un article du site reste dans l'onglet courant ; seule une
+								     source externe s'ouvre à côté. -->
 								<a
 									href={article.url}
-									target="_blank"
+									target={article.url.startsWith('http') ? '_blank' : undefined}
 									rel="noopener noreferrer"
 									class="article-link"
 								>
@@ -407,6 +411,12 @@
 		display: grid;
 		grid-template-columns: repeat(2, 1fr);
 		gap: 0.75rem;
+	}
+
+	/* Un troisième chiffre seul sur sa ligne : il occupe toute la largeur
+	   plutôt que de laisser un trou à côté. */
+	.result-card:nth-child(3):last-child {
+		grid-column: 1 / -1;
 	}
 
 	.result-card {
