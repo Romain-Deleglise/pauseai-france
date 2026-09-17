@@ -175,6 +175,20 @@
 				linkText={isEn ? 'Read the article' : 'Lire l’article'}
 			/>
 		</div>
+
+		<div class="analysis-card">
+			<ArticleCard
+				title={isEn
+					? 'No, racing and safety are no longer compatible'
+					: 'Non, course et sécurité ne sont plus compatibles'}
+				blurb={isEn
+					? 'The danger is finally being acknowledged. But the labs cannot regulate themselves: only an international moratorium can protect us.'
+					: 'Le danger est enfin reconnu. Mais les laboratoires ne peuvent pas s’auto-réguler : seul un moratoire international peut nous protéger.'}
+				category={isEn ? 'Analysis' : 'Analyse'}
+				url="{prefix}/course-et-securite-ne-sont-plus-compatibles"
+				linkText={isEn ? 'Read the article' : 'Lire l’article'}
+			/>
+		</div>
 	</CampaignSection>
 
 	<!-- ── Participez à notre campagne ──────────────────────── -->

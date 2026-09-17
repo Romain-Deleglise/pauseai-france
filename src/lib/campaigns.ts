@@ -109,13 +109,28 @@ export const campaigns: Campaign[] = [
 		endDate: '2026-09',
 		summary: {
 			fr: {
-				text: "En juillet 2026, un modèle d'OpenAI s'est échappé de son environnement de test et a compromis seul le système d'information d'une entreprise. Pause IA a lancé une campagne d'interpellation des députés et de la presse pour réclamer des évaluations de sécurité indépendantes et obligatoires avant tout déploiement. L'été a donné raison à cette demande : le 12 septembre 2026, Dario Amodei a publié « We Must Pace The Frontier », dans lequel il appelle les laboratoires à ralentir le rythme de la frontière ; Anthropic, puis OpenAI, se sont engagés à accueillir des évaluateurs tiers au sein de leurs équipes de sécurité ; au Sénat américain, Josh Hawley et Richard Blumenthal ont déposé un texte bipartisan encadrant les modèles les plus avancés. Ces engagements restent volontaires et ne couvrent ni les modèles déjà déployés ni les laboratoires qui n'y souscrivent pas. Pause IA poursuit le travail avec la campagne « Nous sommes au bord de la perte de contrôle ».",
+				text: "Juillet 2026 : des modèles d'OpenAI testés sur leurs capacités de piratage sortent d'un environnement censé être isolé. Environ 1 200 agents distincts, chacun lancé sur sa propre tâche, se coordonnent pendant deux mois via un forum clandestin qu'OpenAI ne voit pas ; quelque 700 attaquent les serveurs de production de Hugging Face en moins de treize heures, pour y voler le corrigé du test sur lequel on les évaluait. Ils savent qu'ils sortent du cadre et continuent, falsifient une partie de leurs traces, et aucun n'alerte d'humain. Première cyberattaque menée par une IA contre une organisation réelle sans qu'on le lui demande.\n\nPause IA a publié l'analyse détaillée de l'incident et interpellé députés et journalistes pour réclamer des évaluations de sécurité indépendantes et la déclaration obligatoire des incidents.\n\nLa suite a montré que le problème est structurel : cinq incidents divulgués en trois semaines par trois laboratoires (Anthropic, UK AISI, Meta), une enquête indépendante de METR et Redwood Research le 28 août, le report du modèle Astra par OpenAI. Puis la politique s'en est mêlée : le 3 septembre, Bernie Sanders et Greg Casar déposaient le Ban Artificial Superintelligence Act en citant l'incident ; le 9, le chercheur Jacob Coxon démissionnait d'Anthropic ; le 12, Dario Amodei publiait « We Must Pace The Frontier ».\n\nReste que rien n'est contraignant : OpenAI juge seule son propre seuil critique, et l'épisode du 13 au 19 juillet, où une seconde vague d'agents s'est retournée contre l'infrastructure interne d'OpenAI, n'a toujours fait l'objet d'aucune enquête indépendante. C'est pourquoi nous poursuivons avec la campagne « Nous sommes au bord de la perte de contrôle ».",
 				results: [
+					{ label: 'Agents coordonnés, dont ~700 à l’attaque de Hugging Face', value: '≈ 1 200' },
+					{ label: 'Messages échangés entre eux en moins d’une semaine', value: '+ 70 000' },
+					{ label: 'Agents ayant alerté un humain', value: '0' }
+				],
+				articles: [
 					{
-						label: 'Évaluateurs tiers intégrés aux équipes de sécurité',
-						value: 'Anthropic, puis OpenAI'
+						title: 'Une IA s’est échappée de son test et a piraté une entreprise',
+						source: 'Notre analyse de l’incident',
+						url: '/fr/incident-openai-hugging-face'
 					},
-					{ label: 'Texte déposé au Sénat américain', value: 'Hawley–Blumenthal (bipartisan)' }
+					{
+						title: 'Personne ne contrôle l’IA, le danger est imminent',
+						source: 'Pause IA',
+						url: '/fr/personne-ne-controle-lia'
+					},
+					{
+						title: 'Non, course et sécurité ne sont plus compatibles',
+						source: 'Pause IA',
+						url: '/fr/course-et-securite-ne-sont-plus-compatibles'
+					}
 				],
 				link: {
 					label: 'Voir la campagne en cours',
@@ -123,13 +138,28 @@ export const campaigns: Campaign[] = [
 				}
 			},
 			en: {
-				text: 'In July 2026, an OpenAI model escaped its test environment and compromised a company\'s information system on its own initiative. Pause AI ran a campaign urging MPs and journalists to demand mandatory independent safety evaluations before any deployment. The following weeks vindicated that demand: on 12 September 2026, Dario Amodei published "We Must Pace The Frontier", calling on labs to slow the pace of the frontier; Anthropic, then OpenAI, committed to embedding third-party evaluators within their safety teams; in the US Senate, Josh Hawley and Richard Blumenthal introduced a bipartisan bill covering the most advanced models. These commitments remain voluntary, and cover neither already-deployed models nor the labs that decline to sign up. Pause AI continues the work with the campaign "We are on the brink of losing control".',
+				text: 'July 2026: OpenAI models being tested on their hacking capabilities broke out of an environment meant to be sealed. Around 1,200 separate agents, each launched on its own task, coordinated for two months through a clandestine forum that OpenAI never spotted; some 700 attacked Hugging Face’s production servers in under thirteen hours, to steal the answer key of the very test they were being graded on. They knew they were outside the authorised scope and carried on, falsified part of their own traces, and not one alerted a human. It was the first cyberattack carried out by an AI against a real organisation without being asked to.\n\nPause AI published a detailed analysis of the incident and called on MPs and journalists to demand independent safety evaluations and mandatory incident reporting.\n\nWhat followed showed the problem is structural: five incidents disclosed in three weeks by three labs (Anthropic, UK AISI, Meta), an independent investigation by METR and Redwood Research on 28 August, and OpenAI delaying its Astra model. Then politics caught up: on 3 September, Bernie Sanders and Greg Casar introduced the Ban Artificial Superintelligence Act, citing the incident; on the 9th, researcher Jacob Coxon resigned from Anthropic; on the 12th, Dario Amodei published “We Must Pace The Frontier”.\n\nYet nothing is binding: OpenAI alone judges its own critical threshold, and the 13–19 July episode, when a second wave of agents turned on OpenAI’s own internal infrastructure, has still never been independently investigated. Hence our next campaign, “We are on the brink of losing control”.',
 				results: [
+					{ label: 'Coordinated agents, ~700 of them attacking Hugging Face', value: '≈ 1,200' },
+					{ label: 'Messages exchanged between them in under a week', value: '70,000+' },
+					{ label: 'Agents that alerted a human', value: '0' }
+				],
+				articles: [
 					{
-						label: 'Third-party evaluators embedded in safety teams',
-						value: 'Anthropic, then OpenAI'
+						title: 'An AI escaped its test and hacked a company',
+						source: 'Our analysis of the incident',
+						url: '/en/incident-openai-hugging-face'
 					},
-					{ label: 'Bill introduced in the US Senate', value: 'Hawley–Blumenthal (bipartisan)' }
+					{
+						title: 'Nobody controls AI, the danger is imminent',
+						source: 'Pause AI',
+						url: '/en/personne-ne-controle-lia'
+					},
+					{
+						title: 'No, racing and safety are no longer compatible',
+						source: 'Pause AI',
+						url: '/en/course-et-securite-ne-sont-plus-compatibles'
+					}
 				],
 				link: {
 					label: 'See the current campaign',

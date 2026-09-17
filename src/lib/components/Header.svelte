@@ -103,7 +103,8 @@
 			items: [
 				{ href: `${prefix}/campagnes`, label: t.nav.toutes_campagnes },
 				{ href: `${prefix}/perte-de-controle`, label: t.nav.perte_de_controle },
-				{ href: `${prefix}/une-ia-sest-echappee`, label: t.nav.warning_shot },
+				// « Une IA s'est échappée » est terminée : elle reste en ligne et
+				// listée sur /campagnes avec son bilan, mais quitte le menu.
 				{ href: `${prefix}/emploi-ia`, label: t.nav.emploi_ia }
 			]
 		},

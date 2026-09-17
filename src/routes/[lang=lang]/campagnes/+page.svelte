@@ -156,7 +156,11 @@
 				{/if}
 			</div>
 
-			<p class="modal-text">{summary.text}</p>
+			<!-- Les bilans longs sont écrits en paragraphes séparés par une ligne
+			     vide : un seul bloc de texte devenait illisible. -->
+			{#each summary.text.split('\n\n') as paragraph}
+				<p class="modal-text">{paragraph}</p>
+			{/each}
 
 			{#if summary.results.length > 0}
 				<div class="results-grid">
