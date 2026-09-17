@@ -77,10 +77,7 @@ dans `src/lib/campaigns.ts` pour qu'elle apparaisse sur `/campagnes` et la page 
 
 ```svelte
 <CampaignSection id="evenements" title="Les prochains événements" variant="card">
-	<LumaCalendar
-		calendarId="cal-PLtig5in051g5mM"
-		calendarUrl="https://luma.com/cal-PLtig5in051g5mM"
-	/>
+	<LumaCalendar calendarId="cal-PLtig5in051g5mM" calendarUrl="https://luma.com/pause-ia" />
 </CampaignSection>
 ```
 

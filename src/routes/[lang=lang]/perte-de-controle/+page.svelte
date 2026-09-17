@@ -26,6 +26,7 @@
 	// Calendrier Luma des actions militantes (agrège aussi les événements créés
 	// par d'autres organisateurs).
 	const LUMA_CALENDAR_ID = 'cal-PLtig5in051g5mM'
+	const LUMA_CALENDAR_URL = 'https://luma.com/pause-ia'
 
 	// Les trois cartes du hero de fresquedesrisquesdelia.org, en éventail.
 	// Visuels issus du dépôt de la fresque (Pause IA, CC BY-SA 4.0) :
@@ -288,6 +289,8 @@
 			title={isEn ? 'Upcoming Pause IA events' : 'Prochains événements Pause IA'}
 			height={520}
 			mobileHeight={560}
+			calendarUrl={LUMA_CALENDAR_URL}
+			calendarLinkLabel={isEn ? 'See all events on Luma' : 'Voir tous les événements sur Luma'}
 		/>
 		<p class="cta-row">
 			<Button href="{prefix}/groupes-locaux" alt>
