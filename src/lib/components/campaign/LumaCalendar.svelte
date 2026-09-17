@@ -87,11 +87,53 @@
 		font-weight: 600;
 	}
 
+	/* Le résumé porte toute la découvrabilité du calendrier : sans habillage,
+	   un simple lien se confondait avec le texte et personne ne le dépliait. */
 	.luma-details summary {
 		cursor: pointer;
-		font-weight: 600;
-		padding: 0.4rem 0;
-		color: var(--brand-subtle);
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.75rem;
+		font-weight: 700;
+		padding: 0.85rem 1.1rem;
+		color: var(--text);
+		background: var(--bg);
+		border: 2px solid var(--border);
+		border-radius: 0.625rem;
+		transition:
+			border-color 0.15s ease,
+			box-shadow 0.15s ease;
+	}
+
+	.luma-details summary::-webkit-details-marker {
+		display: none;
+	}
+
+	.luma-details summary::marker {
+		content: '';
+	}
+
+	.luma-details summary:hover,
+	.luma-details summary:focus-visible {
+		border-color: var(--brand);
+		box-shadow: 0 2px 10px rgb(255 148 22 / 22%);
+	}
+
+	/* Chevron : indique sans ambiguïté que la rangée se déplie. */
+	.luma-details summary::after {
+		content: '';
+		flex: none;
+		inline-size: 0.55rem;
+		block-size: 0.55rem;
+		border-right: 2.5px solid var(--brand-subtle);
+		border-bottom: 2.5px solid var(--brand-subtle);
+		transform: rotate(45deg) translateY(-15%);
+		transition: transform 0.2s ease;
+	}
+
+	.luma-details[open] summary::after {
+		transform: rotate(225deg) translateY(-15%);
 	}
 
 	.luma-details[open] summary {

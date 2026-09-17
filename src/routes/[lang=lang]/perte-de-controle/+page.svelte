@@ -45,10 +45,10 @@
 		}
 	]
 
-	// ── À COMPLÉTER avant mise en ligne ───────────────────────────────────────
-	// Dates du temps fort militant, à renseigner (ex. « du 12 au 19 octobre »).
-	const MOBILISATION_DATES = ''
-	// ──────────────────────────────────────────────────────────────────────────
+	// Dates du temps fort militant. Des actions démarrent quelques jours avant,
+	// d'où « à partir du » plutôt qu'une fourchette fermée dans le titre.
+	const MOBILISATION_DATES_FR = 'du 21 au 28 septembre'
+	const MOBILISATION_DATES_EN = '21 to 28 September'
 
 	$: title = isEn
 		? 'We are on the brink of losing control: let’s react'
@@ -58,12 +58,8 @@
 		: 'L’IA dépasse désormais les humains en sécurité informatique, et les chercheurs qui les entraînent ne les maîtrisent plus. Relayez notre appel à un moratoire mondial sur le développement des IA de pointe.'
 
 	$: mobilisationTitle = isEn
-		? MOBILISATION_DATES
-			? `${MOBILISATION_DATES}: a week of action and a Fresk`
-			: 'We are launching a week of action and a Fresk'
-		: MOBILISATION_DATES
-			? `${MOBILISATION_DATES} : une semaine d’action et une fresque`
-			: 'Nous lançons une semaine d’action et une fresque'
+		? `${MOBILISATION_DATES_EN}: a week of action and a Fresk`
+		: `${MOBILISATION_DATES_FR} : une semaine d’action et une fresque`
 </script>
 
 <CampaignPage {title} {description}>
@@ -281,12 +277,16 @@
 			</div>
 		</div>
 
-		<!-- Calendrier affiché ouvert : pendant la semaine d'action, les dates
-		     sont le contenu le plus concret de la page, les replier derrière un
-		     lien les rendait invisibles. Luma gère son propre défilement. -->
+		<!-- Replié par défaut : la page est déjà longue et l'embed Luma occupe
+		     un demi-écran. Le résumé est habillé comme un vrai bouton (fond,
+		     bordure, chevron) pour qu'on ne puisse pas le manquer. -->
 		<LumaCalendar
 			calendarId={LUMA_CALENDAR_ID}
 			title={isEn ? 'Upcoming Pause IA events' : 'Prochains événements Pause IA'}
+			collapsible
+			summary={isEn
+				? 'See the week of action dates near you'
+				: 'Voir les dates de la semaine d’action près de chez vous'}
 			height={520}
 			mobileHeight={560}
 			calendarUrl={LUMA_CALENDAR_URL}
