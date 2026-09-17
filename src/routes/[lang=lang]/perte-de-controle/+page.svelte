@@ -268,7 +268,12 @@
 							? 'The project was carried by our volunteers all summer; it is free and open-licensed. All the information is on the cards, so anyone can run it in turn. The website lets you schedule a workshop or sign up for one. We even built a tool to run it online.'
 							: 'Le projet a été porté par nos bénévoles tout l’été, il est gratuit et en licence libre. Toutes les informations sont sur les cartes, donc n’importe qui peut l’animer à son tour. Le site permet de programmer un atelier ou de s’y inscrire. Nous sommes même allés jusqu’à développer un outil pour l’animer en ligne.'}
 					</p>
-					<Button href="https://fresquedesrisquesdelia.org/" alt>
+					<Button
+						href="https://fresquedesrisquesdelia.org/"
+						alt
+						target="_blank"
+						rel="noopener noreferrer"
+					>
 						{isEn ? 'The AI Risks Fresk' : 'La fresque des risques de l’IA'}
 					</Button>
 				</div>
@@ -279,7 +284,7 @@
 			calendarId={LUMA_CALENDAR_ID}
 			title={isEn ? 'Upcoming Pause IA events' : 'Prochains événements Pause IA'}
 			collapsible
-			summary={isEn ? 'See upcoming dates' : 'Voir les prochaines dates'}
+			summary={isEn ? 'See the next actions!' : 'Voir les prochaines actions !'}
 			height={420}
 			mobileHeight={520}
 		/>
