@@ -499,7 +499,8 @@
 		hIdx: number,
 		fIdx: number,
 		bIdx: number,
-		aIdx: number
+		aIdx: number,
+		targetId?: string
 	): string[] {
 		const L = isEn ? 'en' : 'fr'
 		const ang = action.angles.find((a) => a.id === angleId) ?? action.angles[0]
@@ -511,7 +512,10 @@
 		const balance = balancePool[bIdx % balancePool.length]
 		const askPool = [action.ask, ...(action.asks ?? [])]
 		const ask = askPool[aIdx % askPool.length]
-		const paras = [hook[L], focus[L]]
+		// Note propre au destinataire (ce que sa rédaction a déjà publié, ou non),
+		// juste après l'accroche : le reste du message reste le même pour tous.
+		const note = targetId ? action.targetNotes?.[targetId] : undefined
+		const paras = note ? [hook[L], note[L], focus[L]] : [hook[L], focus[L]]
 		if (v === 'long') {
 			if (ang.complementLong) paras.push(ang.complementLong[L])
 			if (action.poll) paras.push(action.poll[L])
@@ -547,7 +551,8 @@
 				hookIndex,
 				focusIndex,
 				balanceIndex,
-				askIndex
+				askIndex,
+				r.id
 			),
 			signatureBlock(r)
 		].join('\n\n')
@@ -1353,7 +1358,7 @@
 				<div class="email-body" id="email-body">
 					<p>{salutation(selectedRecipient)}</p>
 					<p>{introLine(selectedRecipient, userName, introIndex)}</p>
-					{#each buildParagraphs(angle, version, personalSentence, hookIndex, focusIndex, balanceIndex, askIndex) as para}
+					{#each buildParagraphs(angle, version, personalSentence, hookIndex, focusIndex, balanceIndex, askIndex, selectedRecipient.id) as para}
 						<p>{para}</p>
 					{/each}
 					<p>

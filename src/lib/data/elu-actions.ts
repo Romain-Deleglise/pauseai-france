@@ -84,6 +84,10 @@ export interface EluAction {
 	/** Phrase de conclusion, après l'appel (une tirée au hasard). Facultative :
 	 * sans elle, le message se termine sur l'appel comme avant. */
 	closings?: Bilingual[]
+	/** Paragraphe propre à un destinataire (clé = son id), inséré juste après
+	 * l'accroche. Sert à tenir compte de ce qu'une rédaction a déjà publié :
+	 * la saluer et proposer la suite, plutôt que lui apprendre son métier. */
+	targetNotes?: Record<string, Bilingual>
 	/** Proposer le choix courte / détaillée ? */
 	hasDetailed: boolean
 }
@@ -1274,6 +1278,88 @@ const PRESSE_PERTE_DE_CONTROLE: EluAction = {
 			}
 		}
 	],
+	// Ce que chaque rédaction a publié ces dernières semaines (relevé de l'équipe
+	// campagne, septembre 2026). Une rédaction qui traite déjà le sujet est
+	// encouragée à poursuivre, pas sermonnée ; à mettre à jour quand le relevé
+	// vieillit, ou à retirer si l'on n'en est plus sûr.
+	targetNotes: {
+		'le-monde': {
+			fr: "Votre rédaction suit ce sujet de près : la démission de Jacob Coxon le 9 septembre, l'appel de Dario Amodei à ralentir le 12, l'ampleur inédite du débat sur l'« IApocalypse » le 11, puis les discours de Bernie Sanders et Steve Bannon le 17. C'est précisément parce que vous couvrez cette actualité que je me permets de vous suggérer la suite.",
+			en: 'Your newsroom follows this closely: Jacob Coxon’s resignation on 9 September, Dario Amodei’s call to slow down on the 12th, the unprecedented scale of the "AI-pocalypse" debate on the 11th, then the Sanders and Bannon speeches on the 17th. It is precisely because you cover this story that I am suggesting where it could go next.'
+		},
+		'le-figaro': {
+			fr: "Vous avez largement couvert la séquence de septembre : le portrait de Jacob Coxon et son « ils jouent avec nos vies » le 9, l'appel du patron d'Anthropic à réduire la cadence le 12, l'alerte de l'ONU le 14. Je vous écris justement parce que votre rédaction suit ce fil.",
+			en: 'You covered the September sequence extensively: the profile of Jacob Coxon and his "they are playing with our lives" on the 9th, the Anthropic CEO’s call to slow the pace on the 12th, the UN warning on the 14th. I am writing precisely because your newsroom is following this thread.'
+		},
+		'le-parisien': {
+			fr: "Vous avez traité l'alerte de l'ONU sur le « risque existentiel » le 7 septembre, puis l'impact de l'IA sur l'emploi le 15. Il manque, je trouve, le maillon entre les deux : ce que les laboratoires eux-mêmes reconnaissent ne plus contrôler.",
+			en: 'You covered the UN warning about the "existential risk" on 7 September, then the impact of AI on employment on the 15th. What is missing, I think, is the link between the two: what the labs themselves admit they no longer control.'
+		},
+		liberation: {
+			fr: "Vous avez publié plusieurs articles sur le sujet : les dérapages de modèles attribués à OpenAI le 7 septembre, l'organe de supervision annoncé par OpenAI, Anthropic et Google le 15, l'appel du secrétaire général de l'ONU le 16. La question qui reste ouverte, et qui m'intéresserait chez vous, est celle du contrôle réel de ces engagements.",
+			en: 'You published several pieces on this: the incidents attributed to OpenAI models on 7 September, the oversight body announced by OpenAI, Anthropic and Google on the 15th, the UN Secretary-General’s call on the 16th. The open question, and the one I would like to read from you, is who actually verifies these commitments.'
+		},
+		'les-echos': {
+			fr: "Vous êtes parmi les rares à suivre ce sujet de près : l'alerte du transfuge d'OpenAI et d'Anthropic le 9 septembre, puis, le 17, les nouveaux incidents de sécurité révélés par OpenAI et la fracture entre champions de l'IA autour de la sécurité. C'est cette dernière ligne que j'aimerais vous voir creuser.",
+			en: 'You are among the few following this closely: the warning from the OpenAI and Anthropic defector on 9 September, then, on the 17th, the new safety incidents disclosed by OpenAI and the rift between AI champions over safety. That last thread is the one I would like to see you dig into.'
+		},
+		'la-tribune': {
+			fr: "Je lis votre couverture de l'économie de l'IA, mais je n'y ai pas trouvé de traitement des risques majeurs que cette technologie fait peser, alors que le sujet occupe une bonne part de l'actualité internationale depuis deux semaines. C'est ce qui me pousse à vous écrire.",
+			en: 'I read your coverage of the AI economy, but I have not found any treatment of the major risks this technology carries, even though the subject has filled international news for two weeks. That is what prompts me to write to you.'
+		},
+		'la-croix': {
+			fr: "Votre traitement m'a marqué, en particulier votre éditorial « Intelligence artificielle : pompiers pyromanes » le 13 septembre et votre question du 15, « a-t-on vraiment perdu le contrôle ? ». J'aimerais que vous poursuiviez dans cette voie.",
+			en: 'Your coverage struck me, in particular your editorial "Artificial intelligence: arsonist firefighters" on 13 September and your 15 September question, "have we really lost control?". I would like you to keep going in that direction.'
+		},
+		'le-point': {
+			fr: "Vous avez traité le sujet sans détour, notamment avec « Quand l'IA échappe à ses créateurs » et votre panorama des scénarios redoutés par les spécialistes. La suite logique serait, je crois, d'examiner ce qui est réellement mis en place pour l'éviter.",
+			en: 'You tackled the subject head-on, notably with "When AI escapes its creators" and your overview of the scenarios specialists fear. The logical next step, I think, would be to examine what is actually being put in place to prevent them.'
+		},
+		marianne: {
+			fr: "J'ai cherché dans vos pages un traitement des risques majeurs de l'IA ces dernières semaines et je n'ai quasiment rien trouvé, alors que le sujet a occupé la presse internationale depuis début septembre. Votre regard critique manque à ce débat.",
+			en: 'I looked through your pages for coverage of the major risks of AI in recent weeks and found almost nothing, even though the subject has filled the international press since early September. Your critical perspective is missing from this debate.'
+		},
+		'le-jdd': {
+			fr: "Je n'ai pas trouvé de sujet récent chez vous sur les risques majeurs de l'IA, alors que la démission d'un chercheur d'Anthropic et l'appel de l'ONU ont été largement repris ailleurs début septembre. C'est ce qui me pousse à vous écrire.",
+			en: 'I have not found any recent piece from you on the major risks of AI, although the resignation of an Anthropic researcher and the UN call were widely picked up elsewhere in early September. That is what prompts me to write.'
+		},
+		'courrier-international': {
+			fr: "Votre revue de la presse étrangère a bien saisi le débat : « Canular » pour Donald Trump, « alarmisme » pour la Chine le 15 septembre, et l'organe de régulation voulu par OpenAI, Anthropic et Google le 16. Un regard international sur les demandes de moratoire compléterait utilement ce tableau.",
+			en: 'Your review of the foreign press captured the debate well: a "hoax" for Donald Trump, "alarmism" for China on 15 September, and the regulatory body sought by OpenAI, Anthropic and Google on the 16th. An international look at the calls for a moratorium would usefully complete the picture.'
+		},
+		'le-canard-enchaine': {
+			fr: "Je n'ai pas vu passer d'enquête de votre part sur ce dossier, alors qu'il réunit vos ingrédients habituels : une industrie qui écrit elle-même ses règles de sécurité, évalue son propre respect de ces règles, et rédige le récit public de ses incidents.",
+			en: 'I have not seen an investigation from you on this file, even though it has your usual ingredients: an industry that writes its own safety rules, assesses its own compliance with them, and drafts the public account of its own incidents.'
+		},
+		'le-monde-diplomatique': {
+			fr: "Vous avez traité l'IA sous l'angle économique et celui de la bulle financière, mais je n'ai pas trouvé d'analyse de fond sur le risque de perte de contrôle des systèmes de pointe. C'est pourtant exactement le genre de sujet où votre profondeur d'analyse manque au débat.",
+			en: 'You have covered AI from an economic angle and from the angle of the financial bubble, but I have not found an in-depth analysis of the risk of losing control of frontier systems. Yet this is exactly the kind of subject where your depth of analysis is missing from the debate.'
+		},
+		mediapart: {
+			fr: "Votre traitement est l'un des rares à prendre le sujet au sérieux : « Pourquoi les spécialistes de l'IA croient qu'elle pourrait tuer tous les humains » le 9 septembre, les virus fabriqués par IA le 5, l'appel du patron d'Anthropic à temporiser le 13. J'aimerais vous voir poursuivre cette enquête.",
+			en: 'Your coverage is among the few that take this seriously: "Why AI specialists believe it could kill every human" on 9 September, AI-designed viruses on the 5th, the Anthropic CEO’s call to slow down on the 13th. I would like to see you continue this investigation.'
+		},
+		slate: {
+			fr: "Vous traitez régulièrement des effets de l'IA, de sa consommation d'eau aux deepfakes, mais je n'ai pas trouvé chez vous de sujet sur les risques les plus graves, ceux dont les laboratoires eux-mêmes parlent depuis deux semaines. C'est ce qui me pousse à vous écrire.",
+			en: 'You regularly cover the effects of AI, from water consumption to deepfakes, but I have not found a piece from you on the gravest risks, the ones the labs themselves have been discussing for two weeks. That is what prompts me to write.'
+		},
+		brut: {
+			fr: "Vous avez posé la bonne question dans votre format « Les géants de la tech ont-ils vraiment peur de l'IA ou est-ce un gros coup de com' ? ». Les faits de cet été permettent maintenant d'y répondre autrement : des agents sortis de leur environnement de test, des incidents reconnus par les entreprises elles-mêmes.",
+			en: 'You asked the right question in your piece "Are the tech giants really afraid of AI, or is it a big PR move?". The facts of this summer now allow a different answer: agents that left their test environment, incidents acknowledged by the companies themselves.'
+		},
+		'france-culture': {
+			fr: "Votre émission du 17 septembre, « L'IA peut-elle nous échapper ? », posait exactement la bonne question, et France Inter l'a prolongée le même jour sur la régulation. Il reste à traiter, je crois, ce que ces alertes impliquent concrètement pour la France.",
+			en: 'Your 17 September programme, "Can AI escape us?", asked exactly the right question, and France Inter carried it further the same day on regulation. What remains to be covered, I think, is what these warnings concretely imply for France.'
+		},
+		'rmc-bfm': {
+			fr: "Vous avez donné la parole à Yoshua Bengio sur la perte de contrôle le 16 septembre, relayé l'appel du secrétaire général de l'ONU le même jour, puis la mise en garde de Charles III le 17. Le prolongement naturel serait d'aller voir ce que la France, elle, en fait.",
+			en: 'You gave Yoshua Bengio the floor on loss of control on 16 September, relayed the UN Secretary-General’s call the same day, then King Charles III’s warning on the 17th. The natural follow-up would be to look at what France itself is doing about it.'
+		},
+		'sciences-et-avenir': {
+			fr: "Vous avez couvert l'essentiel de la séquence : le « risque existentiel » pointé par l'ONU le 7 septembre, le chercheur qui quitte Anthropic en disant que ces entreprises « jouent avec nos vies » le 9, et les opérations de surveillance bloquées par Anthropic le 11. Votre rigueur scientifique serait précieuse sur la question du contrôle.",
+			en: 'You covered most of the sequence: the "existential risk" flagged by the UN on 7 September, the researcher leaving Anthropic saying these companies are "playing with our lives" on the 9th, and the surveillance operations blocked by Anthropic on the 11th. Your scientific rigour would be valuable on the question of control.'
+		}
+	},
 	balance: PRESSE_WARNING_SHOT.balance,
 	balances: PRESSE_WARNING_SHOT.balances,
 	ask: {
