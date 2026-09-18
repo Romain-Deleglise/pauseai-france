@@ -81,6 +81,10 @@ export const campaigns: Campaign[] = [
 		slug: 'perte-de-controle',
 		status: 'active',
 		startDate: '2026-09',
+		// Photo d'une action Pause IA : la campagne s'incarne d'abord dans la
+		// semaine d'action. À remplacer par un cliché de septembre dès qu'on en
+		// aura un.
+		image: '/hero/manif-21.webp',
 		fr: {
 			title: 'Nous sommes au bord de la perte de contrôle : réagissons',
 			homeTitle: 'Nous sommes au bord de la perte de contrôle : réagissons',
