@@ -375,10 +375,13 @@ const MEDIAS: EluAction = {
 	// les-echos, domaines leparisien.fr, liberation.fr, lesechos.fr) dès qu'une
 	// adresse valide est obtenue ; les paragraphes qui leur étaient destinés
 	// sont conservés dans l'historique git du volet presse de la campagne.
-	// Les autres adresses du même motif — Le Figaro, Marianne, le JDD, Courrier
-	// international, Le Canard enchaîné, Sciences et Avenir — présentent le même
-	// risque et restent à tester. Une adresse qui rebondit est pire que pas
-	// d'adresse : l'expéditeur croit son message parti.
+	// Les six autres adresses du même motif ont été vérifiées en septembre 2026
+	// dans les annuaires de contacts presse : Le Figaro, Le Canard enchaîné et
+	// Sciences et Avenir y figurent avec la même adresse que la nôtre, adresse
+	// postale et téléphone concordants ; Marianne et Courrier international y
+	// figurent avec une AUTRE adresse, désormais reprise ici ; seul le JDD reste
+	// sans confirmation. Une adresse qui rebondit est pire que pas d'adresse :
+	// l'expéditeur croit son message parti.
 	id: 'medias',
 	status: 'active',
 	targeting: 'fixed',
@@ -435,7 +438,9 @@ const MEDIAS: EluAction = {
 			nom: 'Marianne',
 			domain: 'marianne.net',
 			role: 'autre',
-			email: 'redaction@marianne.net',
+			// Plusieurs annuaires donnent contact@ comme adresse de la rédaction ;
+			// aucun ne mentionne redaction@, qui figurait ici sans source.
+			email: 'contact@marianne.net',
 			fonction: HEBDO
 		},
 		{
@@ -443,6 +448,8 @@ const MEDIAS: EluAction = {
 			nom: 'Le Journal du Dimanche',
 			domain: 'lejdd.fr',
 			role: 'autre',
+			// Seule des six adresses en redaction@ qui reste sans confirmation :
+			// leur page contact masque les adresses. À tester avant de s'y fier.
 			email: 'redaction@lejdd.fr',
 			fonction: HEBDO
 		},
@@ -451,7 +458,8 @@ const MEDIAS: EluAction = {
 			nom: 'Courrier international',
 			domain: 'courrierinternational.com',
 			role: 'autre',
-			email: 'redaction@courrierinternational.com',
+			// Seule adresse éditoriale retrouvée ; redaction@ n'apparaît nulle part.
+			email: 'web@courrierinternational.com',
 			fonction: HEBDO
 		},
 		{
