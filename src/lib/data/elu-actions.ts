@@ -368,13 +368,17 @@ const MEDIAS: EluAction = {
 	//     bfmtvetvous@bfmtv.fr…) ;
 	//   • des adresses de forme « redaction@<domaine> », qui suivent un motif
 	//     générique et n'ont pas de source établie.
-	// Trois de ces dernières (Le Parisien, Libération, Les Échos) ont été
-	// signalées comme invalides et sont passées à null. Les autres du même motif
-	// — Le Figaro, Marianne, le JDD, Courrier international, Le Canard enchaîné,
-	// Sciences et Avenir — présentent le même risque et restent à vérifier.
-	// Une adresse qui rebondit est pire que pas d'adresse : l'expéditeur croit
-	// son message parti. En l'absence d'email, l'outil propose le texte rédigé
-	// et le bouton « Copier le texte ».
+	// Trois titres ont été RETIRÉS de la liste : Le Parisien, Libération et
+	// Les Échos. Leur adresse en « redaction@ » s'est révélée invalide et leur
+	// formulaire de contact est inexistant ou cassé : les afficher revenait à
+	// proposer une action impossible. À remettre (ids le-parisien, liberation,
+	// les-echos, domaines leparisien.fr, liberation.fr, lesechos.fr) dès qu'une
+	// adresse valide est obtenue ; les paragraphes qui leur étaient destinés
+	// sont conservés dans l'historique git du volet presse de la campagne.
+	// Les autres adresses du même motif — Le Figaro, Marianne, le JDD, Courrier
+	// international, Le Canard enchaîné, Sciences et Avenir — présentent le même
+	// risque et restent à tester. Une adresse qui rebondit est pire que pas
+	// d'adresse : l'expéditeur croit son message parti.
 	id: 'medias',
 	status: 'active',
 	targeting: 'fixed',
@@ -402,30 +406,6 @@ const MEDIAS: EluAction = {
 			fonction: QUOTIDIEN
 		},
 		{
-			id: 'le-parisien',
-			nom: 'Le Parisien',
-			domain: 'leparisien.fr',
-			role: 'autre',
-			email: null, // adresse redaction@ signalée invalide — à remplacer (voir note en tête de bloc)
-			fonction: QUOTIDIEN
-		},
-		{
-			id: 'liberation',
-			nom: 'Libération',
-			domain: 'liberation.fr',
-			role: 'autre',
-			email: null, // adresse redaction@ signalée invalide — à remplacer (voir note en tête de bloc)
-			fonction: QUOTIDIEN
-		},
-		{
-			id: 'les-echos',
-			nom: 'Les Échos',
-			domain: 'lesechos.fr',
-			role: 'autre',
-			email: null, // adresse redaction@ signalée invalide — à remplacer (voir note en tête de bloc)
-			fonction: ECO
-		},
-		{
 			id: 'la-tribune',
 			nom: 'La Tribune',
 			domain: 'latribune.fr',
@@ -447,7 +427,7 @@ const MEDIAS: EluAction = {
 			domain: 'lepoint.fr',
 			role: 'autre',
 			email: null,
-			contactUrl: 'https://www.lepoint.fr/html/contact/',
+			contactUrl: 'https://www.lepoint.fr/html/contact/#contact-form',
 			fonction: HEBDO
 		},
 		{
@@ -1290,18 +1270,6 @@ const PRESSE_PERTE_DE_CONTROLE: EluAction = {
 		'le-figaro': {
 			fr: "Vous avez largement couvert la séquence de septembre, du portrait de Jacob Coxon le 9 à l'alerte de l'ONU le 14. Je vous écris justement parce que votre rédaction suit ce fil.",
 			en: 'You covered the September sequence extensively, from the profile of Jacob Coxon on the 9th to the UN warning on the 14th. I am writing precisely because your newsroom is following this thread.'
-		},
-		'le-parisien': {
-			fr: "Vous avez traité l'alerte de l'ONU sur le « risque existentiel » le 7 septembre, puis l'impact de l'IA sur l'emploi le 15. Il manque, je trouve, le maillon entre les deux : ce que les laboratoires eux-mêmes reconnaissent ne plus contrôler.",
-			en: 'You covered the UN warning about the "existential risk" on 7 September, then the impact of AI on employment on the 15th. What is missing, I think, is the link between the two: what the labs themselves admit they no longer control.'
-		},
-		liberation: {
-			fr: "Vous avez publié plusieurs articles sur le sujet, des dérapages de modèles attribués à OpenAI le 7 septembre à l'organe de supervision annoncé par les laboratoires le 15. La question qui reste ouverte, et que j'aimerais lire chez vous, est celle du contrôle réel de ces engagements.",
-			en: 'You published several pieces on this, from the incidents attributed to OpenAI models on 7 September to the oversight body the labs announced on the 15th. The open question, and the one I would like to read from you, is who actually verifies these commitments.'
-		},
-		'les-echos': {
-			fr: "Vous êtes parmi les rares à suivre ce sujet de près, jusqu'à la fracture entre champions de l'IA autour de la sécurité, le 17 septembre. C'est cette ligne-là que j'aimerais vous voir creuser.",
-			en: 'You are among the few following this closely, up to the rift between AI champions over safety on 17 September. That is the thread I would like to see you dig into.'
 		},
 		'la-croix': {
 			fr: "Votre traitement m'a marqué, en particulier votre éditorial « Intelligence artificielle : pompiers pyromanes » le 13 septembre et votre question du 15, « a-t-on vraiment perdu le contrôle ? ». J'aimerais que vous poursuiviez dans cette voie.",
