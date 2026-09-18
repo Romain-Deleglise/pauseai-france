@@ -39,20 +39,30 @@
 	// servirait l'action « default »). On lit donc ?action côté client au montage,
 	// puis l'action ciblée remplace l'action par défaut. Une action « fixed »
 	// cible des destinataires précis, sinon ce sont les élus de l'utilisateur.
+	// Une page campagne peut remplacer le contenu des deux outils par le sien
+	// (textes propres à la campagne) sans perdre les onglets élus / presse.
+	export let elusActionId = 'default'
+	export let presseActionId = 'medias'
+
 	let actionId: string | null = null
-	$: action = getEluAction(forcedActionId ?? actionId)
+	/** Outil actif quand l'URL n'impose pas d'action. */
+	let tool: 'elus' | 'presse' = 'elus'
+	$: defaultActionId = tool === 'elus' ? elusActionId : presseActionId
+	$: action = getEluAction(forcedActionId ?? actionId ?? defaultActionId)
 
 	// Deux outils principaux présentés en onglets sur la même page (élus / presse).
 	// Les campagnes ponctuelles (Genève, gouvernement…) gardent leur propre page :
 	// on n'affiche les onglets que pour ces deux actions « primaires ».
-	$: isPrimaryAction = action.id === 'default' || action.id === 'medias'
+	$: isPrimaryAction = action.id === elusActionId || action.id === presseActionId
 	$: isPress = !!action.press
-	function selectTool(id: 'default' | 'medias') {
+	function selectTool(which: 'elus' | 'presse') {
 		// Une instance imposée par la page ne change pas d'outil : sans ce garde,
 		// on réécrirait l'URL de la page hôte sans que l'outil bouge.
 		if (forcedActionId) return
-		if (action.id === id) return
-		actionId = id
+		if (tool === which && !actionId) return
+		tool = which
+		const id = which === 'elus' ? elusActionId : presseActionId
+		actionId = null
 		step = 1
 		selectedRecipient = null
 		// Met l'URL à jour pour que l'onglet actif soit partageable / rechargeable.
@@ -509,6 +519,10 @@
 		if (personal.trim()) paras.push(personal.trim())
 		paras.push(balance[L])
 		paras.push(ask[L])
+		// Conclusion facultative, tirée dans le même mouvement que l'appel.
+		if (action.closings?.length) {
+			paras.push(action.closings[aIdx % action.closings.length][L])
+		}
 		return paras
 	}
 
@@ -789,18 +803,18 @@
 				>
 					<button
 						role="tab"
-						class:active={action.id === 'default'}
-						aria-selected={action.id === 'default'}
-						on:click={() => selectTool('default')}
+						class:active={action.id === elusActionId}
+						aria-selected={action.id === elusActionId}
+						on:click={() => selectTool('elus')}
 					>
 						<span class="tab-icon"><Landmark size="1em" aria-hidden="true" /></span>
 						{isEn ? 'Write to my representatives' : 'Écrire à mes élus'}
 					</button>
 					<button
 						role="tab"
-						class:active={action.id === 'medias'}
-						aria-selected={action.id === 'medias'}
-						on:click={() => selectTool('medias')}
+						class:active={action.id === presseActionId}
+						aria-selected={action.id === presseActionId}
+						on:click={() => selectTool('presse')}
 					>
 						<span class="tab-icon"><Newspaper size="1em" aria-hidden="true" /></span>
 						{isEn ? 'Write to the press' : 'Écrire à la presse'}
@@ -915,7 +929,7 @@
 									? 'Next step: ask the press to cover the issue. It takes two more minutes.'
 									: 'Étape suivante : demandez à la presse d’en parler. Deux minutes de plus.'}
 							</p>
-							<Button on:click={() => selectTool('medias')}>
+							<Button on:click={() => selectTool('presse')}>
 								<Newspaper size="1em" aria-hidden="true" />
 								{isEn ? 'Write to the press' : 'Écrire à la presse'}
 							</Button>
