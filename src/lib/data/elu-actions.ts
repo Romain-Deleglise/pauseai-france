@@ -1042,16 +1042,16 @@ const PERTE_DE_CONTROLE: EluAction = {
 	],
 	hooks: [
 		{
-			fr: "Je vous écris au sujet de la course aux systèmes d'IA les plus puissants et des risques qu'elle nous fait courir. Cet été, un incident sans précédent a montré que la perte de contrôle n'est plus une hypothèse d'école.",
-			en: 'I am writing about the race to build the most powerful AI systems and the risks it creates for all of us. This summer, an unprecedented incident showed that losing control is no longer a theoretical scenario.'
+			fr: "Je vous écris au sujet de la course aux systèmes d'IA les plus puissants, et de ce qu'elle nous fait courir comme risque. Ce qui relevait de l'hypothèse d'école il y a encore un an se produit aujourd'hui.",
+			en: 'I am writing about the race to build the most powerful AI systems, and about the risk it creates for all of us. What was still a textbook hypothesis a year ago is now happening.'
 		},
 		{
 			fr: "Il est rare qu'une industrie demande elle-même à être freinée. C'est pourtant ce qui se passe : près de 1 400 personnes travaillant dans les laboratoires d'IA de pointe ont signé un appel à ralentir, et l'un de leurs chercheurs vient de démissionner en déclarant que ces entreprises jouent avec nos vies.",
 			en: 'It is rare for an industry to ask to be slowed down. Yet that is what is happening: nearly 1,400 people working inside frontier AI labs have signed a call to slow the pace, and one of their researchers has just resigned, saying these companies are playing with our lives.'
 		},
 		{
-			fr: "Je fais partie des citoyens que le développement actuel de l'intelligence artificielle inquiète sérieusement, et je doute d'être le seul dans votre circonscription.",
-			en: 'I am one of the citizens seriously worried by the current development of artificial intelligence, and I doubt I am the only one in your constituency.'
+			fr: "Le développement actuel de l'intelligence artificielle m'inquiète sérieusement, et d'autres dans votre circonscription partagent certainement cette inquiétude.",
+			en: 'The current development of artificial intelligence worries me seriously, and others in your constituency certainly share that concern.'
 		},
 		{
 			fr: "Les systèmes d'IA les plus avancés dépassent désormais les meilleurs experts humains en sécurité informatique, et ceux qui les construisent reconnaissent publiquement ne pas les maîtriser. Je voudrais vous alerter sur ce que cela implique.",
@@ -1070,6 +1070,10 @@ const PERTE_DE_CONTROLE: EluAction = {
 				{
 					fr: "Un incident de cet été résume la situation : lors d'un test de sécurité, des agents d'IA sont sortis de l'environnement où ils étaient censés rester confinés, se sont coordonnés entre eux pendant deux mois sans que personne le remarque, puis ont attaqué les serveurs d'une entreprise réelle. Aucun humain ne leur avait demandé de le faire, et aucun d'entre eux n'a donné l'alerte.",
 					en: 'One incident this summer sums up the situation: during a safety test, AI agents left the environment where they were supposed to be confined, coordinated among themselves for two months without anyone noticing, then attacked a real company’s servers. No human had asked them to, and not one of them raised the alarm.'
+				},
+				{
+					fr: "Le point qui me paraît décisif est que personne n'avait demandé ce piratage. La tâche de départ était banale ; ces systèmes ont trouvé seuls qu'enfreindre les règles était le chemin le plus court, et ont continué en sachant qu'ils sortaient du cadre autorisé.",
+					en: 'The decisive point, to me, is that nobody asked for this hack. The initial task was mundane; these systems worked out on their own that breaking the rules was the shortest path, and carried on knowing they were outside the authorised scope.'
 				}
 			],
 			complementLong: {
@@ -1084,6 +1088,12 @@ const PERTE_DE_CONTROLE: EluAction = {
 				fr: "Les cyberattaques assistées par l'IA se multiplient, surtout depuis que les modèles de pointe sont devenus plus experts que les meilleurs humains en sécurité informatique. Or il est beaucoup plus facile d'attaquer que de défendre. Étant donné notre dépendance généralisée au numérique (banques, administrations, transports, logistique, eau potable, services d'urgence), la cybersécurité est clairement devenue un enjeu de sécurité nationale.",
 				en: 'AI-assisted cyberattacks are multiplying, especially since frontier models became better than the best humans at computer security. And attacking is far easier than defending. Given our pervasive dependence on digital systems (banks, public administration, transport, logistics, drinking water, emergency services), cybersecurity has clearly become a matter of national security.'
 			},
+			focusVariants: [
+				{
+					fr: "Ce qui a changé cette année, c'est que l'attaque informatique la plus sophistiquée ne demande plus d'équipe : un système d'IA suffit, et il ne dort pas. Nos banques, nos hôpitaux, notre logistique reposent sur des infrastructures conçues pour résister à des humains.",
+					en: 'What changed this year is that the most sophisticated cyberattack no longer needs a team: one AI system is enough, and it does not sleep. Our banks, hospitals and logistics rest on infrastructure designed to withstand humans.'
+				}
+			],
 			complementLong: {
 				fr: "Une capacité de ce niveau finira par tomber entre de mauvaises mains : c'est une question de temps, pas de probabilité. Et le jour où elle servira à autre chose qu'à tricher à un examen, nous n'aurons aucun moyen de rattraper les dégâts.",
 				en: 'A capability of this level will end up in the wrong hands: that is a matter of time, not of probability. And the day it is used for something other than cheating on a test, we will have no way to undo the damage.'
@@ -1096,6 +1106,12 @@ const PERTE_DE_CONTROLE: EluAction = {
 				fr: "La communauté de la sécurité de l'IA elle-même, jusqu'aux dirigeants des grands laboratoires, est très inquiète. Des scientifiques aux qualités indiscutables, dont plusieurs prix Nobel et prix Turing, affirment que l'IA pourrait entraîner l'extinction de l'humanité, avec une probabilité qu'ils jugent élevée et à l'horizon de quelques années. Quand ceux qui construisent une technologie annoncent eux-mêmes un tel risque, il me semble que la puissance publique ne peut pas s'en remettre à leur bonne volonté.",
 				en: 'The AI safety community itself, up to the leaders of the major labs, is deeply worried. Scientists of unquestionable standing, including several Nobel and Turing laureates, state that AI could lead to human extinction, with a probability they consider high and within a few years. When the very people building a technology announce such a risk, it seems to me that public authorities cannot simply rely on their goodwill.'
 			},
+			focusVariants: [
+				{
+					fr: "Ce n'est pas une inquiétude de militants : ceux qui l'expriment le plus clairement sont les chercheurs qui ont bâti cette technologie, et jusqu'aux dirigeants des laboratoires qui la vendent. Je ne vois pas à quel autre moment de notre histoire des ingénieurs ont demandé publiquement qu'on les empêche de continuer.",
+					en: 'This is not an activist worry: those who state it most clearly are the researchers who built this technology, and even the leaders of the labs selling it. I cannot think of another moment in our history when engineers publicly asked to be stopped.'
+				}
+			],
 			complementLong: {
 				fr: "En 2023 déjà, des centaines de chercheurs et les dirigeants des principaux laboratoires signaient une même phrase : « Atténuer le risque d'extinction lié à l'IA devrait être une priorité mondiale, au même titre que les pandémies ou la guerre nucléaire. » Trois ans plus tard, les capacités ont bondi et les garde-fous n'ont pas bougé.",
 				en: 'Back in 2023, hundreds of researchers and the leaders of the main labs signed a single sentence: "Mitigating the risk of extinction from AI should be a global priority, alongside other societal-scale risks such as pandemics and nuclear war." Three years later, capabilities have leapt forward and the safeguards have not moved.'
@@ -1108,6 +1124,12 @@ const PERTE_DE_CONTROLE: EluAction = {
 				fr: "Il y a dans ce pays une tendance à nier les dangers de l'IA qui me paraît stupéfiante. Passe encore que des personnes peu informées n'y voient qu'un outil, alors qu'il s'agit d'une boîte noire que les chercheurs les plus doués de leur génération ne comprennent déjà plus entièrement. Le pire est l'idée, répandue par certains, que les laboratoires américains joueraient avec nos peurs pour attirer des capitaux. Personnellement, je ne jouerais pas à la roulette russe en pariant sur cette explication.",
 				en: 'There is a tendency in this country to deny the dangers of AI that I find astonishing. It is one thing for people with little information to see it as just a tool, when it is in fact a black box that the most gifted researchers of their generation no longer fully understand. Worse is the idea, spread by some, that American labs are playing on our fears to attract capital. Personally, I would not play Russian roulette on that explanation.'
 			},
+			focusVariants: [
+				{
+					fr: "Ce qui me frappe, c'est l'écart entre la gravité de ce que disent les spécialistes et la légèreté du débat public en France. On traite ces alertes comme une mode technologique de plus, alors qu'elles viennent de ceux qui construisent les systèmes en question.",
+					en: 'What strikes me is the gap between the gravity of what specialists are saying and how lightly the French public debate treats it. These warnings are handled like one more tech fad, when they come from the very people building the systems.'
+				}
+			],
 			complementLong: {
 				fr: "Ce débat mérite mieux que des postures. Il existe des faits vérifiables, des rapports d'incidents publics et des enquêtes indépendantes ; c'est sur cette base que la représentation nationale devrait se prononcer.",
 				en: 'This debate deserves better than posturing. There are verifiable facts, public incident reports and independent investigations; that is the basis on which our elected representatives should take a position.'
@@ -1292,8 +1314,8 @@ const PRESSE_PERTE_DE_CONTROLE: EluAction = {
 			en: 'Your review of the foreign press captured the debate well: a "hoax" for Donald Trump, "alarmism" for China on 15 September, and the regulatory body sought by OpenAI, Anthropic and Google on the 16th. An international look at the calls for a moratorium would usefully complete the picture.'
 		},
 		mediapart: {
-			fr: "Votre traitement est l'un des rares à prendre le sujet au sérieux, de « Pourquoi les spécialistes de l'IA croient qu'elle pourrait tuer tous les humains » le 9 septembre aux virus fabriqués par IA. J'aimerais vous voir poursuivre cette enquête.",
-			en: 'Your coverage is among the few that take this seriously, from "Why AI specialists believe it could kill every human" on 9 September to AI-designed viruses. I would like to see you continue this investigation.'
+			fr: "Votre traitement est l'un des rares à prendre le sujet au sérieux, de « Pourquoi les spécialistes de l'IA croient qu'elle pourrait tuer tous les humains » le 9 septembre aux virus fabriqués par IA. Raison de plus, me semble-t-il, pour ne pas s'arrêter là.",
+			en: 'Your coverage is among the few that take this seriously, from "Why AI specialists believe it could kill every human" on 9 September to AI-designed viruses. All the more reason, it seems to me, not to stop there.'
 		},
 		slate: {
 			fr: "Vous traitez régulièrement des effets de l'IA, de sa consommation d'eau aux deepfakes, mais je n'ai pas trouvé chez vous de sujet sur les risques les plus graves, ceux dont les laboratoires eux-mêmes parlent depuis deux semaines. C'est ce qui me pousse à vous écrire.",
