@@ -380,8 +380,10 @@ const MEDIAS: EluAction = {
 	// Sciences et Avenir y figurent avec la même adresse que la nôtre, adresse
 	// postale et téléphone concordants ; Marianne et Courrier international y
 	// figurent avec une AUTRE adresse, désormais reprise ici ; seul le JDD reste
-	// sans confirmation. Une adresse qui rebondit est pire que pas d'adresse :
-	// l'expéditeur croit son message parti.
+	// sans confirmation : faute de pouvoir la tester, il a été retiré de la
+	// liste par précaution (id le-jdd, domaine lejdd.fr, quotidien) et revient
+	// dès qu'un envoi de contrôle passe. Une adresse qui rebondit est pire que
+	// pas d'adresse : l'expéditeur croit son message parti.
 	id: 'medias',
 	status: 'active',
 	targeting: 'fixed',
@@ -441,16 +443,6 @@ const MEDIAS: EluAction = {
 			// Plusieurs annuaires donnent contact@ comme adresse de la rédaction ;
 			// aucun ne mentionne redaction@, qui figurait ici sans source.
 			email: 'contact@marianne.net',
-			fonction: HEBDO
-		},
-		{
-			id: 'le-jdd',
-			nom: 'Le Journal du Dimanche',
-			domain: 'lejdd.fr',
-			role: 'autre',
-			// Seule des six adresses en redaction@ qui reste sans confirmation :
-			// leur page contact masque les adresses. À tester avant de s'y fier.
-			email: 'redaction@lejdd.fr',
 			fonction: HEBDO
 		},
 		{
@@ -1028,8 +1020,8 @@ const PERTE_DE_CONTROLE: EluAction = {
 			en: 'AI systems escaping their tests: what is France doing?'
 		},
 		{
-			fr: "Inquiétude d'un électeur sur la course à la super-intelligence",
-			en: "A constituent's concern about the race to superintelligence"
+			fr: 'Inquiétude citoyenne sur la course à la super-intelligence',
+			en: 'A citizen’s concern about the race to superintelligence'
 		},
 		{
 			fr: "Sécurité de l'IA : il est temps d'agir, pas de promettre",
@@ -1050,8 +1042,8 @@ const PERTE_DE_CONTROLE: EluAction = {
 			en: 'It is rare for an industry to ask to be slowed down. Yet that is what is happening: nearly 1,400 people working inside frontier AI labs have signed a call to slow the pace, and one of their researchers has just resigned, saying these companies are playing with our lives.'
 		},
 		{
-			fr: "Le développement actuel de l'intelligence artificielle m'inquiète sérieusement, et d'autres dans votre circonscription partagent certainement cette inquiétude.",
-			en: 'The current development of artificial intelligence worries me seriously, and others in your constituency certainly share that concern.'
+			fr: "Le développement actuel de l'intelligence artificielle m'inquiète sérieusement, et beaucoup d'autres autour de moi partagent cette inquiétude.",
+			en: 'The current development of artificial intelligence worries me seriously, and many others around me share that concern.'
 		},
 		{
 			fr: "Les systèmes d'IA les plus avancés dépassent désormais les meilleurs experts humains en sécurité informatique, et ceux qui les construisent reconnaissent publiquement ne pas les maîtriser. Je voudrais vous alerter sur ce que cela implique.",
@@ -1239,8 +1231,8 @@ const PRESSE_PERTE_DE_CONTROLE: EluAction = {
 			en: 'A week of citizen action on the risks of AI'
 		},
 		{
-			fr: 'Un lecteur vous signale un angle sur l’IA',
-			en: 'A reader suggests an AI angle to you'
+			fr: 'Un angle sur l’IA à vous signaler',
+			en: 'An AI angle worth flagging to you'
 		}
 	],
 	hooks: [
@@ -1322,7 +1314,7 @@ const PRESSE_PERTE_DE_CONTROLE: EluAction = {
 			en: 'You regularly cover the effects of AI, from water consumption to deepfakes, but I have not found a piece from you on the gravest risks, the ones the labs themselves have been discussing for two weeks. That is what prompts me to write.'
 		},
 		brut: {
-			fr: "Vous avez posé la bonne question dans « Les géants de la tech ont-ils vraiment peur de l'IA ou est-ce un gros coup de com' ? ». Les faits de cet été permettent d'y répondre autrement, et vos abonnés méritent cette suite.",
+			fr: "Vous avez posé la bonne question dans « Les géants de la tech ont-ils vraiment peur de l'IA ou est-ce un gros coup de com' ? ». Les faits de cet été permettent d'y répondre autrement, et votre audience mérite cette suite.",
 			en: 'You asked the right question in "Are the tech giants really afraid of AI, or is it a big PR move?". The facts of this summer allow a different answer, and your audience deserves that follow-up.'
 		},
 		'france-culture': {
@@ -1346,8 +1338,8 @@ const PRESSE_PERTE_DE_CONTROLE: EluAction = {
 	},
 	asks: [
 		{
-			fr: "Ma demande est simple : que ce sujet ait la place qu'il mérite dans vos pages, au-delà du fait divers technologique. Une enquête, une interview, ou le suivi d'une des actions citoyennes de cette semaine seraient déjà beaucoup. Pause IA (pauseia.fr) est à votre disposition pour des sources et des contacts.",
-			en: 'My request is simple: give this subject the space it deserves in your pages, beyond the tech-news-in-brief. An investigation, an interview, or coverage of one of this week’s citizen actions would already be a lot. Pause AI (pauseia.fr) is available for sources and contacts.'
+			fr: "Ma demande est simple : que ce sujet ait chez vous la place qu'il mérite, au-delà du fait divers technologique. Une enquête, une interview, ou le suivi d'une des actions citoyennes de cette semaine seraient déjà beaucoup. Pause IA (pauseia.fr) est à votre disposition pour des sources et des contacts.",
+			en: 'My request is simple: give this subject the space it deserves, beyond the tech-news-in-brief. An investigation, an interview, or coverage of one of this week’s citizen actions would already be a lot. Pause AI (pauseia.fr) is available for sources and contacts.'
 		},
 		{
 			fr: "Je vous invite à traiter la question de fond : qui contrôle réellement ces systèmes, et sur quelle base décide-t-on qu'ils peuvent être déployés ? Des chercheurs français et internationaux sont disponibles pour en parler ; Pause IA (pauseia.fr) peut faire le lien.",
