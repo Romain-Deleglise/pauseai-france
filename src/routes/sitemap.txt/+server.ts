@@ -4,7 +4,7 @@ import { getStaticRoutes } from '$lib/routes'
 
 export const prerender = true
 
-export async function GET() {
+export function GET() {
 	// Les articles ne sont plus servis qu'avec un préfixe de langue.
 	const postsFr = getPosts('', 'fr')
 	const postsEn = getPosts('', 'en')

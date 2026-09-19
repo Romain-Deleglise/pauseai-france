@@ -4,7 +4,7 @@
 
 	export let data: LayoutData
 
-	$: if (browser && data.lang) {
+	$: if (browser) {
 		document.documentElement.lang = data.lang
 	}
 </script>

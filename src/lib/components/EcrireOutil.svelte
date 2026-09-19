@@ -286,7 +286,7 @@
 		? isEn
 			? 'The MPs of your department'
 			: 'Les députés de votre département'
-		: (result.deputes.length ?? 0) > 1
+		: result.deputes.length > 1
 			? isEn
 				? 'Your MPs (your city)'
 				: 'Vos députés (votre ville)'
@@ -301,7 +301,7 @@
 	//  - un seul député pour ce code postal : circonscription certaine.
 	$: deputeScope = !result?.exactDeputes
 		? 'departement'
-		: (result.deputes.length ?? 0) > 1
+		: result.deputes.length > 1
 			? 'ville'
 			: 'circonscription'
 
@@ -329,12 +329,15 @@
 			})()
 		: []
 
+	// Le type est nommé pour que les trois branches produisent le même, et que
+	// la comparaison sur `kind` reste possible dans le gabarit.
+	type RecipientGroupKind = 'fixed' | 'senateurs' | 'deputes'
 	$: recipientGroups =
 		action.targeting === 'fixed'
 			? action.fixedTargets?.length
 				? [
 						{
-							kind: 'fixed' as const,
+							kind: 'fixed' as RecipientGroupKind,
 							title: action.targetsHeading
 								? isEn
 									? action.targetsHeading.en
@@ -349,12 +352,12 @@
 			: result
 				? [
 						{
-							kind: 'senateurs' as const,
+							kind: 'senateurs' as RecipientGroupKind,
 							title: isEn ? 'Your senators' : 'Vos sénateurs',
 							list: result.senateurs.map(fromElu)
 						},
 						{
-							kind: 'deputes' as const,
+							kind: 'deputes' as RecipientGroupKind,
 							title: deputeTitle,
 							list: deputeRecipients
 						}
@@ -665,7 +668,12 @@
 			search()
 		}
 		try {
-			const u = JSON.parse(localStorage.getItem('elus-user') ?? '{}')
+			const u = JSON.parse(localStorage.getItem('elus-user') ?? '{}') as {
+				userName?: string
+				userVille?: string
+				userEmail?: string
+				personalSentence?: string
+			}
 			userName = u.userName ?? ''
 			userVille = u.userVille ?? ''
 			userEmail = u.userEmail ?? ''
@@ -677,7 +685,7 @@
 	})
 	function loadSent(key: string) {
 		try {
-			sent = new Set(JSON.parse(localStorage.getItem(key) ?? '[]'))
+			sent = new Set(JSON.parse(localStorage.getItem(key) ?? '[]') as string[])
 		} catch {
 			sent = new Set()
 		}
@@ -708,7 +716,7 @@
 	// `sendBeacon` survit à la navigation immédiate vers le client mail. Ce n'est
 	// pas une preuve d'envoi (c'est le clic) : le compteur fiable reste le BCC.
 	function logIntent(r: Recipient) {
-		if (typeof navigator === 'undefined' || !navigator.sendBeacon) return
+		if (typeof navigator === 'undefined' || typeof navigator.sendBeacon !== 'function') return
 		try {
 			const payload = JSON.stringify({
 				action: action.id,

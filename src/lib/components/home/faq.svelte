@@ -3,10 +3,9 @@
 	import FaqList from '$components/FaqList.svelte'
 	import Fly from '$components/Fly.svelte'
 	import { parseFaq, flattenFaq, faqJsonLd } from '$lib/faq'
+	import { jsonLdTag } from '$lib/jsonLd'
 	import type { Lang } from '$lib/i18n'
-	// @ts-ignore - Vite raw import
 	import faqRaw from '$posts/faq.md?raw'
-	// @ts-ignore - Vite raw import
 	import faqRawEn from '$posts/en/faq.md?raw'
 
 	export let lang: Lang = 'fr'
@@ -16,13 +15,12 @@
 	$: categories = parseFaq(isEn ? faqRawEn : faqRaw)
 	// La FAQ n'existe plus qu'ici : les données structurées suivent, sinon on
 	// perdrait l'affichage enrichi de Google.
-	$: jsonLd = faqJsonLd(flattenFaq(categories))
-	$: jsonLdTag = `<script type="application/ld+json">${jsonLd}<\/script>`
+	$: jsonLdScript = jsonLdTag(faqJsonLd(flattenFaq(categories)))
 </script>
 
 <svelte:head>
 	<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-	{@html jsonLdTag}
+	{@html jsonLdScript}
 </svelte:head>
 
 <section id="faq" class="faq" aria-labelledby={label_id}>

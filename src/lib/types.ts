@@ -32,3 +32,11 @@ export interface ArticleShowcaseItem {
 	image?: string
 	langue?: string
 }
+
+/** Réponse de /api/subscribe, commune à tous les formulaires d'inscription. */
+export interface SubscribeResponse {
+	success?: boolean
+	message?: string
+	error?: string
+	contact_id?: number
+}

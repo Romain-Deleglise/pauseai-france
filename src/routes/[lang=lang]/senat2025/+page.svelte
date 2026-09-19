@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { SubscribeResponse } from '$lib/types'
 	import Button from '$lib/components/Button.svelte'
 	import type { PageData } from './$types'
 
@@ -52,7 +53,7 @@
 					source: 'senat2025'
 				})
 			})
-			const json = await res.json()
+			const json = (await res.json()) as SubscribeResponse
 			if (res.ok && json.success) {
 				message =
 					json.message ||

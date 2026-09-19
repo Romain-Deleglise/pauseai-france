@@ -32,8 +32,7 @@
 	$: {
 		if ($faqBulkAction.ts > lastProcessedTs) {
 			lastProcessedTs = $faqBulkAction.ts
-			if ($faqBulkAction.action === 'expand') open = true
-			else if ($faqBulkAction.action === 'collapse') open = false
+			open = $faqBulkAction.action === 'expand'
 		}
 	}
 </script>

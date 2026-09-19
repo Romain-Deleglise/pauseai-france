@@ -65,6 +65,12 @@
 		selectedCampaign = null
 	}
 
+	// Seul un clic sur le fond ferme la modale : un clic dans la boîte remonte
+	// jusqu'ici, on le distingue par sa cible.
+	function closeOnBackdrop(e: MouseEvent) {
+		if (e.target === e.currentTarget) closeSummary()
+	}
+
 	function handleKeydown(e: KeyboardEvent) {
 		if (e.key === 'Escape') closeSummary()
 	}
@@ -98,8 +104,12 @@
 					: ''}"
 				role={hasSummary ? 'button' : undefined}
 				tabindex={hasSummary ? 0 : undefined}
-				on:click={() => hasSummary && openSummary(campaign)}
-				on:keydown={(e) => e.key === 'Enter' && hasSummary && openSummary(campaign)}
+				on:click={() => {
+					if (hasSummary) openSummary(campaign)
+				}}
+				on:keydown={(e) => {
+					if (e.key === 'Enter' && hasSummary) openSummary(campaign)
+				}}
 			>
 				<div class="card-top">
 					<Badge size="sm" variant={campaign.status === 'ended' ? 'neutral' : 'success'}>
@@ -131,7 +141,7 @@
 	<div
 		class="modal-overlay"
 		role="presentation"
-		on:click={closeSummary}
+		on:click={closeOnBackdrop}
 		transition:fade={{ duration: 150 }}
 	>
 		<div
@@ -139,7 +149,6 @@
 			role="dialog"
 			aria-modal="true"
 			aria-label={isEn ? 'Campaign results' : 'Bilan de la campagne'}
-			on:click|stopPropagation
 		>
 			<button class="modal-close" on:click={closeSummary} aria-label={isEn ? 'Close' : 'Fermer'}
 				>&times;</button

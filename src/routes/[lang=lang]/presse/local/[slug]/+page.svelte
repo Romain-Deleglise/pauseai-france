@@ -65,6 +65,7 @@
 
 	<article class="pr-content">
 		{#if data.hasContent}
+			<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 			{@html data.content}
 		{:else}
 			<iframe
@@ -124,6 +125,7 @@
 		<div class="fullscreen-body">
 			{#if data.hasContent}
 				<div class="pr-content">
+					<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 					{@html data.content}
 				</div>
 			{:else}

@@ -23,7 +23,7 @@
 
 	$: coverageByYear = pressCoverage.reduce<Record<string, PressCoverage[]>>((acc, item) => {
 		const year = item.date ? item.date.slice(0, 4) : '?'
-		if (!acc[year]) acc[year] = []
+		acc[year] ??= []
 		acc[year].push(item)
 		return acc
 	}, {})

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { openActivoiceForm } from '$lib/activoice'
 	import PostMeta from '$components/PostMeta.svelte'
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
 	import Button from '$lib/components/Button.svelte'
@@ -10,18 +11,10 @@
 	$: t = getT(data.lang)
 
 	function openActivoice() {
-		const embedEl = document.getElementById(
-			'activoice-embed-a0fa93be_f050_4d77_8a0c_9e70e3fe02b6'
-		) as HTMLElement & { openWithId?: (id: string) => void }
-		if ((window as Window & { Activoice?: { bootstrap: () => Promise<void> } }).Activoice) {
-			;(window as Window & { Activoice?: { bootstrap: () => Promise<void> } })
-				.Activoice!.bootstrap()
-				.then(() => {
-					;(embedEl as HTMLElement & { openWithId?: (id: string) => void }).openWithId?.(
-						'a0fa93be-f050-4d77-8a0c-9e70e3fe02b6'
-					)
-				})
-		}
+		void openActivoiceForm(
+			'activoice-embed-a0fa93be_f050_4d77_8a0c_9e70e3fe02b6',
+			'a0fa93be-f050-4d77-8a0c-9e70e3fe02b6'
+		)
 	}
 </script>
 

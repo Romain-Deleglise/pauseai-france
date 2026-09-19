@@ -2,7 +2,6 @@
 	import { page } from '$app/stores'
 
 	export let label: string
-	export let white = false
 	export let items: {
 		href: string
 		label: string
@@ -33,7 +32,6 @@
 	<button
 		class="trigger"
 		class:active={hasActiveChild}
-		class:white
 		on:click={() => (open = !open)}
 		aria-expanded={open}
 		aria-haspopup="menu"
@@ -132,10 +130,6 @@
 		white-space: nowrap;
 	}
 
-	.trigger.white {
-		color: rgba(255, 255, 255, 0.9);
-	}
-
 	.trigger:hover,
 	.trigger.active {
 		background: rgba(0, 0, 0, 0.05);
@@ -145,12 +139,6 @@
 	:global([data-theme='dark']) .trigger:hover,
 	:global([data-theme='dark']) .trigger.active {
 		background: rgba(255, 255, 255, 0.07);
-	}
-
-	.trigger.white:hover,
-	.trigger.white.active {
-		background: rgba(255, 255, 255, 0.15);
-		color: var(--white);
 	}
 
 	.trigger {

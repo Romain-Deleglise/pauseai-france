@@ -22,9 +22,6 @@
 		$page.url.pathname == `/${lang}/`
 	let bannerDismissed = false
 
-	// Hero has a light background — header stays dark on homepage
-	$: whiteNav = false && onHomepage && !scrolled
-
 	let open = false
 	let scrolled = false
 	let mounted = false
@@ -153,7 +150,7 @@
 	function getSwitchLangHref(pathname: string, currentLang: string, other: string) {
 		const slugsFrom = DANGER_SLUGS[currentLang as 'fr' | 'en']
 		const slugsTo = DANGER_SLUGS[other as 'fr' | 'en']
-		if (slugsFrom && slugsTo) {
+		{
 			const dangerMatch = pathname.match(new RegExp(`^/${currentLang}/dangers/(.+)$`))
 			if (dangerMatch) {
 				const idx = slugsFrom.indexOf(dangerMatch[1])
@@ -170,7 +167,7 @@
 	// URL est saisie sans libellé — on complète avec la campagne en cours
 	// plutôt que d'afficher un bouton mort ou de le faire disparaître.
 	$: featuredCampaign = getFeaturedCampaign()
-	$: bannerFallbackUrl = featuredCampaign ? `${prefix}/${featuredCampaign.slug}` : `${prefix}`
+	$: bannerFallbackUrl = featuredCampaign ? `${prefix}/${featuredCampaign.slug}` : prefix
 	$: bannerLink =
 		$bannerStore.linkUrl || $bannerStore.linkText
 			? {
@@ -207,7 +204,7 @@
 		<nav in:fade={{ duration: 400, delay: 100 }} class:scrolled class:homepage={onHomepage}>
 			<a href={prefix} class="logo">
 				<div class="big-logo">
-					<Logo animate fill_pause={whiteNav ? 'white' : $theme === 'dark' ? 'white' : 'black'} />
+					<Logo animate fill_pause={$theme === 'dark' ? 'white' : 'black'} />
 				</div>
 				<div class="small-logo">
 					<Logo animate only_circle />
@@ -217,22 +214,20 @@
 			<div class="nav-right">
 				<div class="nav-links">
 					{#each navGroups as group}
-						<NavDropdown label={group.label} items={group.items} white={whiteNav} />
+						<NavDropdown label={group.label} items={group.items} />
 					{/each}
 					<!-- Séparateur vertical -->
-					<div class="nav-separator" class:on-hero={whiteNav} aria-hidden="true"></div>
+					<div class="nav-separator" aria-hidden="true"></div>
 					<!-- CTAs -->
 					<div class="nav-ctas">
 						<a
 							href={switchLangHref}
 							class="lang-toggle"
-							class:on-hero={whiteNav}
 							aria-label={otherLang === 'fr' ? 'Passer en français' : 'Switch to English'}
 							title={otherLang === 'fr' ? 'Français' : 'English'}>{otherLang.toUpperCase()}</a
 						>
 						<button
 							class="theme-toggle"
-							class:on-hero={whiteNav}
 							on:click={() => {
 								theme.toggle()
 							}}
@@ -277,8 +272,8 @@
 								</svg>
 							{/if}
 						</button>
-						<a href="{prefix}/dons" class="btn-donate" class:on-hero={whiteNav}>Donner</a>
-						<a href="{prefix}/rejoindre" class="btn-join" class:on-hero={whiteNav}>Rejoindre</a>
+						<a href="{prefix}/dons" class="btn-donate">Donner</a>
+						<a href="{prefix}/rejoindre" class="btn-join">Rejoindre</a>
 					</div>
 				</div>
 				<button
@@ -299,21 +294,21 @@
 							y="0"
 							height="2.5"
 							width="24"
-							fill={whiteNav ? 'white' : $theme === 'dark' ? 'white' : 'black'}
+							fill={$theme === 'dark' ? 'white' : 'black'}
 						/>
 						<rect
 							class="bar bar-mid"
 							y="10.75"
 							height="2.5"
 							width="24"
-							fill={whiteNav ? 'white' : $theme === 'dark' ? 'white' : 'black'}
+							fill={$theme === 'dark' ? 'white' : 'black'}
 						/>
 						<rect
 							class="bar bar-bot"
 							y="21.5"
 							height="2.5"
 							width="24"
-							fill={whiteNav ? 'white' : $theme === 'dark' ? 'white' : 'black'}
+							fill={$theme === 'dark' ? 'white' : 'black'}
 						/>
 					</svg>
 				</button>
@@ -458,7 +453,9 @@
 					class="sidebar-backdrop"
 					role="presentation"
 					on:click={closeMenu}
-					on:keydown={(e) => (e.key === 'Escape' || e.key === 'Enter') && closeMenu()}
+					on:keydown={(e) => {
+						if (e.key === 'Escape' || e.key === 'Enter') closeMenu()
+					}}
 					transition:fade={{ duration: 200 }}
 					use:portal
 				></div>
@@ -563,10 +560,6 @@
 		flex-shrink: 0;
 	}
 
-	.nav-separator.on-hero {
-		background: rgba(255, 255, 255, 0.4);
-	}
-
 	/* CTAs group (Donner + Rejoindre) */
 	.nav-ctas {
 		display: flex;
@@ -613,26 +606,6 @@
 	}
 
 	/* On hero (white text context): invert to semi-transparent white */
-	.btn-donate.on-hero {
-		background: rgba(255, 255, 255, 0.2);
-		color: white;
-		outline: 1.5px solid rgba(255, 255, 255, 0.5);
-		outline-offset: -1.5px;
-	}
-
-	.btn-donate.on-hero:hover {
-		background: rgba(255, 255, 255, 0.32);
-		opacity: 1;
-	}
-
-	.btn-join.on-hero {
-		background: white;
-		color: black;
-	}
-
-	.btn-join.on-hero:hover {
-		opacity: 0.88;
-	}
 
 	/* ─── Theme toggle ───────────────────────────────────────── */
 	.theme-toggle {
@@ -653,14 +626,6 @@
 
 	.theme-toggle:hover {
 		background: rgba(0, 0, 0, 0.08);
-	}
-
-	.theme-toggle.on-hero {
-		color: white;
-	}
-
-	.theme-toggle.on-hero:hover {
-		background: rgba(255, 255, 255, 0.15);
 	}
 
 	/* Dark mode: flip icon colors automatically via CSS currentColor */
@@ -689,14 +654,6 @@
 
 	.lang-toggle:hover {
 		background: rgba(0, 0, 0, 0.08);
-	}
-
-	.lang-toggle.on-hero {
-		color: white;
-	}
-
-	.lang-toggle.on-hero:hover {
-		background: rgba(255, 255, 255, 0.15);
 	}
 
 	:global([data-theme='dark']) .lang-toggle:hover {

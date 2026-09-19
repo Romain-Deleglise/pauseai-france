@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { openActivoiceForm } from '$lib/activoice'
 	import { Badge } from '$components/ui'
 	import PostMeta from '$components/PostMeta.svelte'
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
@@ -220,6 +221,12 @@
 		showCharterModal = true
 	}
 
+	// Seul un clic sur le fond ferme : un clic dans la boîte remonte jusqu'ici,
+	// on le distingue par sa cible.
+	function closeOnBackdrop(e: MouseEvent) {
+		if (e.target === e.currentTarget) closeModal()
+	}
+
 	function closeModal() {
 		showCharterModal = false
 		showGeneralModal = false
@@ -227,14 +234,10 @@
 	}
 
 	function openActivoice() {
-		const embedEl = document.getElementById(
-			'activoice-embed-1d572d9b_9638_4731_84c0_ce7fd867cccb'
-		) as any
-		if ((window as any).Activoice) {
-			;(window as any).Activoice.bootstrap().then(() => {
-				embedEl?.openWithId('1d572d9b-9638-4731-84c0-ce7fd867cccb')
-			})
-		}
+		void openActivoiceForm(
+			'activoice-embed-1d572d9b_9638_4731_84c0_ce7fd867cccb',
+			'1d572d9b-9638-4731-84c0-ce7fd867cccb'
+		)
 	}
 
 	function formatDate(dateStr: string): string {
@@ -397,11 +400,9 @@
 
 <!-- Modal : Charte d'un candidat -->
 {#if showCharterModal && selectedCandidate}
-	<!-- svelte-ignore a11y-click-events-have-key-events -->
-	<div class="modal-overlay" on:click={closeModal}>
+	<div class="modal-overlay" role="presentation" on:click={closeOnBackdrop}>
 		<div
 			class="modal-content"
-			on:click|stopPropagation
 			role="dialog"
 			aria-modal="true"
 			aria-label={isEn
@@ -460,11 +461,9 @@
 
 <!-- Modal : Charte générale -->
 {#if showGeneralModal}
-	<!-- svelte-ignore a11y-click-events-have-key-events -->
-	<div class="modal-overlay" on:click={closeModal}>
+	<div class="modal-overlay" role="presentation" on:click={closeOnBackdrop}>
 		<div
 			class="modal-content modal-content--img"
-			on:click|stopPropagation
 			role="dialog"
 			aria-modal="true"
 			aria-label={isEn ? 'Pause AI Charter' : 'Charte Pause IA'}

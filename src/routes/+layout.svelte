@@ -8,7 +8,8 @@
 	import Header from '$components/Header.svelte'
 	// import Toc from '$components/Toc.svelte'
 	import { bannerStore } from '$lib/stores/banner'
-	import { theme } from '$lib/stores/theme'
+	import type { Banner } from '$lib/notion'
+	import { jsonLdTag } from '$lib/jsonLd'
 	import { onMount } from 'svelte'
 	import type { Lang } from '$lib/i18n'
 
@@ -31,7 +32,7 @@
 		try {
 			const res = await fetch('/api/banner')
 			if (res.ok) {
-				const banner = await res.json()
+				const banner = (await res.json()) as Banner | null
 				if (banner) {
 					bannerStore.set(banner)
 				}
@@ -41,9 +42,7 @@
 		}
 	})
 	// Données structurées de l'organisation, présentes sur toutes les pages.
-	// La balise est assemblée ici plutôt que dans le markup : un <script>
-	// littéral dans un gabarit empêche le linter d'analyser le fichier.
-	const organisationJsonLd = `<script type="application/ld+json">${JSON.stringify({
+	const organisationJsonLd = jsonLdTag({
 		'@context': 'https://schema.org',
 		'@type': ['Organization', 'NGO'],
 		name: 'PauseAI France',
@@ -59,7 +58,9 @@
 			'https://pauseia.substack.com/',
 			'https://www.threads.net/@pause_ia'
 		]
-	})}<\/script>`
+		// eslint-disable-next-line no-useless-escape -- la barre oblique doit rester
+		// échappée : la balise fermante littérale terminerait ce bloc de script.
+	})
 </script>
 
 <svelte:head>

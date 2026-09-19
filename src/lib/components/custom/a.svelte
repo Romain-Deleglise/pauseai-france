@@ -26,7 +26,7 @@
 	const LANG_FREE = ['/fr/', '/en/', '/api/', '/pdfs/', '/campaigns/', '/hero/', '/membres/']
 	// Pages restées sans préfixe (françaises uniquement).
 	const NO_LANG = ['/recrutement', '/guide-recrutement', '/rss', '/fr', '/en']
-	$: lang = ($page.data.lang as string) ?? 'fr'
+	$: lang = ($page.data.lang as string | undefined) ?? 'fr'
 	$: resolved =
 		href.startsWith('/') &&
 		!LANG_FREE.some((p) => href.startsWith(p)) &&
@@ -37,7 +37,7 @@
 
 	if ((href.startsWith('http:') || href.startsWith('https:')) && !href.startsWith(siteUrl)) {
 		type = Type.External
-		if (!target) target = '_blank'
+		target ??= '_blank'
 	} else if (href.startsWith('mailto:')) type = Type.Mail
 
 	onMount(() => {

@@ -32,7 +32,7 @@
 		try {
 			const res = await fetch('/api/events')
 			if (!res.ok) return
-			const events: LocalEvent[] = await res.json()
+			const events = (await res.json()) as LocalEvent[]
 			const today = new Date()
 			today.setHours(0, 0, 0, 0)
 			next =

@@ -19,12 +19,18 @@ module.exports = {
 		tsconfigRootDir: __dirname
 	},
 	rules: {
+		// Un identifiant préfixé d'un tiret bas signale une valeur volontairement
+		// ignorée (indice de boucle, argument de rappel).
+		'@typescript-eslint/no-unused-vars': [
+			'error',
+			{ argsIgnorePattern: '^_', varsIgnorePattern: '^_', caughtErrorsIgnorePattern: '^_' }
+		],
 		// Le code traite volontairement la chaîne vide comme une absence de
 		// valeur (champs de formulaire, propriétés Notion) : `||` est alors le
 		// bon opérateur, `??` laisserait passer des chaînes vides.
 		'@typescript-eslint/prefer-nullish-coalescing': [
 			'error',
-			{ ignorePrimitives: { string: true } }
+			{ ignorePrimitives: { string: true, boolean: true } }
 		],
 		// Interpoler un nombre ou un booléen dans un gabarit est sans danger.
 		'@typescript-eslint/restrict-template-expressions': [

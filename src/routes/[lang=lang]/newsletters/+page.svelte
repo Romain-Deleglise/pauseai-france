@@ -85,8 +85,8 @@
 	const PAGE_SIZE = 12
 	let currentPage = 1
 
-	// Reset to page 1 when search changes
-	$: if (searchQuery !== undefined) currentPage = 1
+	// Revenir à la première page dès que la recherche change
+	$: if (searchQuery || !searchQuery) currentPage = 1
 
 	$: totalPages = Math.max(1, Math.ceil(filteredNewsletters.length / PAGE_SIZE))
 	$: paginatedNewsletters = filteredNewsletters.slice(

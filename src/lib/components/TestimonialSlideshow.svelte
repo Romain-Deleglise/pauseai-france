@@ -82,7 +82,6 @@
 <section class="slideshow" aria-roledescription="carousel">
 	{#if slides.length}
 		<figure class="slide" aria-live="polite">
-			<!-- svelte-ignore a11y-no-static-element-interactions -->
 			<div class="slide-frame" on:touchstart={onTouchStart} on:touchend={onTouchEnd}>
 				<button
 					type="button"
@@ -132,7 +131,10 @@
 	<!-- Vue plein écran pour lire les cartes chargées en texte.
 	     Navigation : flèches ‹ ›, clavier ← →, balayage tactile.
 	     Fermeture : clic sur le fond, bouton ×, ou touche Échap. -->
-	<!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions a11y-no-noninteractive-element-interactions -->
+	<!-- Le clavier est géré au niveau de la fenêtre (Échap ferme, ← → naviguent)
+	     et par les boutons ci-dessous ; ce fond ne fait que doubler ces chemins
+	     à la souris et au doigt. -->
+	<!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
 	<div
 		class="lightbox"
 		role="dialog"

@@ -22,9 +22,9 @@
 	let copiedField: string | null = null
 
 	let dialogEl: HTMLElement
-	let firstFocusEl: HTMLElement
+	let firstFocusEl: HTMLElement | undefined
 
-	$: if (show) {
+	$: if (show && firstFocusEl) {
 		step = 1
 		prenom = ''
 		nom = ''
@@ -52,9 +52,9 @@
 		}
 	}
 
-	$: if (show && firstFocusEl) {
+	$: if (show) {
 		setTimeout(() => {
-			firstFocusEl.focus()
+			firstFocusEl?.focus()
 		}, 50)
 	}
 
@@ -148,7 +148,6 @@
 <svelte:window on:keydown={handleKeydown} />
 
 {#if show}
-	<!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
 	<div class="overlay" on:click={handleOverlayClick} aria-hidden="true"></div>
 	<div
 		class="modal"

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { SubscribeResponse } from '$lib/types'
 	import type { Lang } from '$lib/i18n'
 
 	export let lang: Lang = 'fr'
@@ -27,7 +28,7 @@
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ email, subscribeNewsletter: true, source: 'homepage-cta' })
 			})
-			const result = await res.json()
+			const result = (await res.json()) as SubscribeResponse
 			if (res.ok) {
 				message =
 					lang === 'en'

@@ -5,11 +5,11 @@
 
 	export let visible = true
 
-	const dispatch = createEventDispatcher<{ close: void }>()
+	const dispatch = createEventDispatcher<{ close: null }>()
 
 	function handleClose() {
 		visible = false
-		dispatch('close')
+		dispatch('close', null)
 	}
 </script>
 

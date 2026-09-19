@@ -107,7 +107,7 @@
 	let mounted = false
 	let heroTopOffset = 80 // fallback in px
 	let heroBgEl: HTMLElement | null = null
-	let contentBoxEl: HTMLElement | null = null
+	let contentBoxEl: HTMLElement | undefined
 	let frostColTop = 'calc(50% - 17rem)' // CSS fallback before measurement
 
 	function measureFrostCol() {
@@ -124,7 +124,7 @@
 		let roContent: ResizeObserver | undefined
 
 		// Wait for pending DOM updates (Header nav rendering) before measuring
-		tick().then(async () => {
+		void tick().then(async () => {
 			const header = document.querySelector('.site-header')
 			const main = document.querySelector('main')
 

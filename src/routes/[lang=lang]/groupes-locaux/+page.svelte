@@ -87,7 +87,7 @@
 	let events: LocalEvent[] = []
 	// Carte chargée en différé, mais suffisamment en avance (grande marge) pour
 	// qu'elle soit déjà prête quand l'utilisateur arrive dessus.
-	let mapSection: HTMLElement
+	let mapSection: HTMLElement | undefined
 	let showMap = false
 	onMount(async () => {
 		if (mapSection && 'IntersectionObserver' in window) {
@@ -106,7 +106,7 @@
 		}
 		try {
 			const res = await fetch('/api/events')
-			if (res.ok) events = await res.json()
+			if (res.ok) events = (await res.json()) as LocalEvent[]
 		} catch {
 			/* agenda indisponible : la page reste fonctionnelle */
 		}

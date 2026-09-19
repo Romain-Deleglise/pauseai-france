@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { jsonLdTag } from '$lib/jsonLd'
 	import { onMount } from 'svelte'
 	import { goto } from '$app/navigation'
 	import { page } from '$app/stores'
@@ -127,7 +128,7 @@
 		const qs = params.toString()
 		const target = qs ? `${$page.url.pathname}?${qs}` : $page.url.pathname
 		if (target !== $page.url.pathname + $page.url.search) {
-			goto(target, { replaceState: true, keepFocus: true, noScroll: true })
+			void goto(target, { replaceState: true, keepFocus: true, noScroll: true })
 		}
 	}
 
@@ -166,7 +167,7 @@
 		const tokens = text.split(/\s+/)
 		const extras: string[] = []
 		for (const t of tokens) {
-			const syns = SYNONYMS[t]
+			const syns = SYNONYMS[t] as string[] | undefined
 			if (syns) extras.push(...syns.map(normalize))
 		}
 		return extras.length > 0 ? text + ' ' + extras.join(' ') : text
@@ -221,7 +222,7 @@
 	$: byCategory = (() => {
 		const m: Record<string, Resource[]> = {}
 		for (const r of filtered) {
-			if (!m[r.category]) m[r.category] = []
+			m[r.category] ??= []
 			m[r.category].push(r)
 		}
 		return m
@@ -231,7 +232,7 @@
 		const m: Record<string, Resource[]> = {}
 		for (const r of list) {
 			const key = r.subgroup ?? '__no_subgroup__'
-			if (!m[key]) m[key] = []
+			m[key] ??= []
 			m[key].push(r)
 		}
 		const order = SUBGROUP_ORDER[category] ?? []
@@ -363,7 +364,7 @@
 		const items = resources.map((r, i) => {
 			const itemUrl = r.internal ? `${siteUrl}${r.url}` : r.url
 			const node: Record<string, unknown> = {
-				'@type': SCHEMA_TYPE[r.type] ?? 'CreativeWork',
+				'@type': (SCHEMA_TYPE as Record<string, string | undefined>)[r.type] ?? 'CreativeWork',
 				name: localized(r.title, lang),
 				description: localized(r.description, lang),
 				url: itemUrl,
@@ -421,14 +422,14 @@
 				''
 			].join('\n')
 		)
-	$: jsonLdTag = `<script type="application/ld+json">${JSON.stringify(jsonLd).replace(/</g, '\\u003c')}<\/script>`
+	$: jsonLdScript = jsonLdTag(jsonLd)
 </script>
 
 <PostMeta {title} {description} />
 
 <svelte:head>
 	<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-	{@html jsonLdTag}
+	{@html jsonLdScript}
 </svelte:head>
 
 <div class="layout">

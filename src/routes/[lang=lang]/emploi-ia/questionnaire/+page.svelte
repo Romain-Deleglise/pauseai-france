@@ -6,7 +6,7 @@
 	import { getT } from '$lib/i18n'
 	import toast from 'svelte-french-toast'
 
-	$: lang = ($page.params.lang as Lang) || 'fr'
+	$: lang = $page.params.lang as Lang
 	$: t = getT(lang)
 	$: frT = getT('fr')
 
@@ -40,10 +40,19 @@
 		'autres'
 	]
 
+	/**
+	 * Libellé d'un secteur d'activité dans la langue donnée. Les clés viennent
+	 * de la liste `sectors` ci-dessus, qui suit le dictionnaire.
+	 */
+	function sectorLabel(dict: ReturnType<typeof getT>, key: string): string {
+		const secteurs = dict.emploi_questionnaire.options.secteurs as Record<string, string>
+		return secteurs[key] ?? key
+	}
+
 	$: translatedSectors = sectors.map((key) => ({
 		key,
-		label: (t.emploi_questionnaire.options.secteurs as any)[key],
-		value: (frT.emploi_questionnaire.options.secteurs as any)[key]
+		label: sectorLabel(t, key),
+		value: sectorLabel(frT, key)
 	}))
 
 	let formData = {
@@ -155,7 +164,7 @@
 
 			if (response.ok) {
 				toast.success(t.emploi_questionnaire.toasts.success)
-				const lang = $page.data.lang || 'fr'
+				const lang = $page.data.lang as Lang
 				await goto(`/${lang}/emploi-ia/merci`)
 			} else {
 				toast.error(t.emploi_questionnaire.toasts.error)

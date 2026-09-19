@@ -4,7 +4,7 @@
 	import { getT } from '$lib/i18n'
 	import { page } from '$app/stores'
 
-	$: lang = ($page.params.lang as Lang) || 'fr'
+	$: lang = $page.params.lang as Lang
 	$: t = getT(lang)
 </script>
 
