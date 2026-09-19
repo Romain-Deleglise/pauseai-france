@@ -3,12 +3,12 @@
 
 	export let label: string
 	export let white = false
-	export let items: Array<{
+	export let items: {
 		href: string
 		label: string
 		external?: boolean
 		muted?: boolean
-	}>
+	}[]
 
 	let open = false
 

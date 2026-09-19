@@ -116,7 +116,7 @@
 		// défilement, ce qui évite l'attente du transcodage à froid de Netlify.
 		if (typeof Image !== 'undefined') {
 			for (const e of events) {
-				if (!e.images?.length) continue
+				if (!e.images.length) continue
 				if (e.featured) {
 					// Toutes les photos du carrousel : la navigation devient instantanée.
 					for (const img of e.images) {
@@ -415,14 +415,18 @@
 									{#if e.images.length > 1}
 										<button
 											class="gallery-nav prev"
-											on:click={() => galStep(e.id, e.images.length, -1)}
+											on:click={() => {
+												galStep(e.id, e.images.length, -1)
+											}}
 											aria-label={isEn ? 'Previous photo' : 'Photo précédente'}
 										>
 											<ChevronLeft size="1.2em" />
 										</button>
 										<button
 											class="gallery-nav next"
-											on:click={() => galStep(e.id, e.images.length, 1)}
+											on:click={() => {
+												galStep(e.id, e.images.length, 1)
+											}}
 											aria-label={isEn ? 'Next photo' : 'Photo suivante'}
 										>
 											<ChevronRight size="1.2em" />

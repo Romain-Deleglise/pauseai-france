@@ -76,7 +76,7 @@
 				return (
 					n.title.toLowerCase().includes(query) ||
 					n.description.toLowerCase().includes(query) ||
-					(n.date && n.date.includes(query))
+					n.date?.includes(query)
 				)
 			})
 		: newsletters
@@ -286,7 +286,12 @@
 				<ul class="sidebar-list">
 					{#each paginatedNewsletters as nl (nl.id)}
 						<li>
-							<button class="sidebar-item" on:click={() => scrollToCard(nl.id)}>
+							<button
+								class="sidebar-item"
+								on:click={() => {
+									scrollToCard(nl.id)
+								}}
+							>
 								<span class="sidebar-item-title">{nl.title}</span>
 								{#if nl.date}
 									<time class="sidebar-item-date" datetime={nl.date}
@@ -327,7 +332,9 @@
 						<button
 							class="pagination-btn"
 							disabled={currentPage === 1}
-							on:click={() => goToPage(currentPage - 1)}
+							on:click={() => {
+								goToPage(currentPage - 1)
+							}}
 							aria-label={t.newsletters.prev_page}
 						>
 							<ChevronLeft size="1.25rem" />
@@ -336,7 +343,9 @@
 							<button
 								class="pagination-btn"
 								class:active={page === currentPage}
-								on:click={() => goToPage(page)}
+								on:click={() => {
+									goToPage(page)
+								}}
 								aria-label={`${t.newsletters.page} ${page}`}
 								aria-current={page === currentPage ? 'page' : undefined}
 							>
@@ -346,7 +355,9 @@
 						<button
 							class="pagination-btn"
 							disabled={currentPage === totalPages}
-							on:click={() => goToPage(currentPage + 1)}
+							on:click={() => {
+								goToPage(currentPage + 1)
+							}}
 							aria-label={t.newsletters.next_page}
 						>
 							<ChevronRight size="1.25rem" />

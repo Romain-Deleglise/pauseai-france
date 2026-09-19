@@ -14,7 +14,10 @@
 //
 // Règle de style : aucun tiret long (—) dans les textes destinés aux utilisateurs.
 
-export type Bilingual = { fr: string; en: string }
+export interface Bilingual {
+	fr: string
+	en: string
+}
 
 /** Un destinataire précis pour une action ciblée (ministre, commission…). */
 export interface FixedTarget {

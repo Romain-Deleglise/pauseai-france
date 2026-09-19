@@ -11,7 +11,7 @@
 	// (choix d’un journal / retour), au lieu de remonter en haut de la page.
 	let pressSection: HTMLElement
 	function scrollToPress() {
-		pressSection?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+		pressSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
 	}
 
 	const SUBSTACK_URL = 'https://pauseia.substack.com/p/pour-la-premiere-fois-une-ia-sest'

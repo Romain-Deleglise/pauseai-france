@@ -1,6 +1,6 @@
 <script lang="ts">
 	export let id: string
-	export let title: string = 'Vidéo YouTube'
+	export let title = 'Vidéo YouTube'
 </script>
 
 <div class="video-container">

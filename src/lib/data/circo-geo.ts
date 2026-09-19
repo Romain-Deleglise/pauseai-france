@@ -94,7 +94,7 @@ export async function findCirco(dept: string, p: GeoPoint): Promise<number | nul
 	if (!features) return null
 	const pt: [number, number] = [p.lon, p.lat]
 	for (const f of features) {
-		if (inGeometry(pt, f.geometry)) return f.properties?.circo ?? null
+		if (inGeometry(pt, f.geometry)) return f.properties.circo ?? null
 	}
 	return null
 }

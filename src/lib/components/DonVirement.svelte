@@ -53,7 +53,9 @@
 	}
 
 	$: if (show && firstFocusEl) {
-		setTimeout(() => firstFocusEl?.focus(), 50)
+		setTimeout(() => {
+			firstFocusEl.focus()
+		}, 50)
 	}
 
 	function close() {
@@ -211,7 +213,9 @@
 								type="button"
 								class="preset-btn"
 								class:selected={selectedPreset === preset}
-								on:click={() => selectPreset(preset)}
+								on:click={() => {
+									selectPreset(preset)
+								}}
 							>
 								{preset}€
 							</button>

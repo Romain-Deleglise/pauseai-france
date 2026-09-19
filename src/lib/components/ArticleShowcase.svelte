@@ -13,8 +13,8 @@
 	$: ALL_CATEGORY = t.emploi_ia.articles_all_category
 	$: ALL_LANG = t.emploi_ia.articles_lang_all
 
-	let activeCategory: string = 'Toutes'
-	let activeLanguage: string = 'Toutes'
+	let activeCategory = 'Toutes'
+	let activeLanguage = 'Toutes'
 	let currentPage = 0
 	let categories: string[] = []
 	let tabs: string[] = []
@@ -142,7 +142,9 @@
 						class:seg-btn--first={i === 0}
 						class:seg-btn--last={i === languages.length - 1}
 						aria-pressed={language.id === activeLanguage}
-						on:click={() => switchLanguage(language.id)}
+						on:click={() => {
+							switchLanguage(language.id)
+						}}
 					>
 						{language.label}
 					</button>

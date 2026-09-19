@@ -324,7 +324,12 @@
 
 		<div class="candidates-grid">
 			{#each candidates as candidate}
-				<button class="candidate-card" on:click={() => openCandidate(candidate)}>
+				<button
+					class="candidate-card"
+					on:click={() => {
+						openCandidate(candidate)
+					}}
+				>
 					<div class="card-top">
 						<div class="candidate-info">
 							<span class="candidate-name">{candidate.name}</span>

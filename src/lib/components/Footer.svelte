@@ -110,7 +110,7 @@
 	<div class="footer-links">
 		<div class="column">
 			<h2>{t.footer.nav_title}</h2>
-			<a href="{prefix}/faq">{t.footer.faq}</a>
+			<a href="{prefix}#faq">{t.footer.faq}</a>
 			<a href="{prefix}/propositions">{t.footer.propositions}</a>
 			<a href="{prefix}/newsletters">{t.footer.newsletters}</a>
 			<a href="https://pauseia.substack.com/">{t.footer.blog}</a>

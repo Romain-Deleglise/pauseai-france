@@ -1,10 +1,11 @@
 <script lang="ts">
+	import type { PageData } from './$types'
 	import PostMeta from '$components/PostMeta.svelte'
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
 
 	import { title as siteName } from '$config'
 
-	export let data
+	export let data: PageData
 
 	const { metadata, slug, content } = data
 	const { title = slug, date, description, image, original } = metadata

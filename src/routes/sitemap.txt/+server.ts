@@ -17,7 +17,7 @@ export async function GET() {
 	const headers = { 'Content-Type': 'text/plain' }
 
 	const lines: string[] = []
-	lines.push(`${website}`)
+	lines.push(website)
 	for (const route of staticRoutes) {
 		lines.push(`${website}${route === '/' ? '' : route}`)
 	}

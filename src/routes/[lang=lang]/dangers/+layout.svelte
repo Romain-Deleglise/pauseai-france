@@ -1,8 +1,9 @@
 <script lang="ts">
+	import type { LayoutData } from './$types'
 	import { onMount } from 'svelte'
 	import MoveLeftIcon from '$components/icons/move-left.svelte'
 	import MoveRightIcon from '$components/icons/move-right.svelte'
-	export let data
+	export let data: LayoutData
 
 	const index = data.posts.findIndex((post) => post.slug === data.slug)
 	const prev = data.posts[index - 1]

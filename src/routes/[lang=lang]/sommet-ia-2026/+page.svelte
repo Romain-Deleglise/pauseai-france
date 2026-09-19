@@ -17,7 +17,7 @@
 			;(window as Window & { Activoice?: { bootstrap: () => Promise<void> } })
 				.Activoice!.bootstrap()
 				.then(() => {
-					;(embedEl as HTMLElement & { openWithId?: (id: string) => void })?.openWithId?.(
+					;(embedEl as HTMLElement & { openWithId?: (id: string) => void }).openWithId?.(
 						'a0fa93be-f050-4d77-8a0c-9e70e3fe02b6'
 					)
 				})

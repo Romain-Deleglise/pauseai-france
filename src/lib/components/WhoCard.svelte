@@ -1,7 +1,7 @@
 <script lang="ts">
 	export let name: string
 	export let image: string | null = null
-	export let job: string = ''
+	export let job = ''
 </script>
 
 <article class="member-card">

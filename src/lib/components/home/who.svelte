@@ -426,7 +426,7 @@
 					<svelte:fragment slot="details">
 						<ul class="bullet-list">
 							<li>
-								Les discours «&nbsp;<a href="/faq">rassuristes</a>&nbsp;» nous font perdre du temps.
+								Les discours «&nbsp;<a href="#faq">rassuristes</a>&nbsp;» nous font perdre du temps.
 								<em
 									>L'IA ne serait pas vraiment intelligente, les géants de la tech exagéreraient les
 									performances de leurs modèles, on serait à la veille de l'explosion d'une bulle

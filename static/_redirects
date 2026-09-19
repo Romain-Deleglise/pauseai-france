@@ -23,7 +23,6 @@
 /dangers  /fr/dangers  301!
 /dangers/*  /fr/dangers/:splat  301!
 /ressources  /fr/ressources  301!
-/faq  /fr/faq  301!
 /agir  /fr/agir  301!
 
 # ── Anciennes URL historiques ──────────────────────────────────────────
@@ -35,3 +34,8 @@
 
 # ── Raccourcis ─────────────────────────────────────────────────────────
 /discord https://discord.gg/vyXGd7AeGc
+
+# La FAQ ne vit plus que sur la page d'accueil (une seule source de vérité).
+/fr/faq  /fr#faq  301!
+/en/faq  /en#faq  301!
+/faq     /fr#faq  301!

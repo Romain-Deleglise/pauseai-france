@@ -101,7 +101,7 @@ export function lookupElus(codePostal: string): LookupResult | null {
 	let deputes = allDeputes
 	let exactDeputes = false
 	const circos = cpToCirco[clean]
-	if (circos && circos.length) {
+	if (circos?.length) {
 		const keys = new Set(circos.map((c) => `${c.departement}-${c.circo}`))
 		const filtered = allDeputes.filter((d) => keys.has(`${d.departement}-${d.circo}`))
 		if (filtered.length) {

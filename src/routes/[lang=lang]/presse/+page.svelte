@@ -21,15 +21,12 @@
 		return new Date(b.date).getTime() - new Date(a.date).getTime()
 	})
 
-	$: coverageByYear = pressCoverage.reduce(
-		(acc, item) => {
-			const year = item.date ? item.date.slice(0, 4) : '?'
-			if (!acc[year]) acc[year] = []
-			acc[year].push(item)
-			return acc
-		},
-		{} as Record<string, PressCoverage[]>
-	)
+	$: coverageByYear = pressCoverage.reduce<Record<string, PressCoverage[]>>((acc, item) => {
+		const year = item.date ? item.date.slice(0, 4) : '?'
+		if (!acc[year]) acc[year] = []
+		acc[year].push(item)
+		return acc
+	}, {})
 	$: coverageYears = Object.keys(coverageByYear).sort((a, b) => b.localeCompare(a))
 
 	// Controlled open/close state for year groups
@@ -253,7 +250,7 @@
 		deptDropdownOpen = false
 		highlightedIndex = -1
 		localCurrentPage = 1
-		deptInputEl?.focus()
+		deptInputEl.focus()
 	}
 
 	function onDeptInputFocus() {
@@ -292,7 +289,7 @@
 			}
 		} else if (e.key === 'Escape') {
 			deptDropdownOpen = false
-			deptInputEl?.blur()
+			deptInputEl.blur()
 		}
 	}
 
@@ -409,7 +406,9 @@
 			<button
 				class="tab"
 				class:active={activeTab === 'national'}
-				on:click={() => switchTab('national')}
+				on:click={() => {
+					switchTab('national')
+				}}
 				role="tab"
 				aria-selected={activeTab === 'national'}
 			>
@@ -421,7 +420,9 @@
 			<button
 				class="tab"
 				class:active={activeTab === 'local'}
-				on:click={() => switchTab('local')}
+				on:click={() => {
+					switchTab('local')
+				}}
 				role="tab"
 				aria-selected={activeTab === 'local'}
 			>
@@ -454,7 +455,12 @@
 					<ul class="sidebar-list">
 						{#each paginatedReleases as pr (pr.id)}
 							<li>
-								<button class="sidebar-item" on:click={() => scrollToCard(pr.id)}>
+								<button
+									class="sidebar-item"
+									on:click={() => {
+										scrollToCard(pr.id)
+									}}
+								>
 									<span class="sidebar-item-title">{pr.title}</span>
 									{#if pr.date}
 										<time class="sidebar-item-date" datetime={pr.date}
@@ -506,7 +512,9 @@
 							<button
 								class="pagination-btn"
 								disabled={currentPage === 1}
-								on:click={() => goToPage(currentPage - 1)}
+								on:click={() => {
+									goToPage(currentPage - 1)
+								}}
 								aria-label={t.presse.prev_page}
 							>
 								<ChevronLeft size="1.25rem" />
@@ -516,7 +524,9 @@
 								<button
 									class="pagination-num"
 									class:active={currentPage === i + 1}
-									on:click={() => goToPage(i + 1)}
+									on:click={() => {
+										goToPage(i + 1)
+									}}
 									aria-label="{t.presse.page} {i + 1}"
 									aria-current={currentPage === i + 1 ? 'page' : undefined}
 								>
@@ -527,7 +537,9 @@
 							<button
 								class="pagination-btn"
 								disabled={currentPage === totalPages}
-								on:click={() => goToPage(currentPage + 1)}
+								on:click={() => {
+									goToPage(currentPage + 1)
+								}}
 								aria-label={t.presse.next_page}
 							>
 								<ChevronRight size="1.25rem" />
@@ -584,7 +596,9 @@
 									class="dept-option"
 									class:highlighted={i === highlightedIndex}
 									aria-selected={code === selectedDepartment}
-									on:mousedown|preventDefault={() => selectDepartment(code)}
+									on:mousedown|preventDefault={() => {
+										selectDepartment(code)
+									}}
 								>
 									<span class="dept-option-code">{code}</span>
 									<span class="dept-option-name">{DEPT_NAMES[code] || code}</span>
@@ -629,7 +643,12 @@
 						<ul class="sidebar-list">
 							{#each paginatedLocalReleases as pr (pr.id)}
 								<li>
-									<button class="sidebar-item" on:click={() => scrollToCard(pr.id)}>
+									<button
+										class="sidebar-item"
+										on:click={() => {
+											scrollToCard(pr.id)
+										}}
+									>
 										<span class="sidebar-item-dept">{getDeptLabel(pr.department)}</span>
 										<span class="sidebar-item-title">{pr.title}</span>
 										{#if pr.date}
@@ -683,7 +702,9 @@
 								<button
 									class="pagination-btn"
 									disabled={localCurrentPage === 1}
-									on:click={() => goToLocalPage(localCurrentPage - 1)}
+									on:click={() => {
+										goToLocalPage(localCurrentPage - 1)
+									}}
 									aria-label={t.presse.prev_page}
 								>
 									<ChevronLeft size="1.25rem" />
@@ -693,7 +714,9 @@
 									<button
 										class="pagination-num"
 										class:active={localCurrentPage === i + 1}
-										on:click={() => goToLocalPage(i + 1)}
+										on:click={() => {
+											goToLocalPage(i + 1)
+										}}
 										aria-label="{t.presse.page} {i + 1}"
 										aria-current={localCurrentPage === i + 1 ? 'page' : undefined}
 									>
@@ -704,7 +727,9 @@
 								<button
 									class="pagination-btn"
 									disabled={localCurrentPage === localTotalPages}
-									on:click={() => goToLocalPage(localCurrentPage + 1)}
+									on:click={() => {
+										goToLocalPage(localCurrentPage + 1)
+									}}
 									aria-label={t.presse.next_page}
 								>
 									<ChevronRight size="1.25rem" />
@@ -739,7 +764,9 @@
 				<details
 					class="coverage-year-group"
 					open={openYears.has(year)}
-					on:toggle={(e) => toggleYear(year, e)}
+					on:toggle={(e) => {
+						toggleYear(year, e)
+					}}
 				>
 					<summary class="coverage-year">
 						<span class="coverage-year-chevron">▶</span>

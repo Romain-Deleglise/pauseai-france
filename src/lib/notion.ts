@@ -212,7 +212,7 @@ function getFileUrl(property: NotionProperty | undefined): string {
 
 // Helper to extract ALL file URLs (Notion "files" property with several files)
 function getFileUrls(property: NotionProperty | undefined): string[] {
-	if (!property || !property.files) return []
+	if (!property?.files) return []
 	return property.files
 		.map((f) => (f.type === 'file' ? (f.file?.url ?? '') : (f.external?.url ?? '')))
 		.filter((u) => u !== '')
@@ -260,6 +260,16 @@ function isValidBanner(banner: Banner): boolean {
 	if (!banner.message) {
 		console.warn(`Invalid banner: missing message`)
 		return false
+	}
+	// Un libellé sans URL (ou l'inverse) est une bannière à moitié remplie :
+	// le bouton disparaît silencieusement côté site. On le signale.
+	if (banner.linkText && !banner.linkUrl) {
+		console.warn(
+			`Bannière « ${banner.message} » : texte de lien sans URL, le bouton ne s'affichera pas.`
+		)
+	}
+	if (banner.linkUrl && !banner.linkText) {
+		console.warn(`Bannière « ${banner.message} » : URL sans texte de lien.`)
 	}
 	return true
 }
@@ -320,7 +330,7 @@ async function queryDatabase<T>(
 	}
 
 	try {
-		const body: { sorts?: Array<{ property: string; direction: string }> } = {}
+		const body: { sorts?: { property: string; direction: string }[] } = {}
 		if (options?.sortBy) {
 			body.sorts = [{ property: options.sortBy, direction: options.sortDirection ?? 'ascending' }]
 		}
@@ -356,14 +366,14 @@ export async function getVideos(): Promise<Video[]> {
 	const videos = await queryDatabase<Video | null>(
 		databaseId,
 		(page) => {
-			const visible = getCheckbox(page.properties['Visible'])
+			const visible = getCheckbox(page.properties.Visible)
 			if (!visible) return null
 
 			const video: Video = {
 				id: page.id,
-				title: getText(page.properties['Titre']),
+				title: getText(page.properties.Titre),
 				youtubeId: getText(page.properties['YouTube ID']),
-				order: getNumber(page.properties['Ordre']),
+				order: getNumber(page.properties.Ordre),
 				visible
 			}
 
@@ -383,22 +393,22 @@ export async function getArticles(): Promise<Article[]> {
 	const articles = await queryDatabase<Article | null>(
 		databaseId,
 		(page) => {
-			const visible = getCheckbox(page.properties['Visible'])
+			const visible = getCheckbox(page.properties.Visible)
 			if (!visible) return null
 
-			const typeValue = getSelect(page.properties['Type'])
+			const typeValue = getSelect(page.properties.Type)
 
-			const title = getText(page.properties['Titre'])
+			const title = getText(page.properties.Titre)
 			const article: Article = {
 				id: page.id,
 				title,
 				slug: generateSlug(title),
-				description: getText(page.properties['Description']),
-				url: getUrl(page.properties['URL']),
+				description: getText(page.properties.Description),
+				url: getUrl(page.properties.URL),
 				type: typeValue === 'Newsletter' ? 'Newsletter' : 'Article',
-				order: getNumber(page.properties['Ordre']),
+				order: getNumber(page.properties.Ordre),
 				visible,
-				image: getFileUrl(page.properties['Image']) || undefined,
+				image: getFileUrl(page.properties.Image) || undefined,
 				date: getDate(page.properties['Date de publication']) || undefined
 			}
 
@@ -613,16 +623,16 @@ export async function getReports(): Promise<Report[]> {
 	const reports = await queryDatabase<Report | null>(
 		databaseId,
 		(page) => {
-			const visible = getCheckbox(page.properties['Visible'])
+			const visible = getCheckbox(page.properties.Visible)
 			if (!visible) return null
 
 			const report: Report = {
 				id: page.id,
-				title: getText(page.properties['Titre']),
-				description: getText(page.properties['Description']),
-				url: getUrl(page.properties['URL']),
-				image: getUrl(page.properties['Image']),
-				order: getNumber(page.properties['Ordre']),
+				title: getText(page.properties.Titre),
+				description: getText(page.properties.Description),
+				url: getUrl(page.properties.URL),
+				image: getUrl(page.properties.Image),
+				order: getNumber(page.properties.Ordre),
 				visible
 			}
 
@@ -640,12 +650,12 @@ export async function getBanner(): Promise<Banner | null> {
 	if (!databaseId) return null
 
 	const banners = await queryDatabase<Banner | null>(databaseId, (page) => {
-		const visible = getCheckbox(page.properties['Visible'])
+		const visible = getCheckbox(page.properties.Visible)
 		if (!visible) return null
 
 		const banner: Banner = {
 			id: page.id,
-			message: getText(page.properties['Message']),
+			message: getText(page.properties.Message),
 			linkText: getText(page.properties['Texte du lien']),
 			linkUrl: getUrl(page.properties['URL du lien']),
 			visible
@@ -666,18 +676,18 @@ export async function getPressReleases(): Promise<PressRelease[]> {
 	const pressReleases = await queryDatabase<PressRelease | null>(
 		databaseId,
 		(page) => {
-			const visible = getCheckbox(page.properties['Visible'])
+			const visible = getCheckbox(page.properties.Visible)
 			if (!visible) return null
 
-			const title = getText(page.properties['Titre'])
+			const title = getText(page.properties.Titre)
 			const pr: PressRelease = {
 				id: page.id,
 				title,
 				slug: generateSlug(title),
-				date: getDate(page.properties['Date']),
-				url: getUrl(page.properties['URL']),
-				description: getText(page.properties['Description']),
-				order: getNumber(page.properties['Ordre']),
+				date: getDate(page.properties.Date),
+				url: getUrl(page.properties.URL),
+				description: getText(page.properties.Description),
+				order: getNumber(page.properties.Ordre),
 				visible
 			}
 
@@ -701,19 +711,19 @@ export async function getLocalPressReleases(): Promise<LocalPressRelease[]> {
 	const pressReleases = await queryDatabase<LocalPressRelease | null>(
 		databaseId,
 		(page) => {
-			const visible = getCheckbox(page.properties['Visible'])
+			const visible = getCheckbox(page.properties.Visible)
 			if (!visible) return null
 
-			const title = getText(page.properties['Titre'])
+			const title = getText(page.properties.Titre)
 			const pr: LocalPressRelease = {
 				id: page.id,
 				title,
 				slug: generateSlug(title),
-				date: getDate(page.properties['Date']),
-				url: getUrl(page.properties['URL']),
-				description: getText(page.properties['Description']),
+				date: getDate(page.properties.Date),
+				url: getUrl(page.properties.URL),
+				description: getText(page.properties.Description),
 				department: getText(page.properties['Département']),
-				order: getNumber(page.properties['Ordre']),
+				order: getNumber(page.properties.Ordre),
 				visible
 			}
 
@@ -750,16 +760,16 @@ export async function getPressCoverage(): Promise<PressCoverage[]> {
 	const items = await queryDatabase<PressCoverage | null>(
 		databaseId,
 		(page) => {
-			const visible = getCheckbox(page.properties['Visible'])
+			const visible = getCheckbox(page.properties.Visible)
 			if (!visible) return null
 
 			const pc: PressCoverage = {
 				id: page.id,
-				title: getText(page.properties['Titre']),
-				source: getText(page.properties['Source']),
-				date: getDate(page.properties['Date']),
-				url: getUrl(page.properties['URL']),
-				order: getNumber(page.properties['Ordre']),
+				title: getText(page.properties.Titre),
+				source: getText(page.properties.Source),
+				date: getDate(page.properties.Date),
+				url: getUrl(page.properties.URL),
+				order: getNumber(page.properties.Ordre),
 				visible
 			}
 
@@ -778,20 +788,20 @@ export async function getLocalEvents(): Promise<LocalEvent[]> {
 	const events = await queryDatabase<LocalEvent | null>(
 		databaseId,
 		(page) => {
-			const visible = getCheckbox(page.properties['Visible'])
+			const visible = getCheckbox(page.properties.Visible)
 			if (!visible) return null
 
 			const event: LocalEvent = {
 				id: page.id,
-				title: getText(page.properties['Titre']),
-				date: getDate(page.properties['Date']),
-				city: getText(page.properties['Ville']),
-				type: getSelect(page.properties['Type']),
-				url: getUrl(page.properties['URL']),
-				time: getText(page.properties['Heure']),
-				place: getText(page.properties['Lieu']),
-				description: getText(page.properties['Description']),
-				images: getFileUrls(page.properties['Image']),
+				title: getText(page.properties.Titre),
+				date: getDate(page.properties.Date),
+				city: getText(page.properties.Ville),
+				type: getSelect(page.properties.Type),
+				url: getUrl(page.properties.URL),
+				time: getText(page.properties.Heure),
+				place: getText(page.properties.Lieu),
+				description: getText(page.properties.Description),
+				images: getFileUrls(page.properties.Image),
 				featured: getCheckbox(page.properties['À la une']),
 				volunteers: getNumber(page.properties['Bénévoles']),
 				visible
@@ -838,19 +848,19 @@ export async function getTeamMembers(): Promise<TeamMember[]> {
 	const members = await queryDatabase<TeamMember | null>(
 		databaseId,
 		(page) => {
-			const visible = getCheckbox(page.properties['Visible'])
+			const visible = getCheckbox(page.properties.Visible)
 			if (!visible) return null
 
 			const categoryValue = getSelect(page.properties['Catégorie'])
 
 			const member: TeamMember = {
 				id: page.id,
-				name: getText(page.properties['Nom']),
+				name: getText(page.properties.Nom),
 				role: getText(page.properties['Rôle']),
-				profession: getText(page.properties['Profession']),
+				profession: getText(page.properties.Profession),
 				category: (categoryValue as TeamCategory) || 'Membre',
-				image: getFileUrl(page.properties['Photo']),
-				order: getNumber(page.properties['Ordre']),
+				image: getFileUrl(page.properties.Photo),
+				order: getNumber(page.properties.Ordre),
 				visible
 			}
 

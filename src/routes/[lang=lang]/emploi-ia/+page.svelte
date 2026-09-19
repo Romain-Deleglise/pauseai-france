@@ -99,9 +99,7 @@
 			})
 		}
 
-		const existing = document.querySelector(
-			`script[src="${SCRIPT_SRC}"]`
-		) as HTMLScriptElement | null
+		const existing = document.querySelector(`script[src="${SCRIPT_SRC}"]`)
 		if (existing) {
 			if ((window as Window & { Activoice?: unknown }).Activoice) {
 				initEmbed()

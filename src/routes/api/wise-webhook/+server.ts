@@ -108,7 +108,7 @@ export const POST: RequestHandler = async ({ request }) => {
 	if (eventType !== 'balances#update' && eventType !== 'balances#credit') {
 		return json({ ok: true })
 	}
-	if (data?.transaction_type !== 'credit' || data?.currency !== 'EUR') {
+	if (data?.transaction_type !== 'credit' || data.currency !== 'EUR') {
 		return json({ ok: true })
 	}
 

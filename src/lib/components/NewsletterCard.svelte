@@ -2,11 +2,11 @@
 	import { MoveUpRight, Calendar, Mail } from 'lucide-svelte'
 
 	export let title: string
-	export let description: string = ''
+	export let description = ''
 	export let url: string
-	export let slug: string = ''
-	export let date: string = ''
-	export let image: string = ''
+	export let slug = ''
+	export let date = ''
+	export let image = ''
 
 	$: href = slug ? `/newsletters/${slug}` : url
 	$: isExternal = !slug

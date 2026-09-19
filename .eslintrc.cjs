@@ -38,6 +38,13 @@ module.exports = {
 		{
 			extends: ['plugin:@typescript-eslint/disable-type-checked'],
 			files: ['netlify/functions/**/*.ts']
+		},
+		{
+			// Plugins de build en JavaScript simple (remark/rehype/Vite) : sans
+			// annotations de type, les règles « type-checked » ne voient que du
+			// `any` et produisent du bruit, pas des bugs.
+			extends: ['plugin:@typescript-eslint/disable-type-checked'],
+			files: ['src/lib/*.js', 'scripts/**/*.js', 'tests/**/*.js']
 		}
 	]
 }

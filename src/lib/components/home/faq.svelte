@@ -2,7 +2,7 @@
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
 	import FaqList from '$components/FaqList.svelte'
 	import Fly from '$components/Fly.svelte'
-	import { parseFaq } from '$lib/faq'
+	import { parseFaq, flattenFaq, faqJsonLd } from '$lib/faq'
 	import type { Lang } from '$lib/i18n'
 	// @ts-ignore - Vite raw import
 	import faqRaw from '$posts/faq.md?raw'
@@ -14,9 +14,17 @@
 	const label_id = 'faq-title'
 	$: isEn = lang === 'en'
 	$: categories = parseFaq(isEn ? faqRawEn : faqRaw)
+	// La FAQ n'existe plus qu'ici : les données structurées suivent, sinon on
+	// perdrait l'affichage enrichi de Google.
+	$: jsonLd = faqJsonLd(flattenFaq(categories))
 </script>
 
-<section class="faq" aria-labelledby={label_id}>
+<svelte:head>
+	<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+	{@html `<script type="application/ld+json">${jsonLd}</script>`}
+</svelte:head>
+
+<section id="faq" class="faq" aria-labelledby={label_id}>
 	<Fly>
 		<UnderlinedTitle id={label_id}>F.A.Q.</UnderlinedTitle>
 	</Fly>

@@ -27,7 +27,7 @@
 	const LANG_FREE = ['/fr/', '/en/', '/api/', '/pdfs/', '/campaigns/', '/hero/', '/membres/']
 	// Pages restées sans préfixe (françaises uniquement).
 	const NO_LANG = ['/recrutement', '/guide-recrutement', '/rss', '/fr', '/en']
-	$: lang = ($page.data?.lang as string) ?? 'fr'
+	$: lang = ($page.data.lang as string) ?? 'fr'
 	$: resolved =
 		href.startsWith('/') &&
 		!LANG_FREE.some((p) => href.startsWith(p)) &&

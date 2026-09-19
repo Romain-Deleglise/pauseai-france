@@ -96,10 +96,10 @@ export const POST: RequestHandler = async ({ request }) => {
 		const data = (await request.json()) as DonVirementRequest
 
 		// Validate required fields
-		if (!data.prenom || !data.prenom.trim()) {
+		if (!data.prenom.trim()) {
 			return json({ success: false, error: 'Le prénom est requis' }, { status: 400 })
 		}
-		if (!data.nom || !data.nom.trim()) {
+		if (!data.nom.trim()) {
 			return json({ success: false, error: 'Le nom est requis' }, { status: 400 })
 		}
 

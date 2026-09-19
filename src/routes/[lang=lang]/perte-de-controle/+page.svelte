@@ -19,7 +19,7 @@
 	// (choix d'un journal / retour), au lieu de remonter en haut de la page.
 	let pressSection: HTMLElement
 	function scrollToPress() {
-		pressSection?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+		pressSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
 	}
 
 	const VIDEO_ID = 'WhQViEjkg7s'

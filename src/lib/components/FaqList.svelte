@@ -20,7 +20,9 @@
 	onMount(() => {
 		openFromHash()
 		window.addEventListener('hashchange', openFromHash)
-		return () => window.removeEventListener('hashchange', openFromHash)
+		return () => {
+			window.removeEventListener('hashchange', openFromHash)
+		}
 	})
 </script>
 

@@ -17,7 +17,7 @@ const PAGE_ORDER_EN = [
 ]
 
 export const load: LayoutLoad = ({ url, params }) => {
-	const lang = params.lang as 'fr' | 'en'
+	const lang = params.lang
 	const posts = getPosts('/dangers', lang)
 
 	const pageOrder = lang === 'en' ? PAGE_ORDER_EN : PAGE_ORDER_FR

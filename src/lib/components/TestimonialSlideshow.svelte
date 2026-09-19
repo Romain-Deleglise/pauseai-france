@@ -35,7 +35,7 @@
 	let zoomed = false
 
 	$: currentSlide = slides[current]
-	$: currentAlt = currentSlide?.meta
+	$: currentAlt = currentSlide.meta
 		? `${currentSlide.meta.name}, ${currentSlide.meta.role} : « ${currentSlide.meta.quote} »`
 		: `${t.emploi_ia.slideshow_alt} ${current + 1}`
 
@@ -45,8 +45,12 @@
 		current = ((index % total) + total) % total
 	}
 
-	const previous = () => goTo(current - 1)
-	const next = () => goTo(current + 1)
+	const previous = () => {
+		goTo(current - 1)
+	}
+	const next = () => {
+		goTo(current + 1)
+	}
 
 	const openZoom = () => (zoomed = true)
 	const closeZoom = () => (zoomed = false)

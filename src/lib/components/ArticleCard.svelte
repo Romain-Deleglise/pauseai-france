@@ -3,10 +3,10 @@
 
 	export let title: string
 	export let blurb: string
-	export let category: string = ''
+	export let category = ''
 	export let url: string
-	export let linkText: string = "Lire l'article"
-	export let date: string = ''
+	export let linkText = "Lire l'article"
+	export let date = ''
 
 	function formatDate(dateStr: string): string {
 		if (!dateStr) return ''

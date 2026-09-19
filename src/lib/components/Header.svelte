@@ -71,15 +71,24 @@
 		open = false
 	}
 
-	type NavItem = { href: string; label: string; external?: boolean; muted?: boolean }
-	type NavGroup = { id: string; label: string; items: NavItem[] }
+	interface NavItem {
+		href: string
+		label: string
+		external?: boolean
+		muted?: boolean
+	}
+	interface NavGroup {
+		id: string
+		label: string
+		items: NavItem[]
+	}
 	let navGroups: NavGroup[]
 	$: navGroups = [
 		{
 			id: 'comprendre',
 			label: t.nav.comprendre,
 			items: [
-				{ href: `${prefix}/faq`, label: t.nav.faq },
+				{ href: `${prefix}#faq`, label: t.nav.faq },
 				{ href: `${prefix}/ressources`, label: t.nav.liens_utiles },
 				{ href: `${prefix}/newsletters`, label: t.nav.newsletter },
 				{ href: 'https://pauseia.substack.com/', label: t.nav.blog, external: true },
@@ -182,7 +191,7 @@
 
 	{#if mounted || !onHomepage}
 		<nav in:fade={{ duration: 400, delay: 100 }} class:scrolled class:homepage={onHomepage}>
-			<a href={`${prefix}`} class="logo">
+			<a href={prefix} class="logo">
 				<div class="big-logo">
 					<Logo animate fill_pause={whiteNav ? 'white' : $theme === 'dark' ? 'white' : 'black'} />
 				</div>
@@ -210,7 +219,9 @@
 						<button
 							class="theme-toggle"
 							class:on-hero={whiteNav}
-							on:click={() => theme.toggle()}
+							on:click={() => {
+								theme.toggle()
+							}}
 							aria-label={$theme === 'dark' ? 'Passer en mode clair' : 'Passer en mode sombre'}
 							title={$theme === 'dark' ? 'Mode clair' : 'Mode sombre'}
 						>
@@ -376,7 +387,9 @@
 						</a>
 						<button
 							class="sidebar-theme-toggle"
-							on:click={() => theme.toggle()}
+							on:click={() => {
+								theme.toggle()
+							}}
 							aria-label={$theme === 'dark' ? 'Passer en mode clair' : 'Passer en mode sombre'}
 						>
 							{#if $theme === 'dark'}

@@ -12,7 +12,7 @@ import {
 // proviennent désormais des images de src/assets/emploi-ia/temoignages/, plus de Notion.
 
 const notion = new Client({
-	auth: process.env.NOTION_TOKEN as string
+	auth: process.env.NOTION_TOKEN!
 })
 
 function isPageWithProperties(result: PageObjectResponse | any): result is PageObjectResponse {
@@ -24,7 +24,7 @@ export const prerender = false
 export async function load() {
 	try {
 		const articleShowcase_datasource = await notion.dataSources.query({
-			data_source_id: process.env.ARTICLE_SHOWCASE_ID as string
+			data_source_id: process.env.ARTICLE_SHOWCASE_ID!
 		})
 
 		const articleShowcaseItems = articleShowcase_datasource.results

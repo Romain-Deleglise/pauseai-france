@@ -286,7 +286,7 @@
 		? isEn
 			? 'The MPs of your department'
 			: 'Les députés de votre département'
-		: (result?.deputes.length ?? 0) > 1
+		: (result.deputes.length ?? 0) > 1
 			? isEn
 				? 'Your MPs (your city)'
 				: 'Vos députés (votre ville)'
@@ -299,13 +299,11 @@
 	//  - un code postal couvrant plusieurs circonscriptions (grandes villes) : on
 	//    sait seulement que l'utilisateur habite la ville → 'ville'
 	//  - un seul député pour ce code postal : circonscription certaine.
-	$: deputeScope = (
-		!result?.exactDeputes
-			? 'departement'
-			: (result?.deputes.length ?? 0) > 1
-				? 'ville'
-				: 'circonscription'
-	) as 'circonscription' | 'ville' | 'departement'
+	$: deputeScope = !result?.exactDeputes
+		? 'departement'
+		: (result.deputes.length ?? 0) > 1
+			? 'ville'
+			: 'circonscription'
 
 	// Départements couvrant le code postal (en général un seul) : sert au
 	// géocodage fin dans le cas ambigu.
@@ -333,7 +331,7 @@
 
 	$: recipientGroups =
 		action.targeting === 'fixed'
-			? action.fixedTargets && action.fixedTargets.length
+			? action.fixedTargets?.length
 				? [
 						{
 							kind: 'fixed' as const,
@@ -810,7 +808,9 @@
 						role="tab"
 						class:active={action.id === elusActionId}
 						aria-selected={action.id === elusActionId}
-						on:click={() => selectTool('elus')}
+						on:click={() => {
+							selectTool('elus')
+						}}
 					>
 						<span class="tab-icon"><Landmark size="1em" aria-hidden="true" /></span>
 						{isEn ? 'Write to my representatives' : 'Écrire à mes élus'}
@@ -819,7 +819,9 @@
 						role="tab"
 						class:active={action.id === presseActionId}
 						aria-selected={action.id === presseActionId}
-						on:click={() => selectTool('presse')}
+						on:click={() => {
+							selectTool('presse')
+						}}
 					>
 						<span class="tab-icon"><Newspaper size="1em" aria-hidden="true" /></span>
 						{isEn ? 'Write to the press' : 'Écrire à la presse'}
@@ -934,7 +936,11 @@
 									? 'Next step: ask the press to cover the issue. It takes two more minutes.'
 									: 'Étape suivante : demandez à la presse d’en parler. Deux minutes de plus.'}
 							</p>
-							<Button on:click={() => selectTool('presse')}>
+							<Button
+								on:click={() => {
+									selectTool('presse')
+								}}
+							>
 								<Newspaper size="1em" aria-hidden="true" />
 								{isEn ? 'Write to the press' : 'Écrire à la presse'}
 							</Button>
@@ -1027,7 +1033,12 @@
 												{/if}
 											</div>
 										</div>
-										<Button alt={sent.has(r.id)} on:click={() => choose(r)}>
+										<Button
+											alt={sent.has(r.id)}
+											on:click={() => {
+												choose(r)
+											}}
+										>
 											{#if sent.has(r.id)}
 												{isEn ? 'Written ✓' : 'Écrit ✓'}
 											{:else}
@@ -1424,7 +1435,12 @@
 					</summary>
 					<div class="webmail-links">
 						{#each WEBMAILS as wm}
-							<button class="webmail-btn" on:click={() => openWebmail(wm.id)}>{wm.label}</button>
+							<button
+								class="webmail-btn"
+								on:click={() => {
+									openWebmail(wm.id)
+								}}>{wm.label}</button
+							>
 						{/each}
 					</div>
 					<p class="webmail-note">
