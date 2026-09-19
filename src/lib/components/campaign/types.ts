@@ -32,3 +32,15 @@ export interface CampaignAction {
 	/** Mise en avant visuelle de l'action principale. */
 	featured?: boolean
 }
+
+export interface CampaignFact {
+	/** Affirmation courte et vérifiable, une phrase. */
+	statement: string
+	/** Précision facultative, une ou deux lignes. */
+	detail?: string
+	/** Lien vers l'article ou la source qui démontre l'affirmation. */
+	href?: string
+	/** Libellé du lien, sinon « Lire l'analyse ». */
+	linkLabel?: string
+	external?: boolean
+}

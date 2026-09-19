@@ -18,6 +18,35 @@ mode sombre), et chaque nouvelle campagne repart d'un copier-coller.
 
 Le module fixe ces décisions une fois.
 
+## La structure d'une page campagne
+
+Le modèle suit toujours le même ordre de lecture. Il n'est pas rigide : les deux
+derniers blocs sont facultatifs, et une campagne qui n'a rien à y mettre les
+retire plutôt que de les remplir à moitié.
+
+| Ordre | Bloc                      | Composant                     | Ce qu'on y met                                                                                |
+| ----- | ------------------------- | ----------------------------- | --------------------------------------------------------------------------------------------- |
+| 1     | **Slogan**                | `CampaignHero` (`title`)      | Le titre de la campagne, repris **à l'identique** dans le menu                                |
+| 2     | **Chapeau**               | `CampaignHero` (`lede`)       | Deux ou trois lignes : ce qu'éclaire le slogan, et le mode d'action principal                 |
+| 3     | **L'essentiel**           | `CampaignFacts`               | Deux à quatre affirmations courtes et vérifiables, chacune reliée à l'article qui la démontre |
+| 4     | **Passer à l'action**     | `EcrireOutil`                 | Le module d'envoi de mails, élus et presse, **intégré à la page**                             |
+| 5     | **Autres façons d'aider** | `CampaignActions`             | Groupes locaux, relais, don                                                                   |
+| 6     | **Le contexte**           | `CampaignSection` + `Callout` | Le développement, pour qui veut aller plus loin, et la demande formulée noir sur blanc        |
+| 7     | **Les événements**        | `LumaCalendar`                | Quand la campagne en comporte                                                                 |
+| —     | _Chiffres clés_           | `CampaignStats`               | Facultatif : une campagne qui démarre n'a pas de chiffres                                     |
+| —     | _Chronologie_             | `CampaignTimeline`            | Facultatif : une action permanente n'a pas d'échéances                                        |
+
+Trois règles pour que ça reste lisible d'une campagne à l'autre :
+
+1. **Une affirmation, un lien.** Chaque fait de « L'essentiel » renvoie vers ce qui
+   le démontre — au minimum un de nos articles d'analyse. Un fait sans source n'a
+   rien à faire là.
+2. **L'action se fait sur la page.** Le module de mails est intégré, pas mis en
+   lien : chaque redirection perd des gens.
+3. **Le slogan est le titre.** Le libellé du menu, le titre de la page et le nom de
+   la campagne dans `src/lib/campaigns.ts` disent la même chose, au raccourcissement
+   près quand la place manque.
+
 ## Mise en route
 
 ```svelte
@@ -67,6 +96,7 @@ dans `src/lib/campaigns.ts` pour qu'elle apparaisse sur `/campagnes` et la page 
 | `CampaignPage`     | Conteneur : largeur, gouttières, rythme vertical, `PostMeta`      | `title`, `description`, `width` (`narrow` \| `wide`)              |
 | `CampaignHero`     | Filet de marque, badge de statut, h1, chapô, boutons (slot)       | `title`, `lede`, `eyebrow`, `date`, `status`                      |
 | `CampaignSection`  | Section titrée avec ancre                                         | `title`, `intro`, `id`, `variant` (`plain` \| `card` \| `accent`) |
+| `CampaignFacts`    | « L'essentiel » : faits courts, chacun avec son lien source       | `facts: CampaignFact[]`, `linkLabel`                              |
 | `CampaignStats`    | Grille de chiffres clés                                           | `stats: CampaignStat[]`                                           |
 | `CampaignTimeline` | Chronologie par phases, axe orange (rouge si `accent`)            | `phases: TimelinePhase[]`                                         |
 | `CampaignActions`  | Grille de cartes d'action, la première pouvant être mise en avant | `actions: CampaignAction[]`                                       |

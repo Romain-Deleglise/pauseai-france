@@ -149,3 +149,16 @@ tiennent la charte :
 Les seules exceptions, déclarées dans `.stylelintrc.json` : `app.css` (la palette
 elle-même), la palette Wait But Why, les fills du logo et les drapeaux SVG.
 Le hook de pre-commit lance stylelint sur les fichiers modifiés.
+
+## 8. Version imprimable
+
+Un résumé mis en page de cette charte — nuancier, spécimens typographiques,
+briques — vit à côté de ce fichier :
+
+- `docs/charte-graphique.html` : la source, à ouvrir dans un navigateur ;
+- `docs/charte-graphique.pdf` : la version à diffuser.
+
+Régénérer le PDF après modification du HTML : `node scripts/charte-pdf.mjs`,
+ou simplement imprimer la page en PDF depuis le navigateur (A4, fonds
+d'impression activés). Le HTML recopie les valeurs de `src/app.css` pour
+pouvoir les montrer ; en cas d'écart, c'est `app.css` qui a raison.

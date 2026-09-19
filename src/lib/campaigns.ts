@@ -86,7 +86,7 @@ export const campaigns: Campaign[] = [
 		// du même cortège). À remplacer par un cliché de la semaine d'action.
 		image: '/hero/manif-20.webp',
 		fr: {
-			title: 'Nous sommes au bord de la perte de contrôle : réagissons',
+			title: 'Nous sommes au bord de la perte de contrôle : réagissons !',
 			homeTitle: 'Nous sommes au bord de la perte de contrôle : réagissons',
 			description:
 				'L’IA dépasse désormais les humains en sécurité informatique, et les chercheurs qui les entraînent ne les maîtrisent plus suffisamment. Relayez l’appel à un moratoire mondial sur le développement des IA de pointe.',
@@ -96,7 +96,7 @@ export const campaigns: Campaign[] = [
 			homeCta: 'Je passe à l’action'
 		},
 		en: {
-			title: 'We are on the brink of losing control: let’s react',
+			title: 'We are on the brink of losing control: let’s react!',
 			homeTitle: 'We are on the brink of losing control: let’s react',
 			description:
 				'AI now outperforms humans at computer security, and the researchers who train these systems no longer control them well enough. Relay the call for a global moratorium on frontier AI development.',

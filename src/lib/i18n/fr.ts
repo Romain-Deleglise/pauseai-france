@@ -17,10 +17,12 @@ export default {
 		groupes_locaux: 'Groupes locaux',
 		toutes_campagnes: 'Toutes nos campagnes',
 		geneve_2026: 'Genève 2026',
-		perte_de_controle: 'Perte de contrôle',
+		// Les libellés de campagne reprennent le slogan de la page, raccourci
+		// au minimum pour tenir dans le menu.
+		perte_de_controle: 'Au bord de la perte de contrôle',
 		warning_shot: 'Une IA s’est échappée',
 		ecrire_elus: 'Écrire aux élus et à la presse',
-		emploi_ia: 'Emploi et IA',
+		emploi_ia: 'L’IA ne détruira pas QUE votre emploi',
 		g7_2026: 'G7 2026',
 		municipales: 'Municipales 2026',
 		sommet: "Sommet de l'IA 2026",

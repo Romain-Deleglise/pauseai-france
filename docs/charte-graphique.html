@@ -1,0 +1,817 @@
+<!doctype html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>Charte graphique — Pause IA</title>
+		<style>
+			@font-face {
+				font-family: 'IBM Plex Sans';
+				font-weight: 400;
+				font-style: normal;
+				font-display: swap;
+				src: url('fonts/ibm-plex-sans-latin-400-normal.woff2') format('woff2');
+			}
+			@font-face {
+				font-family: 'IBM Plex Sans';
+				font-weight: 600;
+				font-style: normal;
+				font-display: swap;
+				src: url('fonts/ibm-plex-sans-latin-600-normal.woff2') format('woff2');
+			}
+			@font-face {
+				font-family: 'IBM Plex Sans';
+				font-weight: 700;
+				font-style: normal;
+				font-display: swap;
+				src: url('fonts/ibm-plex-sans-latin-700-normal.woff2') format('woff2');
+			}
+
+			/* Les valeurs ci-dessous sont recopiées de src/app.css, qui reste la
+			   source de vérité. Ce document les montre, il ne les définit pas. */
+			:root {
+				--brand: #ff9416;
+				--brand-light: #fff5e8;
+				--brand-subtle: #c96900;
+				--bg: #ffffff;
+				--bg-subtle: #fff5e8;
+				--bg-card: #fffcf8;
+				--bg-secondary: #fdfaf6;
+				--text: #000000;
+				--text-2: #555555;
+				--text-secondary: #676e7a;
+				--border: #e5e7eb;
+				--on-brand: #1a1a1a;
+				--on-brand-muted: #3a2600;
+				--success: #2e7d32;
+				--success-bg: #e8f5e9;
+				--success-border: #a5d6a7;
+				--error: #c0392b;
+				--error-bg: #fdecee;
+				--error-border: #f6c6cc;
+				--alert: #d92d20;
+				--radius-sm: 8px;
+				--radius-md: 12px;
+				--radius-lg: 16px;
+				--radius-pill: 999px;
+				--shadow-card: 0 4px 20px rgba(0, 0, 0, 0.03);
+			}
+
+			@page {
+				size: A4;
+				margin: 16mm 14mm 18mm;
+			}
+
+			* {
+				box-sizing: border-box;
+			}
+
+			body {
+				margin: 0;
+				font-family: 'IBM Plex Sans', system-ui, sans-serif;
+				font-size: 10.5pt;
+				line-height: 1.55;
+				color: var(--text);
+				background: var(--bg);
+			}
+
+			.page {
+				max-width: 175mm;
+				margin: 0 auto;
+			}
+
+			/* ── Couverture ─────────────────────────────────────── */
+			.cover {
+				padding: 8mm 0 10mm;
+				border-bottom: 1px solid var(--border);
+				margin-bottom: 9mm;
+			}
+
+			.rule {
+				display: block;
+				width: 48px;
+				height: 5px;
+				border-radius: var(--radius-pill);
+				background: var(--brand);
+				margin-bottom: 7mm;
+			}
+
+			h1 {
+				margin: 0;
+				font-size: 30pt;
+				font-weight: 700;
+				line-height: 1.05;
+				letter-spacing: -0.02em;
+			}
+
+			.cover .lede {
+				margin: 4mm 0 0;
+				max-width: 120mm;
+				font-size: 12pt;
+				line-height: 1.5;
+				color: var(--text-2);
+			}
+
+			.cover .meta {
+				margin-top: 6mm;
+				font-size: 9pt;
+				color: var(--text-secondary);
+			}
+
+			.cover .meta code {
+				color: var(--brand-subtle);
+			}
+
+			h2 {
+				font-size: 15pt;
+				font-weight: 700;
+				line-height: 1.2;
+				margin: 10mm 0 1mm;
+				padding-bottom: 2.5mm;
+				position: relative;
+			}
+
+			h2::after {
+				content: '';
+				position: absolute;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				height: 3px;
+				border-radius: 2px;
+				background: linear-gradient(to right, var(--brand) 0%, transparent 70%);
+			}
+
+			h2 .num {
+				color: var(--brand-subtle);
+				margin-right: 0.4em;
+			}
+
+			h3 {
+				font-size: 11.5pt;
+				font-weight: 600;
+				margin: 6mm 0 2mm;
+			}
+
+			p {
+				margin: 0 0 3mm;
+			}
+
+			code {
+				font-family: 'JetBrains Mono', ui-monospace, monospace;
+				font-size: 0.88em;
+				background: var(--bg-subtle);
+				padding: 0.1em 0.35em;
+				border-radius: 4px;
+			}
+
+			strong {
+				font-weight: 600;
+			}
+
+			ul {
+				margin: 0 0 3mm;
+				padding-left: 5mm;
+			}
+
+			li {
+				margin-bottom: 1.2mm;
+			}
+
+			/* ── Règle mise en avant ────────────────────────────── */
+			.rulebox {
+				background: var(--bg-subtle);
+				border-left: 4px solid var(--brand);
+				border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+				padding: 3.5mm 5mm;
+				margin: 4mm 0;
+			}
+
+			.rulebox p:last-child {
+				margin-bottom: 0;
+			}
+
+			.rulebox .label {
+				display: block;
+				font-size: 8pt;
+				font-weight: 700;
+				letter-spacing: 0.08em;
+				text-transform: uppercase;
+				color: var(--brand-subtle);
+				margin-bottom: 1.5mm;
+			}
+
+			/* ── Nuancier ───────────────────────────────────────── */
+			.swatches {
+				display: grid;
+				grid-template-columns: repeat(3, 1fr);
+				gap: 3mm;
+				margin: 4mm 0 5mm;
+			}
+
+			.swatch {
+				border: 1px solid var(--border);
+				border-radius: var(--radius-md);
+				overflow: hidden;
+				break-inside: avoid;
+			}
+
+			.swatch .chip {
+				height: 16mm;
+				display: flex;
+				align-items: flex-end;
+				justify-content: flex-end;
+				padding: 2mm;
+				font-size: 7.5pt;
+				font-weight: 700;
+			}
+
+			.swatch .body {
+				padding: 2.5mm 3mm 3mm;
+				background: var(--bg-card);
+			}
+
+			.swatch .token {
+				font-family: 'JetBrains Mono', ui-monospace, monospace;
+				font-size: 8.5pt;
+				font-weight: 600;
+			}
+
+			.swatch .use {
+				display: block;
+				font-size: 8pt;
+				line-height: 1.35;
+				color: var(--text-secondary);
+				margin-top: 1mm;
+			}
+
+			.swatch .dark {
+				display: block;
+				font-size: 7.5pt;
+				color: var(--text-secondary);
+				margin-top: 1.5mm;
+			}
+
+			/* ── Tableaux ───────────────────────────────────────── */
+			table {
+				width: 100%;
+				border-collapse: collapse;
+				margin: 3mm 0 5mm;
+				font-size: 9.5pt;
+			}
+
+			th {
+				text-align: left;
+				font-weight: 600;
+				font-size: 8.5pt;
+				letter-spacing: 0.04em;
+				text-transform: uppercase;
+				color: var(--text-secondary);
+				border-bottom: 1.5px solid var(--border);
+				padding: 0 3mm 1.5mm 0;
+			}
+
+			td {
+				padding: 1.8mm 3mm 1.8mm 0;
+				border-bottom: 1px solid var(--border);
+				vertical-align: top;
+			}
+
+			td:first-child {
+				font-family: 'JetBrains Mono', ui-monospace, monospace;
+				font-size: 8.8pt;
+				white-space: nowrap;
+			}
+
+			.dot {
+				display: inline-block;
+				width: 9px;
+				height: 9px;
+				border-radius: 50%;
+				border: 1px solid rgba(0, 0, 0, 0.15);
+				margin-right: 1.5mm;
+				vertical-align: -1px;
+			}
+
+			/* ── Spécimens ──────────────────────────────────────── */
+			.specimen {
+				border: 1px solid var(--border);
+				border-radius: var(--radius-lg);
+				background: var(--bg-card);
+				padding: 5mm;
+				margin: 4mm 0 5mm;
+				break-inside: avoid;
+			}
+
+			.specimen .row {
+				display: flex;
+				align-items: baseline;
+				gap: 4mm;
+				padding: 2mm 0;
+				border-bottom: 1px solid var(--border);
+			}
+
+			.specimen .row:last-child {
+				border-bottom: 0;
+			}
+
+			.specimen .spec {
+				flex: 0 0 34mm;
+				font-family: 'JetBrains Mono', ui-monospace, monospace;
+				font-size: 8pt;
+				color: var(--text-secondary);
+			}
+
+			.btn {
+				display: inline-block;
+				background: var(--brand);
+				color: var(--on-brand);
+				font-weight: 700;
+				font-size: 10pt;
+				padding: 2.5mm 5mm;
+				border-radius: 0.625rem;
+				margin-right: 3mm;
+			}
+
+			.btn.alt {
+				background: var(--bg);
+				color: var(--text);
+				border: 1px solid var(--text);
+			}
+
+			.badge {
+				display: inline-block;
+				border-radius: var(--radius-pill);
+				font-size: 8pt;
+				font-weight: 700;
+				padding: 1mm 3mm;
+				margin-right: 2mm;
+				border: 1px solid transparent;
+			}
+
+			.badge.brand {
+				background: var(--brand);
+				color: #fff;
+			}
+
+			.badge.neutral {
+				background: var(--bg-secondary);
+				color: var(--text-secondary);
+				border-color: var(--border);
+			}
+
+			.badge.outline {
+				color: var(--brand-subtle);
+				border-color: var(--brand);
+			}
+
+			.badge.success {
+				background: var(--success-bg);
+				color: var(--success);
+				border-color: var(--success-border);
+			}
+
+			.badge.error {
+				background: var(--error-bg);
+				color: var(--error);
+				border-color: var(--error-border);
+			}
+
+			.radii {
+				display: flex;
+				gap: 4mm;
+				margin: 3mm 0 5mm;
+			}
+
+			.radii div {
+				flex: 1;
+				height: 18mm;
+				background: var(--bg-subtle);
+				border: 1px solid var(--brand);
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-family: 'JetBrains Mono', ui-monospace, monospace;
+				font-size: 7.5pt;
+				color: var(--brand-subtle);
+				text-align: center;
+			}
+
+			.two-col {
+				display: grid;
+				grid-template-columns: 1fr 1fr;
+				gap: 5mm;
+			}
+
+			.do-dont {
+				border-radius: var(--radius-md);
+				padding: 4mm;
+				font-size: 9.5pt;
+				break-inside: avoid;
+			}
+
+			.do {
+				background: var(--success-bg);
+				border: 1px solid var(--success-border);
+			}
+
+			.dont {
+				background: var(--error-bg);
+				border: 1px solid var(--error-border);
+			}
+
+			.do h4,
+			.dont h4 {
+				margin: 0 0 2mm;
+				font-size: 9.5pt;
+				font-weight: 700;
+			}
+
+			.do h4 {
+				color: var(--success);
+			}
+
+			.dont h4 {
+				color: var(--error);
+			}
+
+			.do ul,
+			.dont ul {
+				margin: 0;
+				padding-left: 4mm;
+			}
+
+			footer {
+				margin-top: 10mm;
+				padding-top: 4mm;
+				border-top: 1px solid var(--border);
+				font-size: 8.5pt;
+				color: var(--text-secondary);
+			}
+
+			.break {
+				break-before: page;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="page">
+			<header class="cover">
+				<span class="rule"></span>
+				<h1>Charte graphique</h1>
+				<p class="lede">
+					Les couleurs, la typographie et les briques d’interface du site Pause IA — et les quelques
+					règles qui les tiennent ensemble.
+				</p>
+				<p class="meta">
+					Source de vérité : <code>src/app.css</code>. Ce document en est le reflet lisible ; en cas
+					d’écart, c’est le code qui a raison. Version longue et à jour :
+					<code>docs/charte-graphique.md</code>.
+				</p>
+			</header>
+
+			<h2><span class="num">1.</span>Le principe</h2>
+			<p>
+				Tout est écrit en <strong>variables CSS</strong> (des « tokens »). Une page qui n’utilise
+				que ces variables fonctionne en mode clair comme en mode sombre sans une ligne de plus, et
+				suit automatiquement toute évolution de la charte.
+			</p>
+			<div class="rulebox">
+				<span class="label">La règle unique</span>
+				<p>
+					Jamais de couleur en dur dans une page. <code>#ff9416</code> s’écrit
+					<code>var(--brand)</code>. Le linter (<code>pnpm lint</code>) refuse le reste.
+				</p>
+			</div>
+
+			<h2><span class="num">2.</span>Couleurs de marque</h2>
+			<div class="swatches">
+				<div class="swatch">
+					<div class="chip" style="background: #ff9416; color: #1a1a1a">#ff9416</div>
+					<div class="body">
+						<span class="token">--brand</span>
+						<span class="use">Aplats : boutons, filets, puces, bordures.</span>
+						<span class="dark">Sombre : identique.</span>
+					</div>
+				</div>
+				<div class="swatch">
+					<div class="chip" style="background: #fff5e8; color: #3a2600">#fff5e8</div>
+					<div class="body">
+						<span class="token">--brand-light</span>
+						<span class="use">Fond orangé très clair, mises en avant.</span>
+						<span class="dark">Sombre : #2a1f0a.</span>
+					</div>
+				</div>
+				<div class="swatch">
+					<div class="chip" style="background: #c96900; color: #fff">#c96900</div>
+					<div class="body">
+						<span class="token">--brand-subtle</span>
+						<span class="use">Orange lisible : liens, chiffres, sur-titres.</span>
+						<span class="dark">Sombre : #ffab40.</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="rulebox">
+				<span class="label">Contraste</span>
+				<p>
+					<code>--brand</code> n’a pas un contraste suffisant pour du <strong>texte</strong> sur
+					fond clair. Pour un lien ou un chiffre, c’est <code>--brand-subtle</code>.
+					<code>--brand</code> reste réservé aux aplats.
+				</p>
+			</div>
+
+			<h3>Texte posé sur l’orange</h3>
+			<p>
+				Un fond orange ne change pas en mode sombre : le texte qu’il porte non plus. D’où deux
+				tokens dédiés, <code>--on-brand</code> (<span class="dot" style="background: #1a1a1a"></span
+				>#1a1a1a) et <code>--on-brand-muted</code> (<span
+					class="dot"
+					style="background: #3a2600"
+				></span
+				>#3a2600), à utiliser au lieu de « noir ».
+			</p>
+
+			<h2><span class="num">3.</span>Neutres et surfaces</h2>
+			<table>
+				<thead>
+					<tr>
+						<th>Token</th>
+						<th>Clair</th>
+						<th>Sombre</th>
+						<th>Usage</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>--bg</td>
+						<td><span class="dot" style="background: #fff"></span>blanc</td>
+						<td>#272727</td>
+						<td>Fond de page</td>
+					</tr>
+					<tr>
+						<td>--bg-subtle</td>
+						<td><span class="dot" style="background: #fff5e8"></span>#fff5e8</td>
+						<td>#312e29</td>
+						<td>Fond crème des pages intérieures, callouts</td>
+					</tr>
+					<tr>
+						<td>--bg-card</td>
+						<td><span class="dot" style="background: #fffcf8"></span>#fffcf8</td>
+						<td>#35322c</td>
+						<td>Fond de carte et d’encadré</td>
+					</tr>
+					<tr>
+						<td>--bg-secondary</td>
+						<td><span class="dot" style="background: #fdfaf6"></span>#fdfaf6</td>
+						<td>#303030</td>
+						<td>Zone secondaire : onglets, champs, RIB</td>
+					</tr>
+					<tr>
+						<td>--text</td>
+						<td><span class="dot" style="background: #000"></span>noir</td>
+						<td>#f0f0f0</td>
+						<td>Texte courant</td>
+					</tr>
+					<tr>
+						<td>--text-2</td>
+						<td><span class="dot" style="background: #555"></span>#555</td>
+						<td>#a0a8b4</td>
+						<td>Chapô, légendes</td>
+					</tr>
+					<tr>
+						<td>--text-secondary</td>
+						<td><span class="dot" style="background: #676e7a"></span>#676e7a</td>
+						<td>#a0a8b4</td>
+						<td>Texte d’interface secondaire</td>
+					</tr>
+					<tr>
+						<td>--border</td>
+						<td><span class="dot" style="background: #e5e7eb"></span>#e5e7eb</td>
+						<td>#3e4048</td>
+						<td>Bordures et filets</td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="rulebox">
+				<span class="label">Pourquoi un blanc cassé</span>
+				<p>
+					Le fond de page est crème sur toutes les pages sauf l’accueil. Les cartes prennent donc un
+					blanc <em>chaud</em> (<code>--bg-card</code>) : un gris froid posé sur ce crème se voit
+					immédiatement.
+				</p>
+			</div>
+
+			<h2 class="break"><span class="num">4.</span>Couleurs d’état</h2>
+			<p>
+				Le vert et le rouge signalent un <strong>état</strong> — inscription réussie, paiement
+				refusé. Un badge décoratif prend l’orange de marque, jamais une couleur d’état.
+			</p>
+			<div class="specimen">
+				<p style="margin-bottom: 3mm">
+					<span class="badge brand">Brand</span>
+					<span class="badge neutral">Neutral</span>
+					<span class="badge outline">Outline</span>
+					<span class="badge success">Succès</span>
+					<span class="badge error">Erreur</span>
+				</p>
+				<table style="margin: 0">
+					<tbody>
+						<tr>
+							<td>--success</td>
+							<td><span class="dot" style="background: #2e7d32"></span>#2e7d32</td>
+							<td>#6fcf7e</td>
+							<td>Texte de confirmation</td>
+						</tr>
+						<tr>
+							<td>--error</td>
+							<td><span class="dot" style="background: #c0392b"></span>#c0392b</td>
+							<td>#ff8a7a</td>
+							<td>Texte d’erreur</td>
+						</tr>
+						<tr>
+							<td>--alert</td>
+							<td><span class="dot" style="background: #d92d20"></span>#d92d20</td>
+							<td>#ff6b5e</td>
+							<td>Moment critique d’une chronologie, rien d’autre</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<p>
+				Chaque état a aussi son fond et sa bordure : <code>--success-bg</code>,
+				<code>--success-border</code>, <code>--error-bg</code>, <code>--error-border</code>.
+			</p>
+
+			<h2><span class="num">5.</span>Typographie</h2>
+			<p>
+				Une seule police, <strong>IBM Plex Sans</strong>, pour les titres comme pour le texte (<code
+					>--font-body</code
+				>
+				= <code>--font-heading</code>).
+			</p>
+			<div class="specimen">
+				<div class="row">
+					<span class="spec">h1 — 700 / 2rem</span>
+					<span style="font-size: 20pt; font-weight: 700; line-height: 1.1"
+						>Reprendre le contrôle</span
+					>
+				</div>
+				<div class="row">
+					<span class="spec">h2 — 700 / 1.7rem</span>
+					<span style="font-size: 16pt; font-weight: 700">Nos analyses</span>
+				</div>
+				<div class="row">
+					<span class="spec">h3 — 500 / 1.5rem</span>
+					<span style="font-size: 14pt; font-weight: 400">Ce que nous demandons</span>
+				</div>
+				<div class="row">
+					<span class="spec">chapô — --text-2</span>
+					<span style="font-size: 11.5pt; color: var(--text-2)"
+						>Une ou deux phrases qui éclairent le titre.</span
+					>
+				</div>
+				<div class="row">
+					<span class="spec">corps — 1.2rem / 1.5</span>
+					<span
+						>Le texte courant, avec un
+						<a href="#" style="color: var(--brand-subtle); text-decoration: underline"
+							>lien souligné</a
+						>
+						en orange foncé.</span
+					>
+				</div>
+			</div>
+			<p>
+				Sur les pages campagne, les titres respirent : <code>clamp(2rem, 5.5vw, 3rem)</code> pour le
+				h1. La typographie française est appliquée automatiquement au Markdown — espace fine
+				insécable avant <code>; ? ! %</code>, insécable avant <code>:</code>, guillemets
+				<code>« »</code>.
+			</p>
+
+			<h2><span class="num">6.</span>Rythme, rayons, ombres</h2>
+			<div class="radii">
+				<div style="border-radius: 8px">--radius-sm<br />8px</div>
+				<div style="border-radius: 12px">--radius-md<br />12px</div>
+				<div style="border-radius: 16px">--radius-lg<br />16px</div>
+				<div style="border-radius: 999px">--radius-pill<br />badges</div>
+			</div>
+			<ul>
+				<li>
+					<strong>Largeurs</strong> : <code>--width-text</code> 44 rem (corps de texte),
+					<code>--width-content</code> 54 rem (pages éditoriales et campagnes),
+					<code>--width-wide</code> 66 rem (grilles).
+				</li>
+				<li>
+					<strong>Ombres</strong> : <code>--shadow-card</code> très discrète sur les encadrés,
+					<code>--shadow-raised</code> au survol d’une carte cliquable,
+					<code>--shadow-brand</code> sur le bouton principal. Renforcées en mode sombre.
+				</li>
+				<li><strong>Cibles tactiles</strong> : 48 px de haut au minimum pour un bouton.</li>
+				<li><strong>Gouttière</strong> : 1,5 rem, 1,1 rem en mobile.</li>
+			</ul>
+
+			<h2><span class="num">7.</span>Briques réutilisables</h2>
+			<div class="specimen">
+				<p style="margin-bottom: 4mm">
+					<span class="btn">Bouton principal</span>
+					<span class="btn alt">Bouton secondaire</span>
+				</p>
+				<table style="margin: 0">
+					<tbody>
+						<tr>
+							<td>Card</td>
+							<td>
+								Carte de la charte — <code>default</code>, <code>accent</code>, <code>plain</code>
+							</td>
+						</tr>
+						<tr>
+							<td>Badge</td>
+							<td>
+								Pastille — <code>brand</code>, <code>neutral</code>, <code>outline</code>,
+								<code>success</code>, <code>error</code>
+							</td>
+						</tr>
+						<tr>
+							<td>PageHero</td>
+							<td>Filet de marque, titre, chapô, actions</td>
+						</tr>
+						<tr>
+							<td>SectionTitle</td>
+							<td>Titre de section avec pastille de compte</td>
+						</tr>
+						<tr>
+							<td>FilterChips</td>
+							<td>Barre de filtres en pilules</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<p>
+				Elles vivent dans <code>$components/ui</code>. Les pages campagne ont en plus leur module
+				dédié, <code>$components/campaign</code>, construit sur les mêmes tokens — voir
+				<code>/fr/campagne-modele</code>.
+			</p>
+			<p>
+				Motifs récurrents : filet de marque au-dessus d’un titre de hero (3 rem × 4 px, arrondi),
+				titre souligné d’un dégradé orange, callout à bordure orange, citation à barre gauche,
+				chronologie à axe vertical orange.
+			</p>
+
+			<h2 class="break"><span class="num">8.</span>Mode sombre</h2>
+			<p>
+				Piloté par <code>data-theme="dark"</code> sur <code>&lt;html&gt;</code>, posé avant le
+				premier rendu pour éviter le flash. Une page qui n’utilise que des tokens n’a
+				<strong>rien de spécifique à écrire</strong>. Les intégrations tierces (iframes) doivent en
+				revanche recevoir le thème explicitement.
+			</p>
+
+			<h2><span class="num">9.</span>Accessibilité</h2>
+			<ul>
+				<li>Mouvement réduit respecté globalement (<code>prefers-reduced-motion</code>).</li>
+				<li>Focus visible conservé sur tous les éléments interactifs.</li>
+				<li>Toute <code>iframe</code> porte un <code>title</code> descriptif.</li>
+				<li>Pas de texte justifié : sans césure fiable, il creuse des rivières de blancs.</li>
+			</ul>
+
+			<h2><span class="num">10.</span>En pratique</h2>
+			<div class="two-col">
+				<div class="do-dont do">
+					<h4>À faire</h4>
+					<ul>
+						<li><code>color: var(--text)</code></li>
+						<li><code>background: var(--bg-card)</code></li>
+						<li><code>border-radius: var(--radius-md)</code></li>
+						<li>Partir de <code>Card</code> et <code>Badge</code></li>
+						<li>Vérifier la page dans les deux thèmes</li>
+					</ul>
+				</div>
+				<div class="do-dont dont">
+					<h4>À éviter</h4>
+					<ul>
+						<li><code>color: #111</code>, <code>color: white</code></li>
+						<li><code>var(--text, #111)</code> — le repli masque le token</li>
+						<li>Un vert ou un rouge décoratif</li>
+						<li>Une énième variante de carte locale</li>
+						<li><code>text-align: justify</code></li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="rulebox">
+				<span class="label">Contrôle automatique</span>
+				<p>
+					<code>pnpm lint</code> lance stylelint : couleur en dur, couleur nommée et texte justifié
+					sont refusés. Le hook de pre-commit le lance sur les fichiers modifiés. Les seules
+					exceptions, déclarées dans <code>.stylelintrc.json</code> : <code>app.css</code> (la
+					palette), la palette Wait But Why, le logo et les drapeaux SVG.
+				</p>
+			</div>
+
+			<footer>
+				Pause IA — document de référence interne. Régénérer le PDF : ouvrir ce fichier dans un
+				navigateur et imprimer en PDF (A4, marges par défaut), ou
+				<code>node scripts/charte-pdf.mjs</code>.
+			</footer>
+		</div>
+	</body>
+</html>
