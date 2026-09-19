@@ -5,6 +5,7 @@
 
 	/* Colors */
 	--brand: #ff9416;
+	--brand-rgb: 255, 148, 22; /* composantes de --brand, pour les rgba() */
 	--brand-light: #fff5e8;
 	--brand-subtle: #c96900; /* orange foncé pour liens sur fond clair */
 	--white: white;

@@ -146,12 +146,12 @@
 		left: 0;
 		right: 0;
 		height: 4px;
-		background: var(--primary, var(--brand));
+		background: var(--brand);
 		z-index: 1;
 	}
 
 	.card:hover {
-		border-color: var(--primary, var(--brand));
+		border-color: var(--brand);
 	}
 
 	.cover-link {
@@ -217,7 +217,7 @@
 
 	.title-link:hover,
 	.title-link:focus-visible {
-		color: var(--primary, var(--brand));
+		color: var(--brand);
 	}
 
 	.desc {
@@ -240,7 +240,7 @@
 		display: inline-flex;
 		align-items: center;
 		gap: 0.45rem;
-		background: var(--primary, var(--brand));
+		background: var(--brand);
 		color: white;
 		text-decoration: none;
 		font-weight: 700;

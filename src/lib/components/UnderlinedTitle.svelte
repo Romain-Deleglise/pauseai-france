@@ -36,7 +36,7 @@
 		left: 0;
 		right: 0;
 		height: 4px;
-		background: linear-gradient(to right, var(--underline-color) 0%, transparent 75%);
+		background: linear-gradient(to right, var(--underline-color, var(--brand)) 0%, transparent 75%);
 		border-radius: 2px;
 	}
 

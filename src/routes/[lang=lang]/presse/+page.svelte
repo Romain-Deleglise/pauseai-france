@@ -899,7 +899,7 @@
 		display: inline-flex;
 		gap: 0.25rem;
 		margin-bottom: 1.5rem;
-		background-color: #f1f3f5;
+		background-color: var(--bg-secondary);
 		border-radius: 0.625rem;
 		padding: 0.25rem;
 	}
@@ -929,7 +929,7 @@
 
 	.tab.active {
 		color: var(--brand);
-		background-color: var(--white);
+		background-color: var(--bg-card);
 		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 	}
 
@@ -953,7 +953,7 @@
 	}
 
 	.tab.active .tab-count {
-		background-color: rgba(var(--brand-rgb, 255, 148, 22), 0.15);
+		background-color: rgba(var(--brand-rgb), 0.15);
 		color: var(--brand);
 	}
 
@@ -985,7 +985,7 @@
 		align-items: center;
 		border: 1px solid var(--border);
 		border-radius: 0.5rem;
-		background-color: var(--white);
+		background-color: var(--bg-card);
 		transition:
 			border-color 0.15s ease,
 			box-shadow 0.15s ease;
@@ -993,7 +993,7 @@
 
 	.dept-input-wrapper:focus-within {
 		border-color: var(--brand);
-		box-shadow: 0 0 0 3px rgba(var(--brand-rgb, 0, 0, 0), 0.1);
+		box-shadow: 0 0 0 3px rgba(var(--brand-rgb), 0.1);
 	}
 
 	.dept-search-icon {
@@ -1049,7 +1049,7 @@
 		right: 0;
 		max-height: 15rem;
 		overflow-y: auto;
-		background-color: var(--white);
+		background-color: var(--bg-card);
 		border: 1px solid var(--border);
 		border-radius: 0.5rem;
 		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
@@ -1071,7 +1071,7 @@
 
 	.dept-option:hover,
 	.dept-option.highlighted {
-		background-color: rgba(var(--brand-rgb, 0, 0, 0), 0.06);
+		background-color: rgba(var(--brand-rgb), 0.06);
 	}
 
 	.dept-option-code {
@@ -1109,7 +1109,7 @@
 		font-size: 0.75rem;
 		font-weight: 700;
 		color: var(--brand);
-		background-color: rgba(var(--brand-rgb, 0, 0, 0), 0.08);
+		background-color: rgba(var(--brand-rgb), 0.08);
 		border: 1px solid var(--brand);
 		border-radius: 0.25rem;
 	}
@@ -1150,7 +1150,7 @@
 		font-family: var(--font-body);
 		border: 1px solid var(--border);
 		border-radius: 0.375rem;
-		background-color: var(--white);
+		background-color: var(--bg-card);
 		color: var(--text);
 		appearance: none;
 		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23676e7a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
@@ -1265,7 +1265,7 @@
 		display: flex;
 		flex-direction: column;
 		padding: 1.5rem;
-		background-color: var(--white);
+		background-color: var(--bg-card);
 		border: 1px solid var(--border);
 		border-radius: 0.75rem;
 		text-decoration: none;

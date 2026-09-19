@@ -239,10 +239,10 @@
 	}
 
 	.campaign-card {
-		background: #fafafa;
+		background: var(--bg-card);
 		border-radius: 16px;
 		padding: 2.5rem 2rem;
-		border: 1px solid #eee;
+		border: 1px solid var(--border);
 		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
 		display: flex;
 		flex-direction: column;
@@ -256,7 +256,7 @@
 	.campaign-card:hover {
 		transform: translateY(-3px);
 		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-		border-color: #d0d0d0;
+		border-color: var(--border);
 	}
 
 	.campaign-card.ended {
@@ -267,7 +267,7 @@
 	.campaign-card.ended:hover {
 		transform: none;
 		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-		border-color: #eee;
+		border-color: var(--border);
 	}
 
 	.campaign-card.clickable {
@@ -301,7 +301,7 @@
 
 	.card-date {
 		font-size: 0.85rem;
-		color: #999;
+		color: var(--text-secondary);
 	}
 
 	.card-badge {
@@ -317,15 +317,15 @@
 	}
 
 	.card-badge.badge-ended {
-		background: #f5f5f5;
-		color: #888;
+		background: var(--bg-secondary);
+		color: var(--text-secondary);
 	}
 
 	h2 {
 		font-size: 1.75rem;
 		margin-top: 0;
 		margin-bottom: 1rem;
-		color: var(--text-heading, #222);
+		color: var(--text);
 	}
 
 	.campaign-card p {
@@ -396,7 +396,7 @@
 
 	.modal-dates {
 		font-size: 0.9rem;
-		color: #999;
+		color: var(--text-secondary);
 		margin: 0;
 	}
 

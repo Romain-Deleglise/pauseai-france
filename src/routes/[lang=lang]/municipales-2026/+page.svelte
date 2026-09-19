@@ -514,11 +514,11 @@
 	.section-header h2 {
 		margin: 0;
 		font-size: 1.75rem;
-		color: var(--text-heading, #111);
+		color: var(--text);
 	}
 
 	.count-pill {
-		background: var(--brand, var(--brand));
+		background: var(--brand);
 		color: #fff;
 		font-size: 0.75rem;
 		font-weight: 700;
@@ -540,12 +540,12 @@
 		font-size: 1.75rem;
 		margin-top: 0;
 		margin-bottom: 1rem;
-		color: var(--text-heading, #111);
+		color: var(--text);
 	}
 
 	/* ── 1. Action section ── */
 	.action-section {
-		background: linear-gradient(135deg, #fff8f0 0%, #fff3e0 100%);
+		background: var(--bg-card);
 		border: 1px solid rgba(255, 148, 22, 0.25);
 		border-radius: 20px;
 		padding: 2.5rem 2.5rem 2rem;
@@ -588,9 +588,9 @@
 		flex-direction: column;
 		gap: 1rem;
 		padding: 1.25rem 1.375rem;
-		background: #fff;
-		border: 1.5px solid #e8e8e8;
-		border-left: 4px solid var(--brand, var(--brand));
+		background: var(--bg-card);
+		border: 1.5px solid var(--border);
+		border-left: 4px solid var(--brand);
 		border-radius: 10px;
 		cursor: pointer;
 		text-align: left;
@@ -604,8 +604,8 @@
 	.candidate-card:hover {
 		transform: translateY(-3px);
 		box-shadow: 0 8px 28px rgba(0, 0, 0, 0.1);
-		border-color: var(--brand, var(--brand));
-		border-left-color: var(--brand, var(--brand));
+		border-color: var(--brand);
+		border-left-color: var(--brand);
 	}
 
 	.card-top {
@@ -623,7 +623,7 @@
 	.candidate-name {
 		font-size: 1rem;
 		font-weight: 700;
-		color: var(--text-heading, #111);
+		color: var(--text);
 		line-height: 1.3;
 	}
 
@@ -671,7 +671,7 @@
 		gap: 0.35rem;
 		font-size: 0.82rem;
 		font-weight: 600;
-		color: var(--brand, var(--brand));
+		color: var(--brand);
 		margin-top: auto;
 	}
 
@@ -692,11 +692,11 @@
 		align-items: center;
 		gap: 1.25rem;
 		padding: 1rem 1.25rem;
-		background: #fff;
-		border: 1px solid #e8e8e8;
+		background: var(--bg-card);
+		border: 1px solid var(--border);
 		border-radius: 10px;
 		text-decoration: none;
-		color: var(--text-heading, #111);
+		color: var(--text);
 		transition:
 			transform 0.18s ease,
 			box-shadow 0.18s ease,
@@ -706,8 +706,8 @@
 	.press-card:hover {
 		transform: translateX(3px);
 		box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-		border-color: var(--brand, var(--brand));
-		color: var(--text-heading, #111);
+		border-color: var(--brand);
+		color: var(--text);
 	}
 
 	.press-meta {
@@ -722,7 +722,7 @@
 		font-weight: 700;
 		text-transform: uppercase;
 		letter-spacing: 0.05em;
-		color: var(--brand, var(--brand));
+		color: var(--brand);
 		white-space: nowrap;
 	}
 
@@ -736,7 +736,7 @@
 		font-size: 0.925rem;
 		font-weight: 500;
 		line-height: 1.4;
-		color: var(--text-heading, #111);
+		color: var(--text);
 	}
 
 	.press-link-icon {
@@ -747,7 +747,7 @@
 	}
 
 	.press-card:hover .press-link-icon {
-		color: var(--brand, var(--brand));
+		color: var(--brand);
 	}
 
 	/* ── Modal ── */
@@ -769,7 +769,7 @@
 		width: min(92vw, 58rem);
 		height: 90vh;
 		max-height: 90vh;
-		background: #fff;
+		background: var(--bg-card);
 		border-radius: 14px;
 		overflow: hidden;
 		box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
@@ -789,8 +789,8 @@
 		justify-content: space-between;
 		gap: 1rem;
 		padding: 0.875rem 1.25rem;
-		border-bottom: 1px solid #eee;
-		background: #fafafa;
+		border-bottom: 1px solid var(--border);
+		background: var(--bg-secondary);
 		flex-shrink: 0;
 	}
 
@@ -813,7 +813,7 @@
 	.close-button {
 		background: transparent;
 		color: var(--text-2);
-		border: 1px solid #ddd;
+		border: 1px solid var(--border);
 		border-radius: 50%;
 		width: 2rem;
 		height: 2rem;
@@ -883,14 +883,14 @@
 		font-size: 0.975rem;
 		line-height: 1.55;
 		padding: 0.75rem 1rem;
-		background: #fafafa;
-		border-left: 3px solid var(--brand, var(--brand));
+		background: var(--bg-secondary);
+		border-left: 3px solid var(--brand);
 		border-radius: 0 6px 6px 0;
 	}
 
 	.engagements-list li::before {
 		content: '✓';
-		color: var(--brand, var(--brand));
+		color: var(--brand);
 		font-weight: 700;
 		flex-shrink: 0;
 		margin-top: 0.05em;
@@ -910,7 +910,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		background: #f5f5f5;
+		background: var(--bg-secondary);
 		padding: 1rem;
 	}
 

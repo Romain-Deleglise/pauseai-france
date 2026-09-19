@@ -57,11 +57,11 @@
 	}
 
 	.article-link:hover article {
-		border-color: var(--primary, var(--brand));
+		border-color: var(--brand);
 	}
 
 	.article-link:hover .read-more {
-		color: var(--primary, var(--brand));
+		color: var(--brand);
 	}
 
 	article {
