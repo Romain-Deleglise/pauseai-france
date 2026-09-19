@@ -1,9 +1,37 @@
-/senat-2025  /senat2025  301!
+# Une seule version de chaque page : /fr et /en. Les anciennes URL sans préfixe
+# ont été archivées (voir archive/routes-sans-prefixe) et redirigent ici.
+# Le « ! » force la redirection même si un fichier existe encore côté build.
+
+# ── Pages sans préfixe → version française ─────────────────────────────
 /campagnes  /fr/campagnes  301!
+/campagnes/*  /fr/campagnes/:splat  301!
+/dons  /fr/dons  301!
+/rejoindre  /fr/rejoindre  301!
+/qui-sommes-nous  /fr/qui-sommes-nous  301!
+/presse  /fr/presse  301!
+/presse/*  /fr/presse/:splat  301!
+/newsletters  /fr/newsletters  301!
+/newsletters/*  /fr/newsletters/:splat  301!
+/posts  /fr/posts  301!
+/groupes-locaux  /fr/groupes-locaux  301!
+/emploi-ia  /fr/emploi-ia  301!
+/emploi-ia/*  /fr/emploi-ia/:splat  301!
+/municipales-2026  /fr/municipales-2026  301!
+/senat2025  /fr/senat2025  301!
+/sommet-ia-2026  /fr/sommet-ia-2026  301!
+/merci  /fr/merci  301!
+/dangers  /fr/dangers  301!
+/dangers/*  /fr/dangers/:splat  301!
+/ressources  /fr/ressources  301!
+/faq  /fr/faq  301!
+/agir  /fr/agir  301!
+
+# ── Anciennes URL historiques ──────────────────────────────────────────
+/senat-2025  /fr/senat2025  301!
+/nous-rejoindre  /fr/rejoindre  301!
+/publications  /fr/newsletters  301!
+/publications/*  /fr/newsletters/:splat  301!
+/directeur-france  /fr/recrutement-emploi  301!
+
+# ── Raccourcis ─────────────────────────────────────────────────────────
 /discord https://discord.gg/vyXGd7AeGc
-/nous-rejoindre /rejoindre 301!
-/directeur-france /recrutement-emploi 301!
-/publications /newsletters 301!
-/publications/* /newsletters/:splat 301!
-/ressources /fr/ressources 301!
-/faq /fr/faq 301!

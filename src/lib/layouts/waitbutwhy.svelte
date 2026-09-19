@@ -1,3 +1,10 @@
+<script context="module" lang="ts">
+	// Même mapping que la mise en page Markdown par défaut : sans lui, les
+	// liens internes de ces articles échappent au préfixe de langue.
+	import { img, a } from '$components/custom'
+	export { img, a }
+</script>
+
 <svelte:head>
 	<script>
 		window.popupContent = {

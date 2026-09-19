@@ -252,8 +252,8 @@
 								</svg>
 							{/if}
 						</button>
-						<a href="/dons" class="btn-donate" class:on-hero={whiteNav}>Donner</a>
-						<a href="/rejoindre" class="btn-join" class:on-hero={whiteNav}>Rejoindre</a>
+						<a href="{prefix}/dons" class="btn-donate" class:on-hero={whiteNav}>Donner</a>
+						<a href="{prefix}/rejoindre" class="btn-join" class:on-hero={whiteNav}>Rejoindre</a>
 					</div>
 				</div>
 				<button
@@ -419,8 +419,9 @@
 								Mode sombre
 							{/if}
 						</button>
-						<a href="/dons" class="sidebar-cta" on:click={closeMenu}>Faire un don</a>
-						<a href="/rejoindre" class="sidebar-join" on:click={closeMenu}>Nous rejoindre</a>
+						<a href="{prefix}/dons" class="sidebar-cta" on:click={closeMenu}>Faire un don</a>
+						<a href="{prefix}/rejoindre" class="sidebar-join" on:click={closeMenu}>Nous rejoindre</a
+						>
 					</div>
 				</div>
 			</div>

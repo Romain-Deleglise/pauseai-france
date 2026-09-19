@@ -126,7 +126,7 @@ export const resources: Resource[] = [
 			fr: "Panorama des dangers de l'IA, du niveau individuel à la société, jusqu'au scénario de perte de contrôle. Point d'entrée idéal pour découvrir les enjeux.",
 			en: 'Overview of AI dangers, from the individual to society and the loss-of-control scenario. An ideal entry point to discover the stakes.'
 		},
-		url: '/dangers/pour-les-individus',
+		url: '/fr/dangers/pour-les-individus',
 		internal: true,
 		langs: ['fr'],
 		category: 'pause-ia',

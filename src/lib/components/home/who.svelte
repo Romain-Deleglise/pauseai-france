@@ -11,6 +11,7 @@
 
 	export let teamMembers: TeamMember[] = []
 	export let lang: Lang = 'fr'
+	$: prefix = lang === 'en' ? '/en' : '/fr'
 
 	const label_id = 'who-title'
 
@@ -270,8 +271,9 @@
 			<p class="lead">
 				Nous sommes une <a href="/mentions-legales">association</a> qui alerte les citoyens et les
 				pouvoirs publics français sur les
-				<a href="/dangers/economiques-et-materiels">graves dangers</a> de la course à l'intelligence
-				artificielle, et les incite à agir pour s'y opposer. Nous représentons en France
+				<a href="{prefix}/dangers/economiques-et-materiels">graves dangers</a> de la course à
+				l'intelligence artificielle, et les incite à agir pour s'y opposer. Nous représentons en
+				France
 				<a href="https://pauseai.info">PauseAI Global</a>.
 			</p>
 		{/if}
@@ -279,8 +281,8 @@
 			{#if lang === 'en'}
 				<Button alt href="mailto:contact@pauseia.fr">Contact us</Button>
 			{:else}
-				<Button href="/dons">Faire un don</Button>
-				<Button alt href="/rejoindre">Nous rejoindre</Button>
+				<Button href="{prefix}/dons">Faire un don</Button>
+				<Button alt href="{prefix}/rejoindre">Nous rejoindre</Button>
 				<Button alt href="mailto:contact@pauseia.fr">Nous contacter</Button>
 			{/if}
 		</div>
@@ -396,9 +398,9 @@
 							</li>
 							<li>
 								Ils présentent déjà des risques majeurs pour la sécurité de nos <a
-									href="/dangers/economiques-et-materiels">infrastructures</a
-								>, pour <a href="/dangers/pour-la-societe">nos institutions</a>, pour
-								<a href="/dangers/pour-les-individus">notre modèle social</a>.
+									href="{prefix}/dangers/economiques-et-materiels">infrastructures</a
+								>, pour <a href="{prefix}/dangers/pour-la-societe">nos institutions</a>, pour
+								<a href="{prefix}/dangers/pour-les-individus">notre modèle social</a>.
 							</li>
 							<li>
 								Ces modèles d'IA commencent à <a
@@ -449,8 +451,8 @@
 		<p class="independence">
 			Association à but non lucratif créée en juin 2024, nous sommes <strong
 				>totalement indépendants de l'industrie de l'IA et de la tech</strong
-			>&nbsp;: nous fonctionnons grâce aux <a href="/dons">dons</a> de nos soutiens, qui financent nos
-			campagnes, nos événements et le fonctionnement de l'association.
+			>&nbsp;: nous fonctionnons grâce aux <a href="{prefix}/dons">dons</a> de nos soutiens, qui financent
+			nos campagnes, nos événements et le fonctionnement de l'association.
 		</p>
 	{/if}
 

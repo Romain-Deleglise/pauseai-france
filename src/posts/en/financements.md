@@ -55,7 +55,7 @@ Our accounts are presented and approved each year at a general assembly. The rep
 </ul>
 
 <div class="cta">
-  <Button href="/dons">Make a donation</Button>
+  <Button href="/en/dons">Make a donation</Button>
   <p class="cta-note"><em>Your donation gives you a 66% tax deduction (for French taxpayers).</em></p>
   <a class="cta-secondary" href="https://www.helloasso.com/associations/pause-ia/adhesions/formulaire-d-adhesion-a-pause-ia">Become a member of Pause IA</a>
 </div>

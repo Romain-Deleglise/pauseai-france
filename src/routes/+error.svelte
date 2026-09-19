@@ -44,7 +44,7 @@
 	<div class="actions">
 		<Button href="/">Retour à l'accueil</Button>
 		{#if info.showPostsLink}
-			<Button href="/posts" alt>Voir les articles</Button>
+			<Button href="/fr/posts" alt>Voir les articles</Button>
 		{/if}
 	</div>
 </div>

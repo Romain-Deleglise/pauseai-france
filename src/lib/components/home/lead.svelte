@@ -7,7 +7,7 @@
 
 	export let lang: Lang = 'fr'
 
-	$: prefix = lang === 'en' ? '/en' : ''
+	$: prefix = lang === 'en' ? '/en' : '/fr'
 	const label_id = 'lead-title'
 </script>
 
@@ -77,7 +77,7 @@
 					un futur où l'IA demeure un outil bénéfique pour l'humanité.
 				</p>
 				<div class="buttons" in:fly={{ y: 20, duration: 300, delay: 700 }}>
-					<Button href="/rejoindre">Rejoignez-nous</Button>
+					<Button href="{prefix}/rejoindre">Rejoignez-nous</Button>
 				</div>
 			{/if}
 		</div>
