@@ -563,3 +563,11 @@ export function getSortedCampaigns(): Campaign[] {
 	const ended = campaigns.filter((c) => c.status === 'ended').sort(byStartDateDesc)
 	return [...active, ...ended]
 }
+
+/**
+ * Campagne mise en avant : la plus récente encore en cours. Sert de destination
+ * de repli pour le bandeau quand personne n'a renseigné d'URL dans Notion.
+ */
+export function getFeaturedCampaign(): Campaign | undefined {
+	return getSortedCampaigns().find((campaign) => campaign.status === 'active')
+}

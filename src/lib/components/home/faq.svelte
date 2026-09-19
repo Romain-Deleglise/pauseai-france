@@ -17,11 +17,12 @@
 	// La FAQ n'existe plus qu'ici : les données structurées suivent, sinon on
 	// perdrait l'affichage enrichi de Google.
 	$: jsonLd = faqJsonLd(flattenFaq(categories))
+	$: jsonLdTag = `<script type="application/ld+json">${jsonLd}<\/script>`
 </script>
 
 <svelte:head>
 	<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-	{@html `<script type="application/ld+json">${jsonLd}</script>`}
+	{@html jsonLdTag}
 </svelte:head>
 
 <section id="faq" class="faq" aria-labelledby={label_id}>

@@ -13,7 +13,6 @@
 
 	export let lang: Lang = 'fr'
 	$: t = getT(lang)
-	$: prefix = lang === 'fr' ? '/fr' : '/en'
 
 	// 4 rows of photos, each row scrolls in its own direction
 	const row1 = [

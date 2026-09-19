@@ -2,7 +2,6 @@
 	import { slide, fade } from 'svelte/transition'
 	import { page } from '$app/stores'
 	import { faqBulkAction } from '$lib/stores/faq'
-	import { onMount } from 'svelte'
 	import Fly from './Fly.svelte'
 
 	export let open = false

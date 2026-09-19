@@ -1,6 +1,5 @@
-import { SKIP, visit } from 'unist-util-visit'
+import { visit } from 'unist-util-visit'
 import { toHtml } from 'hast-util-to-html'
-import { cp } from 'fs'
 
 const BLUE_POPUP_INDICATOR = /\(\((\d+)\)\)/g
 const GRAY_POPUP_INDICATOR = /\{\((\d+)\)\}/g
@@ -11,11 +10,11 @@ const GRAY_MULTILINE_CONTENT_START_PATTERN = /^\{(\d+)\}\s*:@\($/m
 const SINGLE_LINE_CONTENT_END_PATTERN = /\n/m
 const MULTILINE_CONTENT_END_PATTERN = /^\)$/m
 // const GRAY_MULTILINE_CONTENT = /^\{(\d+)\}\s*:<\s?([\s\S]*?)\s?>$/gm
-const BLUEBOX_START_PATTERN = /bluebox\-start/g
-const BLUEBOX2_START_PATTERN = /bluebox2\-start/g
-const GRAYBOX_START_PATTERN = /graybox\-start/g
-const COLOR_BOX_ALL_END_PATTERN = /colorbox\-end/g
-// const BLUEBOX2_END_PATTERN = /bluebox2\-end/g
+const BLUEBOX_START_PATTERN = /bluebox-start/g
+const BLUEBOX2_START_PATTERN = /bluebox2-start/g
+const GRAYBOX_START_PATTERN = /graybox-start/g
+const COLOR_BOX_ALL_END_PATTERN = /colorbox-end/g
+// const BLUEBOX2_END_PATTERN = /bluebox2-end/g
 const BLUE_POPUP_CLASS = 'blue-popup'
 const GRAY_POPUP_CLASS = 'gray-popup'
 const POPUP_TRIGGER_CLASS = 'popup-trigger'
@@ -26,8 +25,6 @@ const GRAYBOX_CLASS = 'graybox'
 
 export function rehypeWBWPopups2() {
 	return (/** @type {any} */ tree) => {
-		const debugDisplayOn = 1
-
 		// First pass: Process regular popups
 		visit(tree, 'text', (node, index, parent) => {
 			if (!parent || typeof index !== 'number') return

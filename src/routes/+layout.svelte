@@ -40,28 +40,31 @@
 			// Silently fall back to default banner
 		}
 	})
+	// Données structurées de l'organisation, présentes sur toutes les pages.
+	// La balise est assemblée ici plutôt que dans le markup : un <script>
+	// littéral dans un gabarit empêche le linter d'analyser le fichier.
+	const organisationJsonLd = `<script type="application/ld+json">${JSON.stringify({
+		'@context': 'https://schema.org',
+		'@type': ['Organization', 'NGO'],
+		name: 'PauseAI France',
+		url: 'https://pauseia.fr',
+		logo: 'https://pauseia.fr/favicon.png',
+		sameAs: [
+			'https://www.facebook.com/Pause.IA/',
+			'https://twitter.com/pause_ia',
+			'https://www.linkedin.com/company/pause-ia/',
+			'https://www.instagram.com/pause_ia/',
+			'https://www.youtube.com/@Pause_IA',
+			'https://www.tiktok.com/@pause_ia',
+			'https://pauseia.substack.com/',
+			'https://www.threads.net/@pause_ia'
+		]
+	})}<\/script>`
 </script>
 
 <svelte:head>
-	{@html `<script type="application/ld+json">
-		${JSON.stringify({
-			'@context': 'https://schema.org',
-			'@type': ['Organization', 'NGO'],
-			name: 'PauseAI France',
-			url: 'https://pauseia.fr',
-			logo: 'https://pauseia.fr/favicon.png',
-			sameAs: [
-				'https://www.facebook.com/Pause.IA/',
-				'https://twitter.com/pause_ia',
-				'https://www.linkedin.com/company/pause-ia/',
-				'https://www.instagram.com/pause_ia/',
-				'https://www.youtube.com/@Pause_IA',
-				'https://www.tiktok.com/@pause_ia',
-				'https://pauseia.substack.com/',
-				'https://www.threads.net/@pause_ia'
-			]
-		})}
-	</script>`}
+	<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+	{@html organisationJsonLd}
 </svelte:head>
 
 <h2 style="width: 0; height: 0; margin: 0; padding: 0; visibility: hidden;">(Top)</h2>

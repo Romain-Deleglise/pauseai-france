@@ -177,13 +177,13 @@ function getUrl(property: NotionProperty | undefined): string {
 // Helper to extract number
 function getNumber(property: NotionProperty | undefined): number {
 	if (!property) return 0
-	return property.number || 0
+	return property.number ?? 0
 }
 
 // Helper to extract checkbox
 function getCheckbox(property: NotionProperty | undefined): boolean {
 	if (!property) return false
-	return property.checkbox || false
+	return property.checkbox ?? false
 }
 
 // Helper to extract select
@@ -428,7 +428,7 @@ export async function getNewsletters(): Promise<Article[]> {
 
 export async function getNewsletterBySlug(slug: string): Promise<Article | null> {
 	const newsletters = await getNewsletters()
-	return newsletters.find((n) => n.slug === slug) || null
+	return newsletters.find((n) => n.slug === slug) ?? null
 }
 
 /**
@@ -491,7 +491,7 @@ function extractMailingContent(html: string): string {
 
 	for (const pattern of bodyPatterns) {
 		const match = html.match(pattern)
-		if (match && match[1]) {
+		if (match?.[1]) {
 			const cleaned = cleanContent(match[1])
 			const textOnly = cleaned.replace(/<[^>]*>/g, '').trim()
 			if (textOnly.length > 100) {
@@ -502,7 +502,7 @@ function extractMailingContent(html: string): string {
 
 	// Strategy 2: Extract full <body> content and clean it
 	const bodyMatch = html.match(/<body[^>]*>([\s\S]*)<\/body>/i)
-	if (bodyMatch && bodyMatch[1]) {
+	if (bodyMatch?.[1]) {
 		return cleanContent(bodyMatch[1])
 	}
 
@@ -666,7 +666,7 @@ export async function getBanner(): Promise<Banner | null> {
 	})
 
 	// Return the first visible banner
-	return banners.find((b): b is Banner => b !== null) || null
+	return banners.find((b): b is Banner => b !== null) ?? null
 }
 
 export async function getPressReleases(): Promise<PressRelease[]> {
@@ -701,7 +701,7 @@ export async function getPressReleases(): Promise<PressRelease[]> {
 
 export async function getPressReleaseBySlug(slug: string): Promise<PressRelease | null> {
 	const releases = await getPressReleases()
-	return releases.find((pr) => pr.slug === slug) || null
+	return releases.find((pr) => pr.slug === slug) ?? null
 }
 
 export async function getLocalPressReleases(): Promise<LocalPressRelease[]> {
@@ -737,7 +737,7 @@ export async function getLocalPressReleases(): Promise<LocalPressRelease[]> {
 
 export async function getLocalPressReleaseBySlug(slug: string): Promise<LocalPressRelease | null> {
 	const releases = await getLocalPressReleases()
-	return releases.find((pr) => pr.slug === slug) || null
+	return releases.find((pr) => pr.slug === slug) ?? null
 }
 
 /**
@@ -818,6 +818,13 @@ export async function getLocalEvents(): Promise<LocalEvent[]> {
 // Team members
 export type TeamCategory = 'Direction' | 'Conseil scientifique' | 'Membre'
 
+const TEAM_CATEGORIES: TeamCategory[] = ['Direction', 'Conseil scientifique', 'Membre']
+
+/** La catégorie vient d'une liste déroulante Notion : on la valide au lieu de la présumer. */
+function toTeamCategory(value: string): TeamCategory {
+	return TEAM_CATEGORIES.includes(value as TeamCategory) ? (value as TeamCategory) : 'Membre'
+}
+
 export interface TeamMember {
 	id: string
 	name: string
@@ -832,10 +839,6 @@ export interface TeamMember {
 function isValidTeamMember(member: TeamMember): boolean {
 	if (!member.name) {
 		console.warn(`Invalid team member: missing name`)
-		return false
-	}
-	if (!member.category) {
-		console.warn(`Invalid team member: missing category for "${member.name}"`)
 		return false
 	}
 	return true
@@ -858,7 +861,7 @@ export async function getTeamMembers(): Promise<TeamMember[]> {
 				name: getText(page.properties.Nom),
 				role: getText(page.properties['Rôle']),
 				profession: getText(page.properties.Profession),
-				category: (categoryValue as TeamCategory) || 'Membre',
+				category: toTeamCategory(categoryValue),
 				image: getFileUrl(page.properties.Photo),
 				order: getNumber(page.properties.Ordre),
 				visible

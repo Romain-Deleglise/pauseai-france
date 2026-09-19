@@ -39,7 +39,11 @@
 	$: title = t.meta_title
 	$: description = t.meta_desc
 
-	type CategoryMeta = { label: string; icon: ComponentType; intro?: string }
+	interface CategoryMeta {
+		label: string
+		icon: ComponentType
+		intro?: string
+	}
 	$: CATEGORIES = {
 		'pause-ia': { label: t.cat_pause_ia, icon: BookOpen, intro: t.pause_ia_intro },
 		livres: { label: t.cat_livres, icon: Book, intro: t.livres_intro },
@@ -326,8 +330,12 @@
 			},
 			{ rootMargin: '-15% 0px -70% 0px', threshold: 0 }
 		)
-		sections.forEach((s) => observer.observe(s))
-		return () => observer.disconnect()
+		sections.forEach((s) => {
+			observer.observe(s)
+		})
+		return () => {
+			observer.disconnect()
+		}
 	})
 
 	// Map our internal media types to Schema.org @type values for the
@@ -413,12 +421,14 @@
 				''
 			].join('\n')
 		)
+	$: jsonLdTag = `<script type="application/ld+json">${JSON.stringify(jsonLd).replace(/</g, '\\u003c')}<\/script>`
 </script>
 
 <PostMeta {title} {description} />
 
 <svelte:head>
-	{@html `<script type="application/ld+json">${JSON.stringify(jsonLd).replace(/</g, '\\u003c')}</script>`}
+	<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+	{@html jsonLdTag}
 </svelte:head>
 
 <div class="layout">
@@ -473,7 +483,9 @@
 					<button
 						class="pill"
 						class:active={langFilter.includes('fr')}
-						on:click={() => toggleLang('fr')}
+						on:click={() => {
+							toggleLang('fr')
+						}}
 						aria-pressed={langFilter.includes('fr')}
 					>
 						<img src="/flags/fr.svg" alt="" width="16" /> FR
@@ -481,7 +493,9 @@
 					<button
 						class="pill"
 						class:active={langFilter.includes('en')}
-						on:click={() => toggleLang('en')}
+						on:click={() => {
+							toggleLang('en')
+						}}
 						aria-pressed={langFilter.includes('en')}
 					>
 						<img src="/flags/gb.svg" alt="" width="16" /> EN
@@ -493,7 +507,9 @@
 						<button
 							class="pill"
 							class:active={categoryFilter.includes(cat)}
-							on:click={() => toggleCategory(cat)}
+							on:click={() => {
+								toggleCategory(cat)
+							}}
 							aria-pressed={categoryFilter.includes(cat)}
 						>
 							<svelte:component this={CATEGORIES[cat].icon} size={14} />
@@ -507,7 +523,9 @@
 						<button
 							class="pill pill-type"
 							class:active={typeFilter.includes(mt)}
-							on:click={() => toggleType(mt)}
+							on:click={() => {
+								toggleType(mt)
+							}}
 							aria-pressed={typeFilter.includes(mt)}
 						>
 							{MEDIA_TYPE_LABELS[mt]}

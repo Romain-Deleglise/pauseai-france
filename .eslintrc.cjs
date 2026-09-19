@@ -18,6 +18,20 @@ module.exports = {
 		project: true,
 		tsconfigRootDir: __dirname
 	},
+	rules: {
+		// Le code traite volontairement la chaîne vide comme une absence de
+		// valeur (champs de formulaire, propriétés Notion) : `||` est alors le
+		// bon opérateur, `??` laisserait passer des chaînes vides.
+		'@typescript-eslint/prefer-nullish-coalescing': [
+			'error',
+			{ ignorePrimitives: { string: true } }
+		],
+		// Interpoler un nombre ou un booléen dans un gabarit est sans danger.
+		'@typescript-eslint/restrict-template-expressions': [
+			'error',
+			{ allowNumber: true, allowBoolean: true }
+		]
+	},
 	env: {
 		browser: true,
 		es2017: true,

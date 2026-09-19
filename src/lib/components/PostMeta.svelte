@@ -21,6 +21,7 @@
 			url: imageUrl
 		}
 	}
+	$: jsonLdTag = `<script type="application/ld+json">${JSON.stringify(schemaOrgMarkup)}<\/script>`
 </script>
 
 <svelte:head>
@@ -43,7 +44,6 @@
 	<meta property="twitter:description" content={description} />
 	<meta property="twitter:site" content="@pause_ia" />
 	<meta property="twitter:creator" content="@pause_ia" />
-	{@html `<script type="application/ld+json">
-        ${JSON.stringify(schemaOrgMarkup)}
-    </script>`}
+	<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+	{@html jsonLdTag}
 </svelte:head>

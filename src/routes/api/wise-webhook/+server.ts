@@ -63,7 +63,7 @@ async function callApi4<T = Record<string, unknown>>(
 }
 
 // Wise effectue une requête GET pour valider l'URL lors de la création du webhook
-export const GET: RequestHandler = async () => {
+export const GET: RequestHandler = () => {
 	return json({ ok: true })
 }
 
@@ -102,7 +102,18 @@ export const POST: RequestHandler = async ({ request }) => {
 	console.log('[wise-webhook] Payload complet:', JSON.stringify(event, null, 2))
 
 	const eventType = event.event_type as string | undefined
-	const data = event.data as Record<string, unknown> | undefined
+	// Le corps du webhook n'est pas typé par Wise : on ne lit que les champs
+	// dont on se sert, et seulement en tant que texte ou nombre.
+	const data = event.data as
+		| {
+				transaction_type?: string
+				currency?: string
+				amount?: number
+				channel_name?: string
+				transfer_reference?: string
+				occurred_at?: string
+		  }
+		| undefined
 
 	// 3. Ne traiter que les crédits EUR
 	if (eventType !== 'balances#update' && eventType !== 'balances#credit') {
@@ -147,7 +158,7 @@ export const POST: RequestHandler = async ({ request }) => {
 		}
 
 		const contrib = findResult.values[0]
-		const occurredAt = data.occurred_at as string | undefined
+		const occurredAt = data.occurred_at
 		const receiveDate = occurredAt?.split('T')[0] ?? new Date().toISOString().split('T')[0]
 
 		if (data.amount !== contrib.total_amount) {

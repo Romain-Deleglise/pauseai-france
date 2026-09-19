@@ -1,13 +1,11 @@
 <script lang="ts">
 	import PostMeta from '$components/PostMeta.svelte'
 	import { ArrowLeft, ArrowRight, ExternalLink, Calendar, Maximize2, X } from 'lucide-svelte'
-	import { getT } from '$lib/i18n'
 	import type { PageData } from './$types'
 
 	export let data: PageData
 
 	$: lang = data.lang
-	$: t = getT(lang)
 	$: prefix = `/${lang}`
 
 	let fullscreen = false

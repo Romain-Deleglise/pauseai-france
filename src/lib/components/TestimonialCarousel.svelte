@@ -1,6 +1,6 @@
 <script lang="ts">
 	import CarouselNavigation from '$components/CarouselNavigation.svelte'
-	import { formatFrenchDate, formatDate } from '$lib/utils'
+	import { formatDate } from '$lib/utils'
 	import type { Testimonial } from '$lib/types'
 	import type { Lang } from '$lib/i18n'
 	import { getT } from '$lib/i18n'

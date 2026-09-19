@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { getFeaturedCampaign } from '$lib/campaigns'
 	import NavDropdown from '$components/NavDropdown.svelte'
 	import Logo from '$components/Logo.svelte'
 	import { page } from '$app/stores'
@@ -164,6 +165,19 @@
 	}
 
 	$: switchLangHref = getSwitchLangHref($page.url.pathname, lang, otherLang)
+
+	// Le bandeau vient de Notion. Si le bouton est annoncé sans URL — ou si une
+	// URL est saisie sans libellé — on complète avec la campagne en cours
+	// plutôt que d'afficher un bouton mort ou de le faire disparaître.
+	$: featuredCampaign = getFeaturedCampaign()
+	$: bannerFallbackUrl = featuredCampaign ? `${prefix}/${featuredCampaign.slug}` : `${prefix}`
+	$: bannerLink =
+		$bannerStore.linkUrl || $bannerStore.linkText
+			? {
+					url: $bannerStore.linkUrl || bannerFallbackUrl,
+					text: $bannerStore.linkText || (lang === 'en' ? 'Take action' : 'Passer à l’action')
+				}
+			: null
 </script>
 
 <!--
@@ -183,8 +197,8 @@
 			on:close={() => (bannerDismissed = true)}
 		>
 			{$bannerStore.message}
-			{#if $bannerStore.linkUrl}
-				<a href={$bannerStore.linkUrl}>{$bannerStore.linkText}</a>
+			{#if bannerLink}
+				<a href={bannerLink.url}>{bannerLink.text}</a>
 			{/if}
 		</Banner>
 	</div>
