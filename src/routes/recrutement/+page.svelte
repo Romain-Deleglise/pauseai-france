@@ -433,7 +433,7 @@
 	.resource-card {
 		background: var(--bg);
 		border: 2px solid var(--border);
-		border-radius: 0.5rem;
+		border-radius: var(--radius-sm);
 		padding: 2rem;
 		text-align: center;
 		transition: all 0.2s ease;
@@ -470,7 +470,7 @@
 	.card-button {
 		display: inline-block;
 		padding: 0.75rem 1.5rem;
-		border-radius: 0.375rem;
+		border-radius: var(--radius-sm);
 		font-weight: 600;
 		text-decoration: none;
 		border: none;
@@ -481,7 +481,7 @@
 
 	.card-button.primary {
 		background-color: var(--brand);
-		color: white;
+		color: var(--white);
 	}
 
 	.card-button.primary:hover {
@@ -496,7 +496,7 @@
 
 	.card-button.secondary:hover {
 		background-color: var(--brand);
-		color: white;
+		color: var(--white);
 	}
 
 	.card-button:disabled {
@@ -614,7 +614,7 @@
 	/* Conclusion Section */
 	.conclusion-section {
 		background: var(--bg-subtle);
-		border-radius: 0.5rem;
+		border-radius: var(--radius-sm);
 		padding: 3rem 2rem;
 		text-align: center;
 		margin-top: 4rem;
@@ -638,9 +638,9 @@
 	.conclusion-cta {
 		display: inline-block;
 		background-color: var(--brand);
-		color: white;
+		color: var(--white);
 		padding: 1rem 2rem;
-		border-radius: 0.5rem;
+		border-radius: var(--radius-sm);
 		text-decoration: none;
 		font-weight: 600;
 		font-size: 1.1rem;

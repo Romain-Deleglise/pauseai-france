@@ -52,10 +52,10 @@
 	}
 
 	.success-message {
-		background: white;
-		border-radius: 12px;
+		background: var(--white);
+		border-radius: var(--radius-md);
 		padding: 3rem 2rem;
-		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		box-shadow: var(--shadow-raised);
 		margin: 2rem 0;
 	}
 
@@ -79,7 +79,7 @@
 
 	.next-steps {
 		background: var(--bg);
-		border-radius: 12px;
+		border-radius: var(--radius-md);
 		padding: 2rem;
 		margin: 2rem 0;
 		border: 2px solid var(--brand-light);
@@ -114,12 +114,12 @@
 		font-size: 1.1rem;
 		border: 2px solid var(--brand);
 		padding: 0.75rem 1.5rem;
-		border-radius: 8px;
+		border-radius: var(--radius-sm);
 		transition: all 0.3s;
 	}
 
 	.return-link a:hover {
 		background-color: var(--brand);
-		color: white;
+		color: var(--white);
 	}
 </style>

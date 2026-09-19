@@ -193,7 +193,7 @@
 		text-transform: uppercase;
 		letter-spacing: 0.5px;
 		padding: 0.3rem 0.6rem;
-		border-radius: 999px;
+		border-radius: var(--radius-pill);
 		line-height: 1.2;
 	}
 
@@ -241,12 +241,12 @@
 		align-items: center;
 		gap: 0.45rem;
 		background: var(--brand);
-		color: white;
+		color: var(--white);
 		text-decoration: none;
 		font-weight: 700;
 		font-size: 0.9rem;
 		padding: 0.6rem 1rem;
-		border-radius: 8px;
+		border-radius: var(--radius-sm);
 		transition:
 			opacity 0.2s ease,
 			transform 0.2s ease;

@@ -132,7 +132,7 @@
 		width: 100%;
 		padding: 0.7rem 0.85rem 0.7rem 2.75rem;
 		border: 2px solid var(--border);
-		border-radius: 0.625rem;
+		border-radius: var(--radius-btn);
 		font-size: 1rem;
 		font-family: inherit;
 		background: var(--bg);

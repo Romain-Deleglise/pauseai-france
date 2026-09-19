@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { Badge } from '$components/ui'
 	import PostMeta from '$components/PostMeta.svelte'
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
 	import Button from '$components/Button.svelte'
@@ -126,7 +127,7 @@
 							<span class="title-text">Don par carte bancaire</span>
 						{/if}
 					</span>
-					<span class="monthly-badge">{lang === 'en' ? 'Simple & fast' : 'Simple & rapide'}</span>
+					<Badge size="sm">{lang === 'en' ? 'Simple & fast' : 'Simple & rapide'}</Badge>
 				</h3>
 				{#if lang === 'en'}
 					<p>
@@ -372,8 +373,8 @@
 		margin-bottom: 3rem;
 		background: var(--bg);
 		padding: 3rem 2rem;
-		border-radius: 12px;
-		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		border-radius: var(--radius-md);
+		box-shadow: var(--shadow-raised);
 	}
 
 	.hero-description {
@@ -385,7 +386,7 @@
 	.tax-benefit {
 		background: var(--success-bg);
 		border: 2px solid var(--success-border);
-		border-radius: 8px;
+		border-radius: var(--radius-sm);
 		padding: 1rem;
 		margin: 1.5rem 0;
 		text-align: center;
@@ -416,9 +417,9 @@
 
 	.donation-card {
 		background: var(--bg);
-		border-radius: 12px;
+		border-radius: var(--radius-md);
 		padding: 2rem;
-		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		box-shadow: var(--shadow-raised);
 		border: 2px solid transparent;
 		transition: all 0.3s ease-out;
 		display: flex;
@@ -470,20 +471,8 @@
 		max-width: 100% !important;
 	}
 
-	/* Badge décoratif : orange de marque, pas une couleur d'état. */
-	.monthly-badge {
-		background: var(--brand);
-		color: var(--white);
-		padding: 0.25rem 0.75rem;
-		border-radius: 20px;
-		font-size: 0.9rem;
-		font-weight: 500;
-	}
-
-	.title-with-icon .monthly-badge {
-		display: inline-flex;
+	.title-with-icon :global(.ui-badge) {
 		align-self: flex-start;
-		margin-top: 0;
 	}
 
 	.donation-note {
@@ -497,10 +486,10 @@
 	}
 
 	.impact-highlight {
-		background: linear-gradient(135deg, var(--brand), #ff6b35);
+		background: linear-gradient(135deg, var(--brand), var(--brand-deep));
 		color: var(--black);
 		padding: 2rem;
-		border-radius: 12px;
+		border-radius: var(--radius-md);
 		margin: 2rem 0;
 		text-align: center;
 	}
@@ -552,7 +541,7 @@
 		width: 120px;
 		padding: 0.75rem 1.25rem;
 		border: 2px solid var(--border);
-		border-radius: 10px;
+		border-radius: var(--radius-md);
 		font-size: 1.25rem;
 		font-weight: 500;
 		text-align: left;
@@ -609,7 +598,7 @@
 		margin: 1.5rem 0;
 		padding: 1.5rem;
 		background: var(--bg-secondary);
-		border-radius: 8px;
+		border-radius: var(--radius-sm);
 		border: 1px solid var(--border);
 		text-align: center;
 	}

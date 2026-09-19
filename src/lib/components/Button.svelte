@@ -23,7 +23,7 @@
 		background-color: var(--btn-bg);
 		color: var(--text) !important;
 		border: none;
-		border-radius: 0.625rem;
+		border-radius: var(--radius-btn);
 		padding: 0.5rem 1rem;
 		font-family: var(--font-body);
 		cursor: pointer;
@@ -41,7 +41,7 @@
 			background-color 0.15s ease,
 			transform 0.15s ease,
 			box-shadow 0.15s ease;
-		box-shadow: 0 2px 8px rgba(255, 148, 22, 0.3);
+		box-shadow: var(--shadow-brand);
 	}
 
 	button.alt,

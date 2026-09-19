@@ -342,7 +342,7 @@
 		transform: translate(-50%, -50%);
 		z-index: 1001;
 		background: var(--bg);
-		border-radius: 12px;
+		border-radius: var(--radius-md);
 		padding: 2rem;
 		width: min(540px, calc(100vw - 2rem));
 		max-height: calc(100dvh - 2rem);
@@ -399,7 +399,7 @@
 	input[type='number'] {
 		padding: 0.6rem 0.9rem;
 		border: 2px solid var(--border);
-		border-radius: 8px;
+		border-radius: var(--radius-sm);
 		font-size: 1rem;
 		font-family: inherit;
 		background: var(--bg);
@@ -468,7 +468,7 @@
 
 	.preset-btn {
 		padding: 0.4rem 0.9rem;
-		border-radius: 20px;
+		border-radius: var(--radius-pill);
 		border: 2px solid var(--brand);
 		background: transparent;
 		color: var(--brand);
@@ -483,7 +483,7 @@
 	.preset-btn:hover,
 	.preset-btn.selected {
 		background: var(--brand);
-		color: white;
+		color: var(--white);
 	}
 
 	/* Field hint */
@@ -510,7 +510,7 @@
 	.error-banner {
 		background: var(--error-bg);
 		border: 1px solid var(--error-border);
-		border-radius: 6px;
+		border-radius: var(--radius-sm);
 		padding: 0.7rem 1rem;
 		color: var(--error);
 		font-size: 0.9rem;
@@ -522,9 +522,9 @@
 		width: 100%;
 		padding: 0.85rem;
 		background: var(--brand);
-		color: white;
+		color: var(--white);
 		border: none;
-		border-radius: 8px;
+		border-radius: var(--radius-sm);
 		font-size: 1.05rem;
 		font-weight: 600;
 		cursor: pointer;
@@ -567,7 +567,7 @@
 		width: 100%;
 		background: var(--bg-secondary);
 		border: 1px solid var(--border);
-		border-radius: 10px;
+		border-radius: var(--radius-md);
 		padding: 1.25rem 1.5rem;
 		text-align: left;
 	}
@@ -624,7 +624,7 @@
 	.copy-inline {
 		background: none;
 		border: 1px solid var(--border);
-		border-radius: 6px;
+		border-radius: var(--radius-sm);
 		cursor: pointer;
 		font-size: 1rem;
 		padding: 0.25rem 0.5rem;
@@ -645,9 +645,9 @@
 		width: 100%;
 		padding: 0.85rem;
 		background: var(--brand);
-		color: white;
+		color: var(--white);
 		border: none;
-		border-radius: 8px;
+		border-radius: var(--radius-sm);
 		font-size: 1.05rem;
 		font-weight: 600;
 		cursor: pointer;

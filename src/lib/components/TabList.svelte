@@ -100,8 +100,8 @@
 	button.active {
 		background: var(--brand);
 		border-color: var(--brand);
-		color: white;
-		box-shadow: 0 2px 8px rgba(255, 148, 22, 0.35);
+		color: var(--white);
+		box-shadow: var(--shadow-brand);
 	}
 
 	button:not(.active):hover {

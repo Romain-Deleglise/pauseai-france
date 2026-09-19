@@ -807,7 +807,7 @@
 	.contact-card {
 		background-color: var(--bg-subtle);
 		border: 2px solid var(--brand);
-		border-radius: 0.5rem;
+		border-radius: var(--radius-sm);
 		padding: 1.25rem 1.5rem;
 	}
 
@@ -880,7 +880,6 @@
 		margin-bottom: 0;
 		padding-top: 1rem;
 		border-top: 1px solid rgba(0, 0, 0, 0.08);
-		text-align: justify;
 	}
 
 	.redirect a {
@@ -900,7 +899,7 @@
 		gap: 0.25rem;
 		margin-bottom: 1.5rem;
 		background-color: var(--bg-secondary);
-		border-radius: 0.625rem;
+		border-radius: var(--radius-btn);
 		padding: 0.25rem;
 	}
 
@@ -920,7 +919,7 @@
 			color 0.2s ease,
 			background-color 0.2s ease,
 			box-shadow 0.2s ease;
-		border-radius: 0.5rem;
+		border-radius: var(--radius-sm);
 	}
 
 	.tab:hover {
@@ -930,7 +929,7 @@
 	.tab.active {
 		color: var(--brand);
 		background-color: var(--bg-card);
-		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+		box-shadow: var(--shadow-card);
 	}
 
 	.tab-label {
@@ -946,7 +945,7 @@
 		padding: 0 0.375rem;
 		font-size: 0.75rem;
 		font-weight: 700;
-		border-radius: 999px;
+		border-radius: var(--radius-pill);
 		background-color: rgba(0, 0, 0, 0.08);
 		color: var(--text-secondary);
 		line-height: 1;
@@ -984,7 +983,7 @@
 		display: flex;
 		align-items: center;
 		border: 1px solid var(--border);
-		border-radius: 0.5rem;
+		border-radius: var(--radius-sm);
 		background-color: var(--bg-card);
 		transition:
 			border-color 0.15s ease,
@@ -1051,7 +1050,7 @@
 		overflow-y: auto;
 		background-color: var(--bg-card);
 		border: 1px solid var(--border);
-		border-radius: 0.5rem;
+		border-radius: var(--radius-sm);
 		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 		z-index: 50;
 		list-style: none;
@@ -1064,7 +1063,7 @@
 		align-items: center;
 		gap: 0.625rem;
 		padding: 0.5rem 0.75rem;
-		border-radius: 0.375rem;
+		border-radius: var(--radius-sm);
 		cursor: pointer;
 		transition: background-color 0.1s ease;
 	}
@@ -1129,7 +1128,7 @@
 		margin-bottom: 1.5rem;
 		background-color: var(--bg-subtle);
 		border: 1px solid var(--border);
-		border-radius: 0.75rem;
+		border-radius: var(--radius-md);
 		padding: 0.75rem 1rem;
 	}
 
@@ -1149,7 +1148,7 @@
 		font-size: 0.875rem;
 		font-family: var(--font-body);
 		border: 1px solid var(--border);
-		border-radius: 0.375rem;
+		border-radius: var(--radius-sm);
 		background-color: var(--bg-card);
 		color: var(--text);
 		appearance: none;
@@ -1182,7 +1181,7 @@
 		overflow-y: auto;
 		background-color: var(--bg-subtle);
 		border: 1px solid var(--border);
-		border-radius: 0.75rem;
+		border-radius: var(--radius-md);
 		padding: 1.25rem;
 	}
 
@@ -1217,7 +1216,7 @@
 		padding: 0.5rem 0.625rem;
 		border: none;
 		background: transparent;
-		border-radius: 0.375rem;
+		border-radius: var(--radius-sm);
 		cursor: pointer;
 		text-align: left;
 		transition: background-color 0.15s ease;
@@ -1267,7 +1266,7 @@
 		padding: 1.5rem;
 		background-color: var(--bg-card);
 		border: 1px solid var(--border);
-		border-radius: 0.75rem;
+		border-radius: var(--radius-md);
 		text-decoration: none;
 		color: var(--text);
 		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
@@ -1301,7 +1300,6 @@
 		font-size: 0.95rem;
 		color: var(--text-secondary);
 		line-height: 1.5;
-		text-align: justify;
 	}
 
 	.pr-footer {
@@ -1359,7 +1357,7 @@
 		width: 2.25rem;
 		height: 2.25rem;
 		border: 1px solid var(--border);
-		border-radius: 0.375rem;
+		border-radius: var(--radius-sm);
 		background: var(--white);
 		color: var(--text);
 		cursor: pointer;
@@ -1385,7 +1383,7 @@
 		width: 2.25rem;
 		height: 2.25rem;
 		border: 1px solid var(--border);
-		border-radius: 0.375rem;
+		border-radius: var(--radius-sm);
 		background: var(--white);
 		color: var(--text);
 		font-size: 0.875rem;
@@ -1435,7 +1433,7 @@
 		border: 1px solid var(--border);
 		color: var(--text-secondary);
 		padding: 0.1rem 0.5rem;
-		border-radius: 999px;
+		border-radius: var(--radius-pill);
 	}
 
 	.toggle-all-btn {
@@ -1444,7 +1442,7 @@
 		color: var(--text-secondary);
 		background: none;
 		border: 1px solid var(--border);
-		border-radius: 0.375rem;
+		border-radius: var(--radius-sm);
 		padding: 0.25rem 0.625rem;
 		cursor: pointer;
 		white-space: nowrap;
@@ -1503,7 +1501,7 @@
 		border: 1px solid var(--border);
 		color: var(--text-secondary);
 		padding: 0.05rem 0.4rem;
-		border-radius: 999px;
+		border-radius: var(--radius-pill);
 	}
 
 	.coverage-list {
@@ -1517,7 +1515,7 @@
 		flex-direction: column;
 		gap: 0.15rem;
 		padding: 0.5rem 0.75rem;
-		border-radius: 0.375rem;
+		border-radius: var(--radius-sm);
 		border-left: 2px solid transparent;
 		text-decoration: none;
 		color: var(--text);
@@ -1582,7 +1580,7 @@
 		background-color: var(--bg-secondary);
 		border: 1px solid var(--border);
 		border-left: 4px solid var(--brand);
-		border-radius: 0.75rem;
+		border-radius: var(--radius-md);
 		padding: 2rem 2.5rem;
 	}
 
@@ -1598,7 +1596,6 @@
 		line-height: 1.6;
 		color: var(--text-secondary);
 		margin-bottom: 0.75rem;
-		text-align: justify;
 	}
 
 	.about-card p:last-child {

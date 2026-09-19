@@ -156,7 +156,7 @@
 		width: 36px;
 		height: 36px;
 		border-radius: 50%;
-		border: 1px solid var(--carousel-border, #d9c7b0);
+		border: 1px solid var(--carousel-border);
 		background: var(--brand-light);
 		color: var(--carousel-accent, var(--brand));
 		font-size: 1.45rem;

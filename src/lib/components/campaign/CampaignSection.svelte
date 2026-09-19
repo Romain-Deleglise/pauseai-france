@@ -50,14 +50,14 @@
 
 	.card,
 	.accent {
-		border-radius: 16px;
+		border-radius: var(--radius-lg);
 		padding: 2rem;
 		border: 1px solid var(--border);
 	}
 
 	.card {
 		background: var(--bg-card);
-		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+		box-shadow: var(--shadow-card);
 	}
 
 	.accent {

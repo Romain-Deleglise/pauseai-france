@@ -254,17 +254,17 @@
 	.cta-btn {
 		display: inline-block;
 		background: var(--brand);
-		color: white;
+		color: var(--white);
 		text-decoration: none;
 		padding: 0.75rem 1.5rem;
-		border-radius: 6px;
+		border-radius: var(--radius-sm);
 		font-weight: 600;
 		transition: background 0.2s;
 	}
 
 	.cta-btn:hover {
 		background: var(--btn-hover-bg);
-		color: white;
+		color: var(--white);
 	}
 
 	.article-nav {

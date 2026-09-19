@@ -8,6 +8,8 @@
 	--brand-rgb: 255, 148, 22; /* composantes de --brand, pour les rgba() */
 	--brand-light: #fff5e8;
 	--brand-subtle: #c96900; /* orange foncé pour liens sur fond clair */
+	--brand-deep: #ff6b35; /* fin de dégradé sur les encadrés d'appel */
+	--brand-soft: #ffb347; /* début de dégradé clair (bandeaux) */
 	--white: white;
 	--black: black;
 	--text: var(--black);
@@ -38,6 +40,37 @@
 	--error: #c0392b;
 	--error-bg: #fdecee;
 	--error-border: #f6c6cc;
+
+	/* Carrousels éditoriaux (témoignages, articles) : beige chaud */
+	--carousel-border: #d9c7b0;
+	--carousel-text: #414042;
+
+	/* Menu déroulant de navigation : toujours sombre, sur fond clair comme sombre */
+	--menu-bg: #1e1e24;
+
+	/* Teintes de catégorie (pastilles d'engagement des municipales) */
+	--hue-green: #1a7f4b;
+	--hue-blue: #2563eb;
+	--hue-amber: #a16207;
+	--hue-pink: #be185d;
+
+	/* Rayons — cf. docs/charte-graphique.md § 3 */
+	--radius-sm: 8px; /* champs, petits encadrés */
+	--radius-md: 12px; /* médias et cartes */
+	--radius-lg: 16px; /* grands encadrés */
+	--radius-btn: 0.625rem;
+	--radius-pill: 999px;
+
+	/* Ombres — très discrètes, la carte se lit d'abord par sa bordure */
+	--shadow-card: 0 4px 20px rgba(0, 0, 0, 0.03);
+	--shadow-raised: 0 8px 28px rgba(0, 0, 0, 0.06);
+	--shadow-brand: 0 2px 8px rgba(255, 148, 22, 0.3);
+
+	/* Largeurs de colonne */
+	--width-text: 44rem; /* corps de texte */
+	--width-content: 54rem; /* pages éditoriales et campagnes */
+	--width-wide: 66rem; /* pages larges (grilles, cartes) */
+	--gutter: 1.5rem;
 
 	/* Buttons */
 	--btn-bg: var(--brand);
@@ -76,6 +109,10 @@
 	--error: #ff8a7a;
 	--error-bg: #3a201d;
 	--error-border: #5e322d;
+	--carousel-border: #4a423a;
+	--carousel-text: #e6e1da;
+	--shadow-card: 0 4px 20px rgba(0, 0, 0, 0.35);
+	--shadow-raised: 0 8px 28px rgba(0, 0, 0, 0.45);
 	--brand-subtle: #ffab40; /* orange plus clair pour fond sombre */
 
 	--btn-alt-bg: #303030;
@@ -129,7 +166,8 @@ h3 {
 
 p {
 	margin-bottom: 1.5rem;
-	text-align: justify;
+	/* Pas de justification : sans césure typographique fiable, elle creuse
+	   des rivières de blancs dans les colonnes étroites. */
 	hyphens: auto;
 }
 

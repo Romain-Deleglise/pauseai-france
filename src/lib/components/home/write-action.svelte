@@ -219,7 +219,7 @@
 		color: var(--text);
 		background: var(--bg);
 		border: 1px solid var(--border);
-		border-radius: 0.625rem;
+		border-radius: var(--radius-btn);
 	}
 
 	.wa-field input:focus-visible {
@@ -240,7 +240,7 @@
 		color: var(--text);
 		background-color: var(--btn-bg);
 		border: none;
-		border-radius: 0.625rem;
+		border-radius: var(--radius-btn);
 		cursor: pointer;
 	}
 

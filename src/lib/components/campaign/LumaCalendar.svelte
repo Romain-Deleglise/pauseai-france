@@ -64,7 +64,7 @@
 <style>
 	.luma {
 		border: 1px solid var(--border);
-		border-radius: 12px;
+		border-radius: var(--radius-md);
 		overflow: hidden;
 		background: var(--bg);
 	}
@@ -100,7 +100,7 @@
 		color: var(--text);
 		background: var(--bg);
 		border: 2px solid var(--border);
-		border-radius: 0.625rem;
+		border-radius: var(--radius-btn);
 		transition:
 			border-color 0.15s ease,
 			box-shadow 0.15s ease;

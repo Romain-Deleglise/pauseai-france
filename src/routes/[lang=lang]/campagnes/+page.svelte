@@ -6,6 +6,7 @@
 	import { getSortedCampaigns } from '$lib/campaigns'
 	import type { Campaign } from '$lib/campaigns'
 	import { fade } from 'svelte/transition'
+	import { Badge, Card } from '$components/ui'
 	import type { PageData } from './$types'
 
 	export let data: PageData
@@ -78,8 +79,10 @@
 		<UnderlinedTitle as="h1">{t.campagnes.title}</UnderlinedTitle>
 		<p class="intro">{t.campagnes.subtitle}</p>
 		<p class="active-count">
-			{activeCount}
-			{activeCount === 1 ? t.campagnes.active_count_singular : t.campagnes.active_count_plural}
+			<Badge variant="success">
+				{activeCount}
+				{activeCount === 1 ? t.campagnes.active_count_singular : t.campagnes.active_count_plural}
+			</Badge>
 		</p>
 	</section>
 
@@ -88,19 +91,20 @@
 			{@const content = isEn ? campaign.en : campaign.fr}
 			{@const href = campaign.url ?? `${prefix}/${campaign.slug}`}
 			{@const hasSummary = campaign.status === 'ended' && campaign.summary}
-			<div
-				class="campaign-card"
-				class:ended={campaign.status === 'ended'}
-				class:clickable={hasSummary}
+			<Card
+				interactive={Boolean(hasSummary)}
+				class="campaign-card {campaign.status === 'ended' ? 'ended' : ''} {hasSummary
+					? 'clickable'
+					: ''}"
 				role={hasSummary ? 'button' : undefined}
 				tabindex={hasSummary ? 0 : undefined}
 				on:click={() => hasSummary && openSummary(campaign)}
 				on:keydown={(e) => e.key === 'Enter' && hasSummary && openSummary(campaign)}
 			>
 				<div class="card-top">
-					<div class="card-badge" class:badge-ended={campaign.status === 'ended'}>
+					<Badge size="sm" variant={campaign.status === 'ended' ? 'neutral' : 'success'}>
 						{campaign.status === 'active' ? t.campagnes.badge_active : t.campagnes.badge_ended}
-					</div>
+					</Badge>
 					<span class="card-date">
 						{#if campaign.endDate}
 							{formatDate(campaign.startDate)} – {formatDate(campaign.endDate)}
@@ -116,7 +120,7 @@
 				{:else if hasSummary}
 					<span class="see-results">{isEn ? 'View results' : 'Voir le bilan'} →</span>
 				{/if}
-			</div>
+			</Card>
 		{/each}
 	</section>
 </article>
@@ -142,9 +146,7 @@
 			>
 
 			<div class="modal-header">
-				<div class="card-badge badge-ended">
-					{t.campagnes.badge_ended}
-				</div>
+				<Badge size="sm" variant="neutral">{t.campagnes.badge_ended}</Badge>
 				<h2>{content.title}</h2>
 				{#if selectedCampaign.startDate}
 					<p class="modal-dates">
@@ -238,57 +240,29 @@
 		margin-bottom: 5rem;
 	}
 
-	.campaign-card {
-		background: var(--bg-card);
-		border-radius: 16px;
-		padding: 2.5rem 2rem;
-		border: 1px solid var(--border);
-		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+	/* Le fond, la bordure et l'ombre viennent du composant Card. */
+	.campaigns-list :global(.campaign-card) {
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
-		transition:
-			transform 0.2s ease,
-			box-shadow 0.2s ease,
-			border-color 0.2s ease;
 	}
 
-	.campaign-card:hover {
-		transform: translateY(-3px);
-		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-		border-color: var(--border);
-	}
-
-	.campaign-card.ended {
+	.campaigns-list :global(.campaign-card.ended) {
 		opacity: 0.75;
 		cursor: default;
 	}
 
-	.campaign-card.ended:hover {
+	.campaigns-list :global(.campaign-card.ended:hover) {
 		transform: none;
-		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+		box-shadow: var(--shadow-card);
 		border-color: var(--border);
 	}
 
-	.campaign-card.clickable {
+	.campaigns-list :global(.campaign-card.clickable) {
 		cursor: pointer;
 	}
 
-	.campaign-card.clickable:hover {
-		opacity: 1;
-		transform: translateY(-2px);
-		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-		border-color: color-mix(in srgb, var(--brand) 30%, transparent);
-	}
-
 	.active-count {
-		font-size: 1rem;
-		font-weight: 600;
-		color: var(--success);
-		background: var(--success-bg);
-		display: inline-block;
-		padding: 0.3rem 0.8rem;
-		border-radius: 999px;
 		margin-top: 0.5rem;
 	}
 
@@ -304,21 +278,9 @@
 		color: var(--text-secondary);
 	}
 
-	.card-badge {
-		display: inline-block;
-		background: var(--success-bg);
-		color: var(--success);
-		font-size: 0.75rem;
-		font-weight: 700;
+	.card-top :global(.ui-badge) {
 		text-transform: uppercase;
 		letter-spacing: 0.06em;
-		padding: 0.2rem 0.6rem;
-		border-radius: 999px;
-	}
-
-	.card-badge.badge-ended {
-		background: var(--bg-secondary);
-		color: var(--text-secondary);
 	}
 
 	h2 {
@@ -328,7 +290,7 @@
 		color: var(--text);
 	}
 
-	.campaign-card p {
+	.campaigns-list :global(.campaign-card p) {
 		font-size: 1.05rem;
 		line-height: 1.7;
 		color: var(--text-muted);
@@ -376,7 +338,7 @@
 		color: var(--text-secondary);
 		cursor: pointer;
 		padding: 0.25rem 0.5rem;
-		border-radius: 0.5rem;
+		border-radius: var(--radius-sm);
 		transition: background 0.15s;
 	}
 
@@ -421,7 +383,7 @@
 
 	.result-card {
 		background: var(--bg-subtle);
-		border-radius: 0.75rem;
+		border-radius: var(--radius-md);
 		padding: 1rem;
 		display: flex;
 		flex-direction: column;
@@ -468,7 +430,7 @@
 		align-items: baseline;
 		gap: 0.6rem;
 		padding: 0.45rem 0.6rem;
-		border-radius: 0.5rem;
+		border-radius: var(--radius-sm);
 		text-decoration: none;
 		transition: background 0.15s;
 	}
@@ -484,7 +446,7 @@
 		color: var(--brand);
 		background: color-mix(in srgb, var(--brand) 10%, var(--bg));
 		padding: 0.1rem 0.45rem;
-		border-radius: 999px;
+		border-radius: var(--radius-pill);
 	}
 
 	.article-title {
@@ -499,7 +461,7 @@
 		gap: 0.25rem;
 		margin-top: 1.5rem;
 		padding: 0.55rem 1.1rem;
-		border-radius: 999px;
+		border-radius: var(--radius-pill);
 		font-size: 0.9rem;
 		font-weight: 600;
 		text-decoration: none;
@@ -521,7 +483,7 @@
 			font-size: 1.4rem;
 		}
 
-		.campaign-card {
+		.campaigns-list :global(.campaign-card) {
 			padding: 1.5rem;
 		}
 
@@ -544,7 +506,7 @@
 			width: 2.5rem;
 			height: 0.25rem;
 			background: var(--border);
-			border-radius: 999px;
+			border-radius: var(--radius-pill);
 			margin: 0 auto 1.25rem;
 		}
 

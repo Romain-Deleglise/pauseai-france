@@ -147,7 +147,7 @@
 
 	.city-pill {
 		padding: 0.2rem 0.65rem;
-		border-radius: 999px;
+		border-radius: var(--radius-pill);
 		background: var(--bg);
 		border: 1px solid color-mix(in srgb, var(--brand) 30%, transparent);
 		font-size: 0.8rem;
@@ -230,7 +230,7 @@
 
 	.btn {
 		padding: 0.65rem 1.4rem;
-		border-radius: 0.5rem;
+		border-radius: var(--radius-sm);
 		font-family: var(--font-heading);
 		font-weight: 700;
 		font-size: 0.95rem;
@@ -250,7 +250,7 @@
 
 	.btn.primary {
 		background: var(--brand);
-		color: white;
+		color: var(--white);
 		border-color: var(--brand);
 	}
 

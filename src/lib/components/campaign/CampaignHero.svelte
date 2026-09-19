@@ -68,7 +68,7 @@
 		letter-spacing: 0.04em;
 		text-transform: uppercase;
 		padding: 0.25rem 0.7rem;
-		border-radius: 999px;
+		border-radius: var(--radius-pill);
 	}
 
 	.badge.ended {

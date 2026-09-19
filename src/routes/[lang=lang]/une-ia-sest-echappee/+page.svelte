@@ -997,7 +997,7 @@
 		overflow: hidden;
 		margin-bottom: 2.5rem;
 		border: 1px solid var(--border);
-		border-radius: 6px;
+		border-radius: var(--radius-sm);
 		background: var(--bg-card);
 		text-decoration: none;
 		color: var(--text);
@@ -1091,7 +1091,7 @@
 	.action-card {
 		padding: 1.75rem;
 		border: 1px solid var(--border);
-		border-radius: 6px;
+		border-radius: var(--radius-sm);
 		background: var(--bg-card);
 		margin-bottom: 1.25rem;
 	}
@@ -1168,7 +1168,7 @@
 		font-weight: 700;
 		font-size: 0.92rem;
 		padding: 0.6rem 1.1rem;
-		border-radius: 6px;
+		border-radius: var(--radius-sm);
 		transition: background 0.2s ease;
 	}
 
@@ -1203,7 +1203,7 @@
 		align-items: baseline;
 		gap: 0.6rem;
 		padding: 0.6rem 0.75rem;
-		border-radius: 10px;
+		border-radius: var(--radius-md);
 		text-decoration: none;
 		color: var(--text);
 		transition: background 0.15s ease;

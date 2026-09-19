@@ -241,23 +241,23 @@
 		font-weight: 600;
 		letter-spacing: 0.04em;
 		text-transform: uppercase;
-		color: var(--carousel-text, #414042);
+		color: var(--carousel-text);
 		white-space: nowrap;
 	}
 
 	.segmented {
 		display: flex;
-		border: 1px solid var(--carousel-border, #d9c7b0);
-		border-radius: 8px;
+		border: 1px solid var(--carousel-border);
+		border-radius: var(--radius-sm);
 		overflow: hidden;
 	}
 
 	.seg-btn {
 		background: var(--white);
 		border: none;
-		border-left: 1px solid var(--carousel-border, #d9c7b0);
+		border-left: 1px solid var(--carousel-border);
 		padding: 0.3rem 0.75rem;
-		color: var(--carousel-text, #414042);
+		color: var(--carousel-text);
 		cursor: pointer;
 		transition:
 			background 150ms ease,
@@ -289,7 +289,7 @@
 
 	.label {
 		font-weight: 600;
-		color: var(--carousel-text, #414042);
+		color: var(--carousel-text);
 	}
 
 	.tabs {
@@ -299,11 +299,11 @@
 	}
 
 	button[role='tab'] {
-		border-radius: 999px;
-		border: 1px solid var(--carousel-border, #d9c7b0);
+		border-radius: var(--radius-pill);
+		border: 1px solid var(--carousel-border);
 		background: var(--white);
 		padding: 0.5rem 1.3rem;
-		color: var(--carousel-text, #414042);
+		color: var(--carousel-text);
 		cursor: pointer;
 		transition:
 			background 180ms ease,

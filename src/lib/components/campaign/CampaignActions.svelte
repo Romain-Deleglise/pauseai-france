@@ -38,7 +38,7 @@
 		padding: 1.5rem;
 		background: var(--bg-card);
 		border: 1px solid var(--border);
-		border-radius: 14px;
+		border-radius: var(--radius-lg);
 	}
 
 	.action.featured {

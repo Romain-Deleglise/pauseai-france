@@ -944,7 +944,7 @@
 		text-align: center;
 		background: var(--brand);
 		color: white;
-		border-radius: 0.625rem;
+		border-radius: var(--radius-btn);
 		padding: 0.8rem 1.5rem;
 		font-family: var(--font-heading);
 		font-weight: 700;
@@ -963,7 +963,7 @@
 		color: var(--white);
 		text-align: center;
 		padding: 0.8rem 1.5rem;
-		border-radius: 0.625rem;
+		border-radius: var(--radius-btn);
 		font-family: var(--font-heading);
 		font-weight: 700;
 		font-size: 1rem;

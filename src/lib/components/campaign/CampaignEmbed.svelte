@@ -23,7 +23,7 @@
 <style>
 	.embed {
 		border: 1px solid var(--border);
-		border-radius: 12px;
+		border-radius: var(--radius-md);
 		overflow: hidden;
 		background: var(--bg);
 	}

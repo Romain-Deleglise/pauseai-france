@@ -397,7 +397,7 @@
 		width: 72%;
 		aspect-ratio: 1.41 / 1;
 		object-fit: cover;
-		border-radius: 0.5rem;
+		border-radius: var(--radius-sm);
 		box-shadow:
 			0 2px 5px rgb(27 26 23 / 16%),
 			0 14px 28px -10px rgb(27 26 23 / 35%);

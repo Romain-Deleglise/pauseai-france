@@ -301,7 +301,7 @@
 		aspect-ratio: 4/3;
 		object-fit: cover;
 		display: block;
-		border-radius: 6px;
+		border-radius: var(--radius-sm);
 		flex-shrink: 0;
 		/* No filter — natural colors, overlay handles readability */
 	}
@@ -382,7 +382,7 @@
 		background: rgba(255, 250, 245, 0.82);
 		backdrop-filter: blur(14px);
 		-webkit-backdrop-filter: blur(14px);
-		border-radius: 16px;
+		border-radius: var(--radius-lg);
 		padding: 1rem 1.5rem;
 	}
 
@@ -536,7 +536,7 @@
 			gap: 6px;
 		}
 		.marquee-track img {
-			border-radius: 8px;
+			border-radius: var(--radius-sm);
 		}
 	}
 

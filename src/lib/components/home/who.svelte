@@ -608,7 +608,7 @@
 		background: var(--bg-card);
 		border: 1px solid var(--border);
 		border-radius: 1rem;
-		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+		box-shadow: var(--shadow-card);
 	}
 
 	.section-title {
@@ -644,7 +644,7 @@
 		color: var(--text);
 		text-align: center;
 		background: var(--bg-subtle);
-		border-radius: 0.5rem;
+		border-radius: var(--radius-sm);
 		border: 1px solid var(--border);
 	}
 </style>

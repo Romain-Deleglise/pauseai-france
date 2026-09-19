@@ -74,6 +74,6 @@
 	}
 
 	.consent-widget :global(.alt) {
-		border: 1px solid black;
+		border: 1px solid var(--black);
 	}
 </style>

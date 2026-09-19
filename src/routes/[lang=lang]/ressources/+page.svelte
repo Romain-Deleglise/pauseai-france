@@ -652,7 +652,7 @@
 		align-items: center;
 		gap: 0.45rem;
 		padding: 0.45rem 0.75rem;
-		border-radius: 8px;
+		border-radius: var(--radius-sm);
 		font-family: var(--font-heading);
 		font-weight: 500;
 		font-size: 0.85rem;
@@ -695,7 +695,7 @@
 		min-width: 1.3rem;
 		height: 1.3rem;
 		padding: 0 0.35rem;
-		border-radius: 999px;
+		border-radius: var(--radius-pill);
 		background: rgba(0, 0, 0, 0.06);
 		color: var(--text-secondary);
 		font-size: 0.7rem;
@@ -704,7 +704,7 @@
 
 	.toc-link.active .toc-count {
 		background: var(--brand);
-		color: white;
+		color: var(--white);
 	}
 
 	:global([data-theme='dark']) .toc-count {
@@ -734,7 +734,7 @@
 		margin-bottom: 2rem;
 		background: var(--bg);
 		padding: 2rem 1.5rem 1.75rem;
-		border-radius: 12px;
+		border-radius: var(--radius-md);
 		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
 	}
 
@@ -771,7 +771,7 @@
 		font-family: var(--font-body);
 		font-size: 1rem;
 		border: 1px solid var(--border);
-		border-radius: 10px;
+		border-radius: var(--radius-md);
 		background: var(--bg);
 		color: var(--text);
 		transition:
@@ -829,7 +829,7 @@
 		align-items: center;
 		gap: 0.35rem;
 		padding: 0.4rem 0.75rem;
-		border-radius: 999px;
+		border-radius: var(--radius-pill);
 		border: 1px solid var(--border);
 		background: var(--bg);
 		color: var(--text-secondary);
@@ -848,7 +848,7 @@
 	.pill.active {
 		background: var(--brand);
 		border-color: var(--brand);
-		color: white;
+		color: var(--white);
 	}
 
 	.pill img {
@@ -891,7 +891,7 @@
 		font-weight: 600;
 		background: transparent;
 		border: 1px solid var(--border);
-		border-radius: 999px;
+		border-radius: var(--radius-pill);
 		color: var(--text-secondary);
 		cursor: pointer;
 		transition: all 0.15s;
@@ -932,7 +932,7 @@
 		justify-content: center;
 		width: 2.4rem;
 		height: 2.4rem;
-		border-radius: 10px;
+		border-radius: var(--radius-md);
 		background: var(--brand-light);
 		color: var(--brand-subtle);
 		flex-shrink: 0;
@@ -1001,7 +1001,7 @@
 		padding: 1rem 1.1rem;
 		background: var(--bg);
 		border: 1px solid var(--border);
-		border-radius: 10px;
+		border-radius: var(--radius-md);
 		text-decoration: none;
 		color: var(--text);
 		transition:
@@ -1121,7 +1121,7 @@
 		padding: 1.75rem;
 		background: var(--bg);
 		border: 1px solid var(--border);
-		border-radius: 12px;
+		border-radius: var(--radius-md);
 		text-align: center;
 		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.04);
 	}
@@ -1147,9 +1147,9 @@
 		align-items: center;
 		gap: 0.45rem;
 		padding: 0.6rem 1.15rem;
-		border-radius: 8px;
+		border-radius: var(--radius-sm);
 		background: var(--brand);
-		color: white;
+		color: var(--white);
 		text-decoration: none;
 		font-family: var(--font-heading);
 		font-weight: 700;

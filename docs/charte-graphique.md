@@ -89,10 +89,14 @@ ailleurs dans l'interface.
   pour les pages larges. Gouttière : `1.5rem` (`1.1rem` en mobile).
 - Espacement entre sections : `3.5rem` sur les pages campagne (le global d'`app.css`
   est de 5/10 rem, neutralisé par `CampaignPage`).
-- Rayons : `12px` pour les médias et les cartes, `16px` pour les grands encadrés,
-  `0.625rem` pour les boutons, `999px` pour les badges.
-- Ombres : très discrètes — `0 4px 20px rgba(0, 0, 0, 0.03)` sur les encadrés,
-  `0 2px 8px rgba(255, 148, 22, 0.3)` sur le bouton principal.
+- Rayons, par token : `--radius-sm` (8px, champs et petits encadrés),
+  `--radius-md` (12px, médias et cartes), `--radius-lg` (16px, grands encadrés),
+  `--radius-btn` (0.625rem), `--radius-pill` (999px, badges).
+- Ombres, par token : `--shadow-card` (très discrète, sur les encadrés),
+  `--shadow-raised` (au survol d'une carte cliquable), `--shadow-brand`
+  (bouton principal). Elles sont renforcées en mode sombre.
+- Largeurs : `--width-text` (44 rem), `--width-content` (54 rem),
+  `--width-wide` (66 rem).
 - Cibles tactiles : hauteur de bouton `48px` minimum.
 
 ## 4. Motifs récurrents
@@ -102,6 +106,22 @@ ailleurs dans l'interface.
 - **Callout** (`Callout`) : fond `--bg-subtle`, bordure `2px` `--brand`.
 - **Citation** : fond `--bg-subtle`, barre gauche `4px` `--brand`.
 - **Chronologie** : axe vertical orange à 30 % d'opacité, pastilles pleines `--brand`.
+
+### Composants partagés (`$components/ui`)
+
+Toute nouvelle page se compose d'abord avec ces briques, plutôt qu'avec des
+styles locaux :
+
+| Composant      | Rôle                                                                     |
+| -------------- | ------------------------------------------------------------------------ |
+| `Card`         | Carte de la charte. `variant` : `default`, `accent`, `plain`.            |
+| `Badge`        | Pastille. `variant` : `brand`, `neutral`, `outline`, `success`, `error`. |
+| `PageHero`     | Filet de marque, titre, chapô, actions.                                  |
+| `SectionTitle` | Titre de section avec pastille de compte optionnelle.                    |
+| `FilterChips`  | Barre de filtres (onglets pilule).                                       |
+
+Les pages campagne gardent leur module dédié (`$components/campaign`), construit
+sur les mêmes tokens.
 
 ## 5. Mode sombre
 
@@ -116,3 +136,16 @@ revanche recevoir le thème explicitement — voir `LumaCalendar.svelte`.
 - Mouvement réduit respecté globalement (`prefers-reduced-motion`).
 - Focus visible conservé sur tous les éléments interactifs.
 - Toute `iframe` doit porter un `title` descriptif.
+
+## 7. Contrôle automatique
+
+`pnpm lint` exécute **stylelint** en plus de Prettier et ESLint. Trois règles
+tiennent la charte :
+
+- `color-no-hex` — aucune couleur en dur hors d'`app.css` ;
+- `color-named` — pas de `white` / `black` non plus ;
+- pas de `text-align: justify`.
+
+Les seules exceptions, déclarées dans `.stylelintrc.json` : `app.css` (la palette
+elle-même), la palette Wait But Why, les fills du logo et les drapeaux SVG.
+Le hook de pre-commit lance stylelint sur les fichiers modifiés.

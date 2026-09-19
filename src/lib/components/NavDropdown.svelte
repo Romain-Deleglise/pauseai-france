@@ -125,7 +125,7 @@
 		border: none;
 		cursor: pointer;
 		padding: 0.5rem 0.6rem;
-		border-radius: 0.5rem;
+		border-radius: var(--radius-sm);
 		transition:
 			color 120ms,
 			background-color 120ms;
@@ -150,7 +150,7 @@
 	.trigger.white:hover,
 	.trigger.white.active {
 		background: rgba(255, 255, 255, 0.15);
-		color: white;
+		color: var(--white);
 	}
 
 	.trigger {
@@ -196,13 +196,13 @@
 	.menu-arrow {
 		width: 10px;
 		height: 6px;
-		background: #1e1e24;
+		background: var(--menu-bg);
 		clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
 		margin: 0 auto 0;
 	}
 
 	.menu-inner {
-		background: #1e1e24;
+		background: var(--menu-bg);
 		border: 1px solid rgba(255, 255, 255, 0.07);
 		border-radius: 0.875rem;
 		box-shadow:
@@ -223,7 +223,7 @@
 		font-size: 0.88rem;
 		color: rgba(255, 255, 255, 0.75);
 		text-decoration: none;
-		border-radius: 0.5rem;
+		border-radius: var(--radius-sm);
 		transition:
 			background-color 0.1s ease,
 			color 0.1s ease;
@@ -232,7 +232,7 @@
 
 	.menu a:hover {
 		background-color: rgba(255, 255, 255, 0.08);
-		color: white;
+		color: var(--white);
 	}
 
 	.menu a.active {

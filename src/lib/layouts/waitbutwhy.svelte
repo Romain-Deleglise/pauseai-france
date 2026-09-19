@@ -206,7 +206,7 @@
 		position: absolute;
 		background: white;
 		border: 1px solid #ccc;
-		border-radius: 8px;
+		border-radius: var(--radius-sm);
 		padding: 10px;
 		width: max-content;
 		color: black;

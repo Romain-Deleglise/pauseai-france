@@ -1558,7 +1558,7 @@
 		inline-size: 100%;
 		padding: 0.35rem;
 		border: 1px solid var(--border);
-		border-radius: 14px;
+		border-radius: var(--radius-lg);
 		background: var(--bg-card);
 	}
 
@@ -1569,7 +1569,7 @@
 		gap: 0.5rem;
 		padding: 0.85rem 1rem;
 		border: none;
-		border-radius: 10px;
+		border-radius: var(--radius-md);
 		background: transparent;
 		font-family: inherit;
 		font-size: 1rem;
@@ -1585,7 +1585,7 @@
 	.tool-tabs button.active {
 		background: var(--brand);
 		color: var(--on-brand);
-		box-shadow: 0 2px 8px rgba(255, 148, 22, 0.35);
+		box-shadow: var(--shadow-brand);
 	}
 
 	.tool-tabs button:not(.active):hover {
@@ -1641,10 +1641,10 @@
 	.card {
 		background: var(--bg);
 		border: 1px solid var(--border);
-		border-radius: 14px;
+		border-radius: var(--radius-lg);
 		padding: 1.75rem;
 		margin-bottom: 1.5rem;
-		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+		box-shadow: var(--shadow-card);
 	}
 
 	.card :global(.tool-heading) {
@@ -1682,7 +1682,7 @@
 		margin-bottom: 1.25rem;
 		padding: 0.9rem 1rem;
 		border: 1px solid var(--border);
-		border-radius: 10px;
+		border-radius: var(--radius-md);
 		background: var(--bg-subtle);
 		transition: border-color 0.15s ease;
 	}
@@ -1748,7 +1748,7 @@
 		min-inline-size: 200px;
 		padding: 0.85rem 1rem;
 		border: 2px solid var(--border);
-		border-radius: 10px;
+		border-radius: var(--radius-md);
 		font-size: 1.05rem;
 		background: var(--bg);
 		color: var(--text);
@@ -1780,7 +1780,7 @@
 	/* Notices */
 	.notice {
 		font-size: 0.9rem;
-		border-radius: 8px;
+		border-radius: var(--radius-sm);
 		padding: 0.6rem 0.85rem;
 		margin-top: 0.85rem;
 	}
@@ -1831,7 +1831,7 @@
 		font-weight: 600;
 		color: var(--brand-subtle);
 		background: var(--brand-light);
-		border-radius: 8px;
+		border-radius: var(--radius-sm);
 		padding: 0.6rem 0.85rem;
 	}
 
@@ -1865,7 +1865,7 @@
 		gap: 1rem;
 		padding: 0.8rem 1rem;
 		border: 1px solid var(--border);
-		border-radius: 10px;
+		border-radius: var(--radius-md);
 		background: var(--bg-card);
 		transition: opacity 0.15s;
 	}
@@ -1891,7 +1891,7 @@
 		color: var(--brand-subtle);
 		background: color-mix(in srgb, var(--brand) 16%, transparent);
 		padding: 0.1rem 0.5rem;
-		border-radius: 999px;
+		border-radius: var(--radius-pill);
 	}
 
 	/* Recherche fine de la circonscription (cas ambigu : grandes villes) */
@@ -1899,7 +1899,7 @@
 		margin-bottom: 1rem;
 		padding: 0.9rem 1rem;
 		border: 1px dashed var(--brand);
-		border-radius: 10px;
+		border-radius: var(--radius-md);
 		background: color-mix(in srgb, var(--brand) 5%, var(--bg));
 	}
 
@@ -1920,7 +1920,7 @@
 		min-inline-size: 12rem;
 		padding: 0.6rem 0.8rem;
 		border: 1px solid var(--border);
-		border-radius: 8px;
+		border-radius: var(--radius-sm);
 		font-size: 0.95rem;
 		font-family: inherit;
 		background: var(--bg);
@@ -2029,7 +2029,7 @@
 		display: block;
 		padding: 0.65rem 0.9rem;
 		border: 1px solid var(--border);
-		border-radius: 8px;
+		border-radius: var(--radius-sm);
 		text-decoration: none;
 		color: var(--text);
 		background: var(--bg-card);
@@ -2063,7 +2063,7 @@
 		gap: 0.75rem;
 		padding: 0.85rem 1rem;
 		background: var(--brand-light);
-		border-radius: 10px;
+		border-radius: var(--radius-md);
 		margin-bottom: 1.25rem;
 	}
 
@@ -2119,7 +2119,7 @@
 	.segmented {
 		display: inline-flex;
 		border: 1px solid var(--border);
-		border-radius: 8px;
+		border-radius: var(--radius-sm);
 		overflow: hidden;
 	}
 
@@ -2146,7 +2146,7 @@
 
 	.chip {
 		padding: 0.35rem 0.8rem;
-		border-radius: 999px;
+		border-radius: var(--radius-pill);
 		border: 1px solid var(--border);
 		background: var(--bg);
 		font-size: 0.8rem;
@@ -2234,7 +2234,7 @@
 		font-size: 0.82rem;
 		font-weight: 600;
 		padding: 0.4rem 0.8rem;
-		border-radius: 999px;
+		border-radius: var(--radius-pill);
 		cursor: pointer;
 		transition:
 			background-color 0.15s ease,
@@ -2249,7 +2249,7 @@
 	/* Aperçu email */
 	.email-preview {
 		border: 1px solid var(--border);
-		border-radius: 10px;
+		border-radius: var(--radius-md);
 		overflow: hidden;
 	}
 
@@ -2307,7 +2307,7 @@
 	.webmail-btn {
 		padding: 0.5rem 1rem;
 		border: 1px solid var(--border);
-		border-radius: 8px;
+		border-radius: var(--radius-sm);
 		background: var(--bg-card);
 		color: var(--text);
 		font-size: 0.88rem;
@@ -2405,7 +2405,7 @@
 		padding: 1.1rem 1.25rem;
 		border: 1px solid var(--brand);
 		background: var(--brand-light);
-		border-radius: 12px;
+		border-radius: var(--radius-md);
 	}
 
 	.after-send p {
@@ -2429,7 +2429,7 @@
 		margin-top: 1.1rem;
 		padding: 1rem 1.25rem;
 		border: 1px solid var(--brand);
-		border-radius: 12px;
+		border-radius: var(--radius-md);
 		background: var(--brand-light);
 		display: flex;
 		flex-direction: column;

@@ -44,7 +44,7 @@
 		-webkit-user-drag: none;
 		display: block;
 		height: 100%;
-		border-radius: 0.75rem;
+		border-radius: var(--radius-md);
 		overflow: hidden;
 		transition:
 			transform 0.2s ease,
@@ -73,7 +73,7 @@
 		border: 2px solid var(--border);
 		/* Le texte reste sélectionnable malgré le lien qui enveloppe la carte. */
 		user-select: text;
-		border-radius: 0.75rem;
+		border-radius: var(--radius-md);
 		transition: border-color 0.2s ease;
 	}
 

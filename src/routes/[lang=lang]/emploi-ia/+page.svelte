@@ -295,7 +295,7 @@
 		align-items: center;
 		gap: 1.25rem;
 		border: 1px solid rgba(255, 148, 22, 0.35);
-		border-radius: 10px;
+		border-radius: var(--radius-md);
 		padding: 0.9rem 1.5rem;
 		margin: 2rem 0 3rem;
 		text-decoration: none;
@@ -357,10 +357,10 @@
 		gap: 0.15rem;
 		position: relative;
 		background: var(--brand);
-		color: white;
+		color: var(--white);
 		text-decoration: none;
 		padding: 1.1rem 3rem 1.1rem 1.5rem;
-		border-radius: 12px;
+		border-radius: var(--radius-md);
 		margin: 0 0 3rem;
 		box-shadow: 0 2px 14px rgba(255, 148, 22, 0.28);
 		transition:
@@ -423,7 +423,7 @@
 		gap: 0.5rem;
 		padding: 1.1rem 1.2rem;
 		border: 1px solid var(--border);
-		border-radius: 10px;
+		border-radius: var(--radius-md);
 		background: var(--bg-card);
 		text-decoration: none;
 		color: inherit;
@@ -455,7 +455,7 @@
 		font-weight: 700;
 		text-transform: uppercase;
 		letter-spacing: 0.06em;
-		color: white;
+		color: var(--white);
 		background: var(--brand);
 		padding: 0.2rem 0.5rem;
 		border-radius: 4px;
@@ -490,7 +490,7 @@
 	/* ── Bigger-problem section ── */
 	.bigger-problem {
 		background: var(--bg-subtle);
-		border-radius: 12px;
+		border-radius: var(--radius-md);
 		padding: 2rem 2.25rem;
 		/* Décale l'ancre (#ecrire-elus) sous l'en-tête fixe lors du scroll. */
 		scroll-margin-top: 5.5rem;
@@ -570,7 +570,7 @@
 		gap: 0.2rem;
 		padding: 0.85rem 1.1rem;
 		border: 1px solid var(--border);
-		border-radius: 8px;
+		border-radius: var(--radius-sm);
 		text-decoration: none;
 		color: inherit;
 		transition:
@@ -631,7 +631,7 @@
 		top: -0.65rem;
 		left: 1rem;
 		background: var(--brand);
-		color: white;
+		color: var(--white);
 		font-size: 0.68rem;
 		font-weight: 700;
 		text-transform: uppercase;

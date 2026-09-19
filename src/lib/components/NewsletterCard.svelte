@@ -130,7 +130,7 @@
 		color: var(--brand);
 		background: rgba(255, 148, 22, 0.1);
 		padding: 0.25rem 0.625rem;
-		border-radius: 6px;
+		border-radius: var(--radius-sm);
 		width: fit-content;
 		margin-bottom: 0.75rem;
 	}
@@ -140,7 +140,7 @@
 		font-size: 1.125rem;
 		font-weight: 700;
 		line-height: 1.4;
-		color: var(--text, black);
+		color: var(--text);
 	}
 
 	.card-description {
@@ -178,7 +178,7 @@
 		gap: 0.25rem;
 		font-size: 0.875rem;
 		font-weight: 600;
-		color: var(--text, black);
+		color: var(--text);
 		transition: color 0.2s ease;
 		margin-left: auto;
 	}

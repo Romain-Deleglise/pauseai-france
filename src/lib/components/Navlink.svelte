@@ -38,7 +38,7 @@
 		color: var(--brand);
 	}
 	a.white {
-		color: white;
+		color: var(--white);
 	}
 	a:hover {
 		color: var(--brand);

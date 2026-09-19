@@ -97,7 +97,6 @@
 <style>
 	:global(body) {
 		--carousel-background: var(--bg-subtle);
-		--carousel-border: #d9c7b0;
 		--carousel-text: var(--text);
 		--carousel-accent: var(--brand);
 	}
@@ -109,7 +108,7 @@
 	.slide {
 		background: var(--bg);
 		border-radius: 18px;
-		border: 1px solid var(--carousel-border, #d9c7b0);
+		border: 1px solid var(--carousel-border);
 		padding: 2rem 2.4rem;
 		min-height: 220px;
 		display: flex;

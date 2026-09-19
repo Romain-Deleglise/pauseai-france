@@ -21,7 +21,7 @@
 		background-color: var(--brand);
 		text-decoration: none;
 		padding: 1rem 1.25rem;
-		border-radius: 10px;
+		border-radius: var(--radius-md);
 		margin: 1.5rem 0;
 		transition: background 0.2s;
 	}
@@ -32,7 +32,7 @@
 
 	.card-title {
 		font-weight: 700;
-		color: white;
+		color: var(--white);
 		white-space: nowrap;
 		flex-shrink: 0;
 	}
@@ -46,7 +46,7 @@
 	.card-arrow {
 		margin-left: auto;
 		font-size: 1.2rem;
-		color: white;
+		color: var(--white);
 		flex-shrink: 0;
 	}
 

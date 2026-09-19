@@ -87,7 +87,7 @@
 
 	.map-container {
 		height: 500px;
-		border-radius: 16px;
+		border-radius: var(--radius-lg);
 		overflow: hidden;
 		box-shadow:
 			0 4px 6px rgba(0, 0, 0, 0.04),

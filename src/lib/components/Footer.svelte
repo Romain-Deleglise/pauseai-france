@@ -236,7 +236,7 @@
 		min-width: 180px;
 		padding: 0.6rem 0.75rem;
 		border: 2px solid rgba(0, 0, 0, 0.15);
-		border-radius: 0.375rem;
+		border-radius: var(--radius-sm);
 		font-size: 0.95rem;
 		font-family: inherit;
 		background: white;
@@ -259,7 +259,7 @@
 		background: black;
 		color: white;
 		border: none;
-		border-radius: 0.375rem;
+		border-radius: var(--radius-sm);
 		font-size: 0.95rem;
 		font-weight: 600;
 		font-family: inherit;

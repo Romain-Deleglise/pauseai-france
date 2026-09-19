@@ -203,7 +203,7 @@
 		background: none;
 		cursor: zoom-in;
 		position: relative;
-		border-radius: 14px;
+		border-radius: var(--radius-lg);
 	}
 
 	/* Flèches de navigation, sur les bords de la carte + balayage tactile. */
@@ -233,7 +233,7 @@
 
 	.nav-arrow:hover {
 		background: var(--brand);
-		color: white;
+		color: var(--white);
 		transform: translateY(-50%) scale(1.05);
 	}
 
@@ -261,7 +261,7 @@
 		aspect-ratio: 1 / 1;
 		height: auto;
 		object-fit: cover;
-		border-radius: 14px;
+		border-radius: var(--radius-lg);
 		border: 1px solid var(--border);
 		display: block;
 		background: var(--bg);
@@ -273,10 +273,10 @@
 		bottom: 0.6rem;
 		font-size: 0.75rem;
 		font-weight: 600;
-		color: white;
+		color: var(--white);
 		background: rgba(0, 0, 0, 0.6);
 		padding: 0.3rem 0.55rem;
-		border-radius: 6px;
+		border-radius: var(--radius-sm);
 		opacity: 0;
 		transition: opacity 0.2s;
 	}
@@ -334,7 +334,7 @@
 		height: auto;
 		max-height: 95vh;
 		object-fit: contain;
-		border-radius: 8px;
+		border-radius: var(--radius-sm);
 		background: var(--bg-card);
 		cursor: default;
 	}
@@ -347,7 +347,7 @@
 		height: 2.5rem;
 		font-size: 1.8rem;
 		line-height: 1;
-		color: white;
+		color: var(--white);
 		background: rgba(255, 255, 255, 0.15);
 		border: 0;
 		border-radius: 50%;
@@ -369,7 +369,7 @@
 		height: 3rem;
 		font-size: 2rem;
 		line-height: 1;
-		color: white;
+		color: var(--white);
 		background: rgba(255, 255, 255, 0.15);
 		border: 0;
 		border-radius: 50%;
@@ -397,11 +397,11 @@
 		bottom: 1rem;
 		left: 50%;
 		transform: translateX(-50%);
-		color: white;
+		color: var(--white);
 		font-size: 0.9rem;
 		font-weight: 600;
 		background: rgba(0, 0, 0, 0.5);
 		padding: 0.35rem 0.8rem;
-		border-radius: 20px;
+		border-radius: var(--radius-pill);
 	}
 </style>

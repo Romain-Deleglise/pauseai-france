@@ -67,10 +67,10 @@
 
 	.campaign-content {
 		background: var(--bg-secondary);
-		border-radius: 16px;
+		border-radius: var(--radius-lg);
 		padding: 3rem 2rem;
 		border: 1px solid var(--border);
-		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+		box-shadow: var(--shadow-card);
 		text-align: center;
 		margin-bottom: 5rem;
 	}

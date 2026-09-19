@@ -538,7 +538,7 @@
 	/* Hero Section */
 	.hero {
 		position: relative;
-		border-radius: 12px;
+		border-radius: var(--radius-md);
 		overflow: hidden;
 		margin-bottom: 2rem;
 	}
@@ -602,8 +602,8 @@
 		border-left: 4px solid var(--brand);
 		padding: 1.25rem;
 		margin-bottom: 1rem;
-		border-radius: 8px;
-		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+		border-radius: var(--radius-sm);
+		box-shadow: var(--shadow-card);
 	}
 
 	.key-point-card p {
@@ -616,7 +616,7 @@
 		margin: 3rem 0;
 		padding: 2rem;
 		background: var(--bg-secondary);
-		border-radius: 12px;
+		border-radius: var(--radius-md);
 	}
 
 	.executive-summary h2 {
@@ -651,7 +651,7 @@
 		margin: 3rem 0 2rem;
 		padding: 2.5rem 2rem;
 		background: var(--brand-light);
-		border-radius: 12px;
+		border-radius: var(--radius-md);
 		border: 2px solid var(--border);
 	}
 
@@ -700,13 +700,13 @@
 		width: 100%;
 		padding: 0.6rem 0.7rem;
 		border: 1px solid var(--border);
-		border-radius: 6px;
+		border-radius: var(--radius-sm);
 		font-size: 1rem;
 	}
 
 	fieldset.choices {
 		border: 1px solid var(--border);
-		border-radius: 8px;
+		border-radius: var(--radius-sm);
 		padding: 0.75rem 1rem;
 		background: var(--bg-card);
 	}
@@ -741,7 +741,7 @@
 		color: var(--black);
 		border: 0;
 		padding: 0.7rem 1.1rem;
-		border-radius: 8px;
+		border-radius: var(--radius-sm);
 		font-weight: 700;
 		cursor: pointer;
 		transition:

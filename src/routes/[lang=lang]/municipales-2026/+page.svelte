@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { Badge } from '$components/ui'
 	import PostMeta from '$components/PostMeta.svelte'
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
 	import Button from '$lib/components/Button.svelte'
@@ -309,10 +310,7 @@
 	<section class="signatories-section">
 		<div class="section-header">
 			<h2>{isEn ? 'Committed candidates' : 'Les candidat·es engagé·es'}</h2>
-			<span class="count-pill">
-				{candidates.length}
-				{isEn ? 'signatories' : 'signataires'}
-			</span>
+			<Badge>{candidates.length} {isEn ? 'signatories' : 'signataires'}</Badge>
 		</div>
 		<p class="section-intro">
 			{#if isEn}
@@ -372,7 +370,7 @@
 		<section class="press-section">
 			<div class="section-header">
 				<h2>{isEn ? 'Campaign press review' : 'Revue de presse de la campagne'}</h2>
-				<span class="count-pill">{pressArticles.length} articles</span>
+				<Badge>{pressArticles.length} articles</Badge>
 			</div>
 			<div class="press-list">
 				{#each pressArticles as article}
@@ -517,17 +515,6 @@
 		color: var(--text);
 	}
 
-	.count-pill {
-		background: var(--brand);
-		color: var(--white);
-		font-size: 0.75rem;
-		font-weight: 700;
-		padding: 0.2rem 0.65rem;
-		border-radius: 999px;
-		white-space: nowrap;
-		flex-shrink: 0;
-	}
-
 	.section-intro {
 		font-size: 1rem;
 		line-height: 1.65;
@@ -547,7 +534,7 @@
 	.action-section {
 		background: var(--bg-card);
 		border: 1px solid rgba(255, 148, 22, 0.25);
-		border-radius: 20px;
+		border-radius: var(--radius-lg);
 		padding: 2.5rem 2.5rem 2rem;
 		margin-bottom: 4rem;
 		box-shadow: 0 2px 16px rgba(255, 148, 22, 0.08);
@@ -591,7 +578,7 @@
 		background: var(--bg-card);
 		border: 1.5px solid var(--border);
 		border-left: 4px solid var(--brand);
-		border-radius: 10px;
+		border-radius: var(--radius-md);
 		cursor: pointer;
 		text-align: left;
 		transition:
@@ -638,7 +625,7 @@
 	.commitment-badge {
 		display: inline-block;
 		padding: 0.18rem 0.55rem;
-		border-radius: 999px;
+		border-radius: var(--radius-pill);
 		font-size: 0.72rem;
 		font-weight: 700;
 		width: fit-content;
@@ -648,19 +635,19 @@
 	/* Pastilles d'engagement : quatre teintes distinctes, mélangées au fond
 	   de la carte pour rester lisibles en clair comme en sombre. */
 	.badge-full {
-		--badge-hue: #1a7f4b;
+		--badge-hue: var(--hue-green);
 	}
 
 	.badge-high {
-		--badge-hue: #2563eb;
+		--badge-hue: var(--hue-blue);
 	}
 
 	.badge-mid {
-		--badge-hue: #a16207;
+		--badge-hue: var(--hue-amber);
 	}
 
 	.badge-low {
-		--badge-hue: #be185d;
+		--badge-hue: var(--hue-pink);
 	}
 
 	.commitment-badge {
@@ -697,7 +684,7 @@
 		padding: 1rem 1.25rem;
 		background: var(--bg-card);
 		border: 1px solid var(--border);
-		border-radius: 10px;
+		border-radius: var(--radius-md);
 		text-decoration: none;
 		color: var(--text);
 		transition:
@@ -773,7 +760,7 @@
 		height: 90vh;
 		max-height: 90vh;
 		background: var(--bg-card);
-		border-radius: 14px;
+		border-radius: var(--radius-lg);
 		overflow: hidden;
 		box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
 		cursor: default;
@@ -843,7 +830,7 @@
 		top: 1rem;
 		right: 1rem;
 		background: rgba(0, 0, 0, 0.5);
-		color: white;
+		color: var(--white);
 		border: none;
 		width: 2.5rem;
 		height: 2.5rem;
@@ -853,7 +840,7 @@
 
 	.close-button--top:hover {
 		background: rgba(0, 0, 0, 0.85);
-		color: white;
+		color: var(--white);
 	}
 
 	.charter-engagements {
@@ -948,7 +935,7 @@
 
 		.action-section {
 			padding: 1.5rem 1.25rem 1.5rem;
-			border-radius: 14px;
+			border-radius: var(--radius-lg);
 			margin-bottom: 2.5rem;
 		}
 

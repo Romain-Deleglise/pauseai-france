@@ -433,7 +433,7 @@
 	.hero {
 		position: relative;
 		overflow: hidden;
-		border-radius: 12px;
+		border-radius: var(--radius-md);
 		padding: 2.75rem 2.5rem 3rem;
 		margin-bottom: 2.5rem;
 		background: var(--brand);
@@ -502,7 +502,7 @@
 		font-weight: 700;
 		font-size: 0.98rem;
 		padding: 0.75rem 1.6rem;
-		border-radius: 999px;
+		border-radius: var(--radius-pill);
 		transition:
 			transform 0.15s ease,
 			background 0.15s ease;
@@ -577,7 +577,7 @@
 	.callout {
 		margin: 2rem 0;
 		padding: 1.5rem 1.75rem;
-		border-radius: 14px;
+		border-radius: var(--radius-lg);
 		background: var(--bg-subtle);
 		border-left: 4px solid var(--brand);
 	}
@@ -645,7 +645,7 @@
 	/* ── Sidebar ───────────────────────────────────────────── */
 	.sidebar-card {
 		border: 1px solid var(--border);
-		border-radius: 16px;
+		border-radius: var(--radius-lg);
 		background: var(--bg-card);
 		padding: 1.5rem;
 	}

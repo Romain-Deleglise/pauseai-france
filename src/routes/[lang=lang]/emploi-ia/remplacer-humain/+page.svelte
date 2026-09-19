@@ -243,7 +243,7 @@
 		margin: 3rem 0 1.5rem;
 		padding: 1.5rem;
 		border: 1px solid var(--border);
-		border-radius: 10px;
+		border-radius: var(--radius-md);
 		text-decoration: none;
 		color: inherit;
 		transition:

@@ -54,8 +54,8 @@
 	.content {
 		background-color: var(--bg);
 		padding: 3rem;
-		border-radius: 0.5rem;
-		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+		border-radius: var(--radius-sm);
+		box-shadow: var(--shadow-card);
 		text-align: center;
 	}
 

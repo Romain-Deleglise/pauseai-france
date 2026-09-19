@@ -253,7 +253,7 @@
 		width: 100%;
 		min-height: 80vh;
 		border: 1px solid var(--border);
-		border-radius: 0.5rem;
+		border-radius: var(--radius-sm);
 	}
 
 	.pr-nav {
@@ -280,7 +280,7 @@
 		text-decoration: none;
 		color: var(--text);
 		padding: 0.75rem 1rem;
-		border-radius: 0.5rem;
+		border-radius: var(--radius-sm);
 		border: 1px solid var(--border);
 		background: var(--bg-card);
 		transition:
@@ -293,7 +293,7 @@
 	.nav-link:hover {
 		background: var(--bg);
 		border-color: var(--brand);
-		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+		box-shadow: var(--shadow-card);
 	}
 
 	.nav-next {
@@ -342,7 +342,7 @@
 		border-radius: 50%;
 		border: none;
 		background: var(--brand);
-		color: white;
+		color: var(--white);
 		display: flex;
 		align-items: center;
 		justify-content: center;

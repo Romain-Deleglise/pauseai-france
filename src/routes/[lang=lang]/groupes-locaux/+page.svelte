@@ -551,7 +551,7 @@
 	   en page, avec une légère animation d'attente. */
 	.map-placeholder {
 		height: 500px;
-		border-radius: 16px;
+		border-radius: var(--radius-lg);
 		background: linear-gradient(
 			100deg,
 			var(--brand-light) 30%,
@@ -644,7 +644,7 @@
 	.impact-card {
 		padding: 1.5rem 1.5rem 1.6rem;
 		border: 1px solid var(--border);
-		border-radius: 14px;
+		border-radius: var(--radius-lg);
 		background: var(--bg-card);
 	}
 
@@ -685,7 +685,7 @@
 		align-items: center;
 		gap: 0.4rem;
 		padding: 0.35rem 0.8rem;
-		border-radius: 999px;
+		border-radius: var(--radius-pill);
 		border: 1px solid var(--border);
 		background: var(--bg-card);
 		font-size: 0.88rem;
@@ -746,7 +746,7 @@
 		padding: 1rem 1.25rem;
 		border: 1px solid var(--border);
 		border-left: 4px solid var(--brand);
-		border-radius: 12px;
+		border-radius: var(--radius-md);
 		background: var(--bg-card);
 	}
 
@@ -796,7 +796,7 @@
 
 	.event-cta {
 		padding: 0.45rem 1rem;
-		border-radius: 8px;
+		border-radius: var(--radius-sm);
 		background: var(--brand);
 		color: var(--on-brand);
 		font-size: 0.88rem;
@@ -911,7 +911,7 @@
 		flex: 1 1 auto;
 		min-inline-size: 0;
 		border: 1px solid var(--border);
-		border-radius: 14px;
+		border-radius: var(--radius-lg);
 		overflow: hidden;
 		background: var(--bg-card);
 		transition:
@@ -962,7 +962,7 @@
 		inline-size: 8rem;
 		block-size: 8rem;
 		margin: 0.65rem;
-		border-radius: 10px;
+		border-radius: var(--radius-md);
 		overflow: hidden;
 		background: var(--brand-light);
 		flex-shrink: 0;
@@ -1012,7 +1012,7 @@
 		background: var(--brand);
 		color: var(--on-brand);
 		padding: 0.12rem 0.55rem;
-		border-radius: 999px;
+		border-radius: var(--radius-pill);
 		font-size: 0.7rem;
 		text-transform: uppercase;
 		letter-spacing: 0.03em;
@@ -1116,7 +1116,7 @@
 		inline-size: 100%;
 		min-block-size: 0;
 		overflow: hidden;
-		border-radius: 12px;
+		border-radius: var(--radius-md);
 	}
 
 	.feature-main-bg {
@@ -1172,7 +1172,7 @@
 		bottom: 0.5rem;
 		right: 0.5rem;
 		padding: 0.08rem 0.5rem;
-		border-radius: 999px;
+		border-radius: var(--radius-pill);
 		background: rgba(0, 0, 0, 0.55);
 		color: var(--white);
 		font-size: 0.72rem;
@@ -1219,7 +1219,7 @@
 		color: var(--brand-subtle);
 		background: var(--brand-light);
 		padding: 0.2rem 0.6rem;
-		border-radius: 999px;
+		border-radius: var(--radius-pill);
 	}
 
 	.show-all-btn {
@@ -1227,7 +1227,7 @@
 		margin: 1.25rem auto 0;
 		padding: 0.55rem 1.4rem;
 		border: 1px solid var(--brand);
-		border-radius: 999px;
+		border-radius: var(--radius-pill);
 		background: transparent;
 		color: var(--brand-subtle);
 		font-size: 0.9rem;
@@ -1250,7 +1250,7 @@
 
 	.cta-card {
 		padding: 2.25rem 2rem;
-		border-radius: 20px;
+		border-radius: var(--radius-lg);
 		text-align: center;
 		display: flex;
 		flex-direction: column;
@@ -1270,7 +1270,7 @@
 
 	.cta-card.create {
 		background: var(--brand);
-		color: white;
+		color: var(--white);
 	}
 
 	.cta-icon {
@@ -1286,7 +1286,7 @@
 
 	.cta-card.create .cta-icon {
 		background: rgba(255, 255, 255, 0.22);
-		color: white;
+		color: var(--white);
 	}
 
 	.cta-card h2 {

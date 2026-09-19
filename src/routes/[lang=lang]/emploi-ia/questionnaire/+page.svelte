@@ -947,7 +947,7 @@
 	.progress-step.active .step-number {
 		background-color: var(--brand);
 		border-color: var(--brand);
-		color: white;
+		color: var(--white);
 	}
 
 	.step-label {
@@ -964,9 +964,9 @@
 	.form-section {
 		background-color: var(--bg);
 		padding: 2rem;
-		border-radius: 0.5rem;
+		border-radius: var(--radius-sm);
 		margin-bottom: 2rem;
-		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+		box-shadow: var(--shadow-card);
 	}
 
 	.form-group {
@@ -1050,7 +1050,7 @@
 	.consent-checkbox {
 		background-color: var(--brand-light);
 		padding: 1rem;
-		border-radius: 0.5rem;
+		border-radius: var(--radius-sm);
 		border: 2px solid var(--brand);
 	}
 

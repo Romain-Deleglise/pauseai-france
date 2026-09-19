@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { Badge } from '$components/ui'
 	import PostMeta from '$components/PostMeta.svelte'
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
 	import Button from '$components/Button.svelte'
@@ -37,7 +38,7 @@
 						<UserCheck size="1em" />
 						<span class="title-text">Become a Member</span>
 					</span>
-					<span class="badge support-badge">Official support</span>
+					<Badge>Official support</Badge>
 				</h3>
 				<p>
 					Officially support our mission and bylaws. As a member, you strengthen our collective
@@ -57,7 +58,7 @@
 						<Users size="1em" />
 						<span class="title-text">Join the Community</span>
 					</span>
-					<span class="badge community-badge">The heart of action</span>
+					<Badge variant="neutral">The heart of action</Badge>
 				</h3>
 				<p>
 					Join our Discord community to exchange, stay informed and, if you wish, take action.
@@ -157,7 +158,7 @@
 						<UserCheck size="1em" />
 						<span class="title-text">Devenir Membre</span>
 					</span>
-					<span class="badge support-badge">Soutien officiel</span>
+					<Badge>Soutien officiel</Badge>
 				</h3>
 				<p>
 					Soutenez officiellement notre mission et nos statuts. En tant que membre, vous renforcez
@@ -176,7 +177,7 @@
 						<Users size="1em" />
 						<span class="title-text">Rejoindre la Communauté</span>
 					</span>
-					<span class="badge community-badge">Le cœur de l'action</span>
+					<Badge variant="neutral">Le cœur de l'action</Badge>
 				</h3>
 				<p>
 					Rejoignez notre communauté sur Discord pour échanger, vous informer et, si vous le
@@ -256,8 +257,8 @@
 		margin-bottom: 3rem;
 		background: var(--bg);
 		padding: 3rem 2rem;
-		border-radius: 12px;
-		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		border-radius: var(--radius-md);
+		box-shadow: var(--shadow-raised);
 	}
 
 	.hero-description {
@@ -281,9 +282,9 @@
 
 	.engagement-card {
 		background: var(--bg);
-		border-radius: 12px;
+		border-radius: var(--radius-md);
 		padding: 2rem;
-		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		box-shadow: var(--shadow-raised);
 		border: 2px solid transparent;
 		transition: all 0.3s ease-out;
 		display: flex;
@@ -333,26 +334,10 @@
 		max-width: 100% !important;
 	}
 
-	.badge {
-		color: white;
-		padding: 0.25rem 0.75rem;
-		border-radius: 20px;
-		font-size: 0.9rem;
-		font-weight: 500;
-		display: inline-flex;
+	/* Les pastilles viennent du composant Badge ; seul l'alignement
+	   dans la carte reste local. */
+	.engagement-card :global(.ui-badge) {
 		align-self: flex-start;
-		margin-top: 0;
-	}
-
-	/* Les badges suivent la charte : orange de marque et neutre foncé. */
-	.support-badge {
-		background: var(--brand);
-		color: var(--black);
-	}
-
-	.community-badge {
-		background: var(--text);
-		color: var(--bg);
 	}
 
 	.engagement-note {
@@ -366,10 +351,10 @@
 	}
 
 	.impact-highlight {
-		background: linear-gradient(135deg, var(--brand), #ff6b35);
+		background: linear-gradient(135deg, var(--brand), var(--brand-deep));
 		color: var(--black);
 		padding: 2rem;
-		border-radius: 12px;
+		border-radius: var(--radius-md);
 		margin: 2rem 0;
 		text-align: center;
 	}
@@ -399,7 +384,7 @@
 		padding: 1.75rem 2rem;
 		border: 1px solid var(--border);
 		border-left: 4px solid var(--brand);
-		border-radius: 12px;
+		border-radius: var(--radius-md);
 		background: var(--bg);
 	}
 

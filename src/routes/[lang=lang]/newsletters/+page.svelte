@@ -402,7 +402,7 @@
 		font-size: 0.875rem;
 		padding: 0.375rem 0.75rem;
 		border: 1px solid var(--border);
-		border-radius: 0.375rem;
+		border-radius: var(--radius-sm);
 		transition:
 			color 0.2s,
 			border-color 0.2s,
@@ -425,7 +425,7 @@
 		padding: 1rem 1.25rem;
 		background: var(--brand-light);
 		border: 1px solid rgba(255, 148, 22, 0.2);
-		border-radius: 0.75rem;
+		border-radius: var(--radius-md);
 	}
 
 	.subscribe-icon {
@@ -453,10 +453,10 @@
 		min-width: 160px;
 		padding: 0.5rem 0.75rem;
 		border: 1.5px solid rgba(0, 0, 0, 0.12);
-		border-radius: 0.375rem;
+		border-radius: var(--radius-sm);
 		font-size: 0.9rem;
 		font-family: inherit;
-		background: white;
+		background: var(--white);
 		color: var(--text);
 		transition: border-color 0.2s;
 	}
@@ -474,9 +474,9 @@
 	.subscribe-form button {
 		padding: 0.5rem 1rem;
 		background: var(--brand);
-		color: white;
+		color: var(--white);
 		border: none;
-		border-radius: 0.375rem;
+		border-radius: var(--radius-sm);
 		font-size: 0.9rem;
 		font-weight: 600;
 		font-family: inherit;
@@ -521,7 +521,7 @@
 	.search-label {
 		font-size: 0.9rem;
 		font-weight: 600;
-		color: var(--text, black);
+		color: var(--text);
 		white-space: nowrap;
 	}
 
@@ -530,8 +530,8 @@
 		display: flex;
 		align-items: center;
 		border: 1px solid var(--border);
-		border-radius: 0.5rem;
-		background-color: white;
+		border-radius: var(--radius-sm);
+		background-color: var(--white);
 		transition:
 			border-color 0.15s ease,
 			box-shadow 0.15s ease;
@@ -557,7 +557,7 @@
 		font-family: var(--font-body, inherit);
 		border: none;
 		background: transparent;
-		color: var(--text, black);
+		color: var(--text);
 		outline: none;
 		min-width: 0;
 	}
@@ -584,7 +584,7 @@
 	}
 
 	.clear-btn:hover {
-		color: var(--text, black);
+		color: var(--text);
 		background-color: rgba(0, 0, 0, 0.06);
 	}
 
@@ -601,7 +601,7 @@
 		margin-bottom: 1.5rem;
 		background-color: var(--bg-subtle);
 		border: 1px solid var(--border);
-		border-radius: 0.75rem;
+		border-radius: var(--radius-md);
 		padding: 0.75rem 1rem;
 	}
 
@@ -621,9 +621,9 @@
 		font-size: 0.875rem;
 		font-family: var(--font-body, inherit);
 		border: 1px solid var(--border);
-		border-radius: 0.375rem;
-		background-color: white;
-		color: var(--text, black);
+		border-radius: var(--radius-sm);
+		background-color: var(--white);
+		color: var(--text);
 		appearance: none;
 		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23676e7a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
 		background-repeat: no-repeat;
@@ -654,7 +654,7 @@
 		overflow-y: auto;
 		background-color: var(--bg-subtle);
 		border: 1px solid var(--border);
-		border-radius: 0.75rem;
+		border-radius: var(--radius-md);
 		padding: 1.25rem;
 	}
 
@@ -689,7 +689,7 @@
 		padding: 0.5rem 0.625rem;
 		border: none;
 		background: transparent;
-		border-radius: 0.375rem;
+		border-radius: var(--radius-sm);
 		cursor: pointer;
 		text-align: left;
 		transition: background-color 0.15s ease;
@@ -702,7 +702,7 @@
 	.sidebar-item-title {
 		font-size: 0.8rem;
 		font-weight: 600;
-		color: var(--text, black);
+		color: var(--text);
 		line-height: 1.3;
 		display: -webkit-box;
 		-webkit-line-clamp: 2;
@@ -766,9 +766,9 @@
 		width: 2.25rem;
 		height: 2.25rem;
 		border: 1px solid var(--border);
-		border-radius: 0.375rem;
-		background: white;
-		color: var(--text, black);
+		border-radius: var(--radius-sm);
+		background: var(--white);
+		color: var(--text);
 		font-size: 0.875rem;
 		font-weight: 600;
 		font-family: inherit;
@@ -786,7 +786,7 @@
 	.pagination-btn.active {
 		background-color: var(--brand);
 		border-color: var(--brand);
-		color: white;
+		color: var(--white);
 	}
 
 	.pagination-btn:disabled {

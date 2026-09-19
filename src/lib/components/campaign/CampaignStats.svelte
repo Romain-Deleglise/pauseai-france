@@ -30,7 +30,7 @@
 		text-align: center;
 		background: var(--bg-subtle);
 		border: 1px solid var(--border);
-		border-radius: 12px;
+		border-radius: var(--radius-md);
 	}
 
 	.value {
