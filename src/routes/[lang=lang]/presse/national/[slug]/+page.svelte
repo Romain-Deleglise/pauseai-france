@@ -162,20 +162,20 @@
 		display: inline-flex;
 		align-items: center;
 		gap: 0.375rem;
-		color: var(--text-secondary, var(--text-secondary));
+		color: var(--text-secondary);
 		text-decoration: none;
 		font-size: 0.9375rem;
 		transition: color 0.2s;
 	}
 
 	.back-link:hover {
-		color: var(--brand, var(--brand));
+		color: var(--brand);
 	}
 
 	.pr-header {
 		margin-bottom: 2.5rem;
 		padding-bottom: 1.5rem;
-		border-bottom: 2px solid var(--border, var(--border));
+		border-bottom: 2px solid var(--border);
 	}
 
 	.pr-header h1 {
@@ -196,7 +196,7 @@
 		display: flex;
 		align-items: center;
 		gap: 0.375rem;
-		color: var(--text-secondary, var(--text-secondary));
+		color: var(--text-secondary);
 		font-size: 0.9375rem;
 	}
 
@@ -204,14 +204,14 @@
 		display: inline-flex;
 		align-items: center;
 		gap: 0.375rem;
-		color: var(--text-secondary, var(--text-secondary));
+		color: var(--text-secondary);
 		text-decoration: none;
 		font-size: 0.875rem;
 		transition: color 0.2s;
 	}
 
 	.original-link:hover {
-		color: var(--brand, var(--brand));
+		color: var(--brand);
 	}
 
 	.pr-content {
@@ -242,7 +242,7 @@
 
 	/* Links */
 	.pr-content :global(a) {
-		color: var(--brand, var(--brand));
+		color: var(--brand);
 	}
 
 	.pr-content :global(a:hover) {
@@ -252,7 +252,7 @@
 	.pr-iframe {
 		width: 100%;
 		min-height: 80vh;
-		border: 1px solid var(--border, var(--border));
+		border: 1px solid var(--border);
 		border-radius: 0.5rem;
 	}
 
@@ -261,7 +261,7 @@
 		gap: 1rem;
 		margin-top: 3rem;
 		padding-top: 2rem;
-		border-top: 2px solid var(--border, var(--border));
+		border-top: 2px solid var(--border);
 	}
 
 	.nav-link-wrapper {
@@ -278,11 +278,11 @@
 		align-items: flex-start;
 		gap: 0.5rem;
 		text-decoration: none;
-		color: var(--text, #1a1a1a);
+		color: var(--text);
 		padding: 0.75rem 1rem;
 		border-radius: 0.5rem;
-		border: 1px solid var(--border, var(--border));
-		background: var(--bg-card, #f9f9f9);
+		border: 1px solid var(--border);
+		background: var(--bg-card);
 		transition:
 			background 0.2s,
 			border-color 0.2s,
@@ -291,8 +291,8 @@
 	}
 
 	.nav-link:hover {
-		background: var(--bg, #fff);
-		border-color: var(--brand, var(--brand));
+		background: var(--bg);
+		border-color: var(--brand);
 		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 	}
 
@@ -310,7 +310,7 @@
 
 	.nav-direction {
 		font-size: 0.8125rem;
-		color: var(--text-secondary, var(--text-secondary));
+		color: var(--text-secondary);
 		text-transform: uppercase;
 		letter-spacing: 0.03em;
 		font-weight: 600;
@@ -330,7 +330,7 @@
 	.pr-footer {
 		margin-top: 1.5rem;
 		padding-top: 1.5rem;
-		border-top: 1px solid var(--border, var(--border));
+		border-top: 1px solid var(--border);
 	}
 
 	.fullscreen-btn {
@@ -341,7 +341,7 @@
 		height: 3rem;
 		border-radius: 50%;
 		border: none;
-		background: var(--brand, var(--brand));
+		background: var(--brand);
 		color: white;
 		display: flex;
 		align-items: center;
@@ -363,7 +363,7 @@
 		position: fixed;
 		inset: 0;
 		z-index: 100;
-		background: var(--bg, #fff);
+		background: var(--bg);
 		display: flex;
 		flex-direction: column;
 		overflow: hidden;
@@ -375,7 +375,7 @@
 		justify-content: space-between;
 		gap: 0.75rem;
 		padding: 0.75rem 1rem;
-		border-bottom: 1px solid var(--border, var(--border));
+		border-bottom: 1px solid var(--border);
 		flex-shrink: 0;
 	}
 
@@ -398,13 +398,13 @@
 		border-radius: 50%;
 		border: none;
 		background: transparent;
-		color: var(--text-secondary, var(--text-secondary));
+		color: var(--text-secondary);
 		cursor: pointer;
 		transition: background 0.2s;
 	}
 
 	.fullscreen-close:hover {
-		background: var(--border, var(--border));
+		background: var(--border);
 	}
 
 	.fullscreen-body {

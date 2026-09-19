@@ -34,6 +34,31 @@ jamais des valeurs en dur — c'est ce qui garantit le fonctionnement du mode so
 | `--text-2`         | `#555`    | `#a0a8b4` | Texte secondaire, chapô, légendes      |
 | `--text-secondary` | `#676e7a` | `#a0a8b4` | Alias UI (`--text-muted` idem)         |
 | `--border`         | `#e5e7eb` | `#3e4048` | Bordures et filets                     |
+| `--bg-secondary`   | `#fdfaf6` | `#303030` | Fond de zone secondaire (onglets, RIB) |
+
+### Texte sur l'orange
+
+| Token              | Valeur    | Usage                                       |
+| ------------------ | --------- | ------------------------------------------- |
+| `--on-brand`       | `#1a1a1a` | Texte et pictos posés sur un fond `--brand` |
+| `--on-brand-muted` | `#3a2600` | Texte secondaire sur un fond `--brand`      |
+
+Ces deux tokens ne changent pas en mode sombre : le fond, lui, reste orange.
+`--brand-rgb` (`255, 148, 22`) donne les composantes de l'orange pour les `rgba()`.
+
+### États
+
+| Token              | Clair     | Sombre    | Usage                           |
+| ------------------ | --------- | --------- | ------------------------------- |
+| `--success`        | `#2e7d32` | `#6fcf7e` | Texte de confirmation           |
+| `--success-bg`     | `#e8f5e9` | `#1d3320` | Fond de bandeau de confirmation |
+| `--success-border` | `#a5d6a7` | `#2f5c36` | Bordure associée                |
+| `--error`          | `#c0392b` | `#ff8a7a` | Texte d'erreur                  |
+| `--error-bg`       | `#fdecee` | `#3a201d` | Fond de bandeau d'erreur        |
+| `--error-border`   | `#f6c6cc` | `#5e322d` | Bordure associée                |
+
+Le vert et le rouge signalent un **état** (inscription réussie, paiement refusé).
+Un badge décoratif prend l'orange de marque, jamais une couleur d'état.
 
 ### Boutons
 

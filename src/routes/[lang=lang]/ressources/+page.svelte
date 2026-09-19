@@ -667,12 +667,12 @@
 
 	.toc-link:hover {
 		background: rgba(255, 148, 22, 0.08);
-		color: var(--brand-subtle, var(--brand));
+		color: var(--brand-subtle);
 	}
 
 	.toc-link.active {
 		background: rgba(255, 148, 22, 0.1);
-		color: var(--brand-subtle, var(--brand));
+		color: var(--brand-subtle);
 		border-left-color: var(--brand);
 		font-weight: 600;
 	}
@@ -842,7 +842,7 @@
 
 	.pill:hover {
 		border-color: var(--brand);
-		color: var(--brand-subtle, var(--brand));
+		color: var(--brand-subtle);
 	}
 
 	.pill.active {
@@ -899,7 +899,7 @@
 
 	.reset-btn:hover {
 		border-color: var(--brand);
-		color: var(--brand-subtle, var(--brand));
+		color: var(--brand-subtle);
 	}
 
 	.updated {
@@ -933,8 +933,8 @@
 		width: 2.4rem;
 		height: 2.4rem;
 		border-radius: 10px;
-		background: var(--brand-light, var(--brand-light));
-		color: var(--brand-subtle, var(--brand));
+		background: var(--brand-light);
+		color: var(--brand-subtle);
 		flex-shrink: 0;
 		margin-top: 0.15rem;
 	}
@@ -1043,7 +1043,7 @@
 		font-size: 1rem;
 		line-height: 1.35;
 		margin: 0;
-		color: var(--brand-subtle, var(--brand));
+		color: var(--brand-subtle);
 	}
 
 	:global([data-theme='dark']) .res-title {

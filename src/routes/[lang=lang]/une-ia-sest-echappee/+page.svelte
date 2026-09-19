@@ -1163,7 +1163,7 @@
 		align-self: flex-start;
 		margin-top: 0.5rem;
 		background: var(--brand);
-		color: #1a1a1a;
+		color: var(--on-brand);
 		text-decoration: none;
 		font-weight: 700;
 		font-size: 0.92rem;

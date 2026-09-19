@@ -485,7 +485,7 @@
 	}
 
 	.card-button.primary:hover {
-		background-color: #e88207;
+		background-color: var(--btn-active-bg);
 	}
 
 	.card-button.secondary {
@@ -500,7 +500,7 @@
 	}
 
 	.card-button:disabled {
-		background-color: #f3f4f6;
+		background-color: var(--bg-secondary);
 		color: var(--text-secondary);
 		border-color: var(--border);
 		cursor: not-allowed;
@@ -648,7 +648,7 @@
 	}
 
 	.conclusion-cta:hover {
-		background-color: #e88207;
+		background-color: var(--btn-active-bg);
 	}
 
 	/* Responsive adjustments */

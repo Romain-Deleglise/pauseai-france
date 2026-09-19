@@ -284,11 +284,11 @@
 	}
 
 	.newsletter-message.success {
-		color: #166534;
+		color: var(--success);
 	}
 
 	.newsletter-message.error {
-		color: #991b1b;
+		color: var(--error);
 	}
 	@media (min-width: 480px) {
 		.footer-links {
@@ -374,13 +374,5 @@
 		background: var(--bg-card);
 		color: var(--text);
 		border: 1px solid var(--border);
-	}
-
-	:global([data-theme='dark']) .newsletter-message.success {
-		color: #4ade80;
-	}
-
-	:global([data-theme='dark']) .newsletter-message.error {
-		color: #f87171;
 	}
 </style>

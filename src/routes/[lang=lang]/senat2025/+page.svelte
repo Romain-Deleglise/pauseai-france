@@ -558,7 +558,7 @@
 			rgba(0, 0, 0, 0.55) 60%,
 			rgba(0, 0, 0, 0.75) 100%
 		);
-		color: #fff;
+		color: var(--white);
 	}
 	.hero-text h1 {
 		margin: 0 0 0.25rem 0;
@@ -598,8 +598,8 @@
 	}
 
 	.key-point-card {
-		background: linear-gradient(135deg, #fff9e6 0%, #ffffff 100%);
-		border-left: 4px solid var(--brand, #ffd42a);
+		background: var(--bg-card);
+		border-left: 4px solid var(--brand);
 		padding: 1.25rem;
 		margin-bottom: 1rem;
 		border-radius: 8px;
@@ -615,7 +615,7 @@
 	.executive-summary {
 		margin: 3rem 0;
 		padding: 2rem;
-		background: #fafafa;
+		background: var(--bg-secondary);
 		border-radius: 12px;
 	}
 
@@ -629,7 +629,7 @@
 		margin-top: 2rem;
 		margin-bottom: 1rem;
 		font-size: 1.5rem;
-		color: var(--text, #333);
+		color: var(--text);
 	}
 
 	.executive-summary p {
@@ -650,9 +650,9 @@
 	.newsletter-section {
 		margin: 3rem 0 2rem;
 		padding: 2.5rem 2rem;
-		background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+		background: var(--brand-light);
 		border-radius: 12px;
-		border: 2px solid #bae6fd;
+		border: 2px solid var(--border);
 	}
 
 	.newsletter-section h2 {
@@ -699,16 +699,16 @@
 	input[type='email'] {
 		width: 100%;
 		padding: 0.6rem 0.7rem;
-		border: 1px solid #ccc;
+		border: 1px solid var(--border);
 		border-radius: 6px;
 		font-size: 1rem;
 	}
 
 	fieldset.choices {
-		border: 1px solid #e5e5e5;
+		border: 1px solid var(--border);
 		border-radius: 8px;
 		padding: 0.75rem 1rem;
-		background: white;
+		background: var(--bg-card);
 	}
 
 	fieldset.choices legend {
@@ -730,15 +730,15 @@
 	}
 
 	.msg-error {
-		color: #b00020;
+		color: var(--error);
 	}
 
 	button {
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		background: var(--brand, #ffd42a);
-		color: var(--black, #000);
+		background: var(--brand);
+		color: var(--black);
 		border: 0;
 		padding: 0.7rem 1.1rem;
 		border-radius: 8px;

@@ -228,7 +228,7 @@
 	.intro {
 		font-size: 1.25rem;
 		line-height: 1.6;
-		color: var(--text-muted, #444);
+		color: var(--text-muted);
 	}
 
 	.campaigns-list {
@@ -284,8 +284,8 @@
 	.active-count {
 		font-size: 1rem;
 		font-weight: 600;
-		color: #2e7d32;
-		background: #e8f5e9;
+		color: var(--success);
+		background: var(--success-bg);
 		display: inline-block;
 		padding: 0.3rem 0.8rem;
 		border-radius: 999px;
@@ -306,8 +306,8 @@
 
 	.card-badge {
 		display: inline-block;
-		background: #e8f5e9;
-		color: #2e7d32;
+		background: var(--success-bg);
+		color: var(--success);
 		font-size: 0.75rem;
 		font-weight: 700;
 		text-transform: uppercase;
@@ -331,7 +331,7 @@
 	.campaign-card p {
 		font-size: 1.05rem;
 		line-height: 1.7;
-		color: var(--text-muted, #444);
+		color: var(--text-muted);
 		margin-bottom: 1.5rem;
 	}
 
@@ -356,7 +356,7 @@
 	}
 
 	.modal {
-		background: var(--bg, #fff);
+		background: var(--bg);
 		border-radius: 1rem;
 		padding: 2.5rem;
 		max-width: 36rem;
@@ -373,7 +373,7 @@
 		right: 1rem;
 		font-size: 1.75rem;
 		line-height: 1;
-		color: var(--text-secondary, #666);
+		color: var(--text-secondary);
 		cursor: pointer;
 		padding: 0.25rem 0.5rem;
 		border-radius: 0.5rem;
@@ -381,7 +381,7 @@
 	}
 
 	.modal-close:hover {
-		background: var(--bg-subtle, #f5f5f5);
+		background: var(--bg-subtle);
 	}
 
 	.modal-header {
@@ -404,7 +404,7 @@
 		font-size: 1rem;
 		line-height: 1.6;
 		margin-bottom: 1.5rem;
-		color: var(--text, #222);
+		color: var(--text);
 	}
 
 	.results-grid {
@@ -420,7 +420,7 @@
 	}
 
 	.result-card {
-		background: var(--bg-subtle, #f5f5f5);
+		background: var(--bg-subtle);
 		border-radius: 0.75rem;
 		padding: 1rem;
 		display: flex;
@@ -431,12 +431,12 @@
 	.result-value {
 		font-weight: 700;
 		font-size: 1rem;
-		color: var(--text, #222);
+		color: var(--text);
 	}
 
 	.result-label {
 		font-size: 0.8rem;
-		color: var(--text-secondary, #666);
+		color: var(--text-secondary);
 		text-transform: uppercase;
 		letter-spacing: 0.04em;
 	}
@@ -450,7 +450,7 @@
 		font-weight: 700;
 		text-transform: uppercase;
 		letter-spacing: 0.06em;
-		color: var(--text-secondary, #666);
+		color: var(--text-secondary);
 		margin: 0 0 0.75rem;
 	}
 
@@ -474,7 +474,7 @@
 	}
 
 	.article-link:hover {
-		background: var(--bg-subtle, #f5f5f5);
+		background: var(--bg-subtle);
 	}
 
 	.article-source {
@@ -482,14 +482,14 @@
 		font-size: 0.75rem;
 		font-weight: 700;
 		color: var(--brand);
-		background: color-mix(in srgb, var(--brand) 10%, var(--bg, #fff));
+		background: color-mix(in srgb, var(--brand) 10%, var(--bg));
 		padding: 0.1rem 0.45rem;
 		border-radius: 999px;
 	}
 
 	.article-title {
 		font-size: 0.9rem;
-		color: var(--text, #222);
+		color: var(--text);
 		line-height: 1.4;
 	}
 
@@ -503,7 +503,7 @@
 		font-size: 0.9rem;
 		font-weight: 600;
 		text-decoration: none;
-		background: color-mix(in srgb, var(--brand) 12%, var(--bg, #fff));
+		background: color-mix(in srgb, var(--brand) 12%, var(--bg));
 		color: var(--brand);
 		border: 1.5px solid color-mix(in srgb, var(--brand) 35%, transparent);
 		transition:
@@ -512,7 +512,7 @@
 	}
 
 	.modal-link-btn:hover {
-		background: color-mix(in srgb, var(--brand) 20%, var(--bg, #fff));
+		background: color-mix(in srgb, var(--brand) 20%, var(--bg));
 		border-color: color-mix(in srgb, var(--brand) 55%, transparent);
 	}
 
@@ -543,7 +543,7 @@
 			display: block;
 			width: 2.5rem;
 			height: 0.25rem;
-			background: #ccc;
+			background: var(--border);
 			border-radius: 999px;
 			margin: 0 auto 1.25rem;
 		}

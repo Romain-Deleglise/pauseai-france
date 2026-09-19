@@ -81,7 +81,7 @@
 		flex-direction: column;
 		height: 100%;
 		background: var(--bg);
-		border: 1px solid var(--border, var(--border));
+		border: 1px solid var(--border);
 		border-radius: 1rem;
 		overflow: hidden;
 		transition:
@@ -90,7 +90,7 @@
 	}
 
 	.card-link:hover .card {
-		border-color: var(--brand, var(--brand));
+		border-color: var(--brand);
 	}
 
 	.card-image {
@@ -98,7 +98,7 @@
 		width: 100%;
 		height: 180px;
 		overflow: hidden;
-		background: var(--bg-subtle, var(--brand-light));
+		background: var(--bg-subtle);
 	}
 
 	.card-image img {
@@ -127,7 +127,7 @@
 		font-weight: 600;
 		text-transform: uppercase;
 		letter-spacing: 0.5px;
-		color: var(--brand, var(--brand));
+		color: var(--brand);
 		background: rgba(255, 148, 22, 0.1);
 		padding: 0.25rem 0.625rem;
 		border-radius: 6px;
@@ -147,7 +147,7 @@
 		margin: 0;
 		font-size: 0.9375rem;
 		line-height: 1.6;
-		color: var(--text-secondary, var(--text-secondary));
+		color: var(--text-secondary);
 		display: -webkit-box;
 		-webkit-line-clamp: 3;
 		-webkit-box-orient: vertical;
@@ -161,7 +161,7 @@
 		align-items: center;
 		margin-top: 1rem;
 		padding-top: 1rem;
-		border-top: 1px solid var(--border, var(--border));
+		border-top: 1px solid var(--border);
 	}
 
 	.card-date {
@@ -169,7 +169,7 @@
 		align-items: center;
 		gap: 0.375rem;
 		font-size: 0.8125rem;
-		color: var(--text-secondary, var(--text-secondary));
+		color: var(--text-secondary);
 	}
 
 	.card-action {
@@ -184,7 +184,7 @@
 	}
 
 	.card-link:hover .card-action {
-		color: var(--brand, var(--brand));
+		color: var(--brand);
 	}
 
 	.card-action :global(svg) {

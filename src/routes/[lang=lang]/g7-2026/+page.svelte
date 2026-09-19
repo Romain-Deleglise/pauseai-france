@@ -189,17 +189,17 @@
 	.section-divider {
 		border: 0;
 		height: 4px;
-		background: var(--brand, var(--brand));
+		background: var(--brand);
 		border-radius: 2px;
 		margin: 3.5rem auto 1.5rem;
 		width: 12rem;
 	}
 
 	.embed-section {
-		background: #fafafa;
+		background: var(--bg-secondary);
 		border-radius: 16px;
 		padding: 2rem;
-		border: 1px solid #eee;
+		border: 1px solid var(--border);
 		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
 		margin-bottom: 5rem;
 	}

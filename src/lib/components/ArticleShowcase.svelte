@@ -272,7 +272,7 @@
 
 	.seg-btn:hover,
 	.seg-btn:focus-visible {
-		background: var(--brand-light, #fff7ed);
+		background: var(--brand-light);
 		outline: none;
 	}
 

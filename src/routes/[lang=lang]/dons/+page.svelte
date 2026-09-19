@@ -378,13 +378,13 @@
 
 	.hero-description {
 		font-size: 1.1rem;
-		color: #666;
+		color: var(--text-secondary);
 		margin-bottom: 1.5rem;
 	}
 
 	.tax-benefit {
-		background: #e8f5e8;
-		border: 2px solid #4caf50;
+		background: var(--success-bg);
+		border: 2px solid var(--success-border);
 		border-radius: 8px;
 		padding: 1rem;
 		margin: 1.5rem 0;
@@ -392,7 +392,7 @@
 	}
 
 	.tax-benefit strong {
-		color: #2e7d32;
+		color: var(--success);
 		font-size: 1.1rem;
 	}
 
@@ -458,7 +458,7 @@
 	}
 
 	.donation-card p {
-		color: #666;
+		color: var(--text-secondary);
 		margin-bottom: 1.5rem;
 		flex-grow: 1;
 	}
@@ -470,9 +470,10 @@
 		max-width: 100% !important;
 	}
 
+	/* Badge décoratif : orange de marque, pas une couleur d'état. */
 	.monthly-badge {
-		background: #4caf50;
-		color: white;
+		background: var(--brand);
+		color: var(--white);
 		padding: 0.25rem 0.75rem;
 		border-radius: 20px;
 		font-size: 0.9rem;
@@ -490,7 +491,7 @@
 		align-items: center;
 		gap: 0.4em;
 		margin-top: 1rem;
-		color: #666;
+		color: var(--text-secondary);
 		font-size: 0.9rem;
 		text-align: left;
 	}
@@ -568,7 +569,7 @@
 	}
 
 	.euro-symbol {
-		color: #6b7280;
+		color: var(--text-secondary);
 		font-weight: 600;
 		font-size: 1.25rem;
 	}
@@ -607,7 +608,7 @@
 	.bank-transfer-info {
 		margin: 1.5rem 0;
 		padding: 1.5rem;
-		background: #f8fafc;
+		background: var(--bg-secondary);
 		border-radius: 8px;
 		border: 1px solid var(--border);
 		text-align: center;
@@ -618,17 +619,17 @@
 		display: inline-flex;
 		align-items: center;
 		gap: 0.4em;
-		color: #6b7280;
+		color: var(--text-secondary);
 		font-size: 0.95rem;
 	}
 
 	.error-message {
-		background: #fee;
-		border: 1px solid #fcc;
+		background: var(--error-bg);
+		border: 1px solid var(--error-border);
 		border-radius: 4px;
 		padding: 0.75rem;
 		margin: 1rem 0;
-		color: #c33;
+		color: var(--error);
 		font-size: 0.9rem;
 		text-align: center;
 	}

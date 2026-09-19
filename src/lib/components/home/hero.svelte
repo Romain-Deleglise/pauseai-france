@@ -416,7 +416,7 @@
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
-		border-bottom: 4px solid var(--brand, var(--brand));
+		border-bottom: 4px solid var(--brand);
 		box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
 	}
 

@@ -437,7 +437,7 @@
 		padding: 2.75rem 2.5rem 3rem;
 		margin-bottom: 2.5rem;
 		background: var(--brand);
-		color: #1a1a1a;
+		color: var(--on-brand);
 	}
 
 	/* Fine barre d'accent à gauche, motif récurrent du site. */
@@ -446,7 +446,7 @@
 		position: absolute;
 		inset: 0 auto 0 0;
 		width: 6px;
-		background: #1a1a1a;
+		background: var(--on-brand);
 		opacity: 0.85;
 	}
 
@@ -456,7 +456,7 @@
 		gap: 0.4em;
 		font-size: 0.9rem;
 		font-weight: 600;
-		color: #1a1a1a;
+		color: var(--on-brand);
 		text-decoration: none;
 		opacity: 0.85;
 		margin-bottom: 1.25rem;
@@ -472,14 +472,14 @@
 		font-size: clamp(2rem, 5.5vw, 3.1rem);
 		line-height: 1.05;
 		letter-spacing: -0.02em;
-		color: #1a1a1a;
+		color: var(--on-brand);
 	}
 
 	.meta-line {
 		margin: 0.9rem 0 0;
 		font-size: 0.95rem;
 		font-weight: 600;
-		color: #1a1a1a;
+		color: var(--on-brand);
 		opacity: 0.9;
 	}
 
@@ -496,8 +496,8 @@
 		display: inline-flex;
 		align-items: center;
 		gap: 0.5em;
-		background: #1a1a1a;
-		color: #fff;
+		background: var(--on-brand);
+		color: var(--white);
 		text-decoration: none;
 		font-weight: 700;
 		font-size: 0.98rem;
@@ -511,7 +511,7 @@
 	.apply-btn:hover,
 	.apply-btn:focus-visible {
 		transform: translateY(-1px);
-		background: #000;
+		background: var(--black);
 	}
 
 	/* ── Mise en page corps + sidebar ──────────────────────── */
@@ -612,7 +612,7 @@
 		height: 2.25rem;
 		border-radius: 50%;
 		background: var(--brand);
-		color: #1a1a1a;
+		color: var(--on-brand);
 		font-weight: 800;
 	}
 

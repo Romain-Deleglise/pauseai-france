@@ -171,7 +171,7 @@
 	.nav:hover,
 	.nav:focus-visible {
 		background: var(--carousel-accent, var(--brand));
-		color: #ffffff;
+		color: var(--white);
 		outline: none;
 		transform: translateY(-1px);
 	}

@@ -52,7 +52,7 @@
 		border-radius: 50%;
 		object-fit: cover;
 		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-		border: 2px solid var(--border, var(--border));
+		border: 2px solid var(--border);
 	}
 
 	.placeholder {
@@ -63,7 +63,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		border: 2px solid var(--border, var(--border));
+		border: 2px solid var(--border);
 	}
 
 	.placeholder svg {
@@ -87,7 +87,7 @@
 		margin: 0.15rem 0 0 0;
 		font-weight: 400;
 		font-size: 0.8rem;
-		color: var(--text-secondary, #666);
+		color: var(--text-secondary);
 		line-height: 1.3;
 	}
 </style>

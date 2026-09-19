@@ -228,7 +228,7 @@
 	}
 
 	.wa-field input[aria-invalid='true'] {
-		border-color: #c0392b;
+		border-color: var(--error);
 	}
 
 	.wa-form button {
@@ -260,7 +260,7 @@
 	.wa-error {
 		margin: 0;
 		font-size: 0.9rem;
-		color: #c0392b;
+		color: var(--error);
 		text-align: left;
 	}
 

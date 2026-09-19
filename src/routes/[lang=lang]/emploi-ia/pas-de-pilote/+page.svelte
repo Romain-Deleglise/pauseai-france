@@ -175,13 +175,13 @@
 
 	.breadcrumb a {
 		font-size: 0.875rem;
-		color: var(--text-secondary, var(--text-secondary));
+		color: var(--text-secondary);
 		text-decoration: none;
 		transition: color 0.2s;
 	}
 
 	.breadcrumb a:hover {
-		color: var(--brand, var(--brand));
+		color: var(--brand);
 	}
 
 	.article-meta {
@@ -197,34 +197,34 @@
 		font-weight: 700;
 		letter-spacing: 0.08em;
 		text-transform: uppercase;
-		color: var(--brand-subtle, var(--brand-subtle));
-		background: var(--brand-light, var(--brand-light));
+		color: var(--brand-subtle);
+		background: var(--brand-light);
 		padding: 0.2rem 0.55rem;
 		border-radius: 4px;
 	}
 
 	.meta-sep {
-		color: var(--border, #d1d5db);
+		color: var(--border);
 		font-size: 0.8rem;
 	}
 
 	.meta-series {
 		font-size: 0.8125rem;
 		font-weight: 600;
-		color: var(--text-secondary, var(--text-2));
+		color: var(--text-secondary);
 	}
 
 	.meta-reading {
 		font-size: 0.8125rem;
-		color: var(--text-secondary, #888);
+		color: var(--text-secondary);
 	}
 
 	.intro {
 		font-size: 1.15rem;
 		font-weight: 500;
-		color: var(--brand-subtle, var(--brand-subtle));
-		border-left: 4px solid var(--brand, var(--brand));
-		background: var(--brand-light, var(--brand-light));
+		color: var(--brand-subtle);
+		border-left: 4px solid var(--brand);
+		background: var(--brand-light);
 		padding: 1rem 1.25rem;
 		margin: 1.5rem 0 2rem;
 	}
@@ -236,8 +236,8 @@
 	.cta-box {
 		margin: 3rem 0 2rem;
 		padding: 2rem;
-		background: var(--brand-light, var(--brand-light));
-		border-left: 4px solid var(--brand, var(--brand));
+		background: var(--brand-light);
+		border-left: 4px solid var(--brand);
 		border-radius: 0 12px 12px 0;
 		display: flex;
 		flex-direction: column;
@@ -247,13 +247,13 @@
 
 	.cta-text {
 		font-weight: 600;
-		color: var(--brand-subtle, var(--brand-subtle));
+		color: var(--brand-subtle);
 		margin: 0;
 	}
 
 	.cta-btn {
 		display: inline-block;
-		background: var(--brand, var(--brand));
+		background: var(--brand);
 		color: white;
 		text-decoration: none;
 		padding: 0.75rem 1.5rem;
@@ -263,14 +263,14 @@
 	}
 
 	.cta-btn:hover {
-		background: var(--btn-hover-bg, #ffa945);
+		background: var(--btn-hover-bg);
 		color: white;
 	}
 
 	.article-nav {
 		margin-top: 2rem;
 		padding-top: 1.5rem;
-		border-top: 1px solid var(--border, var(--border));
+		border-top: 1px solid var(--border);
 		margin-bottom: 3rem;
 		display: flex;
 		justify-content: space-between;
@@ -280,14 +280,14 @@
 	}
 
 	.article-nav a {
-		color: var(--text-secondary, var(--text-secondary));
+		color: var(--text-secondary);
 		text-decoration: none;
 		font-size: 0.9375rem;
 		transition: color 0.2s;
 	}
 
 	.article-nav a:hover {
-		color: var(--brand, var(--brand));
+		color: var(--brand);
 	}
 
 	.nav-back {

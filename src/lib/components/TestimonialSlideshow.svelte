@@ -219,9 +219,9 @@
 		font-size: 1.9rem;
 		line-height: 1;
 		padding-bottom: 0.2rem;
-		color: var(--brand-subtle, var(--brand-subtle));
+		color: var(--brand-subtle);
 		background: rgba(255, 255, 255, 0.92);
-		border: 1px solid var(--border, var(--border));
+		border: 1px solid var(--border);
 		border-radius: 50%;
 		cursor: pointer;
 		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
@@ -232,7 +232,7 @@
 	}
 
 	.nav-arrow:hover {
-		background: var(--brand, var(--brand));
+		background: var(--brand);
 		color: white;
 		transform: translateY(-50%) scale(1.05);
 	}
@@ -262,9 +262,9 @@
 		height: auto;
 		object-fit: cover;
 		border-radius: 14px;
-		border: 1px solid var(--border, #d9c7b0);
+		border: 1px solid var(--border);
 		display: block;
-		background: var(--bg, #fff);
+		background: var(--bg);
 	}
 
 	.zoom-hint {
@@ -297,20 +297,20 @@
 	.attribution {
 		font-size: 0.95rem;
 		font-weight: 600;
-		color: var(--brand-subtle, var(--brand-subtle));
+		color: var(--brand-subtle);
 	}
 
 	.counter {
 		font-size: 0.85rem;
 		font-weight: 600;
-		color: var(--text-secondary, #888);
+		color: var(--text-secondary);
 	}
 
 	.empty {
 		margin: 0;
 		text-align: center;
 		font-size: 1rem;
-		color: var(--text-secondary, #888);
+		color: var(--text-secondary);
 		padding: 2rem 1rem;
 	}
 
@@ -335,7 +335,7 @@
 		max-height: 95vh;
 		object-fit: contain;
 		border-radius: 8px;
-		background: #fff;
+		background: var(--bg-card);
 		cursor: default;
 	}
 

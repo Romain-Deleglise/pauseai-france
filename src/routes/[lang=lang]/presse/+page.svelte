@@ -1579,8 +1579,8 @@
 	}
 
 	.about-card {
-		background-color: #f8f9fa;
-		border: 1px solid #e9ecef;
+		background-color: var(--bg-secondary);
+		border: 1px solid var(--border);
 		border-left: 4px solid var(--brand);
 		border-radius: 0.75rem;
 		padding: 2rem 2.5rem;

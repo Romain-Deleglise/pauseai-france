@@ -92,7 +92,7 @@
 		box-shadow:
 			0 4px 6px rgba(0, 0, 0, 0.04),
 			0 10px 40px rgba(0, 0, 0, 0.1);
-		border: 1px solid var(--border, var(--border));
+		border: 1px solid var(--border);
 	}
 
 	/* ── Marker styles (injected into DOM, need :global) ──────────────── */
@@ -113,7 +113,7 @@
 		height: 14px;
 		border-radius: 50%;
 		background: var(--brand);
-		border: 2.5px solid #fff;
+		border: 2.5px solid var(--white);
 		box-shadow: 0 2px 8px rgba(255, 148, 22, 0.55);
 		z-index: 2;
 	}
@@ -157,7 +157,7 @@
 
 	:global(.map-tooltip) {
 		background: rgba(17, 17, 17, 0.93) !important;
-		color: #fff !important;
+		color: var(--white) !important;
 		border: none !important;
 		border-radius: 8px !important;
 		padding: 0 !important;
@@ -207,8 +207,8 @@
 
 	:global(.leaflet-control-zoom a) {
 		border-radius: 6px !important;
-		color: var(--text, #111) !important;
-		border-color: var(--border, var(--border)) !important;
+		color: var(--text) !important;
+		border-color: var(--border) !important;
 	}
 
 	/* ── Legend ───────────────────────────────────────────────────────── */
@@ -219,7 +219,7 @@
 		justify-content: center;
 		margin-top: 0.875rem;
 		font-size: 0.82rem;
-		color: var(--text-secondary, var(--text-secondary));
+		color: var(--text-secondary);
 	}
 
 	.legend-item {
@@ -238,7 +238,7 @@
 
 	.legend-dot.active {
 		background: var(--brand);
-		border: 2.5px solid #fff;
+		border: 2.5px solid var(--white);
 		box-shadow: 0 0 0 1.5px var(--brand);
 	}
 

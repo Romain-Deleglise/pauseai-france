@@ -981,7 +981,7 @@
 	}
 
 	.required {
-		color: #dc2626;
+		color: var(--error);
 	}
 
 	input[type='text'],

@@ -94,7 +94,7 @@
 		border-radius: 8px;
 		font-size: 0.65rem;
 		font-weight: 800;
-		color: var(--text, #414042);
+		color: var(--text);
 		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 		display: flex;
 		align-items: center;

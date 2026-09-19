@@ -1584,7 +1584,7 @@
 
 	.tool-tabs button.active {
 		background: var(--brand);
-		color: #1a1a1a;
+		color: var(--on-brand);
 		box-shadow: 0 2px 8px rgba(255, 148, 22, 0.35);
 	}
 
@@ -1625,7 +1625,7 @@
 		font-weight: 800;
 		line-height: 1.05;
 		margin: 0 0 1rem;
-		color: #1a1a1a;
+		color: var(--on-brand);
 	}
 
 	.hero-sub {
@@ -1633,7 +1633,7 @@
 		line-height: 1.5;
 		margin: 0 auto;
 		max-inline-size: 36rem;
-		color: #3a2600;
+		color: var(--on-brand-muted);
 		font-weight: 500;
 	}
 
@@ -1664,7 +1664,7 @@
 		block-size: 1.7rem;
 		border-radius: 50%;
 		background: var(--brand);
-		color: #1a1a1a;
+		color: var(--on-brand);
 		font-size: 0.95rem;
 		font-weight: 700;
 		flex-shrink: 0;
@@ -1792,9 +1792,9 @@
 	}
 
 	.notice--error {
-		color: #c0392b;
-		background: #fdecee;
-		border: 1px solid #f6c6cc;
+		color: var(--error);
+		background: var(--error-bg);
+		border: 1px solid var(--error-border);
 	}
 
 	.notice--info {
@@ -1949,7 +1949,7 @@
 	}
 
 	.done-check {
-		color: #2a9d5c;
+		color: var(--success);
 		font-weight: 700;
 		margin-right: 0.35rem;
 	}
@@ -2134,7 +2134,7 @@
 
 	.segmented button.active {
 		background: var(--brand);
-		color: #1a1a1a;
+		color: var(--on-brand);
 		font-weight: 600;
 	}
 
@@ -2158,7 +2158,7 @@
 	.chip.active {
 		border-color: var(--brand);
 		background: var(--brand);
-		color: #1a1a1a;
+		color: var(--on-brand);
 	}
 
 	.perso-field {
@@ -2387,7 +2387,7 @@
 	.newsletter-error {
 		margin-top: 0.5rem;
 		font-size: 0.82rem;
-		color: #c0392b;
+		color: var(--error);
 	}
 
 	.newsletter-done {

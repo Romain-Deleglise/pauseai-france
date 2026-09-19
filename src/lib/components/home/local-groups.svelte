@@ -162,7 +162,7 @@
 
 	.city-pill.more {
 		background: color-mix(in srgb, var(--brand) 16%, transparent);
-		color: var(--brand-subtle, var(--brand));
+		color: var(--brand-subtle);
 		border-color: transparent;
 	}
 
@@ -237,7 +237,7 @@
 		text-decoration: none;
 		white-space: nowrap;
 		border: 1.5px solid color-mix(in srgb, var(--brand) 45%, transparent);
-		color: var(--brand-subtle, var(--brand));
+		color: var(--brand-subtle);
 		background: var(--bg);
 		transition: opacity 0.15s;
 		text-align: center;

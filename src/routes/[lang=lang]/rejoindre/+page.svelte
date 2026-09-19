@@ -262,7 +262,7 @@
 
 	.hero-description {
 		font-size: 1.1rem;
-		color: #666;
+		color: var(--text-secondary);
 		margin-bottom: 1.5rem;
 	}
 
@@ -322,7 +322,7 @@
 	}
 
 	.engagement-card p {
-		color: #666;
+		color: var(--text-secondary);
 		margin-bottom: 1.5rem;
 		flex-grow: 1;
 	}
@@ -344,12 +344,15 @@
 		margin-top: 0;
 	}
 
+	/* Les badges suivent la charte : orange de marque et neutre foncé. */
 	.support-badge {
-		background: #4caf50;
+		background: var(--brand);
+		color: var(--black);
 	}
 
 	.community-badge {
-		background: #3498db;
+		background: var(--text);
+		color: var(--bg);
 	}
 
 	.engagement-note {
@@ -357,7 +360,7 @@
 		align-items: center;
 		gap: 0.4em;
 		margin-top: 1rem;
-		color: #666;
+		color: var(--text-secondary);
 		font-size: 0.9rem;
 		text-align: left;
 	}
@@ -419,7 +422,7 @@
 
 	.recruit-card p {
 		margin: 0;
-		color: #666;
+		color: var(--text-secondary);
 	}
 
 	.recruit-card :global(a) {

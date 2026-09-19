@@ -798,7 +798,7 @@
 		padding: 0.45rem 1rem;
 		border-radius: 8px;
 		background: var(--brand);
-		color: #1a1a1a;
+		color: var(--on-brand);
 		font-size: 0.88rem;
 		font-weight: 600;
 		text-decoration: none;
@@ -903,7 +903,7 @@
 		align-items: center;
 		justify-content: center;
 		background: var(--brand);
-		color: #1a1a1a;
+		color: var(--on-brand);
 	}
 
 	/* Carte */
@@ -1010,7 +1010,7 @@
 		align-items: center;
 		gap: 0.3rem;
 		background: var(--brand);
-		color: #1a1a1a;
+		color: var(--on-brand);
 		padding: 0.12rem 0.55rem;
 		border-radius: 999px;
 		font-size: 0.7rem;
@@ -1149,7 +1149,7 @@
 		border: none;
 		border-radius: 50%;
 		background: rgba(0, 0, 0, 0.45);
-		color: #fff;
+		color: var(--white);
 		cursor: pointer;
 		transition: background 0.15s;
 	}
@@ -1174,7 +1174,7 @@
 		padding: 0.08rem 0.5rem;
 		border-radius: 999px;
 		background: rgba(0, 0, 0, 0.55);
-		color: #fff;
+		color: var(--white);
 		font-size: 0.72rem;
 		font-weight: 600;
 	}
@@ -1324,7 +1324,7 @@
 	}
 
 	.map-title-row :global(.map-pin-icon) {
-		color: var(--brand, var(--brand));
+		color: var(--brand);
 		flex-shrink: 0;
 	}
 
@@ -1338,19 +1338,19 @@
 
 	.map-stat {
 		font-weight: 600;
-		color: var(--brand, var(--brand));
+		color: var(--brand);
 	}
 
 	.map-stat.forming {
-		color: var(--text-secondary, #888);
+		color: var(--text-secondary);
 	}
 
 	.map-sep {
-		color: var(--border, #d1d5db);
+		color: var(--border);
 	}
 
 	.map-hint {
-		color: var(--text-secondary, #888);
+		color: var(--text-secondary);
 	}
 
 	/* ── Responsive ───────────────────────────────────────────────────── */

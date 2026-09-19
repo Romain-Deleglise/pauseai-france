@@ -499,7 +499,7 @@
 	.intro {
 		font-size: 1.2rem;
 		line-height: 1.7;
-		color: var(--text-muted, var(--text-2));
+		color: var(--text-muted);
 		max-width: 52rem;
 	}
 
@@ -519,7 +519,7 @@
 
 	.count-pill {
 		background: var(--brand);
-		color: #fff;
+		color: var(--white);
 		font-size: 0.75rem;
 		font-weight: 700;
 		padding: 0.2rem 0.65rem;
@@ -531,7 +531,7 @@
 	.section-intro {
 		font-size: 1rem;
 		line-height: 1.65;
-		color: var(--text-muted, var(--text-2));
+		color: var(--text-muted);
 		margin: 0 0 1.75rem;
 		max-width: 52rem;
 	}
@@ -561,7 +561,7 @@
 	.action-inner p {
 		font-size: 1.05rem;
 		line-height: 1.65;
-		color: var(--text-muted, var(--text-2));
+		color: var(--text-muted);
 		margin: 0 0 1.75rem;
 		max-width: 48rem;
 	}
@@ -632,7 +632,7 @@
 		align-items: center;
 		gap: 0.3rem;
 		font-size: 0.85rem;
-		color: var(--text-secondary, #777);
+		color: var(--text-secondary);
 	}
 
 	.commitment-badge {
@@ -645,24 +645,27 @@
 		letter-spacing: 0.01em;
 	}
 
+	/* Pastilles d'engagement : quatre teintes distinctes, mélangées au fond
+	   de la carte pour rester lisibles en clair comme en sombre. */
 	.badge-full {
-		background: #d1fae5;
-		color: #065f46;
+		--badge-hue: #1a7f4b;
 	}
 
 	.badge-high {
-		background: #dbeafe;
-		color: #1e40af;
+		--badge-hue: #2563eb;
 	}
 
 	.badge-mid {
-		background: #fef9c3;
-		color: #854d0e;
+		--badge-hue: #a16207;
 	}
 
 	.badge-low {
-		background: #fce7f3;
-		color: #831843;
+		--badge-hue: #be185d;
+	}
+
+	.commitment-badge {
+		background: color-mix(in srgb, var(--badge-hue) 16%, var(--bg-card));
+		color: color-mix(in srgb, var(--badge-hue) 60%, var(--text));
 	}
 
 	.view-charter {
@@ -728,7 +731,7 @@
 
 	.press-date {
 		font-size: 0.78rem;
-		color: var(--text-secondary, #888);
+		color: var(--text-secondary);
 		white-space: nowrap;
 	}
 
@@ -741,7 +744,7 @@
 
 	.press-link-icon {
 		font-size: 1.1rem;
-		color: var(--text-secondary, #aaa);
+		color: var(--text-secondary);
 		flex-shrink: 0;
 		transition: color 0.18s;
 	}
@@ -803,7 +806,7 @@
 	}
 
 	.modal-city {
-		color: var(--text-secondary, #777);
+		color: var(--text-secondary);
 	}
 
 	.modal-badge {
@@ -830,9 +833,9 @@
 	}
 
 	.close-button:hover {
-		background: #111;
-		color: #fff;
-		border-color: #111;
+		background: var(--text);
+		color: var(--bg);
+		border-color: var(--text);
 	}
 
 	.close-button--top {
@@ -862,7 +865,7 @@
 
 	.engagements-intro {
 		font-size: 0.95rem;
-		color: var(--text-secondary, var(--text-2));
+		color: var(--text-secondary);
 		margin-bottom: 1.25rem;
 		font-style: italic;
 	}

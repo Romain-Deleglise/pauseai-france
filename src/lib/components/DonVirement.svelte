@@ -358,7 +358,7 @@
 		border: none;
 		font-size: 1.2rem;
 		cursor: pointer;
-		color: var(--text-secondary, var(--text-secondary));
+		color: var(--text-secondary);
 		line-height: 1;
 		padding: 0.25rem 0.5rem;
 		border-radius: 4px;
@@ -398,7 +398,7 @@
 	input[type='email'],
 	input[type='number'] {
 		padding: 0.6rem 0.9rem;
-		border: 2px solid var(--border, var(--border));
+		border: 2px solid var(--border);
 		border-radius: 8px;
 		font-size: 1rem;
 		font-family: inherit;
@@ -455,7 +455,7 @@
 
 	.presets-label {
 		font-size: 0.85rem;
-		color: var(--text-secondary, var(--text-secondary));
+		color: var(--text-secondary);
 		margin: 0 0 0.5rem;
 	}
 
@@ -489,7 +489,7 @@
 	/* Field hint */
 	.field-hint {
 		font-size: 0.82rem;
-		color: var(--text-secondary, var(--text-secondary));
+		color: var(--text-secondary);
 		margin-top: 0.2rem;
 	}
 
@@ -508,11 +508,11 @@
 
 	/* Error */
 	.error-banner {
-		background: #fee;
-		border: 1px solid #fcc;
+		background: var(--error-bg);
+		border: 1px solid var(--error-border);
 		border-radius: 6px;
 		padding: 0.7rem 1rem;
-		color: #c33;
+		color: var(--error);
 		font-size: 0.9rem;
 		margin-bottom: 1rem;
 	}
@@ -534,7 +534,7 @@
 	}
 
 	.submit-btn:hover:not(:disabled) {
-		background: #ffa945;
+		background: var(--btn-hover-bg);
 		transform: translateY(-1px);
 	}
 
@@ -558,15 +558,15 @@
 	}
 
 	.confirm-text {
-		color: #666;
+		color: var(--text-secondary);
 		margin: 0;
 	}
 
 	/* RIB card */
 	.rib-card {
 		width: 100%;
-		background: #f8fafc;
-		border: 1px solid var(--border, var(--border));
+		background: var(--bg-secondary);
+		border: 1px solid var(--border);
 		border-radius: 10px;
 		padding: 1.25rem 1.5rem;
 		text-align: left;
@@ -577,7 +577,7 @@
 		justify-content: space-between;
 		align-items: center;
 		padding: 0.5rem 0;
-		border-bottom: 1px solid var(--border, var(--border));
+		border-bottom: 1px solid var(--border);
 	}
 
 	.rib-row:last-child {
@@ -587,7 +587,7 @@
 	.rib-label {
 		font-weight: 600;
 		font-size: 0.9rem;
-		color: var(--text-secondary, var(--text-secondary));
+		color: var(--text-secondary);
 		min-width: 80px;
 	}
 
@@ -610,26 +610,26 @@
 		margin: 1rem 0 0;
 		font-size: 0.9rem;
 		line-height: 1.5;
-		color: var(--text-secondary, var(--text-secondary));
+		color: var(--text-secondary);
 	}
 
 	.confirm-note {
 		margin: 1.25rem 0 1.5rem;
 		font-size: 0.85rem;
 		line-height: 1.5;
-		color: var(--text-secondary, var(--text-secondary));
+		color: var(--text-secondary);
 	}
 
 	/* Inline copy buttons */
 	.copy-inline {
 		background: none;
-		border: 1px solid var(--border, var(--border));
+		border: 1px solid var(--border);
 		border-radius: 6px;
 		cursor: pointer;
 		font-size: 1rem;
 		padding: 0.25rem 0.5rem;
 		line-height: 1;
-		color: var(--text-secondary, var(--text-secondary));
+		color: var(--text-secondary);
 		transition:
 			background 0.15s,
 			border-color 0.15s;
@@ -637,7 +637,7 @@
 	}
 
 	.copy-inline:hover {
-		background: var(--brand-light, var(--brand-light));
+		background: var(--brand-light);
 		border-color: var(--brand);
 	}
 
@@ -657,14 +657,14 @@
 	}
 
 	.done-btn:hover {
-		background: #ffa945;
+		background: var(--btn-hover-bg);
 		transform: translateY(-1px);
 	}
 
 	.close-link {
 		background: none;
 		border: none;
-		color: var(--text-secondary, var(--text-secondary));
+		color: var(--text-secondary);
 		font-size: 0.95rem;
 		cursor: pointer;
 		text-decoration: underline;
