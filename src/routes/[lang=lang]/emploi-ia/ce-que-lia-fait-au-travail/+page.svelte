@@ -239,13 +239,13 @@
 
 	.breadcrumb a {
 		font-size: 0.875rem;
-		color: var(--text-secondary, #676e7a);
+		color: var(--text-secondary, var(--text-secondary));
 		text-decoration: none;
 		transition: color 0.2s;
 	}
 
 	.breadcrumb a:hover {
-		color: var(--brand, #ff9416);
+		color: var(--brand, var(--brand));
 	}
 
 	.article-meta {
@@ -261,8 +261,8 @@
 		font-weight: 700;
 		letter-spacing: 0.08em;
 		text-transform: uppercase;
-		color: var(--brand-subtle, #c96900);
-		background: var(--brand-light, #fff5e8);
+		color: var(--brand-subtle, var(--brand-subtle));
+		background: var(--brand-light, var(--brand-light));
 		padding: 0.2rem 0.55rem;
 		border-radius: 4px;
 	}
@@ -275,7 +275,7 @@
 	.meta-series {
 		font-size: 0.8125rem;
 		font-weight: 600;
-		color: var(--text-secondary, #555);
+		color: var(--text-secondary, var(--text-2));
 	}
 
 	.meta-reading {
@@ -286,9 +286,9 @@
 	.intro {
 		font-size: 1.15rem;
 		font-weight: 500;
-		color: var(--brand-subtle, #c96900);
-		border-left: 4px solid var(--brand, #ff9416);
-		background: var(--brand-light, #fff5e8);
+		color: var(--brand-subtle, var(--brand-subtle));
+		border-left: 4px solid var(--brand, var(--brand));
+		background: var(--brand-light, var(--brand-light));
 		padding: 1rem 1.25rem;
 		margin: 1.5rem 0 2rem;
 	}
@@ -298,7 +298,7 @@
 	}
 
 	blockquote {
-		border-left: 4px solid var(--brand, #ff9416);
+		border-left: 4px solid var(--brand, var(--brand));
 		margin: 2rem 0;
 		padding: 1.25rem 1.5rem;
 		background: var(--bg-subtle, #f7f7f5);
@@ -313,25 +313,25 @@
 		margin: 0;
 		font-style: italic;
 		font-size: 1.05rem;
-		color: var(--brand-subtle, #c96900);
+		color: var(--brand-subtle, var(--brand-subtle));
 		font-weight: 500;
 	}
 
 	.back-nav {
 		margin-top: 2rem;
 		padding-top: 1.5rem;
-		border-top: 1px solid var(--border, #e5e7eb);
+		border-top: 1px solid var(--border, var(--border));
 		margin-bottom: 3rem;
 	}
 
 	.back-nav a {
-		color: var(--text-secondary, #676e7a);
+		color: var(--text-secondary, var(--text-secondary));
 		text-decoration: none;
 		font-size: 0.9375rem;
 		transition: color 0.2s;
 	}
 
 	.back-nav a:hover {
-		color: var(--brand, #ff9416);
+		color: var(--brand, var(--brand));
 	}
 </style>

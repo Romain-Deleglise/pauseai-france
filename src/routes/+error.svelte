@@ -76,7 +76,7 @@
 	}
 
 	.description {
-		color: var(--text-secondary, #676e7a);
+		color: var(--text-secondary, var(--text-secondary));
 		font-size: 1.1rem;
 		max-width: 32rem;
 		margin: 0;

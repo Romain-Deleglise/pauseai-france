@@ -550,7 +550,7 @@
 	.amount-input {
 		width: 120px;
 		padding: 0.75rem 1.25rem;
-		border: 2px solid #e5e7eb;
+		border: 2px solid var(--border);
 		border-radius: 10px;
 		font-size: 1.25rem;
 		font-weight: 500;
@@ -609,7 +609,7 @@
 		padding: 1.5rem;
 		background: #f8fafc;
 		border-radius: 8px;
-		border: 1px solid #e5e7eb;
+		border: 1px solid var(--border);
 		text-align: center;
 	}
 

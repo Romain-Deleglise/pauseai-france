@@ -22,6 +22,9 @@
 	                       des pages intérieures comme sur le blanc de l'accueil */
 	--bg-secondary: #fdfaf6;
 
+	/* Alerte : réservé aux moments critiques (chronologies, erreurs). */
+	--alert: #d92d20;
+
 	/* Buttons */
 	--btn-bg: var(--brand);
 	--btn-hover-bg: #ffa945;
@@ -52,6 +55,7 @@
 	--bg-secondary: #303030;
 	--border: #3e4048;
 	--brand-light: #2a1f0a;
+	--alert: #ff6b5e;
 	--brand-subtle: #ffab40; /* orange plus clair pour fond sombre */
 
 	--btn-alt-bg: #303030;

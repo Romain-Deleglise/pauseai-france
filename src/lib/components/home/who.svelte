@@ -567,7 +567,7 @@
 	.values-note {
 		margin: 0.5rem 0 1.5rem;
 		padding: 0.75rem 0 0.75rem 1rem;
-		border-left: 3px solid var(--border, #e5e7eb);
+		border-left: 3px solid var(--border, var(--border));
 		color: var(--text-secondary, #4b5563);
 		font-size: 0.95rem;
 		line-height: 1.6;
@@ -587,7 +587,7 @@
 	.independence {
 		margin: 1.75rem 0 0;
 		padding-top: 1.5rem;
-		border-top: 1px solid var(--border, #e5e7eb);
+		border-top: 1px solid var(--border, var(--border));
 		font-size: 0.95rem;
 		color: var(--text-secondary, #4b5563);
 		line-height: 1.6;
@@ -621,7 +621,7 @@
 
 	.section-description {
 		margin-bottom: 2rem;
-		color: var(--text-secondary, #676e7a);
+		color: var(--text-secondary, var(--text-secondary));
 		font-size: 1rem;
 		text-align: center;
 	}
@@ -643,8 +643,8 @@
 		font-weight: 600;
 		color: var(--text, #333);
 		text-align: center;
-		background: var(--bg-subtle, #fff5e8);
+		background: var(--bg-subtle, var(--brand-light));
 		border-radius: 0.5rem;
-		border: 1px solid var(--border, #e5e7eb);
+		border: 1px solid var(--border, var(--border));
 	}
 </style>

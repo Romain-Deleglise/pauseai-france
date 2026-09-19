@@ -219,9 +219,9 @@
 		font-size: 1.9rem;
 		line-height: 1;
 		padding-bottom: 0.2rem;
-		color: var(--brand-subtle, #c96900);
+		color: var(--brand-subtle, var(--brand-subtle));
 		background: rgba(255, 255, 255, 0.92);
-		border: 1px solid var(--border, #e5e7eb);
+		border: 1px solid var(--border, var(--border));
 		border-radius: 50%;
 		cursor: pointer;
 		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
@@ -232,7 +232,7 @@
 	}
 
 	.nav-arrow:hover {
-		background: var(--brand, #ff9416);
+		background: var(--brand, var(--brand));
 		color: white;
 		transform: translateY(-50%) scale(1.05);
 	}
@@ -297,7 +297,7 @@
 	.attribution {
 		font-size: 0.95rem;
 		font-weight: 600;
-		color: var(--brand-subtle, #c96900);
+		color: var(--brand-subtle, var(--brand-subtle));
 	}
 
 	.counter {

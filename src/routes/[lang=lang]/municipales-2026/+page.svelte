@@ -499,7 +499,7 @@
 	.intro {
 		font-size: 1.2rem;
 		line-height: 1.7;
-		color: var(--text-muted, #555);
+		color: var(--text-muted, var(--text-2));
 		max-width: 52rem;
 	}
 
@@ -518,7 +518,7 @@
 	}
 
 	.count-pill {
-		background: var(--brand, #ff9416);
+		background: var(--brand, var(--brand));
 		color: #fff;
 		font-size: 0.75rem;
 		font-weight: 700;
@@ -531,7 +531,7 @@
 	.section-intro {
 		font-size: 1rem;
 		line-height: 1.65;
-		color: var(--text-muted, #555);
+		color: var(--text-muted, var(--text-2));
 		margin: 0 0 1.75rem;
 		max-width: 52rem;
 	}
@@ -561,7 +561,7 @@
 	.action-inner p {
 		font-size: 1.05rem;
 		line-height: 1.65;
-		color: var(--text-muted, #555);
+		color: var(--text-muted, var(--text-2));
 		margin: 0 0 1.75rem;
 		max-width: 48rem;
 	}
@@ -590,7 +590,7 @@
 		padding: 1.25rem 1.375rem;
 		background: #fff;
 		border: 1.5px solid #e8e8e8;
-		border-left: 4px solid var(--brand, #ff9416);
+		border-left: 4px solid var(--brand, var(--brand));
 		border-radius: 10px;
 		cursor: pointer;
 		text-align: left;
@@ -604,8 +604,8 @@
 	.candidate-card:hover {
 		transform: translateY(-3px);
 		box-shadow: 0 8px 28px rgba(0, 0, 0, 0.1);
-		border-color: var(--brand, #ff9416);
-		border-left-color: var(--brand, #ff9416);
+		border-color: var(--brand, var(--brand));
+		border-left-color: var(--brand, var(--brand));
 	}
 
 	.card-top {
@@ -671,7 +671,7 @@
 		gap: 0.35rem;
 		font-size: 0.82rem;
 		font-weight: 600;
-		color: var(--brand, #ff9416);
+		color: var(--brand, var(--brand));
 		margin-top: auto;
 	}
 
@@ -706,7 +706,7 @@
 	.press-card:hover {
 		transform: translateX(3px);
 		box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-		border-color: var(--brand, #ff9416);
+		border-color: var(--brand, var(--brand));
 		color: var(--text-heading, #111);
 	}
 
@@ -722,7 +722,7 @@
 		font-weight: 700;
 		text-transform: uppercase;
 		letter-spacing: 0.05em;
-		color: var(--brand, #ff9416);
+		color: var(--brand, var(--brand));
 		white-space: nowrap;
 	}
 
@@ -747,7 +747,7 @@
 	}
 
 	.press-card:hover .press-link-icon {
-		color: var(--brand, #ff9416);
+		color: var(--brand, var(--brand));
 	}
 
 	/* ── Modal ── */
@@ -812,7 +812,7 @@
 
 	.close-button {
 		background: transparent;
-		color: #555;
+		color: var(--text-2);
 		border: 1px solid #ddd;
 		border-radius: 50%;
 		width: 2rem;
@@ -862,7 +862,7 @@
 
 	.engagements-intro {
 		font-size: 0.95rem;
-		color: var(--text-secondary, #555);
+		color: var(--text-secondary, var(--text-2));
 		margin-bottom: 1.25rem;
 		font-style: italic;
 	}
@@ -884,13 +884,13 @@
 		line-height: 1.55;
 		padding: 0.75rem 1rem;
 		background: #fafafa;
-		border-left: 3px solid var(--brand, #ff9416);
+		border-left: 3px solid var(--brand, var(--brand));
 		border-radius: 0 6px 6px 0;
 	}
 
 	.engagements-list li::before {
 		content: '✓';
-		color: var(--brand, #ff9416);
+		color: var(--brand, var(--brand));
 		font-weight: 700;
 		flex-shrink: 0;
 		margin-top: 0.05em;

@@ -358,7 +358,7 @@
 		border: none;
 		font-size: 1.2rem;
 		cursor: pointer;
-		color: var(--text-secondary, #676e7a);
+		color: var(--text-secondary, var(--text-secondary));
 		line-height: 1;
 		padding: 0.25rem 0.5rem;
 		border-radius: 4px;
@@ -398,7 +398,7 @@
 	input[type='email'],
 	input[type='number'] {
 		padding: 0.6rem 0.9rem;
-		border: 2px solid var(--border, #e5e7eb);
+		border: 2px solid var(--border, var(--border));
 		border-radius: 8px;
 		font-size: 1rem;
 		font-family: inherit;
@@ -455,7 +455,7 @@
 
 	.presets-label {
 		font-size: 0.85rem;
-		color: var(--text-secondary, #676e7a);
+		color: var(--text-secondary, var(--text-secondary));
 		margin: 0 0 0.5rem;
 	}
 
@@ -489,7 +489,7 @@
 	/* Field hint */
 	.field-hint {
 		font-size: 0.82rem;
-		color: var(--text-secondary, #676e7a);
+		color: var(--text-secondary, var(--text-secondary));
 		margin-top: 0.2rem;
 	}
 
@@ -566,7 +566,7 @@
 	.rib-card {
 		width: 100%;
 		background: #f8fafc;
-		border: 1px solid var(--border, #e5e7eb);
+		border: 1px solid var(--border, var(--border));
 		border-radius: 10px;
 		padding: 1.25rem 1.5rem;
 		text-align: left;
@@ -577,7 +577,7 @@
 		justify-content: space-between;
 		align-items: center;
 		padding: 0.5rem 0;
-		border-bottom: 1px solid var(--border, #e5e7eb);
+		border-bottom: 1px solid var(--border, var(--border));
 	}
 
 	.rib-row:last-child {
@@ -587,7 +587,7 @@
 	.rib-label {
 		font-weight: 600;
 		font-size: 0.9rem;
-		color: var(--text-secondary, #676e7a);
+		color: var(--text-secondary, var(--text-secondary));
 		min-width: 80px;
 	}
 
@@ -610,26 +610,26 @@
 		margin: 1rem 0 0;
 		font-size: 0.9rem;
 		line-height: 1.5;
-		color: var(--text-secondary, #676e7a);
+		color: var(--text-secondary, var(--text-secondary));
 	}
 
 	.confirm-note {
 		margin: 1.25rem 0 1.5rem;
 		font-size: 0.85rem;
 		line-height: 1.5;
-		color: var(--text-secondary, #676e7a);
+		color: var(--text-secondary, var(--text-secondary));
 	}
 
 	/* Inline copy buttons */
 	.copy-inline {
 		background: none;
-		border: 1px solid var(--border, #e5e7eb);
+		border: 1px solid var(--border, var(--border));
 		border-radius: 6px;
 		cursor: pointer;
 		font-size: 1rem;
 		padding: 0.25rem 0.5rem;
 		line-height: 1;
-		color: var(--text-secondary, #676e7a);
+		color: var(--text-secondary, var(--text-secondary));
 		transition:
 			background 0.15s,
 			border-color 0.15s;
@@ -637,7 +637,7 @@
 	}
 
 	.copy-inline:hover {
-		background: var(--brand-light, #fff5e8);
+		background: var(--brand-light, var(--brand-light));
 		border-color: var(--brand);
 	}
 
@@ -664,7 +664,7 @@
 	.close-link {
 		background: none;
 		border: none;
-		color: var(--text-secondary, #676e7a);
+		color: var(--text-secondary, var(--text-secondary));
 		font-size: 0.95rem;
 		cursor: pointer;
 		text-decoration: underline;

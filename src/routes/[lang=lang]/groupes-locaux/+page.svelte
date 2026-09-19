@@ -1324,7 +1324,7 @@
 	}
 
 	.map-title-row :global(.map-pin-icon) {
-		color: var(--brand, #ff9416);
+		color: var(--brand, var(--brand));
 		flex-shrink: 0;
 	}
 
@@ -1338,7 +1338,7 @@
 
 	.map-stat {
 		font-weight: 600;
-		color: var(--brand, #ff9416);
+		color: var(--brand, var(--brand));
 	}
 
 	.map-stat.forming {

@@ -825,11 +825,11 @@
 	}
 
 	.phase.attack .frise-list {
-		border-left-color: color-mix(in srgb, #d92d20 45%, transparent);
+		border-left-color: color-mix(in srgb, var(--alert) 45%, transparent);
 	}
 
 	.phase.attack .frise-item::before {
-		background: #d92d20;
+		background: var(--alert);
 	}
 
 	.frise-date {

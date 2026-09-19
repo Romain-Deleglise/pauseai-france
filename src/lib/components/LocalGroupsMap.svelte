@@ -92,7 +92,7 @@
 		box-shadow:
 			0 4px 6px rgba(0, 0, 0, 0.04),
 			0 10px 40px rgba(0, 0, 0, 0.1);
-		border: 1px solid var(--border, #e5e7eb);
+		border: 1px solid var(--border, var(--border));
 	}
 
 	/* ── Marker styles (injected into DOM, need :global) ──────────────── */
@@ -112,7 +112,7 @@
 		width: 14px;
 		height: 14px;
 		border-radius: 50%;
-		background: #ff9416;
+		background: var(--brand);
 		border: 2.5px solid #fff;
 		box-shadow: 0 2px 8px rgba(255, 148, 22, 0.55);
 		z-index: 2;
@@ -120,7 +120,7 @@
 
 	:global(.lm-forming .lm-dot) {
 		background: rgba(255, 148, 22, 0.35);
-		border: 2px dashed #ff9416;
+		border: 2px dashed var(--brand);
 		box-shadow: none;
 		width: 16px;
 		height: 16px;
@@ -208,7 +208,7 @@
 	:global(.leaflet-control-zoom a) {
 		border-radius: 6px !important;
 		color: var(--text, #111) !important;
-		border-color: var(--border, #e5e7eb) !important;
+		border-color: var(--border, var(--border)) !important;
 	}
 
 	/* ── Legend ───────────────────────────────────────────────────────── */
@@ -219,7 +219,7 @@
 		justify-content: center;
 		margin-top: 0.875rem;
 		font-size: 0.82rem;
-		color: var(--text-secondary, #676e7a);
+		color: var(--text-secondary, var(--text-secondary));
 	}
 
 	.legend-item {
@@ -237,13 +237,13 @@
 	}
 
 	.legend-dot.active {
-		background: #ff9416;
+		background: var(--brand);
 		border: 2.5px solid #fff;
-		box-shadow: 0 0 0 1.5px #ff9416;
+		box-shadow: 0 0 0 1.5px var(--brand);
 	}
 
 	.legend-dot.forming {
 		background: rgba(255, 148, 22, 0.35);
-		border: 2px dashed #ff9416;
+		border: 2px dashed var(--brand);
 	}
 </style>

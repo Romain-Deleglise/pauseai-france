@@ -138,7 +138,7 @@
 
 	.category {
 		background: var(--brand-light);
-		color: var(--carousel-accent, #ff9416);
+		color: var(--carousel-accent, var(--brand));
 		padding: 0.3rem 0.7rem;
 		border-radius: 999px;
 		font-size: 0.7rem;

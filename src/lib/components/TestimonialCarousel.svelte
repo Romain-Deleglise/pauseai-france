@@ -99,7 +99,7 @@
 		--carousel-background: var(--bg-subtle);
 		--carousel-border: #d9c7b0;
 		--carousel-text: var(--text);
-		--carousel-accent: #ff9416;
+		--carousel-accent: var(--brand);
 	}
 
 	:global([data-theme='dark']) {

@@ -146,12 +146,12 @@
 		left: 0;
 		right: 0;
 		height: 4px;
-		background: var(--primary, #ff9416);
+		background: var(--primary, var(--brand));
 		z-index: 1;
 	}
 
 	.card:hover {
-		border-color: var(--primary, #ff9416);
+		border-color: var(--primary, var(--brand));
 	}
 
 	.cover-link {
@@ -217,7 +217,7 @@
 
 	.title-link:hover,
 	.title-link:focus-visible {
-		color: var(--primary, #ff9416);
+		color: var(--primary, var(--brand));
 	}
 
 	.desc {
@@ -240,7 +240,7 @@
 		display: inline-flex;
 		align-items: center;
 		gap: 0.45rem;
-		background: var(--primary, #ff9416);
+		background: var(--primary, var(--brand));
 		color: white;
 		text-decoration: none;
 		font-weight: 700;

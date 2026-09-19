@@ -1688,7 +1688,7 @@
 	}
 
 	.name-gate--error {
-		border-color: #d92d20;
+		border-color: var(--alert);
 	}
 
 	.name-gate-label {
@@ -1732,7 +1732,7 @@
 	}
 
 	.user-input.input-error {
-		border-color: #d92d20;
+		border-color: var(--alert);
 	}
 
 	/* Recherche code postal */

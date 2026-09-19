@@ -432,7 +432,7 @@
 
 	.resource-card {
 		background: var(--bg);
-		border: 2px solid #e5e7eb;
+		border: 2px solid var(--border);
 		border-radius: 0.5rem;
 		padding: 2rem;
 		text-align: center;
@@ -502,7 +502,7 @@
 	.card-button:disabled {
 		background-color: #f3f4f6;
 		color: var(--text-secondary);
-		border-color: #e5e7eb;
+		border-color: var(--border);
 		cursor: not-allowed;
 	}
 

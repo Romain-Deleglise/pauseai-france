@@ -237,7 +237,7 @@
 
 	.menu a.active {
 		background-color: rgba(255, 148, 22, 0.18);
-		color: #ff9416;
+		color: var(--brand);
 	}
 
 	.menu a.muted {

@@ -149,7 +149,7 @@
 
 <style>
 	footer {
-		background-color: #ff9416;
+		background-color: var(--brand);
 		display: flex;
 		flex-direction: column;
 		gap: 2rem;

@@ -230,7 +230,7 @@
 	blockquote {
 		margin: 2rem 0;
 		padding: 1rem 1.5rem;
-		border-left: 4px solid var(--brand, #ff9416);
+		border-left: 4px solid var(--brand, var(--brand));
 		background: var(--bg-subtle, rgba(255, 148, 22, 0.06));
 		border-radius: 0 10px 10px 0;
 		font-style: italic;
@@ -249,7 +249,7 @@
 	.section-divider {
 		border: 0;
 		height: 4px;
-		background: var(--brand, #ff9416);
+		background: var(--brand, var(--brand));
 		border-radius: 2px;
 		margin: 3.5rem auto 1.5rem;
 		width: 12rem;

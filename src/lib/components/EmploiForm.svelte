@@ -18,7 +18,7 @@
 		display: flex;
 		align-items: center;
 		gap: 1rem;
-		background-color: var(--brand, #ff9416);
+		background-color: var(--brand, var(--brand));
 		text-decoration: none;
 		padding: 1rem 1.25rem;
 		border-radius: 10px;
@@ -27,7 +27,7 @@
 	}
 
 	a:hover {
-		background-color: var(--brand-subtle, #c96900);
+		background-color: var(--brand-subtle, var(--brand-subtle));
 	}
 
 	.card-title {

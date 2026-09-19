@@ -52,7 +52,7 @@
 		border-radius: 50%;
 		object-fit: cover;
 		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-		border: 2px solid var(--border, #e5e7eb);
+		border: 2px solid var(--border, var(--border));
 	}
 
 	.placeholder {
@@ -63,7 +63,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		border: 2px solid var(--border, #e5e7eb);
+		border: 2px solid var(--border, var(--border));
 	}
 
 	.placeholder svg {

@@ -933,7 +933,7 @@
 		width: 2.4rem;
 		height: 2.4rem;
 		border-radius: 10px;
-		background: var(--brand-light, #fff5e8);
+		background: var(--brand-light, var(--brand-light));
 		color: var(--brand-subtle, var(--brand));
 		flex-shrink: 0;
 		margin-top: 0.15rem;

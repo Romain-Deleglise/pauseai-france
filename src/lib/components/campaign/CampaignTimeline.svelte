@@ -88,11 +88,11 @@
 	}
 
 	.phase.accent .phase-list {
-		border-left-color: color-mix(in srgb, #d92d20 45%, transparent);
+		border-left-color: color-mix(in srgb, var(--alert) 45%, transparent);
 	}
 
 	.phase.accent .phase-item::before {
-		background: #d92d20;
+		background: var(--alert);
 	}
 
 	.event-date {
