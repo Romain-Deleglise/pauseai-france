@@ -291,13 +291,14 @@
 			</div>
 		</div>
 
-		<!-- Replié par défaut : la page est déjà longue et l'embed Luma occupe
-		     un demi-écran. Le résumé est habillé comme un vrai bouton (fond,
-		     bordure, chevron) pour qu'on ne puisse pas le manquer. -->
+		<!-- Déplié par défaut : pendant la semaine d'action, les dates sont
+		     l'information principale de la section. Le résumé reste cliquable
+		     pour replier le calendrier. -->
 		<LumaCalendar
 			calendarId={LUMA_CALENDAR_ID}
 			title={isEn ? 'Upcoming Pause IA events' : 'Prochains événements Pause IA'}
 			collapsible
+			open
 			summary={isEn
 				? 'See the week of action dates near you'
 				: 'Voir les dates de la semaine d’action près de chez vous'}
