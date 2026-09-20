@@ -380,7 +380,7 @@
 
 <style>
 	.recruitment-landing {
-		max-width: 60rem;
+		max-width: var(--width-wide);
 		margin: 0 auto;
 		padding: 2rem 1rem;
 		line-height: 1.6;
@@ -396,7 +396,7 @@
 	.hero-section h1 {
 		font-size: 2.5rem;
 		font-weight: 700;
-		color: var(--brand);
+		color: var(--brand-subtle);
 		margin-bottom: 1.5rem;
 		line-height: 1.2;
 	}
@@ -405,7 +405,7 @@
 		font-size: 1.1rem;
 		color: var(--text);
 		margin-bottom: 1.5rem;
-		max-width: 50rem;
+		max-width: var(--width-content);
 		margin-left: auto;
 		margin-right: auto;
 	}
@@ -413,7 +413,7 @@
 	.hero-cta {
 		font-size: 1rem;
 		font-weight: 600;
-		color: var(--brand);
+		color: var(--brand-subtle);
 		margin-bottom: 0;
 	}
 
@@ -426,7 +426,7 @@
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 		gap: 1.5rem;
-		max-width: 56rem;
+		max-width: var(--width-content);
 		margin: 0 auto;
 	}
 
@@ -440,12 +440,12 @@
 	}
 
 	.resource-card:hover {
-		border-color: var(--brand);
+		border-color: var(--brand-subtle);
 		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 	}
 
 	.resource-card.highlight {
-		border-color: var(--brand);
+		border-color: var(--brand-subtle);
 		background: var(--bg-subtle);
 	}
 
@@ -480,8 +480,8 @@
 	}
 
 	.card-button.primary {
-		background-color: var(--brand);
-		color: var(--white);
+		background-color: var(--brand-subtle);
+		color: var(--on-brand);
 	}
 
 	.card-button.primary:hover {
@@ -490,13 +490,13 @@
 
 	.card-button.secondary {
 		background-color: var(--bg);
-		color: var(--brand);
+		color: var(--brand-subtle);
 		border: 2px solid var(--brand);
 	}
 
 	.card-button.secondary:hover {
-		background-color: var(--brand);
-		color: var(--white);
+		background-color: var(--brand-subtle);
+		color: var(--on-brand);
 	}
 
 	.card-button:disabled {
@@ -518,7 +518,7 @@
 
 	.guide-header h2 {
 		font-size: 1.8rem;
-		color: var(--brand);
+		color: var(--brand-subtle);
 		margin-bottom: 1.5rem;
 		border-bottom: 2px solid var(--brand);
 		padding-bottom: 0.5rem;
@@ -533,7 +533,7 @@
 		display: block;
 		font-size: 2rem;
 		font-weight: 700;
-		color: var(--brand);
+		color: var(--brand-subtle);
 		margin-bottom: 0.5rem;
 	}
 
@@ -545,7 +545,7 @@
 	}
 
 	.guide-content {
-		max-width: 50rem;
+		max-width: var(--width-content);
 		margin: 0 auto;
 	}
 
@@ -595,7 +595,7 @@
 	}
 
 	.guide-content h3 {
-		color: var(--brand);
+		color: var(--brand-subtle);
 		font-size: 1.4rem;
 		margin-top: 3rem;
 		margin-bottom: 1.5rem;
@@ -621,7 +621,7 @@
 	}
 
 	.conclusion-content h2 {
-		color: var(--brand);
+		color: var(--brand-subtle);
 		font-size: 1.8rem;
 		margin-bottom: 1rem;
 	}
@@ -637,8 +637,8 @@
 
 	.conclusion-cta {
 		display: inline-block;
-		background-color: var(--brand);
-		color: var(--white);
+		background-color: var(--brand-subtle);
+		color: var(--on-brand);
 		padding: 1rem 2rem;
 		border-radius: var(--radius-sm);
 		text-decoration: none;
@@ -709,7 +709,7 @@
 		content: counter(item) '.';
 		counter-increment: item;
 		font-weight: bold;
-		color: var(--brand);
+		color: var(--brand-subtle);
 		position: absolute;
 		left: 0;
 	}

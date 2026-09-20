@@ -220,12 +220,12 @@
 
 	.menu a:hover {
 		background-color: rgba(255, 255, 255, 0.08);
-		color: var(--white);
+		color: var(--on-dark);
 	}
 
 	.menu a.active {
 		background-color: rgba(255, 148, 22, 0.18);
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
 	.menu a.muted {

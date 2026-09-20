@@ -227,7 +227,7 @@
 
 <style>
 	article {
-		max-inline-size: 50rem;
+		max-inline-size: var(--width-content);
 		margin-inline: auto;
 		margin-top: 2rem;
 		padding: 0 1rem;
@@ -245,7 +245,7 @@
 	}
 
 	.breadcrumb a:hover {
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
 	.article-meta {
@@ -332,6 +332,6 @@
 	}
 
 	.back-nav a:hover {
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 </style>

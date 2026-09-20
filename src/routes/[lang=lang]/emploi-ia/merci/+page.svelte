@@ -60,7 +60,7 @@
 	}
 
 	h1 {
-		color: var(--brand);
+		color: var(--brand-subtle);
 		margin-top: 0;
 		margin-bottom: 2rem;
 	}
@@ -104,7 +104,7 @@
 	}
 
 	.back-link a:hover {
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
 	@media (max-width: 640px) {

@@ -188,7 +188,7 @@
 		padding: 0.55rem 1.15rem;
 		border-radius: var(--radius-pill);
 		background: var(--carousel-accent, var(--brand));
-		color: var(--white);
+		color: var(--on-brand);
 		font-weight: 600;
 		font-size: 0.875rem;
 		line-height: 1;

@@ -142,7 +142,7 @@
 
 	input[type='email']:focus {
 		outline: none;
-		border-color: var(--brand);
+		border-color: var(--brand-subtle);
 		box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand) 20%, transparent);
 	}
 
@@ -154,7 +154,7 @@
 	button[type='submit'] {
 		padding: 0.65rem 1.5rem;
 		background: var(--brand);
-		color: var(--white);
+		color: var(--on-brand);
 		border: none;
 		border-radius: var(--radius-sm);
 		font-family: var(--font-heading);

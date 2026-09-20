@@ -143,7 +143,7 @@
 
 <style>
 	article {
-		max-inline-size: 60rem;
+		max-inline-size: var(--width-wide);
 		margin-inline: auto;
 		margin-top: 3rem;
 		padding: 0 2rem;

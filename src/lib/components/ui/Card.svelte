@@ -42,7 +42,7 @@
 
 	.accent {
 		background: var(--bg-subtle);
-		border-color: var(--brand);
+		border-color: var(--brand-subtle);
 	}
 
 	.plain {
@@ -64,7 +64,7 @@
 	.interactive:focus-visible {
 		transform: translateY(-2px);
 		box-shadow: var(--shadow-raised);
-		border-color: var(--brand);
+		border-color: var(--brand-subtle);
 	}
 
 	@media (max-width: 600px) {

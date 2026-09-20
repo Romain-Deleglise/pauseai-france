@@ -469,7 +469,7 @@
 
 	.hero h1 {
 		margin: 0;
-		font-size: clamp(2rem, 5.5vw, 3.1rem);
+		font-size: clamp(2rem, 5.5vw, 3rem);
 		line-height: 1.05;
 		letter-spacing: -0.02em;
 		color: var(--on-brand);
@@ -497,7 +497,7 @@
 		align-items: center;
 		gap: 0.5em;
 		background: var(--on-brand);
-		color: var(--white);
+		color: var(--on-dark);
 		text-decoration: none;
 		font-weight: 700;
 		font-size: 0.98rem;

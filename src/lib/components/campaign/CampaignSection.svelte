@@ -40,7 +40,7 @@
 		text-align: left;
 		font-size: 1.05rem;
 		line-height: 1.65;
-		max-inline-size: 44rem;
+		max-inline-size: var(--width-text);
 	}
 
 	.section :global(p) {
@@ -62,7 +62,7 @@
 
 	.accent {
 		background: var(--bg-subtle);
-		border-color: var(--brand);
+		border-color: var(--brand-subtle);
 	}
 
 	@media (max-width: 600px) {

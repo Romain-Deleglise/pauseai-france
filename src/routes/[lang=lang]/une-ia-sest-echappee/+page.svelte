@@ -693,7 +693,7 @@
 
 <style>
 	article {
-		max-inline-size: 54rem;
+		max-inline-size: var(--width-content);
 		margin-inline: auto;
 		margin-top: 2.5rem;
 		padding: 0 1.5rem;
@@ -728,7 +728,7 @@
 		font-size: clamp(1.05rem, 2vw, 1.25rem);
 		line-height: 1.6;
 		font-weight: 400;
-		max-inline-size: 44rem;
+		max-inline-size: var(--width-text);
 		color: var(--text-2);
 	}
 
@@ -946,7 +946,7 @@
 		top: -0.75rem;
 		font-size: 4rem;
 		line-height: 1;
-		color: var(--brand);
+		color: var(--brand-subtle);
 		font-family: Georgia, serif;
 	}
 
@@ -1141,7 +1141,7 @@
 		font-size: 0.98rem;
 		line-height: 1.6;
 		color: var(--text-2);
-		max-inline-size: 44rem;
+		max-inline-size: var(--width-text);
 	}
 
 	/* Décalage pour que le défilement automatique passe sous l’en-tête fixe. */

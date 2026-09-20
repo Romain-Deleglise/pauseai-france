@@ -27,26 +27,27 @@
 	}
 
 	a:hover {
-		background-color: var(--brand-subtle);
+		background-color: var(--btn-hover-bg);
 	}
 
 	.card-title {
 		font-weight: 700;
-		color: var(--white);
+		color: var(--on-brand);
 		white-space: nowrap;
 		flex-shrink: 0;
 	}
 
 	.card-text {
 		font-size: 0.9rem;
-		color: rgba(255, 255, 255, 0.88);
+		color: var(--on-brand);
+		opacity: 0.92;
 		line-height: 1.3;
 	}
 
 	.card-arrow {
 		margin-left: auto;
 		font-size: 1.2rem;
-		color: var(--white);
+		color: var(--on-brand);
 		flex-shrink: 0;
 	}
 

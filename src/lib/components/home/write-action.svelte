@@ -237,7 +237,7 @@
 		font-family: var(--font-body);
 		font-size: 1rem;
 		font-weight: bold;
-		color: var(--text);
+		color: var(--on-brand);
 		background-color: var(--btn-bg);
 		border: none;
 		border-radius: var(--radius-btn);

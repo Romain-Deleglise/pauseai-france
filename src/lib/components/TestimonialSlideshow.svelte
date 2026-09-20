@@ -239,7 +239,7 @@
 
 	.nav-arrow:hover {
 		background: var(--brand);
-		color: var(--white);
+		color: var(--on-brand);
 		transform: translateY(-50%) scale(1.05);
 	}
 
@@ -279,7 +279,7 @@
 		bottom: 0.6rem;
 		font-size: 0.75rem;
 		font-weight: 600;
-		color: var(--white);
+		color: var(--on-dark);
 		background: rgba(0, 0, 0, 0.6);
 		padding: 0.3rem 0.55rem;
 		border-radius: var(--radius-sm);
@@ -353,7 +353,7 @@
 		height: 2.5rem;
 		font-size: 1.8rem;
 		line-height: 1;
-		color: var(--white);
+		color: var(--on-dark);
 		background: rgba(255, 255, 255, 0.15);
 		border: 0;
 		border-radius: 50%;
@@ -375,7 +375,7 @@
 		height: 3rem;
 		font-size: 2rem;
 		line-height: 1;
-		color: var(--white);
+		color: var(--on-dark);
 		background: rgba(255, 255, 255, 0.15);
 		border: 0;
 		border-radius: 50%;
@@ -403,7 +403,7 @@
 		bottom: 1rem;
 		left: 50%;
 		transform: translateX(-50%);
-		color: var(--white);
+		color: var(--on-dark);
 		font-size: 0.9rem;
 		font-weight: 600;
 		background: rgba(0, 0, 0, 0.5);

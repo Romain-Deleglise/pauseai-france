@@ -34,7 +34,7 @@
 
 <style>
 	article {
-		max-inline-size: 50rem;
+		max-inline-size: var(--width-content);
 		margin-inline: auto;
 		margin-top: 3rem;
 	}

@@ -64,7 +64,7 @@
 	.faq-cat {
 		font-size: 1.3rem;
 		font-weight: 700;
-		color: var(--brand);
+		color: var(--brand-subtle);
 		margin: 2.5rem 0 1rem;
 		padding-bottom: 0.5rem;
 		border-bottom: 2px solid var(--brand);

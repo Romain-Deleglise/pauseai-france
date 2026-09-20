@@ -34,7 +34,7 @@
 
 	.brand {
 		background: var(--brand);
-		color: var(--white);
+		color: var(--on-brand);
 	}
 
 	.neutral {
@@ -46,7 +46,7 @@
 	.outline {
 		background: transparent;
 		color: var(--brand-subtle);
-		border-color: var(--brand);
+		border-color: var(--brand-subtle);
 	}
 
 	.success {

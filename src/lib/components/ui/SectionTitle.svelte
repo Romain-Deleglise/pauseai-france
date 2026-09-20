@@ -22,7 +22,7 @@
 
 	.count {
 		background: var(--brand);
-		color: var(--white);
+		color: var(--on-brand);
 		border-radius: var(--radius-pill);
 		padding: 0.15rem 0.6rem;
 		font-size: 0.75rem;

@@ -90,7 +90,7 @@
 	}
 
 	.card-link:hover .card {
-		border-color: var(--brand);
+		border-color: var(--brand-subtle);
 	}
 
 	.card-image {
@@ -127,7 +127,7 @@
 		font-weight: 600;
 		text-transform: uppercase;
 		letter-spacing: 0.5px;
-		color: var(--brand);
+		color: var(--brand-subtle);
 		background: rgba(255, 148, 22, 0.1);
 		padding: 0.25rem 0.625rem;
 		border-radius: var(--radius-sm);
@@ -184,7 +184,7 @@
 	}
 
 	.card-link:hover .card-action {
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
 	.card-action :global(svg) {

@@ -244,6 +244,7 @@ export default {
 		next_page: 'Page suivante'
 	},
 	posts: {
+		title: 'Articles',
 		meta_title: 'Articles - Pause IA'
 	},
 	campagnes: {

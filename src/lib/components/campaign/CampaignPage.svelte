@@ -24,7 +24,7 @@
 		   de descendre sous la largeur intrinsèque de son contenu (les images
 		   de cartes font 560px de large) et la page défile horizontalement. */
 		min-inline-size: 0;
-		max-inline-size: 54rem;
+		max-inline-size: var(--width-content);
 		margin-inline: auto;
 		margin-top: 2.5rem;
 		margin-bottom: 5rem;

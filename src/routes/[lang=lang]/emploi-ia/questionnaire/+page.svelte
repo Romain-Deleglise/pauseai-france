@@ -954,9 +954,9 @@
 	}
 
 	.progress-step.active .step-number {
-		background-color: var(--brand);
-		border-color: var(--brand);
-		color: var(--white);
+		background-color: var(--brand-subtle);
+		border-color: var(--brand-subtle);
+		color: var(--on-brand);
 	}
 
 	.step-label {
@@ -966,7 +966,7 @@
 	}
 
 	.progress-step.active .step-label {
-		color: var(--brand);
+		color: var(--brand-subtle);
 		font-weight: 500;
 	}
 
@@ -1013,7 +1013,7 @@
 	select:focus,
 	textarea:focus {
 		outline: none;
-		border-color: var(--brand);
+		border-color: var(--brand-subtle);
 		box-shadow: 0 0 0 3px rgba(255, 148, 22, 0.1);
 	}
 

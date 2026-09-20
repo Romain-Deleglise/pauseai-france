@@ -280,7 +280,7 @@
 
 	.seg-btn--active {
 		background: var(--carousel-accent, var(--brand));
-		color: var(--white);
+		color: var(--on-brand);
 	}
 
 	.seg-btn--active:hover {
@@ -323,7 +323,7 @@
 
 	button[role='tab'].tab--active {
 		background: var(--carousel-accent, var(--brand));
-		color: var(--white);
+		color: var(--on-brand);
 		border-color: var(--carousel-accent, var(--brand));
 	}
 

@@ -282,7 +282,7 @@
 		<div class="content-layout">
 			<!-- Desktop: sidebar quick access -->
 			<nav class="sidebar">
-				<h3 class="sidebar-title">{t.newsletters.quick_access}</h3>
+				<h2 class="sidebar-title">{t.newsletters.quick_access}</h2>
 				<ul class="sidebar-list">
 					{#each paginatedNewsletters as nl (nl.id)}
 						<li>
@@ -440,7 +440,7 @@
 	}
 
 	.subscribe-icon {
-		color: var(--brand);
+		color: var(--brand-subtle);
 		flex-shrink: 0;
 		margin-top: 0.5rem;
 	}
@@ -474,7 +474,7 @@
 
 	.subscribe-form input[type='email']:focus {
 		outline: none;
-		border-color: var(--brand);
+		border-color: var(--brand-subtle);
 	}
 
 	.subscribe-form input[type='email']:disabled {
@@ -485,7 +485,7 @@
 	.subscribe-form button {
 		padding: 0.5rem 1rem;
 		background: var(--brand);
-		color: var(--white);
+		color: var(--on-brand);
 		border: none;
 		border-radius: var(--radius-sm);
 		font-size: 0.9rem;
@@ -549,7 +549,7 @@
 	}
 
 	.search-input-wrapper:focus-within {
-		border-color: var(--brand);
+		border-color: var(--brand-subtle);
 		box-shadow: 0 0 0 3px rgba(255, 148, 22, 0.1);
 	}
 
@@ -622,7 +622,7 @@
 		font-weight: 700;
 		text-transform: uppercase;
 		letter-spacing: 0.05em;
-		color: var(--brand);
+		color: var(--brand-subtle);
 		margin-bottom: 0.5rem;
 	}
 
@@ -675,7 +675,7 @@
 		font-weight: 700;
 		text-transform: uppercase;
 		letter-spacing: 0.05em;
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
 	.sidebar-list {
@@ -791,13 +791,13 @@
 
 	.pagination-btn:hover:not(:disabled):not(.active) {
 		background-color: var(--bg-subtle);
-		border-color: var(--brand);
+		border-color: var(--brand-subtle);
 	}
 
 	.pagination-btn.active {
-		background-color: var(--brand);
-		border-color: var(--brand);
-		color: var(--white);
+		background-color: var(--brand-subtle);
+		border-color: var(--brand-subtle);
+		color: var(--on-brand);
 	}
 
 	.pagination-btn:disabled {

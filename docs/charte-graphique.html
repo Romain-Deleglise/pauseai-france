@@ -31,7 +31,7 @@
 			:root {
 				--brand: #ff9416;
 				--brand-light: #fff5e8;
-				--brand-subtle: #c96900;
+				--brand-subtle: #9c4f00;
 				--bg: #ffffff;
 				--bg-subtle: #fff5e8;
 				--bg-card: #fffcf8;
@@ -502,10 +502,10 @@
 					</div>
 				</div>
 				<div class="swatch">
-					<div class="chip" style="background: #c96900; color: #fff">#c96900</div>
+					<div class="chip" style="background: #9c4f00; color: #fff">#9c4f00</div>
 					<div class="body">
 						<span class="token">--brand-subtle</span>
-						<span class="use">Orange lisible : liens, chiffres, sur-titres.</span>
+						<span class="use">Le seul orange lisible en texte : liens, chiffres, sur-titres.</span>
 						<span class="dark">Sombre : #ffab40.</span>
 					</div>
 				</div>
@@ -514,9 +514,10 @@
 			<div class="rulebox">
 				<span class="label">Contraste</span>
 				<p>
-					<code>--brand</code> n’a pas un contraste suffisant pour du <strong>texte</strong> sur
-					fond clair. Pour un lien ou un chiffre, c’est <code>--brand-subtle</code>.
-					<code>--brand</code> reste réservé aux aplats.
+					<code>--brand</code> n’a <strong>jamais</strong> un contraste suffisant pour du texte
+					(2,2:1 sur le crème). Pour un lien ou un chiffre, c’est
+					<code>--brand-subtle</code> (5,5:1) ; sur un aplat orange, c’est
+					<code>--on-brand</code> (7,9:1), jamais du blanc.
 				</p>
 			</div>
 

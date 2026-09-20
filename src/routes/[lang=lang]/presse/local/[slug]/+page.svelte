@@ -150,7 +150,7 @@
 
 <style>
 	.page {
-		max-width: 52rem;
+		max-width: var(--width-content);
 		margin: 0 auto;
 		padding: 1.5rem 0.5rem 3rem;
 	}
@@ -170,7 +170,7 @@
 	}
 
 	.back-link:hover {
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
 	.pr-header {
@@ -185,7 +185,7 @@
 		margin-bottom: 0.75rem;
 		font-size: 0.8rem;
 		font-weight: 700;
-		color: var(--brand);
+		color: var(--brand-subtle);
 		background-color: rgba(255, 148, 22, 0.1);
 		border: 1px solid var(--brand);
 		border-radius: 0.25rem;
@@ -224,7 +224,7 @@
 	}
 
 	.original-link:hover {
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
 	.pr-content {
@@ -255,7 +255,7 @@
 
 	/* Links */
 	.pr-content :global(a) {
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
 	.pr-content :global(a:hover) {
@@ -305,7 +305,7 @@
 
 	.nav-link:hover {
 		background: var(--bg);
-		border-color: var(--brand);
+		border-color: var(--brand-subtle);
 		box-shadow: var(--shadow-card);
 	}
 
@@ -355,7 +355,7 @@
 		border-radius: 50%;
 		border: none;
 		background: var(--brand);
-		color: var(--white);
+		color: var(--on-brand);
 		display: flex;
 		align-items: center;
 		justify-content: center;

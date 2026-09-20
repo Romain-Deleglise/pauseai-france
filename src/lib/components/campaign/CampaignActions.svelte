@@ -43,7 +43,7 @@
 
 	.action.featured {
 		background: var(--bg-subtle);
-		border-color: var(--brand);
+		border-color: var(--brand-subtle);
 	}
 
 	.action h3 {

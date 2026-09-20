@@ -157,7 +157,7 @@
 
 	:global(.map-tooltip) {
 		background: rgba(17, 17, 17, 0.93) !important;
-		color: var(--white) !important;
+		color: var(--on-dark) !important;
 		border: none !important;
 		border-radius: 8px !important;
 		padding: 0 !important;

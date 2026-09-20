@@ -62,7 +62,7 @@
 
 	.badge {
 		background: var(--brand);
-		color: var(--black);
+		color: var(--on-brand);
 		font-size: 0.78rem;
 		font-weight: 700;
 		letter-spacing: 0.04em;
@@ -94,7 +94,7 @@
 		font-size: clamp(1.05rem, 2vw, 1.25rem);
 		line-height: 1.6;
 		text-align: left;
-		max-inline-size: 44rem;
+		max-inline-size: var(--width-text);
 		color: var(--text-2);
 	}
 

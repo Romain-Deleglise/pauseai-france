@@ -157,7 +157,7 @@
 		margin-left: calc(50% - 50vw);
 		margin-right: calc(50% - 50vw);
 		background: var(--brand);
-		color: var(--black);
+		color: var(--on-brand);
 		padding: 2.5rem 1rem;
 		display: flex;
 		flex-direction: column;
@@ -169,7 +169,7 @@
 
 	.content {
 		width: 100%;
-		max-width: 50rem;
+		max-width: var(--width-content);
 		margin: 0 auto;
 		text-align: center;
 		position: relative;
@@ -237,7 +237,7 @@
 
 	input[type='email']:focus {
 		outline: none;
-		border-color: var(--brand);
+		border-color: var(--brand-subtle);
 		box-shadow: 0 0 0 3px rgba(255, 147, 23, 0.1);
 	}
 
@@ -290,7 +290,7 @@
 	}
 
 	.checkbox-label:hover .checkmark {
-		border-color: var(--brand);
+		border-color: var(--brand-subtle);
 	}
 
 	input[type='checkbox'] {
@@ -316,13 +316,13 @@
 	}
 
 	input[type='checkbox']:checked + .checkmark {
-		background-color: var(--brand);
-		border-color: var(--brand);
+		background-color: var(--brand-subtle);
+		border-color: var(--brand-subtle);
 	}
 
 	input[type='checkbox']:checked + .checkmark::after {
 		content: '✓';
-		color: var(--white);
+		color: var(--on-dark);
 		font-weight: bold;
 		font-size: 0.875rem;
 	}

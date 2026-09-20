@@ -806,7 +806,7 @@
 
 <style>
 	.press-page {
-		max-width: 64rem;
+		max-width: var(--width-wide);
 		margin: 0 auto;
 		padding: 2rem 1rem;
 	}
@@ -865,7 +865,7 @@
 	}
 
 	.contact-email-main a {
-		color: var(--brand);
+		color: var(--brand-subtle);
 		font-weight: 600;
 	}
 
@@ -897,7 +897,7 @@
 	}
 
 	.contact-info a {
-		color: var(--brand);
+		color: var(--brand-subtle);
 		font-weight: 600;
 	}
 
@@ -910,7 +910,7 @@
 	}
 
 	.redirect a {
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
 	/* Press releases section */
@@ -954,7 +954,7 @@
 	}
 
 	.tab.active {
-		color: var(--brand);
+		color: var(--brand-subtle);
 		background-color: var(--bg-card);
 		box-shadow: var(--shadow-card);
 	}
@@ -980,7 +980,7 @@
 
 	.tab.active .tab-count {
 		background-color: rgba(var(--brand-rgb), 0.15);
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
 	/* Department filter combobox */
@@ -1018,7 +1018,7 @@
 	}
 
 	.dept-input-wrapper:focus-within {
-		border-color: var(--brand);
+		border-color: var(--brand-subtle);
 		box-shadow: 0 0 0 3px rgba(var(--brand-rgb), 0.1);
 	}
 
@@ -1103,7 +1103,7 @@
 	.dept-option-code {
 		font-weight: 700;
 		font-size: 0.9rem;
-		color: var(--brand);
+		color: var(--brand-subtle);
 		min-width: 2rem;
 	}
 
@@ -1134,7 +1134,7 @@
 		margin-bottom: 0.5rem;
 		font-size: 0.75rem;
 		font-weight: 700;
-		color: var(--brand);
+		color: var(--brand-subtle);
 		background-color: rgba(var(--brand-rgb), 0.08);
 		border: 1px solid var(--brand);
 		border-radius: 0.25rem;
@@ -1144,7 +1144,7 @@
 	.sidebar-item-dept {
 		font-size: 0.7rem;
 		font-weight: 700;
-		color: var(--brand);
+		color: var(--brand-subtle);
 		text-transform: uppercase;
 		letter-spacing: 0.03em;
 	}
@@ -1165,7 +1165,7 @@
 		font-weight: 700;
 		text-transform: uppercase;
 		letter-spacing: 0.05em;
-		color: var(--brand);
+		color: var(--brand-subtle);
 		margin-bottom: 0.5rem;
 	}
 
@@ -1218,7 +1218,7 @@
 		font-weight: 700;
 		text-transform: uppercase;
 		letter-spacing: 0.05em;
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
 	.sidebar-list {
@@ -1306,7 +1306,7 @@
 	.press-release-card:hover {
 		transform: translateY(-2px);
 		box-shadow: 0 8px 20px -6px rgba(0, 0, 0, 0.12);
-		border-color: var(--brand);
+		border-color: var(--brand-subtle);
 		color: var(--text);
 	}
 
@@ -1349,12 +1349,12 @@
 		gap: 0.375rem;
 		font-size: 0.875rem;
 		font-weight: 600;
-		color: var(--brand);
+		color: var(--brand-subtle);
 		transition: color 0.2s ease;
 	}
 
 	.press-release-card:hover .read-link {
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
 	.link-icon {
@@ -1395,7 +1395,7 @@
 
 	.pagination-btn:hover:not(:disabled) {
 		background-color: var(--bg-subtle);
-		border-color: var(--brand);
+		border-color: var(--brand-subtle);
 	}
 
 	.pagination-btn:disabled {
@@ -1423,13 +1423,13 @@
 
 	.pagination-num:hover {
 		background-color: var(--bg-subtle);
-		border-color: var(--brand);
+		border-color: var(--brand-subtle);
 	}
 
 	.pagination-num.active {
-		background-color: var(--brand);
-		border-color: var(--brand);
-		color: var(--white);
+		background-color: var(--brand-subtle);
+		border-color: var(--brand-subtle);
+		color: var(--on-brand);
 	}
 
 	/* ── Press coverage section ──────────────────────────────────── */
@@ -1479,7 +1479,7 @@
 	}
 
 	.toggle-all-btn:hover {
-		border-color: var(--brand);
+		border-color: var(--brand-subtle);
 		color: var(--text);
 	}
 
@@ -1553,7 +1553,7 @@
 
 	.coverage-item:hover {
 		background-color: var(--bg-subtle);
-		border-left-color: var(--brand);
+		border-left-color: var(--brand-subtle);
 		color: var(--text);
 	}
 
@@ -1568,7 +1568,7 @@
 		font-weight: 700;
 		text-transform: uppercase;
 		letter-spacing: 0.04em;
-		color: var(--brand);
+		color: var(--brand-subtle);
 		background: color-mix(in srgb, var(--brand) 10%, transparent);
 		padding: 0.1rem 0.4rem;
 		border-radius: 0.25rem;
@@ -1615,7 +1615,7 @@
 		margin-top: 0;
 		margin-bottom: 1rem;
 		font-size: 1.3rem;
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
 	.about-card p {

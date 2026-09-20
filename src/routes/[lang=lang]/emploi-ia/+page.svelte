@@ -249,7 +249,7 @@
 
 <style>
 	article {
-		max-inline-size: 50rem;
+		max-inline-size: var(--width-content);
 		width: 100%;
 		margin-inline: auto;
 		margin-top: 2rem;
@@ -304,12 +304,12 @@
 	}
 
 	.stat-block:hover {
-		border-color: var(--brand);
+		border-color: var(--brand-subtle);
 		box-shadow: 0 2px 12px rgba(255, 148, 22, 0.12);
 	}
 
 	.stat-number {
-		font-size: clamp(2rem, 5vw, 3rem);
+		font-size: clamp(2rem, 5.5vw, 3rem);
 		font-weight: 800;
 		line-height: 1;
 		color: var(--brand-subtle);
@@ -355,7 +355,7 @@
 		gap: 0.15rem;
 		position: relative;
 		background: var(--brand);
-		color: var(--white);
+		color: var(--on-brand);
 		text-decoration: none;
 		padding: 1.1rem 3rem 1.1rem 1.5rem;
 		border-radius: var(--radius-md);
@@ -381,7 +381,8 @@
 
 	.primary-cta-sub {
 		font-size: 0.9rem;
-		color: rgba(255, 255, 255, 0.9);
+		/* Sur l'aplat orange, le texte reste foncé (le blanc n'y donne que 2,2:1). */
+		color: var(--on-brand-muted);
 		line-height: 1.3;
 	}
 
@@ -431,13 +432,13 @@
 	}
 
 	.article-card:hover {
-		border-color: var(--brand);
+		border-color: var(--brand-subtle);
 		box-shadow: 0 2px 12px rgba(255, 148, 22, 0.12);
 	}
 
 	/* ── Carte mise en avant : le bilan de la campagne ── */
 	.article-card-featured {
-		border-color: var(--brand);
+		border-color: var(--brand-subtle);
 		border-width: 2px;
 		background: var(--brand-light);
 		box-shadow: 0 2px 12px rgba(255, 148, 22, 0.14);
@@ -453,7 +454,7 @@
 		font-weight: 700;
 		text-transform: uppercase;
 		letter-spacing: 0.06em;
-		color: var(--white);
+		color: var(--on-brand);
 		background: var(--brand);
 		padding: 0.2rem 0.5rem;
 		border-radius: 4px;
@@ -482,7 +483,7 @@
 	}
 
 	.article-card:hover .article-card-link {
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
 	/* ── Bigger-problem section ── */
@@ -577,7 +578,7 @@
 	}
 
 	.press-item:hover {
-		border-color: var(--brand);
+		border-color: var(--brand-subtle);
 		box-shadow: 0 2px 8px rgba(255, 148, 22, 0.1);
 	}
 
@@ -620,7 +621,7 @@
 		position: relative;
 		padding: 1.25rem 1.4rem 1.1rem;
 		border-width: 2px;
-		border-color: var(--brand);
+		border-color: var(--brand-subtle);
 		background: rgba(255, 148, 22, 0.04);
 	}
 
@@ -629,7 +630,7 @@
 		top: -0.65rem;
 		left: 1rem;
 		background: var(--brand);
-		color: var(--white);
+		color: var(--on-brand);
 		font-size: 0.68rem;
 		font-weight: 700;
 		text-transform: uppercase;

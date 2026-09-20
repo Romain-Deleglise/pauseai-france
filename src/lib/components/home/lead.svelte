@@ -87,7 +87,7 @@
 <style>
 	.lead {
 		align-self: center;
-		max-width: 60rem;
+		max-width: var(--width-wide);
 		display: flex;
 		flex-direction: column;
 		align-items: center;

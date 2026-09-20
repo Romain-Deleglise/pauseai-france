@@ -116,7 +116,7 @@
 
 	.luma-details summary:hover,
 	.luma-details summary:focus-visible {
-		border-color: var(--brand);
+		border-color: var(--brand-subtle);
 		box-shadow: 0 2px 10px rgb(255 148 22 / 22%);
 	}
 

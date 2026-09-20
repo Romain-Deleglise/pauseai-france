@@ -277,7 +277,14 @@
 					</div>
 				</div>
 				<button
-					aria-label="Open mobile menu"
+					aria-label={open
+						? lang === 'en'
+							? 'Close menu'
+							: 'Fermer le menu'
+						: lang === 'en'
+							? 'Open menu'
+							: 'Ouvrir le menu'}
+					aria-expanded={open}
 					class="hamburger"
 					class:open
 					on:click={() => (open = !open)}
@@ -588,7 +595,7 @@
 	/* "Donner" — brand orange */
 	.btn-donate {
 		background: var(--brand);
-		color: white;
+		color: var(--on-brand);
 	}
 
 	.btn-donate:hover {
@@ -676,7 +683,7 @@
 
 	.sidebar-lang-toggle:hover {
 		background: rgba(255, 148, 22, 0.1);
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
 	:global([data-theme='dark']) .sidebar-lang-toggle {
@@ -686,7 +693,7 @@
 
 	:global([data-theme='dark']) .sidebar-lang-toggle:hover {
 		background: rgba(255, 148, 22, 0.15);
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
 	.sidebar-theme-toggle {
@@ -708,7 +715,7 @@
 
 	.sidebar-theme-toggle:hover {
 		background: rgba(255, 148, 22, 0.1);
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
 	:global([data-theme='dark']) .sidebar-theme-toggle {
@@ -718,16 +725,21 @@
 
 	:global([data-theme='dark']) .sidebar-theme-toggle:hover {
 		background: rgba(255, 148, 22, 0.15);
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
 	.hamburger {
 		display: flex;
 		align-items: center;
+		justify-content: center;
 		cursor: pointer;
 		background: none;
 		border: none;
+		/* Cible tactile de 44 px : le dessin ne fait que 24 px. */
+		inline-size: 44px;
+		block-size: 44px;
 		padding: 0;
+		margin-inline-end: -10px;
 	}
 
 	/* ─── Hamburger → croix (morph) ──────────────────────────── */
@@ -906,7 +918,7 @@
 	.sidebar-subsection a:hover,
 	.sidebar-subsection a.active {
 		background: rgba(255, 148, 22, 0.1);
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
 	.ext-icon {
@@ -927,7 +939,7 @@
 		text-decoration: none;
 		text-align: center;
 		background: var(--brand);
-		color: white;
+		color: var(--on-brand);
 		border-radius: var(--radius-btn);
 		padding: 0.8rem 1.5rem;
 		font-family: var(--font-heading);

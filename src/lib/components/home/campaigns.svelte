@@ -151,7 +151,7 @@
 	}
 
 	.card:hover {
-		border-color: var(--brand);
+		border-color: var(--brand-subtle);
 	}
 
 	.cover-link {
@@ -198,7 +198,7 @@
 	}
 
 	.pill-progress {
-		color: var(--brand);
+		color: var(--brand-subtle);
 		background-color: rgba(255, 148, 22, 0.12);
 	}
 
@@ -217,7 +217,7 @@
 
 	.title-link:hover,
 	.title-link:focus-visible {
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
 	.desc {
@@ -241,7 +241,7 @@
 		align-items: center;
 		gap: 0.45rem;
 		background: var(--brand);
-		color: var(--white);
+		color: var(--on-brand);
 		text-decoration: none;
 		font-weight: 700;
 		font-size: 0.9rem;

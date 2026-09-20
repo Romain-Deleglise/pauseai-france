@@ -133,7 +133,7 @@
 		inline-size: 3rem;
 		block-size: auto;
 		flex-shrink: 0;
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
 	/* Pastilles de villes */
@@ -157,7 +157,7 @@
 	}
 
 	.cities:hover .city-pill {
-		border-color: var(--brand);
+		border-color: var(--brand-subtle);
 	}
 
 	.city-pill.more {
@@ -185,7 +185,7 @@
 	}
 
 	.title :global(svg) {
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
 	.desc {
@@ -219,7 +219,7 @@
 	}
 
 	.next-text :global(svg) {
-		color: var(--brand);
+		color: var(--brand-subtle);
 		flex-shrink: 0;
 		transform: translateY(2px);
 	}
@@ -250,8 +250,8 @@
 
 	.btn.primary {
 		background: var(--brand);
-		color: var(--white);
-		border-color: var(--brand);
+		color: var(--on-brand);
+		border-color: var(--brand-subtle);
 	}
 
 	@media (min-width: 640px) {

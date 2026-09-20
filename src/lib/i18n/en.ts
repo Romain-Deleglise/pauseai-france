@@ -240,6 +240,7 @@ export default {
 		next_page: 'Next page'
 	},
 	posts: {
+		title: 'Articles',
 		meta_title: 'Articles - Pause AI'
 	},
 	campagnes: {

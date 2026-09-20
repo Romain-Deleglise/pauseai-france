@@ -487,7 +487,7 @@
 
 <style>
 	article {
-		max-inline-size: 62rem;
+		max-inline-size: var(--width-wide);
 		margin-inline: auto;
 		margin-top: 3rem;
 		padding: 0 2rem 4rem;
@@ -502,7 +502,7 @@
 		font-size: 1.2rem;
 		line-height: 1.7;
 		color: var(--text-muted);
-		max-width: 52rem;
+		max-width: var(--width-content);
 	}
 
 	/* ── Section header pattern ── */
@@ -524,7 +524,7 @@
 		line-height: 1.65;
 		color: var(--text-muted);
 		margin: 0 0 1.75rem;
-		max-width: 52rem;
+		max-width: var(--width-content);
 	}
 
 	h2 {
@@ -554,7 +554,7 @@
 		line-height: 1.65;
 		color: var(--text-muted);
 		margin: 0 0 1.75rem;
-		max-width: 48rem;
+		max-width: var(--width-text);
 	}
 
 	.cta-container {
@@ -595,8 +595,8 @@
 	.candidate-card:hover {
 		transform: translateY(-3px);
 		box-shadow: 0 8px 28px rgba(0, 0, 0, 0.1);
-		border-color: var(--brand);
-		border-left-color: var(--brand);
+		border-color: var(--brand-subtle);
+		border-left-color: var(--brand-subtle);
 	}
 
 	.card-top {
@@ -656,7 +656,7 @@
 
 	.commitment-badge {
 		background: color-mix(in srgb, var(--badge-hue) 16%, var(--bg-card));
-		color: color-mix(in srgb, var(--badge-hue) 60%, var(--text));
+		color: color-mix(in srgb, var(--badge-hue) 45%, var(--text));
 	}
 
 	.view-charter {
@@ -665,7 +665,7 @@
 		gap: 0.35rem;
 		font-size: 0.82rem;
 		font-weight: 600;
-		color: var(--brand);
+		color: var(--brand-subtle);
 		margin-top: auto;
 	}
 
@@ -700,7 +700,7 @@
 	.press-card:hover {
 		transform: translateX(3px);
 		box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-		border-color: var(--brand);
+		border-color: var(--brand-subtle);
 		color: var(--text);
 	}
 
@@ -716,7 +716,7 @@
 		font-weight: 700;
 		text-transform: uppercase;
 		letter-spacing: 0.05em;
-		color: var(--brand);
+		color: var(--brand-subtle);
 		white-space: nowrap;
 	}
 
@@ -741,7 +741,7 @@
 	}
 
 	.press-card:hover .press-link-icon {
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
 	/* ── Modal ── */
@@ -834,7 +834,7 @@
 		top: 1rem;
 		right: 1rem;
 		background: rgba(0, 0, 0, 0.5);
-		color: var(--white);
+		color: var(--on-dark);
 		border: none;
 		width: 2.5rem;
 		height: 2.5rem;
@@ -844,7 +844,7 @@
 
 	.close-button--top:hover {
 		background: rgba(0, 0, 0, 0.85);
-		color: var(--white);
+		color: var(--on-dark);
 	}
 
 	.charter-engagements {
@@ -884,7 +884,7 @@
 
 	.engagements-list li::before {
 		content: '✓';
-		color: var(--brand);
+		color: var(--brand-subtle);
 		font-weight: 700;
 		flex-shrink: 0;
 		margin-top: 0.05em;

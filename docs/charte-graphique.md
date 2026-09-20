@@ -8,20 +8,24 @@ jamais des valeurs en dur — c'est ce qui garantit le fonctionnement du mode so
 
 ### Marque
 
-| Token            | Clair     | Sombre    | Usage                                       |
-| ---------------- | --------- | --------- | ------------------------------------------- |
-| `--brand`        | `#ff9416` | identique | Orange Pause IA : boutons, soulignés, puces |
-| `--brand-light`  | `#fff5e8` | `#2a1f0a` | Fond orangé très clair                      |
-| `--brand-subtle` | `#c96900` | `#ffab40` | Orange foncé, lisible en texte et en lien   |
+| Token            | Clair     | Sombre    | Usage                                          |
+| ---------------- | --------- | --------- | ---------------------------------------------- |
+| `--brand`        | `#ff9416` | identique | Orange Pause IA : boutons, soulignés, puces    |
+| `--brand-light`  | `#fff5e8` | `#2a1f0a` | Fond orangé très clair                         |
+| `--brand-subtle` | `#9c4f00` | `#ffab40` | Orange foncé : le seul orange lisible en texte |
 
 > Le fond de page est `--bg-subtle` (crème `#fff5e8`) sur **toutes les pages sauf
 > l'accueil**, qui seule passe en blanc (`bgWhite` dans `src/routes/+layout.svelte`).
 > `--bg-card` est donc un blanc cassé _chaud_, et non un gris : un gris froid posé
 > sur ce crème se voit immédiatement.
 
-> `--brand` (#ff9416) n'a pas un contraste suffisant pour du texte sur fond blanc.
-> Pour un lien ou un chiffre, utiliser `--brand-subtle`. `--brand` reste réservé
-> aux aplats (boutons, filets, puces, bordures).
+> `--brand` (#ff9416) n'a **jamais** un contraste suffisant pour du texte : 2,2:1
+> sur le crème, en dessous même du seuil des grands caractères. Pour un lien, un
+> chiffre ou un sur-titre, c'est `--brand-subtle` (5,5:1). `--brand` reste réservé
+> aux aplats — boutons, filets, puces, bordures.
+
+> **Texte sur un aplat orange** : toujours `--on-brand` (7,9:1). Le blanc n'y
+> donne que 2,2:1.
 
 ### Neutres et surfaces
 
@@ -36,15 +40,21 @@ jamais des valeurs en dur — c'est ce qui garantit le fonctionnement du mode so
 | `--border`         | `#e5e7eb` | `#3e4048` | Bordures et filets                     |
 | `--bg-secondary`   | `#fdfaf6` | `#303030` | Fond de zone secondaire (onglets, RIB) |
 
-### Texte sur l'orange
+### Texte sur un fond qui ne change pas
 
-| Token              | Valeur    | Usage                                       |
-| ------------------ | --------- | ------------------------------------------- |
-| `--on-brand`       | `#1a1a1a` | Texte et pictos posés sur un fond `--brand` |
-| `--on-brand-muted` | `#3a2600` | Texte secondaire sur un fond `--brand`      |
+| Token              | Valeur    | Usage                                                            |
+| ------------------ | --------- | ---------------------------------------------------------------- |
+| `--on-brand`       | `#1a1a1a` | Texte et pictos posés sur un aplat `--brand`                     |
+| `--on-brand-muted` | `#3a2600` | Texte secondaire sur un aplat `--brand`                          |
+| `--on-dark`        | `#ffffff` | Texte sur un fond sombre fixe : photo, calque noir, orange foncé |
 
-Ces deux tokens ne changent pas en mode sombre : le fond, lui, reste orange.
-`--brand-rgb` (`255, 148, 22`) donne les composantes de l'orange pour les `rgba()`.
+Ces trois tokens ne changent pas d'un thème à l'autre, parce que le fond non plus.
+
+> **Piège** : `--white` et `--black` **s'inversent** en mode sombre (`--white`
+> devient `#262626`, `--black` `#f0f0f0`). Ce sont la surface claire et l'encre de
+> la page, pas des couleurs fixes. Sur une photo, un calque noir ou un aplat
+> orange, c'est `--on-dark` ou `--on-brand`.
+> `--brand-rgb` (`255, 148, 22`) donne les composantes de l'orange pour les `rgba()`.
 
 ### États
 
@@ -78,7 +88,8 @@ ailleurs dans l'interface.
 - `h3` : 500, `1.5rem`.
 - Titres de campagne : `clamp(2rem, 5.5vw, 3rem)` pour le h1, `clamp(1.4rem, 3vw, 1.75rem)` pour les h2.
 - Chapô : `clamp(1.05rem, 2vw, 1.25rem)`, couleur `--text-2`, largeur max `44rem`.
-- Les liens sont soulignés, en `--brand-subtle`, et passent à `--brand` au survol.
+- Les liens sont soulignés, en `--brand-subtle`. Au survol, ils s'assombrissent :
+  jamais `--brand`, qui n'est pas lisible en texte.
 - Typographie française appliquée automatiquement au Markdown
   (`src/lib/typographyPlugin.js`) : espace fine insécable avant `; ? ! %`,
   insécable avant `:`, guillemets `« »`.
@@ -95,8 +106,10 @@ ailleurs dans l'interface.
 - Ombres, par token : `--shadow-card` (très discrète, sur les encadrés),
   `--shadow-raised` (au survol d'une carte cliquable), `--shadow-brand`
   (bouton principal). Elles sont renforcées en mode sombre.
-- Largeurs : `--width-text` (44 rem), `--width-content` (54 rem),
-  `--width-wide` (66 rem).
+- Largeurs, par token : `--width-text` (44 rem, corps de texte),
+  `--width-content` (54 rem, pages éditoriales et campagnes),
+  `--width-wide` (62 rem, grilles et cartes). Aucune page ne définit sa propre
+  largeur : sept valeurs distinctes coexistaient, elles sont ramenées à ces trois.
 - Cibles tactiles : hauteur de bouton `48px` minimum.
 
 ## 4. Motifs récurrents

@@ -136,7 +136,7 @@
 
 	article {
 		grid-column: 2;
-		max-width: 50rem;
+		max-width: var(--width-content);
 		margin: 0 auto;
 	}
 

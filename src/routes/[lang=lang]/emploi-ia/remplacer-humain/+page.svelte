@@ -140,7 +140,7 @@
 
 <style>
 	article {
-		max-inline-size: 50rem;
+		max-inline-size: var(--width-content);
 		margin-inline: auto;
 		margin-top: 2rem;
 		padding: 0 1rem;
@@ -158,7 +158,7 @@
 	}
 
 	.breadcrumb a:hover {
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
 	.article-meta {
@@ -252,7 +252,7 @@
 	}
 
 	.next-article:hover {
-		border-color: var(--brand);
+		border-color: var(--brand-subtle);
 		box-shadow: 0 2px 12px rgba(255, 148, 22, 0.12);
 	}
 
@@ -292,6 +292,6 @@
 	}
 
 	.back-nav a:hover {
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 </style>

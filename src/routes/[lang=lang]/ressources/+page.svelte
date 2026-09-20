@@ -585,7 +585,7 @@
 										>
 											<div class="res-card-main">
 												<div class="res-card-header">
-													<h4 class="res-title">{localized(entry.title, lang)}</h4>
+													<h3 class="res-title">{localized(entry.title, lang)}</h3>
 													<MoveUpRight class="res-arrow" size={16} aria-hidden="true" />
 												</div>
 												<p class="res-desc">{localized(entry.description, lang)}</p>
@@ -636,7 +636,7 @@
 
 	.ressources-page {
 		min-width: 0; /* allow grid item to shrink */
-		max-inline-size: 52rem;
+		max-inline-size: var(--width-content);
 		padding: 0 0 4rem;
 		margin: 0 auto;
 	}
@@ -692,14 +692,14 @@
 	.toc-link.active {
 		background: rgba(255, 148, 22, 0.1);
 		color: var(--brand-subtle);
-		border-left-color: var(--brand);
+		border-left-color: var(--brand-subtle);
 		font-weight: 600;
 	}
 
 	:global([data-theme='dark']) .toc-link:hover,
 	:global([data-theme='dark']) .toc-link.active {
 		background: rgba(255, 148, 22, 0.12);
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
 	.toc-label {
@@ -723,7 +723,7 @@
 
 	.toc-link.active .toc-count {
 		background: var(--brand);
-		color: var(--white);
+		color: var(--on-brand);
 	}
 
 	:global([data-theme='dark']) .toc-count {
@@ -800,7 +800,7 @@
 
 	.search input:focus {
 		outline: none;
-		border-color: var(--brand);
+		border-color: var(--brand-subtle);
 		box-shadow: 0 0 0 3px rgba(255, 148, 22, 0.15);
 	}
 
@@ -860,14 +860,14 @@
 	}
 
 	.pill:hover {
-		border-color: var(--brand);
+		border-color: var(--brand-subtle);
 		color: var(--brand-subtle);
 	}
 
 	.pill.active {
 		background: var(--brand);
-		border-color: var(--brand);
-		color: var(--white);
+		border-color: var(--brand-subtle);
+		color: var(--on-brand);
 	}
 
 	.pill img {
@@ -876,7 +876,7 @@
 	}
 
 	:global([data-theme='dark']) .pill:hover {
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
 	.meta-row {
@@ -917,7 +917,7 @@
 	}
 
 	.reset-btn:hover {
-		border-color: var(--brand);
+		border-color: var(--brand-subtle);
 		color: var(--brand-subtle);
 	}
 
@@ -960,7 +960,7 @@
 
 	:global([data-theme='dark']) .section-icon {
 		background: rgba(255, 148, 22, 0.15);
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
 	.res-section-header h2 {
@@ -1030,7 +1030,7 @@
 	}
 
 	.res-card:hover {
-		border-color: var(--brand);
+		border-color: var(--brand-subtle);
 		transform: translateY(-1px);
 		box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
 	}
@@ -1066,7 +1066,7 @@
 	}
 
 	:global([data-theme='dark']) .res-title {
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
 	:global(.res-arrow) {
@@ -1079,7 +1079,7 @@
 	}
 
 	.res-card:hover :global(.res-arrow) {
-		color: var(--brand);
+		color: var(--brand-subtle);
 		transform: translate(2px, -2px);
 	}
 
@@ -1168,7 +1168,7 @@
 		padding: 0.6rem 1.15rem;
 		border-radius: var(--radius-sm);
 		background: var(--brand);
-		color: var(--white);
+		color: var(--on-brand);
 		text-decoration: none;
 		font-family: var(--font-heading);
 		font-weight: 700;

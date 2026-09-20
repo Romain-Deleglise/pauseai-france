@@ -194,7 +194,7 @@
 	<section class="impact-section">
 		<div class="impact-card">
 			<Megaphone size="1.6rem" />
-			<h3>{isEn ? 'Demonstrations & gatherings' : 'Manifestations & rassemblements'}</h3>
+			<h2>{isEn ? 'Demonstrations & gatherings' : 'Manifestations & rassemblements'}</h2>
 			<p>
 				{isEn
 					? 'Carry the message into the street, in several cities at once, to make the risks of AI visible.'
@@ -203,7 +203,7 @@
 		</div>
 		<div class="impact-card">
 			<Users size="1.6rem" />
-			<h3>{isEn ? 'Leafleting & outreach' : 'Tractage & sensibilisation'}</h3>
+			<h2>{isEn ? 'Leafleting & outreach' : 'Tractage & sensibilisation'}</h2>
 			<p>
 				{isEn
 					? 'Meet the public, hand out leaflets and start conversations to grow awareness on the ground.'
@@ -212,7 +212,7 @@
 		</div>
 		<div class="impact-card">
 			<Newspaper size="1.6rem" />
-			<h3>{isEn ? 'Press coverage' : 'Retombées presse'}</h3>
+			<h2>{isEn ? 'Press coverage' : 'Retombées presse'}</h2>
 			<p>
 				{#if isEn}
 					These actions draw local media and give the movement real visibility. <a
@@ -527,7 +527,7 @@
 
 <style>
 	article {
-		max-inline-size: 62rem;
+		max-inline-size: var(--width-wide);
 		margin-inline: auto;
 		margin-top: 3rem;
 		padding: 0 2rem;
@@ -544,7 +544,7 @@
 		font-size: 1.2rem;
 		color: var(--text-muted);
 		line-height: 1.65;
-		max-inline-size: 48rem;
+		max-inline-size: var(--width-text);
 	}
 
 	.hero-actions {
@@ -610,10 +610,10 @@
 	}
 
 	.stat-num {
-		font-size: clamp(2.4rem, 5vw, 3rem);
+		font-size: clamp(2rem, 5.5vw, 3rem);
 		font-weight: 800;
 		line-height: 1;
-		color: var(--brand);
+		color: var(--brand-subtle);
 		letter-spacing: -0.02em;
 	}
 
@@ -653,10 +653,10 @@
 	}
 
 	.impact-card :global(svg) {
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
-	.impact-card h3 {
+	.impact-card h2 {
 		margin: 0.6rem 0 0.4rem;
 		font-size: 1.1rem;
 	}
@@ -723,7 +723,7 @@
 	}
 
 	.section-title-row :global(.section-icon) {
-		color: var(--brand);
+		color: var(--brand-subtle);
 		flex-shrink: 0;
 	}
 
@@ -787,7 +787,7 @@
 	}
 
 	.event-body small :global(svg) {
-		color: var(--brand);
+		color: var(--brand-subtle);
 		flex-shrink: 0;
 	}
 
@@ -940,7 +940,7 @@
 	.tl-item:hover .tl-card {
 		transform: translateX(4px);
 		box-shadow: 0 6px 20px rgba(0, 0, 0, 0.09);
-		border-color: var(--brand);
+		border-color: var(--brand-subtle);
 	}
 
 	.tl-item:hover .tl-dot {
@@ -985,7 +985,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		color: var(--brand);
+		color: var(--brand-subtle);
 		opacity: 0.5;
 	}
 
@@ -1153,7 +1153,7 @@
 		border: none;
 		border-radius: 50%;
 		background: rgba(0, 0, 0, 0.45);
-		color: var(--white);
+		color: var(--on-dark);
 		cursor: pointer;
 		transition: background 0.15s;
 	}
@@ -1178,7 +1178,7 @@
 		padding: 0.08rem 0.5rem;
 		border-radius: var(--radius-pill);
 		background: rgba(0, 0, 0, 0.55);
-		color: var(--white);
+		color: var(--on-dark);
 		font-size: 0.72rem;
 		font-weight: 600;
 	}
@@ -1203,7 +1203,7 @@
 	}
 
 	.feature-thumb.active {
-		border-color: var(--brand);
+		border-color: var(--brand-subtle);
 	}
 
 	.feature-thumb img {
@@ -1274,7 +1274,7 @@
 
 	.cta-card.create {
 		background: var(--brand);
-		color: var(--white);
+		color: var(--on-brand);
 	}
 
 	.cta-icon {
@@ -1285,12 +1285,12 @@
 		block-size: 3.2rem;
 		border-radius: 50%;
 		background: color-mix(in srgb, var(--brand) 18%, transparent);
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
 	.cta-card.create .cta-icon {
 		background: rgba(255, 255, 255, 0.22);
-		color: var(--white);
+		color: var(--on-dark);
 	}
 
 	.cta-card h2 {
@@ -1328,7 +1328,7 @@
 	}
 
 	.map-title-row :global(.map-pin-icon) {
-		color: var(--brand);
+		color: var(--brand-subtle);
 		flex-shrink: 0;
 	}
 
@@ -1342,7 +1342,7 @@
 
 	.map-stat {
 		font-weight: 600;
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
 	.map-stat.forming {

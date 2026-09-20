@@ -21,7 +21,10 @@
 	button,
 	a {
 		background-color: var(--btn-bg);
-		color: var(--text) !important;
+		/* Le fond est orange dans les deux thèmes : le texte doit rester foncé,
+		   sinon il tombe à 1,9:1 en mode sombre. La variante claire (.alt)
+		   reprend la couleur de texte de la page, plus bas. */
+		color: var(--on-brand) !important;
 		border: none;
 		border-radius: var(--radius-btn);
 		padding: 0.5rem 1rem;
@@ -47,6 +50,8 @@
 	button.alt,
 	a.alt {
 		background-color: var(--btn-alt-bg);
+		/* Fond clair en mode clair, sombre en mode sombre : le texte suit. */
+		color: var(--text) !important;
 		box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 	}
 

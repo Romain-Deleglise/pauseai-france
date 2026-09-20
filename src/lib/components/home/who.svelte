@@ -11,6 +11,8 @@
 
 	export let teamMembers: TeamMember[] = []
 	export let lang: Lang = 'fr'
+	/** h1 sur la page « Qui sommes-nous », h2 quand la section est sur l'accueil. */
+	export let as: 'h1' | 'h2' = 'h2'
 	$: prefix = lang === 'en' ? '/en' : '/fr'
 
 	const label_id = 'who-title'
@@ -260,7 +262,7 @@
 </script>
 
 <section aria-labelledby={label_id}>
-	<UnderlinedTitle id={label_id}
+	<UnderlinedTitle {as} id={label_id}
 		>{lang === 'en' ? 'Who are we?' : 'Qui sommes-nous ?'}</UnderlinedTitle
 	>
 

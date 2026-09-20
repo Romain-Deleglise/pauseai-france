@@ -225,7 +225,7 @@
 
 <style>
 	article {
-		max-inline-size: 60rem;
+		max-inline-size: var(--width-wide);
 		margin-inline: auto;
 		margin-top: 3rem;
 		padding: 0 2rem;
@@ -309,7 +309,7 @@
 	.see-results {
 		font-size: 0.9rem;
 		font-weight: 600;
-		color: var(--brand);
+		color: var(--brand-subtle);
 		margin-top: auto;
 	}
 
@@ -452,7 +452,7 @@
 		flex-shrink: 0;
 		font-size: 0.75rem;
 		font-weight: 700;
-		color: var(--brand);
+		color: var(--brand-subtle);
 		background: color-mix(in srgb, var(--brand) 10%, var(--bg));
 		padding: 0.1rem 0.45rem;
 		border-radius: var(--radius-pill);
@@ -475,7 +475,7 @@
 		font-weight: 600;
 		text-decoration: none;
 		background: color-mix(in srgb, var(--brand) 12%, var(--bg));
-		color: var(--brand);
+		color: var(--brand-subtle);
 		border: 1.5px solid color-mix(in srgb, var(--brand) 35%, transparent);
 		transition:
 			background 0.15s,

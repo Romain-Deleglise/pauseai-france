@@ -68,7 +68,9 @@
 	{@html organisationJsonLd}
 </svelte:head>
 
-<h2 style="width: 0; height: 0; margin: 0; padding: 0; visibility: hidden;">(Top)</h2>
+<!-- Ancre de retour en haut de page. C'était un <h2> masqué : il s'insérait
+     avant le <h1> de chaque page et cassait la hiérarchie des titres. -->
+<span id="top" style="position: absolute; width: 0; height: 0; overflow: hidden;"></span>
 
 <div class="layout" class:bgWhite>
 	<Header {lang} />
@@ -111,7 +113,7 @@
 
 	/* .wrapper {
 		color: var(--t-text);
-		max-width: 50rem;
+		max-width: var(--width-content);
 		margin: auto;
 	} */
 	.layout {

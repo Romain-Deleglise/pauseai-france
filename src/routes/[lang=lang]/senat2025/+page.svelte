@@ -559,7 +559,7 @@
 			rgba(0, 0, 0, 0.55) 60%,
 			rgba(0, 0, 0, 0.75) 100%
 		);
-		color: var(--white);
+		color: var(--on-dark);
 	}
 	.hero-text h1 {
 		margin: 0 0 0.25rem 0;
@@ -705,6 +705,13 @@
 		font-size: 1rem;
 	}
 
+	/* Cases à cocher : cible d'au moins 24 px, doigt compris. */
+	input[type='checkbox'] {
+		inline-size: 1.5rem;
+		block-size: 1.5rem;
+		accent-color: var(--brand);
+	}
+
 	fieldset.choices {
 		border: 1px solid var(--border);
 		border-radius: var(--radius-sm);
@@ -739,7 +746,7 @@
 		align-items: center;
 		justify-content: center;
 		background: var(--brand);
-		color: var(--black);
+		color: var(--on-brand);
 		border: 0;
 		padding: 0.7rem 1.1rem;
 		border-radius: var(--radius-sm);

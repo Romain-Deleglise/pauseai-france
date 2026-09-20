@@ -414,7 +414,7 @@
 
 	input:focus {
 		outline: none;
-		border-color: var(--brand);
+		border-color: var(--brand-subtle);
 		box-shadow: 0 0 0 3px rgba(255, 148, 23, 0.12);
 	}
 
@@ -474,7 +474,7 @@
 		border-radius: var(--radius-pill);
 		border: 2px solid var(--brand);
 		background: transparent;
-		color: var(--brand);
+		color: var(--brand-subtle);
 		font-weight: 600;
 		font-size: 0.95rem;
 		cursor: pointer;
@@ -486,7 +486,7 @@
 	.preset-btn:hover,
 	.preset-btn.selected {
 		background: var(--brand);
-		color: var(--white);
+		color: var(--on-brand);
 	}
 
 	/* Field hint */
@@ -525,7 +525,7 @@
 		width: 100%;
 		padding: 0.85rem;
 		background: var(--brand);
-		color: var(--white);
+		color: var(--on-brand);
 		border: none;
 		border-radius: var(--radius-sm);
 		font-size: 1.05rem;
@@ -641,14 +641,14 @@
 
 	.copy-inline:hover {
 		background: var(--brand-light);
-		border-color: var(--brand);
+		border-color: var(--brand-subtle);
 	}
 
 	.done-btn {
 		width: 100%;
 		padding: 0.85rem;
 		background: var(--brand);
-		color: var(--white);
+		color: var(--on-brand);
 		border: none;
 		border-radius: var(--radius-sm);
 		font-size: 1.05rem;

@@ -57,11 +57,11 @@
 	}
 
 	.article-link:hover article {
-		border-color: var(--brand);
+		border-color: var(--brand-subtle);
 	}
 
 	.article-link:hover .read-more {
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
 	article {
@@ -114,7 +114,7 @@
 
 	.category {
 		font-size: 0.75rem;
-		color: var(--brand);
+		color: var(--brand-subtle);
 		font-weight: 600;
 		text-transform: uppercase;
 		letter-spacing: 0.5px;

@@ -163,7 +163,7 @@
 
 <style>
 	article {
-		max-inline-size: 50rem;
+		max-inline-size: var(--width-content);
 		margin-inline: auto;
 		margin-top: 2rem;
 		padding: 0 1rem;
@@ -181,7 +181,7 @@
 	}
 
 	.breadcrumb a:hover {
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
 	.article-meta {
@@ -254,7 +254,7 @@
 	.cta-btn {
 		display: inline-block;
 		background: var(--brand);
-		color: var(--white);
+		color: var(--on-brand);
 		text-decoration: none;
 		padding: 0.75rem 1.5rem;
 		border-radius: var(--radius-sm);
@@ -264,7 +264,7 @@
 
 	.cta-btn:hover {
 		background: var(--btn-hover-bg);
-		color: var(--white);
+		color: var(--on-brand);
 	}
 
 	.article-nav {
@@ -287,7 +287,7 @@
 	}
 
 	.article-nav a:hover {
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
 	.nav-back {

@@ -99,8 +99,8 @@
 
 	button.active {
 		background: var(--brand);
-		border-color: var(--brand);
-		color: var(--white);
+		border-color: var(--brand-subtle);
+		color: var(--on-brand);
 		box-shadow: var(--shadow-brand);
 	}
 
