@@ -57,7 +57,7 @@
 	}
 
 	.article-link:hover article {
-		border-color: var(--brand-subtle);
+		border-color: var(--brand);
 	}
 
 	.article-link:hover .read-more {

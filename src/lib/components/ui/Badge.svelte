@@ -46,7 +46,7 @@
 	.outline {
 		background: transparent;
 		color: var(--brand-subtle);
-		border-color: var(--brand-subtle);
+		border-color: var(--brand);
 	}
 
 	.success {

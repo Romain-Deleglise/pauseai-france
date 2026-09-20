@@ -414,7 +414,7 @@
 
 	input:focus {
 		outline: none;
-		border-color: var(--brand-subtle);
+		border-color: var(--brand);
 		box-shadow: 0 0 0 3px rgba(255, 148, 23, 0.12);
 	}
 
@@ -641,7 +641,7 @@
 
 	.copy-inline:hover {
 		background: var(--brand-light);
-		border-color: var(--brand-subtle);
+		border-color: var(--brand);
 	}
 
 	.done-btn {

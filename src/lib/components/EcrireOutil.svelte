@@ -1754,7 +1754,7 @@
 
 	.user-input:focus {
 		outline: none;
-		border-color: var(--brand-subtle);
+		border-color: var(--brand);
 	}
 
 	.user-input.input-error {
@@ -1782,7 +1782,7 @@
 
 	.cp-input:focus {
 		outline: none;
-		border-color: var(--brand-subtle);
+		border-color: var(--brand);
 	}
 
 	/* Sur mobile, les 200px minimum du champ code postal le faisaient occuper
@@ -1899,13 +1899,13 @@
 	.elu-card.done {
 		opacity: 0.7;
 		background: var(--brand-light);
-		border-color: var(--brand-subtle);
+		border-color: var(--brand);
 	}
 
 	/* Député prioritaire (circonscription confirmée via l'adresse) */
 	.elu-card.priority {
 		border-width: 2px;
-		border-color: var(--brand-subtle);
+		border-color: var(--brand);
 		background: var(--brand-light);
 	}
 
@@ -2063,7 +2063,7 @@
 	}
 
 	.find-btn:hover {
-		border-color: var(--brand-subtle);
+		border-color: var(--brand);
 	}
 
 	/* Retour */
@@ -2182,7 +2182,7 @@
 	}
 
 	.chip.active {
-		border-color: var(--brand-subtle);
+		border-color: var(--brand);
 		background: var(--brand);
 		color: var(--on-brand);
 	}
@@ -2225,7 +2225,7 @@
 
 	.perso-input:focus {
 		outline: none;
-		border-color: var(--brand-subtle);
+		border-color: var(--brand);
 	}
 
 	/* Incitation douce (non bloquante) quand la phrase perso est vide */
@@ -2268,7 +2268,7 @@
 	}
 
 	.shuffle-btn:hover {
-		border-color: var(--brand-subtle);
+		border-color: var(--brand);
 		background: var(--brand-light);
 	}
 
@@ -2342,7 +2342,7 @@
 	}
 
 	.webmail-btn:hover {
-		border-color: var(--brand-subtle);
+		border-color: var(--brand);
 	}
 
 	.webmail-note {
@@ -2407,7 +2407,7 @@
 
 	.newsletter-input:focus {
 		outline: none;
-		border-color: var(--brand-subtle);
+		border-color: var(--brand);
 	}
 
 	.newsletter-error {

@@ -7,7 +7,7 @@
 	--brand: #ff9416;
 	--brand-rgb: 255, 148, 22; /* composantes de --brand, pour les rgba() */
 	--brand-light: #fff5e8;
-	--brand-subtle: #9c4f00; /* orange foncé : le seul orange lisible en texte
+	--brand-subtle: #a85400; /* orange foncé : le seul orange lisible en texte
 	                            (4,9:1 sur le crème, 5,3:1 sur blanc) */
 	--brand-deep: #ff6b35; /* fin de dégradé sur les encadrés d'appel */
 	--brand-soft: #ffb347; /* début de dégradé clair (bandeaux) */

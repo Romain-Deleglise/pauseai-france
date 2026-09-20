@@ -440,12 +440,12 @@
 	}
 
 	.resource-card:hover {
-		border-color: var(--brand-subtle);
+		border-color: var(--brand);
 		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 	}
 
 	.resource-card.highlight {
-		border-color: var(--brand-subtle);
+		border-color: var(--brand);
 		background: var(--bg-subtle);
 	}
 
@@ -480,7 +480,7 @@
 	}
 
 	.card-button.primary {
-		background-color: var(--brand-subtle);
+		background-color: var(--brand);
 		color: var(--on-brand);
 	}
 
@@ -495,7 +495,7 @@
 	}
 
 	.card-button.secondary:hover {
-		background-color: var(--brand-subtle);
+		background-color: var(--brand);
 		color: var(--on-brand);
 	}
 
@@ -637,7 +637,7 @@
 
 	.conclusion-cta {
 		display: inline-block;
-		background-color: var(--brand-subtle);
+		background-color: var(--brand);
 		color: var(--on-brand);
 		padding: 1rem 2rem;
 		border-radius: var(--radius-sm);

@@ -293,7 +293,7 @@
 	}
 
 	.engagement-card:hover {
-		border-color: var(--brand-subtle);
+		border-color: var(--brand);
 		transform: translateY(-2px);
 	}
 

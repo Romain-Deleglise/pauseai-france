@@ -151,7 +151,7 @@
 	}
 
 	.card:hover {
-		border-color: var(--brand-subtle);
+		border-color: var(--brand);
 	}
 
 	.cover-link {

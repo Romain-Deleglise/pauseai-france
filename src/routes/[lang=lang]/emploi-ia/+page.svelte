@@ -304,7 +304,7 @@
 	}
 
 	.stat-block:hover {
-		border-color: var(--brand-subtle);
+		border-color: var(--brand);
 		box-shadow: 0 2px 12px rgba(255, 148, 22, 0.12);
 	}
 
@@ -368,7 +368,7 @@
 	}
 
 	.primary-cta:hover {
-		background: var(--brand-subtle);
+		background: var(--brand);
 		transform: translateY(-1px);
 		box-shadow: 0 4px 18px rgba(255, 148, 22, 0.35);
 	}
@@ -432,13 +432,13 @@
 	}
 
 	.article-card:hover {
-		border-color: var(--brand-subtle);
+		border-color: var(--brand);
 		box-shadow: 0 2px 12px rgba(255, 148, 22, 0.12);
 	}
 
 	/* ── Carte mise en avant : le bilan de la campagne ── */
 	.article-card-featured {
-		border-color: var(--brand-subtle);
+		border-color: var(--brand);
 		border-width: 2px;
 		background: var(--brand-light);
 		box-shadow: 0 2px 12px rgba(255, 148, 22, 0.14);
@@ -578,7 +578,7 @@
 	}
 
 	.press-item:hover {
-		border-color: var(--brand-subtle);
+		border-color: var(--brand);
 		box-shadow: 0 2px 8px rgba(255, 148, 22, 0.1);
 	}
 
@@ -621,7 +621,7 @@
 		position: relative;
 		padding: 1.25rem 1.4rem 1.1rem;
 		border-width: 2px;
-		border-color: var(--brand-subtle);
+		border-color: var(--brand);
 		background: rgba(255, 148, 22, 0.04);
 	}
 

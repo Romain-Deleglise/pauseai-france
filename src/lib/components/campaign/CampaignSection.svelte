@@ -62,7 +62,7 @@
 
 	.accent {
 		background: var(--bg-subtle);
-		border-color: var(--brand-subtle);
+		border-color: var(--brand);
 	}
 
 	@media (max-width: 600px) {

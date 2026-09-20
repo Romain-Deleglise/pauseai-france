@@ -429,7 +429,7 @@
 	}
 
 	.donation-card:hover {
-		border-color: var(--brand-subtle);
+		border-color: var(--brand);
 		transform: translateY(-2px);
 	}
 
@@ -553,7 +553,7 @@
 
 	.amount-input:focus {
 		outline: none;
-		border-color: var(--brand-subtle);
+		border-color: var(--brand);
 		box-shadow: 0 0 0 3px rgba(255, 147, 23, 0.1);
 	}
 

@@ -954,8 +954,8 @@
 	}
 
 	.progress-step.active .step-number {
-		background-color: var(--brand-subtle);
-		border-color: var(--brand-subtle);
+		background-color: var(--brand);
+		border-color: var(--brand);
 		color: var(--on-brand);
 	}
 
@@ -1013,7 +1013,7 @@
 	select:focus,
 	textarea:focus {
 		outline: none;
-		border-color: var(--brand-subtle);
+		border-color: var(--brand);
 		box-shadow: 0 0 0 3px rgba(255, 148, 22, 0.1);
 	}
 

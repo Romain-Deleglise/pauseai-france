@@ -1018,7 +1018,7 @@
 	}
 
 	.dept-input-wrapper:focus-within {
-		border-color: var(--brand-subtle);
+		border-color: var(--brand);
 		box-shadow: 0 0 0 3px rgba(var(--brand-rgb), 0.1);
 	}
 
@@ -1306,7 +1306,7 @@
 	.press-release-card:hover {
 		transform: translateY(-2px);
 		box-shadow: 0 8px 20px -6px rgba(0, 0, 0, 0.12);
-		border-color: var(--brand-subtle);
+		border-color: var(--brand);
 		color: var(--text);
 	}
 
@@ -1395,7 +1395,7 @@
 
 	.pagination-btn:hover:not(:disabled) {
 		background-color: var(--bg-subtle);
-		border-color: var(--brand-subtle);
+		border-color: var(--brand);
 	}
 
 	.pagination-btn:disabled {
@@ -1423,12 +1423,12 @@
 
 	.pagination-num:hover {
 		background-color: var(--bg-subtle);
-		border-color: var(--brand-subtle);
+		border-color: var(--brand);
 	}
 
 	.pagination-num.active {
-		background-color: var(--brand-subtle);
-		border-color: var(--brand-subtle);
+		background-color: var(--brand);
+		border-color: var(--brand);
 		color: var(--on-brand);
 	}
 
@@ -1479,7 +1479,7 @@
 	}
 
 	.toggle-all-btn:hover {
-		border-color: var(--brand-subtle);
+		border-color: var(--brand);
 		color: var(--text);
 	}
 

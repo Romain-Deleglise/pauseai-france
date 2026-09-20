@@ -940,7 +940,7 @@
 	.tl-item:hover .tl-card {
 		transform: translateX(4px);
 		box-shadow: 0 6px 20px rgba(0, 0, 0, 0.09);
-		border-color: var(--brand-subtle);
+		border-color: var(--brand);
 	}
 
 	.tl-item:hover .tl-dot {
@@ -1203,7 +1203,7 @@
 	}
 
 	.feature-thumb.active {
-		border-color: var(--brand-subtle);
+		border-color: var(--brand);
 	}
 
 	.feature-thumb img {

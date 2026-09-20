@@ -90,7 +90,7 @@
 	}
 
 	.card-link:hover .card {
-		border-color: var(--brand-subtle);
+		border-color: var(--brand);
 	}
 
 	.card-image {

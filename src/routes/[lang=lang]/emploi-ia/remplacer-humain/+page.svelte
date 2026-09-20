@@ -252,7 +252,7 @@
 	}
 
 	.next-article:hover {
-		border-color: var(--brand-subtle);
+		border-color: var(--brand);
 		box-shadow: 0 2px 12px rgba(255, 148, 22, 0.12);
 	}
 

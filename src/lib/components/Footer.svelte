@@ -149,10 +149,10 @@
 
 <style>
 	footer {
-		/* Aplat orange foncé, identique dans les deux thèmes : le texte y est
-		   donc blanc fixe (5,9:1), pas la couleur d'encre de la page. */
-		background-color: var(--brand-subtle);
-		color: var(--on-dark);
+		/* Aplat orange de marque, identique dans les deux thèmes : le texte y
+		   est donc foncé et fixe (7,9:1), pas la couleur d'encre de la page. */
+		background-color: var(--brand);
+		color: var(--on-brand);
 		display: flex;
 		flex-direction: column;
 		gap: 2rem;
@@ -292,6 +292,12 @@
 
 	.newsletter-message.error {
 		color: var(--error);
+	}
+
+	/* En mode sombre, app.css repasse le pied de page sur le fond de la page :
+	   le texte reprend alors l'encre courante, pas l'encre « sur orange ». */
+	:global([data-theme='dark']) footer {
+		color: var(--text);
 	}
 	@media (min-width: 480px) {
 		.footer-links {

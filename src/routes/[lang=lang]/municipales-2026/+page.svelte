@@ -595,7 +595,7 @@
 	.candidate-card:hover {
 		transform: translateY(-3px);
 		box-shadow: 0 8px 28px rgba(0, 0, 0, 0.1);
-		border-color: var(--brand-subtle);
+		border-color: var(--brand);
 		border-left-color: var(--brand-subtle);
 	}
 
@@ -700,7 +700,7 @@
 	.press-card:hover {
 		transform: translateX(3px);
 		box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-		border-color: var(--brand-subtle);
+		border-color: var(--brand);
 		color: var(--text);
 	}
 

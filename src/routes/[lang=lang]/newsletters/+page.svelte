@@ -422,7 +422,7 @@
 
 	.rss-link:hover {
 		color: var(--brand-subtle);
-		border-color: var(--brand-subtle);
+		border-color: var(--brand);
 		background: var(--brand-light);
 	}
 
@@ -474,7 +474,7 @@
 
 	.subscribe-form input[type='email']:focus {
 		outline: none;
-		border-color: var(--brand-subtle);
+		border-color: var(--brand);
 	}
 
 	.subscribe-form input[type='email']:disabled {
@@ -549,7 +549,7 @@
 	}
 
 	.search-input-wrapper:focus-within {
-		border-color: var(--brand-subtle);
+		border-color: var(--brand);
 		box-shadow: 0 0 0 3px rgba(255, 148, 22, 0.1);
 	}
 
@@ -791,12 +791,12 @@
 
 	.pagination-btn:hover:not(:disabled):not(.active) {
 		background-color: var(--bg-subtle);
-		border-color: var(--brand-subtle);
+		border-color: var(--brand);
 	}
 
 	.pagination-btn.active {
-		background-color: var(--brand-subtle);
-		border-color: var(--brand-subtle);
+		background-color: var(--brand);
+		border-color: var(--brand);
 		color: var(--on-brand);
 	}
 

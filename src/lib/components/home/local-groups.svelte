@@ -157,7 +157,7 @@
 	}
 
 	.cities:hover .city-pill {
-		border-color: var(--brand-subtle);
+		border-color: var(--brand);
 	}
 
 	.city-pill.more {
@@ -251,7 +251,7 @@
 	.btn.primary {
 		background: var(--brand);
 		color: var(--on-brand);
-		border-color: var(--brand-subtle);
+		border-color: var(--brand);
 	}
 
 	@media (min-width: 640px) {

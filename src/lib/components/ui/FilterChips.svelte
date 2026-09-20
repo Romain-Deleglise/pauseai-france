@@ -58,13 +58,13 @@
 	}
 
 	.chip:hover {
-		border-color: var(--brand-subtle);
+		border-color: var(--brand);
 		color: var(--text);
 	}
 
 	.chip.active {
 		background: var(--brand);
-		border-color: var(--brand-subtle);
+		border-color: var(--brand);
 		color: var(--on-brand);
 	}
 

@@ -12,7 +12,7 @@ jamais des valeurs en dur — c'est ce qui garantit le fonctionnement du mode so
 | ---------------- | --------- | --------- | ---------------------------------------------- |
 | `--brand`        | `#ff9416` | identique | Orange Pause IA : boutons, soulignés, puces    |
 | `--brand-light`  | `#fff5e8` | `#2a1f0a` | Fond orangé très clair                         |
-| `--brand-subtle` | `#9c4f00` | `#ffab40` | Orange foncé : le seul orange lisible en texte |
+| `--brand-subtle` | `#a85400` | `#ffab40` | Orange foncé : le seul orange lisible en texte |
 
 > Le fond de page est `--bg-subtle` (crème `#fff5e8`) sur **toutes les pages sauf
 > l'accueil**, qui seule passe en blanc (`bgWhite` dans `src/routes/+layout.svelte`).
@@ -21,11 +21,15 @@ jamais des valeurs en dur — c'est ce qui garantit le fonctionnement du mode so
 
 > `--brand` (#ff9416) n'a **jamais** un contraste suffisant pour du texte : 2,2:1
 > sur le crème, en dessous même du seuil des grands caractères. Pour un lien, un
-> chiffre ou un sur-titre, c'est `--brand-subtle` (5,5:1). `--brand` reste réservé
+> chiffre ou un sur-titre, c'est `--brand-subtle` (4,9:1). `--brand` reste réservé
 > aux aplats — boutons, filets, puces, bordures.
 
 > **Texte sur un aplat orange** : toujours `--on-brand` (7,9:1). Le blanc n'y
 > donne que 2,2:1.
+
+> `--brand-subtle` est une couleur de **texte**, pas une surface. En aplat elle
+> vire au brun et jure avec le reste : un fond, une bordure ou un état actif
+> prennent `--brand`, et un survol `--btn-hover-bg` / `--btn-active-bg`.
 
 ### Neutres et surfaces
 

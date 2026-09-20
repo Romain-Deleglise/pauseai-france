@@ -305,7 +305,7 @@
 
 	.nav-link:hover {
 		background: var(--bg);
-		border-color: var(--brand-subtle);
+		border-color: var(--brand);
 		box-shadow: var(--shadow-card);
 	}
 

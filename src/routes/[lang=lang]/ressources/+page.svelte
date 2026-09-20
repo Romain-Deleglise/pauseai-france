@@ -800,7 +800,7 @@
 
 	.search input:focus {
 		outline: none;
-		border-color: var(--brand-subtle);
+		border-color: var(--brand);
 		box-shadow: 0 0 0 3px rgba(255, 148, 22, 0.15);
 	}
 
@@ -860,13 +860,13 @@
 	}
 
 	.pill:hover {
-		border-color: var(--brand-subtle);
+		border-color: var(--brand);
 		color: var(--brand-subtle);
 	}
 
 	.pill.active {
 		background: var(--brand);
-		border-color: var(--brand-subtle);
+		border-color: var(--brand);
 		color: var(--on-brand);
 	}
 
@@ -917,7 +917,7 @@
 	}
 
 	.reset-btn:hover {
-		border-color: var(--brand-subtle);
+		border-color: var(--brand);
 		color: var(--brand-subtle);
 	}
 
@@ -1030,7 +1030,7 @@
 	}
 
 	.res-card:hover {
-		border-color: var(--brand-subtle);
+		border-color: var(--brand);
 		transform: translateY(-1px);
 		box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
 	}

@@ -119,7 +119,7 @@
 	}
 
 	.return-link a:hover {
-		background-color: var(--brand-subtle);
+		background-color: var(--brand);
 		color: var(--on-brand);
 	}
 </style>
