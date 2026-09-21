@@ -1105,7 +1105,7 @@
 			],
 			"groupe": "NI",
 			"id": "PA642734",
-			"nom": "Eric Gerard",
+			"nom": "Eric Gérard",
 			"nomCirco": "Eure-et-Loir (3e circonscription)",
 			"photo": "https://www.assemblee-nationale.fr/dyn/static/tribun/17/photos/carre/642734.jpg",
 			"role": "depute"
@@ -4478,7 +4478,7 @@
 				"source",
 				"pattern"
 			],
-			"groupe": "SOC",
+			"groupe": "NI",
 			"id": "PA793624",
 			"nom": "Philippe Brun",
 			"nomCirco": "Eure (4e circonscription)",
@@ -11707,7 +11707,7 @@
 					"source",
 					"pattern"
 				],
-				"groupe": "SOC",
+				"groupe": "NI",
 				"id": "PA793624",
 				"nom": "Philippe Brun",
 				"nomCirco": "Eure (4e circonscription)",
@@ -11782,7 +11782,7 @@
 				],
 				"groupe": "NI",
 				"id": "PA642734",
-				"nom": "Eric Gerard",
+				"nom": "Eric Gérard",
 				"nomCirco": "Eure-et-Loir (3e circonscription)",
 				"photo": "https://www.assemblee-nationale.fr/dyn/static/tribun/17/photos/carre/642734.jpg",
 				"role": "depute"
@@ -20913,7 +20913,7 @@
 			}
 		]
 	},
-	"generatedAt": "2026-09-14",
+	"generatedAt": "2026-09-21",
 	"senateurs": [
 		{
 			"civ": "M",
