@@ -11,3 +11,9 @@ src/lib/components/widget-consent/loadTwitter.js
 pnpm-lock.yaml
 package-lock.json
 yarn.lock
+
+# Données générées (script generate-elus, mises à jour automatiques amont) :
+# les reformater crée un conflit à chaque mise à jour.
+src/lib/data/elus.json
+src/lib/data/commune-circo.json
+src/lib/data/code-postal-circo.json
