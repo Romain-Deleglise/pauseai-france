@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { SubscribeResponse } from '$lib/types'
 	import type { Lang } from '$lib/i18n'
 
 	export let lang: Lang = 'fr'
@@ -27,7 +28,7 @@
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ email, subscribeNewsletter: true, source: 'homepage-cta' })
 			})
-			const result = await res.json()
+			const result = (await res.json()) as SubscribeResponse
 			if (res.ok) {
 				message =
 					lang === 'en'
@@ -131,7 +132,7 @@
 		flex: 1;
 		padding: 0.65rem 1rem;
 		border: 1.5px solid color-mix(in srgb, var(--brand) 40%, transparent);
-		border-radius: 0.5rem;
+		border-radius: var(--radius-sm);
 		font-family: var(--font-body);
 		font-size: 1rem;
 		background: var(--bg);
@@ -153,9 +154,9 @@
 	button[type='submit'] {
 		padding: 0.65rem 1.5rem;
 		background: var(--brand);
-		color: white;
+		color: var(--on-brand);
 		border: none;
-		border-radius: 0.5rem;
+		border-radius: var(--radius-sm);
 		font-family: var(--font-heading);
 		font-weight: 700;
 		font-size: 1rem;
@@ -179,7 +180,7 @@
 	}
 
 	.feedback.error {
-		color: color-mix(in srgb, red 70%, var(--text));
+		color: var(--error);
 	}
 
 	@media (min-width: 640px) {

@@ -99,9 +99,7 @@
 			})
 		}
 
-		const existing = document.querySelector(
-			`script[src="${SCRIPT_SRC}"]`
-		) as HTMLScriptElement | null
+		const existing = document.querySelector(`script[src="${SCRIPT_SRC}"]`)
 		if (existing) {
 			if ((window as Window & { Activoice?: unknown }).Activoice) {
 				initEmbed()
@@ -251,7 +249,7 @@
 
 <style>
 	article {
-		max-inline-size: 50rem;
+		max-inline-size: var(--width-content);
 		width: 100%;
 		margin-inline: auto;
 		margin-top: 2rem;
@@ -267,7 +265,7 @@
 	.survey-block {
 		margin-top: 2.5rem;
 		padding-top: 1.75rem;
-		border-top: 1px solid var(--border, #e5e7eb);
+		border-top: 1px solid var(--border);
 		scroll-margin-top: 5.5rem;
 	}
 
@@ -281,9 +279,9 @@
 		font-size: 1.2rem;
 		font-weight: 500;
 		line-height: 1.5;
-		color: var(--brand-subtle, #c96900);
-		border-left: 4px solid var(--brand, #ff9416);
-		background: var(--brand-light, #fff5e8);
+		color: var(--brand-subtle);
+		border-left: 4px solid var(--brand);
+		background: var(--brand-light);
 		padding: 1rem 1.25rem;
 		margin: 1.5rem 0 1.5rem;
 	}
@@ -295,7 +293,7 @@
 		align-items: center;
 		gap: 1.25rem;
 		border: 1px solid rgba(255, 148, 22, 0.35);
-		border-radius: 10px;
+		border-radius: var(--radius-md);
 		padding: 0.9rem 1.5rem;
 		margin: 2rem 0 3rem;
 		text-decoration: none;
@@ -306,15 +304,15 @@
 	}
 
 	.stat-block:hover {
-		border-color: var(--brand, #ff9416);
+		border-color: var(--brand);
 		box-shadow: 0 2px 12px rgba(255, 148, 22, 0.12);
 	}
 
 	.stat-number {
-		font-size: clamp(2rem, 5vw, 3rem);
+		font-size: clamp(2rem, 5.5vw, 3rem);
 		font-weight: 800;
 		line-height: 1;
-		color: var(--brand-subtle, #c96900);
+		color: var(--brand-subtle);
 		letter-spacing: -0.02em;
 		white-space: nowrap;
 		flex-shrink: 0;
@@ -328,13 +326,13 @@
 
 	.stat-label {
 		font-size: 0.95rem;
-		color: var(--text, #111);
+		color: var(--text);
 		line-height: 1.3;
 	}
 
 	.stat-source {
 		font-size: 0.75rem;
-		color: var(--text-secondary, #888);
+		color: var(--text-secondary);
 	}
 
 	@media (max-width: 540px) {
@@ -356,11 +354,11 @@
 		flex-direction: column;
 		gap: 0.15rem;
 		position: relative;
-		background: var(--brand, #ff9416);
-		color: white;
+		background: var(--brand);
+		color: var(--on-brand);
 		text-decoration: none;
 		padding: 1.1rem 3rem 1.1rem 1.5rem;
-		border-radius: 12px;
+		border-radius: var(--radius-md);
 		margin: 0 0 3rem;
 		box-shadow: 0 2px 14px rgba(255, 148, 22, 0.28);
 		transition:
@@ -370,7 +368,7 @@
 	}
 
 	.primary-cta:hover {
-		background: var(--brand-subtle, #c96900);
+		background: var(--brand);
 		transform: translateY(-1px);
 		box-shadow: 0 4px 18px rgba(255, 148, 22, 0.35);
 	}
@@ -383,7 +381,8 @@
 
 	.primary-cta-sub {
 		font-size: 0.9rem;
-		color: rgba(255, 255, 255, 0.9);
+		/* Sur l'aplat orange, le texte reste foncé (le blanc n'y donne que 2,2:1). */
+		color: var(--on-brand-muted);
 		line-height: 1.3;
 	}
 
@@ -413,7 +412,7 @@
 	.card-meta {
 		font-size: 0.75rem;
 		font-weight: 600;
-		color: var(--text-secondary, #888);
+		color: var(--text-secondary);
 		letter-spacing: 0.04em;
 	}
 
@@ -422,9 +421,9 @@
 		flex-direction: column;
 		gap: 0.5rem;
 		padding: 1.1rem 1.2rem;
-		border: 1px solid var(--border, #e5e7eb);
-		border-radius: 10px;
-		background: var(--bg-card, #fafafa);
+		border: 1px solid var(--border);
+		border-radius: var(--radius-md);
+		background: var(--bg-card);
 		text-decoration: none;
 		color: inherit;
 		transition:
@@ -433,15 +432,15 @@
 	}
 
 	.article-card:hover {
-		border-color: var(--brand, #ff9416);
+		border-color: var(--brand);
 		box-shadow: 0 2px 12px rgba(255, 148, 22, 0.12);
 	}
 
 	/* ── Carte mise en avant : le bilan de la campagne ── */
 	.article-card-featured {
-		border-color: var(--brand, #ff9416);
+		border-color: var(--brand);
 		border-width: 2px;
-		background: var(--brand-light, #fff5e8);
+		background: var(--brand-light);
 		box-shadow: 0 2px 12px rgba(255, 148, 22, 0.14);
 	}
 
@@ -455,8 +454,8 @@
 		font-weight: 700;
 		text-transform: uppercase;
 		letter-spacing: 0.06em;
-		color: white;
-		background: var(--brand, #ff9416);
+		color: var(--on-brand);
+		background: var(--brand);
 		padding: 0.2rem 0.5rem;
 		border-radius: 4px;
 	}
@@ -465,13 +464,13 @@
 		font-size: 1rem;
 		font-weight: 700;
 		line-height: 1.4;
-		color: var(--text, #111);
+		color: var(--text);
 		margin: 0;
 	}
 
 	.article-card-desc {
 		font-size: 0.9rem;
-		color: var(--text-secondary, #676e7a);
+		color: var(--text-secondary);
 		line-height: 1.5;
 		margin: 0;
 		flex: 1;
@@ -480,17 +479,17 @@
 	.article-card-link {
 		font-size: 0.875rem;
 		font-weight: 600;
-		color: var(--brand-subtle, #c96900);
+		color: var(--brand-subtle);
 	}
 
 	.article-card:hover .article-card-link {
-		color: var(--brand, #ff9416);
+		color: var(--brand-subtle);
 	}
 
 	/* ── Bigger-problem section ── */
 	.bigger-problem {
-		background: var(--bg-subtle, #f7f7f5);
-		border-radius: 12px;
+		background: var(--bg-subtle);
+		border-radius: var(--radius-md);
 		padding: 2rem 2.25rem;
 		/* Décale l'ancre (#ecrire-elus) sous l'en-tête fixe lors du scroll. */
 		scroll-margin-top: 5.5rem;
@@ -507,9 +506,9 @@
 	/* ── CTA callout ── */
 	.cta-callout {
 		font-weight: 600;
-		color: var(--brand-subtle, #c96900);
-		border-left: 4px solid var(--brand, #ff9416);
-		background: var(--brand-light, #fff5e8);
+		color: var(--brand-subtle);
+		border-left: 4px solid var(--brand);
+		background: var(--brand-light);
 		padding: 0.85rem 1.1rem;
 		margin: 1.5rem 0 0.5rem;
 		line-height: 1.5;
@@ -517,13 +516,13 @@
 
 	.cta-detail {
 		font-size: 0.95rem;
-		color: var(--text-secondary, #555);
+		color: var(--text-secondary);
 		margin: 0 0 0.25rem;
 	}
 
 	.cta-guide {
 		font-weight: 700;
-		color: var(--brand-subtle, #c96900);
+		color: var(--brand-subtle);
 		margin: 0.75rem 0 0.25rem;
 	}
 
@@ -537,19 +536,19 @@
 		font-weight: 600;
 		text-transform: uppercase;
 		letter-spacing: 0.04em;
-		color: var(--text-secondary, #888);
+		color: var(--text-secondary);
 		margin-bottom: 0.4rem;
 	}
 
 	.elus-example blockquote {
 		margin: 0;
 		padding: 1rem 1.25rem;
-		border-left: 3px solid var(--brand, #ff9416);
-		background: var(--bg, #fff);
+		border-left: 3px solid var(--brand);
+		background: var(--bg);
 		border-radius: 0 8px 8px 0;
 		font-style: italic;
 		line-height: 1.6;
-		color: var(--text, #111);
+		color: var(--text);
 	}
 
 	:global([data-theme='dark']) .elus-example blockquote {
@@ -569,8 +568,8 @@
 		flex-direction: column;
 		gap: 0.2rem;
 		padding: 0.85rem 1.1rem;
-		border: 1px solid var(--border, #e5e7eb);
-		border-radius: 8px;
+		border: 1px solid var(--border);
+		border-radius: var(--radius-sm);
 		text-decoration: none;
 		color: inherit;
 		transition:
@@ -579,7 +578,7 @@
 	}
 
 	.press-item:hover {
-		border-color: var(--brand, #ff9416);
+		border-color: var(--brand);
 		box-shadow: 0 2px 8px rgba(255, 148, 22, 0.1);
 	}
 
@@ -594,12 +593,12 @@
 		font-weight: 700;
 		text-transform: uppercase;
 		letter-spacing: 0.05em;
-		color: var(--brand-subtle, #c96900);
+		color: var(--brand-subtle);
 	}
 
 	.press-date {
 		font-size: 0.75rem;
-		color: var(--text-secondary, #888);
+		color: var(--text-secondary);
 	}
 
 	.press-date::before {
@@ -610,19 +609,19 @@
 	.press-title {
 		font-size: 0.9rem;
 		font-weight: 500;
-		color: var(--text, #111);
+		color: var(--text);
 		line-height: 1.4;
 	}
 
 	.press-item:hover .press-title {
-		color: var(--brand-subtle, #c96900);
+		color: var(--brand-subtle);
 	}
 
 	.press-item-featured {
 		position: relative;
 		padding: 1.25rem 1.4rem 1.1rem;
 		border-width: 2px;
-		border-color: var(--brand, #ff9416);
+		border-color: var(--brand);
 		background: rgba(255, 148, 22, 0.04);
 	}
 
@@ -630,8 +629,8 @@
 		position: absolute;
 		top: -0.65rem;
 		left: 1rem;
-		background: var(--brand, #ff9416);
-		color: white;
+		background: var(--brand);
+		color: var(--on-brand);
 		font-size: 0.68rem;
 		font-weight: 700;
 		text-transform: uppercase;
@@ -650,7 +649,7 @@
 	.press-excerpt {
 		font-size: 0.875rem;
 		line-height: 1.5;
-		color: var(--text-secondary, #555);
+		color: var(--text-secondary);
 		margin: 0.3rem 0 0;
 	}
 

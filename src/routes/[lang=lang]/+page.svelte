@@ -2,14 +2,13 @@
 	import PostMeta from '$components/PostMeta.svelte'
 	import Hero from '$components/home/hero.svelte'
 	import Lead from '$components/home/lead.svelte'
+	import WriteAction from '$components/home/write-action.svelte'
 	import Campaigns from '$components/home/campaigns.svelte'
 	import LocalGroups from '$components/home/local-groups.svelte'
-	import Risks from '$components/home/risks.svelte'
 	import Articles from '$components/home/articles.svelte'
 	import NewsletterCta from '$components/home/newsletter-cta.svelte'
 	import Faq from '$components/home/faq.svelte'
 	import Videos from '$components/home/videos.svelte'
-	import Inserts from '$components/home/inserts.svelte'
 	import { bannerStore } from '$lib/stores/banner'
 	import { getT } from '$lib/i18n'
 	import type { PageData } from './$types'
@@ -31,17 +30,15 @@
 
 <Lead {lang} />
 
+<WriteAction {lang} />
+
 <Campaigns {lang} />
 
 <LocalGroups {lang} />
 
-<Risks {lang} />
-
 <NewsletterCta {lang} />
 
 <Videos videos={data.videos} {lang} />
-
-<Inserts reports={data.reports} {lang} />
 
 <Articles articles={data.articles} {lang} />
 

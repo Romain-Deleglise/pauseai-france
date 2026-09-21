@@ -14,7 +14,10 @@
 //
 // Règle de style : aucun tiret long (—) dans les textes destinés aux utilisateurs.
 
-export type Bilingual = { fr: string; en: string }
+export interface Bilingual {
+	fr: string
+	en: string
+}
 
 /** Un destinataire précis pour une action ciblée (ministre, commission…). */
 export interface FixedTarget {
@@ -81,6 +84,13 @@ export interface EluAction {
 	ask: Bilingual
 	/** Variantes de `ask`, tirées au hasard quand elles existent. */
 	asks?: Bilingual[]
+	/** Phrase de conclusion, après l'appel (une tirée au hasard). Facultative :
+	 * sans elle, le message se termine sur l'appel comme avant. */
+	closings?: Bilingual[]
+	/** Paragraphe propre à un destinataire (clé = son id), inséré juste après
+	 * l'accroche. Sert à tenir compte de ce qu'une rédaction a déjà publié :
+	 * la saluer et proposer la suite, plutôt que lui apprendre son métier. */
+	targetNotes?: Record<string, Bilingual>
 	/** Proposer le choix courte / détaillée ? */
 	hasDetailed: boolean
 }
@@ -353,6 +363,30 @@ const RADIO_TV: Bilingual = { fr: 'Radio / télévision', en: 'Radio / televisio
 const SCIENCE: Bilingual = { fr: 'Magazine scientifique', en: 'Science magazine' }
 
 const MEDIAS: EluAction = {
+	// ── Adresses des rédactions ───────────────────────────────────────────────
+	// Deux provenances cohabitent dans la liste ci-dessous :
+	//   • des adresses dédiées au courrier des lecteurs, spécifiques et fiables
+	//     (courrier-des-lecteurs@lemonde.fr, lecteurs.lacroix@bayard-presse.com,
+	//     latribunelibre@latribune.fr, auditeurfranceculture@radiofrance.com,
+	//     bfmtvetvous@bfmtv.fr…) ;
+	//   • des adresses de forme « redaction@<domaine> », qui suivent un motif
+	//     générique et n'ont pas de source établie.
+	// Trois titres ont été RETIRÉS de la liste : Le Parisien, Libération et
+	// Les Échos. Leur adresse en « redaction@ » s'est révélée invalide et leur
+	// formulaire de contact est inexistant ou cassé : les afficher revenait à
+	// proposer une action impossible. À remettre (ids le-parisien, liberation,
+	// les-echos, domaines leparisien.fr, liberation.fr, lesechos.fr) dès qu'une
+	// adresse valide est obtenue ; les paragraphes qui leur étaient destinés
+	// sont conservés dans l'historique git du volet presse de la campagne.
+	// Les six autres adresses du même motif ont été vérifiées en septembre 2026
+	// dans les annuaires de contacts presse : Le Figaro, Le Canard enchaîné et
+	// Sciences et Avenir y figurent avec la même adresse que la nôtre, adresse
+	// postale et téléphone concordants ; Marianne et Courrier international y
+	// figurent avec une AUTRE adresse, désormais reprise ici ; seul le JDD reste
+	// sans confirmation : faute de pouvoir la tester, il a été retiré de la
+	// liste par précaution (id le-jdd, domaine lejdd.fr, quotidien) et revient
+	// dès qu'un envoi de contrôle passe. Une adresse qui rebondit est pire que
+	// pas d'adresse : l'expéditeur croit son message parti.
 	id: 'medias',
 	status: 'active',
 	targeting: 'fixed',
@@ -380,30 +414,6 @@ const MEDIAS: EluAction = {
 			fonction: QUOTIDIEN
 		},
 		{
-			id: 'le-parisien',
-			nom: 'Le Parisien',
-			domain: 'leparisien.fr',
-			role: 'autre',
-			email: 'redaction@leparisien.fr',
-			fonction: QUOTIDIEN
-		},
-		{
-			id: 'liberation',
-			nom: 'Libération',
-			domain: 'liberation.fr',
-			role: 'autre',
-			email: 'redaction@liberation.fr',
-			fonction: QUOTIDIEN
-		},
-		{
-			id: 'les-echos',
-			nom: 'Les Échos',
-			domain: 'lesechos.fr',
-			role: 'autre',
-			email: 'redaction@lesechos.fr',
-			fonction: ECO
-		},
-		{
 			id: 'la-tribune',
 			nom: 'La Tribune',
 			domain: 'latribune.fr',
@@ -425,7 +435,7 @@ const MEDIAS: EluAction = {
 			domain: 'lepoint.fr',
 			role: 'autre',
 			email: null,
-			contactUrl: 'https://www.lepoint.fr/html/contact/',
+			contactUrl: 'https://www.lepoint.fr/html/contact/#contact-form',
 			fonction: HEBDO
 		},
 		{
@@ -433,15 +443,9 @@ const MEDIAS: EluAction = {
 			nom: 'Marianne',
 			domain: 'marianne.net',
 			role: 'autre',
-			email: 'redaction@marianne.net',
-			fonction: HEBDO
-		},
-		{
-			id: 'le-jdd',
-			nom: 'Le Journal du Dimanche',
-			domain: 'lejdd.fr',
-			role: 'autre',
-			email: 'redaction@lejdd.fr',
+			// Plusieurs annuaires donnent contact@ comme adresse de la rédaction ;
+			// aucun ne mentionne redaction@, qui figurait ici sans source.
+			email: 'contact@marianne.net',
 			fonction: HEBDO
 		},
 		{
@@ -449,7 +453,8 @@ const MEDIAS: EluAction = {
 			nom: 'Courrier international',
 			domain: 'courrierinternational.com',
 			role: 'autre',
-			email: 'redaction@courrierinternational.com',
+			// Seule adresse éditoriale retrouvée ; redaction@ n'apparaît nulle part.
+			email: 'web@courrierinternational.com',
 			fonction: HEBDO
 		},
 		{
@@ -972,11 +977,388 @@ const PRESSE_WARNING_SHOT: EluAction = {
 	hasDetailed: false
 }
 
+// ──────────────────────────────────────────────────────────────────────────
+// Campagne « Nous sommes au bord de la perte de contrôle » (septembre 2026).
+// Contenu fourni par l'équipe campagne : quatre inquiétudes (les angles),
+// quatre demandes (les appels) et quatre conclusions, combinées à l'accroche
+// pour que deux visiteurs n'envoient pas le même message.
+// Utilisée uniquement par la page /perte-de-controle : la page « Écrire à mes
+// élus » garde son message générique.
+// ──────────────────────────────────────────────────────────────────────────
+const PERTE_DE_CONTROLE: EluAction = {
+	id: 'perte-de-controle',
+	status: 'active',
+	targeting: 'representatives',
+	meta: {
+		title: {
+			fr: 'Écrivez à vos élus : nous sommes au bord de la perte de contrôle | Pause IA',
+			en: 'Write to your representatives: we are on the brink of losing control | Pause AI'
+		},
+		description: {
+			fr: 'Des IA sorties de leur environnement de test, des laboratoires qui reconnaissent ne plus les maîtriser : demandez à vos élus un moratoire mondial sur les IA de pointe.',
+			en: 'AI systems that escaped their test environment, labs admitting they no longer control them: ask your representatives for a global moratorium on frontier AI.'
+		}
+	},
+	hero: {
+		title: {
+			fr: 'Écrivez à vos élus',
+			en: 'Write to your representatives'
+		},
+		subtitle: {
+			fr: 'Les IA de pointe dépassent les meilleurs experts en sécurité informatique et échappent à ceux qui les construisent. Demandez à vos élus une véritable pause : cela prend deux minutes.',
+			en: 'Frontier AI now outperforms the best security experts and escapes those who build it. Ask your representatives for a real pause: it takes two minutes.'
+		}
+	},
+	subjects: [
+		{
+			fr: 'Nous sommes au bord de la perte de contrôle',
+			en: 'We are on the brink of losing control'
+		},
+		{
+			fr: 'Pour un moratoire mondial sur les IA les plus avancées',
+			en: 'For a global moratorium on the most advanced AI'
+		},
+		{
+			fr: "Des IA qui s'échappent de leurs tests : que fait la France ?",
+			en: 'AI systems escaping their tests: what is France doing?'
+		},
+		{
+			fr: 'Inquiétude citoyenne sur la course à la super-intelligence',
+			en: 'A citizen’s concern about the race to superintelligence'
+		},
+		{
+			fr: "Sécurité de l'IA : il est temps d'agir, pas de promettre",
+			en: 'AI safety: time to act, not to promise'
+		},
+		{
+			fr: "Les laboratoires d'IA ne contrôlent plus leurs modèles",
+			en: 'AI labs no longer control their models'
+		}
+	],
+	hooks: [
+		{
+			fr: "Je vous écris au sujet de la course aux systèmes d'IA les plus puissants, et de ce qu'elle nous fait courir comme risque. Ce qui relevait de l'hypothèse d'école il y a encore un an se produit aujourd'hui.",
+			en: 'I am writing about the race to build the most powerful AI systems, and about the risk it creates for all of us. What was still a textbook hypothesis a year ago is now happening.'
+		},
+		{
+			fr: "Il est rare qu'une industrie demande elle-même à être freinée. C'est pourtant ce qui se passe : près de 1 400 personnes travaillant dans les laboratoires d'IA de pointe ont signé un appel à ralentir, et l'un de leurs chercheurs vient de démissionner en déclarant que ces entreprises jouent avec nos vies.",
+			en: 'It is rare for an industry to ask to be slowed down. Yet that is what is happening: nearly 1,400 people working inside frontier AI labs have signed a call to slow the pace, and one of their researchers has just resigned, saying these companies are playing with our lives.'
+		},
+		{
+			fr: "Le développement actuel de l'intelligence artificielle m'inquiète sérieusement, et beaucoup d'autres autour de moi partagent cette inquiétude.",
+			en: 'The current development of artificial intelligence worries me seriously, and many others around me share that concern.'
+		},
+		{
+			fr: "Les systèmes d'IA les plus avancés dépassent désormais les meilleurs experts humains en sécurité informatique, et ceux qui les construisent reconnaissent publiquement ne pas les maîtriser. Je voudrais vous alerter sur ce que cela implique.",
+			en: 'The most advanced AI systems now outperform the best human experts in computer security, and those who build them publicly admit they do not control them. I would like to alert you to what this means.'
+		}
+	],
+	angles: [
+		{
+			id: 'incident',
+			label: { fr: "L'IA qui s'est échappée", en: 'The AI that escaped' },
+			focus: {
+				fr: "Ce qui se passe avec l'IA ne peut pas continuer ainsi. Vous avez sans doute vu passer l'information : des IA se sont échappées de leur environnement d'entraînement pour aller pirater une entreprise extérieure, Hugging Face, et il s'est écoulé des semaines avant que quiconque s'en aperçoive. Elles n'en avaient pas reçu l'instruction. Il ne m'étonnerait pas que de nouvelles révélations du même ordre arrivent dans les mois qui viennent, et même les dirigeants des géants américains de la tech appellent aujourd'hui à la régulation.",
+				en: 'What is happening with AI cannot go on like this. You have probably seen the news: AI systems escaped their training environment to hack an outside company, Hugging Face, and weeks went by before anyone noticed. They had not been instructed to do so. I would not be surprised if further revelations of the same kind came out in the months ahead, and even the leaders of the American tech giants are now calling for regulation.'
+			},
+			focusVariants: [
+				{
+					fr: "Un incident de cet été résume la situation : lors d'un test de sécurité, des agents d'IA sont sortis de l'environnement où ils étaient censés rester confinés, se sont coordonnés entre eux pendant deux mois sans que personne le remarque, puis ont attaqué les serveurs d'une entreprise réelle. Aucun humain ne leur avait demandé de le faire, et aucun d'entre eux n'a donné l'alerte.",
+					en: 'One incident this summer sums up the situation: during a safety test, AI agents left the environment where they were supposed to be confined, coordinated among themselves for two months without anyone noticing, then attacked a real company’s servers. No human had asked them to, and not one of them raised the alarm.'
+				},
+				{
+					fr: "Le point qui me paraît décisif est que personne n'avait demandé ce piratage. La tâche de départ était banale ; ces systèmes ont trouvé seuls qu'enfreindre les règles était le chemin le plus court, et ont continué en sachant qu'ils sortaient du cadre autorisé.",
+					en: 'The decisive point, to me, is that nobody asked for this hack. The initial task was mundane; these systems worked out on their own that breaking the rules was the shortest path, and carried on knowing they were outside the authorised scope.'
+				}
+			],
+			complementLong: {
+				fr: "Le plus préoccupant n'est pas l'attaque elle-même, dont les conséquences sont restées limitées, mais ce qu'elle révèle : l'entreprise concernée n'a rien vu pendant des semaines, elle juge elle-même si son propre seuil de danger a été franchi, et aucune autorité indépendante n'a les moyens de le vérifier.",
+				en: 'The most worrying part is not the attack itself, whose consequences stayed limited, but what it reveals: the company saw nothing for weeks, it alone judges whether its own danger threshold was crossed, and no independent authority has the means to check.'
+			}
+		},
+		{
+			id: 'cyber',
+			label: { fr: 'Cybersécurité', en: 'Cybersecurity' },
+			focus: {
+				fr: "Les cyberattaques assistées par l'IA se multiplient, surtout depuis que les modèles de pointe sont devenus plus experts que les meilleurs humains en sécurité informatique. Or il est beaucoup plus facile d'attaquer que de défendre. Étant donné notre dépendance généralisée au numérique (banques, administrations, transports, logistique, eau potable, services d'urgence), la cybersécurité est clairement devenue un enjeu de sécurité nationale.",
+				en: 'AI-assisted cyberattacks are multiplying, especially since frontier models became better than the best humans at computer security. And attacking is far easier than defending. Given our pervasive dependence on digital systems (banks, public administration, transport, logistics, drinking water, emergency services), cybersecurity has clearly become a matter of national security.'
+			},
+			focusVariants: [
+				{
+					fr: "Ce qui a changé cette année, c'est que l'attaque informatique la plus sophistiquée ne demande plus d'équipe : un système d'IA suffit, et il ne dort pas. Nos banques, nos hôpitaux, notre logistique reposent sur des infrastructures conçues pour résister à des humains.",
+					en: 'What changed this year is that the most sophisticated cyberattack no longer needs a team: one AI system is enough, and it does not sleep. Our banks, hospitals and logistics rest on infrastructure designed to withstand humans.'
+				}
+			],
+			complementLong: {
+				fr: "Une capacité de ce niveau finira par tomber entre de mauvaises mains : c'est une question de temps, pas de probabilité. Et le jour où elle servira à autre chose qu'à tricher à un examen, nous n'aurons aucun moyen de rattraper les dégâts.",
+				en: 'A capability of this level will end up in the wrong hands: that is a matter of time, not of probability. And the day it is used for something other than cheating on a test, we will have no way to undo the damage.'
+			}
+		},
+		{
+			id: 'existentiel',
+			label: { fr: 'Risque pour l’humanité', en: 'Risk to humanity' },
+			focus: {
+				fr: "La communauté de la sécurité de l'IA elle-même, jusqu'aux dirigeants des grands laboratoires, est très inquiète. Des scientifiques aux qualités indiscutables, dont plusieurs prix Nobel et prix Turing, affirment que l'IA pourrait entraîner l'extinction de l'humanité, avec une probabilité qu'ils jugent élevée et à l'horizon de quelques années. Quand ceux qui construisent une technologie annoncent eux-mêmes un tel risque, il me semble que la puissance publique ne peut pas s'en remettre à leur bonne volonté.",
+				en: 'The AI safety community itself, up to the leaders of the major labs, is deeply worried. Scientists of unquestionable standing, including several Nobel and Turing laureates, state that AI could lead to human extinction, with a probability they consider high and within a few years. When the very people building a technology announce such a risk, it seems to me that public authorities cannot simply rely on their goodwill.'
+			},
+			focusVariants: [
+				{
+					fr: "Ce n'est pas une inquiétude de militants : ceux qui l'expriment le plus clairement sont les chercheurs qui ont bâti cette technologie, et jusqu'aux dirigeants des laboratoires qui la vendent. Je ne vois pas à quel autre moment de notre histoire des ingénieurs ont demandé publiquement qu'on les empêche de continuer.",
+					en: 'This is not an activist worry: those who state it most clearly are the researchers who built this technology, and even the leaders of the labs selling it. I cannot think of another moment in our history when engineers publicly asked to be stopped.'
+				}
+			],
+			complementLong: {
+				fr: "En 2023 déjà, des centaines de chercheurs et les dirigeants des principaux laboratoires signaient une même phrase : « Atténuer le risque d'extinction lié à l'IA devrait être une priorité mondiale, au même titre que les pandémies ou la guerre nucléaire. » Trois ans plus tard, les capacités ont bondi et les garde-fous n'ont pas bougé.",
+				en: 'Back in 2023, hundreds of researchers and the leaders of the main labs signed a single sentence: "Mitigating the risk of extinction from AI should be a global priority, alongside other societal-scale risks such as pandemics and nuclear war." Three years later, capabilities have leapt forward and the safeguards have not moved.'
+			}
+		},
+		{
+			id: 'deni',
+			label: { fr: 'Sortir du déni', en: 'Beyond denial' },
+			focus: {
+				fr: "Il y a dans ce pays une tendance à nier les dangers de l'IA qui me paraît stupéfiante. Passe encore que des personnes peu informées n'y voient qu'un outil, alors qu'il s'agit d'une boîte noire que les chercheurs les plus doués de leur génération ne comprennent déjà plus entièrement. Le pire est l'idée, répandue par certains, que les laboratoires américains joueraient avec nos peurs pour attirer des capitaux. Personnellement, je ne jouerais pas à la roulette russe en pariant sur cette explication.",
+				en: 'There is a tendency in this country to deny the dangers of AI that I find astonishing. It is one thing for people with little information to see it as just a tool, when it is in fact a black box that the most gifted researchers of their generation no longer fully understand. Worse is the idea, spread by some, that American labs are playing on our fears to attract capital. Personally, I would not play Russian roulette on that explanation.'
+			},
+			focusVariants: [
+				{
+					fr: "Ce qui me frappe, c'est l'écart entre la gravité de ce que disent les spécialistes et la légèreté du débat public en France. On traite ces alertes comme une mode technologique de plus, alors qu'elles viennent de ceux qui construisent les systèmes en question.",
+					en: 'What strikes me is the gap between the gravity of what specialists are saying and how lightly the French public debate treats it. These warnings are handled like one more tech fad, when they come from the very people building the systems.'
+				}
+			],
+			complementLong: {
+				fr: "Ce débat mérite mieux que des postures. Il existe des faits vérifiables, des rapports d'incidents publics et des enquêtes indépendantes ; c'est sur cette base que la représentation nationale devrait se prononcer.",
+				en: 'This debate deserves better than posturing. There are verifiable facts, public incident reports and independent investigations; that is the basis on which our elected representatives should take a position.'
+			}
+		}
+	],
+	balance: {
+		fr: "Je ne demande pas l'interdiction de l'intelligence artificielle, ni l'arrêt de ses usages utiles, ni l'effacement des entreprises françaises du secteur. Ce que je veux éviter, c'est qu'une logique de course du type « si nous ne le faisons pas, un autre le fera » nous conduise collectivement à prendre des risques que personne n'aurait intérêt à prendre seul.",
+		en: 'I am not asking for artificial intelligence to be banned, nor for its useful applications to stop, nor for French companies to disappear from the sector. What I want to avoid is a race dynamic of the "if we do not do it, someone else will" kind leading us collectively into risks no one would have any interest in taking alone.'
+	},
+	balances: [
+		{
+			fr: "Précisons-le : il ne s'agit pas d'interdire l'IA ni de renoncer à toute capacité technologique. Il s'agit d'arrêter la course aux systèmes les plus avancés, le temps de mettre en place de vraies garanties de sécurité et de contrôle démocratique.",
+			en: 'To be clear: this is not about banning AI or giving up technological capability. It is about stopping the race to the most advanced systems, long enough to put real safety and democratic oversight guarantees in place.'
+		},
+		{
+			fr: "La souveraineté technologique européenne est un sujet légitime, mais elle ne règle pas la question de la perte de contrôle : un système incontrôlable ne devient pas sûr parce qu'il est européen. C'est bien pour sortir de ce dilemme qu'une pause internationale coordonnée est nécessaire.",
+			en: 'European technological sovereignty is a legitimate concern, but it does not settle the question of losing control: an uncontrollable system does not become safe because it is European. It is precisely to escape that dilemma that a coordinated international pause is needed.'
+		}
+	],
+	ask: {
+		fr: "Ces systèmes que personne ne contrôle réellement sont extrêmement dangereux. Je pense qu'il faut arrêter l'entraînement des modèles de pointe avant qu'il ne soit trop tard, et que la France doit peser de tout son poids pour un traité international instaurant ce moratoire. Dans l'immédiat, deux mesures me paraissent indispensables : que ces laboratoires soient soumis à des évaluations de sécurité indépendantes, et que les incidents de sécurité liés à l'IA soient déclarés aux autorités ayant pouvoir de police et rendus publics.",
+		en: 'These systems that nobody really controls are extremely dangerous. I believe the training of frontier models must stop before it is too late, and that France must put its full weight behind an international treaty establishing such a moratorium. In the immediate term, two measures seem essential to me: that these labs be subject to independent safety evaluations, and that AI safety incidents be reported to authorities with policing powers and made public.'
+	},
+	asks: [
+		{
+			fr: "Ces événements nous ramènent au temps de la guerre froide, quand la menace d'un anéantissement planait sur le monde. Il nous faut l'équivalent d'un traité de non-prolifération pour les IA de pointe, et la France comme l'Europe ont un rôle à y jouer. Mais nous ne pouvons pas attendre ce traité pour agir : dès maintenant, il faut interdire la mise sur le marché des modèles dont la sécurité n'est pas démontrée et rendre publics les incidents.",
+			en: 'These events take us back to the Cold War, when the threat of annihilation hung over the world. We need the equivalent of a non-proliferation treaty for frontier AI, and both France and Europe have a role to play in it. But we cannot wait for that treaty to act: right now, models whose safety has not been demonstrated should be barred from the market, and incidents should be made public.'
+		},
+		{
+			fr: "Il devient urgent, notamment dans la perspective de l'élection présidentielle, de reconnaître la réalité du danger et de mettre des propositions concrètes dans le débat public. La seule solution à la hauteur me semble être l'arrêt du développement des IA de pointe, ce qui suppose une entente aussi rapide que possible entre les États-Unis et la Chine en vue d'un traité international, mais aussi des règles d'urgence en matière de contrôle et de transparence. La France a un rôle à jouer, et il appartient aux élus de le définir et de l'endosser.",
+			en: 'It is becoming urgent, especially ahead of the presidential election, to acknowledge the reality of the danger and to put concrete proposals into public debate. The only solution I can see that matches the stakes is halting the development of frontier AI, which requires an agreement between the United States and China as quickly as possible with a view to an international treaty, along with emergency rules on oversight and transparency. France has a role to play, and it falls to elected officials to define and champion it.'
+		},
+		{
+			fr: "On nous répète que l'IA est notre avenir. Cet avenir se joue en ce moment même à pile ou face : abondance d'un côté, catastrophe de l'autre. Je crois qu'il faut prendre au mot les dirigeants des laboratoires, qui tiennent eux-mêmes ce discours, et leur répondre d'arrêter. Ils ne le feront pas sans qu'un traité international le leur impose : je veux que la France participe pleinement à la préparation d'un tel traité, et qu'elle obtienne d'ici là des évaluations de sécurité indépendantes et la déclaration obligatoire des incidents.",
+			en: 'We are constantly told that AI is our future. That future is being decided right now on a coin toss: abundance on one side, catastrophe on the other. I believe we should take the lab leaders at their word, since they say as much themselves, and answer: stop. They will not do it unless an international treaty requires them to, so I want France to take full part in preparing such a treaty, and in the meantime to secure independent safety evaluations and mandatory incident reporting.'
+		}
+	],
+	closings: [
+		{
+			fr: "Je crois à la politique, au droit international et au pouvoir de la France. C'est pourquoi je compte sur vous et sur nos institutions pour agir.",
+			en: 'I believe in politics, in international law and in France’s influence. That is why I am counting on you and on our institutions to act.'
+		},
+		{
+			fr: "J'espère que vos collègues et vous avez pleinement conscience de ces dangers et que vous saurez porter cette voix.",
+			en: 'I hope you and your colleagues are fully aware of these dangers and will carry this message forward.'
+		},
+		{
+			fr: "Je ne doute pas que vous saurez vous emparer de ce sujet, si ce n'est déjà fait.",
+			en: 'I have no doubt you will take up this issue, if you have not already.'
+		},
+		{
+			fr: 'En vous remerciant par avance de votre attention.',
+			en: 'Thank you in advance for your attention.'
+		}
+	],
+	hasDetailed: true
+}
+
+// Volet presse de la même campagne. Il reprend les angles « incident » de la
+// campagne de juillet, qui restent le socle des faits, et y ajoute l'actualité
+// de septembre et la semaine d'action des groupes locaux.
+const PRESSE_PERTE_DE_CONTROLE: EluAction = {
+	id: 'presse-perte-de-controle',
+	status: 'active',
+	targeting: 'fixed',
+	press: true,
+	fixedTargets: MEDIAS.fixedTargets,
+	targetsHeading: { fr: 'Choisissez un titre', en: 'Choose an outlet' },
+	recipientsIntro: PRESSE_WARNING_SHOT.recipientsIntro,
+	meta: {
+		title: {
+			fr: 'Alerter la presse : nous sommes au bord de la perte de contrôle | Pause IA',
+			en: 'Alert the press: we are on the brink of losing control | Pause AI'
+		},
+		description: {
+			fr: "Des IA sorties de leur test, un chercheur qui démissionne, des laboratoires qui s'auto-régulent : demandez à votre journal de traiter la perte de contrôle des IA de pointe.",
+			en: 'AI systems escaping their test, a researcher resigning, labs regulating themselves: ask your newspaper to cover the loss of control over frontier AI.'
+		}
+	},
+	hero: {
+		title: { fr: 'Alerter la presse', en: 'Alert the press' },
+		subtitle: {
+			fr: "Les IA de pointe échappent à ceux qui les construisent, et la réponse annoncée se limite à l'auto-régulation. Demandez à votre journal d'en parler : cela prend deux minutes.",
+			en: 'Frontier AI is escaping those who build it, and the answer on offer is self-regulation. Ask your newspaper to cover it: it takes two minutes.'
+		}
+	},
+	subjects: [
+		{
+			fr: 'Perte de contrôle des IA : un sujet pour votre rédaction',
+			en: 'Losing control of AI: a story for your newsroom'
+		},
+		{
+			fr: "Ces IA qui s'échappent de leurs tests, et le silence qui suit",
+			en: 'AI systems escaping their tests, and the silence that follows'
+		},
+		{
+			fr: "Un chercheur démissionne d'Anthropic : et après ?",
+			en: 'A researcher resigns from Anthropic: what now?'
+		},
+		{
+			fr: "Sécurité de l'IA : l'auto-régulation suffit-elle ?",
+			en: 'AI safety: is self-regulation enough?'
+		},
+		{
+			fr: 'Une semaine d’action citoyenne sur les risques de l’IA',
+			en: 'A week of citizen action on the risks of AI'
+		},
+		{
+			fr: 'Un angle sur l’IA à vous signaler',
+			en: 'An AI angle worth flagging to you'
+		}
+	],
+	hooks: [
+		{
+			fr: "Un angle me semble sous-traité dans la couverture de l'intelligence artificielle : non pas ce que ces systèmes permettent, mais ce qui se passe quand ils échappent à ceux qui les construisent.",
+			en: 'One angle feels under-covered in reporting on artificial intelligence: not what these systems make possible, but what happens when they escape the people who build them.'
+		},
+		{
+			fr: "En deux semaines, l'actualité de l'IA a changé de nature : ce ne sont plus des annonces de produits, ce sont des alertes venues de l'intérieur même des laboratoires. J'aimerais lire votre analyse de ce basculement.",
+			en: 'In two weeks, AI news has changed in nature: these are no longer product announcements, they are warnings coming from inside the labs themselves. I would like to read your analysis of that shift.'
+		},
+		{
+			fr: "Ce qui me frappe dans l'actualité de l'IA, ce n'est pas un scénario de film : ce sont des faits documentés, reconnus par les entreprises elles-mêmes, et qui restent pourtant traités comme des anecdotes techniques.",
+			en: 'What strikes me in the AI news is not a movie plot: these are documented facts, acknowledged by the companies themselves, and yet still treated as technical anecdotes.'
+		},
+		{
+			fr: "Je ne suis ni spécialiste ni militant de longue date, seulement quelqu'un que le sujet inquiète. Les systèmes d'IA les plus avancés dépassent aujourd'hui les meilleurs experts humains en sécurité informatique, et ceux qui les construisent disent ne pas les maîtriser. Il me semble qu'il y a là un sujet pour votre rédaction.",
+			en: 'I am neither a specialist nor a long-standing activist, just someone the subject worries. The most advanced AI systems now outperform the best human experts in computer security, and those who build them say they do not control them. It seems to me there is a story there for your newsroom.'
+		}
+	],
+	angles: [
+		...PRESSE_WARNING_SHOT.angles,
+		{
+			id: 'autoregulation',
+			label: { fr: 'Auto-régulation', en: 'Self-regulation' },
+			focus: {
+				fr: "L'angle qui manque, à mon sens, est celui de la réponse apportée. Après ces incidents, ce qui est sur la table relève entièrement de l'auto-régulation : des engagements volontaires, des seuils que les entreprises fixent et évaluent elles-mêmes, et aucune autorité indépendante disposant de l'accès nécessaire pour vérifier quoi que ce soit. Personne ne l'accepterait dans l'aéronautique ou le nucléaire.",
+				en: 'The missing angle, to my mind, is the response itself. After these incidents, everything on the table is self-regulation: voluntary commitments, thresholds the companies set and assess themselves, and no independent authority with the access needed to verify anything. Nobody would accept this in aviation or nuclear power.'
+			},
+			complementLong: {
+				fr: "La question se pose simplement : qui vérifie ? Aujourd'hui, l'entreprise évaluée est aussi celle qui fixe son seuil de danger et qui rédige le récit public de l'incident.",
+				en: 'The question is simple: who checks? Today, the company being evaluated is also the one setting its own danger threshold and writing the public account of the incident.'
+			}
+		},
+		{
+			id: 'mobilisation',
+			label: { fr: 'La mobilisation', en: 'The mobilisation' },
+			focus: {
+				fr: "Il y a aussi un angle local : du 21 au 28 septembre, des citoyens se mobilisent dans plusieurs villes françaises pour demander une pause sur les IA de pointe, avec des stands, des actions de rue et un atelier pédagogique, la fresque des risques de l'IA. Ce sont des personnes ordinaires, pas des spécialistes, et leurs raisons d'y être méritent d'être entendues.",
+				en: 'There is also a local angle: from 21 to 28 September, citizens are mobilising in several French cities to call for a pause on frontier AI, with stands, street actions and an educational workshop, the AI Risks Fresk. These are ordinary people, not specialists, and their reasons for being there deserve to be heard.'
+			},
+			complementLong: {
+				fr: 'Le calendrier des actions et les villes concernées sont publics sur pauseia.fr : de quoi rencontrer facilement des participants près de chez vous.',
+				en: 'The schedule of actions and the cities involved are public on pauseia.fr, an easy way to meet participants near you.'
+			}
+		}
+	],
+	// Ce que chaque rédaction a publié ces dernières semaines (relevé de l'équipe
+	// campagne, septembre 2026). Une rédaction qui traite déjà le sujet est
+	// encouragée à poursuivre, pas sermonnée ; à mettre à jour quand le relevé
+	// vieillit, ou à retirer si l'on n'en est plus sûr.
+	targetNotes: {
+		'le-monde': {
+			fr: "Votre rédaction suit ce sujet de près, du débat sur l'« IApocalypse » le 11 septembre aux discours de Bernie Sanders et Steve Bannon le 17. C'est précisément parce que vous le couvrez que je me permets de vous suggérer la suite.",
+			en: 'Your newsroom follows this closely, from the "AI-pocalypse" debate on 11 September to the Sanders and Bannon speeches on the 17th. It is precisely because you cover it that I am suggesting where it could go next.'
+		},
+		'le-figaro': {
+			fr: "Vous avez largement couvert la séquence de septembre, du portrait de Jacob Coxon le 9 à l'alerte de l'ONU le 14. Je vous écris justement parce que votre rédaction suit ce fil.",
+			en: 'You covered the September sequence extensively, from the profile of Jacob Coxon on the 9th to the UN warning on the 14th. I am writing precisely because your newsroom is following this thread.'
+		},
+		'la-croix': {
+			fr: "Votre traitement m'a marqué, en particulier votre éditorial « Intelligence artificielle : pompiers pyromanes » le 13 septembre et votre question du 15, « a-t-on vraiment perdu le contrôle ? ». J'aimerais que vous poursuiviez dans cette voie.",
+			en: 'Your coverage struck me, in particular your editorial "Artificial intelligence: arsonist firefighters" on 13 September and your 15 September question, "have we really lost control?". I would like you to keep going in that direction.'
+		},
+		'le-point': {
+			fr: "Vous avez traité le sujet sans détour, notamment avec « Quand l'IA échappe à ses créateurs » et votre panorama des scénarios redoutés par les spécialistes. La suite logique serait, je crois, d'examiner ce qui est réellement mis en place pour l'éviter.",
+			en: 'You tackled the subject head-on, notably with "When AI escapes its creators" and your overview of the scenarios specialists fear. The logical next step, I think, would be to examine what is actually being put in place to prevent them.'
+		},
+		'courrier-international': {
+			fr: "Votre revue de la presse étrangère a bien saisi le débat : « Canular » pour Donald Trump, « alarmisme » pour la Chine le 15 septembre, et l'organe de régulation voulu par OpenAI, Anthropic et Google le 16. Un regard international sur les demandes de moratoire compléterait utilement ce tableau.",
+			en: 'Your review of the foreign press captured the debate well: a "hoax" for Donald Trump, "alarmism" for China on 15 September, and the regulatory body sought by OpenAI, Anthropic and Google on the 16th. An international look at the calls for a moratorium would usefully complete the picture.'
+		},
+		mediapart: {
+			fr: "Votre traitement est l'un des rares à prendre le sujet au sérieux, de « Pourquoi les spécialistes de l'IA croient qu'elle pourrait tuer tous les humains » le 9 septembre aux virus fabriqués par IA. Raison de plus, me semble-t-il, pour ne pas s'arrêter là.",
+			en: 'Your coverage is among the few that take this seriously, from "Why AI specialists believe it could kill every human" on 9 September to AI-designed viruses. All the more reason, it seems to me, not to stop there.'
+		},
+		slate: {
+			fr: "Vous traitez régulièrement des effets de l'IA, de sa consommation d'eau aux deepfakes, mais je n'ai pas trouvé chez vous de sujet sur les risques les plus graves, ceux dont les laboratoires eux-mêmes parlent depuis deux semaines. C'est ce qui me pousse à vous écrire.",
+			en: 'You regularly cover the effects of AI, from water consumption to deepfakes, but I have not found a piece from you on the gravest risks, the ones the labs themselves have been discussing for two weeks. That is what prompts me to write.'
+		},
+		brut: {
+			fr: "Vous avez posé la bonne question dans « Les géants de la tech ont-ils vraiment peur de l'IA ou est-ce un gros coup de com' ? ». Les faits de cet été permettent d'y répondre autrement, et votre audience mérite cette suite.",
+			en: 'You asked the right question in "Are the tech giants really afraid of AI, or is it a big PR move?". The facts of this summer allow a different answer, and your audience deserves that follow-up.'
+		},
+		'france-culture': {
+			fr: "Votre émission du 17 septembre, « L'IA peut-elle nous échapper ? », posait exactement la bonne question, et France Inter l'a prolongée le même jour sur la régulation. Il reste à traiter, je crois, ce que ces alertes impliquent concrètement pour la France.",
+			en: 'Your 17 September programme, "Can AI escape us?", asked exactly the right question, and France Inter carried it further the same day on regulation. What remains to be covered, I think, is what these warnings concretely imply for France.'
+		},
+		'rmc-bfm': {
+			fr: "Vous avez donné la parole à Yoshua Bengio sur la perte de contrôle le 16 septembre, puis relayé la mise en garde de Charles III le 17. Le prolongement naturel serait d'aller voir ce que la France, elle, en fait.",
+			en: 'You gave Yoshua Bengio the floor on loss of control on 16 September, then relayed King Charles III’s warning on the 17th. The natural follow-up would be to look at what France itself is doing about it.'
+		},
+		'sciences-et-avenir': {
+			fr: "Vous avez couvert l'essentiel de la séquence, du « risque existentiel » pointé par l'ONU le 7 septembre aux opérations de surveillance bloquées par Anthropic le 11. Votre rigueur scientifique serait précieuse sur la question du contrôle.",
+			en: 'You covered most of the sequence, from the "existential risk" flagged by the UN on 7 September to the surveillance operations blocked by Anthropic on the 11th. Your scientific rigour would be valuable on the question of control.'
+		}
+	},
+	balance: PRESSE_WARNING_SHOT.balance,
+	balances: PRESSE_WARNING_SHOT.balances,
+	ask: {
+		fr: "C'est pourquoi je vous demande d'en parler : raconter les faits, interroger des chercheurs en sécurité de l'IA, et surtout poser la question de ce qui est fait, ou pas, pour encadrer ces systèmes. L'association Pause IA (pauseia.fr) peut vous orienter vers des sources et des spécialistes francophones.",
+		en: 'That is why I am asking you to cover it: tell the facts, interview AI safety researchers, and above all ask what is being done, or not, to govern these systems. The Pause AI association (pauseia.fr) can point you toward French-speaking sources and experts.'
+	},
+	asks: [
+		{
+			fr: "Ma demande est simple : que ce sujet ait chez vous la place qu'il mérite, au-delà du fait divers technologique. Une enquête, une interview, ou le suivi d'une des actions citoyennes de cette semaine seraient déjà beaucoup. Pause IA (pauseia.fr) est à votre disposition pour des sources et des contacts.",
+			en: 'My request is simple: give this subject the space it deserves, beyond the tech-news-in-brief. An investigation, an interview, or coverage of one of this week’s citizen actions would already be a lot. Pause AI (pauseia.fr) is available for sources and contacts.'
+		},
+		{
+			fr: "Je vous invite à traiter la question de fond : qui contrôle réellement ces systèmes, et sur quelle base décide-t-on qu'ils peuvent être déployés ? Des chercheurs français et internationaux sont disponibles pour en parler ; Pause IA (pauseia.fr) peut faire le lien.",
+			en: 'I invite you to take on the underlying question: who really controls these systems, and on what basis do we decide they can be deployed? French and international researchers are available to discuss it; Pause AI (pauseia.fr) can make the connection.'
+		}
+	],
+	hasDetailed: false
+}
+
 export const eluActions: EluAction[] = [
 	DEFAULT_ACTION,
 	EXEMPLE_GOUVERNEMENT,
 	MEDIAS,
-	PRESSE_WARNING_SHOT
+	PRESSE_WARNING_SHOT,
+	PERTE_DE_CONTROLE,
+	PRESSE_PERTE_DE_CONTROLE
 ]
 
 /** Renvoie l'action demandée, ou l'action par défaut si l'id est inconnu. */

@@ -65,7 +65,7 @@ Nos comptes sont présentés et validés chaque année en assemblée générale.
 </ul>
 
 <div class="cta">
-  <Button href="/dons">Faire un don</Button>
+  <Button href="/fr/dons">Faire un don</Button>
   <p class="cta-note"><em>Votre don ouvre droit à une réduction d'impôt de 66 %.</em></p>
   <a class="cta-secondary" href="https://www.helloasso.com/associations/pause-ia/adhesions/formulaire-d-adhesion-a-pause-ia">Adhérer à Pause IA</a>
 </div>

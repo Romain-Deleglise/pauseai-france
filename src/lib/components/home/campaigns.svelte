@@ -12,8 +12,10 @@
 	$: prefix = lang === 'en' ? '/en' : '/fr'
 	$: activeCampaigns = getSortedCampaigns()
 		.filter((c) => c.status === 'active' && !c.homeHidden)
-		.slice(0, 3)
+		.slice(0, 2)
 
+	// Deux campagnes mises en avant au maximum : au-delà, l'accueil se disperse.
+	// La liste complète reste sur /campagnes.
 	// With 3 campaigns: 1 featured + 2 secondary in a grid.
 	// With 1-2 campaigns: show them side-by-side (same size), ordered by priority.
 	$: featured = activeCampaigns.length >= 3 ? activeCampaigns[0] : null
@@ -144,12 +146,12 @@
 		left: 0;
 		right: 0;
 		height: 4px;
-		background: var(--primary, #ff9416);
+		background: var(--brand);
 		z-index: 1;
 	}
 
 	.card:hover {
-		border-color: var(--primary, #ff9416);
+		border-color: var(--brand);
 	}
 
 	.cover-link {
@@ -191,12 +193,12 @@
 		text-transform: uppercase;
 		letter-spacing: 0.5px;
 		padding: 0.3rem 0.6rem;
-		border-radius: 999px;
+		border-radius: var(--radius-pill);
 		line-height: 1.2;
 	}
 
 	.pill-progress {
-		color: var(--brand);
+		color: var(--brand-subtle);
 		background-color: rgba(255, 148, 22, 0.12);
 	}
 
@@ -215,7 +217,7 @@
 
 	.title-link:hover,
 	.title-link:focus-visible {
-		color: var(--primary, #ff9416);
+		color: var(--brand-subtle);
 	}
 
 	.desc {
@@ -238,13 +240,13 @@
 		display: inline-flex;
 		align-items: center;
 		gap: 0.45rem;
-		background: var(--primary, #ff9416);
-		color: white;
+		background: var(--brand);
+		color: var(--on-brand);
 		text-decoration: none;
 		font-weight: 700;
 		font-size: 0.9rem;
 		padding: 0.6rem 1rem;
-		border-radius: 8px;
+		border-radius: var(--radius-sm);
 		transition:
 			opacity 0.2s ease,
 			transform 0.2s ease;

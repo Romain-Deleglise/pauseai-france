@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { SubscribeResponse } from '$lib/types'
 	import Button from '$lib/components/Button.svelte'
 	import type { PageData } from './$types'
 
@@ -52,7 +53,7 @@
 					source: 'senat2025'
 				})
 			})
-			const json = await res.json()
+			const json = (await res.json()) as SubscribeResponse
 			if (res.ok && json.success) {
 				message =
 					json.message ||
@@ -538,7 +539,7 @@
 	/* Hero Section */
 	.hero {
 		position: relative;
-		border-radius: 12px;
+		border-radius: var(--radius-md);
 		overflow: hidden;
 		margin-bottom: 2rem;
 	}
@@ -558,7 +559,7 @@
 			rgba(0, 0, 0, 0.55) 60%,
 			rgba(0, 0, 0, 0.75) 100%
 		);
-		color: #fff;
+		color: var(--on-dark);
 	}
 	.hero-text h1 {
 		margin: 0 0 0.25rem 0;
@@ -598,12 +599,12 @@
 	}
 
 	.key-point-card {
-		background: linear-gradient(135deg, #fff9e6 0%, #ffffff 100%);
-		border-left: 4px solid var(--brand, #ffd42a);
+		background: var(--bg-card);
+		border-left: 4px solid var(--brand);
 		padding: 1.25rem;
 		margin-bottom: 1rem;
-		border-radius: 8px;
-		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+		border-radius: var(--radius-sm);
+		box-shadow: var(--shadow-card);
 	}
 
 	.key-point-card p {
@@ -615,8 +616,8 @@
 	.executive-summary {
 		margin: 3rem 0;
 		padding: 2rem;
-		background: #fafafa;
-		border-radius: 12px;
+		background: var(--bg-secondary);
+		border-radius: var(--radius-md);
 	}
 
 	.executive-summary h2 {
@@ -629,7 +630,7 @@
 		margin-top: 2rem;
 		margin-bottom: 1rem;
 		font-size: 1.5rem;
-		color: var(--text, #333);
+		color: var(--text);
 	}
 
 	.executive-summary p {
@@ -650,9 +651,9 @@
 	.newsletter-section {
 		margin: 3rem 0 2rem;
 		padding: 2.5rem 2rem;
-		background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-		border-radius: 12px;
-		border: 2px solid #bae6fd;
+		background: var(--brand-light);
+		border-radius: var(--radius-md);
+		border: 2px solid var(--border);
 	}
 
 	.newsletter-section h2 {
@@ -699,16 +700,23 @@
 	input[type='email'] {
 		width: 100%;
 		padding: 0.6rem 0.7rem;
-		border: 1px solid #ccc;
-		border-radius: 6px;
+		border: 1px solid var(--border);
+		border-radius: var(--radius-sm);
 		font-size: 1rem;
 	}
 
+	/* Cases à cocher : cible d'au moins 24 px, doigt compris. */
+	input[type='checkbox'] {
+		inline-size: 1.5rem;
+		block-size: 1.5rem;
+		accent-color: var(--brand);
+	}
+
 	fieldset.choices {
-		border: 1px solid #e5e5e5;
-		border-radius: 8px;
+		border: 1px solid var(--border);
+		border-radius: var(--radius-sm);
 		padding: 0.75rem 1rem;
-		background: white;
+		background: var(--bg-card);
 	}
 
 	fieldset.choices legend {
@@ -730,18 +738,18 @@
 	}
 
 	.msg-error {
-		color: #b00020;
+		color: var(--error);
 	}
 
 	button {
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		background: var(--brand, #ffd42a);
-		color: var(--black, #000);
+		background: var(--brand);
+		color: var(--on-brand);
 		border: 0;
 		padding: 0.7rem 1.1rem;
-		border-radius: 8px;
+		border-radius: var(--radius-sm);
 		font-weight: 700;
 		cursor: pointer;
 		transition:

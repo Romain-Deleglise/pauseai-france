@@ -79,7 +79,6 @@
 				/>
 			</div>
 		</a>
-		<p>{t.footer.tagline}</p>
 	</div>
 	<div id="newsletter" class="newsletter-section">
 		<h2>{t.footer.newsletter_title}</h2>
@@ -111,22 +110,17 @@
 	<div class="footer-links">
 		<div class="column">
 			<h2>{t.footer.nav_title}</h2>
-			<a href="{prefix}/faq">{t.footer.faq}</a>
-			<a href="{prefix}/dangers">{t.footer.dangers}</a>
+			<a href="{prefix}#faq">{t.footer.faq}</a>
 			<a href="{prefix}/propositions">{t.footer.propositions}</a>
 			<a href="{prefix}/newsletters">{t.footer.newsletters}</a>
 			<a href="https://pauseia.substack.com/">{t.footer.blog}</a>
+			<ExternalLink href="https://fresquedesrisquesdelia.org/" target="_blank"
+				>{t.footer.fresque}</ExternalLink
+			>
 			<a href="{prefix}/agir">{t.footer.agir}</a>
 			<a href="{prefix}/dons">{t.footer.donner}</a>
 			<a href="{prefix}/rejoindre">{t.footer.rejoindre}</a>
 			<a href="{prefix}/qui-sommes-nous">{t.footer.qui_sommes_nous}</a>
-		</div>
-		<div class="column">
-			<h2>{t.footer.dangers_title}</h2>
-			<a href="{prefix}/dangers/economiques-et-materiels">{t.footer.dangers_eco}</a>
-			<a href="{prefix}/dangers/pour-les-individus">{t.footer.dangers_individus}</a>
-			<a href="{prefix}/dangers/pour-la-societe">{t.footer.dangers_societe}</a>
-			<a href="{prefix}/dangers/pour-l'humanite">{t.footer.dangers_humanite}</a>
 		</div>
 		<div class="column">
 			<h2>{t.footer.act_title}</h2>
@@ -142,6 +136,7 @@
 		<div class="column">
 			<h2>{t.footer.other_title}</h2>
 			<a href="{prefix}/presse">{t.footer.press}</a>
+			<a href="{prefix}/financements">{t.footer.funding}</a>
 			<a href="{prefix}/mentions-legales">{t.footer.legal}</a>
 			<a href="{prefix}/politique-de-confidentialite">{t.footer.privacy}</a>
 			<a href="{prefix}/charte-des-valeurs">{t.footer.values}</a>
@@ -154,7 +149,10 @@
 
 <style>
 	footer {
-		background-color: #ff9416;
+		/* Aplat orange de marque, identique dans les deux thèmes : le texte y
+		   est donc foncé et fixe (7,9:1), pas la couleur d'encre de la page. */
+		background-color: var(--brand);
+		color: var(--on-brand);
 		display: flex;
 		flex-direction: column;
 		gap: 2rem;
@@ -210,13 +208,6 @@
 		text-decoration: underline;
 	}
 
-	.brand p {
-		margin-top: 1rem;
-		margin-bottom: 0;
-		text-align: left;
-		font-style: italic;
-	}
-
 	/* Newsletter section styles */
 	.newsletter-section {
 		display: flex;
@@ -248,7 +239,7 @@
 		min-width: 180px;
 		padding: 0.6rem 0.75rem;
 		border: 2px solid rgba(0, 0, 0, 0.15);
-		border-radius: 0.375rem;
+		border-radius: var(--radius-sm);
 		font-size: 0.95rem;
 		font-family: inherit;
 		background: white;
@@ -271,7 +262,7 @@
 		background: black;
 		color: white;
 		border: none;
-		border-radius: 0.375rem;
+		border-radius: var(--radius-sm);
 		font-size: 0.95rem;
 		font-weight: 600;
 		font-family: inherit;
@@ -296,11 +287,17 @@
 	}
 
 	.newsletter-message.success {
-		color: #166534;
+		color: var(--success);
 	}
 
 	.newsletter-message.error {
-		color: #991b1b;
+		color: var(--error);
+	}
+
+	/* En mode sombre, app.css repasse le pied de page sur le fond de la page :
+	   le texte reprend alors l'encre courante, pas l'encre « sur orange ». */
+	:global([data-theme='dark']) footer {
+		color: var(--text);
 	}
 	@media (min-width: 480px) {
 		.footer-links {
@@ -386,13 +383,5 @@
 		background: var(--bg-card);
 		color: var(--text);
 		border: 1px solid var(--border);
-	}
-
-	:global([data-theme='dark']) .newsletter-message.success {
-		color: #4ade80;
-	}
-
-	:global([data-theme='dark']) .newsletter-message.error {
-		color: #f87171;
 	}
 </style>

@@ -20,7 +20,9 @@
 	onMount(() => {
 		openFromHash()
 		window.addEventListener('hashchange', openFromHash)
-		return () => window.removeEventListener('hashchange', openFromHash)
+		return () => {
+			window.removeEventListener('hashchange', openFromHash)
+		}
 	})
 </script>
 
@@ -44,7 +46,9 @@
 							</svg>
 						</span>
 					</summary>
-					<!-- Contenu toujours présent dans le HTML (visible des robots) -->
+					<!-- Contenu toujours présent dans le HTML (visible des robots).
+					     Le HTML vient de notre propre Markdown, pas d'une saisie tierce. -->
+					<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 					<div class="faq-answer">{@html item.answerHtml}</div>
 				</details>
 			{/each}
@@ -60,7 +64,7 @@
 	.faq-cat {
 		font-size: 1.3rem;
 		font-weight: 700;
-		color: var(--brand);
+		color: var(--brand-subtle);
 		margin: 2.5rem 0 1rem;
 		padding-bottom: 0.5rem;
 		border-bottom: 2px solid var(--brand);

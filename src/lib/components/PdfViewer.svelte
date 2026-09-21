@@ -40,7 +40,7 @@
 	.pdf-viewer {
 		width: 100%;
 		height: 500px;
-		border: 1px solid var(--color-border);
+		border: 1px solid var(--border);
 		border-radius: 4px;
 	}
 
@@ -74,6 +74,6 @@
 	}
 
 	.consent-widget :global(.alt) {
-		border: 1px solid black;
+		border: 1px solid var(--black);
 	}
 </style>

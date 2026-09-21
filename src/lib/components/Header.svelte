@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { getFeaturedCampaign } from '$lib/campaigns'
 	import NavDropdown from '$components/NavDropdown.svelte'
 	import Logo from '$components/Logo.svelte'
 	import { page } from '$app/stores'
@@ -20,9 +21,6 @@
 		$page.url.pathname == `/${lang}` ||
 		$page.url.pathname == `/${lang}/`
 	let bannerDismissed = false
-
-	// Hero has a light background — header stays dark on homepage
-	$: whiteNav = false && onHomepage && !scrolled
 
 	let open = false
 	let scrolled = false
@@ -71,18 +69,30 @@
 		open = false
 	}
 
-	type NavItem = { href: string; label: string; external?: boolean; muted?: boolean }
-	type NavGroup = { id: string; label: string; items: NavItem[] }
+	interface NavItem {
+		href: string
+		label: string
+		external?: boolean
+		muted?: boolean
+	}
+	interface NavGroup {
+		id: string
+		label: string
+		items: NavItem[]
+	}
 	let navGroups: NavGroup[]
 	$: navGroups = [
 		{
 			id: 'comprendre',
 			label: t.nav.comprendre,
 			items: [
-				{ href: `${prefix}/dangers`, label: t.nav.dangers },
+				{ href: `${prefix}#faq`, label: t.nav.faq },
 				{ href: `${prefix}/ressources`, label: t.nav.liens_utiles },
 				{ href: `${prefix}/newsletters`, label: t.nav.newsletter },
-				{ href: 'https://pauseia.substack.com/', label: t.nav.blog, external: true }
+				{ href: 'https://pauseia.substack.com/', label: t.nav.blog, external: true },
+				{ href: 'https://fresquedesrisquesdelia.org/', label: t.nav.fresque, external: true }
+				// « Les dangers de l'IA » est retiré du menu le temps de retravailler le
+				// discours. La route reste en place : les liens existants fonctionnent.
 			]
 		},
 		{
@@ -99,8 +109,9 @@
 			label: t.nav.campagnes,
 			items: [
 				{ href: `${prefix}/campagnes`, label: t.nav.toutes_campagnes },
-				{ href: `${prefix}/une-ia-sest-echappee`, label: t.nav.warning_shot },
-				{ href: `${prefix}/ecrire-a-mes-elus`, label: t.nav.ecrire_elus },
+				{ href: `${prefix}/perte-de-controle`, label: t.nav.perte_de_controle },
+				// « Une IA s'est échappée » est terminée : elle reste en ligne et
+				// listée sur /campagnes avec son bilan, mais quitte le menu.
 				{ href: `${prefix}/emploi-ia`, label: t.nav.emploi_ia }
 			]
 		},
@@ -139,7 +150,7 @@
 	function getSwitchLangHref(pathname: string, currentLang: string, other: string) {
 		const slugsFrom = DANGER_SLUGS[currentLang as 'fr' | 'en']
 		const slugsTo = DANGER_SLUGS[other as 'fr' | 'en']
-		if (slugsFrom && slugsTo) {
+		{
 			const dangerMatch = pathname.match(new RegExp(`^/${currentLang}/dangers/(.+)$`))
 			if (dangerMatch) {
 				const idx = slugsFrom.indexOf(dangerMatch[1])
@@ -151,6 +162,19 @@
 	}
 
 	$: switchLangHref = getSwitchLangHref($page.url.pathname, lang, otherLang)
+
+	// Le bandeau vient de Notion. Si le bouton est annoncé sans URL — ou si une
+	// URL est saisie sans libellé — on complète avec la campagne en cours
+	// plutôt que d'afficher un bouton mort ou de le faire disparaître.
+	$: featuredCampaign = getFeaturedCampaign()
+	$: bannerFallbackUrl = featuredCampaign ? `${prefix}/${featuredCampaign.slug}` : prefix
+	$: bannerLink =
+		$bannerStore.linkUrl || $bannerStore.linkText
+			? {
+					url: $bannerStore.linkUrl || bannerFallbackUrl,
+					text: $bannerStore.linkText || (lang === 'en' ? 'Take action' : 'Passer à l’action')
+				}
+			: null
 </script>
 
 <!--
@@ -170,17 +194,17 @@
 			on:close={() => (bannerDismissed = true)}
 		>
 			{$bannerStore.message}
-			{#if $bannerStore.linkUrl}
-				<a href={$bannerStore.linkUrl}>{$bannerStore.linkText}</a>
+			{#if bannerLink}
+				<a href={bannerLink.url}>{bannerLink.text}</a>
 			{/if}
 		</Banner>
 	</div>
 
 	{#if mounted || !onHomepage}
 		<nav in:fade={{ duration: 400, delay: 100 }} class:scrolled class:homepage={onHomepage}>
-			<a href={`${prefix}`} class="logo">
+			<a href={prefix} class="logo">
 				<div class="big-logo">
-					<Logo animate fill_pause={whiteNav ? 'white' : $theme === 'dark' ? 'white' : 'black'} />
+					<Logo animate fill_pause={$theme === 'dark' ? 'white' : 'black'} />
 				</div>
 				<div class="small-logo">
 					<Logo animate only_circle />
@@ -190,23 +214,23 @@
 			<div class="nav-right">
 				<div class="nav-links">
 					{#each navGroups as group}
-						<NavDropdown label={group.label} items={group.items} white={whiteNav} />
+						<NavDropdown label={group.label} items={group.items} />
 					{/each}
 					<!-- Séparateur vertical -->
-					<div class="nav-separator" class:on-hero={whiteNav} aria-hidden="true"></div>
+					<div class="nav-separator" aria-hidden="true"></div>
 					<!-- CTAs -->
 					<div class="nav-ctas">
 						<a
 							href={switchLangHref}
 							class="lang-toggle"
-							class:on-hero={whiteNav}
 							aria-label={otherLang === 'fr' ? 'Passer en français' : 'Switch to English'}
 							title={otherLang === 'fr' ? 'Français' : 'English'}>{otherLang.toUpperCase()}</a
 						>
 						<button
 							class="theme-toggle"
-							class:on-hero={whiteNav}
-							on:click={() => theme.toggle()}
+							on:click={() => {
+								theme.toggle()
+							}}
 							aria-label={$theme === 'dark' ? 'Passer en mode clair' : 'Passer en mode sombre'}
 							title={$theme === 'dark' ? 'Mode clair' : 'Mode sombre'}
 						>
@@ -248,12 +272,19 @@
 								</svg>
 							{/if}
 						</button>
-						<a href="/dons" class="btn-donate" class:on-hero={whiteNav}>Donner</a>
-						<a href="/rejoindre" class="btn-join" class:on-hero={whiteNav}>Rejoindre</a>
+						<a href="{prefix}/dons" class="btn-donate">Donner</a>
+						<a href="{prefix}/rejoindre" class="btn-join">Rejoindre</a>
 					</div>
 				</div>
 				<button
-					aria-label="Open mobile menu"
+					aria-label={open
+						? lang === 'en'
+							? 'Close menu'
+							: 'Fermer le menu'
+						: lang === 'en'
+							? 'Open menu'
+							: 'Ouvrir le menu'}
+					aria-expanded={open}
 					class="hamburger"
 					class:open
 					on:click={() => (open = !open)}
@@ -270,21 +301,21 @@
 							y="0"
 							height="2.5"
 							width="24"
-							fill={whiteNav ? 'white' : $theme === 'dark' ? 'white' : 'black'}
+							fill={$theme === 'dark' ? 'white' : 'black'}
 						/>
 						<rect
 							class="bar bar-mid"
 							y="10.75"
 							height="2.5"
 							width="24"
-							fill={whiteNav ? 'white' : $theme === 'dark' ? 'white' : 'black'}
+							fill={$theme === 'dark' ? 'white' : 'black'}
 						/>
 						<rect
 							class="bar bar-bot"
 							y="21.5"
 							height="2.5"
 							width="24"
-							fill={whiteNav ? 'white' : $theme === 'dark' ? 'white' : 'black'}
+							fill={$theme === 'dark' ? 'white' : 'black'}
 						/>
 					</svg>
 				</button>
@@ -331,6 +362,7 @@
 										on:click={closeMenu}
 										target={item.external ? '_blank' : undefined}
 										rel={item.external ? 'noopener noreferrer' : undefined}
+										class:muted={item.muted}
 										class:active={!item.href.startsWith('http') &&
 											($page.url.pathname === item.href ||
 												$page.url.pathname.startsWith(item.href + '/'))}
@@ -371,7 +403,9 @@
 						</a>
 						<button
 							class="sidebar-theme-toggle"
-							on:click={() => theme.toggle()}
+							on:click={() => {
+								theme.toggle()
+							}}
 							aria-label={$theme === 'dark' ? 'Passer en mode clair' : 'Passer en mode sombre'}
 						>
 							{#if $theme === 'dark'}
@@ -414,8 +448,9 @@
 								Mode sombre
 							{/if}
 						</button>
-						<a href="/dons" class="sidebar-cta" on:click={closeMenu}>Faire un don</a>
-						<a href="/rejoindre" class="sidebar-join" on:click={closeMenu}>Nous rejoindre</a>
+						<a href="{prefix}/dons" class="sidebar-cta" on:click={closeMenu}>Faire un don</a>
+						<a href="{prefix}/rejoindre" class="sidebar-join" on:click={closeMenu}>Nous rejoindre</a
+						>
 					</div>
 				</div>
 			</div>
@@ -425,7 +460,9 @@
 					class="sidebar-backdrop"
 					role="presentation"
 					on:click={closeMenu}
-					on:keydown={(e) => (e.key === 'Escape' || e.key === 'Enter') && closeMenu()}
+					on:keydown={(e) => {
+						if (e.key === 'Escape' || e.key === 'Enter') closeMenu()
+					}}
 					transition:fade={{ duration: 200 }}
 					use:portal
 				></div>
@@ -530,10 +567,6 @@
 		flex-shrink: 0;
 	}
 
-	.nav-separator.on-hero {
-		background: rgba(255, 255, 255, 0.4);
-	}
-
 	/* CTAs group (Donner + Rejoindre) */
 	.nav-ctas {
 		display: flex;
@@ -562,7 +595,7 @@
 	/* "Donner" — brand orange */
 	.btn-donate {
 		background: var(--brand);
-		color: white;
+		color: var(--on-brand);
 	}
 
 	.btn-donate:hover {
@@ -580,26 +613,6 @@
 	}
 
 	/* On hero (white text context): invert to semi-transparent white */
-	.btn-donate.on-hero {
-		background: rgba(255, 255, 255, 0.2);
-		color: white;
-		outline: 1.5px solid rgba(255, 255, 255, 0.5);
-		outline-offset: -1.5px;
-	}
-
-	.btn-donate.on-hero:hover {
-		background: rgba(255, 255, 255, 0.32);
-		opacity: 1;
-	}
-
-	.btn-join.on-hero {
-		background: white;
-		color: black;
-	}
-
-	.btn-join.on-hero:hover {
-		opacity: 0.88;
-	}
 
 	/* ─── Theme toggle ───────────────────────────────────────── */
 	.theme-toggle {
@@ -620,14 +633,6 @@
 
 	.theme-toggle:hover {
 		background: rgba(0, 0, 0, 0.08);
-	}
-
-	.theme-toggle.on-hero {
-		color: white;
-	}
-
-	.theme-toggle.on-hero:hover {
-		background: rgba(255, 255, 255, 0.15);
 	}
 
 	/* Dark mode: flip icon colors automatically via CSS currentColor */
@@ -658,14 +663,6 @@
 		background: rgba(0, 0, 0, 0.08);
 	}
 
-	.lang-toggle.on-hero {
-		color: white;
-	}
-
-	.lang-toggle.on-hero:hover {
-		background: rgba(255, 255, 255, 0.15);
-	}
-
 	:global([data-theme='dark']) .lang-toggle:hover {
 		background: rgba(255, 255, 255, 0.08);
 	}
@@ -686,7 +683,7 @@
 
 	.sidebar-lang-toggle:hover {
 		background: rgba(255, 148, 22, 0.1);
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
 	:global([data-theme='dark']) .sidebar-lang-toggle {
@@ -696,7 +693,7 @@
 
 	:global([data-theme='dark']) .sidebar-lang-toggle:hover {
 		background: rgba(255, 148, 22, 0.15);
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
 	.sidebar-theme-toggle {
@@ -718,7 +715,7 @@
 
 	.sidebar-theme-toggle:hover {
 		background: rgba(255, 148, 22, 0.1);
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
 	:global([data-theme='dark']) .sidebar-theme-toggle {
@@ -728,16 +725,21 @@
 
 	:global([data-theme='dark']) .sidebar-theme-toggle:hover {
 		background: rgba(255, 148, 22, 0.15);
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
 	.hamburger {
 		display: flex;
 		align-items: center;
+		justify-content: center;
 		cursor: pointer;
 		background: none;
 		border: none;
+		/* Cible tactile de 44 px : le dessin ne fait que 24 px. */
+		inline-size: 44px;
+		block-size: 44px;
 		padding: 0;
+		margin-inline-end: -10px;
 	}
 
 	/* ─── Hamburger → croix (morph) ──────────────────────────── */
@@ -907,10 +909,16 @@
 			color 0.1s;
 	}
 
+	.sidebar-subsection a.muted {
+		opacity: 0.62;
+		font-size: 0.9em;
+		font-style: italic;
+	}
+
 	.sidebar-subsection a:hover,
 	.sidebar-subsection a.active {
 		background: rgba(255, 148, 22, 0.1);
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
 	.ext-icon {
@@ -931,8 +939,8 @@
 		text-decoration: none;
 		text-align: center;
 		background: var(--brand);
-		color: white;
-		border-radius: 0.625rem;
+		color: var(--on-brand);
+		border-radius: var(--radius-btn);
 		padding: 0.8rem 1.5rem;
 		font-family: var(--font-heading);
 		font-weight: 700;
@@ -951,7 +959,7 @@
 		color: var(--white);
 		text-align: center;
 		padding: 0.8rem 1.5rem;
-		border-radius: 0.625rem;
+		border-radius: var(--radius-btn);
 		font-family: var(--font-heading);
 		font-weight: 700;
 		font-size: 1rem;

@@ -44,7 +44,7 @@
 	<div class="actions">
 		<Button href="/">Retour à l'accueil</Button>
 		{#if info.showPostsLink}
-			<Button href="/posts" alt>Voir les articles</Button>
+			<Button href="/fr/posts" alt>Voir les articles</Button>
 		{/if}
 	</div>
 </div>
@@ -65,7 +65,7 @@
 		font-size: 6rem;
 		font-weight: 700;
 		line-height: 1;
-		color: var(--brand);
+		color: var(--brand-subtle);
 		font-family: var(--font-heading);
 	}
 
@@ -76,7 +76,7 @@
 	}
 
 	.description {
-		color: var(--text-secondary, #676e7a);
+		color: var(--text-secondary);
 		font-size: 1.1rem;
 		max-width: 32rem;
 		margin: 0;

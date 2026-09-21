@@ -12,13 +12,17 @@ export default {
 		newsletter: 'Newsletter',
 		propositions: 'Que demandons-nous ?',
 		blog: 'Blog',
+		fresque: 'La fresque des risques de l’IA',
 		comment_agir: 'Comment agir ?',
 		groupes_locaux: 'Groupes locaux',
 		toutes_campagnes: 'Toutes nos campagnes',
 		geneve_2026: 'Genève 2026',
+		// Les libellés de campagne reprennent le slogan de la page, raccourci
+		// au minimum pour tenir dans le menu.
+		perte_de_controle: 'Au bord de la perte de contrôle',
 		warning_shot: 'Une IA s’est échappée',
 		ecrire_elus: 'Écrire aux élus et à la presse',
-		emploi_ia: 'Emploi et IA',
+		emploi_ia: 'L’IA ne détruira pas QUE votre emploi',
 		g7_2026: 'G7 2026',
 		municipales: 'Municipales 2026',
 		sommet: "Sommet de l'IA 2026",
@@ -32,7 +36,6 @@ export default {
 		nous_rejoindre: 'Nous rejoindre'
 	},
 	footer: {
-		tagline: "Pour une IA alignée sur l'humanité.",
 		newsletter_title: 'Newsletter',
 		newsletter_desc: "L'essentiel de l'actualité IA décrypté chaque mois",
 		newsletter_placeholder: 'votre@email.com',
@@ -49,15 +52,11 @@ export default {
 		propositions: 'Propositions',
 		newsletters: 'Newsletters',
 		blog: 'Blog',
+		fresque: 'La fresque des risques de l’IA',
 		agir: 'Agir',
 		donner: 'Donner',
 		rejoindre: 'Nous rejoindre',
 		qui_sommes_nous: 'Qui sommes-nous ?',
-		dangers_title: 'Dangers',
-		dangers_eco: 'Économiques et matériels',
-		dangers_individus: 'Pour les individus',
-		dangers_societe: 'Pour la société',
-		dangers_humanite: "Pour l'humanité",
 		act_title: 'Agir',
 		join_pauseia: 'Rejoindre Pause IA',
 		how_to_help: 'Comment pouvez-vous aider ?',
@@ -67,6 +66,7 @@ export default {
 		jobs: "Offres d'emploi",
 		other_title: 'Autres',
 		press: 'Presse',
+		funding: 'Financements',
 		legal: 'Mentions légales',
 		privacy: 'Politique de confidentialité',
 		values: 'Charte des valeurs',
@@ -244,6 +244,7 @@ export default {
 		next_page: 'Page suivante'
 	},
 	posts: {
+		title: 'Articles',
 		meta_title: 'Articles - Pause IA'
 	},
 	campagnes: {

@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { openActivoiceForm } from '$lib/activoice'
+	import { Badge } from '$components/ui'
 	import PostMeta from '$components/PostMeta.svelte'
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
 	import Button from '$lib/components/Button.svelte'
@@ -219,6 +221,12 @@
 		showCharterModal = true
 	}
 
+	// Seul un clic sur le fond ferme : un clic dans la boîte remonte jusqu'ici,
+	// on le distingue par sa cible.
+	function closeOnBackdrop(e: MouseEvent) {
+		if (e.target === e.currentTarget) closeModal()
+	}
+
 	function closeModal() {
 		showCharterModal = false
 		showGeneralModal = false
@@ -226,14 +234,10 @@
 	}
 
 	function openActivoice() {
-		const embedEl = document.getElementById(
-			'activoice-embed-1d572d9b_9638_4731_84c0_ce7fd867cccb'
-		) as any
-		if ((window as any).Activoice) {
-			;(window as any).Activoice.bootstrap().then(() => {
-				embedEl?.openWithId('1d572d9b-9638-4731-84c0-ce7fd867cccb')
-			})
-		}
+		void openActivoiceForm(
+			'activoice-embed-1d572d9b_9638_4731_84c0_ce7fd867cccb',
+			'1d572d9b-9638-4731-84c0-ce7fd867cccb'
+		)
 	}
 
 	function formatDate(dateStr: string): string {
@@ -309,10 +313,7 @@
 	<section class="signatories-section">
 		<div class="section-header">
 			<h2>{isEn ? 'Committed candidates' : 'Les candidat·es engagé·es'}</h2>
-			<span class="count-pill">
-				{candidates.length}
-				{isEn ? 'signatories' : 'signataires'}
-			</span>
+			<Badge>{candidates.length} {isEn ? 'signatories' : 'signataires'}</Badge>
 		</div>
 		<p class="section-intro">
 			{#if isEn}
@@ -326,7 +327,12 @@
 
 		<div class="candidates-grid">
 			{#each candidates as candidate}
-				<button class="candidate-card" on:click={() => openCandidate(candidate)}>
+				<button
+					class="candidate-card"
+					on:click={() => {
+						openCandidate(candidate)
+					}}
+				>
 					<div class="card-top">
 						<div class="candidate-info">
 							<span class="candidate-name">{candidate.name}</span>
@@ -372,7 +378,7 @@
 		<section class="press-section">
 			<div class="section-header">
 				<h2>{isEn ? 'Campaign press review' : 'Revue de presse de la campagne'}</h2>
-				<span class="count-pill">{pressArticles.length} articles</span>
+				<Badge>{pressArticles.length} articles</Badge>
 			</div>
 			<div class="press-list">
 				{#each pressArticles as article}
@@ -394,11 +400,9 @@
 
 <!-- Modal : Charte d'un candidat -->
 {#if showCharterModal && selectedCandidate}
-	<!-- svelte-ignore a11y-click-events-have-key-events -->
-	<div class="modal-overlay" on:click={closeModal}>
+	<div class="modal-overlay" role="presentation" on:click={closeOnBackdrop}>
 		<div
 			class="modal-content"
-			on:click|stopPropagation
 			role="dialog"
 			aria-modal="true"
 			aria-label={isEn
@@ -457,11 +461,9 @@
 
 <!-- Modal : Charte générale -->
 {#if showGeneralModal}
-	<!-- svelte-ignore a11y-click-events-have-key-events -->
-	<div class="modal-overlay" on:click={closeModal}>
+	<div class="modal-overlay" role="presentation" on:click={closeOnBackdrop}>
 		<div
 			class="modal-content modal-content--img"
-			on:click|stopPropagation
 			role="dialog"
 			aria-modal="true"
 			aria-label={isEn ? 'Pause AI Charter' : 'Charte Pause IA'}
@@ -485,7 +487,7 @@
 
 <style>
 	article {
-		max-inline-size: 62rem;
+		max-inline-size: var(--width-wide);
 		margin-inline: auto;
 		margin-top: 3rem;
 		padding: 0 2rem 4rem;
@@ -499,8 +501,8 @@
 	.intro {
 		font-size: 1.2rem;
 		line-height: 1.7;
-		color: var(--text-muted, #555);
-		max-width: 52rem;
+		color: var(--text-muted);
+		max-width: var(--width-content);
 	}
 
 	/* ── Section header pattern ── */
@@ -514,40 +516,29 @@
 	.section-header h2 {
 		margin: 0;
 		font-size: 1.75rem;
-		color: var(--text-heading, #111);
-	}
-
-	.count-pill {
-		background: var(--brand, #ff9416);
-		color: #fff;
-		font-size: 0.75rem;
-		font-weight: 700;
-		padding: 0.2rem 0.65rem;
-		border-radius: 999px;
-		white-space: nowrap;
-		flex-shrink: 0;
+		color: var(--text);
 	}
 
 	.section-intro {
 		font-size: 1rem;
 		line-height: 1.65;
-		color: var(--text-muted, #555);
+		color: var(--text-muted);
 		margin: 0 0 1.75rem;
-		max-width: 52rem;
+		max-width: var(--width-content);
 	}
 
 	h2 {
 		font-size: 1.75rem;
 		margin-top: 0;
 		margin-bottom: 1rem;
-		color: var(--text-heading, #111);
+		color: var(--text);
 	}
 
 	/* ── 1. Action section ── */
 	.action-section {
-		background: linear-gradient(135deg, #fff8f0 0%, #fff3e0 100%);
+		background: var(--bg-card);
 		border: 1px solid rgba(255, 148, 22, 0.25);
-		border-radius: 20px;
+		border-radius: var(--radius-lg);
 		padding: 2.5rem 2.5rem 2rem;
 		margin-bottom: 4rem;
 		box-shadow: 0 2px 16px rgba(255, 148, 22, 0.08);
@@ -561,9 +552,9 @@
 	.action-inner p {
 		font-size: 1.05rem;
 		line-height: 1.65;
-		color: var(--text-muted, #555);
+		color: var(--text-muted);
 		margin: 0 0 1.75rem;
-		max-width: 48rem;
+		max-width: var(--width-text);
 	}
 
 	.cta-container {
@@ -588,10 +579,10 @@
 		flex-direction: column;
 		gap: 1rem;
 		padding: 1.25rem 1.375rem;
-		background: #fff;
-		border: 1.5px solid #e8e8e8;
-		border-left: 4px solid var(--brand, #ff9416);
-		border-radius: 10px;
+		background: var(--bg-card);
+		border: 1.5px solid var(--border);
+		border-left: 4px solid var(--brand);
+		border-radius: var(--radius-md);
 		cursor: pointer;
 		text-align: left;
 		transition:
@@ -604,8 +595,8 @@
 	.candidate-card:hover {
 		transform: translateY(-3px);
 		box-shadow: 0 8px 28px rgba(0, 0, 0, 0.1);
-		border-color: var(--brand, #ff9416);
-		border-left-color: var(--brand, #ff9416);
+		border-color: var(--brand);
+		border-left-color: var(--brand-subtle);
 	}
 
 	.card-top {
@@ -623,7 +614,7 @@
 	.candidate-name {
 		font-size: 1rem;
 		font-weight: 700;
-		color: var(--text-heading, #111);
+		color: var(--text);
 		line-height: 1.3;
 	}
 
@@ -632,37 +623,40 @@
 		align-items: center;
 		gap: 0.3rem;
 		font-size: 0.85rem;
-		color: var(--text-secondary, #777);
+		color: var(--text-secondary);
 	}
 
 	.commitment-badge {
 		display: inline-block;
 		padding: 0.18rem 0.55rem;
-		border-radius: 999px;
+		border-radius: var(--radius-pill);
 		font-size: 0.72rem;
 		font-weight: 700;
 		width: fit-content;
 		letter-spacing: 0.01em;
 	}
 
+	/* Pastilles d'engagement : quatre teintes distinctes, mélangées au fond
+	   de la carte pour rester lisibles en clair comme en sombre. */
 	.badge-full {
-		background: #d1fae5;
-		color: #065f46;
+		--badge-hue: var(--hue-green);
 	}
 
 	.badge-high {
-		background: #dbeafe;
-		color: #1e40af;
+		--badge-hue: var(--hue-blue);
 	}
 
 	.badge-mid {
-		background: #fef9c3;
-		color: #854d0e;
+		--badge-hue: var(--hue-amber);
 	}
 
 	.badge-low {
-		background: #fce7f3;
-		color: #831843;
+		--badge-hue: var(--hue-pink);
+	}
+
+	.commitment-badge {
+		background: color-mix(in srgb, var(--badge-hue) 16%, var(--bg-card));
+		color: color-mix(in srgb, var(--badge-hue) 45%, var(--text));
 	}
 
 	.view-charter {
@@ -671,7 +665,7 @@
 		gap: 0.35rem;
 		font-size: 0.82rem;
 		font-weight: 600;
-		color: var(--brand, #ff9416);
+		color: var(--brand-subtle);
 		margin-top: auto;
 	}
 
@@ -692,11 +686,11 @@
 		align-items: center;
 		gap: 1.25rem;
 		padding: 1rem 1.25rem;
-		background: #fff;
-		border: 1px solid #e8e8e8;
-		border-radius: 10px;
+		background: var(--bg-card);
+		border: 1px solid var(--border);
+		border-radius: var(--radius-md);
 		text-decoration: none;
-		color: var(--text-heading, #111);
+		color: var(--text);
 		transition:
 			transform 0.18s ease,
 			box-shadow 0.18s ease,
@@ -706,8 +700,8 @@
 	.press-card:hover {
 		transform: translateX(3px);
 		box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-		border-color: var(--brand, #ff9416);
-		color: var(--text-heading, #111);
+		border-color: var(--brand);
+		color: var(--text);
 	}
 
 	.press-meta {
@@ -722,13 +716,13 @@
 		font-weight: 700;
 		text-transform: uppercase;
 		letter-spacing: 0.05em;
-		color: var(--brand, #ff9416);
+		color: var(--brand-subtle);
 		white-space: nowrap;
 	}
 
 	.press-date {
 		font-size: 0.78rem;
-		color: var(--text-secondary, #888);
+		color: var(--text-secondary);
 		white-space: nowrap;
 	}
 
@@ -736,18 +730,18 @@
 		font-size: 0.925rem;
 		font-weight: 500;
 		line-height: 1.4;
-		color: var(--text-heading, #111);
+		color: var(--text);
 	}
 
 	.press-link-icon {
 		font-size: 1.1rem;
-		color: var(--text-secondary, #aaa);
+		color: var(--text-secondary);
 		flex-shrink: 0;
 		transition: color 0.18s;
 	}
 
 	.press-card:hover .press-link-icon {
-		color: var(--brand, #ff9416);
+		color: var(--brand-subtle);
 	}
 
 	/* ── Modal ── */
@@ -769,8 +763,8 @@
 		width: min(92vw, 58rem);
 		height: 90vh;
 		max-height: 90vh;
-		background: #fff;
-		border-radius: 14px;
+		background: var(--bg-card);
+		border-radius: var(--radius-lg);
 		overflow: hidden;
 		box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
 		cursor: default;
@@ -789,8 +783,8 @@
 		justify-content: space-between;
 		gap: 1rem;
 		padding: 0.875rem 1.25rem;
-		border-bottom: 1px solid #eee;
-		background: #fafafa;
+		border-bottom: 1px solid var(--border);
+		background: var(--bg-secondary);
 		flex-shrink: 0;
 	}
 
@@ -803,7 +797,7 @@
 	}
 
 	.modal-city {
-		color: var(--text-secondary, #777);
+		color: var(--text-secondary);
 	}
 
 	.modal-badge {
@@ -812,8 +806,8 @@
 
 	.close-button {
 		background: transparent;
-		color: #555;
-		border: 1px solid #ddd;
+		color: var(--text-2);
+		border: 1px solid var(--border);
 		border-radius: 50%;
 		width: 2rem;
 		height: 2rem;
@@ -830,9 +824,9 @@
 	}
 
 	.close-button:hover {
-		background: #111;
-		color: #fff;
-		border-color: #111;
+		background: var(--text);
+		color: var(--bg);
+		border-color: var(--text);
 	}
 
 	.close-button--top {
@@ -840,7 +834,7 @@
 		top: 1rem;
 		right: 1rem;
 		background: rgba(0, 0, 0, 0.5);
-		color: white;
+		color: var(--on-dark);
 		border: none;
 		width: 2.5rem;
 		height: 2.5rem;
@@ -850,7 +844,7 @@
 
 	.close-button--top:hover {
 		background: rgba(0, 0, 0, 0.85);
-		color: white;
+		color: var(--on-dark);
 	}
 
 	.charter-engagements {
@@ -862,7 +856,7 @@
 
 	.engagements-intro {
 		font-size: 0.95rem;
-		color: var(--text-secondary, #555);
+		color: var(--text-secondary);
 		margin-bottom: 1.25rem;
 		font-style: italic;
 	}
@@ -883,14 +877,14 @@
 		font-size: 0.975rem;
 		line-height: 1.55;
 		padding: 0.75rem 1rem;
-		background: #fafafa;
-		border-left: 3px solid var(--brand, #ff9416);
+		background: var(--bg-secondary);
+		border-left: 3px solid var(--brand);
 		border-radius: 0 6px 6px 0;
 	}
 
 	.engagements-list li::before {
 		content: '✓';
-		color: var(--brand, #ff9416);
+		color: var(--brand-subtle);
 		font-weight: 700;
 		flex-shrink: 0;
 		margin-top: 0.05em;
@@ -910,7 +904,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		background: #f5f5f5;
+		background: var(--bg-secondary);
 		padding: 1rem;
 	}
 
@@ -945,7 +939,7 @@
 
 		.action-section {
 			padding: 1.5rem 1.25rem 1.5rem;
-			border-radius: 14px;
+			border-radius: var(--radius-lg);
 			margin-bottom: 2.5rem;
 		}
 

@@ -6,7 +6,7 @@
 	import { getT } from '$lib/i18n'
 	import toast from 'svelte-french-toast'
 
-	$: lang = ($page.params.lang as Lang) || 'fr'
+	$: lang = $page.params.lang as Lang
 	$: t = getT(lang)
 	$: frT = getT('fr')
 
@@ -40,10 +40,19 @@
 		'autres'
 	]
 
+	/**
+	 * Libellé d'un secteur d'activité dans la langue donnée. Les clés viennent
+	 * de la liste `sectors` ci-dessus, qui suit le dictionnaire.
+	 */
+	function sectorLabel(dict: ReturnType<typeof getT>, key: string): string {
+		const secteurs = dict.emploi_questionnaire.options.secteurs as Record<string, string>
+		return secteurs[key] ?? key
+	}
+
 	$: translatedSectors = sectors.map((key) => ({
 		key,
-		label: (t.emploi_questionnaire.options.secteurs as any)[key],
-		value: (frT.emploi_questionnaire.options.secteurs as any)[key]
+		label: sectorLabel(t, key),
+		value: sectorLabel(frT, key)
 	}))
 
 	let formData = {
@@ -155,7 +164,7 @@
 
 			if (response.ok) {
 				toast.success(t.emploi_questionnaire.toasts.success)
-				const lang = $page.data.lang || 'fr'
+				const lang = $page.data.lang as Lang
 				await goto(`/${lang}/emploi-ia/merci`)
 			} else {
 				toast.error(t.emploi_questionnaire.toasts.error)
@@ -947,7 +956,7 @@
 	.progress-step.active .step-number {
 		background-color: var(--brand);
 		border-color: var(--brand);
-		color: white;
+		color: var(--on-brand);
 	}
 
 	.step-label {
@@ -957,16 +966,16 @@
 	}
 
 	.progress-step.active .step-label {
-		color: var(--brand);
+		color: var(--brand-subtle);
 		font-weight: 500;
 	}
 
 	.form-section {
 		background-color: var(--bg);
 		padding: 2rem;
-		border-radius: 0.5rem;
+		border-radius: var(--radius-sm);
 		margin-bottom: 2rem;
-		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+		box-shadow: var(--shadow-card);
 	}
 
 	.form-group {
@@ -981,7 +990,7 @@
 	}
 
 	.required {
-		color: #dc2626;
+		color: var(--error);
 	}
 
 	input[type='text'],
@@ -1050,7 +1059,7 @@
 	.consent-checkbox {
 		background-color: var(--brand-light);
 		padding: 1rem;
-		border-radius: 0.5rem;
+		border-radius: var(--radius-sm);
 		border: 2px solid var(--brand);
 	}
 

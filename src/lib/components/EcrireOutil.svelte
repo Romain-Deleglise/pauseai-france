@@ -2,6 +2,7 @@
 	import PostMeta from '$components/PostMeta.svelte'
 	import Button from '$components/Button.svelte'
 	import Accordion from '$components/Accordion.svelte'
+	import { Landmark, Newspaper } from 'lucide-svelte'
 	import { onMount, createEventDispatcher } from 'svelte'
 	import { lookupElus, isSampleData, type Elu, type LookupResult } from '$lib/data/elus'
 	import { getEluAction, type FixedTarget } from '$lib/data/elu-actions'
@@ -15,6 +16,13 @@
 	export let embedded = false
 	// Gate souple : exige un nom avant de composer le mail (auto-complétion).
 	export let requireName = false
+	/**
+	 * Niveau des titres internes de l'outil. Sur sa page dédiée il ouvre la
+	 * hiérarchie sous le h1 et reste en h2 ; imbriqué dans une section qui a
+	 * déjà son h2 (page campagne), le passer en h3 évite un plan de document
+	 * où « Trouvez vos élus » devient frère du titre de la section hôte.
+	 */
+	export let headingLevel: 'h2' | 'h3' = 'h2'
 	$: isEn = lang === 'en'
 
 	const dispatch = createEventDispatcher()
@@ -31,17 +39,30 @@
 	// servirait l'action « default »). On lit donc ?action côté client au montage,
 	// puis l'action ciblée remplace l'action par défaut. Une action « fixed »
 	// cible des destinataires précis, sinon ce sont les élus de l'utilisateur.
+	// Une page campagne peut remplacer le contenu des deux outils par le sien
+	// (textes propres à la campagne) sans perdre les onglets élus / presse.
+	export let elusActionId = 'default'
+	export let presseActionId = 'medias'
+
 	let actionId: string | null = null
-	$: action = getEluAction(forcedActionId ?? actionId)
+	/** Outil actif quand l'URL n'impose pas d'action. */
+	let tool: 'elus' | 'presse' = 'elus'
+	$: defaultActionId = tool === 'elus' ? elusActionId : presseActionId
+	$: action = getEluAction(forcedActionId ?? actionId ?? defaultActionId)
 
 	// Deux outils principaux présentés en onglets sur la même page (élus / presse).
 	// Les campagnes ponctuelles (Genève, gouvernement…) gardent leur propre page :
 	// on n'affiche les onglets que pour ces deux actions « primaires ».
-	$: isPrimaryAction = action.id === 'default' || action.id === 'medias'
+	$: isPrimaryAction = action.id === elusActionId || action.id === presseActionId
 	$: isPress = !!action.press
-	function selectTool(id: 'default' | 'medias') {
-		if (action.id === id) return
-		actionId = id
+	function selectTool(which: 'elus' | 'presse') {
+		// Une instance imposée par la page ne change pas d'outil : sans ce garde,
+		// on réécrirait l'URL de la page hôte sans que l'outil bouge.
+		if (forcedActionId) return
+		if (tool === which && !actionId) return
+		tool = which
+		const id = which === 'elus' ? elusActionId : presseActionId
+		actionId = null
 		step = 1
 		selectedRecipient = null
 		// Met l'URL à jour pour que l'onglet actif soit partageable / rechargeable.
@@ -265,7 +286,7 @@
 		? isEn
 			? 'The MPs of your department'
 			: 'Les députés de votre département'
-		: (result?.deputes.length ?? 0) > 1
+		: result.deputes.length > 1
 			? isEn
 				? 'Your MPs (your city)'
 				: 'Vos députés (votre ville)'
@@ -278,13 +299,11 @@
 	//  - un code postal couvrant plusieurs circonscriptions (grandes villes) : on
 	//    sait seulement que l'utilisateur habite la ville → 'ville'
 	//  - un seul député pour ce code postal : circonscription certaine.
-	$: deputeScope = (
-		!result?.exactDeputes
-			? 'departement'
-			: (result?.deputes.length ?? 0) > 1
-				? 'ville'
-				: 'circonscription'
-	) as 'circonscription' | 'ville' | 'departement'
+	$: deputeScope = !result?.exactDeputes
+		? 'departement'
+		: result.deputes.length > 1
+			? 'ville'
+			: 'circonscription'
 
 	// Départements couvrant le code postal (en général un seul) : sert au
 	// géocodage fin dans le cas ambigu.
@@ -310,12 +329,15 @@
 			})()
 		: []
 
+	// Le type est nommé pour que les trois branches produisent le même, et que
+	// la comparaison sur `kind` reste possible dans le gabarit.
+	type RecipientGroupKind = 'fixed' | 'senateurs' | 'deputes'
 	$: recipientGroups =
 		action.targeting === 'fixed'
-			? action.fixedTargets && action.fixedTargets.length
+			? action.fixedTargets?.length
 				? [
 						{
-							kind: 'fixed' as const,
+							kind: 'fixed' as RecipientGroupKind,
 							title: action.targetsHeading
 								? isEn
 									? action.targetsHeading.en
@@ -330,12 +352,12 @@
 			: result
 				? [
 						{
-							kind: 'senateurs' as const,
+							kind: 'senateurs' as RecipientGroupKind,
 							title: isEn ? 'Your senators' : 'Vos sénateurs',
 							list: result.senateurs.map(fromElu)
 						},
 						{
-							kind: 'deputes' as const,
+							kind: 'deputes' as RecipientGroupKind,
 							title: deputeTitle,
 							list: deputeRecipients
 						}
@@ -478,7 +500,8 @@
 		hIdx: number,
 		fIdx: number,
 		bIdx: number,
-		aIdx: number
+		aIdx: number,
+		targetId?: string
 	): string[] {
 		const L = isEn ? 'en' : 'fr'
 		const ang = action.angles.find((a) => a.id === angleId) ?? action.angles[0]
@@ -490,7 +513,10 @@
 		const balance = balancePool[bIdx % balancePool.length]
 		const askPool = [action.ask, ...(action.asks ?? [])]
 		const ask = askPool[aIdx % askPool.length]
-		const paras = [hook[L], focus[L]]
+		// Note propre au destinataire (ce que sa rédaction a déjà publié, ou non),
+		// juste après l'accroche : le reste du message reste le même pour tous.
+		const note = targetId ? action.targetNotes?.[targetId] : undefined
+		const paras = note ? [hook[L], note[L], focus[L]] : [hook[L], focus[L]]
 		if (v === 'long') {
 			if (ang.complementLong) paras.push(ang.complementLong[L])
 			if (action.poll) paras.push(action.poll[L])
@@ -498,6 +524,10 @@
 		if (personal.trim()) paras.push(personal.trim())
 		paras.push(balance[L])
 		paras.push(ask[L])
+		// Conclusion facultative, tirée dans le même mouvement que l'appel.
+		if (action.closings?.length) {
+			paras.push(action.closings[aIdx % action.closings.length][L])
+		}
 		return paras
 	}
 
@@ -522,7 +552,8 @@
 				hookIndex,
 				focusIndex,
 				balanceIndex,
-				askIndex
+				askIndex,
+				r.id
 			),
 			signatureBlock(r)
 		].join('\n\n')
@@ -534,9 +565,23 @@
 		return `mailto:${r.email ?? ''}?${params.toString().replace(/\+/g, '%20')}`
 	}
 
-	// Liens de composition des webmails (fallback quand le client mailto: n'est pas
-	// configuré). Chacun accepte to/subject/bcc/body en query string.
-	function webmailHref(service: 'gmail' | 'outlook' | 'yahoo', r: Recipient): string {
+	// Webmails proposés en fallback quand le client mailto: n'est pas configuré.
+	// L'ordre est celui affiché sous le mail généré.
+	const WEBMAILS = [
+		{ id: 'gmail', label: 'Gmail' },
+		{ id: 'outlook', label: 'Outlook' },
+		{ id: 'proton', label: 'Proton Mail' },
+		{ id: 'yahoo', label: 'Yahoo' },
+		{ id: 'zoho', label: 'Zoho Mail' }
+	] as const
+	type Webmail = (typeof WEBMAILS)[number]['id']
+
+	// Liens de composition des webmails. Gmail/Outlook/Yahoo/Zoho acceptent
+	// to/subject/bcc/body en query string. Proton Mail n'expose pas de paramètres
+	// propres : il déclare un gestionnaire `mailto:` et attend l'URL mailto
+	// complète dans le paramètre `mailto` (c'est l'URL qu'il enregistre via
+	// registerProtocolHandler), ce qui préserve destinataire, objet, CCI et corps.
+	function webmailHref(service: Webmail, r: Recipient): string {
 		const to = encodeURIComponent(r.email ?? '')
 		const su = encodeURIComponent(subject)
 		const bcc = encodeURIComponent(BCC)
@@ -545,10 +590,14 @@
 			return `https://mail.google.com/mail/?view=cm&fs=1&to=${to}&su=${su}&bcc=${bcc}&body=${body}`
 		if (service === 'outlook')
 			return `https://outlook.live.com/mail/0/deeplink/compose?to=${to}&subject=${su}&bcc=${bcc}&body=${body}`
+		if (service === 'proton')
+			return `https://mail.proton.me/u/0/inbox?mailto=${encodeURIComponent(mailtoHref(r))}`
+		if (service === 'zoho')
+			return `https://mail.zoho.com/zm/#mail/compose?to=${to}&subject=${su}&bcc=${bcc}&body=${body}`
 		return `https://compose.mail.yahoo.com/?to=${to}&subject=${su}&bcc=${bcc}&body=${body}`
 	}
 
-	function openWebmail(service: 'gmail' | 'outlook' | 'yahoo') {
+	function openWebmail(service: Webmail) {
 		if (!selectedRecipient) return
 		markSent(selectedRecipient.id)
 		logIntent(selectedRecipient)
@@ -608,9 +657,23 @@
 	let sent = new Set<string>()
 	let mounted = false
 	onMount(() => {
-		if (!forcedActionId) actionId = new URLSearchParams(window.location.search).get('action')
+		const qs = new URLSearchParams(window.location.search)
+		if (!forcedActionId) actionId = qs.get('action')
+		// ?cp=75011 : le code postal saisi ailleurs (bande d'accueil) arrive
+		// pré-rempli et la recherche est lancée, pour que le visiteur voie
+		// directement son député au lieu de retaper ce qu'il vient de taper.
+		const cp = (qs.get('cp') ?? '').replace(/\s/g, '')
+		if (/^\d{5}$/.test(cp)) {
+			codePostal = cp
+			search()
+		}
 		try {
-			const u = JSON.parse(localStorage.getItem('elus-user') ?? '{}')
+			const u = JSON.parse(localStorage.getItem('elus-user') ?? '{}') as {
+				userName?: string
+				userVille?: string
+				userEmail?: string
+				personalSentence?: string
+			}
 			userName = u.userName ?? ''
 			userVille = u.userVille ?? ''
 			userEmail = u.userEmail ?? ''
@@ -622,7 +685,7 @@
 	})
 	function loadSent(key: string) {
 		try {
-			sent = new Set(JSON.parse(localStorage.getItem(key) ?? '[]'))
+			sent = new Set(JSON.parse(localStorage.getItem(key) ?? '[]') as string[])
 		} catch {
 			sent = new Set()
 		}
@@ -653,7 +716,7 @@
 	// `sendBeacon` survit à la navigation immédiate vers le client mail. Ce n'est
 	// pas une preuve d'envoi (c'est le clic) : le compteur fiable reste le BCC.
 	function logIntent(r: Recipient) {
-		if (typeof navigator === 'undefined' || !navigator.sendBeacon) return
+		if (typeof navigator === 'undefined' || typeof navigator.sendBeacon !== 'function') return
 		try {
 			const payload = JSON.stringify({
 				action: action.id,
@@ -740,11 +803,10 @@
 			</header>
 		{/if}
 
-		{#if isPrimaryAction}
+		<!-- Onglets masqués quand la page impose l'action (forcedActionId) : le
+		     clic serait sans effet, `action` étant calculé sur forcedActionId. -->
+		{#if isPrimaryAction && !forcedActionId}
 			<div class="tool-switch">
-				<span class="tool-switch-label"
-					>{isEn ? 'What do you want to do?' : 'Que voulez-vous faire ?'}</span
-				>
 				<div
 					class="tool-tabs"
 					role="tablist"
@@ -752,20 +814,24 @@
 				>
 					<button
 						role="tab"
-						class:active={action.id === 'default'}
-						aria-selected={action.id === 'default'}
-						on:click={() => selectTool('default')}
+						class:active={action.id === elusActionId}
+						aria-selected={action.id === elusActionId}
+						on:click={() => {
+							selectTool('elus')
+						}}
 					>
-						<span class="tab-emoji" aria-hidden="true">🏛️</span>
+						<span class="tab-icon"><Landmark size="1em" aria-hidden="true" /></span>
 						{isEn ? 'Write to my representatives' : 'Écrire à mes élus'}
 					</button>
 					<button
 						role="tab"
-						class:active={action.id === 'medias'}
-						aria-selected={action.id === 'medias'}
-						on:click={() => selectTool('medias')}
+						class:active={action.id === presseActionId}
+						aria-selected={action.id === presseActionId}
+						on:click={() => {
+							selectTool('presse')
+						}}
 					>
-						<span class="tab-emoji" aria-hidden="true">📰</span>
+						<span class="tab-icon"><Newspaper size="1em" aria-hidden="true" /></span>
 						{isEn ? 'Write to the press' : 'Écrire à la presse'}
 					</button>
 				</div>
@@ -773,13 +839,13 @@
 		{/if}
 
 		<section class="card">
-			<h2>
+			<svelte:element this={headingLevel} class="tool-heading">
 				<span class="step-num">1</span>{#if action.targeting === 'fixed'}{isEn
 						? 'Your recipients'
 						: 'Vos destinataires'}{:else}{isEn
 						? 'Find your representatives'
 						: 'Trouvez vos élus'}{/if}
-			</h2>
+			</svelte:element>
 
 			{#if action.targeting !== 'fixed'}
 				<form class="cp-form" on:submit|preventDefault={search}>
@@ -788,7 +854,7 @@
 						type="text"
 						inputmode="numeric"
 						maxlength="5"
-						placeholder={isEn ? 'Your postal code (e.g. 75011)' : 'Votre code postal (ex. 75011)'}
+						placeholder={isEn ? 'Postal code (e.g. 75011)' : 'Code postal (ex. 75011)'}
 						bind:value={codePostal}
 						aria-label={isEn ? 'Postal code' : 'Code postal'}
 					/>
@@ -802,6 +868,7 @@
 				<input
 					class="user-input"
 					type="text"
+					aria-label={isEn ? 'Your full name' : 'Votre nom complet'}
 					placeholder={isEn ? 'Your full name' : 'Votre nom complet'}
 					autocomplete="name"
 					bind:value={userName}
@@ -810,6 +877,7 @@
 				<input
 					class="user-input"
 					type="text"
+					aria-label={isEn ? 'Your town' : 'Votre ville'}
 					placeholder={isEn ? 'Your town' : 'Votre ville'}
 					bind:value={userVille}
 					on:input={saveUser}
@@ -878,8 +946,13 @@
 									? 'Next step: ask the press to cover the issue. It takes two more minutes.'
 									: 'Étape suivante : demandez à la presse d’en parler. Deux minutes de plus.'}
 							</p>
-							<Button on:click={() => selectTool('medias')}>
-								{isEn ? '📰 Write to the press' : '📰 Écrire à la presse'}
+							<Button
+								on:click={() => {
+									selectTool('presse')
+								}}
+							>
+								<Newspaper size="1em" aria-hidden="true" />
+								{isEn ? 'Write to the press' : 'Écrire à la presse'}
 							</Button>
 						</div>
 						<a class="join-link join-link--block" href={joinHref}>
@@ -970,7 +1043,12 @@
 												{/if}
 											</div>
 										</div>
-										<Button alt={sent.has(r.id)} on:click={() => choose(r)}>
+										<Button
+											alt={sent.has(r.id)}
+											on:click={() => {
+												choose(r)
+											}}
+										>
 											{#if sent.has(r.id)}
 												{isEn ? 'Written ✓' : 'Écrit ✓'}
 											{:else}
@@ -1002,7 +1080,8 @@
 							target="_blank"
 							rel="noopener noreferrer"
 						>
-							🏛️ {isEn ? 'Find my MP' : 'Trouver mon député'} · assemblee-nationale.fr
+							<Landmark size="1em" aria-hidden="true" />
+							{isEn ? 'Find my MP' : 'Trouver mon député'} · assemblee-nationale.fr
 						</a>
 						<a
 							class="find-btn"
@@ -1010,57 +1089,64 @@
 							target="_blank"
 							rel="noopener noreferrer"
 						>
-							🏛️ {isEn ? 'Find my senator(s)' : 'Trouver mon/mes sénateurs'} · senat.fr
+							<Landmark size="1em" aria-hidden="true" />
+							{isEn ? 'Find my senator(s)' : 'Trouver mon/mes sénateurs'} · senat.fr
 						</a>
 					</div>
 				</details>
 			{/if}
 		</section>
 
-		{#if !embedded}
-			<!-- Pourquoi c'est important -->
-			<section class="card prose">
-				<h2>{isEn ? 'Why it matters' : "Pourquoi c'est important"}</h2>
-				{#if isPress}
-					{#if isEn}
-						<p>
-							Newsrooms cover, first and foremost, what interests their readers. A sincere message
-							to the readers' desk or the newsroom signals that a topic matters to the public, and
-							it weighs on editorial choices. Unlike a comment on social media, it lands in an inbox
-							the team reads. A handful of reader messages is sometimes enough to inspire an article
-							or an investigation.
-						</p>
-					{:else}
-						<p>
-							Les rédactions couvrent d'abord ce qui intéresse leurs lecteurs. Un message sincère au
-							courrier des lecteurs ou à la rédaction signale qu'un sujet compte pour le public, et
-							il pèse sur les choix éditoriaux. Contrairement à un commentaire sur les réseaux, il
-							arrive dans une boite lue par l'équipe. Une poignée de messages de lecteurs suffit
-							parfois à inspirer un article ou une enquête.
-						</p>
-					{/if}
-				{:else if isEn}
+		<!-- Pourquoi c'est important. Affiché aussi en mode intégré : c'est ce qui
+		     justifie l'action, et sans lui la page campagne demande d'écrire sans
+		     dire pourquoi ça marche. -->
+		<section class="card prose">
+			<svelte:element this={headingLevel} class="tool-heading"
+				>{isEn ? 'Why it matters' : "Pourquoi c'est important"}</svelte:element
+			>
+			{#if isPress}
+				{#if isEn}
 					<p>
-						MPs and senators take their constituents' messages into account. A personal email (even
-						a short, sincere one) lands in a human inbox, gets read, and signals that a voter cares
-						about this issue. Unlike a petition or a social media post, it carries real weight. A
-						handful of emails from real citizens is often enough to put a topic on a committee's
-						agenda.
+						Newsrooms cover, first and foremost, what interests their readers. A sincere message to
+						the readers' desk or the newsroom signals that a topic matters to the public, and it
+						weighs on editorial choices. Unlike a comment on social media, it lands in an inbox the
+						team reads. A handful of reader messages is sometimes enough to inspire an article or an
+						investigation.
 					</p>
 				{:else}
 					<p>
-						Les députés et sénateurs prennent en compte les messages de leurs électeurs. Un email
-						personnel (même court et sincère) arrive dans une boite mail humaine, il est lu, et il
-						signale qu'un électeur se préoccupe du sujet. Contrairement à une pétition ou à un post
-						sur les réseaux, il a un vrai poids. Une poignée d'emails de vrais citoyens suffit
-						souvent à inscrire un sujet à l'ordre du jour d'une commission.
+						Les rédactions couvrent d'abord ce qui intéresse leurs lecteurs. Un message sincère au
+						courrier des lecteurs ou à la rédaction signale qu'un sujet compte pour le public, et il
+						pèse sur les choix éditoriaux. Contrairement à un commentaire sur les réseaux, il arrive
+						dans une boite lue par l'équipe. Une poignée de messages de lecteurs suffit parfois à
+						inspirer un article ou une enquête.
 					</p>
 				{/if}
-			</section>
+			{:else if isEn}
+				<p>
+					MPs and senators take their constituents' messages into account. A personal email (even a
+					short, sincere one) lands in a human inbox, gets read, and signals that a voter cares
+					about this issue. Unlike a petition or a social media post, it carries real weight. A
+					handful of emails from real citizens is often enough to put a topic on a committee's
+					agenda.
+				</p>
+			{:else}
+				<p>
+					Les députés et sénateurs prennent en compte les messages de leurs électeurs. Un email
+					personnel (même court et sincère) arrive dans une boite mail humaine, il est lu, et il
+					signale qu'un électeur se préoccupe du sujet. Contrairement à une pétition ou à un post
+					sur les réseaux, il a un vrai poids. Une poignée d'emails de vrais citoyens suffit souvent
+					à inscrire un sujet à l'ordre du jour d'une commission.
+				</p>
+			{/if}
+		</section>
 
-			<!-- FAQ -->
+		<!-- FAQ -->
+		{#if !embedded}
 			<section class="card faq">
-				<h2>{isEn ? 'FAQ' : 'Questions fréquentes'}</h2>
+				<svelte:element this={headingLevel} class="tool-heading"
+					>{isEn ? 'FAQ' : 'Questions fréquentes'}</svelte:element
+				>
 				{#if isPress}
 					<Accordion id="faq-p-difference" noHash>
 						<span slot="head">
@@ -1147,9 +1233,9 @@
 		</button>
 
 		<section class="card">
-			<h2>
+			<svelte:element this={headingLevel} class="tool-heading">
 				<span class="step-num">2</span>{isEn ? 'Your message' : 'Votre message'}
-			</h2>
+			</svelte:element>
 
 			<div class="recipient">
 				<span class="avatar avatar--lg">
@@ -1293,7 +1379,7 @@
 				<div class="email-body" id="email-body">
 					<p>{salutation(selectedRecipient)}</p>
 					<p>{introLine(selectedRecipient, userName, introIndex)}</p>
-					{#each buildParagraphs(angle, version, personalSentence, hookIndex, focusIndex, balanceIndex, askIndex) as para}
+					{#each buildParagraphs(angle, version, personalSentence, hookIndex, focusIndex, balanceIndex, askIndex, selectedRecipient.id) as para}
 						<p>{para}</p>
 					{/each}
 					<p>
@@ -1358,9 +1444,14 @@
 							: "Rien ne s'est ouvert ? Envoyez-le autrement"}
 					</summary>
 					<div class="webmail-links">
-						<button class="webmail-btn" on:click={() => openWebmail('gmail')}>Gmail</button>
-						<button class="webmail-btn" on:click={() => openWebmail('outlook')}>Outlook</button>
-						<button class="webmail-btn" on:click={() => openWebmail('yahoo')}>Yahoo</button>
+						{#each WEBMAILS as wm}
+							<button
+								class="webmail-btn"
+								on:click={() => {
+									openWebmail(wm.id)
+								}}>{wm.label}</button
+							>
+						{/each}
 					</div>
 					<p class="webmail-note">
 						{isEn
@@ -1455,7 +1546,7 @@
 
 <style>
 	article {
-		max-inline-size: 50rem;
+		max-inline-size: var(--width-content);
 		margin-inline: auto;
 		margin-top: 2.5rem;
 		padding: 0 1.25rem 5rem;
@@ -1469,6 +1560,13 @@
 		padding: 0;
 	}
 
+	/* Le retrait négatif de .tool-switch sert à le remonter sous le hero de la
+	   page dédiée. Intégré dans une section qui a déjà son titre, il collait au
+	   titre : on le neutralise. */
+	article.embedded .tool-switch {
+		margin-top: 0;
+	}
+
 	/* Sélecteur d'outil (élus / presse) : un vrai commutateur, sous le hero */
 	.tool-switch {
 		max-inline-size: 40rem;
@@ -1479,14 +1577,6 @@
 		gap: 0.6rem;
 	}
 
-	.tool-switch-label {
-		font-size: 0.75rem;
-		font-weight: 700;
-		text-transform: uppercase;
-		letter-spacing: 0.06em;
-		color: var(--text-secondary);
-	}
-
 	.tool-tabs {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
@@ -1494,7 +1584,7 @@
 		inline-size: 100%;
 		padding: 0.35rem;
 		border: 1px solid var(--border);
-		border-radius: 14px;
+		border-radius: var(--radius-lg);
 		background: var(--bg-card);
 	}
 
@@ -1505,7 +1595,7 @@
 		gap: 0.5rem;
 		padding: 0.85rem 1rem;
 		border: none;
-		border-radius: 10px;
+		border-radius: var(--radius-md);
 		background: transparent;
 		font-family: inherit;
 		font-size: 1rem;
@@ -1520,8 +1610,8 @@
 
 	.tool-tabs button.active {
 		background: var(--brand);
-		color: #1a1a1a;
-		box-shadow: 0 2px 8px rgba(255, 148, 22, 0.35);
+		color: var(--on-brand);
+		box-shadow: var(--shadow-brand);
 	}
 
 	.tool-tabs button:not(.active):hover {
@@ -1529,7 +1619,7 @@
 		color: var(--brand-subtle);
 	}
 
-	.tab-emoji {
+	.tab-icon {
 		font-size: 1.1rem;
 	}
 
@@ -1552,16 +1642,16 @@
 	}
 
 	.hero-inner {
-		max-inline-size: 44rem;
+		max-inline-size: var(--width-text);
 		margin-inline: auto;
 	}
 
 	.hero-band h1 {
-		font-size: clamp(2rem, 6vw, 3rem);
+		font-size: clamp(2rem, 5.5vw, 3rem);
 		font-weight: 800;
 		line-height: 1.05;
 		margin: 0 0 1rem;
-		color: #1a1a1a;
+		color: var(--on-brand);
 	}
 
 	.hero-sub {
@@ -1569,7 +1659,7 @@
 		line-height: 1.5;
 		margin: 0 auto;
 		max-inline-size: 36rem;
-		color: #3a2600;
+		color: var(--on-brand-muted);
 		font-weight: 500;
 	}
 
@@ -1577,13 +1667,13 @@
 	.card {
 		background: var(--bg);
 		border: 1px solid var(--border);
-		border-radius: 14px;
+		border-radius: var(--radius-lg);
 		padding: 1.75rem;
 		margin-bottom: 1.5rem;
-		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+		box-shadow: var(--shadow-card);
 	}
 
-	.card h2 {
+	.card :global(.tool-heading) {
 		display: flex;
 		align-items: center;
 		gap: 0.6rem;
@@ -1600,7 +1690,7 @@
 		block-size: 1.7rem;
 		border-radius: 50%;
 		background: var(--brand);
-		color: #1a1a1a;
+		color: var(--on-brand);
 		font-size: 0.95rem;
 		font-weight: 700;
 		flex-shrink: 0;
@@ -1618,13 +1708,13 @@
 		margin-bottom: 1.25rem;
 		padding: 0.9rem 1rem;
 		border: 1px solid var(--border);
-		border-radius: 10px;
+		border-radius: var(--radius-md);
 		background: var(--bg-subtle);
 		transition: border-color 0.15s ease;
 	}
 
 	.name-gate--error {
-		border-color: #d92d20;
+		border-color: var(--alert);
 	}
 
 	.name-gate-label {
@@ -1668,7 +1758,7 @@
 	}
 
 	.user-input.input-error {
-		border-color: #d92d20;
+		border-color: var(--alert);
 	}
 
 	/* Recherche code postal */
@@ -1684,7 +1774,7 @@
 		min-inline-size: 200px;
 		padding: 0.85rem 1rem;
 		border: 2px solid var(--border);
-		border-radius: 10px;
+		border-radius: var(--radius-md);
 		font-size: 1.05rem;
 		background: var(--bg);
 		color: var(--text);
@@ -1695,10 +1785,28 @@
 		border-color: var(--brand);
 	}
 
+	/* Sur mobile, les 200px minimum du champ code postal le faisaient occuper
+	   toute la ligne et poussaient « Rechercher » à la ligne suivante : le
+	   bouton se retrouvait coincé entre la recherche et les champs nom /
+	   ville, comme s'il les validait. */
+	@media (max-width: 520px) {
+		.cp-form {
+			flex-wrap: nowrap;
+		}
+
+		/* inline-size: 0 (la croissance flex reprend la place) : sans ça, la
+		   largeur intrinsèque du champ fixait un min-content de ~394px à la
+		   ligne non enroulable, et toute la page débordait horizontalement. */
+		.cp-input {
+			min-inline-size: 0;
+			inline-size: 0;
+		}
+	}
+
 	/* Notices */
 	.notice {
 		font-size: 0.9rem;
-		border-radius: 8px;
+		border-radius: var(--radius-sm);
 		padding: 0.6rem 0.85rem;
 		margin-top: 0.85rem;
 	}
@@ -1710,9 +1818,9 @@
 	}
 
 	.notice--error {
-		color: #c0392b;
-		background: #fdecee;
-		border: 1px solid #f6c6cc;
+		color: var(--error);
+		background: var(--error-bg);
+		border: 1px solid var(--error-border);
 	}
 
 	.notice--info {
@@ -1749,7 +1857,7 @@
 		font-weight: 600;
 		color: var(--brand-subtle);
 		background: var(--brand-light);
-		border-radius: 8px;
+		border-radius: var(--radius-sm);
 		padding: 0.6rem 0.85rem;
 	}
 
@@ -1783,7 +1891,7 @@
 		gap: 1rem;
 		padding: 0.8rem 1rem;
 		border: 1px solid var(--border);
-		border-radius: 10px;
+		border-radius: var(--radius-md);
 		background: var(--bg-card);
 		transition: opacity 0.15s;
 	}
@@ -1809,7 +1917,7 @@
 		color: var(--brand-subtle);
 		background: color-mix(in srgb, var(--brand) 16%, transparent);
 		padding: 0.1rem 0.5rem;
-		border-radius: 999px;
+		border-radius: var(--radius-pill);
 	}
 
 	/* Recherche fine de la circonscription (cas ambigu : grandes villes) */
@@ -1817,7 +1925,7 @@
 		margin-bottom: 1rem;
 		padding: 0.9rem 1rem;
 		border: 1px dashed var(--brand);
-		border-radius: 10px;
+		border-radius: var(--radius-md);
 		background: color-mix(in srgb, var(--brand) 5%, var(--bg));
 	}
 
@@ -1838,7 +1946,7 @@
 		min-inline-size: 12rem;
 		padding: 0.6rem 0.8rem;
 		border: 1px solid var(--border);
-		border-radius: 8px;
+		border-radius: var(--radius-sm);
 		font-size: 0.95rem;
 		font-family: inherit;
 		background: var(--bg);
@@ -1867,7 +1975,7 @@
 	}
 
 	.done-check {
-		color: #2a9d5c;
+		color: var(--success);
 		font-weight: 700;
 		margin-right: 0.35rem;
 	}
@@ -1947,7 +2055,7 @@
 		display: block;
 		padding: 0.65rem 0.9rem;
 		border: 1px solid var(--border);
-		border-radius: 8px;
+		border-radius: var(--radius-sm);
 		text-decoration: none;
 		color: var(--text);
 		background: var(--bg-card);
@@ -1981,7 +2089,7 @@
 		gap: 0.75rem;
 		padding: 0.85rem 1rem;
 		background: var(--brand-light);
-		border-radius: 10px;
+		border-radius: var(--radius-md);
 		margin-bottom: 1.25rem;
 	}
 
@@ -2037,7 +2145,7 @@
 	.segmented {
 		display: inline-flex;
 		border: 1px solid var(--border);
-		border-radius: 8px;
+		border-radius: var(--radius-sm);
 		overflow: hidden;
 	}
 
@@ -2052,7 +2160,7 @@
 
 	.segmented button.active {
 		background: var(--brand);
-		color: #1a1a1a;
+		color: var(--on-brand);
 		font-weight: 600;
 	}
 
@@ -2064,7 +2172,7 @@
 
 	.chip {
 		padding: 0.35rem 0.8rem;
-		border-radius: 999px;
+		border-radius: var(--radius-pill);
 		border: 1px solid var(--border);
 		background: var(--bg);
 		font-size: 0.8rem;
@@ -2076,7 +2184,7 @@
 	.chip.active {
 		border-color: var(--brand);
 		background: var(--brand);
-		color: #1a1a1a;
+		color: var(--on-brand);
 	}
 
 	.perso-field {
@@ -2152,7 +2260,7 @@
 		font-size: 0.82rem;
 		font-weight: 600;
 		padding: 0.4rem 0.8rem;
-		border-radius: 999px;
+		border-radius: var(--radius-pill);
 		cursor: pointer;
 		transition:
 			background-color 0.15s ease,
@@ -2167,7 +2275,7 @@
 	/* Aperçu email */
 	.email-preview {
 		border: 1px solid var(--border);
-		border-radius: 10px;
+		border-radius: var(--radius-md);
 		overflow: hidden;
 	}
 
@@ -2225,7 +2333,7 @@
 	.webmail-btn {
 		padding: 0.5rem 1rem;
 		border: 1px solid var(--border);
-		border-radius: 8px;
+		border-radius: var(--radius-sm);
 		background: var(--bg-card);
 		color: var(--text);
 		font-size: 0.88rem;
@@ -2305,7 +2413,7 @@
 	.newsletter-error {
 		margin-top: 0.5rem;
 		font-size: 0.82rem;
-		color: #c0392b;
+		color: var(--error);
 	}
 
 	.newsletter-done {
@@ -2323,7 +2431,7 @@
 		padding: 1.1rem 1.25rem;
 		border: 1px solid var(--brand);
 		background: var(--brand-light);
-		border-radius: 12px;
+		border-radius: var(--radius-md);
 	}
 
 	.after-send p {
@@ -2347,7 +2455,7 @@
 		margin-top: 1.1rem;
 		padding: 1rem 1.25rem;
 		border: 1px solid var(--brand);
-		border-radius: 12px;
+		border-radius: var(--radius-md);
 		background: var(--brand-light);
 		display: flex;
 		flex-direction: column;
@@ -2370,8 +2478,8 @@
 	}
 
 	/* Prose + FAQ (en boxes blanches comme les cartes d'étape) */
-	.prose h2,
-	.faq h2 {
+	.prose :global(.tool-heading),
+	.faq :global(.tool-heading) {
 		font-size: 1.3rem;
 		font-weight: 700;
 		margin: 0 0 1rem;

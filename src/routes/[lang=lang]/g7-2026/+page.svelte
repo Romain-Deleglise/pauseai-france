@@ -30,9 +30,7 @@
 			})
 		}
 
-		const existing = document.querySelector(
-			`script[src="${SCRIPT_SRC}"]`
-		) as HTMLScriptElement | null
+		const existing = document.querySelector(`script[src="${SCRIPT_SRC}"]`)
 		if (existing) {
 			if ((window as Window & { Activoice?: unknown }).Activoice) {
 				initEmbeds()
@@ -145,7 +143,7 @@
 
 <style>
 	article {
-		max-inline-size: 60rem;
+		max-inline-size: var(--width-wide);
 		margin-inline: auto;
 		margin-top: 3rem;
 		padding: 0 2rem;
@@ -189,18 +187,18 @@
 	.section-divider {
 		border: 0;
 		height: 4px;
-		background: var(--brand, #ff9416);
+		background: var(--brand);
 		border-radius: 2px;
 		margin: 3.5rem auto 1.5rem;
 		width: 12rem;
 	}
 
 	.embed-section {
-		background: #fafafa;
-		border-radius: 16px;
+		background: var(--bg-secondary);
+		border-radius: var(--radius-lg);
 		padding: 2rem;
-		border: 1px solid #eee;
-		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+		border: 1px solid var(--border);
+		box-shadow: var(--shadow-card);
 		margin-bottom: 5rem;
 	}
 

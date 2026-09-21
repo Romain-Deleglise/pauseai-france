@@ -1,13 +1,11 @@
 <script lang="ts">
 	import PostMeta from '$components/PostMeta.svelte'
 	import { ArrowLeft, ArrowRight, ExternalLink, Calendar, Maximize2, X } from 'lucide-svelte'
-	import { getT } from '$lib/i18n'
 	import type { PageData } from './$types'
 
 	export let data: PageData
 
 	$: lang = data.lang
-	$: t = getT(lang)
 	$: prefix = `/${lang}`
 
 	let fullscreen = false
@@ -67,6 +65,7 @@
 
 	<article class="pr-content">
 		{#if data.hasContent}
+			<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 			{@html data.content}
 		{:else}
 			<iframe
@@ -126,6 +125,7 @@
 		<div class="fullscreen-body">
 			{#if data.hasContent}
 				<div class="pr-content">
+					<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 					{@html data.content}
 				</div>
 			{:else}
@@ -150,7 +150,7 @@
 
 <style>
 	.page {
-		max-width: 52rem;
+		max-width: var(--width-content);
 		margin: 0 auto;
 		padding: 1.5rem 0.5rem 3rem;
 	}
@@ -163,20 +163,20 @@
 		display: inline-flex;
 		align-items: center;
 		gap: 0.375rem;
-		color: var(--text-secondary, #676e7a);
+		color: var(--text-secondary);
 		text-decoration: none;
 		font-size: 0.9375rem;
 		transition: color 0.2s;
 	}
 
 	.back-link:hover {
-		color: var(--brand, #ff9416);
+		color: var(--brand-subtle);
 	}
 
 	.pr-header {
 		margin-bottom: 2.5rem;
 		padding-bottom: 1.5rem;
-		border-bottom: 2px solid var(--border, #e5e7eb);
+		border-bottom: 2px solid var(--border);
 	}
 
 	.dept-badge {
@@ -185,9 +185,9 @@
 		margin-bottom: 0.75rem;
 		font-size: 0.8rem;
 		font-weight: 700;
-		color: var(--brand, #ff9416);
+		color: var(--brand-subtle);
 		background-color: rgba(255, 148, 22, 0.1);
-		border: 1px solid var(--brand, #ff9416);
+		border: 1px solid var(--brand);
 		border-radius: 0.25rem;
 	}
 
@@ -209,7 +209,7 @@
 		display: flex;
 		align-items: center;
 		gap: 0.375rem;
-		color: var(--text-secondary, #676e7a);
+		color: var(--text-secondary);
 		font-size: 0.9375rem;
 	}
 
@@ -217,14 +217,14 @@
 		display: inline-flex;
 		align-items: center;
 		gap: 0.375rem;
-		color: var(--text-secondary, #676e7a);
+		color: var(--text-secondary);
 		text-decoration: none;
 		font-size: 0.875rem;
 		transition: color 0.2s;
 	}
 
 	.original-link:hover {
-		color: var(--brand, #ff9416);
+		color: var(--brand-subtle);
 	}
 
 	.pr-content {
@@ -255,7 +255,7 @@
 
 	/* Links */
 	.pr-content :global(a) {
-		color: var(--brand, #ff9416);
+		color: var(--brand-subtle);
 	}
 
 	.pr-content :global(a:hover) {
@@ -265,8 +265,8 @@
 	.pr-iframe {
 		width: 100%;
 		min-height: 80vh;
-		border: 1px solid var(--border, #e5e7eb);
-		border-radius: 0.5rem;
+		border: 1px solid var(--border);
+		border-radius: var(--radius-sm);
 	}
 
 	.pr-nav {
@@ -274,7 +274,7 @@
 		gap: 1rem;
 		margin-top: 3rem;
 		padding-top: 2rem;
-		border-top: 2px solid var(--border, #e5e7eb);
+		border-top: 2px solid var(--border);
 	}
 
 	.nav-link-wrapper {
@@ -291,11 +291,11 @@
 		align-items: flex-start;
 		gap: 0.5rem;
 		text-decoration: none;
-		color: var(--text, #1a1a1a);
+		color: var(--text);
 		padding: 0.75rem 1rem;
-		border-radius: 0.5rem;
-		border: 1px solid var(--border, #e5e7eb);
-		background: var(--bg-card, #f9f9f9);
+		border-radius: var(--radius-sm);
+		border: 1px solid var(--border);
+		background: var(--bg-card);
 		transition:
 			background 0.2s,
 			border-color 0.2s,
@@ -304,9 +304,9 @@
 	}
 
 	.nav-link:hover {
-		background: var(--bg, #fff);
-		border-color: var(--brand, #ff9416);
-		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+		background: var(--bg);
+		border-color: var(--brand);
+		box-shadow: var(--shadow-card);
 	}
 
 	.nav-next {
@@ -323,7 +323,7 @@
 
 	.nav-direction {
 		font-size: 0.8125rem;
-		color: var(--text-secondary, #676e7a);
+		color: var(--text-secondary);
 		text-transform: uppercase;
 		letter-spacing: 0.03em;
 		font-weight: 600;
@@ -343,7 +343,7 @@
 	.pr-footer {
 		margin-top: 1.5rem;
 		padding-top: 1.5rem;
-		border-top: 1px solid var(--border, #e5e7eb);
+		border-top: 1px solid var(--border);
 	}
 
 	.fullscreen-btn {
@@ -354,8 +354,8 @@
 		height: 3rem;
 		border-radius: 50%;
 		border: none;
-		background: var(--brand, #ff9416);
-		color: white;
+		background: var(--brand);
+		color: var(--on-brand);
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -376,7 +376,7 @@
 		position: fixed;
 		inset: 0;
 		z-index: 100;
-		background: var(--bg, #fff);
+		background: var(--bg);
 		display: flex;
 		flex-direction: column;
 		overflow: hidden;
@@ -388,7 +388,7 @@
 		justify-content: space-between;
 		gap: 0.75rem;
 		padding: 0.75rem 1rem;
-		border-bottom: 1px solid var(--border, #e5e7eb);
+		border-bottom: 1px solid var(--border);
 		flex-shrink: 0;
 	}
 
@@ -411,13 +411,13 @@
 		border-radius: 50%;
 		border: none;
 		background: transparent;
-		color: var(--text-secondary, #676e7a);
+		color: var(--text-secondary);
 		cursor: pointer;
 		transition: background 0.2s;
 	}
 
 	.fullscreen-close:hover {
-		background: var(--border, #e5e7eb);
+		background: var(--border);
 	}
 
 	.fullscreen-body {

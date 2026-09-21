@@ -31,17 +31,14 @@
 	}
 
 	a.c2a {
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
 	a.active {
-		color: var(--brand);
-	}
-	a.white {
-		color: white;
+		color: var(--brand-subtle);
 	}
 	a:hover {
-		color: var(--brand);
+		color: var(--brand-subtle);
 		/*text-decoration: underline;*/
 	}
 	@media (min-width: 1024px) {

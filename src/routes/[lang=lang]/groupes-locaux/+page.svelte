@@ -87,7 +87,7 @@
 	let events: LocalEvent[] = []
 	// Carte chargée en différé, mais suffisamment en avance (grande marge) pour
 	// qu'elle soit déjà prête quand l'utilisateur arrive dessus.
-	let mapSection: HTMLElement
+	let mapSection: HTMLElement | undefined
 	let showMap = false
 	onMount(async () => {
 		if (mapSection && 'IntersectionObserver' in window) {
@@ -106,7 +106,7 @@
 		}
 		try {
 			const res = await fetch('/api/events')
-			if (res.ok) events = await res.json()
+			if (res.ok) events = (await res.json()) as LocalEvent[]
 		} catch {
 			/* agenda indisponible : la page reste fonctionnelle */
 		}
@@ -116,7 +116,7 @@
 		// défilement, ce qui évite l'attente du transcodage à froid de Netlify.
 		if (typeof Image !== 'undefined') {
 			for (const e of events) {
-				if (!e.images?.length) continue
+				if (!e.images.length) continue
 				if (e.featured) {
 					// Toutes les photos du carrousel : la navigation devient instantanée.
 					for (const img of e.images) {
@@ -194,7 +194,7 @@
 	<section class="impact-section">
 		<div class="impact-card">
 			<Megaphone size="1.6rem" />
-			<h3>{isEn ? 'Demonstrations & gatherings' : 'Manifestations & rassemblements'}</h3>
+			<h2>{isEn ? 'Demonstrations & gatherings' : 'Manifestations & rassemblements'}</h2>
 			<p>
 				{isEn
 					? 'Carry the message into the street, in several cities at once, to make the risks of AI visible.'
@@ -203,7 +203,7 @@
 		</div>
 		<div class="impact-card">
 			<Users size="1.6rem" />
-			<h3>{isEn ? 'Leafleting & outreach' : 'Tractage & sensibilisation'}</h3>
+			<h2>{isEn ? 'Leafleting & outreach' : 'Tractage & sensibilisation'}</h2>
 			<p>
 				{isEn
 					? 'Meet the public, hand out leaflets and start conversations to grow awareness on the ground.'
@@ -212,7 +212,7 @@
 		</div>
 		<div class="impact-card">
 			<Newspaper size="1.6rem" />
-			<h3>{isEn ? 'Press coverage' : 'Retombées presse'}</h3>
+			<h2>{isEn ? 'Press coverage' : 'Retombées presse'}</h2>
 			<p>
 				{#if isEn}
 					These actions draw local media and give the movement real visibility. <a
@@ -415,14 +415,18 @@
 									{#if e.images.length > 1}
 										<button
 											class="gallery-nav prev"
-											on:click={() => galStep(e.id, e.images.length, -1)}
+											on:click={() => {
+												galStep(e.id, e.images.length, -1)
+											}}
 											aria-label={isEn ? 'Previous photo' : 'Photo précédente'}
 										>
 											<ChevronLeft size="1.2em" />
 										</button>
 										<button
 											class="gallery-nav next"
-											on:click={() => galStep(e.id, e.images.length, 1)}
+											on:click={() => {
+												galStep(e.id, e.images.length, 1)
+											}}
 											aria-label={isEn ? 'Next photo' : 'Photo suivante'}
 										>
 											<ChevronRight size="1.2em" />
@@ -523,7 +527,7 @@
 
 <style>
 	article {
-		max-inline-size: 62rem;
+		max-inline-size: var(--width-wide);
 		margin-inline: auto;
 		margin-top: 3rem;
 		padding: 0 2rem;
@@ -540,7 +544,7 @@
 		font-size: 1.2rem;
 		color: var(--text-muted);
 		line-height: 1.65;
-		max-inline-size: 48rem;
+		max-inline-size: var(--width-text);
 	}
 
 	.hero-actions {
@@ -551,7 +555,7 @@
 	   en page, avec une légère animation d'attente. */
 	.map-placeholder {
 		height: 500px;
-		border-radius: 16px;
+		border-radius: var(--radius-lg);
 		background: linear-gradient(
 			100deg,
 			var(--brand-light) 30%,
@@ -606,10 +610,10 @@
 	}
 
 	.stat-num {
-		font-size: clamp(2.4rem, 5vw, 3rem);
+		font-size: clamp(2rem, 5.5vw, 3rem);
 		font-weight: 800;
 		line-height: 1;
-		color: var(--brand);
+		color: var(--brand-subtle);
 		letter-spacing: -0.02em;
 	}
 
@@ -644,15 +648,15 @@
 	.impact-card {
 		padding: 1.5rem 1.5rem 1.6rem;
 		border: 1px solid var(--border);
-		border-radius: 14px;
+		border-radius: var(--radius-lg);
 		background: var(--bg-card);
 	}
 
 	.impact-card :global(svg) {
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
-	.impact-card h3 {
+	.impact-card h2 {
 		margin: 0.6rem 0 0.4rem;
 		font-size: 1.1rem;
 	}
@@ -685,7 +689,7 @@
 		align-items: center;
 		gap: 0.4rem;
 		padding: 0.35rem 0.8rem;
-		border-radius: 999px;
+		border-radius: var(--radius-pill);
 		border: 1px solid var(--border);
 		background: var(--bg-card);
 		font-size: 0.88rem;
@@ -719,7 +723,7 @@
 	}
 
 	.section-title-row :global(.section-icon) {
-		color: var(--brand);
+		color: var(--brand-subtle);
 		flex-shrink: 0;
 	}
 
@@ -746,7 +750,7 @@
 		padding: 1rem 1.25rem;
 		border: 1px solid var(--border);
 		border-left: 4px solid var(--brand);
-		border-radius: 12px;
+		border-radius: var(--radius-md);
 		background: var(--bg-card);
 	}
 
@@ -783,7 +787,7 @@
 	}
 
 	.event-body small :global(svg) {
-		color: var(--brand);
+		color: var(--brand-subtle);
 		flex-shrink: 0;
 	}
 
@@ -796,9 +800,9 @@
 
 	.event-cta {
 		padding: 0.45rem 1rem;
-		border-radius: 8px;
+		border-radius: var(--radius-sm);
 		background: var(--brand);
-		color: #1a1a1a;
+		color: var(--on-brand);
 		font-size: 0.88rem;
 		font-weight: 600;
 		text-decoration: none;
@@ -903,7 +907,7 @@
 		align-items: center;
 		justify-content: center;
 		background: var(--brand);
-		color: #1a1a1a;
+		color: var(--on-brand);
 	}
 
 	/* Carte */
@@ -911,7 +915,7 @@
 		flex: 1 1 auto;
 		min-inline-size: 0;
 		border: 1px solid var(--border);
-		border-radius: 14px;
+		border-radius: var(--radius-lg);
 		overflow: hidden;
 		background: var(--bg-card);
 		transition:
@@ -962,7 +966,7 @@
 		inline-size: 8rem;
 		block-size: 8rem;
 		margin: 0.65rem;
-		border-radius: 10px;
+		border-radius: var(--radius-md);
 		overflow: hidden;
 		background: var(--brand-light);
 		flex-shrink: 0;
@@ -981,7 +985,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		color: var(--brand);
+		color: var(--brand-subtle);
 		opacity: 0.5;
 	}
 
@@ -1010,9 +1014,9 @@
 		align-items: center;
 		gap: 0.3rem;
 		background: var(--brand);
-		color: #1a1a1a;
+		color: var(--on-brand);
 		padding: 0.12rem 0.55rem;
-		border-radius: 999px;
+		border-radius: var(--radius-pill);
 		font-size: 0.7rem;
 		text-transform: uppercase;
 		letter-spacing: 0.03em;
@@ -1116,7 +1120,7 @@
 		inline-size: 100%;
 		min-block-size: 0;
 		overflow: hidden;
-		border-radius: 12px;
+		border-radius: var(--radius-md);
 	}
 
 	.feature-main-bg {
@@ -1149,7 +1153,7 @@
 		border: none;
 		border-radius: 50%;
 		background: rgba(0, 0, 0, 0.45);
-		color: #fff;
+		color: var(--on-dark);
 		cursor: pointer;
 		transition: background 0.15s;
 	}
@@ -1172,9 +1176,9 @@
 		bottom: 0.5rem;
 		right: 0.5rem;
 		padding: 0.08rem 0.5rem;
-		border-radius: 999px;
+		border-radius: var(--radius-pill);
 		background: rgba(0, 0, 0, 0.55);
-		color: #fff;
+		color: var(--on-dark);
 		font-size: 0.72rem;
 		font-weight: 600;
 	}
@@ -1219,7 +1223,7 @@
 		color: var(--brand-subtle);
 		background: var(--brand-light);
 		padding: 0.2rem 0.6rem;
-		border-radius: 999px;
+		border-radius: var(--radius-pill);
 	}
 
 	.show-all-btn {
@@ -1227,7 +1231,7 @@
 		margin: 1.25rem auto 0;
 		padding: 0.55rem 1.4rem;
 		border: 1px solid var(--brand);
-		border-radius: 999px;
+		border-radius: var(--radius-pill);
 		background: transparent;
 		color: var(--brand-subtle);
 		font-size: 0.9rem;
@@ -1250,7 +1254,7 @@
 
 	.cta-card {
 		padding: 2.25rem 2rem;
-		border-radius: 20px;
+		border-radius: var(--radius-lg);
 		text-align: center;
 		display: flex;
 		flex-direction: column;
@@ -1270,7 +1274,7 @@
 
 	.cta-card.create {
 		background: var(--brand);
-		color: white;
+		color: var(--on-brand);
 	}
 
 	.cta-icon {
@@ -1281,12 +1285,12 @@
 		block-size: 3.2rem;
 		border-radius: 50%;
 		background: color-mix(in srgb, var(--brand) 18%, transparent);
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
 	.cta-card.create .cta-icon {
 		background: rgba(255, 255, 255, 0.22);
-		color: white;
+		color: var(--on-dark);
 	}
 
 	.cta-card h2 {
@@ -1324,7 +1328,7 @@
 	}
 
 	.map-title-row :global(.map-pin-icon) {
-		color: var(--brand, #ff9416);
+		color: var(--brand-subtle);
 		flex-shrink: 0;
 	}
 
@@ -1338,19 +1342,19 @@
 
 	.map-stat {
 		font-weight: 600;
-		color: var(--brand, #ff9416);
+		color: var(--brand-subtle);
 	}
 
 	.map-stat.forming {
-		color: var(--text-secondary, #888);
+		color: var(--text-secondary);
 	}
 
 	.map-sep {
-		color: var(--border, #d1d5db);
+		color: var(--border);
 	}
 
 	.map-hint {
-		color: var(--text-secondary, #888);
+		color: var(--text-secondary);
 	}
 
 	/* ── Responsive ───────────────────────────────────────────────────── */

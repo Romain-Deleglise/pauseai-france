@@ -12,19 +12,29 @@ import {
 // proviennent désormais des images de src/assets/emploi-ia/temoignages/, plus de Notion.
 
 const notion = new Client({
-	auth: process.env.NOTION_TOKEN as string
+	auth: process.env.NOTION_TOKEN
 })
 
-function isPageWithProperties(result: PageObjectResponse | any): result is PageObjectResponse {
+/**
+ * Une requête Notion peut renvoyer des pages partielles (sans propriétés) :
+ * on ne garde que les complètes.
+ */
+function isPageWithProperties(result: { object: string }): result is PageObjectResponse {
 	return result.object === 'page' && 'properties' in result
 }
 
 export const prerender = false
 
 export async function load() {
+	const dataSourceId = process.env.ARTICLE_SHOWCASE_ID
+	if (!dataSourceId) {
+		console.error('ARTICLE_SHOWCASE_ID manquant : revue de presse non chargée.')
+		return { articleShowcaseItems: [] }
+	}
+
 	try {
 		const articleShowcase_datasource = await notion.dataSources.query({
-			data_source_id: process.env.ARTICLE_SHOWCASE_ID as string
+			data_source_id: dataSourceId
 		})
 
 		const articleShowcaseItems = articleShowcase_datasource.results

@@ -7,7 +7,7 @@
 
 	export let lang: Lang = 'fr'
 
-	$: prefix = lang === 'en' ? '/en' : ''
+	$: prefix = lang === 'en' ? '/en' : '/fr'
 	const label_id = 'lead-title'
 </script>
 
@@ -48,9 +48,7 @@
 					remains a beneficial tool for humanity.
 				</p>
 				<div class="buttons" in:fly={{ y: 20, duration: 300, delay: 700 }}>
-					<Button href="{prefix}/dangers">Learn more</Button>
 					<Button href="{prefix}/rejoindre">Join us</Button>
-					<Button href="{prefix}/agir">Take action</Button>
 				</div>
 			{:else}
 				<p>
@@ -79,9 +77,7 @@
 					un futur où l'IA demeure un outil bénéfique pour l'humanité.
 				</p>
 				<div class="buttons" in:fly={{ y: 20, duration: 300, delay: 700 }}>
-					<Button href="/dangers">Informez-vous</Button>
-					<Button href="/rejoindre">Rejoignez-nous</Button>
-					<Button href="/agir">Passez à l'action</Button>
+					<Button href="{prefix}/rejoindre">Rejoignez-nous</Button>
 				</div>
 			{/if}
 		</div>
@@ -91,7 +87,7 @@
 <style>
 	.lead {
 		align-self: center;
-		max-width: 60rem;
+		max-width: var(--width-wide);
 		display: flex;
 		flex-direction: column;
 		align-items: center;

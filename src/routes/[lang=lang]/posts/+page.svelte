@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { getT } from '$lib/i18n'
+	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
 	import type { PageData } from './$types'
 
 	export let data: PageData
@@ -15,6 +16,7 @@
 </svelte:head>
 
 <section>
+	<UnderlinedTitle as="h1">{t.posts.title}</UnderlinedTitle>
 	<ul class="posts">
 		{#each posts as { slug, title, description }}
 			<li class="post">
@@ -47,6 +49,6 @@
 	}
 
 	.description {
-		margin-top: var(--size-3);
+		margin-top: 0.5rem;
 	}
 </style>

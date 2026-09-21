@@ -2,7 +2,7 @@ import { getPosts } from '$lib/api'
 import type { PageLoad } from './$types'
 
 export const load: PageLoad = ({ params }) => {
-	const lang = params.lang as 'fr' | 'en'
+	const lang = params.lang
 	// La FAQ a sa propre page (/faq) : exclue du blog (contenu dupliqué).
 	const posts = getPosts('', lang).filter(
 		(p) =>

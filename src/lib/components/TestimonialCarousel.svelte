@@ -1,6 +1,6 @@
 <script lang="ts">
 	import CarouselNavigation from '$components/CarouselNavigation.svelte'
-	import { formatFrenchDate, formatDate } from '$lib/utils'
+	import { formatDate } from '$lib/utils'
 	import type { Testimonial } from '$lib/types'
 	import type { Lang } from '$lib/i18n'
 	import { getT } from '$lib/i18n'
@@ -97,9 +97,8 @@
 <style>
 	:global(body) {
 		--carousel-background: var(--bg-subtle);
-		--carousel-border: #d9c7b0;
 		--carousel-text: var(--text);
-		--carousel-accent: #ff9416;
+		--carousel-accent: var(--brand);
 	}
 
 	:global([data-theme='dark']) {
@@ -109,7 +108,7 @@
 	.slide {
 		background: var(--bg);
 		border-radius: 18px;
-		border: 1px solid var(--carousel-border, #d9c7b0);
+		border: 1px solid var(--carousel-border);
 		padding: 2rem 2.4rem;
 		min-height: 220px;
 		display: flex;

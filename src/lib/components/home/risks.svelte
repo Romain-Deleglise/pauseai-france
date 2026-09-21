@@ -7,7 +7,7 @@
 
 	export let lang: Lang = 'fr'
 
-	$: prefix = lang === 'en' ? '/en' : ''
+	$: prefix = lang === 'en' ? '/en' : '/fr'
 	$: tabs =
 		lang === 'en'
 			? ['Economic & material', 'For individuals', 'For society', 'For humanity']
@@ -163,7 +163,7 @@
 							href="{prefix}/emploi-ia">Emploi IA.</a
 						>
 					</p>
-					<Button href="/dangers/economiques-et-materiels">En apprendre davantage</Button>
+					<Button href="{prefix}/dangers/economiques-et-materiels">En apprendre davantage</Button>
 				{:else if tab === 'Pour les individus'}
 					<p>
 						Imaginez-vous sur une application de rencontre, échangeant des messages avec ce qui
@@ -182,7 +182,7 @@
 							>opinions manipulées par la désinformation</a
 						> : les conséquences seraient dévastatrices.
 					</p>
-					<Button href="/dangers/pour-les-individus">En apprendre davantage</Button>
+					<Button href="{prefix}/dangers/pour-les-individus">En apprendre davantage</Button>
 				{:else if tab === 'Pour la société'}
 					<p>
 						Selon la majorité des experts, les intelligences artificielles seront capables de
@@ -205,7 +205,7 @@
 							>l'automatisation des emplois se profile</a
 						>, et l'ombre de nouvelles formes de guerre et de terrorisme plane sur nous.
 					</p>
-					<Button href="/dangers/pour-la-societe">En apprendre davantage</Button>
+					<Button href="{prefix}/dangers/pour-la-societe">En apprendre davantage</Button>
 				{:else if tab === 'Pour l\u2019humanité'}
 					<p>
 						OpenAI, DeepMind, Anthropic et d'autres géants technologiques investissent des milliards
@@ -238,7 +238,7 @@
 						époque.
 					</p>
 					<p>Allons-nous attendre une catastrophe mondiale pour réagir ?</p>
-					<Button href="/dangers/pour-l'humanite">En apprendre davantage</Button>
+					<Button href="{prefix}/dangers/pour-l'humanite">En apprendre davantage</Button>
 				{/if}
 			</svelte:fragment>
 		</TabList>

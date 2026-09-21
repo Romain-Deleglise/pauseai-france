@@ -3,10 +3,10 @@
 
 	export let title: string
 	export let blurb: string
-	export let category: string = ''
+	export let category = ''
 	export let url: string
-	export let linkText: string = "Lire l'article"
-	export let date: string = ''
+	export let linkText = "Lire l'article"
+	export let date = ''
 
 	function formatDate(dateStr: string): string {
 		if (!dateStr) return ''
@@ -19,7 +19,7 @@
 	}
 </script>
 
-<a class="article-link" href={url}>
+<a class="article-link" href={url} draggable="false">
 	<article>
 		<div class="content">
 			<h3>{title}</h3>
@@ -41,9 +41,10 @@
 <style>
 	.article-link {
 		text-decoration: none;
+		-webkit-user-drag: none;
 		display: block;
 		height: 100%;
-		border-radius: 0.75rem;
+		border-radius: var(--radius-md);
 		overflow: hidden;
 		transition:
 			transform 0.2s ease,
@@ -56,11 +57,11 @@
 	}
 
 	.article-link:hover article {
-		border-color: var(--primary, #ff9416);
+		border-color: var(--brand);
 	}
 
 	.article-link:hover .read-more {
-		color: var(--primary, #ff9416);
+		color: var(--brand-subtle);
 	}
 
 	article {
@@ -68,9 +69,11 @@
 		display: flex;
 		flex-direction: column;
 		height: 100%;
-		background-color: var(--bg-subtle);
-		border: 2px solid transparent;
-		border-radius: 0.75rem;
+		background-color: var(--bg-card);
+		border: 2px solid var(--border);
+		/* Le texte reste sélectionnable malgré le lien qui enveloppe la carte. */
+		user-select: text;
+		border-radius: var(--radius-md);
 		transition: border-color 0.2s ease;
 	}
 
@@ -111,7 +114,7 @@
 
 	.category {
 		font-size: 0.75rem;
-		color: var(--brand);
+		color: var(--brand-subtle);
 		font-weight: 600;
 		text-transform: uppercase;
 		letter-spacing: 0.5px;

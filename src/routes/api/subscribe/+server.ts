@@ -337,7 +337,7 @@ export const POST: RequestHandler = async ({ request }) => {
 		)
 
 		// Upsert groups via GroupContact.save with match on contact_id + group_id
-		const groupRecords: Array<{ contact_id: number; group_id: number; status?: string }> = []
+		const groupRecords: { contact_id: number; group_id: number; status?: string }[] = []
 		if (data.subscribeNewsletter && !alreadyInNewsletter)
 			groupRecords.push({ contact_id: contactId, group_id: newsletterGroupId, status: 'Added' })
 		// Automatically add to "Call to Action" group when subscribing to newsletter

@@ -1,6 +1,6 @@
 <script lang="ts">
 	export let id: string
-	export let title: string = 'Vidéo YouTube'
+	export let title = 'Vidéo YouTube'
 </script>
 
 <div class="video-container">
@@ -20,12 +20,12 @@
 		position: relative;
 		width: 100%;
 		aspect-ratio: 16 / 9;
-		border-radius: 0.75rem;
+		border-radius: var(--radius-md);
 		overflow: hidden;
 		box-shadow:
 			0 4px 6px -1px rgba(0, 0, 0, 0.1),
 			0 2px 4px -2px rgba(0, 0, 0, 0.1);
-		background-color: #000;
+		background-color: var(--black);
 		transition:
 			transform 0.2s ease,
 			box-shadow 0.2s ease;

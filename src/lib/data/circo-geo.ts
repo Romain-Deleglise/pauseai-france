@@ -21,8 +21,10 @@ export async function geocodeAddress(query: string, postcode?: string): Promise<
 	try {
 		const res = await fetch(`https://api-adresse.data.gouv.fr/search/?${params.toString()}`)
 		if (!res.ok) return null
-		const data = await res.json()
-		const coords = data?.features?.[0]?.geometry?.coordinates
+		const data = (await res.json()) as {
+			features?: { geometry?: { coordinates?: unknown } }[]
+		}
+		const coords = data.features?.[0]?.geometry?.coordinates
 		if (!Array.isArray(coords) || coords.length < 2) return null
 		return { lon: Number(coords[0]), lat: Number(coords[1]) }
 	} catch {
@@ -58,7 +60,9 @@ function inPolygon(pt: [number, number], poly: PolygonCoords): boolean {
 }
 
 interface CircoGeometry {
-	type: 'Polygon' | 'MultiPolygon'
+	// Type déclaré large : la valeur vient d'un fichier GeoJSON, on la vérifie
+	// à l'exécution plutôt que de la tenir pour acquise.
+	type: string
 	coordinates: PolygonCoords | PolygonCoords[]
 }
 
@@ -80,8 +84,8 @@ function loadDept(dept: string): Promise<CircoFeature[] | null> {
 	let cached = deptCache.get(dept)
 	if (!cached) {
 		cached = fetch(`/circo-geo/${encodeURIComponent(dept)}.json`)
-			.then((r) => (r.ok ? r.json() : null))
-			.then((fc) => (fc?.features as CircoFeature[]) ?? null)
+			.then((r) => (r.ok ? (r.json() as Promise<{ features?: CircoFeature[] } | null>) : null))
+			.then((fc) => fc?.features ?? null)
 			.catch(() => null)
 		deptCache.set(dept, cached)
 	}
@@ -94,7 +98,7 @@ export async function findCirco(dept: string, p: GeoPoint): Promise<number | nul
 	if (!features) return null
 	const pt: [number, number] = [p.lon, p.lat]
 	for (const f of features) {
-		if (inGeometry(pt, f.geometry)) return f.properties?.circo ?? null
+		if (inGeometry(pt, f.geometry)) return f.properties.circo
 	}
 	return null
 }

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { jsonLdTag } from '$lib/jsonLd'
 	import { onMount } from 'svelte'
 	import { goto } from '$app/navigation'
 	import { page } from '$app/stores'
@@ -39,7 +40,11 @@
 	$: title = t.meta_title
 	$: description = t.meta_desc
 
-	type CategoryMeta = { label: string; icon: ComponentType; intro?: string }
+	interface CategoryMeta {
+		label: string
+		icon: ComponentType
+		intro?: string
+	}
 	$: CATEGORIES = {
 		'pause-ia': { label: t.cat_pause_ia, icon: BookOpen, intro: t.pause_ia_intro },
 		livres: { label: t.cat_livres, icon: Book, intro: t.livres_intro },
@@ -123,7 +128,7 @@
 		const qs = params.toString()
 		const target = qs ? `${$page.url.pathname}?${qs}` : $page.url.pathname
 		if (target !== $page.url.pathname + $page.url.search) {
-			goto(target, { replaceState: true, keepFocus: true, noScroll: true })
+			void goto(target, { replaceState: true, keepFocus: true, noScroll: true })
 		}
 	}
 
@@ -162,7 +167,7 @@
 		const tokens = text.split(/\s+/)
 		const extras: string[] = []
 		for (const t of tokens) {
-			const syns = SYNONYMS[t]
+			const syns = SYNONYMS[t] as string[] | undefined
 			if (syns) extras.push(...syns.map(normalize))
 		}
 		return extras.length > 0 ? text + ' ' + extras.join(' ') : text
@@ -217,7 +222,7 @@
 	$: byCategory = (() => {
 		const m: Record<string, Resource[]> = {}
 		for (const r of filtered) {
-			if (!m[r.category]) m[r.category] = []
+			m[r.category] ??= []
 			m[r.category].push(r)
 		}
 		return m
@@ -227,7 +232,7 @@
 		const m: Record<string, Resource[]> = {}
 		for (const r of list) {
 			const key = r.subgroup ?? '__no_subgroup__'
-			if (!m[key]) m[key] = []
+			m[key] ??= []
 			m[key].push(r)
 		}
 		const order = SUBGROUP_ORDER[category] ?? []
@@ -326,8 +331,12 @@
 			},
 			{ rootMargin: '-15% 0px -70% 0px', threshold: 0 }
 		)
-		sections.forEach((s) => observer.observe(s))
-		return () => observer.disconnect()
+		sections.forEach((s) => {
+			observer.observe(s)
+		})
+		return () => {
+			observer.disconnect()
+		}
 	})
 
 	// Map our internal media types to Schema.org @type values for the
@@ -355,7 +364,7 @@
 		const items = resources.map((r, i) => {
 			const itemUrl = r.internal ? `${siteUrl}${r.url}` : r.url
 			const node: Record<string, unknown> = {
-				'@type': SCHEMA_TYPE[r.type] ?? 'CreativeWork',
+				'@type': (SCHEMA_TYPE as Record<string, string | undefined>)[r.type] ?? 'CreativeWork',
 				name: localized(r.title, lang),
 				description: localized(r.description, lang),
 				url: itemUrl,
@@ -413,12 +422,14 @@
 				''
 			].join('\n')
 		)
+	$: jsonLdScript = jsonLdTag(jsonLd)
 </script>
 
 <PostMeta {title} {description} />
 
 <svelte:head>
-	{@html `<script type="application/ld+json">${JSON.stringify(jsonLd).replace(/</g, '\\u003c')}</script>`}
+	<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+	{@html jsonLdScript}
 </svelte:head>
 
 <div class="layout">
@@ -473,7 +484,9 @@
 					<button
 						class="pill"
 						class:active={langFilter.includes('fr')}
-						on:click={() => toggleLang('fr')}
+						on:click={() => {
+							toggleLang('fr')
+						}}
 						aria-pressed={langFilter.includes('fr')}
 					>
 						<img src="/flags/fr.svg" alt="" width="16" /> FR
@@ -481,7 +494,9 @@
 					<button
 						class="pill"
 						class:active={langFilter.includes('en')}
-						on:click={() => toggleLang('en')}
+						on:click={() => {
+							toggleLang('en')
+						}}
 						aria-pressed={langFilter.includes('en')}
 					>
 						<img src="/flags/gb.svg" alt="" width="16" /> EN
@@ -493,7 +508,9 @@
 						<button
 							class="pill"
 							class:active={categoryFilter.includes(cat)}
-							on:click={() => toggleCategory(cat)}
+							on:click={() => {
+								toggleCategory(cat)
+							}}
 							aria-pressed={categoryFilter.includes(cat)}
 						>
 							<svelte:component this={CATEGORIES[cat].icon} size={14} />
@@ -507,7 +524,9 @@
 						<button
 							class="pill pill-type"
 							class:active={typeFilter.includes(mt)}
-							on:click={() => toggleType(mt)}
+							on:click={() => {
+								toggleType(mt)
+							}}
 							aria-pressed={typeFilter.includes(mt)}
 						>
 							{MEDIA_TYPE_LABELS[mt]}
@@ -566,7 +585,7 @@
 										>
 											<div class="res-card-main">
 												<div class="res-card-header">
-													<h4 class="res-title">{localized(entry.title, lang)}</h4>
+													<h3 class="res-title">{localized(entry.title, lang)}</h3>
 													<MoveUpRight class="res-arrow" size={16} aria-hidden="true" />
 												</div>
 												<p class="res-desc">{localized(entry.description, lang)}</p>
@@ -617,7 +636,7 @@
 
 	.ressources-page {
 		min-width: 0; /* allow grid item to shrink */
-		max-inline-size: 52rem;
+		max-inline-size: var(--width-content);
 		padding: 0 0 4rem;
 		margin: 0 auto;
 	}
@@ -652,7 +671,7 @@
 		align-items: center;
 		gap: 0.45rem;
 		padding: 0.45rem 0.75rem;
-		border-radius: 8px;
+		border-radius: var(--radius-sm);
 		font-family: var(--font-heading);
 		font-weight: 500;
 		font-size: 0.85rem;
@@ -667,20 +686,20 @@
 
 	.toc-link:hover {
 		background: rgba(255, 148, 22, 0.08);
-		color: var(--brand-subtle, var(--brand));
+		color: var(--brand-subtle);
 	}
 
 	.toc-link.active {
 		background: rgba(255, 148, 22, 0.1);
-		color: var(--brand-subtle, var(--brand));
-		border-left-color: var(--brand);
+		color: var(--brand-subtle);
+		border-left-color: var(--brand-subtle);
 		font-weight: 600;
 	}
 
 	:global([data-theme='dark']) .toc-link:hover,
 	:global([data-theme='dark']) .toc-link.active {
 		background: rgba(255, 148, 22, 0.12);
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
 	.toc-label {
@@ -695,7 +714,7 @@
 		min-width: 1.3rem;
 		height: 1.3rem;
 		padding: 0 0.35rem;
-		border-radius: 999px;
+		border-radius: var(--radius-pill);
 		background: rgba(0, 0, 0, 0.06);
 		color: var(--text-secondary);
 		font-size: 0.7rem;
@@ -704,7 +723,7 @@
 
 	.toc-link.active .toc-count {
 		background: var(--brand);
-		color: white;
+		color: var(--on-brand);
 	}
 
 	:global([data-theme='dark']) .toc-count {
@@ -734,7 +753,7 @@
 		margin-bottom: 2rem;
 		background: var(--bg);
 		padding: 2rem 1.5rem 1.75rem;
-		border-radius: 12px;
+		border-radius: var(--radius-md);
 		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
 	}
 
@@ -771,7 +790,7 @@
 		font-family: var(--font-body);
 		font-size: 1rem;
 		border: 1px solid var(--border);
-		border-radius: 10px;
+		border-radius: var(--radius-md);
 		background: var(--bg);
 		color: var(--text);
 		transition:
@@ -829,7 +848,7 @@
 		align-items: center;
 		gap: 0.35rem;
 		padding: 0.4rem 0.75rem;
-		border-radius: 999px;
+		border-radius: var(--radius-pill);
 		border: 1px solid var(--border);
 		background: var(--bg);
 		color: var(--text-secondary);
@@ -842,13 +861,13 @@
 
 	.pill:hover {
 		border-color: var(--brand);
-		color: var(--brand-subtle, var(--brand));
+		color: var(--brand-subtle);
 	}
 
 	.pill.active {
 		background: var(--brand);
 		border-color: var(--brand);
-		color: white;
+		color: var(--on-brand);
 	}
 
 	.pill img {
@@ -857,7 +876,7 @@
 	}
 
 	:global([data-theme='dark']) .pill:hover {
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
 	.meta-row {
@@ -891,7 +910,7 @@
 		font-weight: 600;
 		background: transparent;
 		border: 1px solid var(--border);
-		border-radius: 999px;
+		border-radius: var(--radius-pill);
 		color: var(--text-secondary);
 		cursor: pointer;
 		transition: all 0.15s;
@@ -899,7 +918,7 @@
 
 	.reset-btn:hover {
 		border-color: var(--brand);
-		color: var(--brand-subtle, var(--brand));
+		color: var(--brand-subtle);
 	}
 
 	.updated {
@@ -932,16 +951,16 @@
 		justify-content: center;
 		width: 2.4rem;
 		height: 2.4rem;
-		border-radius: 10px;
-		background: var(--brand-light, #fff5e8);
-		color: var(--brand-subtle, var(--brand));
+		border-radius: var(--radius-md);
+		background: var(--brand-light);
+		color: var(--brand-subtle);
 		flex-shrink: 0;
 		margin-top: 0.15rem;
 	}
 
 	:global([data-theme='dark']) .section-icon {
 		background: rgba(255, 148, 22, 0.15);
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
 	.res-section-header h2 {
@@ -1001,7 +1020,7 @@
 		padding: 1rem 1.1rem;
 		background: var(--bg);
 		border: 1px solid var(--border);
-		border-radius: 10px;
+		border-radius: var(--radius-md);
 		text-decoration: none;
 		color: var(--text);
 		transition:
@@ -1043,11 +1062,11 @@
 		font-size: 1rem;
 		line-height: 1.35;
 		margin: 0;
-		color: var(--brand-subtle, var(--brand));
+		color: var(--brand-subtle);
 	}
 
 	:global([data-theme='dark']) .res-title {
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
 	:global(.res-arrow) {
@@ -1060,7 +1079,7 @@
 	}
 
 	.res-card:hover :global(.res-arrow) {
-		color: var(--brand);
+		color: var(--brand-subtle);
 		transform: translate(2px, -2px);
 	}
 
@@ -1121,7 +1140,7 @@
 		padding: 1.75rem;
 		background: var(--bg);
 		border: 1px solid var(--border);
-		border-radius: 12px;
+		border-radius: var(--radius-md);
 		text-align: center;
 		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.04);
 	}
@@ -1147,9 +1166,9 @@
 		align-items: center;
 		gap: 0.45rem;
 		padding: 0.6rem 1.15rem;
-		border-radius: 8px;
+		border-radius: var(--radius-sm);
 		background: var(--brand);
-		color: white;
+		color: var(--on-brand);
 		text-decoration: none;
 		font-family: var(--font-heading);
 		font-weight: 700;

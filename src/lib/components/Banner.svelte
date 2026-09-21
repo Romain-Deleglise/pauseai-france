@@ -5,11 +5,11 @@
 
 	export let visible = true
 
-	const dispatch = createEventDispatcher<{ close: void }>()
+	const dispatch = createEventDispatcher<{ close: null }>()
 
 	function handleClose() {
 		visible = false
-		dispatch('close')
+		dispatch('close', null)
 	}
 </script>
 
@@ -29,8 +29,8 @@
 
 <style>
 	.banner {
-		background: linear-gradient(135deg, var(--brand) 0%, #ffb347 100%);
-		color: black;
+		background: linear-gradient(135deg, var(--brand) 0%, var(--brand-soft) 100%);
+		color: var(--black);
 		font-family: var(--font-heading);
 		display: flex;
 		align-items: center;
@@ -74,7 +74,7 @@
 	:global(.banner a) {
 		font-weight: 700;
 		text-decoration: none;
-		color: black;
+		color: var(--black);
 		background-color: rgba(255, 255, 255, 0.35);
 		padding: 0.25rem 0.5rem;
 		border-radius: 4px;
@@ -89,7 +89,7 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		color: black;
+		color: var(--black);
 		cursor: pointer;
 		border-radius: 50%;
 		transition: background-color 0.2s ease;

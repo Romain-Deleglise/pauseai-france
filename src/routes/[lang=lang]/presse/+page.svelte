@@ -21,15 +21,12 @@
 		return new Date(b.date).getTime() - new Date(a.date).getTime()
 	})
 
-	$: coverageByYear = pressCoverage.reduce(
-		(acc, item) => {
-			const year = item.date ? item.date.slice(0, 4) : '?'
-			if (!acc[year]) acc[year] = []
-			acc[year].push(item)
-			return acc
-		},
-		{} as Record<string, PressCoverage[]>
-	)
+	$: coverageByYear = pressCoverage.reduce<Record<string, PressCoverage[]>>((acc, item) => {
+		const year = item.date ? item.date.slice(0, 4) : '?'
+		acc[year] ??= []
+		acc[year].push(item)
+		return acc
+	}, {})
 	$: coverageYears = Object.keys(coverageByYear).sort((a, b) => b.localeCompare(a))
 
 	// Controlled open/close state for year groups
@@ -253,7 +250,7 @@
 		deptDropdownOpen = false
 		highlightedIndex = -1
 		localCurrentPage = 1
-		deptInputEl?.focus()
+		deptInputEl.focus()
 	}
 
 	function onDeptInputFocus() {
@@ -292,7 +289,7 @@
 			}
 		} else if (e.key === 'Escape') {
 			deptDropdownOpen = false
-			deptInputEl?.blur()
+			deptInputEl.blur()
 		}
 	}
 
@@ -409,7 +406,9 @@
 			<button
 				class="tab"
 				class:active={activeTab === 'national'}
-				on:click={() => switchTab('national')}
+				on:click={() => {
+					switchTab('national')
+				}}
 				role="tab"
 				aria-selected={activeTab === 'national'}
 			>
@@ -421,7 +420,9 @@
 			<button
 				class="tab"
 				class:active={activeTab === 'local'}
-				on:click={() => switchTab('local')}
+				on:click={() => {
+					switchTab('local')
+				}}
 				role="tab"
 				aria-selected={activeTab === 'local'}
 			>
@@ -454,7 +455,12 @@
 					<ul class="sidebar-list">
 						{#each paginatedReleases as pr (pr.id)}
 							<li>
-								<button class="sidebar-item" on:click={() => scrollToCard(pr.id)}>
+								<button
+									class="sidebar-item"
+									on:click={() => {
+										scrollToCard(pr.id)
+									}}
+								>
 									<span class="sidebar-item-title">{pr.title}</span>
 									{#if pr.date}
 										<time class="sidebar-item-date" datetime={pr.date}
@@ -506,7 +512,9 @@
 							<button
 								class="pagination-btn"
 								disabled={currentPage === 1}
-								on:click={() => goToPage(currentPage - 1)}
+								on:click={() => {
+									goToPage(currentPage - 1)
+								}}
 								aria-label={t.presse.prev_page}
 							>
 								<ChevronLeft size="1.25rem" />
@@ -516,7 +524,9 @@
 								<button
 									class="pagination-num"
 									class:active={currentPage === i + 1}
-									on:click={() => goToPage(i + 1)}
+									on:click={() => {
+										goToPage(i + 1)
+									}}
 									aria-label="{t.presse.page} {i + 1}"
 									aria-current={currentPage === i + 1 ? 'page' : undefined}
 								>
@@ -527,7 +537,9 @@
 							<button
 								class="pagination-btn"
 								disabled={currentPage === totalPages}
-								on:click={() => goToPage(currentPage + 1)}
+								on:click={() => {
+									goToPage(currentPage + 1)
+								}}
 								aria-label={t.presse.next_page}
 							>
 								<ChevronRight size="1.25rem" />
@@ -584,7 +596,9 @@
 									class="dept-option"
 									class:highlighted={i === highlightedIndex}
 									aria-selected={code === selectedDepartment}
-									on:mousedown|preventDefault={() => selectDepartment(code)}
+									on:mousedown|preventDefault={() => {
+										selectDepartment(code)
+									}}
 								>
 									<span class="dept-option-code">{code}</span>
 									<span class="dept-option-name">{DEPT_NAMES[code] || code}</span>
@@ -629,7 +643,12 @@
 						<ul class="sidebar-list">
 							{#each paginatedLocalReleases as pr (pr.id)}
 								<li>
-									<button class="sidebar-item" on:click={() => scrollToCard(pr.id)}>
+									<button
+										class="sidebar-item"
+										on:click={() => {
+											scrollToCard(pr.id)
+										}}
+									>
 										<span class="sidebar-item-dept">{getDeptLabel(pr.department)}</span>
 										<span class="sidebar-item-title">{pr.title}</span>
 										{#if pr.date}
@@ -683,7 +702,9 @@
 								<button
 									class="pagination-btn"
 									disabled={localCurrentPage === 1}
-									on:click={() => goToLocalPage(localCurrentPage - 1)}
+									on:click={() => {
+										goToLocalPage(localCurrentPage - 1)
+									}}
 									aria-label={t.presse.prev_page}
 								>
 									<ChevronLeft size="1.25rem" />
@@ -693,7 +714,9 @@
 									<button
 										class="pagination-num"
 										class:active={localCurrentPage === i + 1}
-										on:click={() => goToLocalPage(i + 1)}
+										on:click={() => {
+											goToLocalPage(i + 1)
+										}}
 										aria-label="{t.presse.page} {i + 1}"
 										aria-current={localCurrentPage === i + 1 ? 'page' : undefined}
 									>
@@ -704,7 +727,9 @@
 								<button
 									class="pagination-btn"
 									disabled={localCurrentPage === localTotalPages}
-									on:click={() => goToLocalPage(localCurrentPage + 1)}
+									on:click={() => {
+										goToLocalPage(localCurrentPage + 1)
+									}}
 									aria-label={t.presse.next_page}
 								>
 									<ChevronRight size="1.25rem" />
@@ -739,7 +764,9 @@
 				<details
 					class="coverage-year-group"
 					open={openYears.has(year)}
-					on:toggle={(e) => toggleYear(year, e)}
+					on:toggle={(e) => {
+						toggleYear(year, e)
+					}}
 				>
 					<summary class="coverage-year">
 						<span class="coverage-year-chevron">▶</span>
@@ -779,7 +806,7 @@
 
 <style>
 	.press-page {
-		max-width: 64rem;
+		max-width: var(--width-wide);
 		margin: 0 auto;
 		padding: 2rem 1rem;
 	}
@@ -807,7 +834,7 @@
 	.contact-card {
 		background-color: var(--bg-subtle);
 		border: 2px solid var(--brand);
-		border-radius: 0.5rem;
+		border-radius: var(--radius-sm);
 		padding: 1.25rem 1.5rem;
 	}
 
@@ -838,7 +865,7 @@
 	}
 
 	.contact-email-main a {
-		color: var(--brand);
+		color: var(--brand-subtle);
 		font-weight: 600;
 	}
 
@@ -870,7 +897,7 @@
 	}
 
 	.contact-info a {
-		color: var(--brand);
+		color: var(--brand-subtle);
 		font-weight: 600;
 	}
 
@@ -880,11 +907,10 @@
 		margin-bottom: 0;
 		padding-top: 1rem;
 		border-top: 1px solid rgba(0, 0, 0, 0.08);
-		text-align: justify;
 	}
 
 	.redirect a {
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
 	/* Press releases section */
@@ -899,8 +925,8 @@
 		display: inline-flex;
 		gap: 0.25rem;
 		margin-bottom: 1.5rem;
-		background-color: #f1f3f5;
-		border-radius: 0.625rem;
+		background-color: var(--bg-secondary);
+		border-radius: var(--radius-btn);
 		padding: 0.25rem;
 	}
 
@@ -920,7 +946,7 @@
 			color 0.2s ease,
 			background-color 0.2s ease,
 			box-shadow 0.2s ease;
-		border-radius: 0.5rem;
+		border-radius: var(--radius-sm);
 	}
 
 	.tab:hover {
@@ -928,9 +954,9 @@
 	}
 
 	.tab.active {
-		color: var(--brand);
-		background-color: var(--white);
-		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+		color: var(--brand-subtle);
+		background-color: var(--bg-card);
+		box-shadow: var(--shadow-card);
 	}
 
 	.tab-label {
@@ -946,15 +972,15 @@
 		padding: 0 0.375rem;
 		font-size: 0.75rem;
 		font-weight: 700;
-		border-radius: 999px;
+		border-radius: var(--radius-pill);
 		background-color: rgba(0, 0, 0, 0.08);
 		color: var(--text-secondary);
 		line-height: 1;
 	}
 
 	.tab.active .tab-count {
-		background-color: rgba(var(--brand-rgb, 255, 148, 22), 0.15);
-		color: var(--brand);
+		background-color: rgba(var(--brand-rgb), 0.15);
+		color: var(--brand-subtle);
 	}
 
 	/* Department filter combobox */
@@ -984,8 +1010,8 @@
 		display: flex;
 		align-items: center;
 		border: 1px solid var(--border);
-		border-radius: 0.5rem;
-		background-color: var(--white);
+		border-radius: var(--radius-sm);
+		background-color: var(--bg-card);
 		transition:
 			border-color 0.15s ease,
 			box-shadow 0.15s ease;
@@ -993,7 +1019,7 @@
 
 	.dept-input-wrapper:focus-within {
 		border-color: var(--brand);
-		box-shadow: 0 0 0 3px rgba(var(--brand-rgb, 0, 0, 0), 0.1);
+		box-shadow: 0 0 0 3px rgba(var(--brand-rgb), 0.1);
 	}
 
 	.dept-search-icon {
@@ -1049,9 +1075,9 @@
 		right: 0;
 		max-height: 15rem;
 		overflow-y: auto;
-		background-color: var(--white);
+		background-color: var(--bg-card);
 		border: 1px solid var(--border);
-		border-radius: 0.5rem;
+		border-radius: var(--radius-sm);
 		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 		z-index: 50;
 		list-style: none;
@@ -1064,20 +1090,20 @@
 		align-items: center;
 		gap: 0.625rem;
 		padding: 0.5rem 0.75rem;
-		border-radius: 0.375rem;
+		border-radius: var(--radius-sm);
 		cursor: pointer;
 		transition: background-color 0.1s ease;
 	}
 
 	.dept-option:hover,
 	.dept-option.highlighted {
-		background-color: rgba(var(--brand-rgb, 0, 0, 0), 0.06);
+		background-color: rgba(var(--brand-rgb), 0.06);
 	}
 
 	.dept-option-code {
 		font-weight: 700;
 		font-size: 0.9rem;
-		color: var(--brand);
+		color: var(--brand-subtle);
 		min-width: 2rem;
 	}
 
@@ -1108,8 +1134,8 @@
 		margin-bottom: 0.5rem;
 		font-size: 0.75rem;
 		font-weight: 700;
-		color: var(--brand);
-		background-color: rgba(var(--brand-rgb, 0, 0, 0), 0.08);
+		color: var(--brand-subtle);
+		background-color: rgba(var(--brand-rgb), 0.08);
 		border: 1px solid var(--brand);
 		border-radius: 0.25rem;
 	}
@@ -1118,7 +1144,7 @@
 	.sidebar-item-dept {
 		font-size: 0.7rem;
 		font-weight: 700;
-		color: var(--brand);
+		color: var(--brand-subtle);
 		text-transform: uppercase;
 		letter-spacing: 0.03em;
 	}
@@ -1129,7 +1155,7 @@
 		margin-bottom: 1.5rem;
 		background-color: var(--bg-subtle);
 		border: 1px solid var(--border);
-		border-radius: 0.75rem;
+		border-radius: var(--radius-md);
 		padding: 0.75rem 1rem;
 	}
 
@@ -1139,7 +1165,7 @@
 		font-weight: 700;
 		text-transform: uppercase;
 		letter-spacing: 0.05em;
-		color: var(--brand);
+		color: var(--brand-subtle);
 		margin-bottom: 0.5rem;
 	}
 
@@ -1149,8 +1175,8 @@
 		font-size: 0.875rem;
 		font-family: var(--font-body);
 		border: 1px solid var(--border);
-		border-radius: 0.375rem;
-		background-color: var(--white);
+		border-radius: var(--radius-sm);
+		background-color: var(--bg-card);
 		color: var(--text);
 		appearance: none;
 		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23676e7a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
@@ -1182,7 +1208,7 @@
 		overflow-y: auto;
 		background-color: var(--bg-subtle);
 		border: 1px solid var(--border);
-		border-radius: 0.75rem;
+		border-radius: var(--radius-md);
 		padding: 1.25rem;
 	}
 
@@ -1192,7 +1218,7 @@
 		font-weight: 700;
 		text-transform: uppercase;
 		letter-spacing: 0.05em;
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
 	.sidebar-list {
@@ -1217,7 +1243,7 @@
 		padding: 0.5rem 0.625rem;
 		border: none;
 		background: transparent;
-		border-radius: 0.375rem;
+		border-radius: var(--radius-sm);
 		cursor: pointer;
 		text-align: left;
 		transition: background-color 0.15s ease;
@@ -1265,9 +1291,9 @@
 		display: flex;
 		flex-direction: column;
 		padding: 1.5rem;
-		background-color: var(--white);
+		background-color: var(--bg-card);
 		border: 1px solid var(--border);
-		border-radius: 0.75rem;
+		border-radius: var(--radius-md);
 		text-decoration: none;
 		color: var(--text);
 		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
@@ -1301,7 +1327,6 @@
 		font-size: 0.95rem;
 		color: var(--text-secondary);
 		line-height: 1.5;
-		text-align: justify;
 	}
 
 	.pr-footer {
@@ -1324,12 +1349,12 @@
 		gap: 0.375rem;
 		font-size: 0.875rem;
 		font-weight: 600;
-		color: var(--brand);
+		color: var(--brand-subtle);
 		transition: color 0.2s ease;
 	}
 
 	.press-release-card:hover .read-link {
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
 	.link-icon {
@@ -1359,7 +1384,7 @@
 		width: 2.25rem;
 		height: 2.25rem;
 		border: 1px solid var(--border);
-		border-radius: 0.375rem;
+		border-radius: var(--radius-sm);
 		background: var(--white);
 		color: var(--text);
 		cursor: pointer;
@@ -1385,7 +1410,7 @@
 		width: 2.25rem;
 		height: 2.25rem;
 		border: 1px solid var(--border);
-		border-radius: 0.375rem;
+		border-radius: var(--radius-sm);
 		background: var(--white);
 		color: var(--text);
 		font-size: 0.875rem;
@@ -1404,7 +1429,7 @@
 	.pagination-num.active {
 		background-color: var(--brand);
 		border-color: var(--brand);
-		color: var(--white);
+		color: var(--on-brand);
 	}
 
 	/* ── Press coverage section ──────────────────────────────────── */
@@ -1435,7 +1460,7 @@
 		border: 1px solid var(--border);
 		color: var(--text-secondary);
 		padding: 0.1rem 0.5rem;
-		border-radius: 999px;
+		border-radius: var(--radius-pill);
 	}
 
 	.toggle-all-btn {
@@ -1444,7 +1469,7 @@
 		color: var(--text-secondary);
 		background: none;
 		border: 1px solid var(--border);
-		border-radius: 0.375rem;
+		border-radius: var(--radius-sm);
 		padding: 0.25rem 0.625rem;
 		cursor: pointer;
 		white-space: nowrap;
@@ -1503,7 +1528,7 @@
 		border: 1px solid var(--border);
 		color: var(--text-secondary);
 		padding: 0.05rem 0.4rem;
-		border-radius: 999px;
+		border-radius: var(--radius-pill);
 	}
 
 	.coverage-list {
@@ -1517,7 +1542,7 @@
 		flex-direction: column;
 		gap: 0.15rem;
 		padding: 0.5rem 0.75rem;
-		border-radius: 0.375rem;
+		border-radius: var(--radius-sm);
 		border-left: 2px solid transparent;
 		text-decoration: none;
 		color: var(--text);
@@ -1528,7 +1553,7 @@
 
 	.coverage-item:hover {
 		background-color: var(--bg-subtle);
-		border-left-color: var(--brand);
+		border-left-color: var(--brand-subtle);
 		color: var(--text);
 	}
 
@@ -1543,7 +1568,7 @@
 		font-weight: 700;
 		text-transform: uppercase;
 		letter-spacing: 0.04em;
-		color: var(--brand);
+		color: var(--brand-subtle);
 		background: color-mix(in srgb, var(--brand) 10%, transparent);
 		padding: 0.1rem 0.4rem;
 		border-radius: 0.25rem;
@@ -1579,10 +1604,10 @@
 	}
 
 	.about-card {
-		background-color: #f8f9fa;
-		border: 1px solid #e9ecef;
+		background-color: var(--bg-secondary);
+		border: 1px solid var(--border);
 		border-left: 4px solid var(--brand);
-		border-radius: 0.75rem;
+		border-radius: var(--radius-md);
 		padding: 2rem 2.5rem;
 	}
 
@@ -1590,7 +1615,7 @@
 		margin-top: 0;
 		margin-bottom: 1rem;
 		font-size: 1.3rem;
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
 	.about-card p {
@@ -1598,7 +1623,6 @@
 		line-height: 1.6;
 		color: var(--text-secondary);
 		margin-bottom: 0.75rem;
-		text-align: justify;
 	}
 
 	.about-card p:last-child {

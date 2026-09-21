@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { Badge } from '$components/ui'
 	import PostMeta from '$components/PostMeta.svelte'
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
 	import Button from '$components/Button.svelte'
@@ -32,13 +33,13 @@
 
 		<section class="engagement-options">
 			<div class="engagement-card">
-				<h3 class="title-with-icon">
+				<h2 class="title-with-icon">
 					<span class="icon-and-text">
 						<UserCheck size="1em" />
 						<span class="title-text">Become a Member</span>
 					</span>
-					<span class="badge support-badge">Official support</span>
-				</h3>
+					<Badge>Official support</Badge>
+				</h2>
 				<p>
 					Officially support our mission and bylaws. As a member, you strengthen our collective
 					weight and participate in the life of the association. It's the strong signal of your
@@ -52,13 +53,13 @@
 			</div>
 
 			<div class="engagement-card">
-				<h3 class="title-with-icon">
+				<h2 class="title-with-icon">
 					<span class="icon-and-text">
 						<Users size="1em" />
 						<span class="title-text">Join the Community</span>
 					</span>
-					<span class="badge community-badge">The heart of action</span>
-				</h3>
+					<Badge variant="neutral">The heart of action</Badge>
+				</h2>
 				<p>
 					Join our Discord community to exchange, stay informed and, if you wish, take action.
 					<b>This is the single entry point to become a volunteer</b>, whatever time you can
@@ -70,7 +71,7 @@
 		</section>
 
 		<div class="impact-highlight">
-			<h3><Zap size="1.2em" /> Quick action: Join Pause Action!</h3>
+			<h2><Zap size="1.2em" /> Quick action: Join Pause Action!</h2>
 			<p>
 				Have little time but a strong desire to act? Join our WhatsApp group "Pause Action" to
 				receive simple and quick actions to carry out in a few minutes per week.
@@ -81,7 +82,7 @@
 		<aside class="recruit-card">
 			<div class="recruit-body">
 				<span class="recruit-eyebrow"><Briefcase size="1em" /> We're hiring</span>
-				<h3>Communications Officer (fixed-term, 60%)</h3>
+				<h2>Communications Officer (fixed-term, 60%)</h2>
 				<p>
 					Beyond volunteering, Pause IA is offering a paid position to structure our communications
 					and grow our media presence. Applications are open until 6 September.
@@ -152,13 +153,13 @@
 
 		<section class="engagement-options">
 			<div class="engagement-card">
-				<h3 class="title-with-icon">
+				<h2 class="title-with-icon">
 					<span class="icon-and-text">
 						<UserCheck size="1em" />
 						<span class="title-text">Devenir Membre</span>
 					</span>
-					<span class="badge support-badge">Soutien officiel</span>
-				</h3>
+					<Badge>Soutien officiel</Badge>
+				</h2>
 				<p>
 					Soutenez officiellement notre mission et nos statuts. En tant que membre, vous renforcez
 					notre poids collectif et participez à la vie de l'association.
@@ -171,13 +172,13 @@
 			</div>
 
 			<div class="engagement-card">
-				<h3 class="title-with-icon">
+				<h2 class="title-with-icon">
 					<span class="icon-and-text">
 						<Users size="1em" />
 						<span class="title-text">Rejoindre la Communauté</span>
 					</span>
-					<span class="badge community-badge">Le cœur de l'action</span>
-				</h3>
+					<Badge variant="neutral">Le cœur de l'action</Badge>
+				</h2>
 				<p>
 					Rejoignez notre communauté sur Discord pour échanger, vous informer et, si vous le
 					souhaitez, passer à l'action.
@@ -188,7 +189,7 @@
 		</section>
 
 		<div class="impact-highlight">
-			<h3><Zap size="1.2em" /> L'action rapide : Rejoignez Pause Action !</h3>
+			<h2><Zap size="1.2em" /> L'action rapide : Rejoignez Pause Action !</h2>
 			<p>
 				Vous avez peu de temps mais une grande envie d'agir ? Rejoignez notre groupe WhatsApp "Pause
 				Action".
@@ -201,7 +202,7 @@
 		<aside class="recruit-card">
 			<div class="recruit-body">
 				<span class="recruit-eyebrow"><Briefcase size="1em" /> Nous recrutons</span>
-				<h3>Responsable communication (CDD, 60 %)</h3>
+				<h2>Responsable communication (CDD, 60 %)</h2>
 				<p>
 					Au-delà du bénévolat, Pause IA propose un poste salarié pour structurer sa communication
 					et développer sa présence médiatique. Les candidatures sont ouvertes jusqu'au 6 septembre.
@@ -245,7 +246,7 @@
 
 <style>
 	article {
-		max-inline-size: 50rem;
+		max-inline-size: var(--width-content);
 		margin-inline: auto;
 		margin-top: 3rem;
 		padding: 0 2rem;
@@ -256,13 +257,13 @@
 		margin-bottom: 3rem;
 		background: var(--bg);
 		padding: 3rem 2rem;
-		border-radius: 12px;
-		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		border-radius: var(--radius-md);
+		box-shadow: var(--shadow-raised);
 	}
 
 	.hero-description {
 		font-size: 1.1rem;
-		color: #666;
+		color: var(--text-secondary);
 		margin-bottom: 1.5rem;
 	}
 
@@ -281,9 +282,9 @@
 
 	.engagement-card {
 		background: var(--bg);
-		border-radius: 12px;
+		border-radius: var(--radius-md);
 		padding: 2rem;
-		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		box-shadow: var(--shadow-raised);
 		border: 2px solid transparent;
 		transition: all 0.3s ease-out;
 		display: flex;
@@ -296,7 +297,7 @@
 		transform: translateY(-2px);
 	}
 
-	.engagement-card h3 {
+	.engagement-card h2 {
 		font-size: 1.3rem;
 		margin-top: 0;
 		margin-bottom: 1rem;
@@ -322,7 +323,7 @@
 	}
 
 	.engagement-card p {
-		color: #666;
+		color: var(--text-secondary);
 		margin-bottom: 1.5rem;
 		flex-grow: 1;
 	}
@@ -333,23 +334,10 @@
 		max-width: 100% !important;
 	}
 
-	.badge {
-		color: white;
-		padding: 0.25rem 0.75rem;
-		border-radius: 20px;
-		font-size: 0.9rem;
-		font-weight: 500;
-		display: inline-flex;
+	/* Les pastilles viennent du composant Badge ; seul l'alignement
+	   dans la carte reste local. */
+	.engagement-card :global(.ui-badge) {
 		align-self: flex-start;
-		margin-top: 0;
-	}
-
-	.support-badge {
-		background: #4caf50;
-	}
-
-	.community-badge {
-		background: #3498db;
 	}
 
 	.engagement-note {
@@ -357,21 +345,21 @@
 		align-items: center;
 		gap: 0.4em;
 		margin-top: 1rem;
-		color: #666;
+		color: var(--text-secondary);
 		font-size: 0.9rem;
 		text-align: left;
 	}
 
 	.impact-highlight {
-		background: linear-gradient(135deg, var(--brand), #ff6b35);
+		background: linear-gradient(135deg, var(--brand), var(--brand-deep));
 		color: var(--black);
 		padding: 2rem;
-		border-radius: 12px;
+		border-radius: var(--radius-md);
 		margin: 2rem 0;
 		text-align: center;
 	}
 
-	.impact-highlight h3 {
+	.impact-highlight h2 {
 		margin-bottom: 1rem;
 		color: var(--black);
 		display: inline-flex;
@@ -396,7 +384,7 @@
 		padding: 1.75rem 2rem;
 		border: 1px solid var(--border);
 		border-left: 4px solid var(--brand);
-		border-radius: 12px;
+		border-radius: var(--radius-md);
 		background: var(--bg);
 	}
 
@@ -408,10 +396,10 @@
 		font-weight: 700;
 		text-transform: uppercase;
 		letter-spacing: 0.04em;
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
-	.recruit-card h3 {
+	.recruit-card h2 {
 		margin: 0.5rem 0 0.5rem;
 		font-size: 1.2rem;
 		color: var(--text);
@@ -419,7 +407,7 @@
 
 	.recruit-card p {
 		margin: 0;
-		color: #666;
+		color: var(--text-secondary);
 	}
 
 	.recruit-card :global(a) {
