@@ -3,9 +3,9 @@
 	import PostMeta from '$components/PostMeta.svelte'
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
 	import Button from '$components/Button.svelte'
+	import DonVirement from '$components/DonVirement.svelte'
 	import Accordion from '$components/Accordion.svelte'
 	import { title as siteName } from '$config'
-	import { browser } from '$app/environment'
 	import { CreditCard, Landmark } from 'lucide-svelte'
 	import { getT } from '$lib/i18n'
 	import type { PageData } from './$types'
@@ -15,74 +15,10 @@
 	$: lang = data.lang
 	$: t = getT(lang)
 
-	let showAmountForm = false
-	let amount = 500
-	let isProcessing = false
-	let paymentError = ''
-
-	function showAmountEntry() {
-		showAmountForm = true
-		paymentError = ''
-	}
-
-	function backToMain() {
-		showAmountForm = false
-		paymentError = ''
-	}
-
-	function handleBackToMain() {
-		if (isProcessing) return
-		backToMain()
-	}
-
-	async function proceedToPayment() {
-		if (!browser) return
-
-		isProcessing = true
-		paymentError = ''
-
-		try {
-			const response = await fetch('/api/checkout', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ amount: amount * 100 })
-			})
-
-			if (!response.ok) {
-				const errorData = await response.text()
-				throw new Error(`Erreur serveur: ${errorData}`)
-			}
-
-			const data2 = (await response.json()) as { url: string }
-			const { url } = data2
-
-			window.location.href = url
-		} catch (error) {
-			console.error('Checkout Session creation error:', error)
-			paymentError =
-				error instanceof Error
-					? error.message
-					: 'Erreur lors de la création de la session de paiement'
-		} finally {
-			isProcessing = false
-		}
-	}
-
-	function handleProceedToPayment() {
-		if (isProcessing) return
-		void proceedToPayment()
-	}
-
-	function handleAmountInput(event: Event) {
-		const target = event.target as HTMLInputElement
-		const value = parseInt(target.value)
-		if (target.value === '' || value < 1) {
-			amount = 1
-			target.value = '1'
-		} else {
-			amount = value
-		}
-	}
+	// Le don par virement affiche directement nos coordonnées bancaires et une
+	// référence DON-XXXXXX : l'argent arrive sur notre compte, sans intermédiaire
+	// ni commission. Le webhook Wise solde ensuite la contribution dans CiviCRM.
+	let showVirement = false
 </script>
 
 <PostMeta title={`${t.dons.meta_title} | ${siteName}`} description={t.dons.meta_desc} />
@@ -116,125 +52,62 @@
 	</section>
 
 	<section class="donation-options">
-		{#if !showAmountForm}
-			<div class="donation-card helloasso-card">
-				<h2 class="title-with-icon">
-					<span class="icon-and-text">
-						<CreditCard size="1em" />
-						{#if lang === 'en'}
-							<span class="title-text">Credit card donation</span>
-						{:else}
-							<span class="title-text">Don par carte bancaire</span>
-						{/if}
-					</span>
-					<Badge size="sm">{lang === 'en' ? 'Simple & fast' : 'Simple & rapide'}</Badge>
-				</h2>
-				{#if lang === 'en'}
-					<p>
-						Choose between a one-time or monthly donation. Secure payment by credit card via
-						HelloAsso.
-					</p>
-				{:else}
-					<p>
-						Choisissez entre un don ponctuel ou un soutien mensuel. Paiement sécurisé par carte
-						bancaire via HelloAsso.
-					</p>
-				{/if}
-				<Button href="https://www.helloasso.com/associations/pause-ia/formulaires/1">
-					{lang === 'en' ? 'Donate by card' : 'Donner par carte'}
-				</Button>
-				<small class="donation-note">
+		<div class="donation-card helloasso-card">
+			<h2 class="title-with-icon">
+				<span class="icon-and-text">
 					<CreditCard size="1em" />
-					{lang === 'en' ? 'One-time or monthly donation' : 'Don ponctuel ou mensuel au choix'}
-				</small>
-			</div>
+					{#if lang === 'en'}
+						<span class="title-text">Credit card donation</span>
+					{:else}
+						<span class="title-text">Don par carte bancaire</span>
+					{/if}
+				</span>
+				<Badge size="sm">{lang === 'en' ? 'Simple & fast' : 'Simple & rapide'}</Badge>
+			</h2>
+			{#if lang === 'en'}
+				<p>
+					Choose between a one-time or monthly donation. Secure payment by credit card via
+					HelloAsso.
+				</p>
+			{:else}
+				<p>
+					Choisissez entre un don ponctuel ou un soutien mensuel. Paiement sécurisé par carte
+					bancaire via HelloAsso.
+				</p>
+			{/if}
+			<Button href="https://www.helloasso.com/associations/pause-ia/formulaires/1">
+				{lang === 'en' ? 'Donate by card' : 'Donner par carte'}
+			</Button>
+			<small class="donation-note">
+				<CreditCard size="1em" />
+				{lang === 'en' ? 'One-time or monthly donation' : 'Don ponctuel ou mensuel au choix'}
+			</small>
+		</div>
 
-			<div class="donation-card">
-				<h2 class="title-with-icon">
-					<span class="icon-and-text">
-						<Landmark size="1em" />
-						{#if lang === 'en'}
-							<span class="title-text">Bank transfer donation</span>
-						{:else}
-							<span class="title-text">Don par virement bancaire</span>
-						{/if}
-					</span>
-				</h2>
-				{#if lang === 'en'}
-					<p>Ideal for larger amounts.</p>
-				{:else}
-					<p>Idéal pour les montants importants.</p>
-				{/if}
-				<Button on:click={showAmountEntry}>
-					{lang === 'en' ? 'Make a transfer' : 'Faire un virement'}
-				</Button>
-				<small class="donation-note">
+		<div class="donation-card">
+			<h2 class="title-with-icon">
+				<span class="icon-and-text">
 					<Landmark size="1em" />
-					{lang === 'en' ? 'Recommended for donations > €500' : 'Recommandé pour les dons > 500€'}
-				</small>
-			</div>
-		{:else}
-			<div class="donation-card amount-form-card">
-				<h2 class="form-title title-with-icon">
-					<span class="icon-and-text">
-						<Landmark size="1em" />
-						{#if lang === 'en'}
-							<span class="title-text">Bank transfer donation</span>
-						{:else}
-							<span class="title-text">Don par virement bancaire</span>
-						{/if}
-					</span>
-				</h2>
-
-				<div class="amount-container">
-					<label for="amount-input" class="amount-label">
-						{lang === 'en' ? 'Donation amount' : 'Montant du don'}
-					</label>
-					<input
-						id="amount-input"
-						type="number"
-						bind:value={amount}
-						on:input={handleAmountInput}
-						class="amount-input"
-						min="1"
-						step="1"
-					/>
-					<span class="euro-symbol">€</span>
-				</div>
-
-				{#if paymentError}
-					<div class="error-message">
-						{paymentError}
-					</div>
-				{/if}
-
-				<div class="bank-transfer-info">
-					<p>
-						<CreditCard size="1em" />
-						{lang === 'en'
-							? 'You will be redirected to a secure page with bank transfer instructions.'
-							: 'Vous allez être redirigé vers une page sécurisée avec les instructions de virement bancaire.'}
-					</p>
-				</div>
-
-				<div class="form-buttons">
-					<div class:disabled={isProcessing}>
-						<Button on:click={handleProceedToPayment}>
-							{#if isProcessing}
-								{lang === 'en' ? 'Redirecting...' : 'Redirection...'}
-							{:else}
-								{lang === 'en' ? 'Continue to transfer' : 'Continuer vers le virement'}
-							{/if}
-						</Button>
-					</div>
-					<div class:disabled={isProcessing}>
-						<Button alt on:click={handleBackToMain}>
-							{lang === 'en' ? 'Back' : 'Retour'}
-						</Button>
-					</div>
-				</div>
-			</div>
-		{/if}
+					{#if lang === 'en'}
+						<span class="title-text">Bank transfer donation</span>
+					{:else}
+						<span class="title-text">Don par virement bancaire</span>
+					{/if}
+				</span>
+			</h2>
+			{#if lang === 'en'}
+				<p>Ideal for larger amounts.</p>
+			{:else}
+				<p>Idéal pour les montants importants.</p>
+			{/if}
+			<Button on:click={() => (showVirement = true)}>
+				{lang === 'en' ? 'Make a transfer' : 'Faire un virement'}
+			</Button>
+			<small class="donation-note">
+				<Landmark size="1em" />
+				{lang === 'en' ? 'Recommended for donations > €500' : 'Recommandé pour les dons > 500€'}
+			</small>
+		</div>
 	</section>
 
 	<div class="impact-highlight">
@@ -358,6 +231,7 @@
 			</Accordion>
 		{/if}
 	</section>
+	<DonVirement bind:show={showVirement} />
 </article>
 
 <style>
@@ -499,15 +373,6 @@
 		color: var(--black);
 	}
 
-	.amount-form-card {
-		display: flex;
-		flex-direction: column;
-		align-items: stretch;
-		justify-content: center;
-		padding: 2rem;
-		grid-column: 1 / -1;
-	}
-
 	@keyframes slideInFade {
 		from {
 			opacity: 0;
@@ -517,116 +382,6 @@
 			opacity: 1;
 			transform: translateY(0);
 		}
-	}
-
-	.form-title {
-		font-size: 1.3rem;
-		margin-top: 0;
-		margin-bottom: 1rem;
-		color: var(--text);
-		text-align: center;
-	}
-
-	.amount-container {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		margin-top: 1.5rem;
-		margin-bottom: 1rem;
-		width: 100%;
-		gap: 1rem;
-	}
-
-	.amount-input {
-		width: 120px;
-		padding: 0.75rem 1.25rem;
-		border: 2px solid var(--border);
-		border-radius: var(--radius-md);
-		font-size: 1.25rem;
-		font-weight: 500;
-		text-align: left;
-		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-		background: var(--bg);
-		color: var(--text);
-		box-sizing: border-box;
-	}
-
-	.amount-input:focus {
-		outline: none;
-		border-color: var(--brand);
-		box-shadow: 0 0 0 3px rgba(255, 147, 23, 0.1);
-	}
-
-	.euro-symbol {
-		color: var(--text-secondary);
-		font-weight: 600;
-		font-size: 1.25rem;
-	}
-
-	.form-buttons {
-		display: flex;
-		flex-direction: column;
-		gap: 1rem;
-		width: 100%;
-	}
-
-	.form-buttons :global(a),
-	.form-buttons :global(button) {
-		width: 100% !important;
-		min-width: 100% !important;
-		max-width: 100% !important;
-	}
-
-	.form-buttons :global(.alt) {
-		border: 2px solid var(--brand) !important;
-		background-color: var(--bg) !important;
-		color: var(--brand) !important;
-	}
-
-	.form-buttons :global(.alt:hover) {
-		background-color: var(--brand-light) !important;
-	}
-
-	.amount-label {
-		font-weight: 600;
-		color: var(--text);
-		font-size: 1rem;
-		white-space: nowrap;
-	}
-
-	.bank-transfer-info {
-		margin: 1.5rem 0;
-		padding: 1.5rem;
-		background: var(--bg-secondary);
-		border-radius: var(--radius-sm);
-		border: 1px solid var(--border);
-		text-align: center;
-	}
-
-	.bank-transfer-info p {
-		margin: 0;
-		display: inline-flex;
-		align-items: center;
-		gap: 0.4em;
-		color: var(--text-secondary);
-		font-size: 0.95rem;
-	}
-
-	.error-message {
-		background: var(--error-bg);
-		border: 1px solid var(--error-border);
-		border-radius: 4px;
-		padding: 0.75rem;
-		margin: 1rem 0;
-		color: var(--error);
-		font-size: 0.9rem;
-		text-align: center;
-	}
-
-	.form-buttons .disabled {
-		opacity: 0.6 !important;
-		cursor: not-allowed !important;
-		pointer-events: none !important;
 	}
 
 	.faq-section {

@@ -70,20 +70,20 @@ This is a SvelteKit-based website with Markdown-powered content. Content files l
 
 #### Page Routes
 
-| Route                | Purpose                               | Implementation                                                                  |
-| -------------------- | ------------------------------------- | ------------------------------------------------------------------------------- |
-| `/`                  | Homepage                              | `src/routes/+page.svelte`                                                       |
-| `/posts`             | Blog posts list                       | `src/routes/posts/+page.svelte`                                                 |
-| `/[slug]`            | General content pages (dynamic)       | `src/routes/[slug]/+page.ts` - loads from `src/posts/{slug}.md`                 |
-| `/dangers`           | Redirects to first danger article     | `src/routes/dangers/+page.server.ts` - 307 redirect                             |
-| `/dangers/[slug]`    | Individual danger articles            | `src/routes/dangers/[slug]/+page.ts` - loads from `src/posts/dangers/{slug}.md` |
-| `/qui-sommes-nous`   | About page                            | `src/routes/qui-sommes-nous/+page.svelte`                                       |
-| `/dons`              | Donation page with Stripe integration | `src/routes/dons/+page.svelte`                                                  |
-| `/merci`             | Thank you / success page              | `src/routes/merci/+page.svelte`                                                 |
-| `/rejoindre`         | Join / participation page             | `src/routes/rejoindre/+page.svelte`                                             |
-| `/recrutement`       | Quick recruitment guide               | `src/routes/recrutement/+page.svelte`                                           |
-| `/guide-recrutement` | Full recruitment guide (markdown)     | `src/routes/guide-recrutement/+page.md`                                         |
-| `/senat2025`         | Senate 2025 campaign page             | `src/routes/senat2025/+page.svelte`                                             |
+| Route                | Purpose                                        | Implementation                                                                  |
+| -------------------- | ---------------------------------------------- | ------------------------------------------------------------------------------- |
+| `/`                  | Homepage                                       | `src/routes/+page.svelte`                                                       |
+| `/posts`             | Blog posts list                                | `src/routes/posts/+page.svelte`                                                 |
+| `/[slug]`            | General content pages (dynamic)                | `src/routes/[slug]/+page.ts` - loads from `src/posts/{slug}.md`                 |
+| `/dangers`           | Redirects to first danger article              | `src/routes/dangers/+page.server.ts` - 307 redirect                             |
+| `/dangers/[slug]`    | Individual danger articles                     | `src/routes/dangers/[slug]/+page.ts` - loads from `src/posts/dangers/{slug}.md` |
+| `/qui-sommes-nous`   | About page                                     | `src/routes/qui-sommes-nous/+page.svelte`                                       |
+| `/dons`              | Donation page (HelloAsso card + bank transfer) | `src/routes/dons/+page.svelte`                                                  |
+| `/merci`             | Thank you / success page                       | `src/routes/merci/+page.svelte`                                                 |
+| `/rejoindre`         | Join / participation page                      | `src/routes/rejoindre/+page.svelte`                                             |
+| `/recrutement`       | Quick recruitment guide                        | `src/routes/recrutement/+page.svelte`                                           |
+| `/guide-recrutement` | Full recruitment guide (markdown)              | `src/routes/guide-recrutement/+page.md`                                         |
+| `/senat2025`         | Senate 2025 campaign page                      | `src/routes/senat2025/+page.svelte`                                             |
 
 **Special Routing Patterns:**
 
@@ -102,7 +102,6 @@ This is a SvelteKit-based website with Markdown-powered content. Content files l
 | `/api/posts`        | GET    | Returns all blog posts                      | Uses `getPosts()` from `$lib/api`  |
 | `/api/dangers`      | GET    | Returns all danger articles                 | Uses `getPosts('/dangers')`        |
 | `/api/subscribe`    | POST   | Newsletter subscription via CiviCRM         | See CiviCRM Integration below      |
-| `/api/checkout`     | POST   | Create Stripe payment session               | See Stripe Integration below       |
 | `/api/wise-webhook` | POST   | Wise webhook for bank transfer confirmation | See Wise Webhook Integration below |
 | `/sitemap.xml`      | GET    | XML sitemap for SEO                         | Prerendered, includes all posts    |
 | `/sitemap.txt`      | GET    | Text sitemap                                | Alternative format                 |
@@ -173,29 +172,6 @@ The payment reference (`DON-XXXXXX`) is read from `data.transfer_reference` in t
 Run `scripts/create-wise-webhook.sh <profile_id>` on the Hetzner server to register the webhook subscription with Wise. This endpoint does **not** require SCA — it bypasses the SCA issue with the old polling approach.
 
 **No new environment variables required** — uses existing CiviCRM credentials.
-
-#### Stripe Integration (`/api/checkout`)
-
-Creates payment sessions for donations.
-
-**Request Body:**
-
-```typescript
-{
-	amount: number
-} // In cents, minimum 100 (1€)
-```
-
-**Functionality:**
-
-- Validates minimum amount (100 cents = 1€)
-- Creates Stripe customer with metadata
-- Configures checkout with EU bank transfer and French bank transfer
-- Sets French locale and collects billing address + phone
-- Includes custom message about bank transfer processing time
-- Redirects: success → `/merci`, cancel → `/dons`
-
-**Response:** `{ url: string }` (Stripe checkout URL)
 
 ### Custom Markdown Processing
 
@@ -419,7 +395,6 @@ The pre-commit hook will automatically update `TRANSLATIONS.md`.
 Copy `template.env` to `.env` and configure:
 
 - CiviCRM credentials for subscription API
-- Stripe keys for payment processing
 - `PUBLIC_UNDER_CONSTRUCTION` - Set to 'true' to disable prerendering
 
 ### Deployment
@@ -443,6 +418,5 @@ Copy `template.env` to `.env` and configure:
 - `src/lib/rehypeWBWPlugins.js` - Wait But Why popup and box plugins
 - `src/routes/dangers/+layout.ts` - Page ordering for Dangers section
 - `src/routes/api/subscribe/+server.ts` - CiviCRM newsletter subscription
-- `src/routes/api/checkout/+server.ts` - Stripe payment session creation
 - `translation-info.sh` - Script to track translated content
 - `tests/typographyPlugin.test.js` - Tests for typography rules
