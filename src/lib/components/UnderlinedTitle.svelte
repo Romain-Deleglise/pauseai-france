@@ -1,17 +1,18 @@
 <script lang="ts">
-	export let id = ''
+	/** Ancre facultative : sans valeur, aucun attribut id n'est posé. */
+	export let id: string | undefined = undefined
 	export let as = 'h2'
 	export let underlineColor = 'var(--brand)'
 </script>
 
 {#if as === 'h1'}
-	<h1 {id} style={`--underline-color: ${underlineColor}`}>
+	<h1 id={id || undefined} style={`--underline-color: ${underlineColor}`}>
 		<span>
 			<slot />
 		</span>
 	</h1>
 {:else if as === 'h2'}
-	<h2 {id} style={`--underline-color: ${underlineColor}`}>
+	<h2 id={id || undefined} style={`--underline-color: ${underlineColor}`}>
 		<span>
 			<slot />
 		</span>
@@ -36,7 +37,7 @@
 		left: 0;
 		right: 0;
 		height: 4px;
-		background: linear-gradient(to right, var(--underline-color) 0%, transparent 75%);
+		background: linear-gradient(to right, var(--underline-color, var(--brand)) 0%, transparent 75%);
 		border-radius: 2px;
 	}
 

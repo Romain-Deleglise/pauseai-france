@@ -380,7 +380,7 @@
 
 <style>
 	.recruitment-landing {
-		max-width: 60rem;
+		max-width: var(--width-wide);
 		margin: 0 auto;
 		padding: 2rem 1rem;
 		line-height: 1.6;
@@ -396,7 +396,7 @@
 	.hero-section h1 {
 		font-size: 2.5rem;
 		font-weight: 700;
-		color: var(--brand);
+		color: var(--brand-subtle);
 		margin-bottom: 1.5rem;
 		line-height: 1.2;
 	}
@@ -405,7 +405,7 @@
 		font-size: 1.1rem;
 		color: var(--text);
 		margin-bottom: 1.5rem;
-		max-width: 50rem;
+		max-width: var(--width-content);
 		margin-left: auto;
 		margin-right: auto;
 	}
@@ -413,7 +413,7 @@
 	.hero-cta {
 		font-size: 1rem;
 		font-weight: 600;
-		color: var(--brand);
+		color: var(--brand-subtle);
 		margin-bottom: 0;
 	}
 
@@ -426,14 +426,14 @@
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 		gap: 1.5rem;
-		max-width: 56rem;
+		max-width: var(--width-content);
 		margin: 0 auto;
 	}
 
 	.resource-card {
 		background: var(--bg);
-		border: 2px solid #e5e7eb;
-		border-radius: 0.5rem;
+		border: 2px solid var(--border);
+		border-radius: var(--radius-sm);
 		padding: 2rem;
 		text-align: center;
 		transition: all 0.2s ease;
@@ -470,7 +470,7 @@
 	.card-button {
 		display: inline-block;
 		padding: 0.75rem 1.5rem;
-		border-radius: 0.375rem;
+		border-radius: var(--radius-sm);
 		font-weight: 600;
 		text-decoration: none;
 		border: none;
@@ -481,28 +481,28 @@
 
 	.card-button.primary {
 		background-color: var(--brand);
-		color: white;
+		color: var(--on-brand);
 	}
 
 	.card-button.primary:hover {
-		background-color: #e88207;
+		background-color: var(--btn-active-bg);
 	}
 
 	.card-button.secondary {
 		background-color: var(--bg);
-		color: var(--brand);
+		color: var(--brand-subtle);
 		border: 2px solid var(--brand);
 	}
 
 	.card-button.secondary:hover {
 		background-color: var(--brand);
-		color: white;
+		color: var(--on-brand);
 	}
 
 	.card-button:disabled {
-		background-color: #f3f4f6;
+		background-color: var(--bg-secondary);
 		color: var(--text-secondary);
-		border-color: #e5e7eb;
+		border-color: var(--border);
 		cursor: not-allowed;
 	}
 
@@ -518,7 +518,7 @@
 
 	.guide-header h2 {
 		font-size: 1.8rem;
-		color: var(--brand);
+		color: var(--brand-subtle);
 		margin-bottom: 1.5rem;
 		border-bottom: 2px solid var(--brand);
 		padding-bottom: 0.5rem;
@@ -533,7 +533,7 @@
 		display: block;
 		font-size: 2rem;
 		font-weight: 700;
-		color: var(--brand);
+		color: var(--brand-subtle);
 		margin-bottom: 0.5rem;
 	}
 
@@ -545,7 +545,7 @@
 	}
 
 	.guide-content {
-		max-width: 50rem;
+		max-width: var(--width-content);
 		margin: 0 auto;
 	}
 
@@ -595,7 +595,7 @@
 	}
 
 	.guide-content h3 {
-		color: var(--brand);
+		color: var(--brand-subtle);
 		font-size: 1.4rem;
 		margin-top: 3rem;
 		margin-bottom: 1.5rem;
@@ -614,14 +614,14 @@
 	/* Conclusion Section */
 	.conclusion-section {
 		background: var(--bg-subtle);
-		border-radius: 0.5rem;
+		border-radius: var(--radius-sm);
 		padding: 3rem 2rem;
 		text-align: center;
 		margin-top: 4rem;
 	}
 
 	.conclusion-content h2 {
-		color: var(--brand);
+		color: var(--brand-subtle);
 		font-size: 1.8rem;
 		margin-bottom: 1rem;
 	}
@@ -638,9 +638,9 @@
 	.conclusion-cta {
 		display: inline-block;
 		background-color: var(--brand);
-		color: white;
+		color: var(--on-brand);
 		padding: 1rem 2rem;
-		border-radius: 0.5rem;
+		border-radius: var(--radius-sm);
 		text-decoration: none;
 		font-weight: 600;
 		font-size: 1.1rem;
@@ -648,7 +648,7 @@
 	}
 
 	.conclusion-cta:hover {
-		background-color: #e88207;
+		background-color: var(--btn-active-bg);
 	}
 
 	/* Responsive adjustments */
@@ -709,7 +709,7 @@
 		content: counter(item) '.';
 		counter-increment: item;
 		font-weight: bold;
-		color: var(--brand);
+		color: var(--brand-subtle);
 		position: absolute;
 		left: 0;
 	}

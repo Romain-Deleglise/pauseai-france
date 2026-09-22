@@ -55,7 +55,7 @@
 	.card {
 		display: flex;
 		flex-direction: column;
-		border: 1px solid var(--carousel-border, #d9c7b0);
+		border: 1px solid var(--carousel-border);
 		border-radius: 18px;
 		overflow: hidden;
 		text-decoration: none;
@@ -91,10 +91,10 @@
 		background: rgba(255, 255, 255, 0.9);
 		backdrop-filter: blur(8px);
 		padding: 0.3rem 0.6rem;
-		border-radius: 8px;
+		border-radius: var(--radius-sm);
 		font-size: 0.65rem;
 		font-weight: 800;
-		color: var(--text, #414042);
+		color: var(--text);
 		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 		display: flex;
 		align-items: center;
@@ -138,9 +138,9 @@
 
 	.category {
 		background: var(--brand-light);
-		color: var(--carousel-accent, #ff9416);
+		color: var(--carousel-accent, var(--brand));
 		padding: 0.3rem 0.7rem;
-		border-radius: 999px;
+		border-radius: var(--radius-pill);
 		font-size: 0.7rem;
 		font-weight: 700;
 		letter-spacing: 0.05em;
@@ -186,9 +186,9 @@
 
 	.cta {
 		padding: 0.55rem 1.15rem;
-		border-radius: 999px;
+		border-radius: var(--radius-pill);
 		background: var(--carousel-accent, var(--brand));
-		color: var(--white);
+		color: var(--on-brand);
 		font-weight: 600;
 		font-size: 0.875rem;
 		line-height: 1;

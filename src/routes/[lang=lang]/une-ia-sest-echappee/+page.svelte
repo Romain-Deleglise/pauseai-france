@@ -11,7 +11,7 @@
 	// (choix d’un journal / retour), au lieu de remonter en haut de la page.
 	let pressSection: HTMLElement
 	function scrollToPress() {
-		pressSection?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+		pressSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
 	}
 
 	const SUBSTACK_URL = 'https://pauseia.substack.com/p/pour-la-premiere-fois-une-ia-sest'
@@ -693,7 +693,7 @@
 
 <style>
 	article {
-		max-inline-size: 54rem;
+		max-inline-size: var(--width-content);
 		margin-inline: auto;
 		margin-top: 2.5rem;
 		padding: 0 1.5rem;
@@ -728,7 +728,7 @@
 		font-size: clamp(1.05rem, 2vw, 1.25rem);
 		line-height: 1.6;
 		font-weight: 400;
-		max-inline-size: 44rem;
+		max-inline-size: var(--width-text);
 		color: var(--text-2);
 	}
 
@@ -825,11 +825,11 @@
 	}
 
 	.phase.attack .frise-list {
-		border-left-color: color-mix(in srgb, #d92d20 45%, transparent);
+		border-left-color: color-mix(in srgb, var(--alert) 45%, transparent);
 	}
 
 	.phase.attack .frise-item::before {
-		background: #d92d20;
+		background: var(--alert);
 	}
 
 	.frise-date {
@@ -946,7 +946,7 @@
 		top: -0.75rem;
 		font-size: 4rem;
 		line-height: 1;
-		color: var(--brand);
+		color: var(--brand-subtle);
 		font-family: Georgia, serif;
 	}
 
@@ -997,7 +997,7 @@
 		overflow: hidden;
 		margin-bottom: 2.5rem;
 		border: 1px solid var(--border);
-		border-radius: 6px;
+		border-radius: var(--radius-sm);
 		background: var(--bg-card);
 		text-decoration: none;
 		color: var(--text);
@@ -1091,7 +1091,7 @@
 	.action-card {
 		padding: 1.75rem;
 		border: 1px solid var(--border);
-		border-radius: 6px;
+		border-radius: var(--radius-sm);
 		background: var(--bg-card);
 		margin-bottom: 1.25rem;
 	}
@@ -1141,7 +1141,7 @@
 		font-size: 0.98rem;
 		line-height: 1.6;
 		color: var(--text-2);
-		max-inline-size: 44rem;
+		max-inline-size: var(--width-text);
 	}
 
 	/* Décalage pour que le défilement automatique passe sous l’en-tête fixe. */
@@ -1163,12 +1163,12 @@
 		align-self: flex-start;
 		margin-top: 0.5rem;
 		background: var(--brand);
-		color: #1a1a1a;
+		color: var(--on-brand);
 		text-decoration: none;
 		font-weight: 700;
 		font-size: 0.92rem;
 		padding: 0.6rem 1.1rem;
-		border-radius: 6px;
+		border-radius: var(--radius-sm);
 		transition: background 0.2s ease;
 	}
 
@@ -1203,7 +1203,7 @@
 		align-items: baseline;
 		gap: 0.6rem;
 		padding: 0.6rem 0.75rem;
-		border-radius: 10px;
+		border-radius: var(--radius-md);
 		text-decoration: none;
 		color: var(--text);
 		transition: background 0.15s ease;

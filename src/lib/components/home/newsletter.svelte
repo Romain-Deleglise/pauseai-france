@@ -157,7 +157,7 @@
 		margin-left: calc(50% - 50vw);
 		margin-right: calc(50% - 50vw);
 		background: var(--brand);
-		color: var(--black);
+		color: var(--on-brand);
 		padding: 2.5rem 1rem;
 		display: flex;
 		flex-direction: column;
@@ -169,7 +169,7 @@
 
 	.content {
 		width: 100%;
-		max-width: 50rem;
+		max-width: var(--width-content);
 		margin: 0 auto;
 		text-align: center;
 		position: relative;
@@ -201,7 +201,7 @@
 		background-color: var(--white);
 		border: 1px solid var(--border);
 		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-		border-radius: 0.75rem;
+		border-radius: var(--radius-md);
 		padding: 1.25rem;
 		display: grid;
 		gap: 1.25rem;
@@ -227,7 +227,7 @@
 	input[type='email'] {
 		padding: 0.75rem;
 		border: 2px solid color-mix(in srgb, var(--black) 25%, transparent);
-		border-radius: 0.5rem;
+		border-radius: var(--radius-sm);
 		font-family: var(--font-body);
 		font-size: 1rem;
 		background-color: var(--bg);
@@ -322,7 +322,7 @@
 
 	input[type='checkbox']:checked + .checkmark::after {
 		content: '✓';
-		color: white;
+		color: var(--on-dark);
 		font-weight: bold;
 		font-size: 0.875rem;
 	}
@@ -345,7 +345,7 @@
 
 	.message {
 		padding: 0.75rem 1rem;
-		border-radius: 0.5rem;
+		border-radius: var(--radius-sm);
 		text-align: center;
 		font-weight: 600;
 		background-color: rgba(255, 255, 255, 0.8);

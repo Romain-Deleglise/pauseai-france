@@ -15,7 +15,9 @@ export async function load({
 	// Try lang-specific post first (for English), then fall back to default French posts
 	if (lang === 'en') {
 		try {
-			const { default: content, metadata }: MdModule = await import(`../../../posts/en/${slug}.md`)
+			const { default: content, metadata } = (await import(
+				`../../../posts/en/${slug}.md`
+			)) as MdModule
 			return { content, metadata, slug }
 		} catch {
 			// Fall through to try French version
@@ -23,9 +25,9 @@ export async function load({
 	}
 
 	try {
-		const { default: content, metadata }: MdModule = await import(`../../../posts/${slug}.md`)
+		const { default: content, metadata } = (await import(`../../../posts/${slug}.md`)) as MdModule
 		return { content, metadata, slug }
-	} catch (e) {
-		throw error(404, `Could not find ${slug}`)
+	} catch {
+		error(404, `Could not find ${slug}`)
 	}
 }

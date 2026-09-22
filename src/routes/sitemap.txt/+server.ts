@@ -4,21 +4,28 @@ import { getStaticRoutes } from '$lib/routes'
 
 export const prerender = true
 
-export async function GET() {
-	const posts = getPosts('', 'fr')
+export function GET() {
+	// Les articles ne sont plus servis qu'avec un préfixe de langue.
+	const postsFr = getPosts('', 'fr')
+	const postsEn = getPosts('', 'en')
 	const website = url
 
-	const staticRoutes = getStaticRoutes()
+	// La racine est émise à part ci-dessous : on l'enlève de la liste pour ne
+	// pas la déclarer deux fois.
+	const staticRoutes = getStaticRoutes().filter((route) => route !== '/')
 
 	const headers = { 'Content-Type': 'text/plain' }
 
 	const lines: string[] = []
-	lines.push(`${website}`)
+	lines.push(website)
 	for (const route of staticRoutes) {
 		lines.push(`${website}${route === '/' ? '' : route}`)
 	}
-	for (const { slug } of posts) {
-		lines.push(`${website}/${slug}`)
+	for (const { slug } of postsFr) {
+		lines.push(`${website}/fr/${slug}`)
+	}
+	for (const { slug } of postsEn) {
+		lines.push(`${website}/en/${slug}`)
 	}
 
 	const sitemap = lines.join('\n')

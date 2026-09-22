@@ -1,12 +1,10 @@
 <script lang="ts">
 	import Who from '$components/home/who.svelte'
-	import { getT } from '$lib/i18n'
 	import type { PageData } from './$types'
 
 	export let data: PageData
 
 	$: lang = data.lang
-	$: t = getT(lang)
 
 	$: title = lang === 'en' ? 'Who are we? - Pause AI' : 'Qui sommes-nous ? - Pause IA'
 	$: description =
@@ -20,4 +18,4 @@
 	<meta name="description" content={description} />
 </svelte:head>
 
-<Who teamMembers={data.teamMembers} {lang} />
+<Who teamMembers={data.teamMembers} {lang} as="h1" />

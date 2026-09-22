@@ -1,3 +1,10 @@
+<script context="module" lang="ts">
+	// Même mapping que la mise en page Markdown par défaut : sans lui, les
+	// liens internes de ces articles échappent au préfixe de langue.
+	import { img, a } from '$components/custom'
+	export { img, a }
+</script>
+
 <svelte:head>
 	<script>
 		window.popupContent = {
@@ -199,7 +206,7 @@
 		position: absolute;
 		background: white;
 		border: 1px solid #ccc;
-		border-radius: 8px;
+		border-radius: var(--radius-sm);
 		padding: 10px;
 		width: max-content;
 		color: black;

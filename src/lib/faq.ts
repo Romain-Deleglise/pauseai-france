@@ -29,7 +29,7 @@ function escapeHtml(s: string): string {
 function renderInline(s: string): string {
 	return escapeHtml(s)
 		.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-		.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_m, text, href) => {
+		.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_m: string, text: string, href: string) => {
 			const external = /^https?:\/\//.test(href)
 			const attrs = external ? ' target="_blank" rel="noopener noreferrer"' : ''
 			return `<a href="${href}"${attrs}>${text}</a>`
@@ -118,10 +118,10 @@ export function parseFaq(raw: string): FaqCategory[] {
 export function flattenFaq(categories: FaqCategory[]): FaqItem[] {
 	return categories.flatMap((c) => c.items)
 }
-
 /** JSON-LD FAQPage (rich snippets Google). */
-export function faqJsonLd(items: FaqItem[]): string {
-	return JSON.stringify({
+/** Données structurées FAQPage. La mise en balise revient à `jsonLdTag`. */
+export function faqJsonLd(items: FaqItem[]): unknown {
+	return {
 		'@context': 'https://schema.org',
 		'@type': 'FAQPage',
 		mainEntity: items.map((item) => ({
@@ -129,5 +129,5 @@ export function faqJsonLd(items: FaqItem[]): string {
 			name: item.question,
 			acceptedAnswer: { '@type': 'Answer', text: item.answerText }
 		}))
-	})
+	}
 }

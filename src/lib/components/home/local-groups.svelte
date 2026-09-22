@@ -32,7 +32,7 @@
 		try {
 			const res = await fetch('/api/events')
 			if (!res.ok) return
-			const events: LocalEvent[] = await res.json()
+			const events = (await res.json()) as LocalEvent[]
 			const today = new Date()
 			today.setHours(0, 0, 0, 0)
 			next =
@@ -133,7 +133,7 @@
 		inline-size: 3rem;
 		block-size: auto;
 		flex-shrink: 0;
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
 	/* Pastilles de villes */
@@ -147,7 +147,7 @@
 
 	.city-pill {
 		padding: 0.2rem 0.65rem;
-		border-radius: 999px;
+		border-radius: var(--radius-pill);
 		background: var(--bg);
 		border: 1px solid color-mix(in srgb, var(--brand) 30%, transparent);
 		font-size: 0.8rem;
@@ -162,7 +162,7 @@
 
 	.city-pill.more {
 		background: color-mix(in srgb, var(--brand) 16%, transparent);
-		color: var(--brand-subtle, var(--brand));
+		color: var(--brand-subtle);
 		border-color: transparent;
 	}
 
@@ -185,7 +185,7 @@
 	}
 
 	.title :global(svg) {
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
 	.desc {
@@ -219,7 +219,7 @@
 	}
 
 	.next-text :global(svg) {
-		color: var(--brand);
+		color: var(--brand-subtle);
 		flex-shrink: 0;
 		transform: translateY(2px);
 	}
@@ -230,14 +230,14 @@
 
 	.btn {
 		padding: 0.65rem 1.4rem;
-		border-radius: 0.5rem;
+		border-radius: var(--radius-sm);
 		font-family: var(--font-heading);
 		font-weight: 700;
 		font-size: 0.95rem;
 		text-decoration: none;
 		white-space: nowrap;
 		border: 1.5px solid color-mix(in srgb, var(--brand) 45%, transparent);
-		color: var(--brand-subtle, var(--brand));
+		color: var(--brand-subtle);
 		background: var(--bg);
 		transition: opacity 0.15s;
 		text-align: center;
@@ -250,7 +250,7 @@
 
 	.btn.primary {
 		background: var(--brand);
-		color: white;
+		color: var(--on-brand);
 		border-color: var(--brand);
 	}
 

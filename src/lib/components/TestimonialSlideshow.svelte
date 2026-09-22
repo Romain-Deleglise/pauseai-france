@@ -35,7 +35,7 @@
 	let zoomed = false
 
 	$: currentSlide = slides[current]
-	$: currentAlt = currentSlide?.meta
+	$: currentAlt = currentSlide.meta
 		? `${currentSlide.meta.name}, ${currentSlide.meta.role} : « ${currentSlide.meta.quote} »`
 		: `${t.emploi_ia.slideshow_alt} ${current + 1}`
 
@@ -45,8 +45,12 @@
 		current = ((index % total) + total) % total
 	}
 
-	const previous = () => goTo(current - 1)
-	const next = () => goTo(current + 1)
+	const previous = () => {
+		goTo(current - 1)
+	}
+	const next = () => {
+		goTo(current + 1)
+	}
 
 	const openZoom = () => (zoomed = true)
 	const closeZoom = () => (zoomed = false)
@@ -78,7 +82,6 @@
 <section class="slideshow" aria-roledescription="carousel">
 	{#if slides.length}
 		<figure class="slide" aria-live="polite">
-			<!-- svelte-ignore a11y-no-static-element-interactions -->
 			<div class="slide-frame" on:touchstart={onTouchStart} on:touchend={onTouchEnd}>
 				<button
 					type="button"
@@ -128,7 +131,10 @@
 	<!-- Vue plein écran pour lire les cartes chargées en texte.
 	     Navigation : flèches ‹ ›, clavier ← →, balayage tactile.
 	     Fermeture : clic sur le fond, bouton ×, ou touche Échap. -->
-	<!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions a11y-no-noninteractive-element-interactions -->
+	<!-- Le clavier est géré au niveau de la fenêtre (Échap ferme, ← → naviguent)
+	     et par les boutons ci-dessous ; ce fond ne fait que doubler ces chemins
+	     à la souris et au doigt. -->
+	<!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
 	<div
 		class="lightbox"
 		role="dialog"
@@ -203,7 +209,7 @@
 		background: none;
 		cursor: zoom-in;
 		position: relative;
-		border-radius: 14px;
+		border-radius: var(--radius-lg);
 	}
 
 	/* Flèches de navigation, sur les bords de la carte + balayage tactile. */
@@ -219,9 +225,9 @@
 		font-size: 1.9rem;
 		line-height: 1;
 		padding-bottom: 0.2rem;
-		color: var(--brand-subtle, #c96900);
+		color: var(--brand-subtle);
 		background: rgba(255, 255, 255, 0.92);
-		border: 1px solid var(--border, #e5e7eb);
+		border: 1px solid var(--border);
 		border-radius: 50%;
 		cursor: pointer;
 		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
@@ -232,8 +238,8 @@
 	}
 
 	.nav-arrow:hover {
-		background: var(--brand, #ff9416);
-		color: white;
+		background: var(--brand);
+		color: var(--on-brand);
 		transform: translateY(-50%) scale(1.05);
 	}
 
@@ -261,10 +267,10 @@
 		aspect-ratio: 1 / 1;
 		height: auto;
 		object-fit: cover;
-		border-radius: 14px;
-		border: 1px solid var(--border, #d9c7b0);
+		border-radius: var(--radius-lg);
+		border: 1px solid var(--border);
 		display: block;
-		background: var(--bg, #fff);
+		background: var(--bg);
 	}
 
 	.zoom-hint {
@@ -273,10 +279,10 @@
 		bottom: 0.6rem;
 		font-size: 0.75rem;
 		font-weight: 600;
-		color: white;
+		color: var(--on-dark);
 		background: rgba(0, 0, 0, 0.6);
 		padding: 0.3rem 0.55rem;
-		border-radius: 6px;
+		border-radius: var(--radius-sm);
 		opacity: 0;
 		transition: opacity 0.2s;
 	}
@@ -297,20 +303,20 @@
 	.attribution {
 		font-size: 0.95rem;
 		font-weight: 600;
-		color: var(--brand-subtle, #c96900);
+		color: var(--brand-subtle);
 	}
 
 	.counter {
 		font-size: 0.85rem;
 		font-weight: 600;
-		color: var(--text-secondary, #888);
+		color: var(--text-secondary);
 	}
 
 	.empty {
 		margin: 0;
 		text-align: center;
 		font-size: 1rem;
-		color: var(--text-secondary, #888);
+		color: var(--text-secondary);
 		padding: 2rem 1rem;
 	}
 
@@ -334,8 +340,8 @@
 		height: auto;
 		max-height: 95vh;
 		object-fit: contain;
-		border-radius: 8px;
-		background: #fff;
+		border-radius: var(--radius-sm);
+		background: var(--bg-card);
 		cursor: default;
 	}
 
@@ -347,7 +353,7 @@
 		height: 2.5rem;
 		font-size: 1.8rem;
 		line-height: 1;
-		color: white;
+		color: var(--on-dark);
 		background: rgba(255, 255, 255, 0.15);
 		border: 0;
 		border-radius: 50%;
@@ -369,7 +375,7 @@
 		height: 3rem;
 		font-size: 2rem;
 		line-height: 1;
-		color: white;
+		color: var(--on-dark);
 		background: rgba(255, 255, 255, 0.15);
 		border: 0;
 		border-radius: 50%;
@@ -397,11 +403,11 @@
 		bottom: 1rem;
 		left: 50%;
 		transform: translateX(-50%);
-		color: white;
+		color: var(--on-dark);
 		font-size: 0.9rem;
 		font-weight: 600;
 		background: rgba(0, 0, 0, 0.5);
 		padding: 0.35rem 0.8rem;
-		border-radius: 20px;
+		border-radius: var(--radius-pill);
 	}
 </style>

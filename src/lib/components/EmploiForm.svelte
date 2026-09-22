@@ -18,35 +18,36 @@
 		display: flex;
 		align-items: center;
 		gap: 1rem;
-		background-color: var(--brand, #ff9416);
+		background-color: var(--brand);
 		text-decoration: none;
 		padding: 1rem 1.25rem;
-		border-radius: 10px;
+		border-radius: var(--radius-md);
 		margin: 1.5rem 0;
 		transition: background 0.2s;
 	}
 
 	a:hover {
-		background-color: var(--brand-subtle, #c96900);
+		background-color: var(--btn-hover-bg);
 	}
 
 	.card-title {
 		font-weight: 700;
-		color: white;
+		color: var(--on-brand);
 		white-space: nowrap;
 		flex-shrink: 0;
 	}
 
 	.card-text {
 		font-size: 0.9rem;
-		color: rgba(255, 255, 255, 0.88);
+		color: var(--on-brand);
+		opacity: 0.92;
 		line-height: 1.3;
 	}
 
 	.card-arrow {
 		margin-left: auto;
 		font-size: 1.2rem;
-		color: white;
+		color: var(--on-brand);
 		flex-shrink: 0;
 	}
 

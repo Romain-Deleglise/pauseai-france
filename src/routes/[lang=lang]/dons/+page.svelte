@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { Badge } from '$components/ui'
 	import PostMeta from '$components/PostMeta.svelte'
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
 	import Button from '$components/Button.svelte'
@@ -52,7 +53,7 @@
 
 	<section class="donation-options">
 		<div class="donation-card helloasso-card">
-			<h3 class="title-with-icon">
+			<h2 class="title-with-icon">
 				<span class="icon-and-text">
 					<CreditCard size="1em" />
 					{#if lang === 'en'}
@@ -61,8 +62,8 @@
 						<span class="title-text">Don par carte bancaire</span>
 					{/if}
 				</span>
-				<span class="monthly-badge">{lang === 'en' ? 'Simple & fast' : 'Simple & rapide'}</span>
-			</h3>
+				<Badge size="sm">{lang === 'en' ? 'Simple & fast' : 'Simple & rapide'}</Badge>
+			</h2>
 			{#if lang === 'en'}
 				<p>
 					Choose between a one-time or monthly donation. Secure payment by credit card via
@@ -84,7 +85,7 @@
 		</div>
 
 		<div class="donation-card">
-			<h3 class="title-with-icon">
+			<h2 class="title-with-icon">
 				<span class="icon-and-text">
 					<Landmark size="1em" />
 					{#if lang === 'en'}
@@ -93,7 +94,7 @@
 						<span class="title-text">Don par virement bancaire</span>
 					{/if}
 				</span>
-			</h3>
+			</h2>
 			{#if lang === 'en'}
 				<p>Ideal for larger amounts.</p>
 			{:else}
@@ -111,13 +112,13 @@
 
 	<div class="impact-highlight">
 		{#if lang === 'en'}
-			<h3>Your impact in the face of urgency</h3>
+			<h2>Your impact in the face of urgency</h2>
 			<p>
 				Every day counts as AI development accelerates. Your donations allow us to educate the
 				public, alert decision-makers and build a movement to slow down this dangerous race.
 			</p>
 		{:else}
-			<h3>Votre impact face à l'urgence</h3>
+			<h2>Votre impact face à l'urgence</h2>
 			<p>
 				Chaque jour compte face à l'accélération du développement de l'IA. Vos dons nous permettent
 				d'éduquer le public, d'alerter les décideurs et de construire un mouvement pour ralentir
@@ -235,7 +236,7 @@
 
 <style>
 	article {
-		max-inline-size: 50rem;
+		max-inline-size: var(--width-content);
 		margin-inline: auto;
 		margin-top: 3rem;
 		padding: 0 2rem;
@@ -246,27 +247,27 @@
 		margin-bottom: 3rem;
 		background: var(--bg);
 		padding: 3rem 2rem;
-		border-radius: 12px;
-		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		border-radius: var(--radius-md);
+		box-shadow: var(--shadow-raised);
 	}
 
 	.hero-description {
 		font-size: 1.1rem;
-		color: #666;
+		color: var(--text-secondary);
 		margin-bottom: 1.5rem;
 	}
 
 	.tax-benefit {
-		background: #e8f5e8;
-		border: 2px solid #4caf50;
-		border-radius: 8px;
+		background: var(--success-bg);
+		border: 2px solid var(--success-border);
+		border-radius: var(--radius-sm);
 		padding: 1rem;
 		margin: 1.5rem 0;
 		text-align: center;
 	}
 
 	.tax-benefit strong {
-		color: #2e7d32;
+		color: var(--success);
 		font-size: 1.1rem;
 	}
 
@@ -290,9 +291,9 @@
 
 	.donation-card {
 		background: var(--bg);
-		border-radius: 12px;
+		border-radius: var(--radius-md);
 		padding: 2rem;
-		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		box-shadow: var(--shadow-raised);
 		border: 2px solid transparent;
 		transition: all 0.3s ease-out;
 		display: flex;
@@ -306,7 +307,7 @@
 		transform: translateY(-2px);
 	}
 
-	.donation-card h3 {
+	.donation-card h2 {
 		font-size: 1.3rem;
 		margin-top: 0;
 		margin-bottom: 1rem;
@@ -332,7 +333,7 @@
 	}
 
 	.donation-card p {
-		color: #666;
+		color: var(--text-secondary);
 		margin-bottom: 1.5rem;
 		flex-grow: 1;
 	}
@@ -344,19 +345,8 @@
 		max-width: 100% !important;
 	}
 
-	.monthly-badge {
-		background: #4caf50;
-		color: white;
-		padding: 0.25rem 0.75rem;
-		border-radius: 20px;
-		font-size: 0.9rem;
-		font-weight: 500;
-	}
-
-	.title-with-icon .monthly-badge {
-		display: inline-flex;
+	.title-with-icon :global(.ui-badge) {
 		align-self: flex-start;
-		margin-top: 0;
 	}
 
 	.donation-note {
@@ -364,21 +354,21 @@
 		align-items: center;
 		gap: 0.4em;
 		margin-top: 1rem;
-		color: #666;
+		color: var(--text-secondary);
 		font-size: 0.9rem;
 		text-align: left;
 	}
 
 	.impact-highlight {
-		background: linear-gradient(135deg, var(--brand), #ff6b35);
+		background: linear-gradient(135deg, var(--brand), var(--brand-deep));
 		color: var(--black);
 		padding: 2rem;
-		border-radius: 12px;
+		border-radius: var(--radius-md);
 		margin: 2rem 0;
 		text-align: center;
 	}
 
-	.impact-highlight h3 {
+	.impact-highlight h2 {
 		margin-bottom: 1rem;
 		color: var(--black);
 	}

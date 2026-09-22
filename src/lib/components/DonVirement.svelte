@@ -9,7 +9,7 @@
 
 	const PRESETS = [20, 50, 100, 200]
 
-	let step: 1 | 2 = 1
+	let step: 1 | 2 | 3 = 1
 	let prenom = ''
 	let nom = ''
 	let email = ''
@@ -17,13 +17,14 @@
 	let selectedPreset: number | null = 50
 	let isLoading = false
 	let errorMessage = ''
+	let reference = ''
 
 	let copiedField: string | null = null
 
 	let dialogEl: HTMLElement
-	let firstFocusEl: HTMLElement
+	let firstFocusEl: HTMLElement | undefined
 
-	$: if (show) {
+	$: if (show && firstFocusEl) {
 		step = 1
 		prenom = ''
 		nom = ''
@@ -32,6 +33,7 @@
 		selectedPreset = 50
 		errorMessage = ''
 		copiedField = null
+		reference = ''
 	}
 
 	$: if (typeof document !== 'undefined') {
@@ -50,8 +52,10 @@
 		}
 	}
 
-	$: if (show && firstFocusEl) {
-		setTimeout(() => firstFocusEl?.focus(), 50)
+	$: if (show) {
+		setTimeout(() => {
+			firstFocusEl?.focus()
+		}, 50)
 	}
 
 	function close() {
@@ -112,8 +116,9 @@
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ prenom: prenom.trim(), nom: nom.trim(), email, montant })
 			})
-			const data = (await res.json()) as { success: boolean; error?: string }
+			const data = (await res.json()) as { success: boolean; error?: string; reference?: string }
 			if (data.success) {
+				reference = data.reference ?? ''
 				step = 2
 			} else {
 				errorMessage = data.error ?? 'Une erreur est survenue.'
@@ -143,7 +148,6 @@
 <svelte:window on:keydown={handleKeydown} />
 
 {#if show}
-	<!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
 	<div class="overlay" on:click={handleOverlayClick} aria-hidden="true"></div>
 	<div
 		class="modal"
@@ -208,7 +212,9 @@
 								type="button"
 								class="preset-btn"
 								class:selected={selectedPreset === preset}
-								on:click={() => selectPreset(preset)}
+								on:click={() => {
+									selectPreset(preset)
+								}}
 							>
 								{preset}€
 							</button>
@@ -226,7 +232,7 @@
 					{isLoading ? 'Chargement...' : 'Continuer'}
 				</button>
 			</form>
-		{:else}
+		{:else if step === 2}
 			<div class="confirmation" aria-live="polite">
 				<div class="success-icon" aria-hidden="true">✅</div>
 				<h2 id="modal-title" class="modal-title">Merci, {prenom}&nbsp;!</h2>
@@ -272,12 +278,53 @@
 							{copiedField === 'bic' ? '✓' : '📋'}
 						</button>
 					</div>
+					{#if reference}
+						<div class="rib-row">
+							<span class="rib-label">Référence</span>
+							<span class="rib-value mono reference-value">{reference}</span>
+							<button
+								type="button"
+								class="copy-inline"
+								on:click={() => copyToClipboard(reference, 'reference')}
+								aria-label="Copier la référence"
+							>
+								{copiedField === 'reference' ? '✓' : '📋'}
+							</button>
+						</div>
+					{/if}
 				</div>
 
-				<button type="button" class="done-btn" on:click={close}>
+				{#if reference}
+					<p class="reference-hint">
+						Indiquez bien la référence <strong>{reference}</strong> dans le libellé ou le motif du virement&nbsp;:
+						c'est elle qui nous permet de rattacher votre virement à votre don.
+					</p>
+				{/if}
+
+				<button type="button" class="done-btn" on:click={() => (step = 3)}>
 					C'est fait, j'ai viré {montant}&nbsp;€
 				</button>
 				<button type="button" class="close-link" on:click={close}>Fermer</button>
+			</div>
+		{:else}
+			<div class="confirmation" aria-live="polite">
+				<div class="success-icon" aria-hidden="true">🙏</div>
+				<h2 id="modal-title" class="modal-title">Merci infiniment, {prenom}&nbsp;!</h2>
+				<p class="confirm-text">
+					Votre don de <strong>{montant}&nbsp;€</strong> compte énormément pour nous. Il finance directement
+					notre travail de plaidoyer pour une IA sous contrôle.
+				</p>
+				<p class="confirm-text">
+					Dès que votre virement nous parviendra (comptez quelques jours ouvrés), nous vous
+					enverrons votre <strong>reçu fiscal</strong> à l'adresse <strong>{email}</strong>. Il vous
+					permettra de déduire <strong>66&nbsp;%</strong> de votre don de vos impôts.
+				</p>
+				<p class="confirm-note">
+					Vous ne recevez rien sous une dizaine de jours&nbsp;? Écrivez-nous à
+					<a href="mailto:dons@pauseia.fr">dons@pauseia.fr</a>{#if reference}
+						en indiquant la référence <strong>{reference}</strong>{/if}.
+				</p>
+				<button type="button" class="done-btn" on:click={close}>Fermer</button>
 			</div>
 		{/if}
 	</div>
@@ -298,7 +345,7 @@
 		transform: translate(-50%, -50%);
 		z-index: 1001;
 		background: var(--bg);
-		border-radius: 12px;
+		border-radius: var(--radius-md);
 		padding: 2rem;
 		width: min(540px, calc(100vw - 2rem));
 		max-height: calc(100dvh - 2rem);
@@ -314,7 +361,7 @@
 		border: none;
 		font-size: 1.2rem;
 		cursor: pointer;
-		color: var(--text-secondary, #676e7a);
+		color: var(--text-secondary);
 		line-height: 1;
 		padding: 0.25rem 0.5rem;
 		border-radius: 4px;
@@ -354,8 +401,8 @@
 	input[type='email'],
 	input[type='number'] {
 		padding: 0.6rem 0.9rem;
-		border: 2px solid var(--border, #e5e7eb);
-		border-radius: 8px;
+		border: 2px solid var(--border);
+		border-radius: var(--radius-sm);
 		font-size: 1rem;
 		font-family: inherit;
 		background: var(--bg);
@@ -411,7 +458,7 @@
 
 	.presets-label {
 		font-size: 0.85rem;
-		color: var(--text-secondary, #676e7a);
+		color: var(--text-secondary);
 		margin: 0 0 0.5rem;
 	}
 
@@ -424,10 +471,10 @@
 
 	.preset-btn {
 		padding: 0.4rem 0.9rem;
-		border-radius: 20px;
+		border-radius: var(--radius-pill);
 		border: 2px solid var(--brand);
 		background: transparent;
-		color: var(--brand);
+		color: var(--brand-subtle);
 		font-weight: 600;
 		font-size: 0.95rem;
 		cursor: pointer;
@@ -439,13 +486,13 @@
 	.preset-btn:hover,
 	.preset-btn.selected {
 		background: var(--brand);
-		color: white;
+		color: var(--on-brand);
 	}
 
 	/* Field hint */
 	.field-hint {
 		font-size: 0.82rem;
-		color: var(--text-secondary, #676e7a);
+		color: var(--text-secondary);
 		margin-top: 0.2rem;
 	}
 
@@ -464,11 +511,11 @@
 
 	/* Error */
 	.error-banner {
-		background: #fee;
-		border: 1px solid #fcc;
-		border-radius: 6px;
+		background: var(--error-bg);
+		border: 1px solid var(--error-border);
+		border-radius: var(--radius-sm);
 		padding: 0.7rem 1rem;
-		color: #c33;
+		color: var(--error);
 		font-size: 0.9rem;
 		margin-bottom: 1rem;
 	}
@@ -478,9 +525,9 @@
 		width: 100%;
 		padding: 0.85rem;
 		background: var(--brand);
-		color: white;
+		color: var(--on-brand);
 		border: none;
-		border-radius: 8px;
+		border-radius: var(--radius-sm);
 		font-size: 1.05rem;
 		font-weight: 600;
 		cursor: pointer;
@@ -490,7 +537,7 @@
 	}
 
 	.submit-btn:hover:not(:disabled) {
-		background: #ffa945;
+		background: var(--btn-hover-bg);
 		transform: translateY(-1px);
 	}
 
@@ -514,16 +561,16 @@
 	}
 
 	.confirm-text {
-		color: #666;
+		color: var(--text-secondary);
 		margin: 0;
 	}
 
 	/* RIB card */
 	.rib-card {
 		width: 100%;
-		background: #f8fafc;
-		border: 1px solid var(--border, #e5e7eb);
-		border-radius: 10px;
+		background: var(--bg-secondary);
+		border: 1px solid var(--border);
+		border-radius: var(--radius-md);
 		padding: 1.25rem 1.5rem;
 		text-align: left;
 	}
@@ -533,7 +580,7 @@
 		justify-content: space-between;
 		align-items: center;
 		padding: 0.5rem 0;
-		border-bottom: 1px solid var(--border, #e5e7eb);
+		border-bottom: 1px solid var(--border);
 	}
 
 	.rib-row:last-child {
@@ -543,7 +590,7 @@
 	.rib-label {
 		font-weight: 600;
 		font-size: 0.9rem;
-		color: var(--text-secondary, #676e7a);
+		color: var(--text-secondary);
 		min-width: 80px;
 	}
 
@@ -557,16 +604,35 @@
 		letter-spacing: 0.04em;
 	}
 
+	.reference-value {
+		font-weight: 700;
+		letter-spacing: 0.04em;
+	}
+
+	.reference-hint {
+		margin: 1rem 0 0;
+		font-size: 0.9rem;
+		line-height: 1.5;
+		color: var(--text-secondary);
+	}
+
+	.confirm-note {
+		margin: 1.25rem 0 1.5rem;
+		font-size: 0.85rem;
+		line-height: 1.5;
+		color: var(--text-secondary);
+	}
+
 	/* Inline copy buttons */
 	.copy-inline {
 		background: none;
-		border: 1px solid var(--border, #e5e7eb);
-		border-radius: 6px;
+		border: 1px solid var(--border);
+		border-radius: var(--radius-sm);
 		cursor: pointer;
 		font-size: 1rem;
 		padding: 0.25rem 0.5rem;
 		line-height: 1;
-		color: var(--text-secondary, #676e7a);
+		color: var(--text-secondary);
 		transition:
 			background 0.15s,
 			border-color 0.15s;
@@ -574,7 +640,7 @@
 	}
 
 	.copy-inline:hover {
-		background: var(--brand-light, #fff5e8);
+		background: var(--brand-light);
 		border-color: var(--brand);
 	}
 
@@ -582,9 +648,9 @@
 		width: 100%;
 		padding: 0.85rem;
 		background: var(--brand);
-		color: white;
+		color: var(--on-brand);
 		border: none;
-		border-radius: 8px;
+		border-radius: var(--radius-sm);
 		font-size: 1.05rem;
 		font-weight: 600;
 		cursor: pointer;
@@ -594,14 +660,14 @@
 	}
 
 	.done-btn:hover {
-		background: #ffa945;
+		background: var(--btn-hover-bg);
 		transform: translateY(-1px);
 	}
 
 	.close-link {
 		background: none;
 		border: none;
-		color: var(--text-secondary, #676e7a);
+		color: var(--text-secondary);
 		font-size: 0.95rem;
 		cursor: pointer;
 		text-decoration: underline;

@@ -156,9 +156,9 @@
 		width: 36px;
 		height: 36px;
 		border-radius: 50%;
-		border: 1px solid var(--carousel-border, #d9c7b0);
+		border: 1px solid var(--carousel-border);
 		background: var(--brand-light);
-		color: var(--carousel-accent, #ff9416);
+		color: var(--carousel-accent, var(--brand));
 		font-size: 1.45rem;
 		line-height: 1;
 		cursor: pointer;
@@ -170,8 +170,8 @@
 
 	.nav:hover,
 	.nav:focus-visible {
-		background: var(--carousel-accent, #ff9416);
-		color: #ffffff;
+		background: var(--carousel-accent, var(--brand));
+		color: var(--on-brand);
 		outline: none;
 		transform: translateY(-1px);
 	}
@@ -196,7 +196,7 @@
 	}
 
 	.dots__dot--active {
-		background: var(--carousel-accent, #ff9416);
+		background: var(--carousel-accent, var(--brand));
 		width: 12px;
 		height: 12px;
 		transform: scale(1.08);

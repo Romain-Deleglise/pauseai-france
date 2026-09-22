@@ -31,15 +31,17 @@ export const handler: Handler = async (event) => {
 
 		// Handle the event
 		switch (stripeEvent.type) {
-			case 'checkout.session.completed':
+			case 'checkout.session.completed': {
 				const session = stripeEvent.data.object as Stripe.Checkout.Session
 				console.log('Payment successful:', session.id)
 				// Add your payment success logic here
 				break
-			case 'payment_intent.succeeded':
+			}
+			case 'payment_intent.succeeded': {
 				const paymentIntent = stripeEvent.data.object as Stripe.PaymentIntent
 				console.log('Payment succeeded:', paymentIntent.id)
 				break
+			}
 			default:
 				console.log(`Unhandled event type: ${stripeEvent.type}`)
 		}
@@ -48,8 +50,9 @@ export const handler: Handler = async (event) => {
 			statusCode: 200,
 			body: JSON.stringify({ received: true })
 		}
-	} catch (err: any) {
-		console.error('Webhook error:', err.message)
-		return { statusCode: 400, body: `Webhook Error: ${err.message}` }
+	} catch (err) {
+		const message = err instanceof Error ? err.message : String(err)
+		console.error('Webhook error:', message)
+		return { statusCode: 400, body: `Webhook Error: ${message}` }
 	}
 }

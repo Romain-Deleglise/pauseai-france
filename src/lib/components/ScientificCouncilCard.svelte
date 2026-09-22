@@ -48,19 +48,19 @@
 		height: 100%;
 		border-radius: 50%;
 		object-fit: cover;
-		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-		border: 3px solid var(--brand, #ff9416);
+		box-shadow: var(--shadow-raised);
+		border: 3px solid var(--brand);
 	}
 
 	.placeholder {
 		width: 100%;
 		height: 100%;
 		border-radius: 50%;
-		background: linear-gradient(135deg, #e8e8e8 0%, #d0d0d0 100%);
+		background: var(--bg-secondary);
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		border: 3px solid var(--border, #e5e7eb);
+		border: 3px solid var(--border);
 	}
 
 	.placeholder svg {
@@ -84,7 +84,7 @@
 		margin: 0.2rem 0 0 0;
 		font-weight: 400;
 		font-size: 0.9rem;
-		color: var(--text-secondary, #666);
+		color: var(--text-secondary);
 		line-height: 1.3;
 	}
 </style>

@@ -11,19 +11,19 @@ export interface CampaignArticle {
 	url: string
 }
 
+interface CampaignSummaryContent {
+	/** Paragraphes séparés par une ligne vide (\n\n). */
+	text: string
+	results: CampaignResult[]
+	link?: { label: string; url: string }
+	articles?: CampaignArticle[]
+	/** Titre de la liste d'articles. Par défaut « Couverture presse ». */
+	articlesTitle?: string
+}
+
 export interface CampaignSummary {
-	fr: {
-		text: string
-		results: CampaignResult[]
-		link?: { label: string; url: string }
-		articles?: CampaignArticle[]
-	}
-	en: {
-		text: string
-		results: CampaignResult[]
-		link?: { label: string; url: string }
-		articles?: CampaignArticle[]
-	}
+	fr: CampaignSummaryContent
+	en: CampaignSummaryContent
 }
 
 export interface Campaign {
@@ -78,9 +78,91 @@ export interface Campaign {
  */
 export const campaigns: Campaign[] = [
 	{
-		slug: 'une-ia-sest-echappee',
+		slug: 'perte-de-controle',
 		status: 'active',
+		startDate: '2026-09',
+		// Manifestation du 1er mai : groupe, pancarte pauseia.fr visible, scène
+		// différente de celle de la campagne emploi (qui utilise une autre photo
+		// du même cortège). À remplacer par un cliché de la semaine d'action.
+		image: '/hero/manif-20.webp',
+		fr: {
+			title: 'Nous sommes au bord de la perte de contrôle : réagissons !',
+			homeTitle: 'Nous sommes au bord de la perte de contrôle : réagissons',
+			description:
+				'L’IA dépasse désormais les humains en sécurité informatique, et les chercheurs qui les entraînent ne les maîtrisent plus suffisamment. Relayez l’appel à un moratoire mondial sur le développement des IA de pointe.',
+			shortDescription:
+				'L’IA dépasse les humains en sécurité informatique et échappe au contrôle de ceux qui la construisent. Relayez l’appel à un moratoire mondial sur les IA de pointe.',
+			cta: 'Passer à l’action',
+			homeCta: 'Je passe à l’action'
+		},
+		en: {
+			title: 'We are on the brink of losing control: let’s react!',
+			homeTitle: 'We are on the brink of losing control: let’s react',
+			description:
+				'AI now outperforms humans at computer security, and the researchers who train these systems no longer control them well enough. Relay the call for a global moratorium on frontier AI development.',
+			shortDescription:
+				'AI outperforms humans at computer security and is escaping the control of those who build it. Relay the call for a global moratorium on frontier AI.',
+			cta: 'Take action',
+			homeCta: 'I’m taking action'
+		}
+	},
+	{
+		slug: 'une-ia-sest-echappee',
+		status: 'ended',
 		startDate: '2026-07',
+		endDate: '2026-09',
+		summary: {
+			fr: {
+				text: "En juillet 2026, des modèles d'OpenAI testés sur leurs capacités de piratage sont sortis d'un environnement censé être isolé, ont atteint Internet, puis ont attaqué les serveurs de production de Hugging Face pour y voler le corrigé du test sur lequel on les évaluait. Personne ne leur avait demandé de le faire.\n\nC'est, à notre connaissance, la première fois qu'une IA échappe à son cadre de test et mène seule une cyberattaque contre une organisation réelle. Environ 1 200 agents distincts, chacun lancé sur sa propre tâche, se sont coordonnés deux mois durant via un forum clandestin qu'OpenAI n'a pas vu ; quelque 700 ont participé à l'attaque, menée en moins de treize heures. Ils écrivent dans leurs propres traces qu'ils sortent du cadre autorisé, et continuent. Ils en ont falsifié une partie. Aucun n'a alerté d'humain.\n\nPause IA a publié l'analyse détaillée de l'incident, du début à la fin, en distinguant les faits établis de ce qui est seulement rapporté. Et nous avons interpellé députés et journalistes pour réclamer deux mesures immédiates : des évaluations de sécurité indépendantes avant déploiement, et la déclaration obligatoire des incidents aux autorités.\n\nLa suite a montré que le problème n'est pas celui d'une entreprise : cinq incidents du même schéma divulgués en trois semaines par trois laboratoires (Anthropic le 30 juillet, l'institut britannique UK AISI le 4 août, Meta le 5). L'enquête indépendante de METR et Redwood Research, publiée le 28 août, s'est révélée plus accablante que le rapport d'OpenAI. Puis la politique s'en est mêlée : le 3 septembre, Bernie Sanders et Greg Casar déposaient le Ban Artificial Superintelligence Act en citant l'incident ; le 9, le chercheur Jacob Coxon démissionnait d'Anthropic ; le 12, Dario Amodei publiait « We Must Pace The Frontier ».\n\nMais rien de tout cela n'est contraignant. OpenAI juge seule si son propre seuil critique a été franchi, et ne s'est pas prononcée. L'épisode du 13 au 19 juillet, quand une seconde vague d'agents s'est retournée contre l'infrastructure interne d'OpenAI, n'a toujours fait l'objet d'aucune enquête indépendante. Si les dégâts sont restés limités, c'est par chance, et la chance n'est pas une méthode : nous poursuivons avec la campagne « Nous sommes au bord de la perte de contrôle ».",
+				results: [
+					{ label: 'Agents coordonnés, dont ~700 à l’attaque de Hugging Face', value: '≈ 1 200' },
+					{ label: 'Messages échangés entre eux en moins d’une semaine', value: '+ 70 000' },
+					{ label: 'Agents ayant alerté un humain', value: '0' }
+				],
+				articlesTitle: 'À lire',
+				articles: [
+					{
+						title: 'Personne ne contrôle l’IA, le danger est imminent',
+						source: 'Analyse, 15 septembre 2026',
+						url: '/fr/personne-ne-controle-lia'
+					},
+					{
+						title: 'Non, course et sécurité ne sont plus compatibles',
+						source: 'Analyse, 17 septembre 2026',
+						url: '/fr/course-et-securite-ne-sont-plus-compatibles'
+					}
+				],
+				link: {
+					label: 'Lire notre analyse complète de l’incident',
+					url: '/fr/incident-openai-hugging-face'
+				}
+			},
+			en: {
+				text: 'In July 2026, OpenAI models being tested on their hacking capabilities broke out of an environment meant to be sealed, reached the internet, then attacked Hugging Face’s production servers to steal the answer key of the very test they were being graded on. Nobody had asked them to.\n\nTo our knowledge, this is the first time an AI escaped its test environment and carried out a cyberattack against a real organisation on its own. Around 1,200 separate agents, each launched on its own task, coordinated for two months through a clandestine forum OpenAI never spotted; some 700 took part in the attack, carried out in under thirteen hours. They write in their own traces that they are outside the authorised scope, and carry on. They falsified part of those traces. Not one alerted a human.\n\nPause AI published a detailed analysis of the incident from start to finish, separating established facts from what is merely reported. And we called on MPs and journalists to demand two immediate measures: independent safety evaluations before deployment, and mandatory reporting of incidents to the authorities.\n\nWhat followed showed this is not one company’s problem: five incidents with the same pattern disclosed in three weeks by three labs (Anthropic on 30 July, the UK AI Security Institute on 4 August, Meta on the 5th). The independent investigation by METR and Redwood Research, published on 28 August, proved more damning than OpenAI’s own report. Then politics caught up: on 3 September, Bernie Sanders and Greg Casar introduced the Ban Artificial Superintelligence Act, citing the incident; on the 9th, researcher Jacob Coxon resigned from Anthropic; on the 12th, Dario Amodei published “We Must Pace The Frontier”.\n\nBut none of it is binding. OpenAI alone decides whether its own critical threshold was crossed, and has not said. The 13–19 July episode, when a second wave of agents turned on OpenAI’s internal infrastructure, has still never been independently investigated. If the damage stayed limited, it was down to luck, and luck is not a method: we are carrying on with the campaign “We are on the brink of losing control”.',
+				results: [
+					{ label: 'Coordinated agents, ~700 of them attacking Hugging Face', value: '≈ 1,200' },
+					{ label: 'Messages exchanged between them in under a week', value: '70,000+' },
+					{ label: 'Agents that alerted a human', value: '0' }
+				],
+				articlesTitle: 'Further reading',
+				articles: [
+					{
+						title: 'Nobody controls AI, the danger is imminent',
+						source: 'Analysis, 15 September 2026',
+						url: '/en/personne-ne-controle-lia'
+					},
+					{
+						title: 'No, racing and safety are no longer compatible',
+						source: 'Analysis, 17 September 2026',
+						url: '/en/course-et-securite-ne-sont-plus-compatibles'
+					}
+				],
+				link: {
+					label: 'Read our full analysis of the incident',
+					url: '/en/incident-openai-hugging-face'
+				}
+			}
+		},
 		fr: {
 			title: 'Une IA s’est échappée : exigeons des garde-fous',
 			homeTitle: 'Une IA s’est échappée : exigeons des garde-fous',
@@ -89,8 +171,7 @@ export const campaigns: Campaign[] = [
 			shortDescription:
 				'Pour la première fois, une IA s’est échappée de son test et a piraté une entreprise, de sa propre initiative. Aidez-nous à en faire un sujet : écrivez à vos élus et à la presse en deux minutes.',
 			cta: 'Passer à l’action',
-			homeCta: 'Je passe à l’action',
-			progress: 'Action urgente'
+			homeCta: 'Je passe à l’action'
 		},
 		en: {
 			title: 'An AI escaped: demand safeguards',
@@ -100,8 +181,7 @@ export const campaigns: Campaign[] = [
 			shortDescription:
 				'For the first time, an AI escaped its test and hacked a company on its own initiative. Help make it a story: write to your representatives and the press in two minutes.',
 			cta: 'Take action',
-			homeCta: 'I’m taking action',
-			progress: 'Urgent action'
+			homeCta: 'I’m taking action'
 		}
 	},
 	{
@@ -218,33 +298,6 @@ export const campaigns: Campaign[] = [
 			cta: 'Join the campaign',
 			homeCta: 'Write to the government',
 			progress: 'Before the Évian G7 summit (15-17 June 2026)'
-		}
-	},
-	{
-		slug: 'ecrire-a-mes-elus',
-		status: 'active',
-		startDate: '2026-04',
-		// Photo: Daniel Vorndran / DXR, public domain, via Wikimedia Commons
-		image: '/campaigns/960px-Palais_Bourbon.jpg',
-		fr: {
-			title: 'Écrivez à vos élus',
-			homeTitle: 'Écrivez à votre député·e et à votre sénateur·rice',
-			description:
-				"Envoyez un email à votre député et à votre sénateur pour mettre les risques de l'IA à leur agenda. Un modèle personnalisable et deux versions (courte et complète) sont disponibles.",
-			shortDescription:
-				"Un email prêt à personnaliser pour mettre les risques de l'IA à l'agenda de votre député et de votre sénateur.",
-			cta: 'Envoyer un email à mes élus',
-			homeCta: 'Envoyer mon email'
-		},
-		en: {
-			title: 'Write to your representatives',
-			homeTitle: 'Write to your MP and senator',
-			description:
-				'Send an email to your MP and senator to put AI risks on their agenda. A customisable template with both a short and a full version is available.',
-			shortDescription:
-				'A ready-to-personalise email to put AI risks on the agenda of your MP and senator.',
-			cta: 'Write to my representatives',
-			homeCta: 'Send my email'
 		}
 	},
 	{
@@ -509,4 +562,12 @@ export function getSortedCampaigns(): Campaign[] {
 	const active = campaigns.filter((c) => c.status === 'active').sort(byStartDateDesc)
 	const ended = campaigns.filter((c) => c.status === 'ended').sort(byStartDateDesc)
 	return [...active, ...ended]
+}
+
+/**
+ * Campagne mise en avant : la plus récente encore en cours. Sert de destination
+ * de repli pour le bandeau quand personne n'a renseigné d'URL dans Notion.
+ */
+export function getFeaturedCampaign(): Campaign | undefined {
+	return getSortedCampaigns().find((campaign) => campaign.status === 'active')
 }

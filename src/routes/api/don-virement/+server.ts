@@ -96,10 +96,10 @@ export const POST: RequestHandler = async ({ request }) => {
 		const data = (await request.json()) as DonVirementRequest
 
 		// Validate required fields
-		if (!data.prenom || !data.prenom.trim()) {
+		if (!data.prenom.trim()) {
 			return json({ success: false, error: 'Le prénom est requis' }, { status: 400 })
 		}
-		if (!data.nom || !data.nom.trim()) {
+		if (!data.nom.trim()) {
 			return json({ success: false, error: 'Le nom est requis' }, { status: 400 })
 		}
 
@@ -233,7 +233,10 @@ export const POST: RequestHandler = async ({ request }) => {
 			}
 		})
 
-		return json({ success: true })
+		// La référence doit remonter au donateur : c'est elle qu'il reporte dans le
+		// libellé du virement, et elle seule permet ensuite de rapprocher le
+		// virement reçu de la contribution Pending côté CiviCRM.
+		return json({ success: true, reference })
 	} catch (error) {
 		console.error('[don-virement] error:', error)
 		return json(

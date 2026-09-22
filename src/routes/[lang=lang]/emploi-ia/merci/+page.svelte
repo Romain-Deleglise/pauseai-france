@@ -4,7 +4,7 @@
 	import { getT } from '$lib/i18n'
 	import { page } from '$app/stores'
 
-	$: lang = ($page.params.lang as Lang) || 'fr'
+	$: lang = $page.params.lang as Lang
 	$: t = getT(lang)
 </script>
 
@@ -54,13 +54,13 @@
 	.content {
 		background-color: var(--bg);
 		padding: 3rem;
-		border-radius: 0.5rem;
-		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+		border-radius: var(--radius-sm);
+		box-shadow: var(--shadow-card);
 		text-align: center;
 	}
 
 	h1 {
-		color: var(--brand);
+		color: var(--brand-subtle);
 		margin-top: 0;
 		margin-bottom: 2rem;
 	}
@@ -104,7 +104,7 @@
 	}
 
 	.back-link a:hover {
-		color: var(--brand);
+		color: var(--brand-subtle);
 	}
 
 	@media (max-width: 640px) {

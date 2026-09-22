@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { url as siteUrl } from '$config'
 	import { onMount } from 'svelte'
-	import ExternalLink from 'lucide-svelte/icons/external-link'
 	import Mail from 'lucide-svelte/icons/mail'
 	import { page } from '$app/stores'
 	import { pushState } from '$app/navigation'
@@ -20,9 +19,25 @@
 	let type = Type.Internal
 	let anchor: HTMLAnchorElement
 
+	// Les fichiers Markdown écrivent leurs liens internes sans préfixe de langue
+	// (/propositions, /dangers…) pour rester lisibles et communs aux deux
+	// langues. Les pages n'existent plus qu'en /fr et /en : on préfixe ici,
+	// d'après la langue de la page courante, plutôt que dans chaque fichier.
+	const LANG_FREE = ['/fr/', '/en/', '/api/', '/pdfs/', '/campaigns/', '/hero/', '/membres/']
+	// Pages restées sans préfixe (françaises uniquement).
+	const NO_LANG = ['/recrutement', '/guide-recrutement', '/rss', '/fr', '/en']
+	$: lang = ($page.data.lang as string | undefined) ?? 'fr'
+	$: resolved =
+		href.startsWith('/') &&
+		!LANG_FREE.some((p) => href.startsWith(p)) &&
+		!NO_LANG.includes(href.replace(/[?#].*$/, '')) &&
+		!/\.[a-z0-9]{2,4}($|[?#])/i.test(href)
+			? `/${lang}${href}`
+			: href
+
 	if ((href.startsWith('http:') || href.startsWith('https:')) && !href.startsWith(siteUrl)) {
 		type = Type.External
-		if (!target) target = '_blank'
+		target ??= '_blank'
 	} else if (href.startsWith('mailto:')) type = Type.Mail
 
 	onMount(() => {
@@ -42,7 +57,12 @@
 	})
 </script>
 
-<a {href} {target} rel={target === '_blank' ? 'noopener noreferrer' : undefined} bind:this={anchor}>
+<a
+	href={resolved}
+	{target}
+	rel={target === '_blank' ? 'noopener noreferrer' : undefined}
+	bind:this={anchor}
+>
 	<slot />{#if type != Type.Internal}
 		<span style="white-space: nowrap">
 			<div class="icon">

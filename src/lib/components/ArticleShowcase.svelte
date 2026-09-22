@@ -13,8 +13,8 @@
 	$: ALL_CATEGORY = t.emploi_ia.articles_all_category
 	$: ALL_LANG = t.emploi_ia.articles_lang_all
 
-	let activeCategory: string = 'Toutes'
-	let activeLanguage: string = 'Toutes'
+	let activeCategory = 'Toutes'
+	let activeLanguage = 'Toutes'
 	let currentPage = 0
 	let categories: string[] = []
 	let tabs: string[] = []
@@ -142,7 +142,9 @@
 						class:seg-btn--first={i === 0}
 						class:seg-btn--last={i === languages.length - 1}
 						aria-pressed={language.id === activeLanguage}
-						on:click={() => switchLanguage(language.id)}
+						on:click={() => {
+							switchLanguage(language.id)
+						}}
 					>
 						{language.label}
 					</button>
@@ -241,23 +243,23 @@
 		font-weight: 600;
 		letter-spacing: 0.04em;
 		text-transform: uppercase;
-		color: var(--carousel-text, #414042);
+		color: var(--carousel-text);
 		white-space: nowrap;
 	}
 
 	.segmented {
 		display: flex;
-		border: 1px solid var(--carousel-border, #d9c7b0);
-		border-radius: 8px;
+		border: 1px solid var(--carousel-border);
+		border-radius: var(--radius-sm);
 		overflow: hidden;
 	}
 
 	.seg-btn {
 		background: var(--white);
 		border: none;
-		border-left: 1px solid var(--carousel-border, #d9c7b0);
+		border-left: 1px solid var(--carousel-border);
 		padding: 0.3rem 0.75rem;
-		color: var(--carousel-text, #414042);
+		color: var(--carousel-text);
 		cursor: pointer;
 		transition:
 			background 150ms ease,
@@ -272,13 +274,13 @@
 
 	.seg-btn:hover,
 	.seg-btn:focus-visible {
-		background: var(--brand-light, #fff7ed);
+		background: var(--brand-light);
 		outline: none;
 	}
 
 	.seg-btn--active {
 		background: var(--carousel-accent, var(--brand));
-		color: var(--white);
+		color: var(--on-brand);
 	}
 
 	.seg-btn--active:hover {
@@ -289,7 +291,7 @@
 
 	.label {
 		font-weight: 600;
-		color: var(--carousel-text, #414042);
+		color: var(--carousel-text);
 	}
 
 	.tabs {
@@ -299,11 +301,11 @@
 	}
 
 	button[role='tab'] {
-		border-radius: 999px;
-		border: 1px solid var(--carousel-border, #d9c7b0);
+		border-radius: var(--radius-pill);
+		border: 1px solid var(--carousel-border);
 		background: var(--white);
 		padding: 0.5rem 1.3rem;
-		color: var(--carousel-text, #414042);
+		color: var(--carousel-text);
 		cursor: pointer;
 		transition:
 			background 180ms ease,
@@ -321,7 +323,7 @@
 
 	button[role='tab'].tab--active {
 		background: var(--carousel-accent, var(--brand));
-		color: var(--white);
+		color: var(--on-brand);
 		border-color: var(--carousel-accent, var(--brand));
 	}
 

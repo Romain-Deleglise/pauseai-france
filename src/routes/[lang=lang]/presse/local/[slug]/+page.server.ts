@@ -9,14 +9,14 @@ export const load: PageServerLoad = async ({ params }) => {
 	const index = releases.findIndex((pr) => pr.slug === params.slug)
 
 	if (index === -1) {
-		throw redirect(307, `/${params.lang}/presse`)
+		redirect(307, `/${params.lang}/presse`)
 	}
 
 	const pressRelease = releases[index]
 
 	// For PDF URLs, redirect directly
 	if (pressRelease.url.toLowerCase().endsWith('.pdf')) {
-		throw redirect(307, pressRelease.url)
+		redirect(307, pressRelease.url)
 	}
 
 	const prev =

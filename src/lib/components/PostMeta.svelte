@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { jsonLdTag } from '$lib/jsonLd'
 	import { page } from '$app/stores'
 	import { url, title as siteName } from '$config'
 	export let title: string = siteName
@@ -21,6 +22,7 @@
 			url: imageUrl
 		}
 	}
+	$: jsonLdScript = jsonLdTag(schemaOrgMarkup)
 </script>
 
 <svelte:head>
@@ -43,7 +45,6 @@
 	<meta property="twitter:description" content={description} />
 	<meta property="twitter:site" content="@pause_ia" />
 	<meta property="twitter:creator" content="@pause_ia" />
-	{@html `<script type="application/ld+json">
-        ${JSON.stringify(schemaOrgMarkup)}
-    </script>`}
+	<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+	{@html jsonLdScript}
 </svelte:head>

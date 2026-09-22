@@ -13,7 +13,6 @@
 
 	export let lang: Lang = 'fr'
 	$: t = getT(lang)
-	$: prefix = lang === 'fr' ? '/fr' : '/en'
 
 	// 4 rows of photos, each row scrolls in its own direction
 	const row1 = [
@@ -108,7 +107,7 @@
 	let mounted = false
 	let heroTopOffset = 80 // fallback in px
 	let heroBgEl: HTMLElement | null = null
-	let contentBoxEl: HTMLElement | null = null
+	let contentBoxEl: HTMLElement | undefined
 	let frostColTop = 'calc(50% - 17rem)' // CSS fallback before measurement
 
 	function measureFrostCol() {
@@ -125,7 +124,7 @@
 		let roContent: ResizeObserver | undefined
 
 		// Wait for pending DOM updates (Header nav rendering) before measuring
-		tick().then(async () => {
+		void tick().then(async () => {
 			const header = document.querySelector('.site-header')
 			const main = document.querySelector('main')
 
@@ -231,7 +230,7 @@
 					{/if}
 					<div class="buttons">
 						<div in:fly={{ y: 20, duration: 300, delay: 700 }}>
-							<Button href="{prefix}/agir">{t.home.hero_cta}</Button>
+							<Button href="#ecrire-elus">{t.home.hero_cta}</Button>
 						</div>
 					</div>
 				</div>
@@ -301,7 +300,7 @@
 		aspect-ratio: 4/3;
 		object-fit: cover;
 		display: block;
-		border-radius: 6px;
+		border-radius: var(--radius-sm);
 		flex-shrink: 0;
 		/* No filter — natural colors, overlay handles readability */
 	}
@@ -382,7 +381,7 @@
 		background: rgba(255, 250, 245, 0.82);
 		backdrop-filter: blur(14px);
 		-webkit-backdrop-filter: blur(14px);
-		border-radius: 16px;
+		border-radius: var(--radius-lg);
 		padding: 1rem 1.5rem;
 	}
 
@@ -416,7 +415,7 @@
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
-		border-bottom: 4px solid var(--brand, #ff9416);
+		border-bottom: 4px solid var(--brand);
 		box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
 	}
 
@@ -536,7 +535,7 @@
 			gap: 6px;
 		}
 		.marquee-track img {
-			border-radius: 8px;
+			border-radius: var(--radius-sm);
 		}
 	}
 

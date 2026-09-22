@@ -76,7 +76,7 @@
 				return (
 					n.title.toLowerCase().includes(query) ||
 					n.description.toLowerCase().includes(query) ||
-					(n.date && n.date.includes(query))
+					n.date?.includes(query)
 				)
 			})
 		: newsletters
@@ -85,8 +85,8 @@
 	const PAGE_SIZE = 12
 	let currentPage = 1
 
-	// Reset to page 1 when search changes
-	$: if (searchQuery !== undefined) currentPage = 1
+	// Revenir à la première page dès que la recherche change
+	$: if (searchQuery || !searchQuery) currentPage = 1
 
 	$: totalPages = Math.max(1, Math.ceil(filteredNewsletters.length / PAGE_SIZE))
 	$: paginatedNewsletters = filteredNewsletters.slice(
@@ -282,11 +282,16 @@
 		<div class="content-layout">
 			<!-- Desktop: sidebar quick access -->
 			<nav class="sidebar">
-				<h3 class="sidebar-title">{t.newsletters.quick_access}</h3>
+				<h2 class="sidebar-title">{t.newsletters.quick_access}</h2>
 				<ul class="sidebar-list">
 					{#each paginatedNewsletters as nl (nl.id)}
 						<li>
-							<button class="sidebar-item" on:click={() => scrollToCard(nl.id)}>
+							<button
+								class="sidebar-item"
+								on:click={() => {
+									scrollToCard(nl.id)
+								}}
+							>
 								<span class="sidebar-item-title">{nl.title}</span>
 								{#if nl.date}
 									<time class="sidebar-item-date" datetime={nl.date}
@@ -327,7 +332,9 @@
 						<button
 							class="pagination-btn"
 							disabled={currentPage === 1}
-							on:click={() => goToPage(currentPage - 1)}
+							on:click={() => {
+								goToPage(currentPage - 1)
+							}}
 							aria-label={t.newsletters.prev_page}
 						>
 							<ChevronLeft size="1.25rem" />
@@ -336,7 +343,9 @@
 							<button
 								class="pagination-btn"
 								class:active={page === currentPage}
-								on:click={() => goToPage(page)}
+								on:click={() => {
+									goToPage(page)
+								}}
 								aria-label={`${t.newsletters.page} ${page}`}
 								aria-current={page === currentPage ? 'page' : undefined}
 							>
@@ -346,7 +355,9 @@
 						<button
 							class="pagination-btn"
 							disabled={currentPage === totalPages}
-							on:click={() => goToPage(currentPage + 1)}
+							on:click={() => {
+								goToPage(currentPage + 1)
+							}}
 							aria-label={t.newsletters.next_page}
 						>
 							<ChevronRight size="1.25rem" />
@@ -382,7 +393,7 @@
 	.page-subtitle {
 		max-width: 40rem;
 		margin: 0 auto;
-		color: var(--text-secondary, #676e7a);
+		color: var(--text-secondary);
 		font-size: 1.125rem;
 		line-height: 1.6;
 	}
@@ -397,12 +408,12 @@
 		display: inline-flex;
 		align-items: center;
 		gap: 0.375rem;
-		color: var(--text-secondary, #676e7a);
+		color: var(--text-secondary);
 		text-decoration: none;
 		font-size: 0.875rem;
 		padding: 0.375rem 0.75rem;
-		border: 1px solid var(--border, #e5e7eb);
-		border-radius: 0.375rem;
+		border: 1px solid var(--border);
+		border-radius: var(--radius-sm);
 		transition:
 			color 0.2s,
 			border-color 0.2s,
@@ -410,9 +421,9 @@
 	}
 
 	.rss-link:hover {
-		color: #f26522;
-		border-color: #f26522;
-		background: #fff8f0;
+		color: var(--brand-subtle);
+		border-color: var(--brand);
+		background: var(--brand-light);
 	}
 
 	/* Subscribe bar */
@@ -423,13 +434,13 @@
 		max-width: 36rem;
 		margin: 0 auto 2rem;
 		padding: 1rem 1.25rem;
-		background: linear-gradient(135deg, #fff8f0 0%, #fff0e0 100%);
+		background: var(--brand-light);
 		border: 1px solid rgba(255, 148, 22, 0.2);
-		border-radius: 0.75rem;
+		border-radius: var(--radius-md);
 	}
 
 	.subscribe-icon {
-		color: var(--brand, #ff9416);
+		color: var(--brand-subtle);
 		flex-shrink: 0;
 		margin-top: 0.5rem;
 	}
@@ -453,17 +464,17 @@
 		min-width: 160px;
 		padding: 0.5rem 0.75rem;
 		border: 1.5px solid rgba(0, 0, 0, 0.12);
-		border-radius: 0.375rem;
+		border-radius: var(--radius-sm);
 		font-size: 0.9rem;
 		font-family: inherit;
-		background: white;
+		background: var(--white);
 		color: var(--text);
 		transition: border-color 0.2s;
 	}
 
 	.subscribe-form input[type='email']:focus {
 		outline: none;
-		border-color: var(--brand, #ff9416);
+		border-color: var(--brand);
 	}
 
 	.subscribe-form input[type='email']:disabled {
@@ -473,10 +484,10 @@
 
 	.subscribe-form button {
 		padding: 0.5rem 1rem;
-		background: var(--brand, #ff9416);
-		color: white;
+		background: var(--brand);
+		color: var(--on-brand);
 		border: none;
-		border-radius: 0.375rem;
+		border-radius: var(--radius-sm);
 		font-size: 0.9rem;
 		font-weight: 600;
 		font-family: inherit;
@@ -501,11 +512,11 @@
 	}
 
 	.subscribe-message.success {
-		color: #166534;
+		color: var(--success);
 	}
 
 	.subscribe-message.error {
-		color: #991b1b;
+		color: var(--error);
 	}
 
 	/* Search bar — matches press page combobox style */
@@ -521,7 +532,7 @@
 	.search-label {
 		font-size: 0.9rem;
 		font-weight: 600;
-		color: var(--text, black);
+		color: var(--text);
 		white-space: nowrap;
 	}
 
@@ -529,16 +540,16 @@
 		flex: 1;
 		display: flex;
 		align-items: center;
-		border: 1px solid var(--border, #e5e7eb);
-		border-radius: 0.5rem;
-		background-color: white;
+		border: 1px solid var(--border);
+		border-radius: var(--radius-sm);
+		background-color: var(--white);
 		transition:
 			border-color 0.15s ease,
 			box-shadow 0.15s ease;
 	}
 
 	.search-input-wrapper:focus-within {
-		border-color: var(--brand, #ff9416);
+		border-color: var(--brand);
 		box-shadow: 0 0 0 3px rgba(255, 148, 22, 0.1);
 	}
 
@@ -546,7 +557,7 @@
 		display: flex;
 		align-items: center;
 		padding-left: 0.75rem;
-		color: var(--text-secondary, #676e7a);
+		color: var(--text-secondary);
 		flex-shrink: 0;
 	}
 
@@ -557,13 +568,13 @@
 		font-family: var(--font-body, inherit);
 		border: none;
 		background: transparent;
-		color: var(--text, black);
+		color: var(--text);
 		outline: none;
 		min-width: 0;
 	}
 
 	.search-input-wrapper input::placeholder {
-		color: var(--text-secondary, #676e7a);
+		color: var(--text-secondary);
 		opacity: 0.7;
 	}
 
@@ -575,7 +586,7 @@
 		margin-right: 0.375rem;
 		border: none;
 		background: transparent;
-		color: var(--text-secondary, #676e7a);
+		color: var(--text-secondary);
 		cursor: pointer;
 		border-radius: 0.25rem;
 		transition:
@@ -584,14 +595,14 @@
 	}
 
 	.clear-btn:hover {
-		color: var(--text, black);
+		color: var(--text);
 		background-color: rgba(0, 0, 0, 0.06);
 	}
 
 	/* Results count */
 	.results-count {
 		font-size: 0.875rem;
-		color: var(--text-secondary, #676e7a);
+		color: var(--text-secondary);
 		margin-bottom: 1.5rem;
 	}
 
@@ -599,9 +610,9 @@
 	.mobile-nav {
 		display: none;
 		margin-bottom: 1.5rem;
-		background-color: var(--bg-subtle, #fafafa);
-		border: 1px solid var(--border, #e5e7eb);
-		border-radius: 0.75rem;
+		background-color: var(--bg-subtle);
+		border: 1px solid var(--border);
+		border-radius: var(--radius-md);
 		padding: 0.75rem 1rem;
 	}
 
@@ -611,7 +622,7 @@
 		font-weight: 700;
 		text-transform: uppercase;
 		letter-spacing: 0.05em;
-		color: var(--brand, #ff9416);
+		color: var(--brand-subtle);
 		margin-bottom: 0.5rem;
 	}
 
@@ -620,10 +631,10 @@
 		padding: 0.625rem 2.5rem 0.625rem 0.75rem;
 		font-size: 0.875rem;
 		font-family: var(--font-body, inherit);
-		border: 1px solid var(--border, #e5e7eb);
-		border-radius: 0.375rem;
-		background-color: white;
-		color: var(--text, black);
+		border: 1px solid var(--border);
+		border-radius: var(--radius-sm);
+		background-color: var(--white);
+		color: var(--text);
 		appearance: none;
 		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23676e7a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
 		background-repeat: no-repeat;
@@ -633,7 +644,7 @@
 	}
 
 	.mobile-select:focus {
-		outline: 2px solid var(--brand, #ff9416);
+		outline: 2px solid var(--brand);
 		outline-offset: 2px;
 	}
 
@@ -652,9 +663,9 @@
 		width: 16rem;
 		max-height: calc(100vh - 2rem);
 		overflow-y: auto;
-		background-color: var(--bg-subtle, #fafafa);
-		border: 1px solid var(--border, #e5e7eb);
-		border-radius: 0.75rem;
+		background-color: var(--bg-subtle);
+		border: 1px solid var(--border);
+		border-radius: var(--radius-md);
 		padding: 1.25rem;
 	}
 
@@ -664,7 +675,7 @@
 		font-weight: 700;
 		text-transform: uppercase;
 		letter-spacing: 0.05em;
-		color: var(--brand, #ff9416);
+		color: var(--brand-subtle);
 	}
 
 	.sidebar-list {
@@ -689,7 +700,7 @@
 		padding: 0.5rem 0.625rem;
 		border: none;
 		background: transparent;
-		border-radius: 0.375rem;
+		border-radius: var(--radius-sm);
 		cursor: pointer;
 		text-align: left;
 		transition: background-color 0.15s ease;
@@ -702,7 +713,7 @@
 	.sidebar-item-title {
 		font-size: 0.8rem;
 		font-weight: 600;
-		color: var(--text, black);
+		color: var(--text);
 		line-height: 1.3;
 		display: -webkit-box;
 		-webkit-line-clamp: 2;
@@ -712,15 +723,15 @@
 
 	.sidebar-item-date {
 		font-size: 0.7rem;
-		color: var(--text-secondary, #676e7a);
+		color: var(--text-secondary);
 	}
 
 	.sidebar-page-info {
 		margin-top: 0.75rem;
 		padding-top: 0.75rem;
-		border-top: 1px solid var(--border, #e5e7eb);
+		border-top: 1px solid var(--border);
 		font-size: 0.75rem;
-		color: var(--text-secondary, #676e7a);
+		color: var(--text-secondary);
 		text-align: center;
 	}
 
@@ -741,7 +752,7 @@
 	.empty-state {
 		text-align: center;
 		padding: 4rem 1rem;
-		color: var(--text-secondary, #676e7a);
+		color: var(--text-secondary);
 	}
 
 	.empty-state p {
@@ -765,10 +776,10 @@
 		justify-content: center;
 		width: 2.25rem;
 		height: 2.25rem;
-		border: 1px solid var(--border, #e5e7eb);
-		border-radius: 0.375rem;
-		background: white;
-		color: var(--text, black);
+		border: 1px solid var(--border);
+		border-radius: var(--radius-sm);
+		background: var(--white);
+		color: var(--text);
 		font-size: 0.875rem;
 		font-weight: 600;
 		font-family: inherit;
@@ -779,14 +790,14 @@
 	}
 
 	.pagination-btn:hover:not(:disabled):not(.active) {
-		background-color: var(--bg-subtle, #fafafa);
-		border-color: var(--brand, #ff9416);
+		background-color: var(--bg-subtle);
+		border-color: var(--brand);
 	}
 
 	.pagination-btn.active {
-		background-color: var(--brand, #ff9416);
-		border-color: var(--brand, #ff9416);
-		color: white;
+		background-color: var(--brand);
+		border-color: var(--brand);
+		color: var(--on-brand);
 	}
 
 	.pagination-btn:disabled {

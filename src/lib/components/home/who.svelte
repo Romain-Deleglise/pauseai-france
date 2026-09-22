@@ -11,6 +11,9 @@
 
 	export let teamMembers: TeamMember[] = []
 	export let lang: Lang = 'fr'
+	/** h1 sur la page « Qui sommes-nous », h2 quand la section est sur l'accueil. */
+	export let as: 'h1' | 'h2' = 'h2'
+	$: prefix = lang === 'en' ? '/en' : '/fr'
 
 	const label_id = 'who-title'
 
@@ -126,27 +129,27 @@
 		{
 			name: 'Maxime Fournes',
 			role: 'Co-fondateur et Président',
-			image: 'membres/maxime.png'
+			image: '/membres/maxime.png'
 		},
 		{
 			name: 'Gilles Bréda',
 			role: 'Co-fondateur et Trésorier',
-			image: 'membres/gilles.png'
+			image: '/membres/gilles.png'
 		},
 		{
 			name: 'Clémence Peyrot',
 			role: 'Directrice exécutive',
-			image: 'membres/clemence.jpeg'
+			image: '/membres/clemence.jpeg'
 		},
 		{
 			name: 'Moïri',
 			role: 'Secrétaire général',
-			image: 'membres/moiri.jpeg'
+			image: '/membres/moiri.jpeg'
 		},
 		{
 			name: 'Pierre Lamotte',
 			role: "Conseil d'administration et Responsable communication",
-			image: 'membres/pierre.png'
+			image: '/membres/pierre.png'
 		},
 		{
 			name: 'Romain',
@@ -159,79 +162,79 @@
 		{
 			name: 'Maxime Fournes',
 			job: 'Ingénieur et chercheur en IA',
-			image: 'membres/maxime.png'
+			image: '/membres/maxime.png'
 		},
 		{
 			name: 'Jérémy Perret',
 			job: "Chercheur en sécurité de l'IA, Suboptimal IA",
-			image: 'membres/jeremy.png'
+			image: '/membres/jeremy.png'
 		}
 	]
 
 	const fallbackMembers = [
 		{
 			name: 'Aurélia',
-			image: 'membres/aurelia.jpg',
+			image: '/membres/aurelia.jpg',
 			job: "Professeur d'anglais en classe préparatoire"
 		},
 		{
 			name: 'Éloïse',
-			image: 'membres/eloise.jpg',
+			image: '/membres/eloise.jpg',
 			job: "Chercheuse indépendante en sécurité de l'IA"
 		},
 		{
 			name: 'Salim',
-			image: 'membres/salim.jpg',
+			image: '/membres/salim.jpg',
 			job: 'Etudiant en mathématiques'
 		},
 		{
 			name: 'Karine',
-			image: 'membres/karine.jpg',
+			image: '/membres/karine.jpg',
 			job: 'Hypnothérapeute et coach bien-être'
 		},
 		{
 			name: 'Muriel',
-			image: 'membres/muriel.jpg',
+			image: '/membres/muriel.jpg',
 			job: 'Traductrice'
 		},
 		{
 			name: 'Stélian',
-			image: 'membres/stelian.jpg',
+			image: '/membres/stelian.jpg',
 			job: 'Psychologue-psychothérapeute'
 		},
 		{
 			name: 'Sandra',
-			image: 'membres/sandra.jfif',
+			image: '/membres/sandra.jfif',
 			job: 'Enseignante de littérature et autrice'
 		},
 		{
 			name: 'Sandrine',
-			image: 'membres/sandrine.jpg',
+			image: '/membres/sandrine.jpg',
 			job: 'Psychopédagogue'
 		},
 		{
 			name: 'Bahman',
-			image: 'membres/bahman.jpeg',
+			image: '/membres/bahman.jpeg',
 			job: 'Psychologue cognitiviste'
 		},
 		{
 			name: 'Mandelle',
-			image: 'membres/Mandelle.jpg',
+			image: '/membres/Mandelle.jpg',
 			job: 'Enseignante'
 		},
 		{
 			name: 'Marilyn',
-			image: 'membres/Marilyn.jpg',
+			image: '/membres/Marilyn.jpg',
 			job: 'Cheffe de projet en communication digitale'
 		},
 		{
 			name: 'Damien',
-			image: 'membres/damien.jpg',
+			image: '/membres/damien.jpg',
 			job: 'Ingénieur du son chez studiobreton.fr'
 		},
 		{
 			name: 'Emmanuel',
-			image: 'membres/emmanuel.jpg',
+			image: '/membres/emmanuel.jpg',
 			job: ''
 		}
 	]
@@ -259,7 +262,7 @@
 </script>
 
 <section aria-labelledby={label_id}>
-	<UnderlinedTitle id={label_id}
+	<UnderlinedTitle {as} id={label_id}
 		>{lang === 'en' ? 'Who are we?' : 'Qui sommes-nous ?'}</UnderlinedTitle
 	>
 
@@ -270,8 +273,9 @@
 			<p class="lead">
 				Nous sommes une <a href="/mentions-legales">association</a> qui alerte les citoyens et les
 				pouvoirs publics français sur les
-				<a href="/dangers/economiques-et-materiels">graves dangers</a> de la course à l'intelligence
-				artificielle, et les incite à agir pour s'y opposer. Nous représentons en France
+				<a href="{prefix}/dangers/economiques-et-materiels">graves dangers</a> de la course à
+				l'intelligence artificielle, et les incite à agir pour s'y opposer. Nous représentons en
+				France
 				<a href="https://pauseai.info">PauseAI Global</a>.
 			</p>
 		{/if}
@@ -279,8 +283,8 @@
 			{#if lang === 'en'}
 				<Button alt href="mailto:contact@pauseia.fr">Contact us</Button>
 			{:else}
-				<Button href="/dons">Faire un don</Button>
-				<Button alt href="/rejoindre">Nous rejoindre</Button>
+				<Button href="{prefix}/dons">Faire un don</Button>
+				<Button alt href="{prefix}/rejoindre">Nous rejoindre</Button>
 				<Button alt href="mailto:contact@pauseia.fr">Nous contacter</Button>
 			{/if}
 		</div>
@@ -396,9 +400,9 @@
 							</li>
 							<li>
 								Ils présentent déjà des risques majeurs pour la sécurité de nos <a
-									href="/dangers/economiques-et-materiels">infrastructures</a
-								>, pour <a href="/dangers/pour-la-societe">nos institutions</a>, pour
-								<a href="/dangers/pour-les-individus">notre modèle social</a>.
+									href="{prefix}/dangers/economiques-et-materiels">infrastructures</a
+								>, pour <a href="{prefix}/dangers/pour-la-societe">nos institutions</a>, pour
+								<a href="{prefix}/dangers/pour-les-individus">notre modèle social</a>.
 							</li>
 							<li>
 								Ces modèles d'IA commencent à <a
@@ -424,7 +428,7 @@
 					<svelte:fragment slot="details">
 						<ul class="bullet-list">
 							<li>
-								Les discours «&nbsp;<a href="/faq">rassuristes</a>&nbsp;» nous font perdre du temps.
+								Les discours «&nbsp;<a href="#faq">rassuristes</a>&nbsp;» nous font perdre du temps.
 								<em
 									>L'IA ne serait pas vraiment intelligente, les géants de la tech exagéreraient les
 									performances de leurs modèles, on serait à la veille de l'explosion d'une bulle
@@ -449,8 +453,8 @@
 		<p class="independence">
 			Association à but non lucratif créée en juin 2024, nous sommes <strong
 				>totalement indépendants de l'industrie de l'IA et de la tech</strong
-			>&nbsp;: nous fonctionnons grâce aux <a href="/dons">dons</a> de nos soutiens, qui financent nos
-			campagnes, nos événements et le fonctionnement de l'association.
+			>&nbsp;: nous fonctionnons grâce aux <a href="{prefix}/dons">dons</a> de nos soutiens, qui financent
+			nos campagnes, nos événements et le fonctionnement de l'association.
 		</p>
 	{/if}
 
@@ -502,7 +506,7 @@
 		margin: 1rem auto 1.5rem;
 		font-size: 1.1rem;
 		line-height: 1.7;
-		color: var(--text, #1f2937);
+		color: var(--text);
 	}
 
 	.bullet-list {
@@ -526,7 +530,7 @@
 		width: 0.5rem;
 		height: 0.5rem;
 		border-radius: 50%;
-		background: var(--text-secondary, #4b5563);
+		background: var(--text-secondary);
 	}
 
 	.bullet-list li:last-child {
@@ -565,8 +569,8 @@
 	.values-note {
 		margin: 0.5rem 0 1.5rem;
 		padding: 0.75rem 0 0.75rem 1rem;
-		border-left: 3px solid var(--border, #e5e7eb);
-		color: var(--text-secondary, #4b5563);
+		border-left: 3px solid var(--border);
+		color: var(--text-secondary);
 		font-size: 0.95rem;
 		line-height: 1.6;
 		text-align: left;
@@ -585,9 +589,9 @@
 	.independence {
 		margin: 1.75rem 0 0;
 		padding-top: 1.5rem;
-		border-top: 1px solid var(--border, #e5e7eb);
+		border-top: 1px solid var(--border);
 		font-size: 0.95rem;
-		color: var(--text-secondary, #4b5563);
+		color: var(--text-secondary);
 		line-height: 1.6;
 		text-align: center;
 	}
@@ -606,7 +610,7 @@
 		background: var(--bg-card);
 		border: 1px solid var(--border);
 		border-radius: 1rem;
-		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+		box-shadow: var(--shadow-card);
 	}
 
 	.section-title {
@@ -619,7 +623,7 @@
 
 	.section-description {
 		margin-bottom: 2rem;
-		color: var(--text-secondary, #676e7a);
+		color: var(--text-secondary);
 		font-size: 1rem;
 		text-align: center;
 	}
@@ -639,10 +643,10 @@
 		padding: 1.25rem 2rem;
 		font-size: 1.2rem;
 		font-weight: 600;
-		color: var(--text, #333);
+		color: var(--text);
 		text-align: center;
-		background: var(--bg-subtle, #fff5e8);
-		border-radius: 0.5rem;
-		border: 1px solid var(--border, #e5e7eb);
+		background: var(--bg-subtle);
+		border-radius: var(--radius-sm);
+		border: 1px solid var(--border);
 	}
 </style>

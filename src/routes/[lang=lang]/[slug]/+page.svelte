@@ -1,10 +1,11 @@
 <script lang="ts">
+	import type { PageData } from './$types'
 	import PostMeta from '$components/PostMeta.svelte'
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
 
 	import { title as siteName } from '$config'
 
-	export let data
+	export let data: PageData
 
 	const { metadata, slug, content } = data
 	const { title = slug, date, description, image, original } = metadata
@@ -33,12 +34,12 @@
 
 <style>
 	article {
-		max-inline-size: 50rem;
+		max-inline-size: var(--width-content);
 		margin-inline: auto;
 		margin-top: 3rem;
 	}
 	footer {
-		color: #535353;
+		color: var(--text-secondary);
 		font-size: 0.8rem;
 		margin-top: 4rem;
 	}

@@ -5,10 +5,19 @@
 
 	/* Colors */
 	--brand: #ff9416;
+	--brand-rgb: 255, 148, 22; /* composantes de --brand, pour les rgba() */
 	--brand-light: #fff5e8;
-	--brand-subtle: #c96900; /* orange foncé pour liens sur fond clair */
+	--brand-subtle: #a85400; /* orange foncé : le seul orange lisible en texte
+	                            (4,9:1 sur le crème, 5,3:1 sur blanc) */
+	--brand-deep: #ff6b35; /* fin de dégradé sur les encadrés d'appel */
+	--brand-soft: #ffb347; /* début de dégradé clair (bandeaux) */
+	/* Attention : --white et --black s'inversent en mode sombre. Ce sont la
+	   surface claire et l'encre de la page, pas des couleurs fixes. Pour du
+	   texte posé sur un fond qui, lui, ne change pas (photo, calque noir,
+	   aplat orange), utiliser --on-dark ou --on-brand. */
 	--white: white;
 	--black: black;
+	--on-dark: #ffffff; /* texte sur un fond sombre fixe, dans les deux thèmes */
 	--text: var(--black);
 	--text-2: #555; /* texte secondaire léger */
 	--bg: var(--white);
@@ -18,8 +27,56 @@
 	--border: #e5e7eb;
 	--text-secondary: #676e7a;
 	--text-muted: #676e7a; /* alias de text-secondary */
-	--bg-card: #fafafa;
-	--bg-secondary: #f9f9f9;
+	--bg-card: #fffcf8; /* blanc cassé chaud : lisible sur le crème --bg-subtle
+	                       des pages intérieures comme sur le blanc de l'accueil */
+	--bg-secondary: #fdfaf6;
+
+	/* Alerte : réservé aux moments critiques (chronologies, erreurs). */
+	--alert: #d92d20;
+
+	/* Texte posé sur l'orange de marque : ne change pas en mode sombre,
+	   puisque le fond, lui, reste orange. */
+	--on-brand: #1a1a1a;
+	--on-brand-muted: #3a2600;
+
+	/* États : succès (validé, signé, en ligne) et erreur (échec, refus). */
+	--success: #2e7d32;
+	--success-bg: #e8f5e9;
+	--success-border: #a5d6a7;
+	--error: #c0392b;
+	--error-bg: #fdecee;
+	--error-border: #f6c6cc;
+
+	/* Carrousels éditoriaux (témoignages, articles) : beige chaud */
+	--carousel-border: #d9c7b0;
+	--carousel-text: #414042;
+
+	/* Menu déroulant de navigation : toujours sombre, sur fond clair comme sombre */
+	--menu-bg: #1e1e24;
+
+	/* Teintes de catégorie (pastilles d'engagement des municipales) */
+	--hue-green: #1a7f4b;
+	--hue-blue: #2563eb;
+	--hue-amber: #a16207;
+	--hue-pink: #be185d;
+
+	/* Rayons — cf. docs/charte-graphique.md § 3 */
+	--radius-sm: 8px; /* champs, petits encadrés */
+	--radius-md: 12px; /* médias et cartes */
+	--radius-lg: 16px; /* grands encadrés */
+	--radius-btn: 0.625rem;
+	--radius-pill: 999px;
+
+	/* Ombres — très discrètes, la carte se lit d'abord par sa bordure */
+	--shadow-card: 0 4px 20px rgba(0, 0, 0, 0.03);
+	--shadow-raised: 0 8px 28px rgba(0, 0, 0, 0.06);
+	--shadow-brand: 0 2px 8px rgba(255, 148, 22, 0.3);
+
+	/* Largeurs de colonne */
+	--width-text: 44rem; /* corps de texte */
+	--width-content: 54rem; /* pages éditoriales et campagnes */
+	--width-wide: 62rem; /* pages larges (grilles, cartes) */
+	--gutter: 1.5rem;
 
 	/* Buttons */
 	--btn-bg: var(--brand);
@@ -43,7 +100,7 @@
 	--black: #f0f0f0;
 	--bg: #272727;
 	--bg-subtle: #312e29;
-	--bg-card: #303030;
+	--bg-card: #35322c; /* pendant sombre : chaud, comme --bg-subtle #312e29 */
 	--text: #f0f0f0;
 	--text-2: #a0a8b4;
 	--text-secondary: #a0a8b4;
@@ -51,6 +108,17 @@
 	--bg-secondary: #303030;
 	--border: #3e4048;
 	--brand-light: #2a1f0a;
+	--alert: #ff6b5e;
+	--success: #6fcf7e;
+	--success-bg: #1d3320;
+	--success-border: #2f5c36;
+	--error: #ff8a7a;
+	--error-bg: #3a201d;
+	--error-border: #5e322d;
+	--carousel-border: #4a423a;
+	--carousel-text: #e6e1da;
+	--shadow-card: 0 4px 20px rgba(0, 0, 0, 0.35);
+	--shadow-raised: 0 8px 28px rgba(0, 0, 0, 0.45);
 	--brand-subtle: #ffab40; /* orange plus clair pour fond sombre */
 
 	--btn-alt-bg: #303030;
@@ -104,7 +172,8 @@ h3 {
 
 p {
 	margin-bottom: 1.5rem;
-	text-align: justify;
+	/* Pas de justification : sans césure typographique fiable, elle creuse
+	   des rivières de blancs dans les colonnes étroites. */
 	hyphens: auto;
 }
 

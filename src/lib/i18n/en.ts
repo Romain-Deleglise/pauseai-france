@@ -12,13 +12,15 @@ export default {
 		newsletter: 'Newsletter',
 		propositions: 'What do we ask for?',
 		blog: 'Blog',
+		fresque: 'The AI Risks Fresk',
 		comment_agir: 'How to act?',
 		groupes_locaux: 'Local groups',
 		toutes_campagnes: 'All our campaigns',
 		geneve_2026: 'Geneva 2026',
+		perte_de_controle: 'On the brink of losing control',
 		warning_shot: 'An AI escaped',
 		ecrire_elus: 'Write to reps & the press',
-		emploi_ia: 'Employment & AI',
+		emploi_ia: 'AI will not destroy ONLY your job',
 		g7_2026: 'G7 2026',
 		municipales: 'Municipal 2026',
 		sommet: 'AI Summit 2026',
@@ -32,7 +34,6 @@ export default {
 		nous_rejoindre: 'Join us'
 	},
 	footer: {
-		tagline: 'For an AI aligned with humanity.',
 		newsletter_title: 'Newsletter',
 		newsletter_desc: 'The essential AI news decoded every month',
 		newsletter_placeholder: 'your@email.com',
@@ -49,15 +50,11 @@ export default {
 		propositions: 'Proposals',
 		newsletters: 'Newsletters',
 		blog: 'Blog',
+		fresque: 'The AI Risks Fresk',
 		agir: 'Act',
 		donner: 'Donate',
 		rejoindre: 'Join us',
 		qui_sommes_nous: 'Who are we?',
-		dangers_title: 'Dangers',
-		dangers_eco: 'Economic and material',
-		dangers_individus: 'For individuals',
-		dangers_societe: 'For society',
-		dangers_humanite: 'For humanity',
 		act_title: 'Act',
 		join_pauseia: 'Join Pause AI',
 		how_to_help: 'How can you help?',
@@ -67,6 +64,7 @@ export default {
 		jobs: 'Job offers',
 		other_title: 'Other',
 		press: 'Press',
+		funding: 'Funding',
 		legal: 'Legal notices',
 		privacy: 'Privacy policy',
 		values: 'Values charter',
@@ -242,6 +240,7 @@ export default {
 		next_page: 'Next page'
 	},
 	posts: {
+		title: 'Articles',
 		meta_title: 'Articles - Pause AI'
 	},
 	campagnes: {

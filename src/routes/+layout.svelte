@@ -8,7 +8,8 @@
 	import Header from '$components/Header.svelte'
 	// import Toc from '$components/Toc.svelte'
 	import { bannerStore } from '$lib/stores/banner'
-	import { theme } from '$lib/stores/theme'
+	import type { Banner } from '$lib/notion'
+	import { jsonLdTag } from '$lib/jsonLd'
 	import { onMount } from 'svelte'
 	import type { Lang } from '$lib/i18n'
 
@@ -31,7 +32,7 @@
 		try {
 			const res = await fetch('/api/banner')
 			if (res.ok) {
-				const banner = await res.json()
+				const banner = (await res.json()) as Banner | null
 				if (banner) {
 					bannerStore.set(banner)
 				}
@@ -40,31 +41,36 @@
 			// Silently fall back to default banner
 		}
 	})
+	// Données structurées de l'organisation, présentes sur toutes les pages.
+	const organisationJsonLd = jsonLdTag({
+		'@context': 'https://schema.org',
+		'@type': ['Organization', 'NGO'],
+		name: 'PauseAI France',
+		url: 'https://pauseia.fr',
+		logo: 'https://pauseia.fr/favicon.png',
+		sameAs: [
+			'https://www.facebook.com/Pause.IA/',
+			'https://twitter.com/pause_ia',
+			'https://www.linkedin.com/company/pause-ia/',
+			'https://www.instagram.com/pause_ia/',
+			'https://www.youtube.com/@Pause_IA',
+			'https://www.tiktok.com/@pause_ia',
+			'https://pauseia.substack.com/',
+			'https://www.threads.net/@pause_ia'
+		]
+		// eslint-disable-next-line no-useless-escape -- la barre oblique doit rester
+		// échappée : la balise fermante littérale terminerait ce bloc de script.
+	})
 </script>
 
 <svelte:head>
-	{@html `<script type="application/ld+json">
-		${JSON.stringify({
-			'@context': 'https://schema.org',
-			'@type': ['Organization', 'NGO'],
-			name: 'PauseAI France',
-			url: 'https://pauseia.fr',
-			logo: 'https://pauseia.fr/favicon.png',
-			sameAs: [
-				'https://www.facebook.com/Pause.IA/',
-				'https://twitter.com/pause_ia',
-				'https://www.linkedin.com/company/pause-ia/',
-				'https://www.instagram.com/pause_ia/',
-				'https://www.youtube.com/@Pause_IA',
-				'https://www.tiktok.com/@pause_ia',
-				'https://pauseia.substack.com/',
-				'https://www.threads.net/@pause_ia'
-			]
-		})}
-	</script>`}
+	<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+	{@html organisationJsonLd}
 </svelte:head>
 
-<h2 style="width: 0; height: 0; margin: 0; padding: 0; visibility: hidden;">(Top)</h2>
+<!-- Ancre de retour en haut de page. C'était un <h2> masqué : il s'insérait
+     avant le <h1> de chaque page et cassait la hiérarchie des titres. -->
+<span id="top" style="position: absolute; width: 0; height: 0; overflow: hidden;"></span>
 
 <div class="layout" class:bgWhite>
 	<Header {lang} />
@@ -107,11 +113,10 @@
 
 	/* .wrapper {
 		color: var(--t-text);
-		max-width: 50rem;
+		max-width: var(--width-content);
 		margin: auto;
 	} */
 	.layout {
-		max-inline-size: var(--page-width);
 		display: grid;
 		grid-template-rows: auto 1fr auto;
 		grid-auto-columns: 100%;
