@@ -17,7 +17,6 @@
 	let selectedPreset: number | null = 50
 	let isLoading = false
 	let errorMessage = ''
-	let reference = ''
 
 	let copiedField: string | null = null
 
@@ -39,7 +38,6 @@
 		selectedPreset = 50
 		errorMessage = ''
 		copiedField = null
-		reference = ''
 	}
 
 	$: if (show) reinitialiser()
@@ -124,9 +122,8 @@
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ prenom: prenom.trim(), nom: nom.trim(), email, montant })
 			})
-			const data = (await res.json()) as { success: boolean; error?: string; reference?: string }
+			const data = (await res.json()) as { success: boolean; error?: string }
 			if (data.success) {
-				reference = data.reference ?? ''
 				step = 2
 			} else {
 				errorMessage = data.error ?? 'Une erreur est survenue.'
@@ -286,28 +283,7 @@
 							{copiedField === 'bic' ? '✓' : '📋'}
 						</button>
 					</div>
-					{#if reference}
-						<div class="rib-row">
-							<span class="rib-label">Référence</span>
-							<span class="rib-value mono reference-value">{reference}</span>
-							<button
-								type="button"
-								class="copy-inline"
-								on:click={() => copyToClipboard(reference, 'reference')}
-								aria-label="Copier la référence"
-							>
-								{copiedField === 'reference' ? '✓' : '📋'}
-							</button>
-						</div>
-					{/if}
 				</div>
-
-				{#if reference}
-					<p class="reference-hint">
-						Indiquez bien la référence <strong>{reference}</strong> dans le libellé ou le motif du virement&nbsp;:
-						c'est elle qui nous permet de rattacher votre virement à votre don.
-					</p>
-				{/if}
 
 				<button type="button" class="done-btn" on:click={() => (step = 3)}>
 					C'est fait, j'ai viré {montant}&nbsp;€
@@ -329,8 +305,7 @@
 				</p>
 				<p class="confirm-note">
 					Vous ne recevez rien sous une dizaine de jours&nbsp;? Écrivez-nous à
-					<a href="mailto:dons@pauseia.fr">dons@pauseia.fr</a>{#if reference}
-						en indiquant la référence <strong>{reference}</strong>{/if}.
+					<a href="mailto:dons@pauseia.fr">dons@pauseia.fr</a>.
 				</p>
 				<button type="button" class="done-btn" on:click={close}>Fermer</button>
 			</div>
@@ -612,18 +587,6 @@
 		letter-spacing: 0.04em;
 	}
 
-	.reference-value {
-		font-weight: 700;
-		letter-spacing: 0.04em;
-	}
-
-	.reference-hint {
-		margin: 1rem 0 0;
-		font-size: 0.9rem;
-		line-height: 1.5;
-		color: var(--text-secondary);
-	}
-
 	.confirm-note {
 		margin: 1.25rem 0 1.5rem;
 		font-size: 0.85rem;
@@ -756,10 +719,6 @@
 
 		.rib-row {
 			padding: 0.35rem 0;
-		}
-
-		.reference-value {
-			font-size: 1.3rem;
 		}
 
 		.rib-value.mono {
