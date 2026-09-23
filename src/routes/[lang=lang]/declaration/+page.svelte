@@ -174,11 +174,15 @@
 
 	<p class="source">
 		{#if isEn}
-			This is the statement of the international PauseAI movement, also available on
-			<a href="https://pauseai.info/statement" target="_blank" rel="noopener">pauseai.info</a>.
+			This is the statement of the international PauseAI movement.
+			<a href="https://pauseai.info/statement" target="_blank" rel="noopener"
+				>See it on the PauseAI Global website ↗</a
+			>
 		{:else}
-			Traduction de la déclaration du mouvement international PauseAI, également disponible sur
-			<a href="https://pauseai.info/statement" target="_blank" rel="noopener">pauseai.info</a>.
+			Traduction de la déclaration du mouvement international PauseAI.
+			<a href="https://pauseai.info/statement" target="_blank" rel="noopener"
+				>Voir la version originale (en anglais) sur le site de PauseAI Global ↗</a
+			>
 		{/if}
 	</p>
 

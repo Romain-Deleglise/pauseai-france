@@ -210,7 +210,7 @@ export async function resendWaitMs(
 	contactId: number,
 	subject: string,
 	delayMs: number,
-	now = Date.now()
+	now?: number
 ): Promise<number> {
 	const res = await callApi4<{ 'activity_id.details'?: string | null }>('ActivityContact', 'get', {
 		checkPermissions: false,
@@ -226,5 +226,6 @@ export async function resendWaitMs(
 	const m = SENT_AT.exec(res.values?.[0]?.['activity_id.details'] ?? '')
 	const sentAt = m ? Date.parse(m[1]) : NaN
 	if (Number.isNaN(sentAt)) return 0
-	return Math.max(0, sentAt + delayMs - now)
+	// Heure lue après la réponse de CiviCRM, pas avant l'appel.
+	return Math.max(0, sentAt + delayMs - (now ?? Date.now()))
 }
