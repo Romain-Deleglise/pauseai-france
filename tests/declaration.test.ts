@@ -100,9 +100,17 @@ const tokenFromMail = () => {
 }
 
 const existingContact = (first: string | null, last: string | null, status?: string) => {
-	civi['Email.get'] = () => ({ values: [{ id: 1, contact_id: 7 }] })
-	civi['Contact.get'] = () => ({ values: [{ first_name: first, last_name: last }] })
-	civi['GroupContact.get'] = () => ({ values: status ? [{ status }] : [] })
+	civi['Email.get'] = () => ({
+		values: [
+			{
+				contact_id: 7,
+				'contact_id.first_name': first,
+				'contact_id.last_name': last,
+				'contact_id.job_title': null
+			}
+		]
+	})
+	civi['GroupContact.get'] = () => ({ values: status ? [{ group_id: 73, status }] : [] })
 }
 
 const globalOk = () =>
@@ -112,7 +120,8 @@ const globalOk = () =>
 			{ name: 'Old One', country: 'France', date: '2025-01-01', private: false },
 			{ name: 'Anonymous', country: 'Germany', date: '2025-02-01', private: true },
 			{ name: 'Jane Doe', country: 'United States', bio: 'Researcher', date: '2025-06-01' },
-			{ name: 'Marie Curie', country: 'France', date: '2025-05-01', private: false }
+			{ name: 'Marie Curie', country: 'France', date: '2025-05-01', private: false },
+			{ name: 'Anonymous', country: 'France', date: '2025-03-01', private: true }
 		]
 	})
 
@@ -133,7 +142,6 @@ describe('POST /api/declaration (signature → e-mail de confirmation)', () => {
 	it('nouveau contact : en attente dans le groupe 73, e-mail envoyé, rien de compté', async () => {
 		civi['Email.get'] = () => ({ values: [] })
 		civi['Contact.create'] = () => ({ values: [{ id: 42 }] })
-		civi['Contact.get'] = () => ({ values: [{ first_name: 'Ada', last_name: 'Lovelace' }] })
 
 		const res = await post({
 			firstName: ' Ada ',
@@ -146,9 +154,22 @@ describe('POST /api/declaration (signature → e-mail de confirmation)', () => {
 		expect(res.status).toBe(200)
 		expect(res.body).toMatchObject({ success: true, pending: true, alreadySigned: false })
 		const created = calls.find((c) => c.entity === 'Contact' && c.action === 'create')
-		expect(created?.params.values).toMatchObject({ first_name: 'Ada', last_name: 'Lovelace' })
-		const email = calls.find((c) => c.entity === 'Email' && c.action === 'create')
-		expect(email?.params.values).toMatchObject({ contact_id: 42, email: 'ada@example.org' })
+		expect(created?.params.values).toMatchObject({
+			first_name: 'Ada',
+			last_name: 'Lovelace',
+			job_title: 'Mathématicienne'
+		})
+		// E-mail créé dans le même appel (chaîné), pas d'aller-retour supplémentaire.
+		expect(created?.params.chain).toMatchObject({
+			email: ['Email', 'create', { values: { contact_id: '$id', email: 'ada@example.org' } }]
+		})
+		// Nouveau contact : ni lecture de groupes ni vérification de renvoi.
+		expect(calls.map((c) => `${c.entity}.${c.action}`)).toEqual([
+			'Email.get',
+			'Contact.create',
+			'GroupContact.save',
+			'Activity.create'
+		])
 		// Seulement « Pending » dans le 73 : ni groupe public ni newsletter avant confirmation.
 		expect(savedRecords()).toEqual(['73:Pending'])
 		expect(mail.sent).toHaveLength(1)
@@ -223,6 +244,80 @@ describe('POST /api/declaration (signature → e-mail de confirmation)', () => {
 		})
 	})
 
+	it('commentaire : enregistré « Scheduled », son ID part dans le jeton', async () => {
+		existingContact('Ada', 'Lovelace')
+		civi['Activity.create'] = (p) =>
+			(p.values as { subject: string }).subject.includes('commentaire')
+				? { values: [{ id: 555 }] }
+				: { values: [{ id: 1 }] }
+		await post({
+			firstName: 'Ada',
+			lastName: 'Lovelace',
+			email: 'a@b.fr',
+			showName: true,
+			comment: '  Pour mes enfants.\r\n\r\n\r\nEt les vôtres.  '
+		})
+		const created = calls.find(
+			(c) =>
+				c.entity === 'Activity' &&
+				(c.params.values as { subject: string }).subject.includes('commentaire')
+		)
+		expect(created?.params.values).toMatchObject({
+			details: 'Pour mes enfants.\n\nEt les vôtres.',
+			'status_id:name': 'Scheduled',
+			target_contact_id: [7]
+		})
+		const { verifyToken } = await import('../src/lib/server/declarationToken')
+		expect(verifyToken(tokenFromMail())).toMatchObject({ c: 7, p: true, m: 555 })
+	})
+
+	it('signataire confirmé qui ajoute un commentaire : e-mail de confirmation', async () => {
+		existingContact('Ada', 'Lovelace', 'Added')
+		civi['Activity.create'] = () => ({ values: [{ id: 556 }] })
+		const res = await post({
+			firstName: 'Ada',
+			lastName: 'Lovelace',
+			email: 'a@b.fr',
+			comment: 'Nouveau message'
+		})
+		expect(res.body).toMatchObject({ pending: true, alreadySigned: true })
+		expect(mail.sent).toHaveLength(1)
+	})
+
+	it('commentaire tronqué à 500 caractères', async () => {
+		existingContact('Ada', 'Lovelace')
+		await post({
+			firstName: 'Ada',
+			lastName: 'Lovelace',
+			email: 'a@b.fr',
+			comment: 'x'.repeat(900)
+		})
+		const created = calls.find(
+			(c) =>
+				c.entity === 'Activity' &&
+				(c.params.values as { subject: string }).subject.includes('commentaire')
+		)
+		expect((created?.params.values as { details: string }).details).toHaveLength(500)
+	})
+
+	it('échec de l’enregistrement du commentaire : la signature passe quand même', async () => {
+		existingContact('Ada', 'Lovelace')
+		civi['Activity.create'] = (p) =>
+			(p.values as { subject: string }).subject.includes('commentaire')
+				? { error_message: 'boom' }
+				: { values: [{ id: 1 }] }
+		const res = await post({
+			firstName: 'Ada',
+			lastName: 'Lovelace',
+			email: 'a@b.fr',
+			comment: 'x'
+		})
+		expect(res.body).toMatchObject({ success: true, pending: true })
+		expect(mail.sent).toHaveLength(1)
+		const { verifyToken } = await import('../src/lib/server/declarationToken')
+		expect(verifyToken(tokenFromMail())?.m).toBeUndefined()
+	})
+
 	it('champ piège rempli : répond OK sans rien enregistrer ni envoyer', async () => {
 		const res = await post({
 			firstName: 'Bot',
@@ -255,17 +350,29 @@ describe('POST /api/declaration (signature → e-mail de confirmation)', () => {
 })
 
 describe('POST /api/declaration/confirm (clic dans l’e-mail)', () => {
-	const token = async (claims: { c: number; p: boolean; n: boolean }, now?: number) => {
+	const token = async (claims: { c: number; p: boolean; n: boolean; m?: number }, now?: number) => {
 		const { createToken } = await import('../src/lib/server/declarationToken')
 		return createToken(claims, now)
 	}
 
 	it('confirme : 73 + 74 + newsletter en Added, activité journalisée', async () => {
-		civi['GroupContact.get'] = () => ({ values: [{ status: 'Pending' }] })
+		civi['GroupContact.get'] = () => ({ values: [{ group_id: 73, status: 'Pending' }] })
 		const res = await confirm(await token({ c: 7, p: true, n: true }))
 		expect(res.body).toMatchObject({ success: true, alreadyConfirmed: false, listed: true })
 		expect(savedRecords()).toEqual(['73:Added', '74:Added', '3:Added', '22:Added'])
 		expect(calls.some((c) => c.entity === 'Activity' && c.action === 'create')).toBe(true)
+	})
+
+	it('commentaire : l’activité passe en « Completed » à la confirmation', async () => {
+		await confirm(await token({ c: 7, p: true, n: false, m: 555 }))
+		const update = calls.find((c) => c.entity === 'Activity' && c.action === 'update')
+		expect(update?.params).toMatchObject({
+			values: { 'status_id:name': 'Completed' },
+			where: [
+				['id', '=', 555],
+				['subject', '=', 'Déclaration PauseAI : commentaire']
+			]
+		})
 	})
 
 	it('sans nom public ni newsletter : 73 seulement', async () => {
@@ -275,7 +382,7 @@ describe('POST /api/declaration/confirm (clic dans l’e-mail)', () => {
 	})
 
 	it('deuxième clic : idempotent, pas de nouvelle activité', async () => {
-		civi['GroupContact.get'] = () => ({ values: [{ status: 'Added' }] })
+		civi['GroupContact.get'] = () => ({ values: [{ group_id: 73, status: 'Added' }] })
 		const res = await confirm(await token({ c: 7, p: false, n: false }))
 		expect(res.body).toMatchObject({ success: true, alreadyConfirmed: true })
 		expect(calls.some((c) => c.entity === 'Activity')).toBe(false)
@@ -308,6 +415,7 @@ describe('GET /api/declaration (compteur et listes)', () => {
 			return {
 				values: [
 					{
+						contact_id: 11,
 						'contact_id.first_name': 'Ada',
 						'contact_id.last_name': 'Lovelace',
 						'contact_id.job_title': 'Députée'
@@ -316,15 +424,28 @@ describe('GET /api/declaration (compteur et listes)', () => {
 				]
 			}
 		}
+		// CiviCRM peut renvoyer le texte en HTML : il est ramené à du texte brut.
+		civi['ActivityContact.get'] = () => ({
+			values: [
+				{ contact_id: 11, 'activity_id.details': '<p>Pour mes enfants &amp; les vôtres</p>' },
+				{ contact_id: 11, 'activity_id.details': 'Ancien message' }
+			]
+		})
 	})
 
 	it('renvoie nos signataires et ceux de Global (anonymes exclus, plus récents d’abord)', async () => {
 		const { body, headers } = await get()
 		expect(body.local).toEqual({
 			count: 5,
-			signatories: [{ name: 'Ada Lovelace', title: 'Députée' }]
+			signatories: [
+				{ name: 'Ada Lovelace', title: 'Députée', comment: 'Pour mes enfants & les vôtres' }
+			]
 		})
+		const ac = calls.find((c) => c.entity === 'ActivityContact')
+		expect(ac?.params.where).toContainEqual(['activity_id.status_id:name', '=', 'Completed'])
 		expect(body.global?.totalCount).toBe(2500)
+		// Les anonymes ne sont pas listés, mais les Français anonymes comptent « en France ».
+		expect(body.global?.franceCount).toBe(3)
 		expect(body.global?.signatories.map((s) => s.name)).toEqual([
 			'Jane Doe',
 			'Marie Curie',

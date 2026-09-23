@@ -1,6 +1,7 @@
 import { json, type RequestHandler } from '@sveltejs/kit'
 
 import {
+	confirmComment,
 	groupStatus,
 	logActivity,
 	newsletterGroups,
@@ -32,7 +33,10 @@ export const POST: RequestHandler = async ({ request }) => {
 		const groups = [signatoriesGroup()]
 		if (claims.p) groups.push(publicGroup())
 		if (claims.n) groups.push(...newsletterGroups())
-		await setGroups(claims.c, groups, 'Added')
+		await Promise.all([
+			setGroups(claims.c, groups, 'Added'),
+			claims.m ? confirmComment(claims.m) : Promise.resolve()
+		])
 
 		if (!already) {
 			await logActivity(

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Button from '$components/Button.svelte'
 	// Après une signature de la déclaration PauseAI : partager et aller plus loin.
 	export let lang: 'fr' | 'en'
 	$: isEn = lang === 'en'
@@ -24,9 +25,9 @@
 </script>
 
 <p>
-	<button type="button" class="share" on:click={share}>
+	<Button on:click={share}>
 		{isEn ? 'Share the statement' : 'Partager la déclaration'}
-	</button>
+	</Button>
 	{#if copied}
 		<span class="copied" role="status">{isEn ? 'Link copied!' : 'Lien copié !'}</span>
 	{/if}
@@ -42,17 +43,6 @@
 </p>
 
 <style>
-	.share {
-		padding: 0.7rem 1.6rem;
-		background: var(--brand);
-		color: var(--on-brand);
-		border: none;
-		border-radius: 6px;
-		cursor: pointer;
-		font: inherit;
-		font-weight: 700;
-	}
-
 	.copied {
 		margin-left: 0.8rem;
 		color: var(--text-2);

@@ -165,7 +165,9 @@ The PauseAI Global statement, translated, with our own French form. Signatures a
 - Token: `src/lib/server/declarationToken.ts` (HMAC, `DECLARATION_TOKEN_SECRET`, falls back to a key derived from `CIVICRM_API_KEY`). Template: `src/lib/server/declarationEmail.ts`.
 - `GET` returns `{ local, global }`: our CiviCRM data and PauseAI Global's signatories (pauseai.info/api/signatories, read server-side via `src/lib/server/declarationGlobal.ts`). Each source can fail independently. If Global is down, the last known list is kept in memory, and the page falls back to `/api/declaration/global.json`, a snapshot prerendered at each deploy. Our signatures are not in Global's count, so the page adds both.
 - `/fr|en/declaration/confirmer` and `/api/declaration/global.json` are listed in `prerender.entries` (nothing links to them): removing them breaks the build.
-- Page has search + country filters (France by default). Tests: `tests/declaration.test.ts`, `tests/mailer.test.ts`.
+- Optional comment (« pourquoi c'est important pour vous », 500 chars): stored as a CiviCRM activity « Déclaration PauseAI : commentaire », `Scheduled` until the email is confirmed (activity id carried in the token), then `Completed`. Only confirmed comments of publicly listed signatories are shown. Moderation: edit or delete the activity. A failure to store the comment never blocks the signature.
+- Signing latency: contact + email are created in one chained API4 call, and the independent reads run in parallel.
+- Page uses the charter components (`PageHero`, `Card`, `SectionTitle`, `FilterChips`, `Button`). Country filter: the most represented countries as chips (`src/lib/countries.ts` maps Global's free-text English names to ISO codes, labels via `Intl.DisplayNames`); any other country is found through the search box. Tests: `tests/declaration.test.ts`, `tests/mailer.test.ts`, `tests/countries.test.ts`.
 
 #### Wise Webhook Integration (`/api/wise-webhook`)
 

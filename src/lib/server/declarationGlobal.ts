@@ -2,6 +2,8 @@
 // (pauseai.info/statement). Leur API est publique mais n'accepte pas les
 // appels depuis un navigateur d'un autre domaine : on la lit côté serveur.
 
+import { countryKey } from '$lib/countries'
+
 export const GLOBAL_SIGNATORIES_URL = 'https://pauseai.info/api/signatories'
 
 export interface GlobalSignatory {
@@ -12,6 +14,8 @@ export interface GlobalSignatory {
 
 export interface GlobalSignatories {
 	totalCount: number
+	/** Signatures en France, anonymes comprises (absent des anciennes copies). */
+	franceCount?: number
 	/** Signataires nommés (les anonymes sont comptés mais pas listés), plus récents d'abord. */
 	signatories: GlobalSignatory[]
 	/** Date de récupération (ISO). */
@@ -47,18 +51,25 @@ export async function fetchGlobalSignatories(
 			throw new Error('Empty or invalid response')
 		}
 		const raw = Array.isArray(data.signatories) ? (data.signatories as RawSignatory[]) : []
+		// Compté avant d'écarter les anonymes : leur pays reste connu.
+		const franceCount = raw.filter((s) => countryKey(str(s.country, 60)) === 'FR').length
 		const signatories = raw
 			.filter((s) => s.private !== true)
 			.map((s) => ({
 				date: typeof s.date === 'string' ? Date.parse(s.date) || 0 : 0,
 				name: str(s.name, 80),
 				country: str(s.country, 60) || undefined,
-				bio: str(s.bio, 240) || undefined
+				bio: str(s.bio, 1500) || undefined
 			}))
 			.filter((s) => s.name && s.name.toLowerCase() !== 'anonymous')
 			.sort((a, b) => b.date - a.date)
 			.map(({ name, country, bio }) => ({ name, country, bio }))
-		return { totalCount: data.totalCount, signatories, fetchedAt: new Date().toISOString() }
+		return {
+			totalCount: data.totalCount,
+			franceCount,
+			signatories,
+			fetchedAt: new Date().toISOString()
+		}
 	} finally {
 		clearTimeout(timer)
 	}

@@ -65,18 +65,25 @@ export function newsletterGroups(): number[] {
 		.filter((id) => Number.isFinite(id) && id > 0)
 }
 
-/** Statut du contact dans un groupe (Added, Pending, Removed), ou null. */
-export async function groupStatus(contactId: number, group: number): Promise<string | null> {
-	const res = await callApi4<{ status: string }>('GroupContact', 'get', {
+/** Statuts du contact dans plusieurs groupes : { [group_id]: 'Added' | 'Pending' | 'Removed' }. */
+export async function groupStatuses(
+	contactId: number,
+	groups: number[]
+): Promise<Record<number, string>> {
+	const res = await callApi4<{ group_id: number; status: string }>('GroupContact', 'get', {
 		checkPermissions: false,
-		select: ['status'],
+		select: ['group_id', 'status'],
 		where: [
 			['contact_id', '=', contactId],
-			['group_id', '=', group]
-		],
-		limit: 1
+			['group_id', 'IN', groups]
+		]
 	})
-	return res.values?.[0]?.status ?? null
+	return Object.fromEntries((res.values ?? []).map((v) => [Number(v.group_id), v.status]))
+}
+
+/** Statut du contact dans un groupe (Added, Pending, Removed), ou null. */
+export async function groupStatus(contactId: number, group: number): Promise<string | null> {
+	return (await groupStatuses(contactId, [group]))[group] ?? null
 }
 
 export async function setGroups(contactId: number, groups: number[], status: 'Added' | 'Pending') {
@@ -88,22 +95,99 @@ export async function setGroups(contactId: number, groups: number[], status: 'Ad
 	})
 }
 
+function activityValues(
+	contactId: number,
+	subject: string,
+	details?: string,
+	status = 'Completed'
+) {
+	return {
+		activity_type_id: WEBSITE_SIGNUP_ACTIVITY_ID,
+		subject,
+		details,
+		source_contact_id: Number(privateEnv.CIVICRM_NEWSLETTER_API_CONTACT_ID || ''),
+		target_contact_id: [contactId],
+		'status_id:name': status
+	}
+}
+
 /** Journalise une activité sur le contact (non bloquant). */
 export async function logActivity(contactId: number, subject: string): Promise<void> {
 	try {
 		await callApi4('Activity', 'create', {
 			checkPermissions: false,
-			values: {
-				activity_type_id: WEBSITE_SIGNUP_ACTIVITY_ID,
-				subject,
-				source_contact_id: Number(privateEnv.CIVICRM_NEWSLETTER_API_CONTACT_ID || ''),
-				target_contact_id: [contactId],
-				'status_id:name': 'Completed'
-			}
+			values: activityValues(contactId, subject)
 		})
 	} catch (e) {
 		console.warn('[declaration] journalisation de l’activité impossible (ignoré) :', e)
 	}
+}
+
+// Commentaire du signataire (« pourquoi c'est important pour moi »), stocké
+// dans une activité : « Scheduled » tant que l'adresse n'est pas confirmée,
+// « Completed » ensuite. Seuls les commentaires confirmés des signataires
+// affichés publiquement apparaissent sur la page. Modération : modifier ou
+// supprimer l'activité dans CiviCRM.
+export const COMMENT_SUBJECT = 'Déclaration PauseAI : commentaire'
+
+/** Enregistre un commentaire en attente de confirmation ; renvoie l'ID de l'activité. */
+export async function createPendingComment(contactId: number, comment: string): Promise<number> {
+	const res = await callApi4<{ id: number }>('Activity', 'create', {
+		checkPermissions: false,
+		values: activityValues(contactId, COMMENT_SUBJECT, comment, 'Scheduled')
+	})
+	const id = Number(res.values?.[0]?.id)
+	if (!id) throw new Error('Failed to create comment activity')
+	return id
+}
+
+export async function confirmComment(activityId: number): Promise<void> {
+	await callApi4('Activity', 'update', {
+		checkPermissions: false,
+		values: { 'status_id:name': 'Completed' },
+		where: [
+			['id', '=', activityId],
+			['subject', '=', COMMENT_SUBJECT]
+		]
+	})
+}
+
+const decodeEntities = (s: string) =>
+	s
+		.replace(/<br\s*\/?>/gi, '\n')
+		.replace(/<[^>]*>/g, '')
+		.replace(/&nbsp;/g, ' ')
+		.replace(/&quot;/g, '"')
+		.replace(/&#0?39;|&apos;/g, "'")
+		.replace(/&lt;/g, '<')
+		.replace(/&gt;/g, '>')
+		.replace(/&amp;/g, '&')
+
+/** Dernier commentaire confirmé de chaque contact. */
+export async function confirmedComments(contactIds: number[]): Promise<Map<number, string>> {
+	const out = new Map<number, string>()
+	if (!contactIds.length) return out
+	const res = await callApi4<{ contact_id: number; 'activity_id.details'?: string | null }>(
+		'ActivityContact',
+		'get',
+		{
+			checkPermissions: false,
+			select: ['contact_id', 'activity_id.details'],
+			where: [
+				['contact_id', 'IN', contactIds],
+				['record_type_id:name', '=', 'Activity Targets'],
+				['activity_id.subject', '=', COMMENT_SUBJECT],
+				['activity_id.status_id:name', '=', 'Completed']
+			],
+			orderBy: { activity_id: 'DESC' }
+		}
+	)
+	for (const v of res.values ?? []) {
+		const id = Number(v.contact_id)
+		const text = decodeEntities(v['activity_id.details'] ?? '').trim()
+		if (text && !out.has(id)) out.set(id, text)
+	}
+	return out
 }
 
 /** Vrai si une activité de ce sujet a été créée pour le contact depuis `sinceMs`. */

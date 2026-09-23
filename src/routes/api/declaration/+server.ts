@@ -3,7 +3,9 @@ import { json, type RequestHandler } from '@sveltejs/kit'
 import { url as siteUrl } from '$config'
 import {
 	callApi4,
-	groupStatus,
+	confirmedComments,
+	createPendingComment,
+	groupStatuses,
 	hasRecentActivity,
 	logActivity,
 	publicGroup,
@@ -48,6 +50,8 @@ const RESEND_DELAY_MS = 10 * 60 * 1000
 export interface DeclarationSignatory {
 	name: string
 	title?: string
+	/** Pourquoi c'est important pour la personne (commentaire confirmé). */
+	comment?: string
 }
 
 export interface DeclarationStats {
@@ -90,12 +94,18 @@ async function fetchLocalStats(): Promise<NonNullable<DeclarationStats['local']>
 			]
 		}),
 		callApi4<{
+			contact_id: number
 			'contact_id.first_name'?: string | null
 			'contact_id.last_name'?: string | null
 			'contact_id.job_title'?: string | null
 		}>('GroupContact', 'get', {
 			checkPermissions: false,
-			select: ['contact_id.first_name', 'contact_id.last_name', 'contact_id.job_title'],
+			select: [
+				'contact_id',
+				'contact_id.first_name',
+				'contact_id.last_name',
+				'contact_id.job_title'
+			],
 			where: [
 				['group_id', '=', pubGroup],
 				['status', '=', 'Added'],
@@ -106,13 +116,23 @@ async function fetchLocalStats(): Promise<NonNullable<DeclarationStats['local']>
 		})
 	])
 
-	const signatories = (pub.values ?? [])
+	const rows = pub.values ?? []
+	// Les commentaires ne sont qu'un complément : leur lecture ne doit pas
+	// empêcher d'afficher la liste.
+	const comments = await confirmedComments(rows.map((v) => Number(v.contact_id))).catch(
+		(e: unknown) => {
+			console.warn('[declaration] lecture des commentaires impossible (ignoré) :', e)
+			return new Map<number, string>()
+		}
+	)
+	const signatories = rows
 		.map((v) => ({
 			name: [v['contact_id.first_name'], v['contact_id.last_name']]
 				.filter(Boolean)
 				.join(' ')
 				.trim(),
-			title: v['contact_id.job_title']?.trim() || undefined
+			title: v['contact_id.job_title']?.trim() || undefined,
+			comment: comments.get(Number(v.contact_id))
 		}))
 		.filter((s) => s.name)
 
@@ -143,6 +163,7 @@ interface SignRequest {
 	lastName?: string
 	email?: string
 	title?: string
+	comment?: string
 	showName?: boolean
 	newsletter?: boolean
 	lang?: string
@@ -153,14 +174,45 @@ interface SignRequest {
 const clean = (s: unknown, max: number) =>
 	typeof s === 'string' ? s.replace(/\s+/g, ' ').trim().slice(0, max) : ''
 
+/** Comme clean, mais conserve les retours à la ligne (paragraphes du commentaire). */
+const cleanText = (s: unknown, max: number) =>
+	typeof s === 'string'
+		? s
+				.replace(/\r\n?/g, '\n')
+				.replace(/[^\S\n]+/g, ' ')
+				.replace(/\n{3,}/g, '\n\n')
+				.trim()
+				.slice(0, max)
+		: ''
+
+const COMMENT_MAX = 500
+
+interface KnownContact {
+	id: number
+	first_name?: string | null
+	last_name?: string | null
+	job_title?: string | null
+}
+
+/**
+ * Retrouve le contact par son e-mail, ou le crée (contact + e-mail en un seul
+ * appel chaîné). Chaque aller-retour vers CiviCRM se voit dans le temps de
+ * réponse du bouton « Je signe » : on les limite au strict nécessaire.
+ */
 async function findOrCreateContact(
 	email: string,
 	firstName: string,
-	lastName: string
-): Promise<{ id: number; created: boolean }> {
-	const found = await callApi4<{ id: number; contact_id: number | null }>('Email', 'get', {
+	lastName: string,
+	title: string
+): Promise<{ contact: KnownContact; created: boolean }> {
+	const found = await callApi4<{
+		contact_id: number | null
+		'contact_id.first_name'?: string | null
+		'contact_id.last_name'?: string | null
+		'contact_id.job_title'?: string | null
+	}>('Email', 'get', {
 		checkPermissions: false,
-		select: ['id', 'contact_id'],
+		select: ['contact_id', 'contact_id.first_name', 'contact_id.last_name', 'contact_id.job_title'],
 		where: [
 			['email', '=', email],
 			['contact_id.is_deleted', '=', false]
@@ -169,7 +221,17 @@ async function findOrCreateContact(
 		limit: 1
 	})
 	const existing = found.values?.[0]
-	if (existing?.contact_id) return { id: Number(existing.contact_id), created: false }
+	if (existing?.contact_id) {
+		return {
+			contact: {
+				id: Number(existing.contact_id),
+				first_name: existing['contact_id.first_name'],
+				last_name: existing['contact_id.last_name'],
+				job_title: existing['contact_id.job_title']
+			},
+			created: false
+		}
+	}
 
 	const created = await callApi4<{ id: number }>('Contact', 'create', {
 		checkPermissions: false,
@@ -177,48 +239,48 @@ async function findOrCreateContact(
 			contact_type: 'Individual',
 			first_name: firstName,
 			last_name: lastName,
+			job_title: title || undefined,
 			source: 'pauseia.fr/declaration',
 			contact_sub_type: ['Sympathisant']
+		},
+		chain: {
+			email: [
+				'Email',
+				'create',
+				{
+					checkPermissions: false,
+					values: {
+						contact_id: '$id',
+						email,
+						is_primary: true,
+						'location_type_id:label': 'Domicile'
+					}
+				}
+			]
 		}
 	})
 	const id = created.values?.[0]?.id
 	if (!id) throw new Error('Failed to create contact')
-	await callApi4('Email', 'create', {
-		checkPermissions: false,
-		values: {
-			contact_id: id,
-			email,
-			is_primary: true,
-			'location_type_id:label': 'Domicile'
-		}
-	})
-	return { id: Number(id), created: true }
+	return { contact: { id: Number(id) }, created: true }
 }
 
 /** Complète le nom et la fonction du contact s'ils sont vides (jamais d'écrasement). */
-async function completeContact(id: number, firstName: string, lastName: string, title: string) {
-	const current = await callApi4<{
-		first_name?: string | null
-		last_name?: string | null
-		job_title?: string | null
-	}>('Contact', 'get', {
-		checkPermissions: false,
-		select: ['first_name', 'last_name', 'job_title'],
-		where: [['id', '=', id]],
-		limit: 1
-	})
-	const c = current.values?.[0] ?? {}
+async function completeContact(
+	c: KnownContact,
+	firstName: string,
+	lastName: string,
+	title: string
+) {
 	const values: Record<string, unknown> = {}
 	if (!c.first_name) values.first_name = firstName
 	if (!c.last_name) values.last_name = lastName
 	if (title && !c.job_title) values.job_title = title
-	if (Object.keys(values).length) {
-		await callApi4('Contact', 'update', {
-			checkPermissions: false,
-			values,
-			where: [['id', '=', id]]
-		})
-	}
+	if (!Object.keys(values).length) return
+	await callApi4('Contact', 'update', {
+		checkPermissions: false,
+		values,
+		where: [['id', '=', c.id]]
+	})
 }
 
 export const POST: RequestHandler = async ({ request }) => {
@@ -238,6 +300,7 @@ export const POST: RequestHandler = async ({ request }) => {
 	const lastName = clean(data.lastName, 64)
 	const email = clean(data.email, 254).toLowerCase()
 	const title = clean(data.title, 120)
+	const comment = cleanText(data.comment, COMMENT_MAX)
 
 	if (!firstName || !lastName) {
 		return json(
@@ -268,34 +331,52 @@ export const POST: RequestHandler = async ({ request }) => {
 	}
 
 	try {
-		const contact = await findOrCreateContact(email, firstName, lastName)
-		await completeContact(contact.id, firstName, lastName, title)
+		const { contact, created } = await findOrCreateContact(email, firstName, lastName, title)
 
-		const [signStatus, publicStatus] = await Promise.all([
-			groupStatus(contact.id, signatoriesGroup()),
-			data.showName ? groupStatus(contact.id, publicGroup()) : Promise.resolve(null)
+		// Appels indépendants, lancés en parallèle.
+		const [, statuses, recentlySent] = await Promise.all([
+			created ? Promise.resolve() : completeContact(contact, firstName, lastName, title),
+			created
+				? Promise.resolve({} as Record<number, string>)
+				: groupStatuses(contact.id, [signatoriesGroup(), publicGroup()]),
+			created
+				? Promise.resolve(false)
+				: hasRecentActivity(contact.id, EMAIL_SENT_SUBJECT, RESEND_DELAY_MS)
 		])
-		const confirmed = signStatus === 'Added'
-		const wantsPublic = Boolean(data.showName) && publicStatus !== 'Added'
+		const confirmed = statuses[signatoriesGroup()] === 'Added'
+		const wantsPublic = Boolean(data.showName) && statuses[publicGroup()] !== 'Added'
 
 		// Déjà signataire confirmé, et rien de nouveau à confirmer.
-		if (confirmed && !wantsPublic && !data.newsletter) {
+		if (confirmed && !wantsPublic && !data.newsletter && !comment) {
 			return json({ success: true, alreadySigned: true })
 		}
 
-		if (!confirmed) await setGroups(contact.id, [signatoriesGroup()], 'Pending')
-
 		// Évite qu'un formulaire soumis en boucle inonde une boîte mail.
-		if (!(await hasRecentActivity(contact.id, EMAIL_SENT_SUBJECT, RESEND_DELAY_MS))) {
-			const token = createToken({
-				c: contact.id,
-				p: Boolean(data.showName),
-				n: Boolean(data.newsletter)
-			})
-			const link = `${siteUrl}/${lang}/declaration/confirmer?t=${encodeURIComponent(token)}`
-			await sendMail(confirmationEmail({ to: email, firstName, link, lang }))
-			await logActivity(contact.id, EMAIL_SENT_SUBJECT)
+		if (recentlySent) {
+			if (!confirmed) await setGroups(contact.id, [signatoriesGroup()], 'Pending')
+			return json({ success: true, pending: true, alreadySigned: confirmed })
 		}
+
+		const [, commentId] = await Promise.all([
+			confirmed ? Promise.resolve() : setGroups(contact.id, [signatoriesGroup()], 'Pending'),
+			// Le commentaire est un complément : son échec n'empêche pas de signer.
+			comment
+				? createPendingComment(contact.id, comment).catch((e: unknown) => {
+						console.warn('[declaration] commentaire non enregistré (ignoré) :', e)
+						return undefined
+					})
+				: Promise.resolve(undefined)
+		])
+
+		const token = createToken({
+			c: contact.id,
+			p: Boolean(data.showName),
+			n: Boolean(data.newsletter),
+			...(commentId ? { m: commentId } : {})
+		})
+		const link = `${siteUrl}/${lang}/declaration/confirmer?t=${encodeURIComponent(token)}`
+		await sendMail(confirmationEmail({ to: email, firstName, link, lang }))
+		await logActivity(contact.id, EMAIL_SENT_SUBJECT)
 
 		return json({ success: true, pending: true, alreadySigned: confirmed })
 	} catch (e) {

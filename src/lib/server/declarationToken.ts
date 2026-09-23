@@ -13,6 +13,8 @@ export interface DeclarationClaims {
 	p: boolean
 	/** S'abonner à la newsletter. */
 	n: boolean
+	/** ID de l'activité « commentaire » à valider, s'il y en a un. */
+	m?: number
 	/** Expiration (secondes depuis l'epoch). */
 	e: number
 }
@@ -47,7 +49,8 @@ export function verifyToken(token: string, now = Date.now()): DeclarationClaims 
 		const { c, e } = raw
 		if (typeof c !== 'number' || !Number.isInteger(c) || c <= 0) return null
 		if (typeof e !== 'number' || e * 1000 < now) return null
-		return { c, p: raw.p === true, n: raw.n === true, e }
+		const m = typeof raw.m === 'number' && Number.isInteger(raw.m) && raw.m > 0 ? raw.m : undefined
+		return { c, p: raw.p === true, n: raw.n === true, m, e }
 	} catch {
 		return null
 	}

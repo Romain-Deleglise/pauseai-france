@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
 	import PostMeta from '$components/PostMeta.svelte'
-	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
+	import Button from '$components/Button.svelte'
+	import { Card, PageHero, SectionTitle } from '$components/ui'
 	import DeclarationNextSteps from '$components/DeclarationNextSteps.svelte'
-	import type { DeclarationStats } from '../../api/declaration/+server'
-	import type { GlobalSignatories } from '$lib/server/declarationGlobal'
+	import SignatoryCard from '$components/declaration/SignatoryCard.svelte'
+	import { counts, loadDeclaration, toEntries, type DeclarationData } from '$lib/declaration'
 	import type { PageData } from './$types'
 
 	export let data: PageData
@@ -16,102 +17,37 @@
 		? 'We call on the governments of the world to sign an international treaty implementing a pause on the training of the most powerful general AI systems. Sign the statement.'
 		: 'Nous appelons les gouvernements du monde entier à signer un traité international instaurant une pause dans l’entraînement des systèmes d’IA généralistes les plus puissants. Signez la déclaration.'
 
-	// ── Compteur et liste (non prérendus, via /api/declaration) ──
-	interface Entry {
-		name: string
-		title?: string
-		country?: string
-	}
-	let local: NonNullable<DeclarationStats['local']> | null = null
-	let global: GlobalSignatories | null = null
-	/** Liste de Global issue de la copie figée au déploiement (API injoignable). */
-	let globalFromSnapshot = false
+	// ── Compteur et messages (non prérendus, via /api/declaration) ──
+	let d: DeclarationData | null = null
+	onMount(async () => {
+		d = await loadDeclaration()
+	})
+	$: entries = d ? toEntries(d) : []
+	$: ({ worldCount, franceCount } = d ? counts(d) : { worldCount: null, franceCount: 0 })
 
-	async function loadStats() {
-		try {
-			const res = await fetch('/api/declaration')
-			if (res.ok) {
-				const stats = (await res.json()) as DeclarationStats
-				local = stats.local
-				global = stats.global
-			}
-		} catch {
-			/* compteur indisponible : la page et le formulaire restent fonctionnels */
-		}
-		if (!global) {
-			try {
-				const res = await fetch('/api/declaration/global.json')
-				const snapshot = res.ok ? ((await res.json()) as GlobalSignatories) : null
-				if (snapshot && snapshot.totalCount > 0) {
-					global = snapshot
-					globalFromSnapshot = true
-				}
-			} catch {
-				/* pas de copie de secours : on affiche seulement nos signataires */
-			}
-		}
-	}
-	onMount(loadStats)
+	// « Pourquoi ils signent » : quelques messages récents, ceux de France d'abord.
+	const FEATURED = 6
+	$: featured = [
+		...entries.filter((e) => e.comment && e.country === 'FR'),
+		...entries.filter((e) => e.comment && e.country !== 'FR')
+	].slice(0, FEATURED)
 
-	// Les signatures de pauseia.fr ne sont pas comptées par pauseai.info : on
-	// additionne les deux.
-	$: localCount = local?.count ?? 0
-	$: worldCount = global ? global.totalCount + localCount : null
-
-	const isFrance = (country?: string) => !!country && /france/i.test(country)
-	$: entries = [
-		...(local?.signatories ?? []).map((s) => ({ ...s, country: 'France' })),
-		...(global?.signatories ?? []).map((s) => ({ name: s.name, title: s.bio, country: s.country }))
-	] as Entry[]
-	$: franceCount = localCount + (global?.signatories.filter((s) => isFrance(s.country)).length ?? 0)
-
-	// ── Filtres ──
-	const ALL = ''
-	const FRANCE = 'France'
-	let country = FRANCE
-	let query = ''
-	// Pas encore de signataire en France : on montre directement tous les pays.
-	$: if (country === FRANCE && entries.length && !entries.some((e) => isFrance(e.country)))
-		country = ALL
-	$: countries = (() => {
-		const counts = new Map<string, number>()
-		for (const e of entries) {
-			const c = isFrance(e.country) ? FRANCE : e.country
-			if (c) counts.set(c, (counts.get(c) ?? 0) + 1)
-		}
-		return [...counts.entries()].sort((a, b) =>
-			a[0] === FRANCE ? -1 : b[0] === FRANCE ? 1 : a[0].localeCompare(b[0])
-		)
-	})()
-	const norm = (s: string) =>
-		s
-			.normalize('NFD')
-			.replace(/[\u0300-\u036f]/g, '')
-			.toLowerCase()
-	$: q = norm(query.trim())
-	$: filtered = entries.filter(
-		(e) =>
-			(country === ALL || (country === FRANCE ? isFrance(e.country) : e.country === country)) &&
-			(!q || norm(`${e.name} ${e.title ?? ''}`).includes(q))
-	)
-	const PAGE = 30
-	let limit = PAGE
-	$: country, query, (limit = PAGE)
-	$: shown = filtered.slice(0, limit)
+	// Objectif affiché sous le compteur : le prochain palier.
+	const MILESTONES = [100, 250, 500, 1000, 2500, 5000, 10000, 25000, 50000, 100000, 250000]
+	$: goalBase = worldCount ?? franceCount
+	$: nextGoal = MILESTONES.find((m) => m > goalBase) ?? goalBase
+	$: prevGoal = [...MILESTONES].reverse().find((m) => m <= goalBase) ?? 0
+	$: progress = nextGoal > prevGoal ? (goalBase - prevGoal) / (nextGoal - prevGoal) : 1
 
 	const fmt = (n: number) => n.toLocaleString(isEn ? 'en-GB' : 'fr-FR')
-	const fmtDate = (iso: string) =>
-		new Date(iso).toLocaleDateString(isEn ? 'en-GB' : 'fr-FR', {
-			day: 'numeric',
-			month: 'long',
-			year: 'numeric'
-		})
 
 	// ── Formulaire ──
 	let firstName = ''
 	let lastName = ''
 	let email = ''
 	let jobTitle = ''
+	let comment = ''
+	const COMMENT_MAX = 500
 	let showName = false
 	let newsletter = false
 	let website = '' // champ piège anti-robots
@@ -150,6 +86,7 @@
 					lastName,
 					email,
 					title: jobTitle,
+					comment,
 					showName,
 					newsletter,
 					website,
@@ -186,18 +123,22 @@
 <PostMeta {title} {description} />
 
 <article>
-	<section class="hero">
-		<UnderlinedTitle as="h1">{title}</UnderlinedTitle>
-		<p class="lede">
+	<PageHero>
+		{title}
+		<svelte:fragment slot="lede">
 			{#if isEn}
-				This statement summarises what PauseAI volunteers and supporters are asking for, in France
-				and around the world. Sign it to add your voice to ours.
+				This statement summarises the position of PauseAI and Pause IA volunteers and supporters.
+				Sign it to add your voice to ours and help us build our collective strength.
 			{:else}
-				Cette déclaration résume ce que les bénévoles et sympathisants de PauseAI demandent, en
-				France comme dans le reste du monde. Signez-la pour joindre votre voix à la nôtre.
+				Cette déclaration résume la position des volontaires, sympathisants et sympathisantes de
+				PauseAI et de Pause IA. Signez-la pour ajouter votre voix à la nôtre et nous aider à
+				construire notre force collective.
 			{/if}
-		</p>
-	</section>
+		</svelte:fragment>
+		<div slot="actions" class="hero-actions">
+			<Button href="#signer">{isEn ? 'Sign the statement' : 'Signer la déclaration'}</Button>
+		</div>
+	</PageHero>
 
 	<blockquote class="statement">
 		{#if isEn}
@@ -221,239 +162,266 @@
 		{/if}
 	</p>
 
-	{#if worldCount != null || localCount > 0}
-		<div class="counter" aria-live="polite">
-			{#if worldCount != null}
+	<!-- Hauteur réservée avant le chargement : la page ne saute pas quand les chiffres arrivent. -->
+	<div class="kpis" aria-live="polite" aria-busy={!d}>
+		{#if !d}
+			<div class="counter" aria-hidden="true">
 				<div class="stat">
-					<span class="num">{fmt(worldCount)}</span>
-					<span class="label">{isEn ? 'signatures worldwide' : 'signatures dans le monde'}</span>
+					<span class="num placeholder"></span><span class="label">&nbsp;</span>
 				</div>
-			{/if}
-			{#if franceCount > 0}
 				<div class="stat">
-					<span class="num">{fmt(franceCount)}</span>
-					<span class="label">{isEn ? 'in France' : 'en France'}</span>
+					<span class="num placeholder"></span><span class="label">&nbsp;</span>
 				</div>
-			{/if}
-		</div>
-	{/if}
-
-	<section class="embed-section" id="signer">
-		<h2 class="embed-title">{isEn ? 'Sign the statement' : 'Signer la déclaration'}</h2>
-
-		{#if done === 'pending'}
-			<p class="success" role="status">
-				{isEn ? 'Check your inbox!' : 'Vérifiez votre boîte mail !'}
-			</p>
-			<p>
-				{#if isEn}
-					We have sent a confirmation email to <strong>{sentTo}</strong>. Your signature will be
-					counted as soon as you click the link it contains.
-				{:else}
-					Nous venons d’envoyer un e-mail de confirmation à <strong>{sentTo}</strong>. Votre
-					signature sera comptabilisée dès que vous aurez cliqué sur le lien qu’il contient.
+			</div>
+		{:else if worldCount != null || franceCount > 0}
+			<div class="counter">
+				{#if worldCount != null}
+					<div class="stat">
+						<span class="num">{fmt(worldCount)}</span>
+						<span class="label">{isEn ? 'signatures worldwide' : 'signatures dans le monde'}</span>
+					</div>
 				{/if}
-			</p>
-			<p class="notice">
-				{#if isEn}
-					Nothing received after a few minutes? Check your spam folder, or
-					<button type="button" class="link" on:click={restart}>correct your email address</button>.
-				{:else}
-					Rien reçu après quelques minutes ? Vérifiez vos courriers indésirables, ou
-					<button type="button" class="link" on:click={restart}>corrigez votre adresse</button>.
+				{#if franceCount > 0}
+					<div class="stat">
+						<span class="num">{fmt(franceCount)}</span>
+						<span class="label">{isEn ? 'in France' : 'en France'}</span>
+					</div>
 				{/if}
-			</p>
-		{:else if done === 'already'}
-			<p class="success" role="status">
-				{isEn
-					? 'You had already signed the statement: thank you for your support!'
-					: 'Vous aviez déjà signé la déclaration : merci pour votre soutien !'}
-			</p>
-			<DeclarationNextSteps lang={data.lang} />
-		{:else}
-			<form on:submit|preventDefault={sign} novalidate>
-				<div class="row">
-					<label>
-						<span>{isEn ? 'First name' : 'Prénom'} *</span>
-						<input bind:value={firstName} autocomplete="given-name" maxlength="64" required />
-					</label>
-					<label>
-						<span>{isEn ? 'Last name' : 'Nom'} *</span>
-						<input bind:value={lastName} autocomplete="family-name" maxlength="64" required />
-					</label>
+			</div>
+			<div class="goal">
+				<div
+					class="bar"
+					role="progressbar"
+					aria-label={isEn
+						? 'Progress towards the next goal'
+						: 'Progression vers le prochain objectif'}
+					aria-valuemin={prevGoal}
+					aria-valuemax={nextGoal}
+					aria-valuenow={goalBase}
+				>
+					<span style="width: {Math.round(progress * 100)}%"></span>
 				</div>
-				<label>
-					<span>{isEn ? 'Email' : 'E-mail'} *</span>
-					<input type="email" bind:value={email} autocomplete="email" maxlength="254" required />
-				</label>
-				<label>
-					<span>{isEn ? 'Title or occupation (optional)' : 'Titre ou profession (facultatif)'}</span
-					>
-					<input
-						bind:value={jobTitle}
-						autocomplete="organization-title"
-						maxlength="120"
-						placeholder={isEn
-							? 'e.g. AI researcher, city councillor…'
-							: 'ex. : chercheuse en IA, conseiller municipal…'}
-					/>
-				</label>
-				<!-- Champ piège : invisible pour les humains, rempli par les robots. -->
-				<label class="hp" aria-hidden="true">
-					Website <input bind:value={website} tabindex="-1" autocomplete="off" />
-				</label>
-				<label class="check">
-					<input type="checkbox" bind:checked={showName} />
-					<span>
-						{isEn
-							? 'Show my name (and title) in the public list of signatories'
-							: 'Afficher mon nom (et mon titre) dans la liste publique des signataires'}
-					</span>
-				</label>
-				<label class="check">
-					<input type="checkbox" bind:checked={newsletter} />
-					<span>
-						{isEn ? 'Receive the Pause IA newsletter' : 'Recevoir la newsletter de Pause IA'}
-					</span>
-				</label>
-
-				{#if error}<p class="error" role="alert">{error}</p>{/if}
-
-				<button type="submit" class="submit" disabled={submitting}>
-					{#if submitting}
-						{isEn ? 'Signing…' : 'Signature…'}
-					{:else}
-						{isEn ? 'I sign' : 'Je signe'}
-					{/if}
-				</button>
-				<p class="legal">
+				<p>
 					{#if isEn}
-						Your email is never published. Your data is kept by Pause IA and is not shared.
-						<a href="{prefix}/politique-de-confidentialite">Privacy policy</a>.
+						Next goal: <strong>{fmt(nextGoal)}</strong> signatures
+						{worldCount != null ? 'worldwide' : 'in France'}. Help us get there!
 					{:else}
-						Votre e-mail n’est jamais publié. Vos données sont conservées par Pause IA et ne sont
-						pas partagées.
-						<a href="{prefix}/politique-de-confidentialite">Politique de confidentialité</a>.
+						Prochain objectif : <strong>{fmt(nextGoal)}</strong> signatures
+						{worldCount != null ? 'dans le monde' : 'en France'}. Aidez-nous à l’atteindre !
 					{/if}
 				</p>
-			</form>
+			</div>
 		{/if}
+	</div>
+
+	<section class="sign" id="signer">
+		<Card>
+			<SectionTitle>{isEn ? 'Sign the statement' : 'Signer la déclaration'}</SectionTitle>
+
+			{#if done === 'pending'}
+				<p class="success" role="status">
+					{isEn ? 'Check your inbox!' : 'Vérifiez votre boîte mail !'}
+				</p>
+				<p>
+					{#if isEn}
+						We have sent a confirmation email to <strong>{sentTo}</strong>. Your signature will be
+						counted as soon as you click the link it contains.
+					{:else}
+						Nous venons d’envoyer un e-mail de confirmation à <strong>{sentTo}</strong>. Votre
+						signature sera comptabilisée dès que vous aurez cliqué sur le lien qu’il contient.
+					{/if}
+				</p>
+				<p class="notice">
+					{#if isEn}
+						Nothing received after a few minutes? Check your spam folder, or
+						<button type="button" class="link" on:click={restart}>correct your email address</button
+						>.
+					{:else}
+						Rien reçu après quelques minutes ? Vérifiez vos courriers indésirables, ou
+						<button type="button" class="link" on:click={restart}>corrigez votre adresse</button>.
+					{/if}
+				</p>
+			{:else if done === 'already'}
+				<p class="success" role="status">
+					{isEn
+						? 'You had already signed the statement: thank you for your support!'
+						: 'Vous aviez déjà signé la déclaration : merci pour votre soutien !'}
+				</p>
+				<DeclarationNextSteps lang={data.lang} />
+			{:else}
+				<form on:submit|preventDefault={sign} novalidate>
+					<div class="row">
+						<label>
+							<span>{isEn ? 'First name' : 'Prénom'} *</span>
+							<input bind:value={firstName} autocomplete="given-name" maxlength="64" required />
+						</label>
+						<label>
+							<span>{isEn ? 'Last name' : 'Nom'} *</span>
+							<input bind:value={lastName} autocomplete="family-name" maxlength="64" required />
+						</label>
+					</div>
+					<label>
+						<span>{isEn ? 'Email' : 'E-mail'} *</span>
+						<input type="email" bind:value={email} autocomplete="email" maxlength="254" required />
+					</label>
+					<label>
+						<span
+							>{isEn ? 'Title or occupation (optional)' : 'Titre ou profession (facultatif)'}</span
+						>
+						<input
+							bind:value={jobTitle}
+							autocomplete="organization-title"
+							maxlength="120"
+							placeholder={isEn
+								? 'e.g. AI researcher, city councillor…'
+								: 'ex. : chercheuse en IA, conseiller municipal…'}
+						/>
+					</label>
+					<label>
+						<span>
+							{isEn
+								? 'Tell the world who you are and why you think it is important to tackle AI risks (optional)'
+								: 'Expliquez au monde qui vous êtes et pourquoi vous pensez qu’il est important de s’attaquer aux risques liés à l’IA (facultatif)'}
+						</span>
+						<textarea bind:value={comment} maxlength={COMMENT_MAX} rows="4"></textarea>
+						<small class="hint">
+							{#if isEn}
+								Shown with your name if you accept to appear publicly. {comment.length}/{COMMENT_MAX}
+							{:else}
+								Affiché avec votre nom si vous acceptez d’apparaître publiquement. {comment.length}/{COMMENT_MAX}
+							{/if}
+						</small>
+					</label>
+					<!-- Champ piège : invisible pour les humains, rempli par les robots. -->
+					<label class="hp" aria-hidden="true">
+						Website <input bind:value={website} tabindex="-1" autocomplete="off" />
+					</label>
+					<label class="check">
+						<input type="checkbox" bind:checked={showName} />
+						<span>
+							{isEn
+								? 'Show my name, title and message in the public list of signatories'
+								: 'Afficher mon nom, mon titre et mon message dans la liste publique des signataires'}
+						</span>
+					</label>
+					<label class="check">
+						<input type="checkbox" bind:checked={newsletter} />
+						<span>
+							{isEn ? 'Receive the Pause IA newsletter' : 'Recevoir la newsletter de Pause IA'}
+						</span>
+					</label>
+
+					{#if error}<p class="error" role="alert">{error}</p>{/if}
+
+					<Button type="submit" disabled={submitting}>
+						{#if submitting}
+							{isEn ? 'Signing…' : 'Signature…'}
+						{:else}
+							{isEn ? 'I sign' : 'Je signe'}
+						{/if}
+					</Button>
+					<p class="legal">
+						{#if isEn}
+							Your email is never published. Your data is kept by Pause IA and is not shared.
+							<a href="{prefix}/politique-de-confidentialite">Privacy policy</a>.
+						{:else}
+							Votre e-mail n’est jamais publié. Vos données sont conservées par Pause IA et ne sont
+							pas partagées.
+							<a href="{prefix}/politique-de-confidentialite">Politique de confidentialité</a>.
+						{/if}
+					</p>
+				</form>
+			{/if}
+		</Card>
 	</section>
 
-	{#if entries.length > 0}
-		<section class="signatories" data-pagefind-ignore>
-			<h2>{isEn ? 'Signatories' : 'Signataires'}</h2>
-			<div class="filters">
-				<label>
-					<span>{isEn ? 'Search' : 'Rechercher'}</span>
-					<input
-						type="search"
-						bind:value={query}
-						placeholder={isEn ? 'Name, title…' : 'Nom, titre…'}
-					/>
-				</label>
-				<label>
-					<span>{isEn ? 'Country' : 'Pays'}</span>
-					<select bind:value={country}>
-						<option value={ALL}
-							>{isEn ? 'All countries' : 'Tous les pays'} ({fmt(entries.length)})</option
-						>
-						{#each countries as [c, n]}
-							<option value={c}>{c} ({fmt(n)})</option>
-						{/each}
-					</select>
-				</label>
-			</div>
-			<p class="result-count" aria-live="polite">
-				{#if isEn}
-					{fmt(filtered.length)} {filtered.length > 1 ? 'names' : 'name'} shown
-				{:else}
-					{fmt(filtered.length)} {filtered.length > 1 ? 'noms affichés' : 'nom affiché'}
-				{/if}
-			</p>
-			<ul>
-				{#each shown as s}
-					<li>
-						<span class="name">{s.name}</span>
-						{#if s.title}<span class="title">{s.title}</span>{/if}
-						{#if country !== FRANCE && s.country}<span class="country">{s.country}</span>{/if}
-					</li>
+	<section class="why" data-pagefind-ignore>
+		<SectionTitle>{isEn ? 'Why they sign' : 'Pourquoi ils signent'}</SectionTitle>
+		{#if featured.length}
+			<ul class="grid">
+				{#each featured as s (s)}
+					<SignatoryCard signatory={s} lang={data.lang} />
 				{/each}
 			</ul>
-			{#if filtered.length > limit}
-				<button class="toggle" on:click={() => (limit += PAGE * 3)}>
-					{isEn ? 'Show more' : 'Voir plus'} ({fmt(filtered.length - limit)})
-				</button>
+		{/if}
+		<!-- Lien toujours présent (pas seulement après chargement) : le prérendu le suit. -->
+		<Button alt href="{prefix}/declaration/signataires">
+			{#if worldCount != null}
+				{isEn
+					? `See all ${fmt(worldCount)} signatories`
+					: `Voir les ${fmt(worldCount)} signataires`}
+			{:else}
+				{isEn ? 'See all signatories' : 'Voir tous les signataires'}
 			{/if}
-			<p class="legal">
-				{#if isEn}
-					Includes the signatories collected by PauseAI Global on
-					<a href="https://pauseai.info/statement" target="_blank" rel="noopener">pauseai.info</a
-					>{#if globalFromSnapshot && global?.fetchedAt}&nbsp;(list as of {fmtDate(
-							global.fetchedAt
-						)}){/if}. Anonymous signatures are counted but not listed.
-				{:else}
-					Inclut les signataires recueillis par PauseAI Global sur
-					<a href="https://pauseai.info/statement" target="_blank" rel="noopener">pauseai.info</a
-					>{#if globalFromSnapshot && global?.fetchedAt}&nbsp;(liste au {fmtDate(
-							global.fetchedAt
-						)}){/if}. Les signatures anonymes sont comptées mais pas affichées.
-				{/if}
-			</p>
-		</section>
-	{/if}
+		</Button>
+	</section>
 </article>
 
 <style>
 	article {
-		max-inline-size: var(--width-wide);
+		max-inline-size: var(--width-content);
 		margin-inline: auto;
 		margin-top: 3rem;
-		padding: 0 2rem;
 		margin-bottom: 5rem;
+		padding: 0 1.5rem;
 	}
 
-	.hero {
-		margin-bottom: 2rem;
-	}
-
-	.lede {
-		font-size: 1.2rem;
-		line-height: 1.6;
-		color: var(--text);
+	.hero-actions {
 		margin-top: 1.5rem;
 	}
 
+	/* Citation de la charte : fond --bg-subtle, barre gauche --brand. */
 	.statement {
-		margin: 2rem 0 1rem;
-		padding: 1rem 1.8rem;
+		margin: 0 0 1rem;
+		padding: 1.25rem 1.75rem;
 		border-left: 4px solid var(--brand);
-		background: var(--bg-subtle);
-		border-radius: 0 10px 10px 0;
+		background: var(--bg-card);
+		border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
 		font-weight: 500;
 		font-size: 1.15rem;
 		line-height: 1.7;
 		color: var(--text);
 	}
 
-	@media (min-width: 600px) {
+	@media (min-width: 640px) {
 		.statement {
-			font-size: 1.45rem;
+			font-size: 1.4rem;
 		}
 	}
 
 	.source,
-	.legal {
+	.legal,
+	.notice {
 		color: var(--text-2);
 		font-size: 0.9rem;
 		line-height: 1.6;
+	}
+
+	.kpis {
+		min-block-size: 9.5rem;
+		margin: 2.5rem 0;
+	}
+
+	.placeholder {
+		display: block;
+		inline-size: 6rem;
+		block-size: 2.75rem;
+		border-radius: var(--radius-sm);
+		background: var(--border);
+		animation: pulse 1.4s ease-in-out infinite;
+	}
+
+	@keyframes pulse {
+		50% {
+			opacity: 0.5;
+		}
 	}
 
 	.counter {
 		display: flex;
 		justify-content: center;
 		gap: 3rem;
-		margin: 2.5rem 0;
+		margin: 0 0 1rem;
 		text-align: center;
 	}
 
@@ -473,19 +441,35 @@
 		color: var(--text-2);
 	}
 
-	.embed-section {
-		background: var(--bg-secondary);
-		border-radius: var(--radius-lg);
-		padding: 2rem;
-		border: 1px solid var(--border);
-		box-shadow: var(--shadow-card);
-		margin: 2rem 0 2.5rem;
-		scroll-margin-top: 5rem;
+	.goal {
+		max-inline-size: 28rem;
+		margin: 0 auto;
+		text-align: center;
+		color: var(--text-2);
+		font-size: 0.95rem;
 	}
 
-	.embed-title {
-		margin: 0 0 1.25rem;
-		font-size: 1.5rem;
+	.bar {
+		block-size: 8px;
+		border-radius: var(--radius-pill);
+		background: var(--border);
+		overflow: hidden;
+	}
+
+	.bar span {
+		display: block;
+		block-size: 100%;
+		background: var(--brand);
+		border-radius: inherit;
+	}
+
+	.goal p {
+		margin: 0.5rem 0 0;
+	}
+
+	.sign {
+		margin-bottom: 3.5rem;
+		scroll-margin-top: 5rem;
 	}
 
 	form {
@@ -506,18 +490,23 @@
 		font-size: 0.95rem;
 	}
 
-	input:not([type='checkbox']) {
+	input:not([type='checkbox']),
+	textarea {
 		font: inherit;
 		padding: 0.6rem 0.8rem;
 		border: 1px solid var(--border);
-		border-radius: 6px;
+		border-radius: var(--radius-sm);
 		background: var(--bg);
 		color: var(--text);
 	}
 
-	input:focus-visible {
-		outline: 2px solid var(--brand);
-		outline-offset: 1px;
+	textarea {
+		resize: vertical;
+	}
+
+	.hint {
+		color: var(--text-2);
+		font-size: 0.8rem;
 	}
 
 	label.check {
@@ -539,34 +528,6 @@
 		overflow: hidden;
 	}
 
-	.submit,
-	.toggle {
-		justify-self: start;
-		padding: 0.7rem 1.6rem;
-		background: var(--brand);
-		color: var(--on-brand);
-		border: none;
-		border-radius: 6px;
-		cursor: pointer;
-		font: inherit;
-		font-weight: 700;
-	}
-
-	.submit:disabled {
-		opacity: 0.6;
-		cursor: wait;
-	}
-
-	.error {
-		color: var(--error);
-		margin: 0;
-	}
-
-	.notice {
-		color: var(--text-2);
-		font-size: 0.95rem;
-	}
-
 	.link {
 		background: none;
 		border: none;
@@ -577,85 +538,33 @@
 		cursor: pointer;
 	}
 
+	.error {
+		color: var(--error);
+		margin: 0;
+	}
+
 	.success {
 		font-size: 1.15rem;
 		font-weight: 600;
+		color: var(--success);
 	}
 
-	.signatories h2 {
-		font-size: 1.5rem;
-		margin-bottom: 1rem;
+	.why {
+		margin-bottom: 2rem;
 	}
 
-	.signatories ul {
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
-		gap: 0.9rem 1.5rem;
+	/* Colonnes « maçonnerie » : les cartes de hauteurs différentes s'emboîtent. */
+	.grid {
+		columns: 17rem;
+		column-gap: 1rem;
 		list-style: none;
 		padding: 0;
-	}
-
-	.signatories li {
-		display: flex;
-		flex-direction: column;
-	}
-
-	.name {
-		font-weight: 600;
-	}
-
-	.title {
-		font-style: italic;
-		color: var(--text-2);
-		font-size: 0.9rem;
-	}
-
-	.filters {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 1rem;
-		margin-bottom: 0.5rem;
-	}
-
-	.filters label {
-		flex: 1 1 14rem;
-	}
-
-	select {
-		font: inherit;
-		padding: 0.6rem 0.8rem;
-		border: 1px solid var(--border);
-		border-radius: 6px;
-		background: var(--bg);
-		color: var(--text);
-	}
-
-	.result-count {
-		color: var(--text-2);
-		font-size: 0.9rem;
-		margin: 0.5rem 0 1rem;
-	}
-
-	.country {
-		color: var(--text-2);
-		font-size: 0.85rem;
-	}
-
-	.signatories .legal {
-		margin-top: 1.5rem;
-	}
-
-	.toggle {
-		margin-top: 1.5rem;
-		font-weight: 400;
+		margin: 0 0 1rem;
 	}
 
 	@media (max-width: 600px) {
 		article {
-			padding: 0 1rem;
-		}
-		.embed-section {
-			padding: 1.25rem;
+			padding: 0 1.1rem;
 		}
 		.row {
 			grid-template-columns: 1fr;
