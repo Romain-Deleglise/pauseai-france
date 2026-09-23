@@ -11,6 +11,7 @@ export default {
 		liens_utiles: 'Resources',
 		newsletter: 'Newsletter',
 		propositions: 'What do we ask for?',
+		declaration: 'Sign the statement',
 		blog: 'Blog',
 		fresque: 'The AI Risks Fresk',
 		comment_agir: 'How to act?',

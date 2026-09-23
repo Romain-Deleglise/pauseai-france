@@ -133,6 +133,7 @@
 			items: [
 				{ href: `${prefix}/qui-sommes-nous`, label: t.nav.qui_sommes_nous },
 				{ href: `${prefix}/propositions`, label: t.nav.propositions },
+				{ href: `${prefix}/declaration`, label: t.nav.declaration },
 				{ href: `${prefix}/presse`, label: t.nav.presse }
 			]
 		}

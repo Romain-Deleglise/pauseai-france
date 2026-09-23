@@ -11,6 +11,7 @@ export default {
 		liens_utiles: 'Ressources',
 		newsletter: 'Newsletter',
 		propositions: 'Que demandons-nous ?',
+		declaration: 'Signer la déclaration',
 		blog: 'Blog',
 		fresque: 'La fresque des risques de l’IA',
 		comment_agir: 'Comment agir ?',
