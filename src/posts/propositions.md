@@ -112,9 +112,11 @@ Le mouvement Pause AI a proposé une approche matérielle de la pause lors de l'
 </div>
 </Accordion>
 
-<Callout title="Vous êtes d'accord ? Signez la déclaration">
+<Callout title="Vous êtes d'accord ? Passez à l'action">
 
-La déclaration PauseAI appelle les gouvernements à signer un traité international instaurant une pause dans l'entraînement des IA les plus puissantes. Elle est signée en France et dans le monde entier. **[Signer la déclaration](/fr/declaration)**
+Le plus efficace : **[écrire à vos élus et à la presse](/fr/ecrire-a-mes-elus)**. Cela prend deux minutes, et un message personnel pèse bien plus qu'une signature.
+
+Vous pouvez aussi [signer la déclaration PauseAI](/fr/declaration), qui appelle les gouvernements à un traité international instaurant une pause dans l'entraînement des IA les plus puissantes.
 
 </Callout>
 

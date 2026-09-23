@@ -282,6 +282,7 @@
 						<button type="button" class="link" on:click={restart}>corrigez votre adresse</button>.
 					{/if}
 				</p>
+				<DeclarationNextSteps lang={data.lang} />
 			{:else if done === 'already'}
 				<p class="success" role="status" tabindex="-1" data-focus>
 					{isEn

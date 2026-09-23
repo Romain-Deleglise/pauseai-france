@@ -59,6 +59,7 @@ export default {
 		rejoindre: 'Nous rejoindre',
 		qui_sommes_nous: 'Qui sommes-nous ?',
 		act_title: 'Agir',
+		ecrire_elus: 'Écrire aux élus et à la presse',
 		declaration: 'Signer la déclaration',
 		join_pauseia: 'Rejoindre Pause IA',
 		how_to_help: 'Comment pouvez-vous aider ?',

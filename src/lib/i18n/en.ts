@@ -57,6 +57,7 @@ export default {
 		rejoindre: 'Join us',
 		qui_sommes_nous: 'Who are we?',
 		act_title: 'Act',
+		ecrire_elus: 'Write to reps & the press',
 		declaration: 'Sign the statement',
 		join_pauseia: 'Join Pause AI',
 		how_to_help: 'How can you help?',
