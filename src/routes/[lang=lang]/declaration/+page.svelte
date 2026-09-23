@@ -3,6 +3,7 @@
 	import PostMeta from '$components/PostMeta.svelte'
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
 	import type { DeclarationStats } from '../../api/declaration/+server'
+	import type { GlobalSignatories } from '$lib/server/declarationGlobal'
 	import type { PageData } from './$types'
 
 	export let data: PageData
@@ -15,25 +16,95 @@
 		: 'Nous appelons les gouvernements du monde entier à signer un traité international instaurant une pause dans l’entraînement des systèmes d’IA généralistes les plus puissants. Signez la déclaration.'
 
 	// ── Compteur et liste (non prérendus, via /api/declaration) ──
-	let stats: DeclarationStats | null = null
-	const PREVIEW = 12
-	let showAll = false
-	$: shown = stats ? (showAll ? stats.signatories : stats.signatories.slice(0, PREVIEW)) : []
-	// Les signatures de pauseia.fr ne sont pas comptées par pauseai.info : on
-	// additionne les deux quand le total mondial est disponible.
-	$: worldCount = stats?.globalCount != null ? stats.globalCount + stats.count : null
-
-	const fmt = (n: number) => n.toLocaleString(isEn ? 'en-GB' : 'fr-FR')
+	interface Entry {
+		name: string
+		title?: string
+		country?: string
+	}
+	let local: NonNullable<DeclarationStats['local']> | null = null
+	let global: GlobalSignatories | null = null
+	/** Liste de Global issue de la copie figée au déploiement (API injoignable). */
+	let globalFromSnapshot = false
 
 	async function loadStats() {
 		try {
 			const res = await fetch('/api/declaration')
-			if (res.ok) stats = (await res.json()) as DeclarationStats
+			if (res.ok) {
+				const stats = (await res.json()) as DeclarationStats
+				local = stats.local
+				global = stats.global
+			}
 		} catch {
 			/* compteur indisponible : la page et le formulaire restent fonctionnels */
 		}
+		if (!global) {
+			try {
+				const res = await fetch('/api/declaration/global.json')
+				const snapshot = res.ok ? ((await res.json()) as GlobalSignatories) : null
+				if (snapshot && snapshot.totalCount > 0) {
+					global = snapshot
+					globalFromSnapshot = true
+				}
+			} catch {
+				/* pas de copie de secours : on affiche seulement nos signataires */
+			}
+		}
 	}
 	onMount(loadStats)
+
+	// Les signatures de pauseia.fr ne sont pas comptées par pauseai.info : on
+	// additionne les deux.
+	$: localCount = local?.count ?? 0
+	$: worldCount = global ? global.totalCount + localCount : null
+
+	const isFrance = (country?: string) => !!country && /france/i.test(country)
+	$: entries = [
+		...(local?.signatories ?? []).map((s) => ({ ...s, country: 'France' })),
+		...(global?.signatories ?? []).map((s) => ({ name: s.name, title: s.bio, country: s.country }))
+	] as Entry[]
+	$: franceCount = localCount + (global?.signatories.filter((s) => isFrance(s.country)).length ?? 0)
+
+	// ── Filtres ──
+	const ALL = ''
+	const FRANCE = 'France'
+	let country = FRANCE
+	let query = ''
+	// Pas encore de signataire en France : on montre directement tous les pays.
+	$: if (country === FRANCE && entries.length && !entries.some((e) => isFrance(e.country)))
+		country = ALL
+	$: countries = (() => {
+		const counts = new Map<string, number>()
+		for (const e of entries) {
+			const c = isFrance(e.country) ? FRANCE : e.country
+			if (c) counts.set(c, (counts.get(c) ?? 0) + 1)
+		}
+		return [...counts.entries()].sort((a, b) =>
+			a[0] === FRANCE ? -1 : b[0] === FRANCE ? 1 : a[0].localeCompare(b[0])
+		)
+	})()
+	const norm = (s: string) =>
+		s
+			.normalize('NFD')
+			.replace(/[\u0300-\u036f]/g, '')
+			.toLowerCase()
+	$: q = norm(query.trim())
+	$: filtered = entries.filter(
+		(e) =>
+			(country === ALL || (country === FRANCE ? isFrance(e.country) : e.country === country)) &&
+			(!q || norm(`${e.name} ${e.title ?? ''}`).includes(q))
+	)
+	const PAGE = 30
+	let limit = PAGE
+	$: country, query, (limit = PAGE)
+	$: shown = filtered.slice(0, limit)
+
+	const fmt = (n: number) => n.toLocaleString(isEn ? 'en-GB' : 'fr-FR')
+	const fmtDate = (iso: string) =>
+		new Date(iso).toLocaleDateString(isEn ? 'en-GB' : 'fr-FR', {
+			day: 'numeric',
+			month: 'long',
+			year: 'numeric'
+		})
 
 	// ── Formulaire ──
 	let firstName = ''
@@ -46,6 +117,25 @@
 	let submitting = false
 	let error = ''
 	let done: 'signed' | 'already' | null = null
+	let listed = false
+	let copied = false
+
+	async function share() {
+		const shareUrl = `https://pauseia.fr${prefix}/declaration`
+		const text = isEn
+			? 'I signed the PauseAI statement for an international treaty on AI. Sign it too:'
+			: 'J’ai signé la déclaration PauseAI pour un traité international sur l’IA. Signez-la vous aussi :'
+		try {
+			if (typeof navigator.share === 'function') {
+				await navigator.share({ title, text, url: shareUrl })
+				return
+			}
+			await navigator.clipboard.writeText(`${text} ${shareUrl}`)
+			copied = true
+		} catch {
+			/* partage annulé ou presse-papiers indisponible */
+		}
+	}
 
 	async function sign() {
 		error = ''
@@ -79,11 +169,25 @@
 			const result = (await res.json()) as {
 				success?: boolean
 				alreadySigned?: boolean
+				listed?: boolean
 				error?: string
 			}
 			if (res.ok && result.success) {
 				done = result.alreadySigned ? 'already' : 'signed'
-				void loadStats()
+				listed = Boolean(result.listed)
+				// Mise à jour immédiate : /api/declaration est mis en cache quelques
+				// minutes, un rechargement ne refléterait pas encore la signature.
+				if (local) {
+					const name = `${firstName.trim()} ${lastName.trim()}`
+					const alreadyShown = local.signatories.some((s) => s.name === name)
+					local = {
+						count: local.count + (result.alreadySigned ? 0 : 1),
+						signatories:
+							listed && !alreadyShown
+								? [{ name, title: jobTitle.trim() || undefined }, ...local.signatories]
+								: local.signatories
+					}
+				}
 			} else {
 				error =
 					result.error ||
@@ -139,7 +243,7 @@
 		{/if}
 	</p>
 
-	{#if stats && stats.count > 0}
+	{#if worldCount != null || localCount > 0}
 		<div class="counter" aria-live="polite">
 			{#if worldCount != null}
 				<div class="stat">
@@ -147,10 +251,12 @@
 					<span class="label">{isEn ? 'signatures worldwide' : 'signatures dans le monde'}</span>
 				</div>
 			{/if}
-			<div class="stat">
-				<span class="num">{fmt(stats.count)}</span>
-				<span class="label">{isEn ? 'on pauseia.fr' : 'sur pauseia.fr'}</span>
-			</div>
+			{#if franceCount > 0}
+				<div class="stat">
+					<span class="num">{fmt(franceCount)}</span>
+					<span class="label">{isEn ? 'in France' : 'en France'}</span>
+				</div>
+			{/if}
 		</div>
 	{/if}
 
@@ -167,6 +273,27 @@
 					{isEn
 						? 'Thank you, your signature has been recorded!'
 						: 'Merci, votre signature a bien été enregistrée !'}
+				{/if}
+			</p>
+			{#if showName && !listed}
+				<p class="notice">
+					{#if isEn}
+						Your signature is counted, but your name could not be added to the public list
+						automatically: it does not match the name we already have for this email address.
+						Contact us if you would like it to appear.
+					{:else}
+						Votre signature est bien comptée, mais votre nom n’a pas pu être ajouté automatiquement
+						à la liste publique : il ne correspond pas à celui déjà associé à cette adresse e-mail.
+						Contactez-nous si vous souhaitez qu’il apparaisse.
+					{/if}
+				</p>
+			{/if}
+			<p>
+				<button type="button" class="submit" on:click={share}>
+					{isEn ? 'Share the statement' : 'Partager la déclaration'}
+				</button>
+				{#if copied}
+					<span class="copied" role="status">{isEn ? 'Link copied!' : 'Lien copié !'}</span>
 				{/if}
 			</p>
 			<p>
@@ -248,26 +375,66 @@
 		{/if}
 	</section>
 
-	{#if stats && stats.signatories.length > 0}
+	{#if entries.length > 0}
 		<section class="signatories" data-pagefind-ignore>
 			<h2>{isEn ? 'Signatories' : 'Signataires'}</h2>
+			<div class="filters">
+				<label>
+					<span>{isEn ? 'Search' : 'Rechercher'}</span>
+					<input
+						type="search"
+						bind:value={query}
+						placeholder={isEn ? 'Name, title…' : 'Nom, titre…'}
+					/>
+				</label>
+				<label>
+					<span>{isEn ? 'Country' : 'Pays'}</span>
+					<select bind:value={country}>
+						<option value={ALL}
+							>{isEn ? 'All countries' : 'Tous les pays'} ({fmt(entries.length)})</option
+						>
+						{#each countries as [c, n]}
+							<option value={c}>{c} ({fmt(n)})</option>
+						{/each}
+					</select>
+				</label>
+			</div>
+			<p class="result-count" aria-live="polite">
+				{#if isEn}
+					{fmt(filtered.length)} {filtered.length > 1 ? 'names' : 'name'} shown
+				{:else}
+					{fmt(filtered.length)} {filtered.length > 1 ? 'noms affichés' : 'nom affiché'}
+				{/if}
+			</p>
 			<ul>
 				{#each shown as s}
 					<li>
 						<span class="name">{s.name}</span>
 						{#if s.title}<span class="title">{s.title}</span>{/if}
+						{#if country !== FRANCE && s.country}<span class="country">{s.country}</span>{/if}
 					</li>
 				{/each}
 			</ul>
-			{#if stats.signatories.length > PREVIEW}
-				<button class="toggle" on:click={() => (showAll = !showAll)}>
-					{#if showAll}
-						{isEn ? 'Show less' : 'Voir moins'}
-					{:else}
-						{isEn ? 'Show all signatories' : 'Voir tous les signataires'}
-					{/if}
+			{#if filtered.length > limit}
+				<button class="toggle" on:click={() => (limit += PAGE * 3)}>
+					{isEn ? 'Show more' : 'Voir plus'} ({fmt(filtered.length - limit)})
 				</button>
 			{/if}
+			<p class="legal">
+				{#if isEn}
+					Includes the signatories collected by PauseAI Global on
+					<a href="https://pauseai.info/statement" target="_blank" rel="noopener">pauseai.info</a
+					>{#if globalFromSnapshot && global?.fetchedAt}&nbsp;(list as of {fmtDate(
+							global.fetchedAt
+						)}){/if}. Anonymous signatures are counted but not listed.
+				{:else}
+					Inclut les signataires recueillis par PauseAI Global sur
+					<a href="https://pauseai.info/statement" target="_blank" rel="noopener">pauseai.info</a
+					>{#if globalFromSnapshot && global?.fetchedAt}&nbsp;(liste au {fmtDate(
+							global.fetchedAt
+						)}){/if}. Les signatures anonymes sont comptées mais pas affichées.
+				{/if}
+			</p>
 		</section>
 	{/if}
 </article>
@@ -430,6 +597,16 @@
 		margin: 0;
 	}
 
+	.notice {
+		color: var(--text-2);
+		font-size: 0.95rem;
+	}
+
+	.copied {
+		margin-left: 0.8rem;
+		color: var(--text-2);
+	}
+
 	.success {
 		font-size: 1.15rem;
 		font-weight: 600;
@@ -461,6 +638,41 @@
 		font-style: italic;
 		color: var(--text-2);
 		font-size: 0.9rem;
+	}
+
+	.filters {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1rem;
+		margin-bottom: 0.5rem;
+	}
+
+	.filters label {
+		flex: 1 1 14rem;
+	}
+
+	select {
+		font: inherit;
+		padding: 0.6rem 0.8rem;
+		border: 1px solid var(--border);
+		border-radius: 6px;
+		background: var(--bg);
+		color: var(--text);
+	}
+
+	.result-count {
+		color: var(--text-2);
+		font-size: 0.9rem;
+		margin: 0.5rem 0 1rem;
+	}
+
+	.country {
+		color: var(--text-2);
+		font-size: 0.85rem;
+	}
+
+	.signatories .legal {
+		margin-top: 1.5rem;
 	}
 
 	.toggle {

@@ -160,7 +160,10 @@ The PauseAI Global statement, translated, with our own French form. Signatures a
 - `CIVICRM_DECLARATION_GROUP_ID` — all signatories (the counter)
 - `CIVICRM_DECLARATION_PUBLIC_GROUP_ID` — signatories who agreed to be listed publicly (name + `job_title`). Remove someone from this group to hide them (moderation).
 - Optional newsletter opt-in adds to the Newsletter + Call to Action groups.
-- `GET` also fetches pauseai.info's total to show a worldwide figure; if it fails, the last known value is used, or the figure is hidden. Our signatures are not in Global's count, so the page adds both.
+- Group IDs default to 73 / 74 (civicrm.pauseia.fr) and can be overridden by env vars.
+- Public listing is only granted when the typed name matches the name already stored for that email (prevents publishing someone else's name).
+- `GET` returns `{ local, global }`: our CiviCRM data and PauseAI Global's signatories (pauseai.info/api/signatories, read server-side via `src/lib/server/declarationGlobal.ts`). Each source can fail independently. If Global is down, the last known list is kept in memory, and the page falls back to `/api/declaration/global.json`, a snapshot prerendered at each deploy. Our signatures are not in Global's count, so the page adds both.
+- Page has search + country filters (France by default). Tests: `tests/declaration.test.ts`.
 
 #### Wise Webhook Integration (`/api/wise-webhook`)
 

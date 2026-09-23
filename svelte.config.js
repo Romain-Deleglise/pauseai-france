@@ -45,6 +45,8 @@ const config = {
 					? []
 					: [
 							'*',
+							// Copie de secours de la liste de PauseAI Global (page /declaration).
+							'/api/declaration/global.json',
 							'/fr/campagnes',
 							'/en/campagnes',
 							'/fr/merci',

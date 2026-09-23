@@ -1,24 +1,25 @@
 import { json, type RequestHandler } from '@sveltejs/kit'
 
 import { env as privateEnv } from '$env/dynamic/private'
+import { fetchGlobalSignatories, type GlobalSignatories } from '$lib/server/declarationGlobal'
 
 // Déclaration PauseAI (page /fr/declaration).
 //
 // Les signatures sont recueillies par NOTRE formulaire, en français, et
 // stockées dans NOTRE CiviCRM : la page continue de fonctionner quoi qu'il
 // arrive au site de PauseAI Global.
-//   - CIVICRM_DECLARATION_GROUP_ID : tous les signataires.
-//   - CIVICRM_DECLARATION_PUBLIC_GROUP_ID : ceux qui acceptent que leur nom
+//   - CIVICRM_DECLARATION_GROUP_ID (gid 73) : tous les signataires.
+//   - CIVICRM_DECLARATION_PUBLIC_GROUP_ID (gid 74) : ceux qui acceptent que leur nom
 //     soit affiché. Retirer quelqu'un de ce groupe le masque de la page
 //     (modération), le retirer du premier groupe annule sa signature.
 // Le nom affiché est le prénom + nom du contact, la ligne sous le nom est son
 // champ standard « Fonction » (job_title).
 //
-// Le total mondial de pauseai.info n'est qu'un bonus d'affichage : s'il est
-// injoignable, on renvoie la dernière valeur connue, sinon rien.
+// La liste de pauseai.info (total + noms) est affichée à côté de la nôtre :
+// si elle est injoignable, on renvoie la dernière valeur connue, et la page se
+// rabat sinon sur la copie figée au déploiement (/api/declaration/global.json).
 export const prerender = false
 
-const GLOBAL_SIGNATORIES_URL = 'https://pauseai.info/api/signatories'
 const WEBSITE_SIGNUP_ACTIVITY_ID = 75
 const MAX_PUBLIC = 500
 
@@ -57,8 +58,15 @@ async function callApi4<T = Record<string, unknown>>(
 	return data
 }
 
+// Groupes CiviCRM (gid 73 et 74 sur civicrm.pauseia.fr), surchargeables par
+// variable d'environnement.
+const DEFAULT_GROUPS: Record<string, number> = {
+	CIVICRM_DECLARATION_GROUP_ID: 73,
+	CIVICRM_DECLARATION_PUBLIC_GROUP_ID: 74
+}
+
 function groupId(name: string): number {
-	const id = Number(privateEnv[name])
+	const id = Number(privateEnv[name] || DEFAULT_GROUPS[name])
 	if (!Number.isFinite(id) || id <= 0) throw new Error(`Missing ${name}`)
 	return id
 }
@@ -71,40 +79,31 @@ export interface DeclarationSignatory {
 }
 
 export interface DeclarationStats {
-	/** Signatures recueillies sur pauseia.fr. */
-	count: number
-	/** Signataires qui acceptent d'être affichés, du plus récent au plus ancien. */
-	signatories: DeclarationSignatory[]
-	/** Total de pauseai.info (null s'il n'a jamais pu être récupéré). */
-	globalCount: number | null
+	/** Signatures recueillies sur pauseia.fr (null si CiviCRM est injoignable). */
+	local: {
+		count: number
+		/** Signataires qui acceptent d'être affichés, du plus récent au plus ancien. */
+		signatories: DeclarationSignatory[]
+	} | null
+	/** Liste de pauseai.info (null si elle n'a pas pu être récupérée). */
+	global: GlobalSignatories | null
 }
 
-// Dernière valeur connue du total mondial, conservée tant que la fonction
-// reste chaude : un incident passager chez Global ne fait pas disparaître le
-// chiffre.
-let lastGlobalCount: number | null = null
+// Dernière liste de Global connue, conservée tant que la fonction reste
+// chaude : un incident passager chez eux ne vide pas la page. Au-delà, la page
+// se rabat sur la copie figée au déploiement (/api/declaration/global.json).
+let lastGlobal: GlobalSignatories | null = null
 
-async function fetchGlobalCount(fetchFn: typeof fetch): Promise<number | null> {
+async function getGlobal(fetchFn: typeof fetch): Promise<GlobalSignatories | null> {
 	try {
-		const controller = new AbortController()
-		const timer = setTimeout(() => {
-			controller.abort()
-		}, 4000)
-		const res = await fetchFn(GLOBAL_SIGNATORIES_URL, { signal: controller.signal })
-		clearTimeout(timer)
-		if (!res.ok) throw new Error(`HTTP ${res.status}`)
-		const data = (await res.json()) as { totalCount?: unknown }
-		// Leur API renvoie 0 quand leur Airtable est injoignable : on l'ignore.
-		if (typeof data.totalCount === 'number' && data.totalCount > 0) {
-			lastGlobalCount = data.totalCount
-		}
+		lastGlobal = await fetchGlobalSignatories(fetchFn)
 	} catch (e) {
-		console.warn('[declaration] total mondial indisponible (ignoré) :', e)
+		console.warn('[declaration] liste de Global indisponible (ignoré) :', e)
 	}
-	return lastGlobalCount
+	return lastGlobal
 }
 
-async function fetchLocalStats(): Promise<Omit<DeclarationStats, 'globalCount'>> {
+async function fetchLocalStats(): Promise<NonNullable<DeclarationStats['local']>> {
 	const allGroup = groupId('CIVICRM_DECLARATION_GROUP_ID')
 	const publicGroup = groupId('CIVICRM_DECLARATION_PUBLIC_GROUP_ID')
 
@@ -119,9 +118,9 @@ async function fetchLocalStats(): Promise<Omit<DeclarationStats, 'globalCount'>>
 			]
 		}),
 		callApi4<{
-			'contact_id.first_name'?: string
-			'contact_id.last_name'?: string
-			'contact_id.job_title'?: string
+			'contact_id.first_name'?: string | null
+			'contact_id.last_name'?: string | null
+			'contact_id.job_title'?: string | null
 		}>('GroupContact', 'get', {
 			checkPermissions: false,
 			select: ['contact_id.first_name', 'contact_id.last_name', 'contact_id.job_title'],
@@ -149,17 +148,19 @@ async function fetchLocalStats(): Promise<Omit<DeclarationStats, 'globalCount'>>
 }
 
 export const GET: RequestHandler = async ({ fetch, setHeaders }) => {
-	const [local, globalCount] = await Promise.all([
+	// Les deux sources sont indépendantes : la panne de l'une n'empêche pas
+	// d'afficher l'autre.
+	const [local, global] = await Promise.all([
 		fetchLocalStats().catch((e: unknown) => {
 			console.error('[declaration] lecture CiviCRM impossible :', e)
 			return null
 		}),
-		fetchGlobalCount(fetch)
+		getGlobal(fetch)
 	])
-	if (!local) return json({ error: 'unavailable' }, { status: 502 })
 
-	setHeaders({ 'cache-control': 'public, max-age=60, s-maxage=300' })
-	const body: DeclarationStats = { ...local, globalCount }
+	if (local && global) setHeaders({ 'cache-control': 'public, max-age=60, s-maxage=300' })
+	else setHeaders({ 'cache-control': 'no-store' })
+	const body: DeclarationStats = { local, global }
 	return json(body)
 }
 
@@ -174,6 +175,18 @@ interface SignRequest {
 	newsletter?: boolean
 	/** Champ piège invisible : rempli uniquement par les robots. */
 	website?: string
+}
+
+/** Comparaison de noms insensible à la casse, aux accents et aux espaces. */
+const sameName = (a: string, b: string) => {
+	const norm = (s: string) =>
+		s
+			.normalize('NFD')
+			.replace(/[\u0300-\u036f]/g, '')
+			.replace(/[\s'’-]+/g, ' ')
+			.trim()
+			.toLowerCase()
+	return norm(a) === norm(b)
 }
 
 const clean = (s: unknown, max: number) =>
@@ -250,32 +263,38 @@ export const POST: RequestHandler = async ({ request }) => {
 
 		const contact = await findOrCreateContact(email, firstName, lastName)
 
-		// Contact existant : on ne remplace pas un nom déjà connu (le formulaire
-		// n'est pas authentifié), on complète seulement ce qui manque.
-		if (!contact.created || title) {
-			const current = await callApi4<{
-				first_name?: string
-				last_name?: string
-				job_title?: string
-			}>('Contact', 'get', {
+		// Le formulaire n'est pas authentifié : pour un contact déjà connu, on ne
+		// remplace jamais un nom existant, on complète seulement ce qui manque.
+		const current = await callApi4<{
+			first_name?: string | null
+			last_name?: string | null
+			job_title?: string | null
+		}>('Contact', 'get', {
+			checkPermissions: false,
+			select: ['first_name', 'last_name', 'job_title'],
+			where: [['id', '=', contact.id]],
+			limit: 1
+		})
+		const c = current.values?.[0] ?? {}
+		const values: Record<string, unknown> = {}
+		if (!c.first_name) values.first_name = firstName
+		if (!c.last_name) values.last_name = lastName
+		if (title && !c.job_title) values.job_title = title
+		if (Object.keys(values).length) {
+			await callApi4('Contact', 'update', {
 				checkPermissions: false,
-				select: ['first_name', 'last_name', 'job_title'],
-				where: [['id', '=', contact.id]],
-				limit: 1
+				values,
+				where: [['id', '=', contact.id]]
 			})
-			const c = current.values?.[0] ?? {}
-			const values: Record<string, unknown> = {}
-			if (!c.first_name) values.first_name = firstName
-			if (!c.last_name) values.last_name = lastName
-			if (title && !c.job_title) values.job_title = title
-			if (Object.keys(values).length) {
-				await callApi4('Contact', 'update', {
-					checkPermissions: false,
-					values,
-					where: [['id', '=', contact.id]]
-				})
-			}
 		}
+
+		// Affichage public seulement si le nom saisi correspond à celui déjà
+		// enregistré pour cette adresse : sinon, n'importe qui pourrait publier
+		// le vrai nom d'un contact en tapant son e-mail.
+		const listed =
+			Boolean(data.showName) &&
+			(!c.first_name || sameName(c.first_name, firstName)) &&
+			(!c.last_name || sameName(c.last_name, lastName))
 
 		const already = await callApi4('GroupContact', 'get', {
 			checkPermissions: false,
@@ -290,7 +309,7 @@ export const POST: RequestHandler = async ({ request }) => {
 		const alreadySigned = Boolean(already.values?.length)
 
 		const groups = [allGroup]
-		if (data.showName) groups.push(publicGroup)
+		if (listed) groups.push(publicGroup)
 		if (data.newsletter) {
 			const newsletter = Number(privateEnv.CIVICRM_NEWSLETTER_GROUP_ID)
 			const callToAction = Number(privateEnv.CIVICRM_CALL_TO_ACTION_GROUP_ID)
@@ -324,7 +343,7 @@ export const POST: RequestHandler = async ({ request }) => {
 			}
 		}
 
-		return json({ success: true, alreadySigned })
+		return json({ success: true, alreadySigned, listed })
 	} catch (e) {
 		console.error('[declaration] signature impossible :', e)
 		return json(
