@@ -155,15 +155,17 @@ Handles newsletter and mailing list subscriptions with full contact management.
 
 #### PauseAI statement (`/api/declaration`)
 
-The PauseAI Global statement, translated, with our own French form. Signatures are stored in **our** CiviCRM (no dependency on pauseai.info to sign):
+The PauseAI Global statement, translated, with our own French form. Signatures are stored in **our** CiviCRM (no dependency on pauseai.info to sign), with **email double opt-in**:
 
-- `CIVICRM_DECLARATION_GROUP_ID` — all signatories (the counter)
-- `CIVICRM_DECLARATION_PUBLIC_GROUP_ID` — signatories who agreed to be listed publicly (name + `job_title`). Remove someone from this group to hide them (moderation).
-- Optional newsletter opt-in adds to the Newsletter + Call to Action groups.
-- Group IDs default to 73 / 74 (civicrm.pauseia.fr) and can be overridden by env vars.
-- Public listing is only granted when the typed name matches the name already stored for that email (prevents publishing someone else's name).
+1. `POST /api/declaration` finds/creates the contact (never overwrites an existing name), puts it in group **73** as `Pending` and emails a signed confirmation link (`/[lang]/declaration/confirmer?t=…`, valid 30 days). At most one email per address every 10 minutes.
+2. The confirm page calls `POST /api/declaration/confirm` on a button click (not on link open: mail scanners open links). Only then: group 73 → `Added` (counted), group **74** → `Added` if the person asked to be listed, Newsletter + Call to Action groups if they opted in.
+
+- Groups: `CIVICRM_DECLARATION_GROUP_ID` (73, all confirmed signatories) and `CIVICRM_DECLARATION_PUBLIC_GROUP_ID` (74, listed publicly with name + `job_title`); defaults 73/74, overridable. Remove someone from 74 to hide them (moderation), from 73 to cancel the signature.
+- Email: `src/lib/server/mailer.ts` (nodemailer, SMTP / AWS SES). Same variables as the membership reminder bot (Romain-Deleglise/bot-relance-hello-asso): `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`, `SMTP_USE_SSL`, `MAIL_FROM`, `MAIL_FROM_NAME`, `MAIL_REPLY_TO`, `MAIL_BCC`, `MAIL_REDIRECT_TO` (test mode). Without SMTP, signing returns 503.
+- Token: `src/lib/server/declarationToken.ts` (HMAC, `DECLARATION_TOKEN_SECRET`, falls back to a key derived from `CIVICRM_API_KEY`). Template: `src/lib/server/declarationEmail.ts`.
 - `GET` returns `{ local, global }`: our CiviCRM data and PauseAI Global's signatories (pauseai.info/api/signatories, read server-side via `src/lib/server/declarationGlobal.ts`). Each source can fail independently. If Global is down, the last known list is kept in memory, and the page falls back to `/api/declaration/global.json`, a snapshot prerendered at each deploy. Our signatures are not in Global's count, so the page adds both.
-- Page has search + country filters (France by default). Tests: `tests/declaration.test.ts`.
+- `/fr|en/declaration/confirmer` and `/api/declaration/global.json` are listed in `prerender.entries` (nothing links to them): removing them breaks the build.
+- Page has search + country filters (France by default). Tests: `tests/declaration.test.ts`, `tests/mailer.test.ts`.
 
 #### Wise Webhook Integration (`/api/wise-webhook`)
 

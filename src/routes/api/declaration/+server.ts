@@ -1,75 +1,47 @@
 import { json, type RequestHandler } from '@sveltejs/kit'
 
-import { env as privateEnv } from '$env/dynamic/private'
+import { url as siteUrl } from '$config'
+import {
+	callApi4,
+	groupStatus,
+	hasRecentActivity,
+	logActivity,
+	publicGroup,
+	setGroups,
+	signatoriesGroup
+} from '$lib/server/declarationCivi'
+import { confirmationEmail } from '$lib/server/declarationEmail'
 import { fetchGlobalSignatories, type GlobalSignatories } from '$lib/server/declarationGlobal'
+import { createToken } from '$lib/server/declarationToken'
+import { isMailConfigured, sendMail } from '$lib/server/mailer'
 
 // Déclaration PauseAI (page /fr/declaration).
 //
 // Les signatures sont recueillies par NOTRE formulaire, en français, et
 // stockées dans NOTRE CiviCRM : la page continue de fonctionner quoi qu'il
 // arrive au site de PauseAI Global.
-//   - CIVICRM_DECLARATION_GROUP_ID (gid 73) : tous les signataires.
-//   - CIVICRM_DECLARATION_PUBLIC_GROUP_ID (gid 74) : ceux qui acceptent que leur nom
-//     soit affiché. Retirer quelqu'un de ce groupe le masque de la page
-//     (modération), le retirer du premier groupe annule sa signature.
+//   - gid 73 : signataires. « Pending » tant que l'adresse n'est pas
+//     confirmée, « Added » ensuite (seuls ceux-là sont comptés).
+//   - gid 74 : signataires confirmés qui acceptent que leur nom soit affiché.
+//     Retirer quelqu'un de ce groupe le masque de la page (modération), le
+//     retirer du 73 annule sa signature.
 // Le nom affiché est le prénom + nom du contact, la ligne sous le nom est son
 // champ standard « Fonction » (job_title).
+//
+// Double opt-in : la signature envoie un e-mail (SMTP AWS SES) contenant un
+// lien signé vers /[lang]/declaration/confirmer ; c'est la confirmation
+// (/api/declaration/confirm) qui compte la signature, publie le nom et abonne
+// à la newsletter.
 //
 // La liste de pauseai.info (total + noms) est affichée à côté de la nôtre :
 // si elle est injoignable, on renvoie la dernière valeur connue, et la page se
 // rabat sinon sur la copie figée au déploiement (/api/declaration/global.json).
 export const prerender = false
 
-const WEBSITE_SIGNUP_ACTIVITY_ID = 75
 const MAX_PUBLIC = 500
-
-interface Api4Result<T = Record<string, unknown>> {
-	count?: number
-	countMatched?: number
-	values?: T[]
-	error_message?: string
-}
-
-async function callApi4<T = Record<string, unknown>>(
-	entity: string,
-	action: string,
-	params: Record<string, unknown> = {}
-): Promise<Api4Result<T>> {
-	const base = (privateEnv.CIVICRM_BASE_URL || '').replace(/\/+$/, '')
-	const apiKey = privateEnv.CIVICRM_API_KEY || ''
-	const siteKey = (privateEnv.CIVICRM_SITE_KEY || '').trim()
-	if (!base || !apiKey || !siteKey) throw new Error('Missing required CiviCRM configuration')
-
-	const url = `${base}/civicrm/ajax/api4/${encodeURIComponent(entity)}/${encodeURIComponent(action)}`
-	const headers: Record<string, string> = {
-		'X-Requested-With': 'XMLHttpRequest',
-		Accept: 'application/json',
-		Authorization: `Bearer ${apiKey}`,
-		'X-Civi-Auth': `Bearer ${apiKey}`,
-		'X-Civi-Key': siteKey,
-		'Content-Type': 'application/x-www-form-urlencoded'
-	}
-	const body = new URLSearchParams({ params: JSON.stringify(params) }).toString()
-
-	const response = await fetch(url, { method: 'POST', headers, body })
-	if (!response.ok) throw new Error(`HTTP ${response.status.toString()}: ${response.statusText}`)
-	const data = (await response.json()) as Api4Result<T>
-	if (data.error_message) throw new Error(data.error_message)
-	return data
-}
-
-// Groupes CiviCRM (gid 73 et 74 sur civicrm.pauseia.fr), surchargeables par
-// variable d'environnement.
-const DEFAULT_GROUPS: Record<string, number> = {
-	CIVICRM_DECLARATION_GROUP_ID: 73,
-	CIVICRM_DECLARATION_PUBLIC_GROUP_ID: 74
-}
-
-function groupId(name: string): number {
-	const id = Number(privateEnv[name] || DEFAULT_GROUPS[name])
-	if (!Number.isFinite(id) || id <= 0) throw new Error(`Missing ${name}`)
-	return id
-}
+const EMAIL_SENT_SUBJECT = 'Déclaration PauseAI : e-mail de confirmation envoyé'
+/** Délai minimal entre deux e-mails de confirmation à la même adresse. */
+const RESEND_DELAY_MS = 10 * 60 * 1000
 
 // ── Lecture : compteur et liste publique ────────────────────────────────
 
@@ -104,8 +76,8 @@ async function getGlobal(fetchFn: typeof fetch): Promise<GlobalSignatories | nul
 }
 
 async function fetchLocalStats(): Promise<NonNullable<DeclarationStats['local']>> {
-	const allGroup = groupId('CIVICRM_DECLARATION_GROUP_ID')
-	const publicGroup = groupId('CIVICRM_DECLARATION_PUBLIC_GROUP_ID')
+	const allGroup = signatoriesGroup()
+	const pubGroup = publicGroup()
 
 	const [all, pub] = await Promise.all([
 		callApi4('GroupContact', 'get', {
@@ -125,7 +97,7 @@ async function fetchLocalStats(): Promise<NonNullable<DeclarationStats['local']>
 			checkPermissions: false,
 			select: ['contact_id.first_name', 'contact_id.last_name', 'contact_id.job_title'],
 			where: [
-				['group_id', '=', publicGroup],
+				['group_id', '=', pubGroup],
 				['status', '=', 'Added'],
 				['contact_id.is_deleted', '=', false]
 			],
@@ -173,20 +145,9 @@ interface SignRequest {
 	title?: string
 	showName?: boolean
 	newsletter?: boolean
+	lang?: string
 	/** Champ piège invisible : rempli uniquement par les robots. */
 	website?: string
-}
-
-/** Comparaison de noms insensible à la casse, aux accents et aux espaces. */
-const sameName = (a: string, b: string) => {
-	const norm = (s: string) =>
-		s
-			.normalize('NFD')
-			.replace(/[\u0300-\u036f]/g, '')
-			.replace(/[\s'’-]+/g, ' ')
-			.trim()
-			.toLowerCase()
-	return norm(a) === norm(b)
 }
 
 const clean = (s: unknown, max: number) =>
@@ -234,6 +195,32 @@ async function findOrCreateContact(
 	return { id: Number(id), created: true }
 }
 
+/** Complète le nom et la fonction du contact s'ils sont vides (jamais d'écrasement). */
+async function completeContact(id: number, firstName: string, lastName: string, title: string) {
+	const current = await callApi4<{
+		first_name?: string | null
+		last_name?: string | null
+		job_title?: string | null
+	}>('Contact', 'get', {
+		checkPermissions: false,
+		select: ['first_name', 'last_name', 'job_title'],
+		where: [['id', '=', id]],
+		limit: 1
+	})
+	const c = current.values?.[0] ?? {}
+	const values: Record<string, unknown> = {}
+	if (!c.first_name) values.first_name = firstName
+	if (!c.last_name) values.last_name = lastName
+	if (title && !c.job_title) values.job_title = title
+	if (Object.keys(values).length) {
+		await callApi4('Contact', 'update', {
+			checkPermissions: false,
+			values,
+			where: [['id', '=', id]]
+		})
+	}
+}
+
 export const POST: RequestHandler = async ({ request }) => {
 	let data: SignRequest
 	try {
@@ -243,111 +230,82 @@ export const POST: RequestHandler = async ({ request }) => {
 	}
 
 	// Robot : on fait semblant d'accepter, sans rien enregistrer.
-	if (data.website) return json({ success: true })
+	if (data.website) return json({ success: true, pending: true })
 
+	const lang = data.lang === 'en' ? 'en' : 'fr'
+	const en = lang === 'en'
 	const firstName = clean(data.firstName, 64)
 	const lastName = clean(data.lastName, 64)
 	const email = clean(data.email, 254).toLowerCase()
 	const title = clean(data.title, 120)
 
 	if (!firstName || !lastName) {
-		return json({ error: 'Merci d’indiquer votre prénom et votre nom.' }, { status: 400 })
+		return json(
+			{
+				error: en
+					? 'Please enter your first and last name.'
+					: 'Merci d’indiquer votre prénom et votre nom.'
+			},
+			{ status: 400 }
+		)
 	}
 	if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-		return json({ error: 'Adresse e-mail invalide.' }, { status: 400 })
+		return json(
+			{ error: en ? 'Invalid email address.' : 'Adresse e-mail invalide.' },
+			{ status: 400 }
+		)
+	}
+	if (!isMailConfigured()) {
+		console.error('[declaration] SMTP non configuré : impossible d’envoyer la confirmation')
+		return json(
+			{
+				error: en
+					? 'Signing is temporarily unavailable. Please try again later.'
+					: 'La signature est momentanément indisponible. Merci de réessayer plus tard.'
+			},
+			{ status: 503 }
+		)
 	}
 
 	try {
-		const allGroup = groupId('CIVICRM_DECLARATION_GROUP_ID')
-		const publicGroup = groupId('CIVICRM_DECLARATION_PUBLIC_GROUP_ID')
-
 		const contact = await findOrCreateContact(email, firstName, lastName)
+		await completeContact(contact.id, firstName, lastName, title)
 
-		// Le formulaire n'est pas authentifié : pour un contact déjà connu, on ne
-		// remplace jamais un nom existant, on complète seulement ce qui manque.
-		const current = await callApi4<{
-			first_name?: string | null
-			last_name?: string | null
-			job_title?: string | null
-		}>('Contact', 'get', {
-			checkPermissions: false,
-			select: ['first_name', 'last_name', 'job_title'],
-			where: [['id', '=', contact.id]],
-			limit: 1
-		})
-		const c = current.values?.[0] ?? {}
-		const values: Record<string, unknown> = {}
-		if (!c.first_name) values.first_name = firstName
-		if (!c.last_name) values.last_name = lastName
-		if (title && !c.job_title) values.job_title = title
-		if (Object.keys(values).length) {
-			await callApi4('Contact', 'update', {
-				checkPermissions: false,
-				values,
-				where: [['id', '=', contact.id]]
+		const [signStatus, publicStatus] = await Promise.all([
+			groupStatus(contact.id, signatoriesGroup()),
+			data.showName ? groupStatus(contact.id, publicGroup()) : Promise.resolve(null)
+		])
+		const confirmed = signStatus === 'Added'
+		const wantsPublic = Boolean(data.showName) && publicStatus !== 'Added'
+
+		// Déjà signataire confirmé, et rien de nouveau à confirmer.
+		if (confirmed && !wantsPublic && !data.newsletter) {
+			return json({ success: true, alreadySigned: true })
+		}
+
+		if (!confirmed) await setGroups(contact.id, [signatoriesGroup()], 'Pending')
+
+		// Évite qu'un formulaire soumis en boucle inonde une boîte mail.
+		if (!(await hasRecentActivity(contact.id, EMAIL_SENT_SUBJECT, RESEND_DELAY_MS))) {
+			const token = createToken({
+				c: contact.id,
+				p: Boolean(data.showName),
+				n: Boolean(data.newsletter)
 			})
+			const link = `${siteUrl}/${lang}/declaration/confirmer?t=${encodeURIComponent(token)}`
+			await sendMail(confirmationEmail({ to: email, firstName, link, lang }))
+			await logActivity(contact.id, EMAIL_SENT_SUBJECT)
 		}
 
-		// Affichage public seulement si le nom saisi correspond à celui déjà
-		// enregistré pour cette adresse : sinon, n'importe qui pourrait publier
-		// le vrai nom d'un contact en tapant son e-mail.
-		const listed =
-			Boolean(data.showName) &&
-			(!c.first_name || sameName(c.first_name, firstName)) &&
-			(!c.last_name || sameName(c.last_name, lastName))
-
-		const already = await callApi4('GroupContact', 'get', {
-			checkPermissions: false,
-			select: ['id'],
-			where: [
-				['contact_id', '=', contact.id],
-				['group_id', '=', allGroup],
-				['status', '=', 'Added']
-			],
-			limit: 1
-		})
-		const alreadySigned = Boolean(already.values?.length)
-
-		const groups = [allGroup]
-		if (listed) groups.push(publicGroup)
-		if (data.newsletter) {
-			const newsletter = Number(privateEnv.CIVICRM_NEWSLETTER_GROUP_ID)
-			const callToAction = Number(privateEnv.CIVICRM_CALL_TO_ACTION_GROUP_ID)
-			if (Number.isFinite(newsletter) && newsletter > 0) groups.push(newsletter)
-			if (Number.isFinite(callToAction) && callToAction > 0) groups.push(callToAction)
-		}
-		await callApi4('GroupContact', 'save', {
-			checkPermissions: false,
-			match: ['contact_id', 'group_id'],
-			records: groups.map((group_id) => ({
-				contact_id: contact.id,
-				group_id,
-				status: 'Added'
-			}))
-		})
-
-		if (!alreadySigned) {
-			try {
-				await callApi4('Activity', 'create', {
-					checkPermissions: false,
-					values: {
-						activity_type_id: WEBSITE_SIGNUP_ACTIVITY_ID,
-						subject: `Signature déclaration PauseAI${data.newsletter ? ' + Newsletter' : ''}`,
-						source_contact_id: Number(privateEnv.CIVICRM_NEWSLETTER_API_CONTACT_ID || ''),
-						target_contact_id: [contact.id],
-						'status_id:name': 'Completed'
-					}
-				})
-			} catch (e) {
-				console.warn('[declaration] journalisation de l’activité impossible (ignoré) :', e)
-			}
-		}
-
-		return json({ success: true, alreadySigned, listed })
+		return json({ success: true, pending: true, alreadySigned: confirmed })
 	} catch (e) {
 		console.error('[declaration] signature impossible :', e)
 		return json(
-			{ error: 'La signature n’a pas pu être enregistrée. Merci de réessayer plus tard.' },
+			{
+				error: en
+					? 'Your signature could not be recorded. Please try again later.'
+					: 'La signature n’a pas pu être enregistrée. Merci de réessayer plus tard.'
+			},
 			{ status: 500 }
 		)
 	}

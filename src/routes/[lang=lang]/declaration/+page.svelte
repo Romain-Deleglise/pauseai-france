@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte'
 	import PostMeta from '$components/PostMeta.svelte'
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
+	import DeclarationNextSteps from '$components/DeclarationNextSteps.svelte'
 	import type { DeclarationStats } from '../../api/declaration/+server'
 	import type { GlobalSignatories } from '$lib/server/declarationGlobal'
 	import type { PageData } from './$types'
@@ -116,25 +117,13 @@
 	let website = '' // champ piège anti-robots
 	let submitting = false
 	let error = ''
-	let done: 'signed' | 'already' | null = null
-	let listed = false
-	let copied = false
+	/** pending : e-mail de confirmation envoyé ; already : déjà signataire confirmé. */
+	let done: 'pending' | 'already' | null = null
+	let sentTo = ''
 
-	async function share() {
-		const shareUrl = `https://pauseia.fr${prefix}/declaration`
-		const text = isEn
-			? 'I signed the PauseAI statement for an international treaty on AI. Sign it too:'
-			: 'J’ai signé la déclaration PauseAI pour un traité international sur l’IA. Signez-la vous aussi :'
-		try {
-			if (typeof navigator.share === 'function') {
-				await navigator.share({ title, text, url: shareUrl })
-				return
-			}
-			await navigator.clipboard.writeText(`${text} ${shareUrl}`)
-			copied = true
-		} catch {
-			/* partage annulé ou presse-papiers indisponible */
-		}
+	function restart() {
+		done = null
+		error = ''
 	}
 
 	async function sign() {
@@ -163,31 +152,20 @@
 					title: jobTitle,
 					showName,
 					newsletter,
-					website
+					website,
+					lang: data.lang
 				})
 			})
 			const result = (await res.json()) as {
 				success?: boolean
+				pending?: boolean
 				alreadySigned?: boolean
-				listed?: boolean
 				error?: string
 			}
 			if (res.ok && result.success) {
-				done = result.alreadySigned ? 'already' : 'signed'
-				listed = Boolean(result.listed)
-				// Mise à jour immédiate : /api/declaration est mis en cache quelques
-				// minutes, un rechargement ne refléterait pas encore la signature.
-				if (local) {
-					const name = `${firstName.trim()} ${lastName.trim()}`
-					const alreadyShown = local.signatories.some((s) => s.name === name)
-					local = {
-						count: local.count + (result.alreadySigned ? 0 : 1),
-						signatories:
-							listed && !alreadyShown
-								? [{ name, title: jobTitle.trim() || undefined }, ...local.signatories]
-								: local.signatories
-					}
-				}
+				// Rien n'est compté avant le clic dans l'e-mail de confirmation.
+				done = result.pending ? 'pending' : 'already'
+				sentTo = email.trim()
 			} else {
 				error =
 					result.error ||
@@ -263,48 +241,35 @@
 	<section class="embed-section" id="signer">
 		<h2 class="embed-title">{isEn ? 'Sign the statement' : 'Signer la déclaration'}</h2>
 
-		{#if done}
+		{#if done === 'pending'}
 			<p class="success" role="status">
-				{#if done === 'already'}
-					{isEn
-						? 'You had already signed the statement: thank you for your support!'
-						: 'Vous aviez déjà signé la déclaration : merci pour votre soutien !'}
-				{:else}
-					{isEn
-						? 'Thank you, your signature has been recorded!'
-						: 'Merci, votre signature a bien été enregistrée !'}
-				{/if}
-			</p>
-			{#if showName && !listed}
-				<p class="notice">
-					{#if isEn}
-						Your signature is counted, but your name could not be added to the public list
-						automatically: it does not match the name we already have for this email address.
-						Contact us if you would like it to appear.
-					{:else}
-						Votre signature est bien comptée, mais votre nom n’a pas pu être ajouté automatiquement
-						à la liste publique : il ne correspond pas à celui déjà associé à cette adresse e-mail.
-						Contactez-nous si vous souhaitez qu’il apparaisse.
-					{/if}
-				</p>
-			{/if}
-			<p>
-				<button type="button" class="submit" on:click={share}>
-					{isEn ? 'Share the statement' : 'Partager la déclaration'}
-				</button>
-				{#if copied}
-					<span class="copied" role="status">{isEn ? 'Link copied!' : 'Lien copié !'}</span>
-				{/if}
+				{isEn ? 'Check your inbox!' : 'Vérifiez votre boîte mail !'}
 			</p>
 			<p>
 				{#if isEn}
-					Want to go further? <a href="{prefix}/ecrire-a-mes-elus">Write to your representatives</a>
-					or <a href="{prefix}/rejoindre">join us</a>.
+					We have sent a confirmation email to <strong>{sentTo}</strong>. Your signature will be
+					counted as soon as you click the link it contains.
 				{:else}
-					Envie d’aller plus loin ? <a href="{prefix}/ecrire-a-mes-elus">Écrivez à vos élus</a>
-					ou <a href="{prefix}/rejoindre">rejoignez-nous</a>.
+					Nous venons d’envoyer un e-mail de confirmation à <strong>{sentTo}</strong>. Votre
+					signature sera comptabilisée dès que vous aurez cliqué sur le lien qu’il contient.
 				{/if}
 			</p>
+			<p class="notice">
+				{#if isEn}
+					Nothing received after a few minutes? Check your spam folder, or
+					<button type="button" class="link" on:click={restart}>correct your email address</button>.
+				{:else}
+					Rien reçu après quelques minutes ? Vérifiez vos courriers indésirables, ou
+					<button type="button" class="link" on:click={restart}>corrigez votre adresse</button>.
+				{/if}
+			</p>
+		{:else if done === 'already'}
+			<p class="success" role="status">
+				{isEn
+					? 'You had already signed the statement: thank you for your support!'
+					: 'Vous aviez déjà signé la déclaration : merci pour votre soutien !'}
+			</p>
+			<DeclarationNextSteps lang={data.lang} />
 		{:else}
 			<form on:submit|preventDefault={sign} novalidate>
 				<div class="row">
@@ -602,9 +567,14 @@
 		font-size: 0.95rem;
 	}
 
-	.copied {
-		margin-left: 0.8rem;
-		color: var(--text-2);
+	.link {
+		background: none;
+		border: none;
+		padding: 0;
+		font: inherit;
+		color: var(--brand-subtle);
+		text-decoration: underline;
+		cursor: pointer;
 	}
 
 	.success {

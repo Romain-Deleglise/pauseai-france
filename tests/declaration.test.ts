@@ -4,6 +4,18 @@ import type { DeclarationStats } from '../src/routes/api/declaration/+server'
 
 // Faux CiviCRM et faux pauseai.info : on intercepte fetch et on rejoue des
 // réponses API4 selon l'entité et l'action appelées.
+const mail = vi.hoisted(() => ({
+	configured: true,
+	sent: [] as { to: string; subject: string; text: string }[]
+}))
+vi.mock('$lib/server/mailer', () => ({
+	isMailConfigured: () => mail.configured,
+	sendMail: (m: { to: string; subject: string; text: string }) => {
+		mail.sent.push(m)
+		return Promise.resolve()
+	}
+}))
+
 vi.mock('$env/dynamic/private', () => ({
 	env: {
 		CIVICRM_BASE_URL: 'https://civicrm.test',
@@ -66,8 +78,32 @@ const get = async () => {
 }
 
 const groupSave = () => calls.find((c) => c.entity === 'GroupContact' && c.action === 'save')
-const savedGroups = () =>
-	(groupSave()?.params.records as { group_id: number }[] | undefined)?.map((r) => r.group_id)
+const savedRecords = () =>
+	(groupSave()?.params.records as { group_id: number; status: string }[] | undefined)?.map(
+		(r) => `${r.group_id}:${r.status}`
+	)
+
+const confirm = async (token: string) => {
+	const { POST } = await import('../src/routes/api/declaration/confirm/+server')
+	const request = new Request('https://pauseia.fr/api/declaration/confirm', {
+		method: 'POST',
+		body: JSON.stringify({ token })
+	})
+	const res = await POST({ request } as unknown as RequestEvent)
+	return { status: res.status, body: (await res.json()) as Record<string, unknown> }
+}
+
+/** Extrait le jeton du lien contenu dans le dernier e-mail envoyé. */
+const tokenFromMail = () => {
+	const m = /confirmer\?t=([^\s]+)/.exec(mail.sent.at(-1)?.text ?? '')
+	return m ? decodeURIComponent(m[1]) : ''
+}
+
+const existingContact = (first: string | null, last: string | null, status?: string) => {
+	civi['Email.get'] = () => ({ values: [{ id: 1, contact_id: 7 }] })
+	civi['Contact.get'] = () => ({ values: [{ first_name: first, last_name: last }] })
+	civi['GroupContact.get'] = () => ({ values: status ? [{ status }] : [] })
+}
 
 const globalOk = () =>
 	Response.json({
@@ -84,6 +120,8 @@ beforeEach(() => {
 	vi.resetModules()
 	calls = []
 	civi = {}
+	mail.configured = true
+	mail.sent = []
 	globalResponse = globalOk
 	installFetch()
 })
@@ -91,8 +129,8 @@ afterEach(() => {
 	vi.unstubAllGlobals()
 })
 
-describe('POST /api/declaration (signature)', () => {
-	it('crée un nouveau contact et l’ajoute aux groupes 73 et 74', async () => {
+describe('POST /api/declaration (signature → e-mail de confirmation)', () => {
+	it('nouveau contact : en attente dans le groupe 73, e-mail envoyé, rien de compté', async () => {
 		civi['Email.get'] = () => ({ values: [] })
 		civi['Contact.create'] = () => ({ values: [{ id: 42 }] })
 		civi['Contact.get'] = () => ({ values: [{ first_name: 'Ada', last_name: 'Lovelace' }] })
@@ -106,70 +144,77 @@ describe('POST /api/declaration (signature)', () => {
 		})
 
 		expect(res.status).toBe(200)
-		expect(res.body).toMatchObject({ success: true, alreadySigned: false, listed: true })
+		expect(res.body).toMatchObject({ success: true, pending: true, alreadySigned: false })
 		const created = calls.find((c) => c.entity === 'Contact' && c.action === 'create')
 		expect(created?.params.values).toMatchObject({ first_name: 'Ada', last_name: 'Lovelace' })
 		const email = calls.find((c) => c.entity === 'Email' && c.action === 'create')
 		expect(email?.params.values).toMatchObject({ contact_id: 42, email: 'ada@example.org' })
-		expect(savedGroups()).toEqual([73, 74])
-		expect(calls.some((c) => c.entity === 'Activity' && c.action === 'create')).toBe(true)
+		// Seulement « Pending » dans le 73 : ni groupe public ni newsletter avant confirmation.
+		expect(savedRecords()).toEqual(['73:Pending'])
+		expect(mail.sent).toHaveLength(1)
+		expect(mail.sent[0].to).toBe('ada@example.org')
+		expect(mail.sent[0].subject).toMatch(/Confirmez votre signature/)
+		expect(mail.sent[0].text).toContain('/fr/declaration/confirmer?t=')
+		const { verifyToken } = await import('../src/lib/server/declarationToken')
+		expect(verifyToken(tokenFromMail())).toMatchObject({ c: 42, p: true, n: false })
+		const logged = calls.find((c) => c.entity === 'Activity' && c.action === 'create')
+		expect((logged?.params.values as { subject: string }).subject).toMatch(/e-mail de confirmation/)
 	})
 
-	it('sans case « afficher mon nom » : groupe 73 seulement', async () => {
-		civi['Email.get'] = () => ({ values: [{ id: 1, contact_id: 7 }] })
-		civi['Contact.get'] = () => ({ values: [{ first_name: 'Ada', last_name: 'Lovelace' }] })
+	it('page anglaise : e-mail en anglais et lien /en/', async () => {
+		existingContact('Ada', 'Lovelace')
+		await post({ firstName: 'Ada', lastName: 'Lovelace', email: 'a@b.fr', lang: 'en' })
+		expect(mail.sent[0].subject).toMatch(/Confirm your signature/)
+		expect(mail.sent[0].text).toContain('/en/declaration/confirmer?t=')
+	})
+
+	it('SMTP non configuré : 503, rien n’est enregistré', async () => {
+		mail.configured = false
+		const res = await post({ firstName: 'A', lastName: 'B', email: 'a@b.fr' })
+		expect(res.status).toBe(503)
+		expect(calls).toHaveLength(0)
+	})
+
+	it('déjà signataire confirmé, rien de nouveau : pas d’e-mail', async () => {
+		existingContact('Ada', 'Lovelace', 'Added')
 		const res = await post({ firstName: 'Ada', lastName: 'Lovelace', email: 'a@b.fr' })
-		expect(res.body).toMatchObject({ success: true, listed: false })
-		expect(savedGroups()).toEqual([73])
+		expect(res.body).toMatchObject({ success: true, alreadySigned: true })
+		expect(res.body.pending).toBeUndefined()
+		expect(mail.sent).toHaveLength(0)
+		expect(groupSave()).toBeUndefined()
 	})
 
-	it('newsletter cochée : ajoute aussi Newsletter (3) et Call to Action (22)', async () => {
-		civi['Email.get'] = () => ({ values: [{ id: 1, contact_id: 7 }] })
-		civi['Contact.get'] = () => ({ values: [{ first_name: 'Ada', last_name: 'Lovelace' }] })
-		await post({ firstName: 'Ada', lastName: 'Lovelace', email: 'a@b.fr', newsletter: true })
-		expect(savedGroups()).toEqual([73, 3, 22])
-	})
-
-	it('contact existant avec un autre nom : ne publie pas et n’écrase pas le nom', async () => {
-		civi['Email.get'] = () => ({ values: [{ id: 1, contact_id: 7 }] })
-		civi['Contact.get'] = () => ({ values: [{ first_name: 'Jean', last_name: 'Dupont' }] })
-		const res = await post({
-			firstName: 'Usurpateur',
-			lastName: 'X',
-			email: 'jean@dupont.fr',
-			showName: true
-		})
-		expect(res.body).toMatchObject({ success: true, listed: false })
-		expect(savedGroups()).toEqual([73])
-		expect(calls.some((c) => c.entity === 'Contact' && c.action === 'update')).toBe(false)
-	})
-
-	it('contact existant : nom identique aux accents et à la casse près → publié', async () => {
-		civi['Email.get'] = () => ({ values: [{ id: 1, contact_id: 7 }] })
-		civi['Contact.get'] = () => ({ values: [{ first_name: 'Hélène', last_name: 'Le Bris' }] })
-		const res = await post({
-			firstName: 'helene',
-			lastName: 'LE BRIS',
-			email: 'h@b.fr',
-			showName: true
-		})
-		expect(res.body).toMatchObject({ listed: true })
-		expect(savedGroups()).toEqual([73, 74])
-	})
-
-	it('contact existant sans nom (abonné newsletter) : complète le nom et le titre', async () => {
-		civi['Email.get'] = () => ({ values: [{ id: 1, contact_id: 7 }] })
-		civi['Contact.get'] = () => ({
-			values: [{ first_name: null, last_name: null, job_title: null }]
-		})
+	it('déjà signataire qui demande la newsletter : nouvel e-mail, statut inchangé', async () => {
+		existingContact('Ada', 'Lovelace', 'Added')
 		const res = await post({
 			firstName: 'Ada',
 			lastName: 'Lovelace',
 			email: 'a@b.fr',
-			title: 'Députée',
-			showName: true
+			newsletter: true
 		})
-		expect(res.body).toMatchObject({ listed: true })
+		expect(res.body).toMatchObject({ pending: true, alreadySigned: true })
+		expect(groupSave()).toBeUndefined()
+		const { verifyToken } = await import('../src/lib/server/declarationToken')
+		expect(verifyToken(tokenFromMail())).toMatchObject({ c: 7, n: true })
+	})
+
+	it('e-mail déjà envoyé il y a moins de 10 minutes : pas de renvoi', async () => {
+		existingContact('Ada', 'Lovelace', 'Pending')
+		civi['ActivityContact.get'] = () => ({ values: [{ id: 1 }] })
+		const res = await post({ firstName: 'Ada', lastName: 'Lovelace', email: 'a@b.fr' })
+		expect(res.body).toMatchObject({ success: true, pending: true })
+		expect(mail.sent).toHaveLength(0)
+	})
+
+	it('contact existant avec un autre nom : le nom enregistré n’est pas écrasé', async () => {
+		existingContact('Jean', 'Dupont')
+		await post({ firstName: 'Usurpateur', lastName: 'X', email: 'jean@dupont.fr', showName: true })
+		expect(calls.some((c) => c.entity === 'Contact' && c.action === 'update')).toBe(false)
+	})
+
+	it('contact existant sans nom : complète le nom et la fonction', async () => {
+		existingContact(null, null)
+		await post({ firstName: 'Ada', lastName: 'Lovelace', email: 'a@b.fr', title: 'Députée' })
 		const update = calls.find((c) => c.entity === 'Contact' && c.action === 'update')
 		expect(update?.params.values).toEqual({
 			first_name: 'Ada',
@@ -178,16 +223,7 @@ describe('POST /api/declaration (signature)', () => {
 		})
 	})
 
-	it('déjà signataire : alreadySigned, pas de nouvelle activité', async () => {
-		civi['Email.get'] = () => ({ values: [{ id: 1, contact_id: 7 }] })
-		civi['Contact.get'] = () => ({ values: [{ first_name: 'Ada', last_name: 'Lovelace' }] })
-		civi['GroupContact.get'] = () => ({ values: [{ id: 99 }] })
-		const res = await post({ firstName: 'Ada', lastName: 'Lovelace', email: 'a@b.fr' })
-		expect(res.body).toMatchObject({ success: true, alreadySigned: true })
-		expect(calls.some((c) => c.entity === 'Activity')).toBe(false)
-	})
-
-	it('champ piège rempli : répond OK sans rien enregistrer', async () => {
+	it('champ piège rempli : répond OK sans rien enregistrer ni envoyer', async () => {
 		const res = await post({
 			firstName: 'Bot',
 			lastName: 'Bot',
@@ -196,6 +232,7 @@ describe('POST /api/declaration (signature)', () => {
 		})
 		expect(res.body).toMatchObject({ success: true })
 		expect(calls).toHaveLength(0)
+		expect(mail.sent).toHaveLength(0)
 	})
 
 	it.each([
@@ -213,6 +250,52 @@ describe('POST /api/declaration (signature)', () => {
 		const res = await post({ firstName: 'A', lastName: 'B', email: 'a@b.fr' })
 		expect(res.status).toBe(500)
 		expect(String(res.body.error)).toMatch(/réessayer/)
+		expect(mail.sent).toHaveLength(0)
+	})
+})
+
+describe('POST /api/declaration/confirm (clic dans l’e-mail)', () => {
+	const token = async (claims: { c: number; p: boolean; n: boolean }, now?: number) => {
+		const { createToken } = await import('../src/lib/server/declarationToken')
+		return createToken(claims, now)
+	}
+
+	it('confirme : 73 + 74 + newsletter en Added, activité journalisée', async () => {
+		civi['GroupContact.get'] = () => ({ values: [{ status: 'Pending' }] })
+		const res = await confirm(await token({ c: 7, p: true, n: true }))
+		expect(res.body).toMatchObject({ success: true, alreadyConfirmed: false, listed: true })
+		expect(savedRecords()).toEqual(['73:Added', '74:Added', '3:Added', '22:Added'])
+		expect(calls.some((c) => c.entity === 'Activity' && c.action === 'create')).toBe(true)
+	})
+
+	it('sans nom public ni newsletter : 73 seulement', async () => {
+		const res = await confirm(await token({ c: 7, p: false, n: false }))
+		expect(res.body).toMatchObject({ success: true, listed: false })
+		expect(savedRecords()).toEqual(['73:Added'])
+	})
+
+	it('deuxième clic : idempotent, pas de nouvelle activité', async () => {
+		civi['GroupContact.get'] = () => ({ values: [{ status: 'Added' }] })
+		const res = await confirm(await token({ c: 7, p: false, n: false }))
+		expect(res.body).toMatchObject({ success: true, alreadyConfirmed: true })
+		expect(calls.some((c) => c.entity === 'Activity')).toBe(false)
+	})
+
+	it('jeton expiré (plus de 30 jours) : refusé', async () => {
+		const old = Date.now() - 31 * 24 * 3600 * 1000
+		const res = await confirm(await token({ c: 7, p: true, n: false }, old))
+		expect(res.status).toBe(400)
+		expect(calls).toHaveLength(0)
+	})
+
+	it('jeton falsifié : refusé', async () => {
+		const t = await token({ c: 7, p: false, n: false })
+		const [, mac] = t.split('.')
+		const forged = `${Buffer.from(JSON.stringify({ c: 8, p: true, n: true, e: 9999999999 })).toString('base64url')}.${mac}`
+		expect((await confirm(forged)).status).toBe(400)
+		expect((await confirm('')).status).toBe(400)
+		expect((await confirm('abc')).status).toBe(400)
+		expect(calls).toHaveLength(0)
 	})
 })
 
