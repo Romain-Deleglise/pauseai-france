@@ -99,6 +99,7 @@
 			id: 'agir',
 			label: t.nav.agir,
 			items: [
+				{ href: `${prefix}/declaration`, label: t.nav.declaration },
 				{ href: `${prefix}/ecrire-a-mes-elus`, label: t.nav.ecrire_elus },
 				{ href: `${prefix}/agir`, label: t.nav.comment_agir },
 				{ href: `${prefix}/groupes-locaux`, label: t.nav.groupes_locaux }
@@ -133,7 +134,6 @@
 			items: [
 				{ href: `${prefix}/qui-sommes-nous`, label: t.nav.qui_sommes_nous },
 				{ href: `${prefix}/propositions`, label: t.nav.propositions },
-				{ href: `${prefix}/declaration`, label: t.nav.declaration },
 				{ href: `${prefix}/presse`, label: t.nav.presse }
 			]
 		}
