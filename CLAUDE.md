@@ -84,6 +84,7 @@ This is a SvelteKit-based website with Markdown-powered content. Content files l
 | `/recrutement`       | Quick recruitment guide                        | `src/routes/recrutement/+page.svelte`                                           |
 | `/guide-recrutement` | Full recruitment guide (markdown)              | `src/routes/guide-recrutement/+page.md`                                         |
 | `/senat2025`         | Senate 2025 campaign page                      | `src/routes/senat2025/+page.svelte`                                             |
+| `/declaration`       | PauseAI statement (French form, CiviCRM)       | `src/routes/[lang=lang]/declaration/+page.svelte`                               |
 
 **Special Routing Patterns:**
 
@@ -97,14 +98,15 @@ This is a SvelteKit-based website with Markdown-powered content. Content files l
 
 #### API Endpoints
 
-| Endpoint            | Method | Purpose                                     | Key Details                        |
-| ------------------- | ------ | ------------------------------------------- | ---------------------------------- |
-| `/api/posts`        | GET    | Returns all blog posts                      | Uses `getPosts()` from `$lib/api`  |
-| `/api/dangers`      | GET    | Returns all danger articles                 | Uses `getPosts('/dangers')`        |
-| `/api/subscribe`    | POST   | Newsletter subscription via CiviCRM         | See CiviCRM Integration below      |
-| `/api/wise-webhook` | POST   | Wise webhook for bank transfer confirmation | See Wise Webhook Integration below |
-| `/sitemap.xml`      | GET    | XML sitemap for SEO                         | Prerendered, includes all posts    |
-| `/sitemap.txt`      | GET    | Text sitemap                                | Alternative format                 |
+| Endpoint            | Method   | Purpose                                     | Key Details                        |
+| ------------------- | -------- | ------------------------------------------- | ---------------------------------- |
+| `/api/posts`        | GET      | Returns all blog posts                      | Uses `getPosts()` from `$lib/api`  |
+| `/api/dangers`      | GET      | Returns all danger articles                 | Uses `getPosts('/dangers')`        |
+| `/api/subscribe`    | POST     | Newsletter subscription via CiviCRM         | See CiviCRM Integration below      |
+| `/api/wise-webhook` | POST     | Wise webhook for bank transfer confirmation | See Wise Webhook Integration below |
+| `/api/declaration`  | GET/POST | PauseAI statement: stats / sign             | CiviCRM groups, see below          |
+| `/sitemap.xml`      | GET      | XML sitemap for SEO                         | Prerendered, includes all posts    |
+| `/sitemap.txt`      | GET      | Text sitemap                                | Alternative format                 |
 
 ### External Integrations
 
@@ -150,6 +152,15 @@ Handles newsletter and mailing list subscriptions with full contact management.
 - `CIVICRM_CONFERENCE_GROUP_ID`
 - `CIVICRM_POLICY_GROUP_ID`
 - `CIVICRM_NEWSLETTER_API_CONTACT_ID`
+
+#### PauseAI statement (`/api/declaration`)
+
+The PauseAI Global statement, translated, with our own French form. Signatures are stored in **our** CiviCRM (no dependency on pauseai.info to sign):
+
+- `CIVICRM_DECLARATION_GROUP_ID` — all signatories (the counter)
+- `CIVICRM_DECLARATION_PUBLIC_GROUP_ID` — signatories who agreed to be listed publicly (name + `job_title`). Remove someone from this group to hide them (moderation).
+- Optional newsletter opt-in adds to the Newsletter + Call to Action groups.
+- `GET` also fetches pauseai.info's total to show a worldwide figure; if it fails, the last known value is used, or the figure is hidden. Our signatures are not in Global's count, so the page adds both.
 
 #### Wise Webhook Integration (`/api/wise-webhook`)
 
