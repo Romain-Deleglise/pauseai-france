@@ -219,12 +219,58 @@ describe('POST /api/declaration (signature → e-mail de confirmation)', () => {
 		expect(verifyToken(tokenFromMail())).toMatchObject({ c: 7, n: true })
 	})
 
-	it('e-mail déjà envoyé il y a moins de 10 minutes : pas de renvoi', async () => {
+	const sentMinutesAgo = (min: number) => () => ({
+		values: [
+			{
+				'activity_id.details': `sent_at=${new Date(Date.now() - min * 60000).toISOString()}`,
+				// Heure de Paris, en avance sur UTC : ne doit jouer aucun rôle.
+				'activity_id.activity_date_time': '2099-01-01 00:00:00'
+			}
+		]
+	})
+
+	it('e-mail envoyé il y a 4 minutes : pas de renvoi, et la réponse le dit', async () => {
 		existingContact('Ada', 'Lovelace', 'Pending')
-		civi['ActivityContact.get'] = () => ({ values: [{ id: 1 }] })
+		civi['ActivityContact.get'] = sentMinutesAgo(4)
+		const res = await post({ firstName: 'Ada', lastName: 'Lovelace', email: 'a@b.fr' })
+		expect(res.body).toMatchObject({
+			success: true,
+			pending: true,
+			resent: false,
+			retryInMinutes: 6
+		})
+		expect(mail.sent).toHaveLength(0)
+	})
+
+	it('e-mail envoyé il y a 11 minutes : renvoi (bug du fuseau horaire corrigé)', async () => {
+		existingContact('Ada', 'Lovelace', 'Removed')
+		civi['ActivityContact.get'] = sentMinutesAgo(11)
 		const res = await post({ firstName: 'Ada', lastName: 'Lovelace', email: 'a@b.fr' })
 		expect(res.body).toMatchObject({ success: true, pending: true })
-		expect(mail.sent).toHaveLength(0)
+		expect(res.body.resent).toBeUndefined()
+		expect(mail.sent).toHaveLength(1)
+		// Contact retiré à la main du groupe 73 : il repasse « en attente ».
+		expect(savedRecords()).toEqual(['73:Pending'])
+	})
+
+	it('ancienne activité sans horodatage : ne bloque pas l’envoi', async () => {
+		existingContact('Ada', 'Lovelace')
+		civi['ActivityContact.get'] = () => ({ values: [{ 'activity_id.details': null }] })
+		await post({ firstName: 'Ada', lastName: 'Lovelace', email: 'a@b.fr' })
+		expect(mail.sent).toHaveLength(1)
+	})
+
+	it('l’activité « e-mail envoyé » porte l’heure d’envoi en UTC', async () => {
+		existingContact('Ada', 'Lovelace')
+		await post({ firstName: 'Ada', lastName: 'Lovelace', email: 'a@b.fr' })
+		const logged = calls.find(
+			(c) =>
+				c.entity === 'Activity' &&
+				(c.params.values as { subject: string }).subject.includes('e-mail de confirmation')
+		)
+		expect((logged?.params.values as { details: string }).details).toMatch(
+			/^sent_at=\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/
+		)
 	})
 
 	it('contact existant avec un autre nom : le nom enregistré n’est pas écrasé', async () => {

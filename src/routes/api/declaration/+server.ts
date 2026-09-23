@@ -6,7 +6,8 @@ import {
 	confirmedComments,
 	createPendingComment,
 	groupStatuses,
-	hasRecentActivity,
+	resendWaitMs,
+	sentAtDetails,
 	logActivity,
 	publicGroup,
 	setGroups,
@@ -334,14 +335,12 @@ export const POST: RequestHandler = async ({ request }) => {
 		const { contact, created } = await findOrCreateContact(email, firstName, lastName, title)
 
 		// Appels indépendants, lancés en parallèle.
-		const [, statuses, recentlySent] = await Promise.all([
+		const [, statuses, waitMs] = await Promise.all([
 			created ? Promise.resolve() : completeContact(contact, firstName, lastName, title),
 			created
 				? Promise.resolve({} as Record<number, string>)
 				: groupStatuses(contact.id, [signatoriesGroup(), publicGroup()]),
-			created
-				? Promise.resolve(false)
-				: hasRecentActivity(contact.id, EMAIL_SENT_SUBJECT, RESEND_DELAY_MS)
+			created ? Promise.resolve(0) : resendWaitMs(contact.id, EMAIL_SENT_SUBJECT, RESEND_DELAY_MS)
 		])
 		const confirmed = statuses[signatoriesGroup()] === 'Added'
 		const wantsPublic = Boolean(data.showName) && statuses[publicGroup()] !== 'Added'
@@ -352,9 +351,16 @@ export const POST: RequestHandler = async ({ request }) => {
 		}
 
 		// Évite qu'un formulaire soumis en boucle inonde une boîte mail.
-		if (recentlySent) {
+		if (waitMs > 0) {
 			if (!confirmed) await setGroups(contact.id, [signatoriesGroup()], 'Pending')
-			return json({ success: true, pending: true, alreadySigned: confirmed })
+			// Dit la vérité à l'écran : aucun nouvel e-mail n'est parti.
+			return json({
+				success: true,
+				pending: true,
+				alreadySigned: confirmed,
+				resent: false,
+				retryInMinutes: Math.ceil(waitMs / 60000)
+			})
 		}
 
 		const [, commentId] = await Promise.all([
@@ -376,7 +382,7 @@ export const POST: RequestHandler = async ({ request }) => {
 		})
 		const link = `${siteUrl}/${lang}/declaration/confirmer?t=${encodeURIComponent(token)}`
 		await sendMail(confirmationEmail({ to: email, firstName, link, lang }))
-		await logActivity(contact.id, EMAIL_SENT_SUBJECT)
+		await logActivity(contact.id, EMAIL_SENT_SUBJECT, sentAtDetails())
 
 		return json({ success: true, pending: true, alreadySigned: confirmed })
 	} catch (e) {

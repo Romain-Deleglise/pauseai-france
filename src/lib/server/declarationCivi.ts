@@ -112,11 +112,15 @@ function activityValues(
 }
 
 /** Journalise une activité sur le contact (non bloquant). */
-export async function logActivity(contactId: number, subject: string): Promise<void> {
+export async function logActivity(
+	contactId: number,
+	subject: string,
+	details?: string
+): Promise<void> {
 	try {
 		await callApi4('Activity', 'create', {
 			checkPermissions: false,
-			values: activityValues(contactId, subject)
+			values: activityValues(contactId, subject, details)
 		})
 	} catch (e) {
 		console.warn('[declaration] journalisation de l’activité impossible (ignoré) :', e)
@@ -190,23 +194,37 @@ export async function confirmedComments(contactIds: number[]): Promise<Map<numbe
 	return out
 }
 
-/** Vrai si une activité de ce sujet a été créée pour le contact depuis `sinceMs`. */
-export async function hasRecentActivity(
+// Horodatage d'envoi, écrit dans le détail de l'activité en UTC. On ne se fie
+// pas à activity_date_time : CiviCRM l'enregistre à l'heure de Paris, et une
+// comparaison avec une heure UTC décalait la fenêtre de 1 à 2 heures (un
+// second essai restait bloqué, sans e-mail).
+const SENT_AT = /sent_at=(\S+)/
+
+export const sentAtDetails = (now = Date.now()) => `sent_at=${new Date(now).toISOString()}`
+
+/**
+ * Temps restant (ms) avant de pouvoir renvoyer un e-mail de ce sujet au contact,
+ * ou 0 si l'envoi est possible.
+ */
+export async function resendWaitMs(
 	contactId: number,
 	subject: string,
-	sinceMs: number
-): Promise<boolean> {
-	const since = new Date(Date.now() - sinceMs).toISOString().slice(0, 19).replace('T', ' ')
-	const res = await callApi4('ActivityContact', 'get', {
+	delayMs: number,
+	now = Date.now()
+): Promise<number> {
+	const res = await callApi4<{ 'activity_id.details'?: string | null }>('ActivityContact', 'get', {
 		checkPermissions: false,
-		select: ['id'],
+		select: ['activity_id.details'],
 		where: [
 			['contact_id', '=', contactId],
 			['record_type_id:name', '=', 'Activity Targets'],
-			['activity_id.subject', '=', subject],
-			['activity_id.activity_date_time', '>=', since]
+			['activity_id.subject', '=', subject]
 		],
+		orderBy: { activity_id: 'DESC' },
 		limit: 1
 	})
-	return Boolean(res.values?.length)
+	const m = SENT_AT.exec(res.values?.[0]?.['activity_id.details'] ?? '')
+	const sentAt = m ? Date.parse(m[1]) : NaN
+	if (Number.isNaN(sentAt)) return 0
+	return Math.max(0, sentAt + delayMs - now)
 }

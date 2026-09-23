@@ -157,7 +157,7 @@ Handles newsletter and mailing list subscriptions with full contact management.
 
 The PauseAI Global statement, translated, with our own French form. Signatures are stored in **our** CiviCRM (no dependency on pauseai.info to sign), with **email double opt-in**:
 
-1. `POST /api/declaration` finds/creates the contact (never overwrites an existing name), puts it in group **73** as `Pending` and emails a signed confirmation link (`/[lang]/declaration/confirmer?t=…`, valid 30 days). At most one email per address every 10 minutes.
+1. `POST /api/declaration` finds/creates the contact (never overwrites an existing name), puts it in group **73** as `Pending` and emails a signed confirmation link (`/[lang]/declaration/confirmer?t=…`, valid 30 days). At most one email per address every 10 minutes: the send time is written in UTC in the details of the « e-mail de confirmation envoyé » activity (`sent_at=…`), never compared with `activity_date_time`, which CiviCRM stores in Paris time. When no new email is sent, the response says so (`resent: false`, `retryInMinutes`) and the page tells the user.
 2. The confirm page calls `POST /api/declaration/confirm` on a button click (not on link open: mail scanners open links). Only then: group 73 → `Added` (counted), group **74** → `Added` if the person asked to be listed, Newsletter + Call to Action groups if they opted in.
 
 - Groups: `CIVICRM_DECLARATION_GROUP_ID` (73, all confirmed signatories) and `CIVICRM_DECLARATION_PUBLIC_GROUP_ID` (74, listed publicly with name + `job_title`); defaults 73/74, overridable. Remove someone from 74 to hide them (moderation), from 73 to cancel the signature.

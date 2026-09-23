@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte'
+	import { onMount, tick } from 'svelte'
 	import PostMeta from '$components/PostMeta.svelte'
 	import Button from '$components/Button.svelte'
 	import { Card, PageHero, SectionTitle } from '$components/ui'
@@ -56,10 +56,26 @@
 	/** pending : e-mail de confirmation envoyé ; already : déjà signataire confirmé. */
 	let done: 'pending' | 'already' | null = null
 	let sentTo = ''
+	/** Aucun nouvel e-mail : un autre est parti il y a peu (minutes avant de pouvoir réessayer). */
+	let retryIn = 0
+
+	let signSection: HTMLElement | undefined
+
+	// Le formulaire (long) est remplacé par un message court : sans cela, la page
+	// garde sa position et l'on se retrouve sous le message. On ramène le haut de
+	// l'encadré à l'écran et on y place le focus (lecteurs d'écran, clavier).
+	async function revealSignSection() {
+		await tick()
+		if (!signSection) return
+		const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+		signSection.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' })
+		signSection.querySelector<HTMLElement>('[data-focus]')?.focus({ preventScroll: true })
+	}
 
 	function restart() {
 		done = null
 		error = ''
+		void revealSignSection()
 	}
 
 	async function sign() {
@@ -97,12 +113,16 @@
 				success?: boolean
 				pending?: boolean
 				alreadySigned?: boolean
+				resent?: boolean
+				retryInMinutes?: number
 				error?: string
 			}
 			if (res.ok && result.success) {
 				// Rien n'est compté avant le clic dans l'e-mail de confirmation.
 				done = result.pending ? 'pending' : 'already'
 				sentTo = email.trim()
+				retryIn = result.resent === false ? (result.retryInMinutes ?? 10) : 0
+				void revealSignSection()
 			} else {
 				error =
 					result.error ||
@@ -214,23 +234,37 @@
 		{/if}
 	</div>
 
-	<section class="sign" id="signer">
+	<section class="sign" id="signer" bind:this={signSection}>
 		<Card>
 			<SectionTitle>{isEn ? 'Sign the statement' : 'Signer la déclaration'}</SectionTitle>
 
 			{#if done === 'pending'}
-				<p class="success" role="status">
+				<p class="success" role="status" tabindex="-1" data-focus>
 					{isEn ? 'Check your inbox!' : 'Vérifiez votre boîte mail !'}
 				</p>
-				<p>
-					{#if isEn}
-						We have sent a confirmation email to <strong>{sentTo}</strong>. Your signature will be
-						counted as soon as you click the link it contains.
-					{:else}
-						Nous venons d’envoyer un e-mail de confirmation à <strong>{sentTo}</strong>. Votre
-						signature sera comptabilisée dès que vous aurez cliqué sur le lien qu’il contient.
-					{/if}
-				</p>
+				{#if retryIn}
+					<p>
+						{#if isEn}
+							A confirmation email was already sent to <strong>{sentTo}</strong> a few minutes ago:
+							please use the link it contains. Check your spam folder if you cannot find it. You can
+							request a new one in {retryIn} min.
+						{:else}
+							Un e-mail de confirmation a déjà été envoyé à <strong>{sentTo}</strong> il y a
+							quelques minutes : utilisez le lien qu’il contient. Pensez à vérifier vos courriers
+							indésirables. Vous pourrez en demander un nouveau dans {retryIn} min.
+						{/if}
+					</p>
+				{:else}
+					<p>
+						{#if isEn}
+							We have sent a confirmation email to <strong>{sentTo}</strong>. Your signature will be
+							counted as soon as you click the link it contains.
+						{:else}
+							Nous venons d’envoyer un e-mail de confirmation à <strong>{sentTo}</strong>. Votre
+							signature sera comptabilisée dès que vous aurez cliqué sur le lien qu’il contient.
+						{/if}
+					</p>
+				{/if}
 				<p class="notice">
 					{#if isEn}
 						Nothing received after a few minutes? Check your spam folder, or
@@ -242,7 +276,7 @@
 					{/if}
 				</p>
 			{:else if done === 'already'}
-				<p class="success" role="status">
+				<p class="success" role="status" tabindex="-1" data-focus>
 					{isEn
 						? 'You had already signed the statement: thank you for your support!'
 						: 'Vous aviez déjà signé la déclaration : merci pour votre soutien !'}
@@ -253,7 +287,13 @@
 					<div class="row">
 						<label>
 							<span>{isEn ? 'First name' : 'Prénom'} *</span>
-							<input bind:value={firstName} autocomplete="given-name" maxlength="64" required />
+							<input
+								bind:value={firstName}
+								data-focus
+								autocomplete="given-name"
+								maxlength="64"
+								required
+							/>
 						</label>
 						<label>
 							<span>{isEn ? 'Last name' : 'Nom'} *</span>
@@ -541,6 +581,11 @@
 	.error {
 		color: var(--error);
 		margin: 0;
+	}
+
+	/* Focus posé par le script après l'envoi : pas de contour sur du texte. */
+	.success:focus {
+		outline: none;
 	}
 
 	.success {
