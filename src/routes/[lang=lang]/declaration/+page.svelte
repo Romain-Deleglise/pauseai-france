@@ -27,9 +27,11 @@
 
 	// « Pourquoi ils signent » : quelques messages récents, ceux de France d'abord.
 	const FEATURED = 6
+	// Messages signés d'un nom avant les messages anonymes.
 	$: featured = [
-		...entries.filter((e) => e.comment && e.country === 'FR'),
-		...entries.filter((e) => e.comment && e.country !== 'FR')
+		...entries.filter((e) => e.comment && !e.anonymous && e.country === 'FR'),
+		...entries.filter((e) => e.comment && !e.anonymous && e.country !== 'FR'),
+		...entries.filter((e) => e.comment && e.anonymous)
 	].slice(0, FEATURED)
 
 	// Objectif affiché sous le compteur : le prochain palier.

@@ -41,7 +41,7 @@ import { isMailConfigured, sendMail } from '$lib/server/mailer'
 // rabat sinon sur la copie figée au déploiement (/api/declaration/global.json).
 export const prerender = false
 
-const MAX_PUBLIC = 500
+const MAX_PUBLIC = 5000
 const EMAIL_SENT_SUBJECT = 'Déclaration PauseAI : e-mail de confirmation envoyé'
 /** Délai minimal entre deux e-mails de confirmation à la même adresse. */
 const RESEND_DELAY_MS = 10 * 60 * 1000

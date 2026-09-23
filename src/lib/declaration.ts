@@ -13,6 +13,8 @@ export interface Entry {
 	country?: string
 	/** Signataire recueilli sur pauseia.fr (et non par PauseAI Global). */
 	local: boolean
+	/** Signataire anonyme (nom non publié), affiché « Anonyme » comme chez Global. */
+	anonymous?: boolean
 	/** Texte de recherche normalisé (nom, titre, message, pays en FR et EN). */
 	haystack: string
 }
@@ -54,7 +56,7 @@ function entry(e: Omit<Entry, 'haystack'>): Entry {
 		...e,
 		haystack: norm(
 			[
-				e.name,
+				e.anonymous ? 'anonyme anonymous' : e.name,
 				e.title,
 				e.comment,
 				e.country && countryLabel(e.country, 'fr'),
@@ -66,12 +68,30 @@ function entry(e: Omit<Entry, 'haystack'>): Entry {
 	}
 }
 
-/** Nos signataires d'abord (en France : le formulaire ne demande pas le pays), puis ceux de Global. */
+/**
+ * Tous les signataires, pour que la liste corresponde au compteur :
+ *   1. nos signataires publics ;
+ *   2. nos signataires qui n'ont pas souhaité apparaître, en « Anonyme · France »
+ *      (le formulaire ne demande pas le pays), sans message ;
+ *   3. ceux de Global, tels que pauseai.info/statement les affiche (anonymes
+ *      compris, avec leur pays et leur message).
+ */
 export function toEntries(d: DeclarationData): Entry[] {
+	const pub = d.local?.signatories ?? []
+	const hidden = Math.max(0, (d.local?.count ?? 0) - pub.length)
 	return [
-		...(d.local?.signatories ?? []).map((s) => entry({ ...s, country: 'FR', local: true })),
+		...pub.map((s) => entry({ ...s, country: 'FR', local: true })),
+		...Array.from({ length: hidden }, () =>
+			entry({ name: '', country: 'FR', local: true, anonymous: true })
+		),
 		...(d.global?.signatories ?? []).map((s) =>
-			entry({ name: s.name, comment: s.bio, country: countryKey(s.country), local: false })
+			entry({
+				name: s.name,
+				comment: s.bio,
+				country: countryKey(s.country),
+				local: false,
+				anonymous: s.anonymous
+			})
 		)
 	]
 }

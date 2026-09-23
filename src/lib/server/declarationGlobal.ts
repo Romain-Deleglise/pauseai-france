@@ -10,13 +10,19 @@ export interface GlobalSignatory {
 	name: string
 	country?: string
 	bio?: string
+	/** Signataire anonyme (Global l'affiche lui aussi, sous « Anonymous »). */
+	anonymous?: boolean
 }
 
 export interface GlobalSignatories {
 	totalCount: number
 	/** Signatures en France, anonymes comprises (absent des anciennes copies). */
 	franceCount?: number
-	/** Signataires nommés (les anonymes sont comptés mais pas listés), plus récents d'abord. */
+	/**
+	 * Tous les signataires publiés par Global, anonymes compris (comme sur
+	 * pauseai.info/statement), du plus récent au plus ancien. Aucun n'est écarté
+	 * ni tronqué : la liste doit correspondre à la leur.
+	 */
 	signatories: GlobalSignatory[]
 	/** Date de récupération (ISO). */
 	fetchedAt: string
@@ -32,6 +38,11 @@ interface RawSignatory {
 
 const str = (v: unknown, max: number) =>
 	typeof v === 'string' ? v.replace(/\s+/g, ' ').trim().slice(0, max) : ''
+
+// Garde-fous de taille seulement (bien au-delà de ce que le formulaire de
+// Global accepte) : rien n'est coupé en pratique.
+const MAX_NAME = 300
+const MAX_BIO = 10000
 
 /** Lit et normalise la liste de Global. Lève une erreur si elle est inexploitable. */
 export async function fetchGlobalSignatories(
@@ -51,19 +62,23 @@ export async function fetchGlobalSignatories(
 			throw new Error('Empty or invalid response')
 		}
 		const raw = Array.isArray(data.signatories) ? (data.signatories as RawSignatory[]) : []
-		// Compté avant d'écarter les anonymes : leur pays reste connu.
-		const franceCount = raw.filter((s) => countryKey(str(s.country, 60)) === 'FR').length
 		const signatories = raw
-			.filter((s) => s.private !== true)
-			.map((s) => ({
-				date: typeof s.date === 'string' ? Date.parse(s.date) || 0 : 0,
-				name: str(s.name, 80),
-				country: str(s.country, 60) || undefined,
-				bio: str(s.bio, 1500) || undefined
-			}))
-			.filter((s) => s.name && s.name.toLowerCase() !== 'anonymous')
+			.map((s) => {
+				const anonymous = s.private === true
+				return {
+					date: typeof s.date === 'string' ? Date.parse(s.date) || 0 : 0,
+					name: anonymous ? '' : str(s.name, MAX_NAME),
+					country: str(s.country, 60) || undefined,
+					bio: str(s.bio, MAX_BIO) || undefined,
+					anonymous
+				}
+			})
+			.map((s) => ({ ...s, anonymous: s.anonymous || !s.name || /^anonymous$/i.test(s.name) }))
 			.sort((a, b) => b.date - a.date)
-			.map(({ name, country, bio }) => ({ name, country, bio }))
+			.map(({ name, country, bio, anonymous }) =>
+				anonymous ? { name: '', country, bio, anonymous } : { name, country, bio }
+			)
+		const franceCount = signatories.filter((s) => countryKey(s.country) === 'FR').length
 		return {
 			totalCount: data.totalCount,
 			franceCount,

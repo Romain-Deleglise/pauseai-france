@@ -36,7 +36,9 @@
 </script>
 
 <li class="signatory" class:with-comment={signatory.comment}>
-	<p class="name">{signatory.name}</p>
+	<p class="name" class:anonymous={signatory.anonymous} class:global={!signatory.local}>
+		{signatory.anonymous ? (isEn ? 'Anonymous' : 'Anonyme') : signatory.name}
+	</p>
 	{#if meta.length}<p class="meta">{meta.join(' · ')}</p>{/if}
 	{#if signatory.comment}
 		<p class="comment" class:clamped={!expanded} bind:this={text}>{signatory.comment}</p>
@@ -74,6 +76,16 @@
 		margin: 0;
 		font-weight: 700;
 		line-height: 1.3;
+	}
+
+	/* Comme sur pauseai.info : noms saisis librement, mis en capitales initiales. */
+	.global {
+		text-transform: capitalize;
+	}
+
+	.anonymous {
+		font-style: italic;
+		color: var(--text-2);
 	}
 
 	.meta {

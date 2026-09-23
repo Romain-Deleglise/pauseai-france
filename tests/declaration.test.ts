@@ -479,7 +479,7 @@ describe('GET /api/declaration (compteur et listes)', () => {
 		})
 	})
 
-	it('renvoie nos signataires et ceux de Global (anonymes exclus, plus récents d’abord)', async () => {
+	it('renvoie nos signataires et tous ceux de Global, anonymes compris (plus récents d’abord)', async () => {
 		const { body, headers } = await get()
 		expect(body.local).toEqual({
 			count: 5,
@@ -490,12 +490,13 @@ describe('GET /api/declaration (compteur et listes)', () => {
 		const ac = calls.find((c) => c.entity === 'ActivityContact')
 		expect(ac?.params.where).toContainEqual(['activity_id.status_id:name', '=', 'Completed'])
 		expect(body.global?.totalCount).toBe(2500)
-		// Les anonymes ne sont pas listés, mais les Français anonymes comptent « en France ».
 		expect(body.global?.franceCount).toBe(3)
-		expect(body.global?.signatories.map((s) => s.name)).toEqual([
-			'Jane Doe',
-			'Marie Curie',
-			'Old One'
+		expect(body.global?.signatories).toEqual([
+			{ name: 'Jane Doe', country: 'United States', bio: 'Researcher' },
+			{ name: 'Marie Curie', country: 'France' },
+			{ name: '', country: 'France', anonymous: true },
+			{ name: '', country: 'Germany', anonymous: true },
+			{ name: 'Old One', country: 'France' }
 		])
 		expect(headers['cache-control']).toMatch(/s-maxage/)
 	})

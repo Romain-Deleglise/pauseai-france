@@ -78,10 +78,10 @@
 <p class="result-count" aria-live="polite">
 	{#if isEn}
 		{fmt(filtered.length)}
-		{filtered.length > 1 ? 'signatories shown' : 'signatory shown'}
+		{filtered.length > 1 ? 'signatories' : 'signatory'}
 	{:else}
 		{fmt(filtered.length)}
-		{filtered.length > 1 ? 'signataires affichés' : 'signataire affiché'}
+		{filtered.length > 1 ? 'signataires' : 'signataire'}
 	{/if}
 	{#if country !== ALL && q}
 		· <button type="button" class="link" on:click={() => (country = ALL)}>

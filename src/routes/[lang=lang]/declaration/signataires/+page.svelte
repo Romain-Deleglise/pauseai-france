@@ -71,13 +71,14 @@
 					<a href="https://pauseai.info/statement" target="_blank" rel="noopener">pauseai.info</a
 					>{#if d.globalFromSnapshot && d.global?.fetchedAt}&nbsp;(list as of {fmtDate(
 							d.global.fetchedAt
-						)}){/if}. Anonymous signatures are counted but not listed.
+						)}){/if}. Signatories who chose not to show their name appear as “Anonymous”.
 				{:else}
 					Inclut les signataires recueillis par PauseAI Global sur
 					<a href="https://pauseai.info/statement" target="_blank" rel="noopener">pauseai.info</a
 					>{#if d.globalFromSnapshot && d.global?.fetchedAt}&nbsp;(liste au {fmtDate(
 							d.global.fetchedAt
-						)}){/if}. Les signatures anonymes sont comptées mais pas affichées.
+						)}){/if}. Les signataires qui n’ont pas souhaité afficher leur nom apparaissent comme «
+					Anonyme ».
 				{/if}
 			</p>
 		{:else}
