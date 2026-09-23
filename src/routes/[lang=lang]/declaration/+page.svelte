@@ -149,12 +149,13 @@
 		{title}
 		<svelte:fragment slot="lede">
 			{#if isEn}
-				This statement summarises the position of PauseAI and Pause IA volunteers and supporters.
-				Sign it to add your voice to ours and help us build our collective strength.
+				This statement summarises the position of the volunteers and supporters of the PauseAI
+				association, and in particular of its French branch, Pause IA. Sign it to add your voice to
+				ours and help us build our collective strength.
 			{:else}
-				Cette déclaration résume la position des volontaires, sympathisants et sympathisantes de
-				PauseAI et de Pause IA. Signez-la pour ajouter votre voix à la nôtre et nous aider à
-				construire notre force collective.
+				Cette déclaration résume la position des bénévoles, sympathisants et sympathisantes de
+				l’association PauseAI et notamment de sa branche française, Pause IA. Signez-la pour ajouter
+				votre voix à la nôtre et nous aider à construire notre force collective.
 			{/if}
 		</svelte:fragment>
 		<div slot="actions" class="hero-actions">
