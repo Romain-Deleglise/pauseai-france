@@ -78,22 +78,22 @@
 
 	<nav class="pr-nav">
 		<div class="nav-link-wrapper">
-			{#if data.prev}
-				<a href="{prefix}/presse/national/{data.prev.slug}" class="nav-link nav-prev">
+			{#if data.newer}
+				<a href="{prefix}/presse/national/{data.newer.slug}" class="nav-link nav-prev">
 					<ArrowLeft size="1.25rem" />
 					<span class="nav-label">
-						<span class="nav-direction">{lang === 'en' ? 'Previous' : 'Précédent'}</span>
-						<span class="nav-title">{data.prev.title}</span>
+						<span class="nav-direction">{lang === 'en' ? 'Newer' : 'Plus récent'}</span>
+						<span class="nav-title">{data.newer.title}</span>
 					</span>
 				</a>
 			{/if}
 		</div>
 		<div class="nav-link-wrapper nav-link-right">
-			{#if data.next}
-				<a href="{prefix}/presse/national/{data.next.slug}" class="nav-link nav-next">
+			{#if data.older}
+				<a href="{prefix}/presse/national/{data.older.slug}" class="nav-link nav-next">
 					<span class="nav-label">
-						<span class="nav-direction">{lang === 'en' ? 'Next' : 'Suivant'}</span>
-						<span class="nav-title">{data.next.title}</span>
+						<span class="nav-direction">{lang === 'en' ? 'Older' : 'Plus ancien'}</span>
+						<span class="nav-title">{data.older.title}</span>
 					</span>
 					<ArrowRight size="1.25rem" />
 				</a>
