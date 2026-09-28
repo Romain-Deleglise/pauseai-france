@@ -1,12 +1,10 @@
 <script lang="ts">
 	import Button from '$components/Button.svelte'
 	import Mark from '$components/Mark.svelte'
-	import Logo from '$components/Logo.svelte'
 	import LeftCorner from '$components/hero/LeftCorner.svelte'
 	import RightCorner from '$components/hero/RightCorner.svelte'
 	import { getT } from '$lib/i18n'
 	import type { Lang } from '$lib/i18n'
-	import { theme } from '$lib/stores/theme'
 	import { onMount, tick } from 'svelte'
 	import { fade, fly } from 'svelte/transition'
 	const label_id = 'hero-title'
@@ -106,15 +104,18 @@
 
 	let mounted = false
 	let heroTopOffset = 80 // fallback in px
-	let heroBgEl: HTMLElement | null = null
+	let headerHeight = 64 // fallback in px
+	let heroEl: HTMLElement | undefined
 	let contentBoxEl: HTMLElement | undefined
 	let frostColTop = 'calc(50% - 17rem)' // CSS fallback before measurement
 
 	function measureFrostCol() {
-		if (!heroBgEl || !contentBoxEl) return
-		const bgRect = heroBgEl.getBoundingClientRect()
+		if (!heroEl || !contentBoxEl) return
+		// .frost-col is positioned relative to .hero (not .hero-bg, which now
+		// starts below the header)
+		const heroRect = heroEl.getBoundingClientRect()
 		const boxRect = contentBoxEl.getBoundingClientRect()
-		const topOffset = Math.max(0, boxRect.top - bgRect.top)
+		const topOffset = Math.max(0, boxRect.top - heroRect.top)
 		// Start the column above the content-box for visual breathing room
 		frostColTop = `${Math.max(0, topOffset - 52)}px`
 	}
@@ -131,6 +132,7 @@
 			const measure = () => {
 				if (header) {
 					const headerH = header.getBoundingClientRect().height
+					headerHeight = headerH
 					const mainPT = main ? parseFloat(getComputedStyle(main).paddingTop) : 0
 					heroTopOffset = headerH + mainPT
 				}
@@ -162,10 +164,11 @@
 {#if mounted}
 	<section
 		class="hero"
-		style="--hero-top-offset: -{heroTopOffset}px; --frost-col-top: {frostColTop}"
+		bind:this={heroEl}
+		style="--hero-top-offset: -{heroTopOffset}px; --header-height: {headerHeight}px; --frost-col-top: {frostColTop}"
 		aria-labelledby={label_id}
 	>
-		<div class="hero-bg" bind:this={heroBgEl} aria-hidden="true">
+		<div class="hero-bg" aria-hidden="true">
 			<div class="marquee-container">
 				<div class="marquee-row row-left">
 					<div class="marquee-track">
@@ -201,14 +204,6 @@
 		<div class="frost-col" aria-hidden="true"></div>
 		<div class="content" in:fade={{ duration: 500, delay: 200 }}>
 			<div class="content-box" bind:this={contentBoxEl}>
-				<div class="hero-logo">
-					<Logo
-						height={48}
-						fill_pause={$theme === 'dark' ? 'white' : 'black'}
-						fill_circle="#FF9416"
-						fill_ai={$theme === 'dark' ? 'white' : '#FF9416'}
-					/>
-				</div>
 				<h1 id={label_id}>
 					{t.home.hero_title}
 					<br /><Mark>{t.home.hero_highlight}</Mark>
@@ -258,7 +253,9 @@
 	.hero-bg {
 		position: absolute;
 		overflow: hidden;
-		top: 0;
+		/* The hero is pulled up under the (always visible, opaque) header:
+		   start the photos below it so the first row isn't hidden */
+		top: var(--header-height, 4rem);
 		bottom: 0;
 		left: 50%;
 		transform: translateX(-50%);
@@ -440,7 +437,7 @@
 		/* Sub-pixel gap insurance — extend the bg 1px above the hero box
 		   so no sliver of white is visible between header and photos. */
 		.hero-bg {
-			top: -1px;
+			top: calc(var(--header-height, 4rem) - 1px);
 		}
 
 		/* Extend the photo grid 5px beyond .hero-bg bounds on top/bottom
@@ -604,11 +601,6 @@
 		.content h1 {
 			font-size: 2.6rem;
 		}
-	}
-
-	/* ─── Logo dans le hero ──────────────────────────────────── */
-	.hero-logo {
-		margin-bottom: 1.5rem;
 	}
 
 	/* ─── Dark mode ──────────────────────────────────────────── */
