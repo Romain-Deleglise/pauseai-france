@@ -19,12 +19,14 @@ export const load: PageServerLoad = async ({ params }) => {
 		redirect(307, pressRelease.url)
 	}
 
+	// Releases are sorted newest first: "previous" is the older one (index + 1),
+	// "next" the more recent one (index - 1), to match chronology.
 	const prev =
-		index > 0 ? { slug: releases[index - 1].slug, title: releases[index - 1].title } : null
-	const next =
 		index < releases.length - 1
 			? { slug: releases[index + 1].slug, title: releases[index + 1].title }
 			: null
+	const next =
+		index > 0 ? { slug: releases[index - 1].slug, title: releases[index - 1].title } : null
 
 	return {
 		pressRelease,

@@ -189,6 +189,7 @@
 <header class="site-header" class:scrolled class:homepage={onHomepage}>
 	<!-- Banner behavior:
 		 - Homepage: hidden while hero is visible, appears when scrolled past hero
+		   (the nav itself is always visible)
 		 - Other pages: visible at top, hidden when scrolled (original behavior)
 	-->
 	<div class="banner-wrapper" class:scrolled class:homepage={onHomepage}>
@@ -494,11 +495,10 @@
 		box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
 	}
 
-	/* On homepage before scroll, header is hidden so hero is full-screen */
-	.site-header.homepage:not(.scrolled) {
-		opacity: 0;
-		pointer-events: none;
-		border-bottom-color: transparent;
+	/* On homepage the nav stays visible over the hero: give it an opaque
+	   background so it stays readable on top of the photo marquee */
+	.site-header.homepage {
+		background: var(--bg);
 	}
 
 	/* ─── Banner slide-away on scroll ───────────────────────────── */
