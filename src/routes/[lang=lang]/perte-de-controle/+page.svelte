@@ -9,6 +9,7 @@
 	import ArticleCard from '$components/ArticleCard.svelte'
 	import EcrireOutil from '$components/EcrireOutil.svelte'
 	import Button from '$components/Button.svelte'
+	import { MoveUpRight } from 'lucide-svelte'
 	import type { PageData } from './$types'
 
 	export let data: PageData
@@ -45,11 +46,6 @@
 		}
 	]
 
-	// Dates du temps fort militant (des actions isolées démarrent la veille :
-	// le calendrier peut donc afficher une date antérieure au 21).
-	const MOBILISATION_DATES_FR = 'Du 21 au 28 septembre'
-	const MOBILISATION_DATES_EN = '21 to 28 September'
-
 	$: title = isEn
 		? 'We are on the brink of losing control: let’s react'
 		: 'Nous sommes au bord de la perte de contrôle : réagissons'
@@ -57,9 +53,13 @@
 		? 'AI now outperforms humans at computer security, and the researchers who train these systems no longer control them. Join our call for a global moratorium on frontier AI development.'
 		: 'L’IA dépasse désormais les humains en sécurité informatique, et les chercheurs qui les entraînent ne les maîtrisent plus. Relayez notre appel à un moratoire mondial sur le développement des IA de pointe.'
 
-	$: mobilisationTitle = isEn
-		? `${MOBILISATION_DATES_EN}: a week of action and a Fresk`
-		: `${MOBILISATION_DATES_FR} : une semaine d’action et une fresque`
+	function formatDate(date: string) {
+		return new Date(date).toLocaleDateString(isEn ? 'en-GB' : 'fr-FR', {
+			day: 'numeric',
+			month: 'long',
+			year: 'numeric'
+		})
+	}
 </script>
 
 <CampaignPage {title} {description}>
@@ -245,73 +245,44 @@
 		</ol>
 	</CampaignSection>
 
-	<!-- ── Action 1 · Semaine d'action et fresque ─────────────── -->
-	<!--
-		Un seul bloc pour les deux lancements : le calendrier des actions et la
-		fresque. Le passage sur la fresque reste volontairement très court.
-	-->
-	<CampaignSection id="evenements" variant="card" title={mobilisationTitle}>
-		<p>
-			{isEn
-				? 'Local groups hold street actions, talks and stands. Several will also run our new educational workshop, the AI Risks Fresk.'
-				: 'Les groupes locaux organisent des actions de rue, des conférences et des stands. Plusieurs animeront aussi notre nouvel atelier pédagogique, la fresque des risques de l’IA.'}
-		</p>
-		<div id="fresque">
-			<div class="fresque">
-				<div class="pile" aria-hidden="false">
-					{#each FRESQUE_CARTES as carte, i}
-						<img
-							class="carte carte-{i}"
-							src={carte.src}
-							alt={isEn ? carte.en : carte.fr}
-							loading="lazy"
-						/>
-					{/each}
-				</div>
-				<div class="fresque-text">
-					<p>
-						{isEn
-							? 'A collaborative workshop built around a deck of cards. Participants discuss, lay out the cards and connect them to one another. Everyone leaves with an overview of AI, its risks and the solutions.'
-							: 'Un atelier collaboratif construit autour d’un jeu de cartes. Les participants discutent, disposent les cartes et les relient entre elles. Chacun repart avec une vue d’ensemble de l’IA, de ses risques et des solutions.'}
-					</p>
-					<p>
-						{isEn
-							? 'The project was carried by our volunteers all summer; it is free and open-licensed. All the information is on the cards, so anyone can run it in turn. The website lets you schedule a workshop or sign up for one. We even built a tool to run it online.'
-							: 'Le projet a été porté par nos bénévoles tout l’été, il est gratuit et en licence libre. Toutes les informations sont sur les cartes, donc n’importe qui peut l’animer à son tour. Le site permet de programmer un atelier ou de s’y inscrire. Nous sommes même allés jusqu’à développer un outil pour l’animer en ligne.'}
-					</p>
-					<Button
-						href="https://fresquedesrisquesdelia.org/"
-						alt
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						{isEn ? 'The AI Risks Fresk' : 'La fresque des risques de l’IA'}
-					</Button>
-				</div>
+	<!-- ── Découvrez notre fresque ──────────────────────────── -->
+	<CampaignSection
+		id="fresque"
+		variant="card"
+		title={isEn ? 'Discover our Fresk' : 'Découvrez notre fresque'}
+	>
+		<div class="fresque">
+			<div class="pile" aria-hidden="false">
+				{#each FRESQUE_CARTES as carte, i}
+					<img
+						class="carte carte-{i}"
+						src={carte.src}
+						alt={isEn ? carte.en : carte.fr}
+						loading="lazy"
+					/>
+				{/each}
+			</div>
+			<div class="fresque-text">
+				<p>
+					{isEn
+						? 'The AI Risks Fresk is a collaborative workshop built around a deck of cards. Participants discuss, lay out the cards and connect them to one another. Everyone leaves with an overview of AI, its risks and the solutions.'
+						: 'La fresque des risques de l’IA est un atelier collaboratif construit autour d’un jeu de cartes. Les participants discutent, disposent les cartes et les relient entre elles. Chacun repart avec une vue d’ensemble de l’IA, de ses risques et des solutions.'}
+				</p>
+				<p>
+					{isEn
+						? 'The project was carried by our volunteers all summer; it is free and open-licensed. All the information is on the cards, so anyone can run it in turn. The website lets you schedule a workshop or sign up for one. We even built a tool to run it online.'
+						: 'Le projet a été porté par nos bénévoles tout l’été, il est gratuit et en licence libre. Toutes les informations sont sur les cartes, donc n’importe qui peut l’animer à son tour. Le site permet de programmer un atelier ou de s’y inscrire. Nous sommes même allés jusqu’à développer un outil pour l’animer en ligne.'}
+				</p>
+				<Button
+					href="https://fresquedesrisquesdelia.org/"
+					alt
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					{isEn ? 'The AI Risks Fresk' : 'La fresque des risques de l’IA'}
+				</Button>
 			</div>
 		</div>
-
-		<!-- Déplié par défaut : pendant la semaine d'action, les dates sont
-		     l'information principale de la section. Le résumé reste cliquable
-		     pour replier le calendrier. -->
-		<LumaCalendar
-			calendarId={LUMA_CALENDAR_ID}
-			title={isEn ? 'Upcoming Pause IA events' : 'Prochains événements Pause IA'}
-			collapsible
-			open
-			summary={isEn
-				? 'See the week of action dates near you'
-				: 'Voir les dates de la semaine d’action près de chez vous'}
-			height={520}
-			mobileHeight={560}
-			calendarUrl={LUMA_CALENDAR_URL}
-			calendarLinkLabel={isEn ? 'See all events on Luma' : 'Voir tous les événements sur Luma'}
-		/>
-		<p class="cta-row">
-			<Button href="{prefix}/groupes-locaux" alt>
-				{isEn ? 'Find my local group' : 'Trouver mon groupe local'}
-			</Button>
-		</p>
 	</CampaignSection>
 
 	<!-- ── Action 2 · Écrire à ses élus et à la presse ───────── -->
@@ -340,6 +311,59 @@
 			/>
 		</CampaignSection>
 	</div>
+
+	<!-- ── Nos groupes locaux se mobilisent ─────────────────── -->
+	<!--
+		Retours presse de la campagne : articles de la base Notion « Revue de
+		presse » parus depuis le début de la campagne (voir +page.server.ts).
+	-->
+	<CampaignSection
+		id="groupes-locaux"
+		title={isEn ? 'Our local groups are mobilising' : 'Nos groupes locaux se mobilisent'}
+	>
+		<p>
+			{isEn
+				? 'All over France, our local groups hold street actions, talks and stands to carry this call. And the press is talking about it.'
+				: 'Partout en France, nos groupes locaux organisent des actions de rue, des conférences et des stands pour porter cet appel. Et la presse en parle.'}
+		</p>
+
+		{#if data.pressCoverage.length > 0}
+			<ul class="press-list">
+				{#each data.pressCoverage as item (item.id)}
+					<li>
+						<a class="press-item" href={item.url} target="_blank" rel="noopener noreferrer">
+							<span class="press-meta">
+								<span class="press-source">{item.source}</span>
+								{#if item.date}
+									<time datetime={item.date}>{formatDate(item.date)}</time>
+								{/if}
+								<MoveUpRight size="0.75rem" aria-hidden="true" />
+							</span>
+							<span class="press-title">{item.title}</span>
+						</a>
+					</li>
+				{/each}
+			</ul>
+		{/if}
+
+		<LumaCalendar
+			calendarId={LUMA_CALENDAR_ID}
+			title={isEn ? 'Upcoming Pause IA events' : 'Prochains événements Pause IA'}
+			collapsible
+			summary={isEn
+				? 'See upcoming actions near you'
+				: 'Voir les prochaines actions près de chez vous'}
+			height={520}
+			mobileHeight={560}
+			calendarUrl={LUMA_CALENDAR_URL}
+			calendarLinkLabel={isEn ? 'See all events on Luma' : 'Voir tous les événements sur Luma'}
+		/>
+		<p class="cta-row">
+			<Button href="{prefix}/groupes-locaux">
+				{isEn ? 'Join a local group' : 'Rejoindre un groupe local'}
+			</Button>
+		</p>
+	</CampaignSection>
 </CampaignPage>
 
 <style>
@@ -356,14 +380,6 @@
 
 	.measures li {
 		line-height: 1.75;
-	}
-
-	/* La section est déjà une carte : pas de carte dans la carte, un simple
-	   filet de séparation suffit. */
-	#fresque {
-		margin-bottom: 1.5rem;
-		padding-bottom: 1.5rem;
-		border-bottom: 1px solid var(--border);
 	}
 
 	.fresque {
@@ -436,5 +452,48 @@
 
 	.cta-row {
 		margin-top: 1rem;
+	}
+
+	.press-list {
+		list-style: none;
+		margin: 1.25rem 0 1.5rem;
+		padding: 0;
+		display: grid;
+		gap: 0.75rem;
+	}
+
+	.press-item {
+		display: block;
+		padding: 0.85rem 1rem;
+		border: 1px solid var(--border);
+		border-radius: var(--radius-sm);
+		color: inherit;
+		text-decoration: none;
+		transition: border-color 0.2s ease;
+	}
+
+	.press-item:hover,
+	.press-item:focus-visible {
+		border-color: var(--brand);
+	}
+
+	.press-meta {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		font-size: 0.85rem;
+		color: var(--text-secondary);
+	}
+
+	.press-source {
+		font-weight: 700;
+		color: var(--brand-subtle);
+	}
+
+	.press-title {
+		display: block;
+		margin-top: 0.25rem;
+		font-weight: 600;
+		line-height: 1.4;
 	}
 </style>
