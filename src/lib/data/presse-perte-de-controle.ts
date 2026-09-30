@@ -2,8 +2,8 @@
  * Retours presse de la campagne « Perte de contrôle » (semaine d'action du
  * 21 au 28 septembre 2026), regroupés par groupe local.
  *
- * Titres reconstitués depuis les URL des articles : à corriger si le titre
- * publié diffère. Dates renseignées seulement quand elles figurent dans l'URL.
+ * Source unique : cette liste alimente aussi la revue de presse de /presse
+ * (voir press-coverage-static.ts), où seuls les éléments datés apparaissent.
  */
 export interface CampaignPressArticle {
 	source: string
@@ -46,8 +46,9 @@ export const pressePerteDeControle: CampaignPressGroup[] = [
 			{
 				source: 'Grenoble Mag',
 				title:
-					'À Grenoble, Pause IA appelle à une pause face aux risques liés à l’intelligence artificielle',
-				url: 'https://www.grenoblemag.com/article/3369/a-grenoble-pause-ia-appelle-a-une-pause-face-aux-risques-lies-a-lintelligence-artificielle'
+					'À Grenoble, Pause IA appelle à une « pause » face aux risques liés à l’intelligence artificielle',
+				url: 'https://www.grenoblemag.com/article/3369/a-grenoble-pause-ia-appelle-a-une-pause-face-aux-risques-lies-a-lintelligence-artificielle',
+				date: '2026-09-25'
 			},
 			{
 				source: 'Mesinfos',
@@ -69,8 +70,9 @@ export const pressePerteDeControle: CampaignPressGroup[] = [
 			{
 				source: 'France 3 Hauts-de-France',
 				title:
-					'« Un risque existentiel pour l’humanité » : ils réclament une pause pour les intelligences artificielles et un moratoire international',
-				url: 'https://france3-regions.franceinfo.fr/hauts-de-france/nord-0/lille/un-risque-existentiel-pour-l-humanite-ils-reclament-une-pause-pour-les-intelligences-artificielles-et-un-moratoire-international-3422831.html'
+					'« Un risque existentiel pour l’humanité » : ils réclament une pause pour les intelligences artificielles et « un moratoire international »',
+				url: 'https://france3-regions.franceinfo.fr/hauts-de-france/nord-0/lille/un-risque-existentiel-pour-l-humanite-ils-reclament-une-pause-pour-les-intelligences-artificielles-et-un-moratoire-international-3422831.html',
+				date: '2026-09-24'
 			},
 			{
 				source: '20 Minutes',
@@ -95,7 +97,8 @@ export const pressePerteDeControle: CampaignPressGroup[] = [
 				source: 'France 3 Occitanie',
 				title:
 					'« Des modèles d’IA plus compétents que les meilleurs hackers » : pourquoi les dérives d’intelligences artificielles surpuissantes ont de quoi faire peur',
-				url: 'https://france3-regions.franceinfo.fr/occitanie/haute-garonne/toulouse/des-modeles-d-ia-plus-competents-que-les-meilleurs-hackers-pourquoi-les-derives-d-intelligences-artificielles-surpuissantes-ont-de-quoi-faire-peur-3421148.html'
+				url: 'https://france3-regions.franceinfo.fr/occitanie/haute-garonne/toulouse/des-modeles-d-ia-plus-competents-que-les-meilleurs-hackers-pourquoi-les-derives-d-intelligences-artificielles-surpuissantes-ont-de-quoi-faire-peur-3421148.html',
+				date: '2026-09-27'
 			},
 			{
 				source: 'Nostalgie',
@@ -126,8 +129,9 @@ export const pressePerteDeControle: CampaignPressGroup[] = [
 			{
 				source: 'France 3 Paris Île-de-France',
 				title:
-					'« Stoppons cette course suicidaire » : mobilisation contre le risque d’une perte de contrôle de l’IA à Paris',
-				url: 'https://france3-regions.franceinfo.fr/paris-ile-de-france/paris/stoppons-cette-course-suicidaire-mobilisation-contre-le-risque-d-une-perte-de-controle-de-l-ia-a-paris-3421424.html'
+					'« Stoppons cette course suicidaire » : mobilisation contre le risque d’une « perte de contrôle » de l’IA à Paris',
+				url: 'https://france3-regions.franceinfo.fr/paris-ile-de-france/paris/stoppons-cette-course-suicidaire-mobilisation-contre-le-risque-d-une-perte-de-controle-de-l-ia-a-paris-3421424.html',
+				date: '2026-09-23'
 			}
 		]
 	},
@@ -137,8 +141,9 @@ export const pressePerteDeControle: CampaignPressGroup[] = [
 			{
 				source: 'France 3 Auvergne-Rhône-Alpes',
 				title:
-					'Pause IA : quel est ce mouvement citoyen qui veut agir pour garder l’intelligence artificielle sous contrôle ?',
-				url: 'https://france3-regions.franceinfo.fr/auvergne-rhone-alpes/puy-de-dome/clermont-ferrand/pause-ia-quel-est-ce-mouvement-citoyen-qui-veut-agir-pour-garder-l-intelligence-artificielle-sous-controle-3420800.html'
+					'« Pause IA » : quel est ce mouvement citoyen qui veut agir pour garder l’intelligence artificielle sous contrôle ?',
+				url: 'https://france3-regions.franceinfo.fr/auvergne-rhone-alpes/puy-de-dome/clermont-ferrand/pause-ia-quel-est-ce-mouvement-citoyen-qui-veut-agir-pour-garder-l-intelligence-artificielle-sous-controle-3420800.html',
+				date: '2026-09-22'
 			},
 			{
 				source: 'Ici Auvergne',
@@ -166,8 +171,9 @@ export const pressePerteDeControle: CampaignPressGroup[] = [
 		articles: [
 			{
 				source: 'Sud Ouest',
-				title: 'À Mérignac, une association alerte sur la course effrénée à l’IA',
-				url: 'https://www.sudouest.fr/gironde/merignac/a-merignac-une-association-alerte-sur-la-course-effrenee-a-l-ia-30737673.php'
+				title: 'À Mérignac, une association alerte « sur la course effrénée à l’IA »',
+				url: 'https://www.sudouest.fr/gironde/merignac/a-merignac-une-association-alerte-sur-la-course-effrenee-a-l-ia-30737673.php',
+				date: '2026-09-25'
 			}
 		]
 	}
