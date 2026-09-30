@@ -10,6 +10,7 @@
 	import EcrireOutil from '$components/EcrireOutil.svelte'
 	import Button from '$components/Button.svelte'
 	import { MoveUpRight } from 'lucide-svelte'
+	import { pressePerteDeControle } from '$lib/data/presse-perte-de-controle'
 	import type { PageData } from './$types'
 
 	export let data: PageData
@@ -314,8 +315,8 @@
 
 	<!-- ── Nos groupes locaux se mobilisent ─────────────────── -->
 	<!--
-		Retours presse de la campagne : articles de la base Notion « Revue de
-		presse » parus depuis le début de la campagne (voir +page.server.ts).
+		Retours presse de la campagne, par groupe local : liste dans
+		src/lib/data/presse-perte-de-controle.ts.
 	-->
 	<CampaignSection
 		id="groupes-locaux"
@@ -323,13 +324,16 @@
 	>
 		<p>
 			{isEn
-				? 'All over France, our local groups hold street actions, talks and stands to carry this call. And the press is talking about it.'
-				: 'Partout en France, nos groupes locaux organisent des actions de rue, des conférences et des stands pour porter cet appel. Et la presse en parle.'}
+				? 'All over France, our local groups hold street actions, talks and stands to carry this call. During the September week of action, the press covered them:'
+				: 'Partout en France, nos groupes locaux organisent des actions de rue, des conférences et des stands pour porter cet appel. Lors de la semaine d’action de septembre, la presse en a parlé :'}
 		</p>
 
-		{#if data.pressCoverage.length > 0}
+		{#each pressePerteDeControle as group (group.city)}
+			<h3 class="press-city">
+				{group.national ? (isEn ? 'National press' : 'Presse nationale') : group.city}
+			</h3>
 			<ul class="press-list">
-				{#each data.pressCoverage as item (item.id)}
+				{#each group.articles as item (item.url)}
 					<li>
 						<a class="press-item" href={item.url} target="_blank" rel="noopener noreferrer">
 							<span class="press-meta">
@@ -344,7 +348,7 @@
 					</li>
 				{/each}
 			</ul>
-		{/if}
+		{/each}
 
 		<LumaCalendar
 			calendarId={LUMA_CALENDAR_ID}
@@ -454,9 +458,15 @@
 		margin-top: 1rem;
 	}
 
+	.press-city {
+		margin: 1.5rem 0 0.6rem;
+		font-size: 1.05rem;
+		font-weight: 700;
+	}
+
 	.press-list {
 		list-style: none;
-		margin: 1.25rem 0 1.5rem;
+		margin: 0 0 1rem;
 		padding: 0;
 		display: grid;
 		gap: 0.75rem;
@@ -479,6 +489,7 @@
 
 	.press-meta {
 		display: flex;
+		flex-wrap: wrap;
 		align-items: center;
 		gap: 0.5rem;
 		font-size: 0.85rem;
