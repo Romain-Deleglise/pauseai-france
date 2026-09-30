@@ -299,15 +299,14 @@
 				: 'Écrivez à vos élus et à la presse'}
 		>
 			<!-- headingLevel=h3 : l'outil s'imbrique sous le h2 de la section.
-			     Les deux outils utilisent les textes propres à la campagne : la page
-			     « Écrire à mes élus » garde, elle, son message générique. -->
+			     Mêmes messages que la page « Écrire à mes élus » (actions par défaut) :
+			     les textes propres à la semaine d'action (perte-de-controle,
+			     presse-perte-de-controle) étaient datés. -->
 			<EcrireOutil
 				lang={data.lang}
 				embedded
 				requireName
 				headingLevel="h3"
-				elusActionId="perte-de-controle"
-				presseActionId="presse-perte-de-controle"
 				on:navigate={scrollToPress}
 			/>
 		</CampaignSection>
