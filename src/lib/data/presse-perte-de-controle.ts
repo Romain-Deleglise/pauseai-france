@@ -10,6 +10,7 @@ export interface CampaignPressArticle {
 	title: string
 	url: string
 	date?: string // YYYY-MM-DD
+	video?: boolean // interview radio/TV mise sur notre chaîne YouTube
 }
 
 export interface CampaignPressGroup {
@@ -77,6 +78,13 @@ export const pressePerteDeControle: CampaignPressGroup[] = [
 					'« On passe pour des complotistes » : une asso tente d’éveiller les consciences sur le risque existentiel lié à l’IA',
 				url: 'https://www.20minutes.fr/lille/4248453-20260929-passe-complotistes-asso-tente-eveiller-consciences-risque-existentiel-lie-ia',
 				date: '2026-09-29'
+			},
+			{
+				source: 'Ici Hauts-de-France',
+				title: 'Interview lors de l’action Pause IA à Lille',
+				url: 'https://youtu.be/SMCMSBmJGJQ',
+				date: '2026-09-24',
+				video: true
 			}
 		]
 	},
@@ -88,6 +96,27 @@ export const pressePerteDeControle: CampaignPressGroup[] = [
 				title:
 					'« Des modèles d’IA plus compétents que les meilleurs hackers » : pourquoi les dérives d’intelligences artificielles surpuissantes ont de quoi faire peur',
 				url: 'https://france3-regions.franceinfo.fr/occitanie/haute-garonne/toulouse/des-modeles-d-ia-plus-competents-que-les-meilleurs-hackers-pourquoi-les-derives-d-intelligences-artificielles-surpuissantes-ont-de-quoi-faire-peur-3421148.html'
+			},
+			{
+				source: 'Nostalgie',
+				title: 'Interview lors de l’action Pause IA à Toulouse (1/3)',
+				url: 'https://youtu.be/QDZlZn8jQYk',
+				date: '2026-09-21',
+				video: true
+			},
+			{
+				source: 'Nostalgie',
+				title: 'Interview lors de l’action Pause IA à Toulouse (2/3)',
+				url: 'https://youtu.be/kGE1k6ncJqs',
+				date: '2026-09-21',
+				video: true
+			},
+			{
+				source: 'Nostalgie',
+				title: 'Interview lors de l’action Pause IA à Toulouse (3/3)',
+				url: 'https://youtu.be/UIw6WyQPatc',
+				date: '2026-09-21',
+				video: true
 			}
 		]
 	},
@@ -110,6 +139,25 @@ export const pressePerteDeControle: CampaignPressGroup[] = [
 				title:
 					'Pause IA : quel est ce mouvement citoyen qui veut agir pour garder l’intelligence artificielle sous contrôle ?',
 				url: 'https://france3-regions.franceinfo.fr/auvergne-rhone-alpes/puy-de-dome/clermont-ferrand/pause-ia-quel-est-ce-mouvement-citoyen-qui-veut-agir-pour-garder-l-intelligence-artificielle-sous-controle-3420800.html'
+			},
+			{
+				source: 'Ici Auvergne',
+				title: 'Interview lors de l’action Pause IA à Clermont-Ferrand',
+				url: 'https://youtu.be/4lGnfuXwM1E',
+				date: '2026-09-25',
+				video: true
+			}
+		]
+	},
+	{
+		city: 'Bordeaux',
+		articles: [
+			{
+				source: 'Nostalgie',
+				title: 'Interview lors de l’action Pause IA à Bordeaux',
+				url: 'https://youtu.be/VvW2AqzGVnk',
+				date: '2026-09-27',
+				video: true
 			}
 		]
 	},

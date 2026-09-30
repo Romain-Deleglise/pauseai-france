@@ -338,6 +338,9 @@
 						<a class="press-item" href={item.url} target="_blank" rel="noopener noreferrer">
 							<span class="press-meta">
 								<span class="press-source">{item.source}</span>
+								{#if item.video}
+									<span class="press-video">{isEn ? 'Video' : 'Vidéo'}</span>
+								{/if}
 								{#if item.date}
 									<time datetime={item.date}>{formatDate(item.date)}</time>
 								{/if}
@@ -499,6 +502,13 @@
 	.press-source {
 		font-weight: 700;
 		color: var(--brand-subtle);
+	}
+
+	.press-video {
+		padding: 0 0.4rem;
+		border: 1px solid var(--border);
+		border-radius: 0.25rem;
+		font-size: 0.75rem;
 	}
 
 	.press-title {
