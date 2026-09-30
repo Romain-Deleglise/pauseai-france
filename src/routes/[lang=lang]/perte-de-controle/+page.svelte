@@ -1,11 +1,5 @@
 <script lang="ts">
-	import {
-		CampaignPage,
-		CampaignHero,
-		CampaignSection,
-		CampaignEmbed,
-		LumaCalendar
-	} from '$components/campaign'
+	import { CampaignPage, CampaignHero, CampaignSection, CampaignEmbed } from '$components/campaign'
 	import ArticleCard from '$components/ArticleCard.svelte'
 	import EcrireOutil from '$components/EcrireOutil.svelte'
 	import Button from '$components/Button.svelte'
@@ -25,11 +19,6 @@
 	}
 
 	const VIDEO_ID = 'WhQViEjkg7s'
-	// Calendrier Luma des actions militantes (agrège aussi les événements créés
-	// par d'autres organisateurs).
-	const LUMA_CALENDAR_ID = 'cal-PLtig5in051g5mM'
-	const LUMA_CALENDAR_URL = 'https://luma.com/pause-ia'
-
 	// Les trois cartes du hero de fresquedesrisquesdelia.org, en éventail.
 	// Visuels issus du dépôt de la fresque (Pause IA, CC BY-SA 4.0) :
 	// github.com/Romain-Deleglise/Fresque-des-risques-de-IA
@@ -286,6 +275,26 @@
 		</div>
 	</CampaignSection>
 
+	<!-- ── Rejoindre un groupe local ────────────────────────── -->
+	<CampaignSection
+		id="groupes-locaux"
+		variant="accent"
+		title={isEn
+			? 'Our local groups are mobilising: join them'
+			: 'Nos groupes locaux se mobilisent : rejoignez-les'}
+	>
+		<p>
+			{isEn
+				? 'All over France, our local groups hold street actions, talks and stands to carry this call. No need to be an expert: join the group near you and act with us.'
+				: 'Partout en France, nos groupes locaux organisent des actions de rue, des conférences et des stands pour porter cet appel. Pas besoin d’être expert : rejoignez le groupe près de chez vous et agissez avec nous.'}
+		</p>
+		<p class="cta-row">
+			<Button href="{prefix}/groupes-locaux">
+				{isEn ? 'Join a local group' : 'Rejoindre un groupe local'}
+			</Button>
+		</p>
+	</CampaignSection>
+
 	<!-- ── Action 2 · Écrire à ses élus et à la presse ───────── -->
 	<!--
 		Une seule section : l'outil gère lui-même le basculement entre « élus » et
@@ -312,21 +321,20 @@
 		</CampaignSection>
 	</div>
 
-	<!-- ── Nos groupes locaux se mobilisent ─────────────────── -->
+	<!-- ── La presse en parle ─────────────────────────────── -->
 	<!--
 		Retours presse de la campagne, par groupe local : liste dans
 		src/lib/data/presse-perte-de-controle.ts.
 	-->
 	<CampaignSection
-		id="groupes-locaux"
-		title={isEn ? 'Our local groups are mobilising' : 'Nos groupes locaux se mobilisent'}
+		id="presse"
+		title={isEn ? 'The press is talking about it' : 'La presse en parle'}
 	>
 		<p>
 			{isEn
-				? 'All over France, our local groups hold street actions, talks and stands to carry this call. During the September week of action, the press covered them:'
-				: 'Partout en France, nos groupes locaux organisent des actions de rue, des conférences et des stands pour porter cet appel. Lors de la semaine d’action de septembre, la presse en a parlé :'}
+				? 'During the September week of action, the press covered our local groups:'
+				: 'Lors de la semaine d’action de septembre, la presse a relayé la mobilisation de nos groupes locaux :'}
 		</p>
-
 		{#each pressePerteDeControle as group (group.city)}
 			<h3 class="press-city">
 				{group.national ? (isEn ? 'National press' : 'Presse nationale') : group.city}
@@ -351,24 +359,6 @@
 				{/each}
 			</ul>
 		{/each}
-
-		<LumaCalendar
-			calendarId={LUMA_CALENDAR_ID}
-			title={isEn ? 'Upcoming Pause IA events' : 'Prochains événements Pause IA'}
-			collapsible
-			summary={isEn
-				? 'See upcoming actions near you'
-				: 'Voir les prochaines actions près de chez vous'}
-			height={520}
-			mobileHeight={560}
-			calendarUrl={LUMA_CALENDAR_URL}
-			calendarLinkLabel={isEn ? 'See all events on Luma' : 'Voir tous les événements sur Luma'}
-		/>
-		<p class="cta-row">
-			<Button href="{prefix}/groupes-locaux">
-				{isEn ? 'Join a local group' : 'Rejoindre un groupe local'}
-			</Button>
-		</p>
 	</CampaignSection>
 </CampaignPage>
 
@@ -477,7 +467,7 @@
 	.press-item {
 		display: block;
 		padding: 0.85rem 1rem;
-		border: 1px solid var(--border);
+		border: 2px solid rgb(255 148 22 / 45%); /* --brand, atténué */
 		border-radius: var(--radius-sm);
 		color: inherit;
 		text-decoration: none;
