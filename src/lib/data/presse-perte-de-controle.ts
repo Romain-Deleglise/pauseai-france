@@ -27,7 +27,7 @@ export const pressePerteDeControle: CampaignPressGroup[] = [
 			{
 				source: '20 Minutes',
 				title:
-					'Comment l’IA pourrait vraiment tous nous tuer, et pourquoi il ne suffira pas de débrancher la prise pour l’arrêter',
+					'Comment l’IA pourrait vraiment tous nous tuer (et pourquoi il ne suffira pas de débrancher la prise pour l’arrêter)',
 				url: 'https://www.20minutes.fr/societe/4244433-20260911-comment-ia-pourrait-vraiment-tous-tuer-pourquoi-suffira-debrancher-prise-arreter',
 				date: '2026-09-11'
 			}
@@ -75,7 +75,7 @@ export const pressePerteDeControle: CampaignPressGroup[] = [
 			{
 				source: '20 Minutes',
 				title:
-					'« On passe pour des complotistes » : une asso tente d’éveiller les consciences sur le risque existentiel lié à l’IA',
+					'« On passe pour des complotistes »… Une asso tente d’éveiller les consciences au risque existentiel lié à l’IA',
 				url: 'https://www.20minutes.fr/lille/4248453-20260929-passe-complotistes-asso-tente-eveiller-consciences-risque-existentiel-lie-ia',
 				date: '2026-09-29'
 			},
