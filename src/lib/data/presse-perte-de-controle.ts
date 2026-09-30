@@ -53,7 +53,8 @@ export const pressePerteDeControle: CampaignPressGroup[] = [
 			{
 				source: 'Mesinfos',
 				title: 'Course à l’IA : une action de sensibilisation aux risques ce vendredi à Grenoble',
-				url: 'https://mesinfos.fr/38000-grenoble/course-a-l-ia-une-action-de-sensibilisation-aux-risques-ce-vendredi-a-grenoble-339629.html'
+				url: 'https://mesinfos.fr/38000-grenoble/course-a-l-ia-une-action-de-sensibilisation-aux-risques-ce-vendredi-a-grenoble-339629.html',
+				date: '2026-09-24'
 			},
 			{
 				source: 'Le Dauphiné libéré',
