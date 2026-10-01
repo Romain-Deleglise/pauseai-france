@@ -348,6 +348,16 @@
 	/* `main` est un conteneur flex : sans largeur explicite, chaque bloc se
 	   rétrécit à son contenu et `margin-inline: auto` le centre sur sa propre
 	   largeur. Le hero se retrouvait décalé de 120 px par rapport au reste. */
+	/* Même rythme vertical que les pages campagne (`CampaignPage`) : un seul pas
+	   entre sections, resserré en mobile. Toutes les marges de section s'y
+	   réfèrent, aucune valeur isolée. Le bandeau pleine largeur vit en dehors de
+	   `.page` : il lui faut sa propre déclaration, sinon `var(--pas)` n'y est
+	   pas défini et sa marge basse tombe à zéro. */
+	.page,
+	.bandeau {
+		--pas: 3.5rem;
+	}
+
 	.page {
 		inline-size: 100%;
 		max-inline-size: var(--width-wide);
@@ -359,7 +369,7 @@
 	   SOUS le titre, comme sur le croquis — la charte le met au-dessus, d'où le
 	   hero écrit ici plutôt qu'une option ajoutée à la brique partagée. */
 	.hero {
-		margin-bottom: 2.5rem;
+		margin-block: 2.5rem var(--pas);
 	}
 
 	.hero h1 {
@@ -376,11 +386,11 @@
 		block-size: 4px;
 		border-radius: var(--radius-pill);
 		background: var(--brand);
-		margin-block: 1.1rem 0;
+		margin-block: 1.25rem 0;
 	}
 
 	.lede {
-		margin: 1rem 0 0;
+		margin: 1.25rem 0 0;
 		max-inline-size: var(--width-text);
 		font-size: 1.1rem;
 		line-height: 1.6;
@@ -388,7 +398,7 @@
 	}
 
 	.hero-action {
-		margin: 1.6rem 0 0;
+		margin: 1.75rem 0 0;
 	}
 
 	/* --- Bandeau panoramique ------------------------------------------------
@@ -401,7 +411,7 @@
 		inline-size: 100vw;
 		margin-inline: calc(50% - 50vw);
 		overflow: hidden;
-		margin-block: 0 3.5rem;
+		margin-block: 0 var(--pas);
 		block-size: clamp(9rem, 19vw, 15rem);
 		background: var(--bg-subtle);
 		border-block: 1px solid var(--border);
@@ -447,7 +457,7 @@
 		grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr);
 		gap: 2.5rem;
 		align-items: start;
-		margin-bottom: 3.5rem;
+		margin-bottom: var(--pas);
 	}
 
 	.prose {
@@ -465,7 +475,7 @@
 	}
 
 	.legende {
-		margin: 0.9rem 0 0;
+		margin: 1rem 0 0;
 		font-size: 0.88rem;
 		color: var(--text-2);
 		text-align: center;
@@ -567,11 +577,11 @@
 
 	/* --- Participer ou animer ---------------------------------------------- */
 	.rejoindre {
-		margin-bottom: 3.5rem;
+		margin-bottom: var(--pas);
 	}
 
 	.intro {
-		margin: 0 0 1.8rem;
+		margin: 0 0 1.5rem;
 		max-inline-size: var(--width-text);
 		color: var(--text-2);
 		line-height: 1.7;
@@ -593,12 +603,12 @@
 
 	.duo .action {
 		margin-block-start: auto;
-		padding-block-start: 1.3rem;
+		padding-block-start: 1.5rem;
 	}
 
 	.duo h3,
 	.interet h3 {
-		margin: 0 0 0.7rem;
+		margin: 0 0 0.75rem;
 		font-size: 1.25rem;
 		color: var(--text);
 	}
@@ -636,7 +646,7 @@
 
 	/* --- Formulaire d'intérêt ---------------------------------------------- */
 	.interet {
-		margin-bottom: 3.5rem;
+		margin-bottom: var(--pas);
 	}
 
 	/* Bande orange pâle du croquis. Le fond de page est déjà le crème
@@ -644,14 +654,18 @@
 	   voile d'orange construit sur `--brand-rgb`, que la charte fournit
 	   justement pour les `rgba()`. */
 	.interet :global(.bande-formulaire) {
-		max-inline-size: 48rem;
-		margin-inline: auto;
-		background: rgb(var(--brand-rgb) / 13%);
-		border-color: transparent;
-	}
-
-	.interet .intro {
-		margin-bottom: 1.4rem;
+		/* Le fond de page est déjà le crème `--bg-subtle` : un `--brand-light`
+		   par-dessus serait invisible, d'où un voile construit sur
+		   `--brand-rgb`, que la charte fournit pour les `rgba()`. Sans bordure,
+		   ce voile ne se lisait pas comme un bloc et le formulaire flottait :
+		   on reprend le filet orange de la variante `accent` de la charte.
+		   Largeur : celle de la colonne, pour que le bord gauche tombe sur
+		   celui des cartes au-dessus — la bande rétrécie se voyait décalée. */
+		background: rgb(var(--brand-rgb) / 10%);
+		border-color: var(--brand);
+		border-radius: var(--radius-lg);
+		box-shadow: var(--shadow-card);
+		padding: 2rem;
 	}
 
 	.interet form {
@@ -746,8 +760,8 @@
 	/* --- Crédits ----------------------------------------------------------- */
 	.credits {
 		max-inline-size: var(--width-text);
-		padding-top: 1.6rem;
-		margin-bottom: 3.5rem;
+		padding-top: 1.5rem;
+		margin-bottom: 5rem;
 		border-top: 1px solid var(--border);
 	}
 
@@ -756,6 +770,21 @@
 		font-size: 0.9rem;
 		line-height: 1.6;
 		color: var(--text-2);
+	}
+
+	@media (max-width: 600px) {
+		.page,
+		.bandeau {
+			--pas: 2.5rem;
+		}
+
+		.page {
+			padding-inline: 1.1rem;
+		}
+
+		.interet :global(.bande-formulaire) {
+			padding: 1.25rem;
+		}
 	}
 
 	@media (max-width: 820px) {
