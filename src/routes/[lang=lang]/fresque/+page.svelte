@@ -229,7 +229,7 @@
 						: 'Les ateliers programmés, en ligne comme en présentiel, sont listés sur le site de la Fresque. Il suffit de choisir celui qui vous convient et de vous inscrire. Vous recevez ensuite toutes les informations par e-mail.'}
 				</p>
 				<p class="action">
-					<Button href="{SITE}/participer/" target="_blank" rel="noopener noreferrer" alt>
+					<Button href="{SITE}/participer/" target="_blank" rel="noopener noreferrer">
 						{isEn ? 'See the workshops' : 'Voir les ateliers'}
 					</Button>
 				</p>
@@ -346,9 +346,12 @@
 	}
 
 	/* --- Bande de photos ---------------------------------------------------
-	   Trois photos fixes, pleine largeur. Un ruban qui défilait répétait quatre
-	   fois les cinq seules photos disponibles : la boucle se voyait, et le
-	   mouvement captait l'œil juste sous le titre sans rien dire. */
+	   Quatre des cinq photos sont en portrait (575 x 768) : les écraser dans
+	   une bande paysage jetait les deux tiers de l'image et coupait les têtes.
+	   Les tuiles sont donc en 4/5, proche du format d'origine, et le cadrage
+	   est calé vers le haut, là où sont les visages. En mobile elles défilent
+	   horizontalement au doigt plutôt que de rétrécir à la vignette — et les
+	   trois restent accessibles, au lieu d'en masquer une. */
 	.bandeau {
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);
@@ -360,8 +363,10 @@
 
 	.bandeau img {
 		inline-size: 100%;
-		block-size: clamp(11rem, 22vw, 19rem);
+		aspect-ratio: 4 / 5;
+		max-block-size: 26rem;
 		object-fit: cover;
+		object-position: center 30%;
 		display: block;
 	}
 
@@ -545,19 +550,22 @@
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
 		gap: 1.5rem;
+		/* Chaque carte épouse son texte. Étirées à la même hauteur, la plus
+		   courte laissait un grand vide au-dessus de son bouton. */
+		align-items: start;
 	}
 
-	/* Le texte des deux cartes n'a pas la même longueur. Sans étirement, leurs
-	   boutons se retrouvent à deux hauteurs différentes ; on les aligne en
-	   poussant l'action en bas d'une carte de hauteur commune. */
 	.duo :global(.ui-card) {
 		display: flex;
 		flex-direction: column;
+		background: var(--bg-card);
+		border-color: var(--border);
+		box-shadow: var(--shadow-card);
+		overflow: hidden;
 	}
 
 	.duo .action {
-		margin-block-start: auto;
-		padding-block-start: 1.5rem;
+		margin-block-start: 1.5rem;
 	}
 
 	.duo h3,
@@ -573,29 +581,14 @@
 		line-height: 1.65;
 	}
 
-	/* Ces règles viennent APRÈS `.duo h3` / `.duo p` à dessein : Svelte ajoute
-	   sa classe de portée des deux côtés, les deux sélecteurs se retrouvent à
-	   spécificité égale, et c'est l'ordre qui tranche. Placées plus haut, elles
-	   étaient écrasées et le texte de la carte orange tombait à 3,4:1.
-
-	   « Participer » est l'action principale : aplat orange. Le texte posé
-	   dessus est `--on-brand`, jamais blanc — le blanc ne donne que 2,2:1 sur
-	   cet orange, en dessous du seuil même pour les grands caractères. */
+	/* « Participer » est l'action principale, mais l'aplat orange plein du
+	   croquis pesait lourd : cinq lignes de texte foncé sur un bloc saturé, et
+	   un grand vide orange au-dessus du bouton parce que l'autre carte est plus
+	   longue. On garde la carte de la charte et on marque la priorité par un
+	   bandeau de marque en tête, pas par un fond intégral. */
 	.duo :global(.carte-participer) {
-		background: var(--brand);
 		border-color: var(--brand);
-	}
-
-	.duo :global(.carte-participer h3),
-	.duo :global(.carte-participer p) {
-		color: var(--on-brand);
-	}
-
-	/* « Animer » : même carte, en contour. */
-	.duo :global(.carte-animer) {
-		background: var(--bg-card);
-		border-color: var(--brand);
-		box-shadow: var(--shadow-card);
+		border-block-start: 4px solid var(--brand);
 	}
 
 	/* --- Formulaire d'intérêt ---------------------------------------------- */
@@ -651,12 +644,14 @@
 
 	@media (max-width: 820px) {
 		.bandeau {
-			grid-template-columns: repeat(2, 1fr);
+			display: flex;
+			overflow-x: auto;
+			scroll-snap-type: x mandatory;
 		}
 
-		/* La troisième photo déborderait seule sur une deuxième ligne. */
-		.bandeau img:last-child {
-			display: none;
+		.bandeau img {
+			flex: 0 0 62vw;
+			scroll-snap-align: center;
 		}
 
 		.atelier {
