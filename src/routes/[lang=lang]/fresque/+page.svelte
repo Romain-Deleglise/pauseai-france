@@ -2,47 +2,75 @@
 	import PostMeta from '$components/PostMeta.svelte'
 	import Button from '$components/Button.svelte'
 	import { Card, SectionTitle } from '$components/ui'
+	import { onMount } from 'svelte'
 	import type { PageData } from './$types'
 
 	export let data: PageData
 	$: isEn = data.lang === 'en'
 
 	const SITE = 'https://fresquedesrisquesdelia.org'
+	/* Formulaire d'expression d'intérêt (Notion). */
+	const INTERET = 'https://pauseia.notion.site/3e728fc94b7780f6bda6c4770042b859'
 
-	/* Bandeau panoramique : les photos d'atelier de l'accueil du site de la
-	   fresque. Il n'y en a que cinq, donc le ruban les répète — mais dans un
-	   ordre différent à chaque passage, sinon l'œil voit une boucle de cinq
-	   images plutôt qu'un défilé. */
+	/* Trois photos d'atelier, fixes. Il n'en existe que cinq : un ruban qui
+	   défile les répétait quatre fois, et la boucle se voyait. Trois images
+	   posées, plus grandes, montrent mieux ce qu'est un atelier. */
 	const P = '/campaigns/fresque/photos'
 	const PHOTOS = [
-		`${P}/table-et-cartes.webp`,
-		`${P}/fresque-en-cours.webp`,
-		`${P}/tour-de-table.webp`,
-		`${P}/premieres-cartes.webp`,
-		`${P}/photo-de-groupe.webp`
+		{
+			src: `${P}/table-et-cartes.webp`,
+			fr: 'Les cartes disposées sur la table d’un atelier.',
+			en: 'The cards laid out on a workshop table.'
+		},
+		{
+			src: `${P}/fresque-en-cours.webp`,
+			fr: 'Un groupe relie les cartes entre elles.',
+			en: 'A group linking the cards together.'
+		},
+		{
+			src: `${P}/tour-de-table.webp`,
+			fr: 'Un tour de table en fin d’atelier.',
+			en: 'A closing round of discussion.'
+		}
 	]
-	const BANDE = [
-		PHOTOS[0],
-		PHOTOS[1],
-		PHOTOS[2],
-		PHOTOS[3],
-		PHOTOS[4],
-		PHOTOS[2],
-		PHOTOS[0],
-		PHOTOS[4],
-		PHOTOS[1],
-		PHOTOS[3],
-		PHOTOS[4],
-		PHOTOS[3],
-		PHOTOS[1],
-		PHOTOS[0],
-		PHOTOS[2],
-		PHOTOS[1],
-		PHOTOS[4],
-		PHOTOS[0],
-		PHOTOS[3],
-		PHOTOS[2]
-	]
+
+	/* Prochains ateliers, lus sur l'agenda public du site de la fresque.
+	   `/api/ateliers.json` est prévu pour ça : lecture seule, sans
+	   authentification, `Access-Control-Allow-Origin: *`, et aucun atelier
+	   privé ni adresse e-mail n'y figure. Appelé au montage et jamais au
+	   prérendu : si le site est indisponible, la page reste entière et seul ce
+	   bloc disparaît. */
+	type Atelier = {
+		code: string
+		debutMs: number
+		mode: string
+		lieu: string
+		places: number
+		complet: boolean
+		url: string
+	}
+	let ateliers: Atelier[] = []
+
+	onMount(async () => {
+		try {
+			const r = await fetch(`${SITE}/api/ateliers.json`)
+			if (!r.ok) return
+			const d = await r.json()
+			ateliers = (d.ateliers || []).filter((a: Atelier) => !a.complet).slice(0, 3)
+		} catch {
+			/* Site injoignable : on n'affiche rien, le bouton suffit. */
+		}
+	})
+
+	function quand(a: Atelier) {
+		return new Intl.DateTimeFormat(isEn ? 'en-GB' : 'fr-FR', {
+			weekday: 'long',
+			day: 'numeric',
+			month: 'long',
+			hour: '2-digit',
+			minute: '2-digit'
+		}).format(new Date(a.debutMs))
+	}
 
 	/* Les trois cartes du hero du site de la fresque, recto et verso.
 	   Visuels issus du dépôt de la fresque (Pause IA, CC BY-SA 4.0). */
@@ -70,74 +98,6 @@
 	// éventail se recouvrent et deviennent illisibles.
 	let retournee: number | null = null
 	const retourner = (i: number) => (retournee = retournee === i ? null : i)
-
-	/* Formulaire d'intérêt. Il passe par /api/subscribe, qui exige au moins une
-	   case cochée : l'inscription à la lettre d'information est donc le support
-	   de l'envoi, et la page le dit au lieu de le faire en silence. Le champ
-	   `source` distingue une demande personnelle d'une demande de structure,
-	   ce qui est la question posée sur la maquette. */
-	let prenom = ''
-	let nom = ''
-	let email = ''
-	let pour: 'personnel' | 'structure' = 'personnel'
-	let envoi = false
-	let message = ''
-	let erreur = false
-
-	interface Reponse {
-		success?: boolean
-		message?: string
-		error?: string
-	}
-
-	async function envoyer() {
-		message = ''
-		erreur = false
-		if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-			erreur = true
-			message = isEn
-				? 'Please enter a valid e-mail address.'
-				: 'Indiquez une adresse e-mail valide.'
-			return
-		}
-		envoi = true
-		try {
-			const res = await fetch('/api/subscribe', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({
-					email,
-					subscribeNewsletter: true,
-					subscribeSubstack: false,
-					firstName: prenom || undefined,
-					lastName: nom || undefined,
-					source: pour === 'structure' ? 'fresque-structure' : 'fresque'
-				})
-			})
-			const json = (await res.json()) as Reponse
-			if (res.ok && json.success) {
-				message = isEn
-					? 'Thank you — we have your interest and will get back to you.'
-					: 'Merci, votre intérêt est enregistré. Nous reviendrons vers vous.'
-				prenom = ''
-				nom = ''
-				email = ''
-			} else {
-				erreur = true
-				message =
-					json.message ||
-					json.error ||
-					(isEn ? 'Sending failed. Please try again.' : 'L’envoi a échoué. Réessayez.')
-			}
-		} catch {
-			erreur = true
-			message = isEn
-				? 'Service unavailable. Please try again later.'
-				: 'Service indisponible. Réessayez plus tard.'
-		} finally {
-			envoi = false
-		}
-	}
 </script>
 
 <PostMeta
@@ -156,27 +116,26 @@
 				? 'A collaborative workshop built around a deck of cards, to build an overall picture of artificial intelligence — from what it can do to the risks it carries, through to the possible solutions.'
 				: 'Un atelier collaboratif autour d’un jeu de cartes pour se faire une vision d’ensemble de l’intelligence artificielle, de ses capacités à ses risques, jusqu’aux solutions possibles.'}
 		</p>
+		<!-- Une seule action dominante : s'inscrire à un atelier, la vraie
+		     conversion de la page. « Découvrir la Fresque » reste accessible,
+		     en second rang : quatre boutons de poids égal ne hiérarchisaient
+		     rien. -->
 		<p class="hero-action">
-			<Button href={SITE} target="_blank" rel="noopener noreferrer">
-				{isEn ? 'Discover the Fresk' : 'Découvrir la Fresque'}
+			<Button href="{SITE}/participer/" target="_blank" rel="noopener noreferrer">
+				{isEn ? 'See the workshops' : 'Voir les ateliers'}
 			</Button>
+			<a class="lien-second" href={SITE} target="_blank" rel="noopener noreferrer">
+				{isEn ? 'Discover the Fresk' : 'Découvrir la Fresque'}
+			</a>
 		</p>
 	</header>
 </div>
 
-<!-- Bandeau panoramique, pleine largeur : il sort de la colonne de contenu. -->
-<div
-	class="bandeau"
-	role="img"
-	aria-label={isEn
-		? 'Photographs taken during AI Risks Fresk workshops.'
-		: 'Photographies prises pendant des ateliers de la Fresque des risques de l’IA.'}
->
-	<div class="ruban">
-		{#each [...BANDE, ...BANDE] as src}
-			<img {src} alt="" loading="lazy" />
-		{/each}
-	</div>
+<!-- Bande de photos, pleine largeur : elle sort de la colonne de contenu. -->
+<div class="bandeau">
+	{#each PHOTOS as photo}
+		<img src={photo.src} alt={isEn ? photo.en : photo.fr} loading="lazy" />
+	{/each}
 </div>
 
 <div class="page">
@@ -240,6 +199,27 @@
 			{/if}
 		</p>
 
+		{#if ateliers.length}
+			<!-- Ateliers réels plutôt qu'une promesse : rempli au montage depuis
+			     l'agenda public de la fresque. Absent si le site est injoignable. -->
+			<ul class="agenda">
+				{#each ateliers as a}
+					<li>
+						<a href={a.url} target="_blank" rel="noopener noreferrer">
+							<span class="quand">{quand(a)}</span>
+							<span class="ou"
+								>{a.mode === 'enligne' ? (isEn ? 'Online' : 'En ligne') : a.lieu}</span
+							>
+							<span class="places">
+								{a.places}
+								{isEn ? 'seats left' : a.places > 1 ? 'places' : 'place'}
+							</span>
+						</a>
+					</li>
+				{/each}
+			</ul>
+		{/if}
+
 		<div class="duo">
 			<Card variant="plain" class="carte-participer">
 				<h3>{isEn ? 'Attend' : 'Participer'}</h3>
@@ -271,8 +251,11 @@
 		</div>
 	</section>
 
+	<!-- Pas de formulaire ici : l'expression d'intérêt vit déjà sur un
+	     formulaire dédié, qui pose les bonnes questions et ne confond pas une
+	     marque d'intérêt avec un abonnement à la lettre d'information. -->
 	<section class="interet">
-		<Card variant="plain" class="bande-formulaire">
+		<Card variant="plain" class="bande-interet">
 			<h3>
 				{isEn
 					? 'Interested in the project, for yourself or for your organisation?'
@@ -281,57 +264,9 @@
 			<p class="intro">
 				{isEn ? 'Tell us about your interest.' : 'Faites-nous part de votre intérêt.'}
 			</p>
-			<form on:submit|preventDefault={envoyer}>
-				<div class="champs">
-					<label>
-						{isEn ? 'First name' : 'Prénom'}
-						<input type="text" bind:value={prenom} autocomplete="given-name" maxlength="80" />
-					</label>
-					<label>
-						{isEn ? 'Last name' : 'Nom'}
-						<input type="text" bind:value={nom} autocomplete="family-name" maxlength="80" />
-					</label>
-				</div>
-				<label class="plein">
-					{isEn ? 'E-mail' : 'E-mail'}
-					<input
-						type="email"
-						bind:value={email}
-						autocomplete="email"
-						maxlength="160"
-						required
-						placeholder={isEn ? 'you@example.org' : 'vous@exemple.fr'}
-					/>
-				</label>
-				<fieldset>
-					<legend>{isEn ? 'You are writing' : 'Vous écrivez'}</legend>
-					<label class="radio">
-						<input type="radio" bind:group={pour} value="personnel" />
-						{isEn ? 'for myself' : 'à titre personnel'}
-					</label>
-					<label class="radio">
-						<input type="radio" bind:group={pour} value="structure" />
-						{isEn ? 'for an organisation or a company' : 'pour une association ou une organisation'}
-					</label>
-				</fieldset>
-				<Button type="submit" disabled={envoi}>
-					{envoi
-						? isEn
-							? 'Sending…'
-							: 'Envoi…'
-						: isEn
-							? 'Register my interest'
-							: 'Faire part de mon intérêt'}
-				</Button>
-				{#if message}
-					<p class="msg" class:err={erreur} role="status">{message}</p>
-				{/if}
-				<p class="rgpd">
-					{isEn
-						? 'You will also receive the Pause IA newsletter, which is how we reply. One-click unsubscribe in every message.'
-						: 'Vous recevrez aussi la lettre d’information de Pause IA, par laquelle nous répondons. Désabonnement en un clic dans chaque message.'}
-				</p>
-			</form>
+			<Button href={INTERET} target="_blank" rel="noopener noreferrer">
+				{isEn ? 'Express my interest' : 'Faire part de mon intérêt'}
+			</Button>
 		</Card>
 	</section>
 
@@ -398,57 +333,36 @@
 	}
 
 	.hero-action {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 1.25rem;
 		margin: 1.75rem 0 0;
 	}
 
-	/* --- Bandeau panoramique ------------------------------------------------
-	   Même cadrage que la page d'accueil : vignettes 4/3, 5 px de gouttière,
-	   rayon de carte. Le ruban contient deux fois la même suite et se déplace
-	   de -50 % : la boucle est invisible. */
+	.lien-second {
+		font-size: 1rem;
+		color: var(--brand-subtle);
+	}
+
+	/* --- Bande de photos ---------------------------------------------------
+	   Trois photos fixes, pleine largeur. Un ruban qui défilait répétait quatre
+	   fois les cinq seules photos disponibles : la boucle se voyait, et le
+	   mouvement captait l'œil juste sous le titre sans rien dire. */
 	.bandeau {
-		/* Pleine largeur : le bandeau sort de la gouttière de `main`. Même
-		   technique que le bandeau newsletter de l'accueil. */
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 4px;
 		inline-size: 100vw;
 		margin-inline: calc(50% - 50vw);
-		overflow: hidden;
 		margin-block: 0 var(--pas);
-		block-size: clamp(9rem, 19vw, 15rem);
-		background: var(--bg-subtle);
-		border-block: 1px solid var(--border);
 	}
 
-	.ruban {
-		display: flex;
-		gap: 5px;
-		block-size: 100%;
-		inline-size: max-content;
-		padding: 5px 0;
-		animation: defile 150s linear infinite;
-	}
-
-	.ruban img {
-		block-size: 100%;
-		aspect-ratio: 4 / 3;
+	.bandeau img {
+		inline-size: 100%;
+		block-size: clamp(11rem, 22vw, 19rem);
 		object-fit: cover;
 		display: block;
-		border-radius: var(--radius-sm);
-		flex-shrink: 0;
-	}
-
-	@keyframes defile {
-		from {
-			transform: translateX(0);
-		}
-
-		to {
-			transform: translateX(-50%);
-		}
-	}
-
-	@media (prefers-reduced-motion: reduce) {
-		.ruban {
-			animation: none;
-		}
 	}
 
 	/* --- L'atelier : texte et éventail de cartes ---------------------------- */
@@ -587,6 +501,46 @@
 		line-height: 1.7;
 	}
 
+	.agenda {
+		list-style: none;
+		display: grid;
+		gap: 0.5rem;
+		margin: 0 0 1.5rem;
+		padding: 0;
+		max-inline-size: var(--width-text);
+	}
+
+	.agenda a {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: 0.3rem 0.9rem;
+		padding: 0.8rem 1rem;
+		background: var(--bg-card);
+		border: 1px solid var(--border);
+		border-radius: var(--radius-sm);
+		text-decoration: none;
+		color: var(--text);
+	}
+
+	.agenda a:hover {
+		border-color: var(--brand);
+	}
+
+	.quand {
+		font-weight: 600;
+	}
+
+	.ou,
+	.places {
+		font-size: 0.9rem;
+		color: var(--text-2);
+	}
+
+	.places {
+		margin-inline-start: auto;
+	}
+
 	.duo {
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
@@ -653,14 +607,7 @@
 	   `--bg-subtle` : un `--brand-light` par-dessus serait invisible, d'où un
 	   voile d'orange construit sur `--brand-rgb`, que la charte fournit
 	   justement pour les `rgba()`. */
-	.interet :global(.bande-formulaire) {
-		/* Le fond de page est déjà le crème `--bg-subtle` : un `--brand-light`
-		   par-dessus serait invisible, d'où un voile construit sur
-		   `--brand-rgb`, que la charte fournit pour les `rgba()`. Sans bordure,
-		   ce voile ne se lisait pas comme un bloc et le formulaire flottait :
-		   on reprend le filet orange de la variante `accent` de la charte.
-		   Largeur : celle de la colonne, pour que le bord gauche tombe sur
-		   celui des cartes au-dessus — la bande rétrécie se voyait décalée. */
+	.interet :global(.bande-interet) {
 		background: rgb(var(--brand-rgb) / 10%);
 		border-color: var(--brand);
 		border-radius: var(--radius-lg);
@@ -668,93 +615,8 @@
 		padding: 2rem;
 	}
 
-	.interet form {
-		display: grid;
-		gap: 1.1rem;
-		justify-items: start;
-		max-inline-size: var(--width-text);
-	}
-
-	.champs {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
-		gap: 1.1rem;
-		inline-size: 100%;
-	}
-
-	/* `:not(.radio)` est nécessaire : `.interet label` l'emporte en spécificité
-	   sur `.radio`, et les boutons radio se retrouvaient en grille, décalés
-	   au-dessus de leur libellé. */
-	.interet label:not(.radio) {
-		display: grid;
-		gap: 0.35rem;
-		font-size: 0.92rem;
-		font-weight: 600;
-		color: var(--text);
-	}
-
-	.plein {
-		inline-size: 100%;
-	}
-
-	.interet input[type='text'],
-	.interet input[type='email'] {
-		inline-size: 100%;
-		min-block-size: 48px;
-		padding: 0.6rem 0.8rem;
-		font: inherit;
-		font-weight: 400;
-		color: var(--text);
-		background: var(--bg-card);
-		border: 1px solid var(--border);
-		border-radius: var(--radius-sm);
-	}
-
-	.interet fieldset {
-		margin: 0;
-		padding: 0;
-		border: 0;
-	}
-
-	.interet legend {
-		padding: 0;
-		margin-bottom: 0.4rem;
-		font-size: 0.92rem;
-		font-weight: 600;
-		color: var(--text);
-	}
-
-	.radio {
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-		margin: 0.3rem 0;
-		font-weight: 400;
-		color: var(--text-2);
-		cursor: pointer;
-	}
-
-	.msg {
-		margin: 0;
-		padding: 0.7rem 0.9rem;
-		font-size: 0.95rem;
-		color: var(--success);
-		background: var(--success-bg);
-		border: 1px solid var(--success-border);
-		border-radius: var(--radius-sm);
-	}
-
-	.msg.err {
-		color: var(--error);
-		background: var(--error-bg);
-		border-color: var(--error-border);
-	}
-
-	.rgpd {
-		margin: 0;
-		font-size: 0.85rem;
-		line-height: 1.55;
-		color: var(--text-2);
+	.interet .intro {
+		margin-bottom: 1.5rem;
 	}
 
 	/* --- Crédits ----------------------------------------------------------- */
@@ -782,12 +644,21 @@
 			padding-inline: 1.1rem;
 		}
 
-		.interet :global(.bande-formulaire) {
+		.interet :global(.bande-interet) {
 			padding: 1.25rem;
 		}
 	}
 
 	@media (max-width: 820px) {
+		.bandeau {
+			grid-template-columns: repeat(2, 1fr);
+		}
+
+		/* La troisième photo déborderait seule sur une deuxième ligne. */
+		.bandeau img:last-child {
+			display: none;
+		}
+
 		.atelier {
 			grid-template-columns: 1fr;
 			gap: 2rem;
