@@ -1,7 +1,7 @@
 <script lang="ts">
 	import PostMeta from '$components/PostMeta.svelte'
 	import Button from '$components/Button.svelte'
-	import { PageHero, Card, SectionTitle } from '$components/ui'
+	import { Card, SectionTitle } from '$components/ui'
 	import type { PageData } from './$types'
 
 	export let data: PageData
@@ -148,21 +148,20 @@
 />
 
 <div class="page">
-	<PageHero>
-		{isEn ? 'The AI Risks Fresk' : 'La Fresque des risques de l’IA'}
-		<svelte:fragment slot="lede">
+	<header class="hero">
+		<h1>{isEn ? 'The AI Risks Fresk' : 'La Fresque des risques de l’IA'}</h1>
+		<span class="filet" aria-hidden="true"></span>
+		<p class="lede">
 			{isEn
 				? 'A collaborative workshop built around a deck of cards, to build an overall picture of artificial intelligence — from what it can do to the risks it carries, through to the possible solutions.'
 				: 'Un atelier collaboratif autour d’un jeu de cartes pour se faire une vision d’ensemble de l’intelligence artificielle, de ses capacités à ses risques, jusqu’aux solutions possibles.'}
-		</svelte:fragment>
-		<svelte:fragment slot="actions">
-			<p class="hero-action">
-				<Button href={SITE} target="_blank" rel="noopener noreferrer">
-					{isEn ? 'Discover the Fresk' : 'Découvrir la Fresque'}
-				</Button>
-			</p>
-		</svelte:fragment>
-	</PageHero>
+		</p>
+		<p class="hero-action">
+			<Button href={SITE} target="_blank" rel="noopener noreferrer">
+				{isEn ? 'Discover the Fresk' : 'Découvrir la Fresque'}
+			</Button>
+		</p>
+	</header>
 </div>
 
 <!-- Bandeau panoramique, pleine largeur : il sort de la colonne de contenu. -->
@@ -242,7 +241,7 @@
 		</p>
 
 		<div class="duo">
-			<Card>
+			<Card variant="plain" class="carte-participer">
 				<h3>{isEn ? 'Attend' : 'Participer'}</h3>
 				<p>
 					{isEn
@@ -250,13 +249,13 @@
 						: 'Les ateliers programmés, en ligne comme en présentiel, sont listés sur le site de la Fresque. Il suffit de choisir celui qui vous convient et de vous inscrire. Vous recevez ensuite toutes les informations par e-mail.'}
 				</p>
 				<p class="action">
-					<Button href="{SITE}/participer/" target="_blank" rel="noopener noreferrer">
+					<Button href="{SITE}/participer/" target="_blank" rel="noopener noreferrer" alt>
 						{isEn ? 'See the workshops' : 'Voir les ateliers'}
 					</Button>
 				</p>
 			</Card>
 
-			<Card>
+			<Card variant="plain" class="carte-animer">
 				<h3>{isEn ? 'Facilitate' : 'Animer'}</h3>
 				<p>
 					{isEn
@@ -264,7 +263,7 @@
 						: 'Tout le nécessaire pour animer est en accès libre : le guide d’animation, le jeu de cartes et l’outil en ligne. Vous pouvez programmer votre atelier directement sur le site. En mode public, il apparaît dans la liste des ateliers et chacun peut s’y inscrire. En mode privé, seules les personnes à qui vous transmettez le lien y ont accès.'}
 				</p>
 				<p class="action">
-					<Button href="{SITE}/devenir-animateur/" target="_blank" rel="noopener noreferrer" alt>
+					<Button href="{SITE}/devenir-animateur/" target="_blank" rel="noopener noreferrer">
 						{isEn ? 'Become a facilitator' : 'Devenir animateur·ice'}
 					</Button>
 				</p>
@@ -273,7 +272,7 @@
 	</section>
 
 	<section class="interet">
-		<Card variant="accent">
+		<Card variant="plain" class="bande-formulaire">
 			<h3>
 				{isEn
 					? 'Interested in the project, for yourself or for your organisation?'
@@ -354,6 +353,38 @@
 		max-inline-size: var(--width-wide);
 		margin-inline: auto;
 		padding-inline: 1.5rem;
+	}
+
+	/* Échelle typographique reprise de `PageHero`. Le filet orange est placé
+	   SOUS le titre, comme sur le croquis — la charte le met au-dessus, d'où le
+	   hero écrit ici plutôt qu'une option ajoutée à la brique partagée. */
+	.hero {
+		margin-bottom: 2.5rem;
+	}
+
+	.hero h1 {
+		margin: 0;
+		font-size: clamp(2rem, 5.5vw, 3rem);
+		line-height: 1.08;
+		letter-spacing: -0.02em;
+		color: var(--text);
+	}
+
+	.filet {
+		display: block;
+		inline-size: 3rem;
+		block-size: 4px;
+		border-radius: var(--radius-pill);
+		background: var(--brand);
+		margin-block: 1.1rem 0;
+	}
+
+	.lede {
+		margin: 1rem 0 0;
+		max-inline-size: var(--width-text);
+		font-size: 1.1rem;
+		line-height: 1.6;
+		color: var(--text-2);
 	}
 
 	.hero-action {
@@ -578,9 +609,45 @@
 		line-height: 1.65;
 	}
 
+	/* Ces règles viennent APRÈS `.duo h3` / `.duo p` à dessein : Svelte ajoute
+	   sa classe de portée des deux côtés, les deux sélecteurs se retrouvent à
+	   spécificité égale, et c'est l'ordre qui tranche. Placées plus haut, elles
+	   étaient écrasées et le texte de la carte orange tombait à 3,4:1.
+
+	   « Participer » est l'action principale : aplat orange. Le texte posé
+	   dessus est `--on-brand`, jamais blanc — le blanc ne donne que 2,2:1 sur
+	   cet orange, en dessous du seuil même pour les grands caractères. */
+	.duo :global(.carte-participer) {
+		background: var(--brand);
+		border-color: var(--brand);
+	}
+
+	.duo :global(.carte-participer h3),
+	.duo :global(.carte-participer p) {
+		color: var(--on-brand);
+	}
+
+	/* « Animer » : même carte, en contour. */
+	.duo :global(.carte-animer) {
+		background: var(--bg-card);
+		border-color: var(--brand);
+		box-shadow: var(--shadow-card);
+	}
+
 	/* --- Formulaire d'intérêt ---------------------------------------------- */
 	.interet {
 		margin-bottom: 3.5rem;
+	}
+
+	/* Bande orange pâle du croquis. Le fond de page est déjà le crème
+	   `--bg-subtle` : un `--brand-light` par-dessus serait invisible, d'où un
+	   voile d'orange construit sur `--brand-rgb`, que la charte fournit
+	   justement pour les `rgba()`. */
+	.interet :global(.bande-formulaire) {
+		max-inline-size: 48rem;
+		margin-inline: auto;
+		background: rgb(var(--brand-rgb) / 13%);
+		border-color: transparent;
 	}
 
 	.interet .intro {
