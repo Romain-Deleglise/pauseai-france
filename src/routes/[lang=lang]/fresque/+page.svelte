@@ -568,11 +568,25 @@
 		margin-block-start: 1.5rem;
 	}
 
-	.duo h3,
 	.interet h3 {
 		margin: 0 0 0.75rem;
 		font-size: 1.25rem;
 		color: var(--text);
+	}
+
+	/* Chapeau de marque : le titre occupe une bande orange en tête de carte,
+	   à la taille de titre de la charte (h3, 1,5 rem). Les marges négatives
+	   annulent la gouttière de la carte pour que la bande aille d'un bord à
+	   l'autre ; `overflow: hidden` sur la carte lui redonne ses angles.
+	   Texte sur aplat orange : --on-brand, jamais blanc (2,2:1). */
+	.duo h3 {
+		margin: -2rem -2rem 1.5rem;
+		padding: 0.8rem 2rem;
+		background: var(--brand);
+		color: var(--on-brand);
+		font-size: 1.5rem;
+		font-weight: 700;
+		line-height: 1.3;
 	}
 
 	.duo p {
@@ -588,7 +602,6 @@
 	   bandeau de marque en tête, pas par un fond intégral. */
 	.duo :global(.carte-participer) {
 		border-color: var(--brand);
-		border-block-start: 4px solid var(--brand);
 	}
 
 	/* --- Formulaire d'intérêt ---------------------------------------------- */
@@ -639,6 +652,13 @@
 
 		.interet :global(.bande-interet) {
 			padding: 1.25rem;
+		}
+
+		/* La carte passe à 1,25 rem de gouttière : la bande suit. */
+		.duo h3 {
+			margin: -1.25rem -1.25rem 1.25rem;
+			padding: 0.7rem 1.25rem;
+			font-size: 1.35rem;
 		}
 	}
 
