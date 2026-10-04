@@ -40,7 +40,7 @@
 	   privé ni adresse e-mail n'y figure. Appelé au montage et jamais au
 	   prérendu : si le site est indisponible, la page reste entière et seul ce
 	   bloc disparaît. */
-	type Atelier = {
+	interface Atelier {
 		code: string
 		debutMs: number
 		mode: string
@@ -55,8 +55,8 @@
 		try {
 			const r = await fetch(`${SITE}/api/ateliers.json`)
 			if (!r.ok) return
-			const d = await r.json()
-			ateliers = (d.ateliers || []).filter((a: Atelier) => !a.complet).slice(0, 3)
+			const d = (await r.json()) as { ateliers?: Atelier[] }
+			ateliers = (d.ateliers ?? []).filter((a) => !a.complet).slice(0, 3)
 		} catch {
 			/* Site injoignable : on n'affiche rien, le bouton suffit. */
 		}

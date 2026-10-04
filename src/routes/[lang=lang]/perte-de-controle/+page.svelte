@@ -19,23 +19,6 @@
 	}
 
 	const VIDEO_ID = 'WhQViEjkg7s'
-	// Les trois cartes du hero de fresquedesrisquesdelia.org, en éventail.
-	// Visuels issus du dépôt de la fresque (Pause IA, CC BY-SA 4.0) :
-	// github.com/Romain-Deleglise/Fresque-des-risques-de-IA
-	const FRESQUE_CARTES = [
-		{ src: '/campaigns/fresque/14.webp', fr: 'Carte « Deepfake »', en: '“Deepfake” card' },
-		{
-			src: '/campaigns/fresque/08.webp',
-			fr: 'Carte « Génération d’images »',
-			en: '“Image generation” card'
-		},
-		{
-			src: '/campaigns/fresque/28.webp',
-			fr: 'Carte « Systèmes d’armes létales autonomes »',
-			en: '“Lethal autonomous weapons” card'
-		}
-	]
-
 	$: title = isEn
 		? 'We are on the brink of losing control: let’s react'
 		: 'Nous sommes au bord de la perte de contrôle : réagissons'
@@ -235,46 +218,6 @@
 		</ol>
 	</CampaignSection>
 
-	<!-- ── Découvrez notre fresque ──────────────────────────── -->
-	<CampaignSection
-		id="fresque"
-		variant="card"
-		title={isEn ? 'Discover our Fresk' : 'Découvrez notre fresque'}
-	>
-		<div class="fresque">
-			<div class="pile" aria-hidden="false">
-				{#each FRESQUE_CARTES as carte, i}
-					<img
-						class="carte carte-{i}"
-						src={carte.src}
-						alt={isEn ? carte.en : carte.fr}
-						loading="lazy"
-					/>
-				{/each}
-			</div>
-			<div class="fresque-text">
-				<p>
-					{isEn
-						? 'The AI Risks Fresk is a collaborative workshop built around a deck of cards. Participants discuss, lay out the cards and connect them to one another. Everyone leaves with an overview of AI, its risks and the solutions.'
-						: 'La fresque des risques de l’IA est un atelier collaboratif construit autour d’un jeu de cartes. Les participants discutent, disposent les cartes et les relient entre elles. Chacun repart avec une vue d’ensemble de l’IA, de ses risques et des solutions.'}
-				</p>
-				<p>
-					{isEn
-						? 'The project was carried by our volunteers all summer; it is free and open-licensed. All the information is on the cards, so anyone can run it in turn. The website lets you schedule a workshop or sign up for one. We even built a tool to run it online.'
-						: 'Le projet a été porté par nos bénévoles tout l’été, il est gratuit et en licence libre. Toutes les informations sont sur les cartes, donc n’importe qui peut l’animer à son tour. Le site permet de programmer un atelier ou de s’y inscrire. Nous sommes même allés jusqu’à développer un outil pour l’animer en ligne.'}
-				</p>
-				<Button
-					href="https://fresquedesrisquesdelia.org/"
-					alt
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					{isEn ? 'The AI Risks Fresk' : 'La fresque des risques de l’IA'}
-				</Button>
-			</div>
-		</div>
-	</CampaignSection>
-
 	<!-- ── Rejoindre un groupe local ────────────────────────── -->
 	<CampaignSection
 		id="groupes-locaux"
@@ -376,74 +319,6 @@
 
 	.measures li {
 		line-height: 1.75;
-	}
-
-	.fresque {
-		display: grid;
-		grid-template-columns: minmax(0, 1.45fr) minmax(0, 0.55fr);
-		gap: 2rem;
-		align-items: start;
-	}
-
-	.fresque .pile {
-		order: 2;
-	}
-
-	.fresque-text p {
-		margin: 0 0 1rem;
-	}
-
-	/* Éventail repris du hero de fresquedesrisquesdelia.org. */
-	/* La hauteur suit la largeur : les cartes sont positionnées en % de leur
-	   propre boîte, une hauteur fixe les laissait dépasser du bloc (et donc
-	   recouvrir le texte suivant) dès que la colonne se resserrait. */
-	.pile {
-		position: relative;
-		aspect-ratio: 1.35 / 1;
-		margin-top: 0.25rem;
-	}
-
-	.carte {
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		width: 72%;
-		aspect-ratio: 1.41 / 1;
-		object-fit: cover;
-		border-radius: var(--radius-sm);
-		box-shadow:
-			0 2px 5px rgb(27 26 23 / 16%),
-			0 14px 28px -10px rgb(27 26 23 / 35%);
-	}
-
-	.carte-0 {
-		transform: translate(-50%, -50%) rotate(-8deg) translate(-28%, 9%);
-		z-index: 1;
-	}
-
-	.carte-1 {
-		transform: translate(-50%, -50%) translateY(-8%);
-		z-index: 3;
-	}
-
-	.carte-2 {
-		transform: translate(-50%, -50%) rotate(8deg) translate(28%, 9%);
-		z-index: 2;
-	}
-
-	@media (max-width: 820px) {
-		.fresque {
-			grid-template-columns: 1fr;
-		}
-
-		.fresque .pile {
-			order: 0;
-			aspect-ratio: 1.78 / 1;
-		}
-
-		.carte {
-			width: 54%;
-		}
 	}
 
 	.cta-row {
