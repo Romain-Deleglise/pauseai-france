@@ -221,7 +221,8 @@
 		{/if}
 
 		<div class="duo">
-			<Card variant="plain" class="carte-participer">
+			<Card class="carte-participer">
+				<span class="filet" aria-hidden="true"></span>
 				<h3>{isEn ? 'Attend' : 'Participer'}</h3>
 				<p>
 					{isEn
@@ -235,12 +236,13 @@
 				</p>
 			</Card>
 
-			<Card variant="plain" class="carte-animer">
+			<Card class="carte-animer">
+				<span class="filet" aria-hidden="true"></span>
 				<h3>{isEn ? 'Facilitate' : 'Animer'}</h3>
 				<p>
 					{isEn
-						? 'Everything you need to facilitate is freely available: the facilitation guide, the deck of cards and the online tool. You can schedule your workshop directly on the website. In public mode it appears in the list of workshops and anyone can sign up. In private mode, only the people you send the link to can take part.'
-						: 'Tout le nécessaire pour animer est en accès libre : le guide d’animation, le jeu de cartes et l’outil en ligne. Vous pouvez programmer votre atelier directement sur le site. En mode public, il apparaît dans la liste des ateliers et chacun peut s’y inscrire. En mode privé, seules les personnes à qui vous transmettez le lien y ont accès.'}
+						? 'Everything you need is freely available: the facilitation guide, the deck of cards and the online tool. You schedule your workshop directly on the website, open to all or by invitation only.'
+						: 'Tout le nécessaire est en accès libre : le guide d’animation, le jeu de cartes et l’outil en ligne. Vous programmez votre atelier directement sur le site, ouvert à tous ou sur invitation.'}
 				</p>
 				<p class="action">
 					<Button href="{SITE}/devenir-animateur/" target="_blank" rel="noopener noreferrer">
@@ -550,22 +552,17 @@
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
 		gap: 1.5rem;
-		/* Chaque carte épouse son texte. Étirées à la même hauteur, la plus
-		   courte laissait un grand vide au-dessus de son bouton. */
-		align-items: start;
 	}
 
 	.duo :global(.ui-card) {
 		display: flex;
 		flex-direction: column;
-		background: var(--bg-card);
-		border-color: var(--border);
-		box-shadow: var(--shadow-card);
-		overflow: hidden;
 	}
 
+	/* Les deux boutons tombent sur la même ligne. */
 	.duo .action {
-		margin-block-start: 1.5rem;
+		margin-block-start: auto;
+		padding-block-start: 1.5rem;
 	}
 
 	.interet h3 {
@@ -574,19 +571,27 @@
 		color: var(--text);
 	}
 
-	/* Chapeau de marque : le titre occupe une bande orange en tête de carte,
-	   à la taille de titre de la charte (h3, 1,5 rem). Les marges négatives
-	   annulent la gouttière de la carte pour que la bande aille d'un bord à
-	   l'autre ; `overflow: hidden` sur la carte lui redonne ses angles.
-	   Texte sur aplat orange : --on-brand, jamais blanc (2,2:1). */
-	.duo h3 {
-		margin: -2rem -2rem 1.5rem;
-		padding: 0.8rem 2rem;
+	/* Les deux cartes sont la carte de la charte, à hauteur égale. L'accent de
+	   marque passe par le filet — le motif signature de la charte, déjà en tête
+	   de page — plutôt que par un aplat : une bande orange pleine sur chacune
+	   saturait le bloc et pesait plus lourd que la section elle-même.
+	   Le vide au-dessus d'un bouton ne se règle pas en CSS mais dans le texte :
+	   les deux paragraphes font désormais la même longueur. */
+	.duo .filet {
+		display: block;
+		inline-size: 2.5rem;
+		block-size: 4px;
+		margin-block-end: 1.1rem;
+		border-radius: var(--radius-pill);
 		background: var(--brand);
-		color: var(--on-brand);
+	}
+
+	.duo h3 {
+		margin: 0 0 0.75rem;
 		font-size: 1.5rem;
 		font-weight: 700;
-		line-height: 1.3;
+		line-height: 1.25;
+		color: var(--text);
 	}
 
 	.duo p {
@@ -595,11 +600,8 @@
 		line-height: 1.65;
 	}
 
-	/* « Participer » est l'action principale, mais l'aplat orange plein du
-	   croquis pesait lourd : cinq lignes de texte foncé sur un bloc saturé, et
-	   un grand vide orange au-dessus du bouton parce que l'autre carte est plus
-	   longue. On garde la carte de la charte et on marque la priorité par un
-	   bandeau de marque en tête, pas par un fond intégral. */
+	/* « Participer » est l'action principale : seule sa bordure prend l'orange,
+	   accent discret plutôt qu'un second aplat. */
 	.duo :global(.carte-participer) {
 		border-color: var(--brand);
 	}
@@ -654,10 +656,7 @@
 			padding: 1.25rem;
 		}
 
-		/* La carte passe à 1,25 rem de gouttière : la bande suit. */
 		.duo h3 {
-			margin: -1.25rem -1.25rem 1.25rem;
-			padding: 0.7rem 1.25rem;
 			font-size: 1.35rem;
 		}
 	}
