@@ -1,7 +1,8 @@
 <script lang="ts">
 	import PostMeta from '$components/PostMeta.svelte'
 	import Button from '$components/Button.svelte'
-	import { Card, SectionTitle } from '$components/ui'
+	import { Badge, Card, SectionTitle } from '$components/ui'
+	import { Check, Presentation, Users } from 'lucide-svelte'
 	import { onMount } from 'svelte'
 	import type { PageData } from './$types'
 
@@ -220,15 +221,32 @@
 			</ul>
 		{/if}
 
+		<!-- Deux cartes, deux rôles : « Participer » est l'action principale
+		     (encadré accent de la charte, bouton plein, parcours en étapes) ;
+		     « Animer » s'adresse à qui veut aller plus loin (carte standard,
+		     bouton secondaire, contenu du kit en liste à cocher). -->
 		<div class="duo">
-			<Card class="carte-participer">
-				<span class="filet" aria-hidden="true"></span>
+			<Card variant="accent" class="carte-participer">
+				<div class="tete">
+					<span class="picto plein" aria-hidden="true"><Users size="1.5rem" /></span>
+					<Badge>{isEn ? 'No prior knowledge' : 'Sans prérequis'}</Badge>
+				</div>
 				<h3>{isEn ? 'Attend' : 'Participer'}</h3>
-				<p>
-					{isEn
-						? 'Scheduled workshops, online as well as in person, are listed on the Fresk website. Pick the one that suits you and sign up. You then get all the details by e-mail.'
-						: 'Les ateliers programmés, en ligne comme en présentiel, sont listés sur le site de la Fresque. Il suffit de choisir celui qui vous convient et de vous inscrire. Vous recevez ensuite toutes les informations par e-mail.'}
-				</p>
+				<ol class="etapes">
+					<li>
+						{isEn
+							? 'Pick a workshop, online or near you.'
+							: 'Choisissez un atelier, en ligne ou près de chez vous.'}
+					</li>
+					<li>
+						{isEn ? 'Sign up on the Fresk website.' : 'Inscrivez-vous sur le site de la Fresque.'}
+					</li>
+					<li>
+						{isEn
+							? 'You get all the details by e-mail.'
+							: 'Vous recevez toutes les informations par e-mail.'}
+					</li>
+				</ol>
 				<p class="action">
 					<Button href="{SITE}/participer/" target="_blank" rel="noopener noreferrer">
 						{isEn ? 'See the workshops' : 'Voir les ateliers'}
@@ -237,15 +255,32 @@
 			</Card>
 
 			<Card class="carte-animer">
-				<span class="filet" aria-hidden="true"></span>
+				<div class="tete">
+					<span class="picto contour" aria-hidden="true"><Presentation size="1.5rem" /></span>
+					<Badge variant="outline">{isEn ? 'Freely available' : 'En accès libre'}</Badge>
+				</div>
 				<h3>{isEn ? 'Facilitate' : 'Animer'}</h3>
-				<p>
+				<ul class="kit">
+					<li>
+						<Check size="1.1rem" aria-hidden="true" />
+						{isEn ? 'The facilitation guide' : 'Le guide d’animation'}
+					</li>
+					<li>
+						<Check size="1.1rem" aria-hidden="true" />
+						{isEn ? 'The deck of cards, ready to print' : 'Le jeu de cartes, prêt à imprimer'}
+					</li>
+					<li>
+						<Check size="1.1rem" aria-hidden="true" />
+						{isEn ? 'The tool to run it online' : 'L’outil pour animer en ligne'}
+					</li>
+				</ul>
+				<p class="note">
 					{isEn
-						? 'Everything you need is freely available: the facilitation guide, the deck of cards and the online tool. You schedule your workshop directly on the website, open to all or by invitation only.'
-						: 'Tout le nécessaire est en accès libre : le guide d’animation, le jeu de cartes et l’outil en ligne. Vous programmez votre atelier directement sur le site, ouvert à tous ou sur invitation.'}
+						? 'You schedule your workshop on the website, open to all or by invitation only.'
+						: 'Vous programmez votre atelier sur le site, ouvert à tous ou sur invitation.'}
 				</p>
 				<p class="action">
-					<Button href="{SITE}/devenir-animateur/" target="_blank" rel="noopener noreferrer">
+					<Button href="{SITE}/devenir-animateur/" alt target="_blank" rel="noopener noreferrer">
 						{isEn ? 'Become a facilitator' : 'Devenir animateur·ice'}
 					</Button>
 				</p>
@@ -571,39 +606,111 @@
 		color: var(--text);
 	}
 
-	/* Les deux cartes sont la carte de la charte, à hauteur égale. L'accent de
-	   marque passe par le filet — le motif signature de la charte, déjà en tête
-	   de page — plutôt que par un aplat : une bande orange pleine sur chacune
-	   saturait le bloc et pesait plus lourd que la section elle-même.
-	   Le vide au-dessus d'un bouton ne se règle pas en CSS mais dans le texte :
-	   les deux paragraphes font désormais la même longueur. */
-	.duo .filet {
-		display: block;
-		inline-size: 2.5rem;
-		block-size: 4px;
-		margin-block-end: 1.1rem;
-		border-radius: var(--radius-pill);
+	/* En-tête de carte : pictogramme et pastille. Le pictogramme distingue les
+	   deux rôles au premier coup d'œil : aplat orange pour l'action principale,
+	   contour pour la seconde. */
+	.tete {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		margin-block-end: 1.25rem;
+	}
+
+	.picto {
+		display: inline-grid;
+		place-items: center;
+		inline-size: 3rem;
+		block-size: 3rem;
+		border-radius: var(--radius-md);
+	}
+
+	.picto.plein {
 		background: var(--brand);
+		color: var(--on-brand);
+	}
+
+	.picto.contour {
+		border: 2px solid var(--brand);
+		color: var(--brand-subtle);
 	}
 
 	.duo h3 {
-		margin: 0 0 0.75rem;
+		margin: 0 0 1rem;
 		font-size: 1.5rem;
 		font-weight: 700;
 		line-height: 1.25;
 		color: var(--text);
 	}
 
-	.duo p {
-		margin: 0;
+	.duo p,
+	.duo li {
 		color: var(--text-2);
-		line-height: 1.65;
+		line-height: 1.6;
 	}
 
-	/* « Participer » est l'action principale : seule sa bordure prend l'orange,
-	   accent discret plutôt qu'un second aplat. */
+	.duo p {
+		margin: 0;
+	}
+
+	.etapes,
+	.kit {
+		display: grid;
+		gap: 0.75rem;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	/* Parcours en étapes : pastilles numérotées pleines, comme les pastilles
+	   de chronologie de la charte. */
+	.etapes {
+		counter-reset: etape;
+	}
+
+	.etapes li {
+		display: flex;
+		gap: 0.75rem;
+		align-items: baseline;
+		counter-increment: etape;
+	}
+
+	.etapes li::before {
+		content: counter(etape);
+		flex: none;
+		display: inline-grid;
+		place-items: center;
+		inline-size: 1.6rem;
+		block-size: 1.6rem;
+		border-radius: 50%;
+		background: var(--brand);
+		color: var(--on-brand);
+		font-size: 0.85rem;
+		font-weight: 700;
+		transform: translateY(0.3rem);
+	}
+
+	.kit li {
+		display: flex;
+		gap: 0.6rem;
+		align-items: flex-start;
+	}
+
+	.kit :global(svg) {
+		flex: none;
+		margin-block-start: 0.25rem;
+		color: var(--brand-subtle);
+	}
+
+	.note {
+		margin-block-start: 1.25rem;
+		font-size: 0.95rem;
+	}
+
+	/* L'encadré accent de la charte, à 2px comme le Callout : l'action
+	   principale se lit avant la seconde. */
 	.duo :global(.carte-participer) {
-		border-color: var(--brand);
+		border-width: 2px;
 	}
 
 	/* --- Formulaire d'intérêt ---------------------------------------------- */
@@ -616,7 +723,7 @@
 	   voile d'orange construit sur `--brand-rgb`, que la charte fournit
 	   justement pour les `rgba()`. */
 	.interet :global(.bande-interet) {
-		background: rgb(var(--brand-rgb) / 10%);
+		background: rgba(var(--brand-rgb), 0.1);
 		border-color: var(--brand);
 		border-radius: var(--radius-lg);
 		box-shadow: var(--shadow-card);
