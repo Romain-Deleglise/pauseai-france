@@ -99,6 +99,15 @@ export const staticPressCoverage: PressCoverage[] = [
 		visible: true
 	},
 	{
+		id: 'static-radios-libres-perigord-2026-05-01',
+		title: 'Clémence Peyrot de l’association Pause IA, à la manif du 1er mai Périgueux',
+		source: 'Radios Libres en Périgord',
+		date: '2026-05-01',
+		url: 'https://www.radioslibresenperigord.com/audio/clemence-peyrot-de-lassociation-pause-ia-a-la-manif-du-1er-mai-perigueux/',
+		order: 0,
+		visible: true
+	},
+	{
 		id: 'static-dordogne-libre-2026-05',
 		title:
 			"« La question de la sécurité n'est pas posée » — le collectif Pause IA demande un moratoire sur le développement de l'intelligence artificielle",
