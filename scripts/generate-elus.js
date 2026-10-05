@@ -86,17 +86,43 @@ const CHECK_PHOTOS = process.argv.includes('--check-photos')
 
 const UA = { 'User-Agent': 'pauseia.fr elus generator (contact: campagne@pauseia.fr)' }
 
-async function fetchJson(url) {
-	const res = await fetch(url, { headers: UA })
-	if (!res.ok) throw new Error(`HTTP ${res.status} pour ${url}`)
-	return res.json()
+// Le job ne tourne qu'une fois par semaine (timer systemd, lundi 4 h) et une
+// seule requête ratée faisait échouer toute la mise à jour : coupure réseau,
+// 5xx passager de data.gouv ou du Sénat, connexion qui pend. On réessaie, et on
+// borne chaque requête dans le temps — sans délai, une connexion suspendue
+// bloquait le job indéfiniment.
+const FETCH_TIMEOUT_MS = 30_000
+const FETCH_ESSAIS = 3
+
+async function fetchAvecReprise(url, enJson) {
+	let derniere
+	for (let essai = 1; essai <= FETCH_ESSAIS; essai++) {
+		try {
+			const res = await fetch(url, {
+				headers: UA,
+				signal: AbortSignal.timeout(FETCH_TIMEOUT_MS)
+			})
+			if (!res.ok) {
+				const err = new Error(`HTTP ${res.status} pour ${url}`)
+				// 4xx (sauf 429) : la ressource a bougé ou n'existe plus, réessayer
+				// n'y changera rien — on échoue tout de suite, le message est parlant.
+				if (res.status < 500 && res.status !== 429) err.definitif = true
+				throw err
+			}
+			return enJson ? res.json() : res.text()
+		} catch (err) {
+			derniere = err
+			if (err.definitif || essai === FETCH_ESSAIS) break
+			const attente = 2000 * 2 ** (essai - 1)
+			console.warn(`⚠️  ${err.message} — nouvel essai dans ${attente / 1000}s`)
+			await new Promise((r) => setTimeout(r, attente))
+		}
+	}
+	throw derniere
 }
 
-async function fetchText(url) {
-	const res = await fetch(url, { headers: UA })
-	if (!res.ok) throw new Error(`HTTP ${res.status} pour ${url}`)
-	return res.text()
-}
+const fetchJson = (url) => fetchAvecReprise(url, true)
+const fetchText = (url) => fetchAvecReprise(url, false)
 
 /**
  * Construit la table code postal → liste de circonscriptions { departement, circo }.
