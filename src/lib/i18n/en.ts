@@ -80,6 +80,8 @@ export default {
 		hero_title: 'To keep AI under control,',
 		hero_highlight: "let's act now",
 		hero_cta: 'Take action',
+		bande_agir_titre: 'Take action',
+		bande_informer_titre: 'Learn more',
 		campaigns_title: 'Our active campaigns',
 		campaigns_subtitle: 'Speak up, write, testify: every action counts.',
 		campaigns_cta: 'Take part',

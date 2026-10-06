@@ -34,7 +34,9 @@
 </script>
 
 <section aria-labelledby={label_id}>
-	<UnderlinedTitle id={label_id}>{lang === 'en' ? 'Our videos' : 'Nos vidéos'}</UnderlinedTitle>
+	<UnderlinedTitle id={label_id} as="h3"
+		>{lang === 'en' ? 'Our videos' : 'Nos vidéos'}</UnderlinedTitle
+	>
 	<div class="video-grid">
 		{#each displayVideos as video (video.id)}
 			<YouTubeEmbed id={video.youtubeId} title={video.title} />

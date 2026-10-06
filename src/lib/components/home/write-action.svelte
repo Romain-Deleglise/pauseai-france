@@ -52,7 +52,7 @@
 	</Fly>
 
 	<Fly>
-		<UnderlinedTitle id={label_id} as="h2">
+		<UnderlinedTitle id={label_id} as="h3">
 			{isEn ? 'Write to my representatives' : 'Écrire à mes élus'}
 		</UnderlinedTitle>
 	</Fly>
