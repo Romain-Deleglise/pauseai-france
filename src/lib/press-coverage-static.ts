@@ -1,15 +1,37 @@
 import type { PressCoverage } from '$lib/notion'
+import { pressePerteDeControle } from '$lib/data/presse-perte-de-controle'
+
+// Retours presse de la campagne « Perte de contrôle » : repris de la liste de
+// la page campagne (source unique). Un élément sans date n'est pas repris.
+const perteDeControleCoverage: PressCoverage[] = pressePerteDeControle.flatMap((group) =>
+	group.articles.flatMap((article) =>
+		article.date
+			? [
+					{
+						id: `perte-de-controle-${article.url}`,
+						title: article.title,
+						source: article.video ? `${article.source} (vidéo)` : article.source,
+						date: article.date,
+						url: article.url,
+						order: 0,
+						visible: true
+					}
+				]
+			: []
+	)
+)
 
 /**
- * Revue de presse de SECOURS (fichier statique du dépôt).
+ * Revue de presse affichée sur /presse (fichier statique du dépôt).
  *
- * Depuis le branchement de la base Notion « Revue de presse »
- * (NOTION_PRESS_COVERAGE_DATABASE_ID), la page presse utilise Notion en
- * priorité et ne retombe sur cette liste QUE si la base Notion est vide ou non
- * configurée. Pour ajouter un article au quotidien, passer par Notion (voir
- * docs/espace-presse.md), pas par ce fichier.
+ * La page lit d'abord la base Notion « Revue de presse »
+ * (NOTION_PRESS_COVERAGE_DATABASE_ID) et ne retombe sur cette liste que si la
+ * base est vide ou non configurée. Tant qu'aucune base n'est branchée, c'est
+ * donc ici qu'on ajoute un article (voir docs/espace-presse.md).
  */
 export const staticPressCoverage: PressCoverage[] = [
+	...perteDeControleCoverage,
+
 	// ── Cyberattaque IA / OpenAI – Hugging Face (juillet 2026) ──────────────
 	{
 		id: 'static-01net-cyberattaque-ia-2026-07-27',

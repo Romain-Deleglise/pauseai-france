@@ -90,7 +90,7 @@
 				{ href: `${prefix}/ressources`, label: t.nav.liens_utiles },
 				{ href: `${prefix}/newsletters`, label: t.nav.newsletter },
 				{ href: 'https://pauseia.substack.com/', label: t.nav.blog, external: true },
-				{ href: 'https://fresquedesrisquesdelia.org/', label: t.nav.fresque, external: true }
+				{ href: `${prefix}/fresque`, label: t.nav.fresque }
 				// « Les dangers de l'IA » est retiré du menu le temps de retravailler le
 				// discours. La route reste en place : les liens existants fonctionnent.
 			]
@@ -189,6 +189,7 @@
 <header class="site-header" class:scrolled class:homepage={onHomepage}>
 	<!-- Banner behavior:
 		 - Homepage: hidden while hero is visible, appears when scrolled past hero
+		   (the nav itself is always visible)
 		 - Other pages: visible at top, hidden when scrolled (original behavior)
 	-->
 	<div class="banner-wrapper" class:scrolled class:homepage={onHomepage}>
@@ -204,7 +205,7 @@
 	</div>
 
 	{#if mounted || !onHomepage}
-		<nav in:fade={{ duration: 400, delay: 100 }} class:scrolled class:homepage={onHomepage}>
+		<nav in:fade={{ duration: 400, delay: 100 }}>
 			<a href={prefix} class="logo">
 				<div class="big-logo">
 					<Logo animate fill_pause={$theme === 'dark' ? 'white' : 'black'} />
@@ -494,11 +495,10 @@
 		box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
 	}
 
-	/* On homepage before scroll, header is hidden so hero is full-screen */
-	.site-header.homepage:not(.scrolled) {
-		opacity: 0;
-		pointer-events: none;
-		border-bottom-color: transparent;
+	/* On homepage the nav stays visible over the hero: give it an opaque
+	   background so it stays readable on top of the photo marquee */
+	.site-header.homepage {
+		background: var(--bg);
 	}
 
 	/* ─── Banner slide-away on scroll ───────────────────────────── */
@@ -537,14 +537,8 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		padding: 0.85rem 1rem;
-		transition: padding 0.25s ease;
-	}
-
-	/* Compact nav when scrolled (mobile) */
-	nav.scrolled {
-		padding-top: 0.55rem;
-		padding-bottom: 0.55rem;
+		/* Same height at the top of the page and once scrolled */
+		padding: 0.55rem 1rem;
 	}
 
 	.nav-right {
@@ -984,23 +978,13 @@
 		}
 
 		nav {
-			padding: 0.85rem 2rem;
-		}
-
-		nav.scrolled {
-			padding-top: 0.6rem;
-			padding-bottom: 0.6rem;
+			padding: 0.6rem 2rem;
 		}
 	}
 
 	@media (min-width: 768px) {
 		nav {
-			padding: 1.25rem 4rem;
-		}
-
-		nav.scrolled {
-			padding-top: 0.7rem;
-			padding-bottom: 0.7rem;
+			padding: 0.7rem 4rem;
 		}
 	}
 
@@ -1016,12 +1000,7 @@
 		}
 
 		nav {
-			padding: 1.25rem 6rem;
-		}
-
-		nav.scrolled {
-			padding-top: 0.7rem;
-			padding-bottom: 0.7rem;
+			padding: 0.7rem 6rem;
 		}
 	}
 
