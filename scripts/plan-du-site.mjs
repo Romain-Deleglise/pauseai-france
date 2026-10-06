@@ -22,6 +22,8 @@ import { fileURLToPath } from 'node:url'
 
 const RACINE = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const SORTIE = join(RACINE, 'docs/plan-du-site.md')
+// Mêmes données, servies à la page interne /plan-du-site : une seule source.
+const SORTIE_JSON = join(RACINE, 'src/lib/data/plan-du-site.json')
 
 const lire = (p) => readFile(join(RACINE, p), 'utf8')
 
@@ -42,27 +44,38 @@ async function libelles() {
 		const i = src.indexOf(`\t${bloc}: {`)
 		if (i < 0) continue
 		const fin = src.indexOf('\n\t},', i)
-		for (const m of src.slice(i, fin).matchAll(/^\t\t(\w+):\s*'((?:[^'\\]|\\.)*)'/gm)) {
-			out[`${bloc}.${m[1]}`] = m[2].replace(/\\'/g, "'")
+		// Les deux styles de guillemets : une valeur contenant une apostrophe est
+		// écrite en guillemets doubles (« Offres d'emploi »), et n'était pas lue.
+		const motif = /^\t\t(\w+):\s*(?:'((?:[^'\\]|\\.)*)'|"((?:[^"\\]|\\.)*)")/gm
+		for (const m of src.slice(i, fin).matchAll(motif)) {
+			out[`${bloc}.${m[1]}`] = (m[2] ?? m[3]).replace(/\\(['"])/g, '$1')
 		}
 	}
 	return out
 }
 
-/** Pages réelles, chemin sans préfixe de langue. */
+/* Pages réelles. Toutes ne vivent pas sous [lang=lang] : quelques-unes sont
+   françaises et sans préfixe (/recrutement, /guide-recrutement…). On retient la
+   distinction, sinon un lien vers /fr/guide-recrutement renvoie 404 — le build
+   l'a d'ailleurs refusé. `localise` dit si le chemin accepte un préfixe. */
+const RACINES = new Set()
+
 async function pages() {
 	const fichiers = await parcourir('src/routes', (n) => n === '+page.svelte' || n === '+page.md')
-	return fichiers
-		.map((f) =>
-			f
-				.replace('src/routes', '')
-				.replace(/\/\+page\.(svelte|md)$/, '')
-				.replace('/[lang=lang]', '')
-		)
-		.map((p) => p || '/')
-		.filter((p) => !p.startsWith('/api'))
-		.sort()
+	const out = []
+	for (const f of fichiers) {
+		const brut = f.replace('src/routes', '').replace(/\/\+page\.(svelte|md)$/, '')
+		if (brut.startsWith('/api')) continue
+		const localise = brut.includes('/[lang=lang]')
+		const chemin = brut.replace('/[lang=lang]', '') || '/'
+		if (!localise) RACINES.add(chemin)
+		out.push(chemin)
+	}
+	return [...new Set(out)].sort()
 }
+
+/** Adresse réellement cliquable d'un chemin, selon qu'il est localisé ou non. */
+const urlDe = (chemin, prefixe = '/fr') => (RACINES.has(chemin) ? chemin : prefixe + chemin)
 
 /** Groupes du menu principal, dans l'ordre d'affichage. */
 async function menu(lib) {
@@ -285,6 +298,30 @@ const date =
 	datePrecedente && sansDate(gabarit) === sansDate(precedent) ? datePrecedente : aujourdHui
 
 await writeFile(SORTIE, gabarit.replace(MARQUE_DATE, date))
+
+/* La page /plan-du-site lit ce JSON. Le document Markdown sert à la lecture et
+   au commentaire sur GitHub, la page à la consultation quotidienne : les deux
+   viennent du même calcul, ils ne peuvent donc pas se contredire. */
+await writeFile(
+	SORTIE_JSON,
+	JSON.stringify(
+		{
+			genere: date,
+			groupes,
+			colonnes,
+			orphelines: orphelines.map((chemin) => ({ chemin, url: urlDe(chemin) })),
+			dynamiques,
+			articles: listeArticles,
+			total: {
+				pages: statiques.length,
+				dynamiques: dynamiques.length,
+				articles: listeArticles.length
+			}
+		},
+		null,
+		'\t'
+	) + '\n'
+)
 console.log(
 	`✓ docs/plan-du-site.md — ${statiques.length} pages, ${orphelines.length} hors menu, ${listeArticles.length} articles`
 )

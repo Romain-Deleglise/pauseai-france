@@ -1,0 +1,463 @@
+{
+	"genere": "2026-10-06",
+	"groupes": [
+		{
+			"label": "Comprendre",
+			"items": [
+				{
+					"href": "#faq",
+					"label": "FAQ",
+					"externe": false
+				},
+				{
+					"href": "/ressources",
+					"label": "Ressources",
+					"externe": false
+				},
+				{
+					"href": "/newsletters",
+					"label": "Newsletter",
+					"externe": false
+				},
+				{
+					"href": "https://pauseia.substack.com/",
+					"label": "Blog",
+					"externe": true
+				},
+				{
+					"href": "/fresque",
+					"label": "La fresque des risques de l’IA",
+					"externe": false
+				}
+			]
+		},
+		{
+			"label": "Agir",
+			"items": [
+				{
+					"href": "/ecrire-a-mes-elus",
+					"label": "Écrire aux élus et à la presse",
+					"externe": false
+				},
+				{
+					"href": "/declaration",
+					"label": "Signer la déclaration",
+					"externe": false
+				},
+				{
+					"href": "/agir",
+					"label": "Comment agir ?",
+					"externe": false
+				},
+				{
+					"href": "/groupes-locaux",
+					"label": "Groupes locaux",
+					"externe": false
+				}
+			]
+		},
+		{
+			"label": "Campagnes",
+			"items": [
+				{
+					"href": "/campagnes",
+					"label": "Toutes nos campagnes",
+					"externe": false
+				},
+				{
+					"href": "/perte-de-controle",
+					"label": "Au bord de la perte de contrôle",
+					"externe": false
+				},
+				{
+					"href": "/emploi-ia",
+					"label": "L’IA ne détruira pas QUE votre emploi",
+					"externe": false
+				}
+			]
+		},
+		{
+			"label": "Événements",
+			"items": [
+				{
+					"href": "/senat2025",
+					"label": "Colloque Sénat 2025",
+					"externe": false
+				},
+				{
+					"href": "https://controleia.org/solutions/",
+					"label": "Forum solutions 2025",
+					"externe": true
+				}
+			]
+		},
+		{
+			"label": "À propos",
+			"items": [
+				{
+					"href": "/qui-sommes-nous",
+					"label": "Qui sommes-nous ?",
+					"externe": false
+				},
+				{
+					"href": "/propositions",
+					"label": "Que demandons-nous ?",
+					"externe": false
+				},
+				{
+					"href": "/presse",
+					"label": "Espace presse",
+					"externe": false
+				}
+			]
+		}
+	],
+	"colonnes": [
+		{
+			"label": "Navigation",
+			"liens": [
+				{
+					"href": "#faq",
+					"label": "FAQ",
+					"externe": false
+				},
+				{
+					"href": "/propositions",
+					"label": "Propositions",
+					"externe": false
+				},
+				{
+					"href": "/newsletters",
+					"label": "Newsletters",
+					"externe": false
+				},
+				{
+					"href": "https://pauseia.substack.com/",
+					"label": "Blog",
+					"externe": true
+				},
+				{
+					"href": "/fresque",
+					"label": "La fresque des risques de l’IA",
+					"externe": false
+				},
+				{
+					"href": "/agir",
+					"label": "Agir",
+					"externe": false
+				},
+				{
+					"href": "/dons",
+					"label": "Donner",
+					"externe": false
+				},
+				{
+					"href": "/rejoindre",
+					"label": "Nous rejoindre",
+					"externe": false
+				},
+				{
+					"href": "/qui-sommes-nous",
+					"label": "Qui sommes-nous ?",
+					"externe": false
+				}
+			]
+		},
+		{
+			"label": "Agir",
+			"liens": [
+				{
+					"href": "/ecrire-a-mes-elus",
+					"label": "Écrire aux élus et à la presse",
+					"externe": false
+				},
+				{
+					"href": "/declaration",
+					"label": "Signer la déclaration",
+					"externe": false
+				},
+				{
+					"href": "/rejoindre",
+					"label": "Rejoindre Pause IA",
+					"externe": false
+				},
+				{
+					"href": "/agir",
+					"label": "Comment pouvez-vous aider ?",
+					"externe": false
+				},
+				{
+					"href": "/dons",
+					"label": "Faire un don",
+					"externe": false
+				},
+				{
+					"href": "https://pauseai-shop.fourthwall.com",
+					"label": "Marchandises",
+					"externe": true
+				},
+				{
+					"href": "https://pauseai.info/protests",
+					"label": "Manifestations",
+					"externe": true
+				},
+				{
+					"href": "/recrutement-emploi",
+					"label": "Offres d'emploi",
+					"externe": false
+				}
+			]
+		},
+		{
+			"label": "Autres",
+			"liens": [
+				{
+					"href": "/presse",
+					"label": "Presse",
+					"externe": false
+				},
+				{
+					"href": "/financements",
+					"label": "Financements",
+					"externe": false
+				},
+				{
+					"href": "/mentions-legales",
+					"label": "Mentions légales",
+					"externe": false
+				},
+				{
+					"href": "/politique-de-confidentialite",
+					"label": "Politique de confidentialité",
+					"externe": false
+				},
+				{
+					"href": "/charte-des-valeurs",
+					"label": "Charte des valeurs",
+					"externe": false
+				},
+				{
+					"href": "https://creativecommons.org/licenses/by/4.0/deed.fr",
+					"label": "Licence : CC-BY 4.0",
+					"externe": true
+				}
+			]
+		}
+	],
+	"orphelines": [
+		{
+			"chemin": "/campagne-modele",
+			"url": "/fr/campagne-modele"
+		},
+		{
+			"chemin": "/declaration/confirmer",
+			"url": "/fr/declaration/confirmer"
+		},
+		{
+			"chemin": "/declaration/signataires",
+			"url": "/fr/declaration/signataires"
+		},
+		{
+			"chemin": "/emploi-ia/ce-que-lia-fait-au-travail",
+			"url": "/fr/emploi-ia/ce-que-lia-fait-au-travail"
+		},
+		{
+			"chemin": "/emploi-ia/merci",
+			"url": "/fr/emploi-ia/merci"
+		},
+		{
+			"chemin": "/emploi-ia/pas-de-pilote",
+			"url": "/fr/emploi-ia/pas-de-pilote"
+		},
+		{
+			"chemin": "/emploi-ia/questionnaire",
+			"url": "/fr/emploi-ia/questionnaire"
+		},
+		{
+			"chemin": "/emploi-ia/remplacer-humain",
+			"url": "/fr/emploi-ia/remplacer-humain"
+		},
+		{
+			"chemin": "/g7-2026",
+			"url": "/fr/g7-2026"
+		},
+		{
+			"chemin": "/geneve-2026",
+			"url": "/fr/geneve-2026"
+		},
+		{
+			"chemin": "/guide-recrutement",
+			"url": "/guide-recrutement"
+		},
+		{
+			"chemin": "/merci",
+			"url": "/fr/merci"
+		},
+		{
+			"chemin": "/municipales-2026",
+			"url": "/fr/municipales-2026"
+		},
+		{
+			"chemin": "/plan-du-site",
+			"url": "/fr/plan-du-site"
+		},
+		{
+			"chemin": "/posts",
+			"url": "/fr/posts"
+		},
+		{
+			"chemin": "/recrutement",
+			"url": "/recrutement"
+		},
+		{
+			"chemin": "/sommet-ia-2026",
+			"url": "/fr/sommet-ia-2026"
+		},
+		{
+			"chemin": "/une-ia-sest-echappee",
+			"url": "/fr/une-ia-sest-echappee"
+		}
+	],
+	"dynamiques": [
+		"/[slug]",
+		"/dangers/[slug]",
+		"/newsletters/[slug]",
+		"/presse/local/[slug]",
+		"/presse/national/[slug]"
+	],
+	"articles": [
+		{
+			"slug": "/agir",
+			"titre": "Passez à l’action"
+		},
+		{
+			"slug": "/charte-des-valeurs",
+			"titre": "Charte des valeurs"
+		},
+		{
+			"slug": "/course-et-securite-ne-sont-plus-compatibles",
+			"titre": "Non, course et sécurité ne sont plus compatibles"
+		},
+		{
+			"slug": "/dangers/economiques-et-materiels",
+			"titre": "Dangers économiques et matériels"
+		},
+		{
+			"slug": "/dangers/pour-l'humanite",
+			"titre": "Dangers pour l’humanité"
+		},
+		{
+			"slug": "/dangers/pour-la-societe",
+			"titre": "Dangers pour la société"
+		},
+		{
+			"slug": "/dangers/pour-les-individus",
+			"titre": "Dangers pour les individus"
+		},
+		{
+			"slug": "/en/agir",
+			"titre": "Take Action"
+		},
+		{
+			"slug": "/en/charte-des-valeurs",
+			"titre": "Values Charter"
+		},
+		{
+			"slug": "/en/dangers/economic-and-material",
+			"titre": "Economic and Material Dangers"
+		},
+		{
+			"slug": "/en/dangers/for-humanity",
+			"titre": "Dangers for Humanity"
+		},
+		{
+			"slug": "/en/dangers/for-individuals",
+			"titre": "Dangers for Individuals"
+		},
+		{
+			"slug": "/en/dangers/for-society",
+			"titre": "Dangers for Society"
+		},
+		{
+			"slug": "/en/faq",
+			"titre": "FAQ"
+		},
+		{
+			"slug": "/en/financements",
+			"titre": "Our funding"
+		},
+		{
+			"slug": "/en/incident-openai-hugging-face",
+			"titre": "An AI escaped its test and hacked a company"
+		},
+		{
+			"slug": "/en/mentions-legales",
+			"titre": "Legal Notices"
+		},
+		{
+			"slug": "/en/politique-de-confidentialite",
+			"titre": "Privacy Policy"
+		},
+		{
+			"slug": "/en/propositions",
+			"titre": "Our Proposals"
+		},
+		{
+			"slug": "/en/qui-sommes-nous",
+			"titre": "Who Are We?"
+		},
+		{
+			"slug": "/faq",
+			"titre": "FAQ"
+		},
+		{
+			"slug": "/financements",
+			"titre": "Notre financement"
+		},
+		{
+			"slug": "/incident-openai-hugging-face",
+			"titre": "Une IA s’est échappée de son test et a piraté une entreprise"
+		},
+		{
+			"slug": "/mentions-legales",
+			"titre": "Mentions légales"
+		},
+		{
+			"slug": "/personne-ne-controle-lia",
+			"titre": "Personne ne contrôle l’IA, le danger est imminent"
+		},
+		{
+			"slug": "/politique-de-confidentialite",
+			"titre": "Politique de confidentialité"
+		},
+		{
+			"slug": "/propositions",
+			"titre": "Que demandons-nous ?"
+		},
+		{
+			"slug": "/qui-sommes-nous",
+			"titre": "Qui sommes-nous ?"
+		},
+		{
+			"slug": "/videos",
+			"titre": "Vidéos"
+		},
+		{
+			"slug": "/waitbutwhy-test",
+			"titre": "Tests Wait but why"
+		},
+		{
+			"slug": "/waitbutwhy1",
+			"titre": "Wait But Why - IA - Partie 1"
+		},
+		{
+			"slug": "/waitbutwhy2",
+			"titre": "Wait But Why - IA - Partie 2"
+		}
+	],
+	"total": {
+		"pages": 34,
+		"dynamiques": 5,
+		"articles": 32
+	}
+}

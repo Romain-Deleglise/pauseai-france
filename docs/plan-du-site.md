@@ -15,7 +15,7 @@ d'équipe et se tient ailleurs.
 - **34 pages** (hors routes dynamiques), chacune en français et en anglais via le préfixe `/fr` ou `/en`
 - **5 gabarits dynamiques** (articles, campagnes, dangers…)
 - **32 articles** en Markdown dans `src/posts`
-- **17 pages hors menu** : en ligne, mais qu’aucun menu ni pied de page n’atteint
+- **18 pages hors menu** : en ligne, mais qu’aucun menu ni pied de page n’atteint
 
 ## Arborescence depuis le menu principal
 
@@ -76,14 +76,16 @@ flowchart LR
   class n29 orpheline
   orph -.-> n30["/municipales-2026"]
   class n30 orpheline
-  orph -.-> n31["/posts"]
+  orph -.-> n31["/plan-du-site"]
   class n31 orpheline
-  orph -.-> n32["/recrutement"]
+  orph -.-> n32["/posts"]
   class n32 orpheline
-  orph -.-> n33["/sommet-ia-2026"]
+  orph -.-> n33["/recrutement"]
   class n33 orpheline
-  orph -.-> n34["/une-ia-sest-echappee"]
+  orph -.-> n34["/sommet-ia-2026"]
   class n34 orpheline
+  orph -.-> n35["/une-ia-sest-echappee"]
+  class n35 orpheline
   classDef externe stroke-dasharray: 4 3
   classDef orpheline fill:#fff5e8,stroke:#ff9416
 ```
@@ -159,7 +161,7 @@ flowchart LR
 | Faire un don                   | `/dons`                                         |
 | Marchandises                   | _externe_ — https://pauseai-shop.fourthwall.com |
 | Manifestations                 | _externe_ — https://pauseai.info/protests       |
-| footer.jobs                    | `/recrutement-emploi`                           |
+| Offres d'emploi                | `/recrutement-emploi`                           |
 
 ### Autres
 
@@ -193,6 +195,7 @@ campagne, confirmations, remerciements.
 - `/guide-recrutement`
 - `/merci`
 - `/municipales-2026`
+- `/plan-du-site`
 - `/posts`
 - `/recrutement`
 - `/sommet-ia-2026`

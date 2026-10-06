@@ -50,6 +50,10 @@ const config = {
 							// Page du lien de confirmation (jamais liée depuis le site).
 							'/fr/declaration/confirmer',
 							'/en/declaration/confirmer',
+							// Plan du site : page interne, volontairement hors menu et hors pied
+							// de page, donc invisible au robot d'exploration du prérendu.
+							'/fr/plan-du-site',
+							'/en/plan-du-site',
 							'/fr/campagnes',
 							'/en/campagnes',
 							'/fr/merci',
