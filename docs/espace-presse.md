@@ -17,6 +17,12 @@ sont gérés ailleurs, dans `src/lib/campaigns.ts`.
 - **Repli** : si la base est vide ou non configurée, la page utilise le fichier
   `src/lib/press-coverage-static.ts` (aucune régression). Dès qu'au moins un
   article visible existe dans Notion, c'est Notion qui prime entièrement.
+- En pratique, tant qu'aucune base n'est branchée sur Netlify, c'est le
+  fichier statique qui est en ligne : on y ajoute les articles.
+- Les retours presse de la campagne « Perte de contrôle » sont tenus dans
+  `src/lib/data/presse-perte-de-controle.ts` (affichés sur la page campagne)
+  et repris automatiquement dans le fichier statique (éléments datés
+  seulement).
 - Pour reprendre l'historique, recopier les articles de
   `press-coverage-static.ts` dans la base Notion (puis on pourra vider le
   fichier statique si on le souhaite).

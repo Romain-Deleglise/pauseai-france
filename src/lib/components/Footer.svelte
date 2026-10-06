@@ -116,9 +116,7 @@
 			<a href="https://pauseia.substack.com/" target="_blank" rel="noopener noreferrer"
 				>{t.footer.blog}</a
 			>
-			<ExternalLink href="https://fresquedesrisquesdelia.org/" target="_blank"
-				>{t.footer.fresque}</ExternalLink
-			>
+			<a href="{prefix}/fresque">{t.footer.fresque}</a>
 			<a href="{prefix}/agir">{t.footer.agir}</a>
 			<a href="{prefix}/dons">{t.footer.donner}</a>
 			<a href="{prefix}/rejoindre">{t.footer.rejoindre}</a>

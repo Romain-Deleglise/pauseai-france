@@ -1,14 +1,10 @@
 <script lang="ts">
-	import {
-		CampaignPage,
-		CampaignHero,
-		CampaignSection,
-		CampaignEmbed,
-		LumaCalendar
-	} from '$components/campaign'
+	import { CampaignPage, CampaignHero, CampaignSection, CampaignEmbed } from '$components/campaign'
 	import ArticleCard from '$components/ArticleCard.svelte'
 	import EcrireOutil from '$components/EcrireOutil.svelte'
 	import Button from '$components/Button.svelte'
+	import { MoveUpRight } from 'lucide-svelte'
+	import { pressePerteDeControle } from '$lib/data/presse-perte-de-controle'
 	import type { PageData } from './$types'
 
 	export let data: PageData
@@ -23,33 +19,6 @@
 	}
 
 	const VIDEO_ID = 'WhQViEjkg7s'
-	// Calendrier Luma des actions militantes (agrège aussi les événements créés
-	// par d'autres organisateurs).
-	const LUMA_CALENDAR_ID = 'cal-PLtig5in051g5mM'
-	const LUMA_CALENDAR_URL = 'https://luma.com/pause-ia'
-
-	// Les trois cartes du hero de fresquedesrisquesdelia.org, en éventail.
-	// Visuels issus du dépôt de la fresque (Pause IA, CC BY-SA 4.0) :
-	// github.com/Romain-Deleglise/Fresque-des-risques-de-IA
-	const FRESQUE_CARTES = [
-		{ src: '/campaigns/fresque/14.webp', fr: 'Carte « Deepfake »', en: '“Deepfake” card' },
-		{
-			src: '/campaigns/fresque/08.webp',
-			fr: 'Carte « Génération d’images »',
-			en: '“Image generation” card'
-		},
-		{
-			src: '/campaigns/fresque/28.webp',
-			fr: 'Carte « Systèmes d’armes létales autonomes »',
-			en: '“Lethal autonomous weapons” card'
-		}
-	]
-
-	// Dates du temps fort militant (des actions isolées démarrent la veille :
-	// le calendrier peut donc afficher une date antérieure au 21).
-	const MOBILISATION_DATES_FR = 'Du 21 au 28 septembre'
-	const MOBILISATION_DATES_EN = '21 to 28 September'
-
 	$: title = isEn
 		? 'We are on the brink of losing control: let’s react'
 		: 'Nous sommes au bord de la perte de contrôle : réagissons'
@@ -57,9 +26,13 @@
 		? 'AI now outperforms humans at computer security, and the researchers who train these systems no longer control them. Join our call for a global moratorium on frontier AI development.'
 		: 'L’IA dépasse désormais les humains en sécurité informatique, et les chercheurs qui les entraînent ne les maîtrisent plus. Relayez notre appel à un moratoire mondial sur le développement des IA de pointe.'
 
-	$: mobilisationTitle = isEn
-		? `${MOBILISATION_DATES_EN}: a week of action and a Fresk`
-		: `${MOBILISATION_DATES_FR} : une semaine d’action et une fresque`
+	function formatDate(date: string) {
+		return new Date(date).toLocaleDateString(isEn ? 'en-GB' : 'fr-FR', {
+			day: 'numeric',
+			month: 'long',
+			year: 'numeric'
+		})
+	}
 </script>
 
 <CampaignPage {title} {description}>
@@ -245,71 +218,22 @@
 		</ol>
 	</CampaignSection>
 
-	<!-- ── Action 1 · Semaine d'action et fresque ─────────────── -->
-	<!--
-		Un seul bloc pour les deux lancements : le calendrier des actions et la
-		fresque. Le passage sur la fresque reste volontairement très court.
-	-->
-	<CampaignSection id="evenements" variant="card" title={mobilisationTitle}>
+	<!-- ── Rejoindre un groupe local ────────────────────────── -->
+	<CampaignSection
+		id="groupes-locaux"
+		variant="accent"
+		title={isEn
+			? 'Our local groups are mobilising: join them'
+			: 'Nos groupes locaux se mobilisent : rejoignez-les'}
+	>
 		<p>
 			{isEn
-				? 'Local groups hold street actions, talks and stands. Several will also run our new educational workshop, the AI Risks Fresk.'
-				: 'Les groupes locaux organisent des actions de rue, des conférences et des stands. Plusieurs animeront aussi notre nouvel atelier pédagogique, la fresque des risques de l’IA.'}
+				? 'All over France, our local groups hold street actions, talks and stands to carry this call. No need to be an expert: join the group near you and act with us.'
+				: 'Partout en France, nos groupes locaux organisent des actions de rue, des conférences et des stands pour porter cet appel. Pas besoin d’être expert : rejoignez le groupe près de chez vous et agissez avec nous.'}
 		</p>
-		<div id="fresque">
-			<div class="fresque">
-				<div class="pile" aria-hidden="false">
-					{#each FRESQUE_CARTES as carte, i}
-						<img
-							class="carte carte-{i}"
-							src={carte.src}
-							alt={isEn ? carte.en : carte.fr}
-							loading="lazy"
-						/>
-					{/each}
-				</div>
-				<div class="fresque-text">
-					<p>
-						{isEn
-							? 'A collaborative workshop built around a deck of cards. Participants discuss, lay out the cards and connect them to one another. Everyone leaves with an overview of AI, its risks and the solutions.'
-							: 'Un atelier collaboratif construit autour d’un jeu de cartes. Les participants discutent, disposent les cartes et les relient entre elles. Chacun repart avec une vue d’ensemble de l’IA, de ses risques et des solutions.'}
-					</p>
-					<p>
-						{isEn
-							? 'The project was carried by our volunteers all summer; it is free and open-licensed. All the information is on the cards, so anyone can run it in turn. The website lets you schedule a workshop or sign up for one. We even built a tool to run it online.'
-							: 'Le projet a été porté par nos bénévoles tout l’été, il est gratuit et en licence libre. Toutes les informations sont sur les cartes, donc n’importe qui peut l’animer à son tour. Le site permet de programmer un atelier ou de s’y inscrire. Nous sommes même allés jusqu’à développer un outil pour l’animer en ligne.'}
-					</p>
-					<Button
-						href="https://fresquedesrisquesdelia.org/"
-						alt
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						{isEn ? 'The AI Risks Fresk' : 'La fresque des risques de l’IA'}
-					</Button>
-				</div>
-			</div>
-		</div>
-
-		<!-- Déplié par défaut : pendant la semaine d'action, les dates sont
-		     l'information principale de la section. Le résumé reste cliquable
-		     pour replier le calendrier. -->
-		<LumaCalendar
-			calendarId={LUMA_CALENDAR_ID}
-			title={isEn ? 'Upcoming Pause IA events' : 'Prochains événements Pause IA'}
-			collapsible
-			open
-			summary={isEn
-				? 'See the week of action dates near you'
-				: 'Voir les dates de la semaine d’action près de chez vous'}
-			height={520}
-			mobileHeight={560}
-			calendarUrl={LUMA_CALENDAR_URL}
-			calendarLinkLabel={isEn ? 'See all events on Luma' : 'Voir tous les événements sur Luma'}
-		/>
 		<p class="cta-row">
-			<Button href="{prefix}/groupes-locaux" alt>
-				{isEn ? 'Find my local group' : 'Trouver mon groupe local'}
+			<Button href="{prefix}/groupes-locaux">
+				{isEn ? 'Join a local group' : 'Rejoindre un groupe local'}
 			</Button>
 		</p>
 	</CampaignSection>
@@ -327,19 +251,58 @@
 				: 'Écrivez à vos élus et à la presse'}
 		>
 			<!-- headingLevel=h3 : l'outil s'imbrique sous le h2 de la section.
-			     Les deux outils utilisent les textes propres à la campagne : la page
-			     « Écrire à mes élus » garde, elle, son message générique. -->
+			     Mêmes messages que la page « Écrire à mes élus » (actions par défaut) :
+			     les textes propres à la semaine d'action (perte-de-controle,
+			     presse-perte-de-controle) étaient datés. -->
 			<EcrireOutil
 				lang={data.lang}
 				embedded
 				requireName
 				headingLevel="h3"
-				elusActionId="perte-de-controle"
-				presseActionId="presse-perte-de-controle"
 				on:navigate={scrollToPress}
 			/>
 		</CampaignSection>
 	</div>
+
+	<!-- ── La presse en parle ─────────────────────────────── -->
+	<!--
+		Retours presse de la campagne, par groupe local : liste dans
+		src/lib/data/presse-perte-de-controle.ts.
+	-->
+	<CampaignSection
+		id="presse"
+		title={isEn ? 'The press is talking about it' : 'La presse en parle'}
+	>
+		<p>
+			{isEn
+				? 'During the September week of action, the press covered our local groups:'
+				: 'Lors de la semaine d’action de septembre, la presse a relayé la mobilisation de nos groupes locaux :'}
+		</p>
+		{#each pressePerteDeControle as group (group.city)}
+			<h3 class="press-city">
+				{group.national ? (isEn ? 'National press' : 'Presse nationale') : group.city}
+			</h3>
+			<ul class="press-list">
+				{#each group.articles as item (item.url)}
+					<li>
+						<a class="press-item" href={item.url} target="_blank" rel="noopener noreferrer">
+							<span class="press-meta">
+								<span class="press-source">{item.source}</span>
+								{#if item.video}
+									<span class="press-video">{isEn ? 'Video' : 'Vidéo'}</span>
+								{/if}
+								{#if item.date}
+									<time datetime={item.date}>{formatDate(item.date)}</time>
+								{/if}
+								<MoveUpRight size="0.75rem" aria-hidden="true" />
+							</span>
+							<span class="press-title">{item.title}</span>
+						</a>
+					</li>
+				{/each}
+			</ul>
+		{/each}
+	</CampaignSection>
 </CampaignPage>
 
 <style>
@@ -358,83 +321,64 @@
 		line-height: 1.75;
 	}
 
-	/* La section est déjà une carte : pas de carte dans la carte, un simple
-	   filet de séparation suffit. */
-	#fresque {
-		margin-bottom: 1.5rem;
-		padding-bottom: 1.5rem;
-		border-bottom: 1px solid var(--border);
-	}
-
-	.fresque {
-		display: grid;
-		grid-template-columns: minmax(0, 1.45fr) minmax(0, 0.55fr);
-		gap: 2rem;
-		align-items: start;
-	}
-
-	.fresque .pile {
-		order: 2;
-	}
-
-	.fresque-text p {
-		margin: 0 0 1rem;
-	}
-
-	/* Éventail repris du hero de fresquedesrisquesdelia.org. */
-	/* La hauteur suit la largeur : les cartes sont positionnées en % de leur
-	   propre boîte, une hauteur fixe les laissait dépasser du bloc (et donc
-	   recouvrir le texte suivant) dès que la colonne se resserrait. */
-	.pile {
-		position: relative;
-		aspect-ratio: 1.35 / 1;
-		margin-top: 0.25rem;
-	}
-
-	.carte {
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		width: 72%;
-		aspect-ratio: 1.41 / 1;
-		object-fit: cover;
-		border-radius: var(--radius-sm);
-		box-shadow:
-			0 2px 5px rgb(27 26 23 / 16%),
-			0 14px 28px -10px rgb(27 26 23 / 35%);
-	}
-
-	.carte-0 {
-		transform: translate(-50%, -50%) rotate(-8deg) translate(-28%, 9%);
-		z-index: 1;
-	}
-
-	.carte-1 {
-		transform: translate(-50%, -50%) translateY(-8%);
-		z-index: 3;
-	}
-
-	.carte-2 {
-		transform: translate(-50%, -50%) rotate(8deg) translate(28%, 9%);
-		z-index: 2;
-	}
-
-	@media (max-width: 820px) {
-		.fresque {
-			grid-template-columns: 1fr;
-		}
-
-		.fresque .pile {
-			order: 0;
-			aspect-ratio: 1.78 / 1;
-		}
-
-		.carte {
-			width: 54%;
-		}
-	}
-
 	.cta-row {
 		margin-top: 1rem;
+	}
+
+	.press-city {
+		margin: 1.5rem 0 0.6rem;
+		font-size: 1.05rem;
+		font-weight: 700;
+	}
+
+	.press-list {
+		list-style: none;
+		margin: 0 0 1rem;
+		padding: 0;
+		display: grid;
+		gap: 0.75rem;
+	}
+
+	.press-item {
+		display: block;
+		padding: 0.85rem 1rem;
+		border: 2px solid rgb(255 148 22 / 45%); /* --brand, atténué */
+		border-radius: var(--radius-sm);
+		color: inherit;
+		text-decoration: none;
+		transition: border-color 0.2s ease;
+	}
+
+	.press-item:hover,
+	.press-item:focus-visible {
+		border-color: var(--brand);
+	}
+
+	.press-meta {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.5rem;
+		font-size: 0.85rem;
+		color: var(--text-secondary);
+	}
+
+	.press-source {
+		font-weight: 700;
+		color: var(--brand-subtle);
+	}
+
+	.press-video {
+		padding: 0 0.4rem;
+		border: 1px solid var(--border);
+		border-radius: 0.25rem;
+		font-size: 0.75rem;
+	}
+
+	.press-title {
+		display: block;
+		margin-top: 0.25rem;
+		font-weight: 600;
+		line-height: 1.4;
 	}
 </style>
