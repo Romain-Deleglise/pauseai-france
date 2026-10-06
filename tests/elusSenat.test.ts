@@ -1,5 +1,4 @@
 import { describe, it, expect } from 'vitest'
-// @ts-expect-error — script Node sans types, importé pour sa fonction pure.
 import { analyserSenateurs } from '../scripts/generate-elus.js'
 
 /* Le fichier ODSEN du Sénat a fait tomber la mise à jour des élus avec

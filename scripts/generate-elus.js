@@ -1,4 +1,13 @@
 #!/usr/bin/env node
+// @ts-nocheck
+/*
+ * Script Node en JavaScript simple, sans annotations de types. Il vivait hors
+ * du programme TypeScript jusqu'à ce que `tests/elusSenat.test.ts` importe
+ * `analyserSenateurs` : l'import l'y a fait entrer, et `checkJs` + `strict`
+ * ont alors relevé 48 erreurs de typage préexistantes, sans rapport avec le
+ * test. On assume explicitement que ce fichier n'est pas typé, plutôt que de
+ * l'annoter entièrement ou de renoncer à le tester.
+ */
 /**
  * Génère src/lib/data/elus.json : la liste des députés et sénateurs français
  * avec leurs emails, indexés par circonscription / département, plus une table
