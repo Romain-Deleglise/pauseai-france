@@ -1,6 +1,8 @@
 <script lang="ts">
 	import PostMeta from '$components/PostMeta.svelte'
 	import Callout from '$components/Callout.svelte'
+	import Button from '$components/Button.svelte'
+	import { Card, PageHero, SectionTitle } from '$components/ui'
 	import { base } from '$app/paths'
 
 	// Import the infographic
@@ -17,56 +19,56 @@
 
 <article class="recruitment-landing">
 	<!-- Hero Section -->
-	<header class="hero-section">
-		<h1>Devenez Recruteur pour Pause IA</h1>
-		<p class="hero-description">
-			Vous voulez amplifier l'impact de Pause IA ? Le recrutement relationnel est l'un des leviers
-			les plus puissants pour faire grandir notre mouvement. Cette page rassemble tous les outils
-			dont vous avez besoin : guides pratiques, PDFs téléchargeables, et ressources pour maximiser
-			votre impact.
-		</p>
-		<p class="hero-cta">Choisissez votre approche ci-dessous :</p>
-	</header>
+	<PageHero eyebrow="Recrutement relationnel">
+		Devenez recruteur pour Pause IA
+		<svelte:fragment slot="lede">
+			Le recrutement relationnel est l'un des leviers les plus puissants pour faire grandir le
+			mouvement. Cette page rassemble les outils dont vous avez besoin : guides pratiques, documents
+			à télécharger et ressources pour maximiser votre impact.
+		</svelte:fragment>
+	</PageHero>
 
 	<!-- Resources Section -->
-	<section class="resources-section">
-		<div class="resources-grid">
-			<div class="resource-card highlight">
-				<div class="card-icon">🚀</div>
-				<h3>Guide Express (5-10 min)</h3>
-				<p>Commencez rapidement avec l'essentiel du recrutement relationnel</p>
-				<a href="#guide-express" class="card-button primary">Lire maintenant</a>
-			</div>
+	<section class="ressources" aria-labelledby="ressources-titre">
+		<SectionTitle id="ressources-titre">Choisissez votre approche</SectionTitle>
 
-			<div class="resource-card">
-				<div class="card-icon">📚</div>
-				<h3>Guide Complet (30+ min)</h3>
-				<p>Maîtrisez tous les aspects du recrutement avec exemples détaillés</p>
-				<a href="{base}/guide-recrutement" class="card-button secondary">Accéder au guide</a>
-			</div>
+		<div class="grille">
+			<Card class="ressource principale">
+				<h3>Guide express</h3>
+				<p class="duree">5 à 10 minutes</p>
+				<p>L'essentiel du recrutement relationnel, à lire directement sur cette page.</p>
+				<p class="action"><Button href="#guide-express">Lire maintenant</Button></p>
+			</Card>
 
-			<div class="resource-card">
-				<div class="card-icon">📄</div>
-				<h3>PDF Express</h3>
-				<p>Version portable du guide express pour imprimer ou lire hors ligne</p>
-				<a href="/pdfs/guide_recrutement_express.pdf" download class="card-button secondary"
-					>Télécharger le PDF</a
-				>
-			</div>
+			<Card class="ressource">
+				<h3>Guide complet</h3>
+				<p class="duree">30 minutes et plus</p>
+				<p>Tous les aspects du recrutement, avec des exemples détaillés.</p>
+				<p class="action"><Button alt href="{base}/guide-recrutement">Accéder au guide</Button></p>
+			</Card>
 
-			<div class="resource-card">
-				<div class="card-icon">📄</div>
-				<h3>PDF Complet</h3>
-				<p>Version complète portable avec tous les détails et techniques</p>
-				<button class="card-button secondary" disabled>Bientôt disponible</button>
-			</div>
+			<Card class="ressource">
+				<h3>Guide express en PDF</h3>
+				<p class="duree">À imprimer</p>
+				<p>La version portable du guide express, pour lire hors ligne.</p>
+				<p class="action">
+					<Button alt href="/pdfs/guide_recrutement_express.pdf">Télécharger le PDF</Button>
+				</p>
+			</Card>
+
+			<Card class="ressource">
+				<h3>Guide complet en PDF</h3>
+				<p class="duree">Bientôt</p>
+				<p>La version complète portable, avec toutes les techniques.</p>
+				<p class="action"><span class="bientot">Bientôt disponible</span></p>
+			</Card>
 		</div>
 	</section>
 
 	<!-- Guide Express Content -->
 	<section id="guide-express" class="guide-section">
 		<header class="guide-header">
-			<h2>📖 Guide Express : Lisez-le directement ici</h2>
+			<h2>Guide express</h2>
 			<div class="guide-subtitle">
 				<span class="guide-title-main">Votre Guide Express :</span>
 				<span class="guide-title-sub">Devenez un Moteur de Croissance pour Pause IA !</span>
@@ -371,366 +373,192 @@
 				formation complète avec exemples détaillés, techniques avancées, réponses aux objections
 				courantes, et ressources supplémentaires...
 			</p>
-			<a href="{base}/guide-recrutement" class="conclusion-cta">
-				📚 Découvrez le guide de recrutement complet
-			</a>
+			<p class="action">
+				<Button href="{base}/guide-recrutement">Découvrir le guide complet</Button>
+			</p>
 		</div>
 	</section>
 </article>
 
 <style>
+	/* Page refaite sur la charte : plus aucune couleur, aucun rayon ni aucune
+	   ombre en dur — tout passe par les tokens d'app.css, ce qui fait aussi
+	   fonctionner le mode sombre. Les briques partagées (PageHero, Card,
+	   SectionTitle, Button) remplacent les cartes et boutons maison. */
 	.recruitment-landing {
-		/* <main> est un conteneur flex : sans min-inline-size, cet article refuse
-		   de descendre sous la largeur intrinsèque de son contenu (min-width:auto
-		   est la valeur par défaut d'un enfant flex). La page faisait 632 px de
-		   large sur un écran de 390 et défilait horizontalement. Même piège et
-		   même correctif que CampaignPage. */
+		/* <main> est un conteneur flex : sans ces deux déclarations, l'article
+		   refuse de descendre sous la largeur intrinsèque de son contenu et la
+		   page défile horizontalement sur mobile. Même piège que CampaignPage. */
 		min-inline-size: 0;
 		inline-size: 100%;
-		max-width: var(--width-wide);
-		margin: 0 auto;
-		padding: 2rem 1rem;
+		max-inline-size: var(--width-content);
+		margin-inline: auto;
+		padding: 2.5rem 1.5rem 5rem;
+	}
+
+	section {
+		margin-block-end: 3.5rem;
+	}
+
+	/* --- Cartes de ressources --------------------------------------------- */
+	/* Quatre ressources : deux par deux. En `auto-fit`, elles tombaient en 3 + 1,
+	   et la dernière restait seule sur sa ligne. */
+	.grille {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 1.25rem;
+		align-items: start;
+	}
+
+	@media (max-width: 640px) {
+		.grille {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	.grille :global(.ressource) {
+		display: flex;
+		flex-direction: column;
+	}
+
+	/* Le guide express est l'entrée recommandée : bordure de marque, pas d'aplat
+	   (le texte sur un aplat orange descend à 2,2:1 s'il est blanc). */
+	.grille :global(.principale) {
+		border-color: var(--brand);
+	}
+
+	.grille :global(.ressource h3) {
+		margin: 0 0 0.25rem;
+		font-size: 1.15rem;
+		color: var(--text);
+	}
+
+	.grille :global(.ressource p) {
+		margin: 0;
+		color: var(--text-2);
 		line-height: 1.6;
 	}
 
-	/* Hero Section */
-	.hero-section {
-		text-align: center;
-		margin-bottom: 4rem;
-		padding: 2rem 0;
-	}
-
-	.hero-section h1 {
-		font-size: 2.5rem;
-		font-weight: 700;
-		color: var(--brand-subtle);
-		margin-bottom: 1.5rem;
-		line-height: 1.2;
-	}
-
-	.hero-description {
-		font-size: 1.1rem;
-		color: var(--text);
-		margin-bottom: 1.5rem;
-		max-width: var(--width-content);
-		margin-left: auto;
-		margin-right: auto;
-	}
-
-	.hero-cta {
-		font-size: 1rem;
+	.grille :global(.duree) {
+		margin-block-end: 0.75rem !important;
+		font-size: 0.85rem;
 		font-weight: 600;
-		color: var(--brand-subtle);
-		margin-bottom: 0;
+		color: var(--brand-subtle) !important;
 	}
 
-	/* Resources Section */
-	.resources-section {
-		margin-bottom: 5rem;
+	/* Les boutons tombent sur la même ligne quelle que soit la longueur du texte. */
+	.grille :global(.action) {
+		margin-block-start: auto !important;
+		padding-block-start: 1.25rem;
 	}
 
-	.resources-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-		gap: 1.5rem;
-		max-width: var(--width-content);
-		margin: 0 auto;
-	}
-
-	.resource-card {
-		background: var(--bg);
-		border: 2px solid var(--border);
-		border-radius: var(--radius-sm);
-		padding: 2rem;
-		text-align: center;
-		transition: all 0.2s ease;
-	}
-
-	.resource-card:hover {
-		border-color: var(--brand);
-		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-	}
-
-	.resource-card.highlight {
-		border-color: var(--brand);
-		background: var(--bg-subtle);
-	}
-
-	.card-icon {
-		font-size: 2.5rem;
-		margin-bottom: 1rem;
-	}
-
-	.resource-card h3 {
-		font-size: 1.25rem;
-		font-weight: 600;
-		color: var(--text);
-		margin-bottom: 0.75rem;
-	}
-
-	.resource-card p {
-		color: var(--text-secondary);
-		margin-bottom: 1.5rem;
-		font-size: 0.95rem;
-	}
-
-	.card-button {
+	.grille :global(.bientot) {
 		display: inline-block;
-		padding: 0.75rem 1.5rem;
-		border-radius: var(--radius-sm);
-		font-weight: 600;
-		text-decoration: none;
-		border: none;
-		cursor: pointer;
-		font-size: 0.9rem;
-		transition: all 0.2s ease;
-	}
-
-	.card-button.primary {
-		background-color: var(--brand);
-		color: var(--on-brand);
-	}
-
-	.card-button.primary:hover {
-		background-color: var(--btn-active-bg);
-	}
-
-	.card-button.secondary {
-		background-color: var(--bg);
-		color: var(--brand-subtle);
-		border: 2px solid var(--brand);
-	}
-
-	.card-button.secondary:hover {
-		background-color: var(--brand);
-		color: var(--on-brand);
-	}
-
-	.card-button:disabled {
-		background-color: var(--bg-secondary);
+		padding: 0.4rem 0.8rem;
+		font-size: 0.85rem;
 		color: var(--text-secondary);
-		border-color: var(--border);
-		cursor: not-allowed;
+		background: var(--bg-secondary);
+		border: 1px solid var(--border);
+		border-radius: var(--radius-pill);
 	}
 
-	/* Guide Section */
-	.guide-section {
-		margin-bottom: 4rem;
-	}
-
-	.guide-header {
-		text-align: center;
-		margin-bottom: 3rem;
-	}
-
-	.guide-header h2 {
-		font-size: 1.8rem;
-		color: var(--brand-subtle);
-		margin-bottom: 1.5rem;
-		border-bottom: 2px solid var(--brand);
-		padding-bottom: 0.5rem;
-		display: inline-block;
+	/* --- Corps du guide ---------------------------------------------------- */
+	.guide-section h2 {
+		margin: 0 0 1.5rem;
+		font-size: clamp(1.4rem, 3vw, 1.75rem);
 	}
 
 	.guide-subtitle {
-		line-height: 1.2;
+		margin-block-end: 2rem;
 	}
 
 	.guide-title-main {
 		display: block;
-		font-size: 2rem;
 		font-weight: 700;
-		color: var(--brand-subtle);
-		margin-bottom: 0.5rem;
+		color: var(--text);
 	}
 
 	.guide-title-sub {
 		display: block;
-		font-size: 1.5rem;
-		font-weight: 700;
+		color: var(--text-2);
+	}
+
+	.guide-content :global(h3) {
+		margin: 2.5rem 0 1rem;
+		font-size: 1.4rem;
 		color: var(--text);
 	}
 
-	.guide-content {
-		max-width: var(--width-content);
-		margin: 0 auto;
+	.guide-content :global(h4) {
+		margin: 1.75rem 0 0.6rem;
+		font-size: 1.1rem;
+		color: var(--text);
 	}
 
-	.infographic-container {
-		text-align: center;
-		margin: 2rem 0;
+	.guide-content :global(p),
+	.guide-content :global(li) {
+		line-height: 1.7;
 	}
 
-	.infographic {
-		max-width: 100%;
-		height: auto;
-		border-radius: 0.3125rem;
+	.guide-content :global(ul) {
+		padding-inline-start: 1.25rem;
+	}
+
+	.guide-content :global(li) {
+		margin-block-end: 0.5rem;
 	}
 
 	.reference {
-		font-size: 0.95rem;
-		color: var(--text-secondary);
-		font-style: italic;
-	}
-
-	.principles-list {
-		margin: 1.5rem 0;
-	}
-
-	.principles-list li {
-		margin: 0.8rem 0;
-		padding-left: 0.5rem;
-	}
-
-	.chain-list li {
-		font-weight: 500;
-		color: var(--text);
-	}
-
-	.sub-list {
-		margin-top: 0.5rem;
-		margin-bottom: 0.5rem;
-	}
-
-	.sub-list li {
-		margin: 0.3rem 0;
-		font-size: 0.95rem;
-	}
-
-	.guide-content section {
-		margin: 3rem 0;
-	}
-
-	.guide-content h3 {
-		color: var(--brand-subtle);
-		font-size: 1.4rem;
-		margin-top: 3rem;
-		margin-bottom: 1.5rem;
-		border-bottom: 2px solid var(--brand);
-		padding-bottom: 0.5rem;
-	}
-
-	.guide-content h4 {
-		color: var(--text);
-		font-size: 1.1rem;
-		margin-top: 2rem;
-		margin-bottom: 1rem;
-		font-weight: 600;
-	}
-
-	/* Conclusion Section */
-	.conclusion-section {
-		background: var(--bg-subtle);
-		border-radius: var(--radius-sm);
-		padding: 3rem 2rem;
-		text-align: center;
-		margin-top: 4rem;
-	}
-
-	.conclusion-content h2 {
-		color: var(--brand-subtle);
-		font-size: 1.8rem;
-		margin-bottom: 1rem;
-	}
-
-	.conclusion-content p {
-		font-size: 1.1rem;
-		color: var(--text);
-		margin-bottom: 2rem;
-		max-width: 40rem;
-		margin-left: auto;
-		margin-right: auto;
-	}
-
-	.conclusion-cta {
-		display: inline-block;
-		background-color: var(--brand);
-		color: var(--on-brand);
-		padding: 1rem 2rem;
-		border-radius: var(--radius-sm);
-		text-decoration: none;
-		font-weight: 600;
-		font-size: 1.1rem;
-		transition: background-color 0.2s ease;
-	}
-
-	.conclusion-cta:hover {
-		background-color: var(--btn-active-bg);
-	}
-
-	/* Responsive adjustments */
-	@media (min-width: 640px) {
-		.recruitment-landing {
-			padding: 3rem 2rem;
-		}
-
-		.hero-section h1 {
-			font-size: 3rem;
-		}
-
-		.guide-title-main {
-			font-size: 2.5rem;
-		}
-
-		.guide-title-sub {
-			font-size: 1.8rem;
-		}
-
-		.resources-grid {
-			gap: 2rem;
-		}
-
-		.resource-card {
-			padding: 2.5rem;
-		}
-	}
-
-	@media (min-width: 1024px) {
-		.hero-section h1 {
-			font-size: 3.5rem;
-		}
-
-		.guide-title-main {
-			font-size: 3rem;
-		}
-
-		.guide-title-sub {
-			font-size: 2.2rem;
-		}
-	}
-
-	/* Override global list styles for better visual hierarchy */
-	:global(.recruitment-landing ol) {
-		counter-reset: item;
-		padding-left: 0;
-	}
-
-	:global(.recruitment-landing ol > li) {
-		display: block;
-		margin: 0.5rem 0;
-		padding-left: 2rem;
-		position: relative;
-	}
-
-	:global(.recruitment-landing ol > li::before) {
-		content: counter(item) '.';
-		counter-increment: item;
-		font-weight: bold;
-		color: var(--brand-subtle);
-		position: absolute;
-		left: 0;
-	}
-
-	:global(.recruitment-landing code) {
-		background-color: var(--bg-subtle);
-		padding: 0.2rem 0.4rem;
-		border-radius: 0.2rem;
-		font-family: 'Courier New', monospace;
 		font-size: 0.9rem;
+		color: var(--text-2);
 	}
 
-	:global([data-theme='dark']) .card-button:disabled {
-		background-color: var(--btn-alt-bg);
-		border-color: var(--border);
+	.infographic-container {
+		margin-block: 1.5rem;
+	}
+
+	.infographic-container :global(img) {
+		inline-size: 100%;
+		block-size: auto;
+		border-radius: var(--radius-md);
+		border: 1px solid var(--border);
+	}
+
+	/* --- Conclusion -------------------------------------------------------- */
+	.conclusion-section {
+		padding: 2rem;
+		background: var(--bg-subtle);
+		border: 1px solid var(--brand);
+		border-radius: var(--radius-lg);
+	}
+
+	.conclusion-section h2 {
+		margin: 0 0 0.75rem;
+		font-size: clamp(1.3rem, 2.5vw, 1.6rem);
+	}
+
+	.conclusion-section p {
+		margin: 0;
+		max-inline-size: var(--width-text);
+		color: var(--text-2);
+		line-height: 1.7;
+	}
+
+	.conclusion-section .action {
+		margin: 1.5rem 0 0;
+	}
+
+	@media (max-width: 600px) {
+		.recruitment-landing {
+			padding: 2rem 1.1rem 3.5rem;
+		}
+
+		section {
+			margin-block-end: 2.5rem;
+		}
+
+		.conclusion-section {
+			padding: 1.25rem;
+		}
 	}
 </style>
