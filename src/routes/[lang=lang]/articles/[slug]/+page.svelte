@@ -1,0 +1,46 @@
+<script lang="ts">
+	import type { PageData } from './$types'
+	import PostMeta from '$components/PostMeta.svelte'
+	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
+
+	import { title as siteName } from '$config'
+
+	export let data: PageData
+
+	const { metadata, slug, content } = data
+	const { title = slug, date, description, image, original } = metadata
+</script>
+
+<PostMeta title={`${title} | ${siteName}`} {description} {date} {image} />
+
+<article>
+	<hgroup>
+		<UnderlinedTitle as="h1">{title}</UnderlinedTitle>
+		{#if date}
+			<!-- <p>Published at {formatDate(date)}</p> -->
+		{/if}
+	</hgroup>
+
+	<div>
+		<svelte:component this={content} />
+	</div>
+	{#if original}
+		<footer>
+			Adaptée de '<a href={original.url}>{original.title}</a>' par PauseAI, sous
+			<a href="https://creativecommons.org/licenses/by/4.0/deed.fr">licence CC BY 4.0</a>.
+		</footer>
+	{/if}
+</article>
+
+<style>
+	article {
+		max-inline-size: var(--width-content);
+		margin-inline: auto;
+		margin-top: 3rem;
+	}
+	footer {
+		color: var(--text-secondary);
+		font-size: 0.8rem;
+		margin-top: 4rem;
+	}
+</style>

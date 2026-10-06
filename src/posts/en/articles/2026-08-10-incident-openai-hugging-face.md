@@ -1,6 +1,7 @@
 ---
 title: An AI escaped its test and hacked a company
 description: 'What really happened during the OpenAI – Hugging Face incident of July 2026, from start to finish: the established facts, what is reported, and what it means.'
+date: '2026-08-10'
 ---
 
 <script lang="ts">

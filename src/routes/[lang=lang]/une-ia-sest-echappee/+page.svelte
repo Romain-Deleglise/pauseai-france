@@ -260,7 +260,9 @@
 			<div class="reads-links">
 				<a
 					class="read-chip read-chip--primary"
-					href={isEn ? '/en/incident-openai-hugging-face' : '/fr/incident-openai-hugging-face'}
+					href={isEn
+						? '/en/articles/2026-08-10-incident-openai-hugging-face'
+						: '/fr/articles/2026-08-10-incident-openai-hugging-face'}
 				>
 					{isEn ? 'Our detailed summary' : 'Notre page de synthèse'}
 					<ArrowRight size="0.85em" aria-hidden="true" />
@@ -347,13 +349,13 @@
 		<p class="read-more">
 			{#if isEn}
 				Coordination between models, oversight that saw nothing, a response that does not touch the
-				cause: the full, sourced account is on <a href="/en/incident-openai-hugging-face"
-					>our summary page</a
+				cause: the full, sourced account is on <a
+					href="/en/articles/2026-08-10-incident-openai-hugging-face">our summary page</a
 				>.
 			{:else}
 				Coordination entre modèles, supervision qui n’a rien vu, réaction qui ne touche pas la cause
-				: le récit complet et sourcé est sur <a href="/fr/incident-openai-hugging-face"
-					>notre page de synthèse</a
+				: le récit complet et sourcé est sur <a
+					href="/fr/articles/2026-08-10-incident-openai-hugging-face">notre page de synthèse</a
 				>.
 			{/if}
 		</p>
