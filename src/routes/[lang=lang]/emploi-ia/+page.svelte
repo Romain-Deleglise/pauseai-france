@@ -70,6 +70,12 @@
 			url: 'https://mesinfos.fr/75000-paris/manifestation-de-pause-ia-devant-l-assemblee-le-1er-mai-245348.html'
 		},
 		{
+			title: 'Clémence Peyrot de l’association Pause IA, à la manif du 1er mai Périgueux',
+			source: 'Radios Libres en Périgord',
+			date: '1er mai 2026',
+			url: 'https://www.radioslibresenperigord.com/audio/clemence-peyrot-de-lassociation-pause-ia-a-la-manif-du-1er-mai-perigueux/'
+		},
+		{
 			title: "De l'impact social de l'IA",
 			source: 'La Vie Économique',
 			date: 'Mai 2026',

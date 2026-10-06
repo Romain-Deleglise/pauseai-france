@@ -96,7 +96,23 @@ p20). À **régénérer au prochain redécoupage** législatif.
 - **Filet de secours manuel** : workflow GitHub `update-elus.yml`
   (déclenchement manuel uniquement, pour régénérer si le serveur est indispo).
 - **Alerte** : en cas d'échec, notification via `ALERT_WEBHOOK` (Discord/Slack)
-  avec repli mail (`ALERT_EMAIL`).
+  avec repli mail (`ALERT_EMAIL`). Le message joint la fin de la sortie d'erreur
+  du générateur : il dit donc _pourquoi_ ça a échoué (source HS, garde-fou), et
+  non plus seulement le numéro de ligne du script.
+- **Requêtes réseau** : chaque téléchargement est borné à 30 s et retenté trois
+  fois avec attente croissante. Le job ne tourne qu'une fois par semaine ; sans
+  cela, un simple 5xx passager de data.gouv ou du Sénat faisait échouer toute la
+  mise à jour. Un 4xx (hors 429) n'est pas retenté : la ressource a bougé, et
+  c'est au code de suivre.
+- **Fichier du Sénat (ODSEN)** : l'analyse tolère l'UTF-8 comme le latin1, la
+  virgule comme le point-virgule, un BOM, des en-têtes entre guillemets ou
+  accentués différemment, et la casse de la valeur `ACTIF`. Si une colonne
+  attendue manque, le script échoue **en la nommant** au lieu de renvoyer zéro
+  sénateur — c'est ce silence qui avait produit « nombre de sénateurs
+  suspect : 0 ». Tests : `tests/elusSenat.test.ts`.
+- **En cas d'échec** : le journal complet est dans `journalctl -u update-elus`.
+  Rien n'est écrit tant que les garde-fous ne passent pas, donc les données en
+  ligne restent celles du dernier run valide.
 
 ---
 
