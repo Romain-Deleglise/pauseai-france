@@ -22,7 +22,10 @@ export default {
 		// au minimum pour tenir dans le menu.
 		perte_de_controle: 'Au bord de la perte de contrôle',
 		warning_shot: 'Une IA s’est échappée',
-		ecrire_elus: 'Écrire aux élus et à la presse',
+		ecrire_elus: 'Écrire à vos élus ou à la presse',
+		participer_communication: 'Participer à notre communication',
+		pres_de_chez_vous: 'Agir près de chez vous',
+		convaincre: 'Convaincre autour de vous',
 		emploi_ia: 'L’IA ne détruira pas QUE votre emploi',
 		g7_2026: 'G7 2026',
 		municipales: 'Municipales 2026',

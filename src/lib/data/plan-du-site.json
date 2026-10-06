@@ -36,7 +36,7 @@
 			"items": [
 				{
 					"href": "/ecrire-a-mes-elus",
-					"label": "Écrire aux élus et à la presse",
+					"label": "Écrire à vos élus ou à la presse",
 					"externe": false
 				},
 				{
@@ -45,14 +45,19 @@
 					"externe": false
 				},
 				{
-					"href": "/agir",
-					"label": "Comment agir ?",
+					"href": "/participer-a-notre-communication",
+					"label": "Participer à notre communication",
 					"externe": false
 				},
 				{
 					"href": "/groupes-locaux",
-					"label": "Groupes locaux",
+					"label": "Agir près de chez vous",
 					"externe": false
+				},
+				{
+					"href": "/recrutement",
+					"label": "Convaincre autour de vous",
+					"externe": true
 				}
 			]
 		},
@@ -320,6 +325,7 @@
 	],
 	"dynamiques": [
 		"/[slug]",
+		"/articles/[slug]",
 		"/dangers/[slug]",
 		"/newsletters/[slug]",
 		"/presse/local/[slug]",
@@ -331,12 +337,20 @@
 			"titre": "Passez à l’action"
 		},
 		{
-			"slug": "/charte-des-valeurs",
-			"titre": "Charte des valeurs"
+			"slug": "/articles/2026-08-10-incident-openai-hugging-face",
+			"titre": "Une IA s’est échappée de son test et a piraté une entreprise"
 		},
 		{
-			"slug": "/course-et-securite-ne-sont-plus-compatibles",
+			"slug": "/articles/2026-09-15-personne-ne-controle-lia",
+			"titre": "Personne ne contrôle l’IA, le danger est imminent"
+		},
+		{
+			"slug": "/articles/2026-09-17-course-et-securite-ne-sont-plus-compatibles",
 			"titre": "Non, course et sécurité ne sont plus compatibles"
+		},
+		{
+			"slug": "/charte-des-valeurs",
+			"titre": "Charte des valeurs"
 		},
 		{
 			"slug": "/dangers/economiques-et-materiels",
@@ -357,6 +371,10 @@
 		{
 			"slug": "/en/agir",
 			"titre": "Take Action"
+		},
+		{
+			"slug": "/en/articles/2026-08-10-incident-openai-hugging-face",
+			"titre": "An AI escaped its test and hacked a company"
 		},
 		{
 			"slug": "/en/charte-des-valeurs",
@@ -387,10 +405,6 @@
 			"titre": "Our funding"
 		},
 		{
-			"slug": "/en/incident-openai-hugging-face",
-			"titre": "An AI escaped its test and hacked a company"
-		},
-		{
 			"slug": "/en/mentions-legales",
 			"titre": "Legal Notices"
 		},
@@ -415,16 +429,12 @@
 			"titre": "Notre financement"
 		},
 		{
-			"slug": "/incident-openai-hugging-face",
-			"titre": "Une IA s’est échappée de son test et a piraté une entreprise"
-		},
-		{
 			"slug": "/mentions-legales",
 			"titre": "Mentions légales"
 		},
 		{
-			"slug": "/personne-ne-controle-lia",
-			"titre": "Personne ne contrôle l’IA, le danger est imminent"
+			"slug": "/participer-a-notre-communication",
+			"titre": "Participer à notre communication"
 		},
 		{
 			"slug": "/politique-de-confidentialite",
@@ -457,7 +467,7 @@
 	],
 	"total": {
 		"pages": 34,
-		"dynamiques": 5,
-		"articles": 32
+		"dynamiques": 6,
+		"articles": 33
 	}
 }

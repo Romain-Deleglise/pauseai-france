@@ -13,7 +13,7 @@
 	   Les données viennent de src/lib/data/plan-du-site.json, régénéré à chaque
 	   déploiement par scripts/plan-du-site.mjs — même source que le document
 	   docs/plan-du-site.md, donc les deux ne peuvent pas diverger. */
-	export let data
+	export let data: { lang?: string }
 
 	$: prefix = `/${data.lang ?? 'fr'}`
 </script>

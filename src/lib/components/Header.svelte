@@ -99,12 +99,21 @@
 			id: 'agir',
 			label: t.nav.agir,
 			items: [
-				// Écrire aux élus et à la presse reste l'action prioritaire ; la
-				// déclaration vient juste après.
+				// Écrire aux élus et à la presse reste l'action prioritaire : elle est
+				// de premier niveau, jamais rangée derrière une page intermédiaire.
 				{ href: `${prefix}/ecrire-a-mes-elus`, label: t.nav.ecrire_elus },
 				{ href: `${prefix}/declaration`, label: t.nav.declaration },
-				{ href: `${prefix}/agir`, label: t.nav.comment_agir },
-				{ href: `${prefix}/groupes-locaux`, label: t.nav.groupes_locaux }
+				// Page hub : réseaux sociaux, Pause Action, participation aux
+				// campagnes. Les trois ne sont pas un sous-menu, ils sont sur la page.
+				{
+					href: `${prefix}/participer-a-notre-communication`,
+					label: t.nav.participer_communication
+				},
+				{ href: `${prefix}/groupes-locaux`, label: t.nav.pres_de_chez_vous },
+				// /recrutement n'est pas localisée : pas de préfixe de langue.
+				{ href: '/recrutement', label: t.nav.convaincre }
+				// « Comment agir ? » quitte le menu : la page reste en ligne (et liée
+				// depuis le pied de page) pour conserver son référencement.
 			]
 		},
 		{
