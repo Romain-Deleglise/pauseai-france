@@ -1,14 +1,25 @@
 <script lang="ts">
+	import { url as siteUrl } from '$config'
+
 	export let alt = false
 	export let href = ''
 	export let target = ''
 	export let rel = ''
 	export let type: 'button' | 'submit' | 'reset' = 'button'
 	export let disabled = false
+
+	/* Règle du site : un lien externe s'ouvre dans un nouvel onglet. Les liens
+	   des fichiers Markdown passent par `custom/a.svelte`, qui l'applique déjà ;
+	   les boutons ne l'avaient nulle part, et onze appels l'oubliaient. On le
+	   pose ici une fois plutôt qu'à chaque appel — un `target` explicite reste
+	   prioritaire. `rel` protège l'onglet d'origine (`noopener`). */
+	$: externe = Boolean(href) && /^https?:\/\//.test(href) && !href.startsWith(siteUrl)
+	$: cible = target || (externe ? '_blank' : '')
+	$: relation = rel || (cible === '_blank' ? 'noopener noreferrer' : '')
 </script>
 
 {#if href}
-	<a {href} {target} {rel} class:alt aria-disabled={disabled}>
+	<a {href} target={cible} rel={relation} class:alt aria-disabled={disabled}>
 		<slot />
 	</a>
 {:else}

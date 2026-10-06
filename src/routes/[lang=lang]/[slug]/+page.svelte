@@ -27,7 +27,11 @@
 	{#if original}
 		<footer>
 			Adaptée de '<a href={original.url}>{original.title}</a>' par PauseAI, sous
-			<a href="https://creativecommons.org/licenses/by/4.0/deed.fr">licence CC BY 4.0</a>.
+			<a
+				href="https://creativecommons.org/licenses/by/4.0/deed.fr"
+				target="_blank"
+				rel="noopener noreferrer">licence CC BY 4.0</a
+			>.
 		</footer>
 	{/if}
 </article>

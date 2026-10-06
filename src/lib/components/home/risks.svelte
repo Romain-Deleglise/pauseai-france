@@ -35,8 +35,10 @@
 					{#if tab === 'Economic & material'}
 						<p>
 							AI labs are planning to automate
-							<a href="https://www.palladiummag.com/2024/05/17/my-last-five-years-of-work/"
-								>all human work within 4 years</a
+							<a
+								href="https://www.palladiummag.com/2024/05/17/my-last-five-years-of-work/"
+								target="_blank"
+								rel="noopener noreferrer">all human work within 4 years</a
 							>. Whether they fully achieve this goal or not, it's clear we're heading toward a
 							major upheaval in the labor market. We must prepare for an unprecedented economic
 							shock.
@@ -44,7 +46,8 @@
 						<p>
 							<a
 								href="https://www.crowdstrike.com/cybersecurity-101/cyberattacks/ai-powered-cyberattacks/"
-								>Economic and material dangers</a
+								target="_blank"
+								rel="noopener noreferrer">Economic and material dangers</a
 							> linked to AI directly threaten our infrastructure, businesses and resources. This technology
 							introduces unprecedented vulnerabilities and possibilities for catastrophic failures. Imagine
 							devastating AI-facilitated attacks, or the collapse of entire sectors facing these disruptive
@@ -67,7 +70,10 @@
 							person. But are you really talking to a human being? Today, the answer may seem
 							obvious, but this reality is about to change radically. The technology to create
 							conversations
-							<a href="https://techxplore.com/news/2024-02-secrets-social-bots-ai-role.html"
+							<a
+								href="https://techxplore.com/news/2024-02-secrets-social-bots-ai-role.html"
+								target="_blank"
+								rel="noopener noreferrer"
 								>indistinguishable from human interactions already exists</a
 							>. It will soon be deployed and make it impossible to distinguish between a human and
 							an AI.
@@ -75,8 +81,10 @@
 						<p>
 							This rapid evolution reveals how deeply AI is infiltrating our daily lives,
 							threatening our privacy, security and wellbeing. Every day, we risk seeing our private
-							life violated and our <a href="https://arxiv.org/pdf/2403.14380"
-								>opinions manipulated by disinformation</a
+							life violated and our <a
+								href="https://arxiv.org/pdf/2403.14380"
+								target="_blank"
+								rel="noopener noreferrer">opinions manipulated by disinformation</a
 							>: the consequences would be devastating.
 						</p>
 						<Button href="{prefix}/dangers/for-individuals">Learn more</Button>
@@ -84,11 +92,14 @@
 						<p>
 							According to the majority of experts, AI will be capable of designing and synthesizing
 							viruses more deadly than anything we know today in the very near future.
-							<a href="https://arxiv.org/abs/2306.03809">AI-assisted bioterrorism</a> is just one
-							example among a multitude of emerging threats. The risk of
+							<a href="https://arxiv.org/abs/2306.03809" target="_blank" rel="noopener noreferrer"
+								>AI-assisted bioterrorism</a
+							>
+							is just one example among a multitude of emerging threats. The risk of
 							<a
 								href="https://blog.checkpoint.com/2023/03/15/check-point-research-conducts-initial-security-analysis-of-chatgpt4-highlighting-potential-scenarios-for-accelerated-cybercrime/"
-								>devastating cyberattacks</a
+								target="_blank"
+								rel="noopener noreferrer">devastating cyberattacks</a
 							>, orchestrated or amplified by sophisticated AI, looms over our critical
 							infrastructure and communication systems.
 						</p>
@@ -107,20 +118,23 @@
 							within the next four years. They admit they don't know how to control their creation
 							and publicly acknowledge that <a
 								href="https://www.cnn.com/2023/10/31/tech/sam-altman-ai-risk-taker/index.html"
-								>humanity could go extinct</a
+								target="_blank"
+								rel="noopener noreferrer">humanity could go extinct</a
 							> because of it.
 						</p>
 						<p>
 							The world's most eminent AI experts have signed an <a
 								href="https://futureoflife.org/open-letter/pause-giant-ai-experiments/"
-								>open letter</a
+								target="_blank"
+								rel="noopener noreferrer">open letter</a
 							> warning that "AI poses an existential risk to humanity, on par with pandemics and nuclear
 							wars."
 						</p>
 						<p>
 							According to the <a
 								href="https://wiki.aiimpacts.org/ai_timelines/predictions_of_human-level_ai_timelines/ai_timeline_surveys/2023_expert_survey_on_progress_in_ai"
-								>2023 AI Impacts survey</a
+								target="_blank"
+								rel="noopener noreferrer">2023 AI Impacts survey</a
 							> of 2,778 AI researchers, the median estimated probability of human extinction is 5%,
 							and more than a third of respondents place it above 10%.
 						</p>
@@ -136,8 +150,10 @@
 				{:else if tab === 'Économiques et matériels'}
 					<p>
 						Les laboratoires d'IA ont pour projet d'automatiser
-						<a href="https://www.palladiummag.com/2024/05/17/my-last-five-years-of-work/"
-							>la totalité du travail humain d'ici 4 ans</a
+						<a
+							href="https://www.palladiummag.com/2024/05/17/my-last-five-years-of-work/"
+							target="_blank"
+							rel="noopener noreferrer">la totalité du travail humain d'ici 4 ans</a
 						>. Qu'ils atteignent pleinement cet objectif ou non, il est évident que nous nous
 						dirigeons vers un bouleversement majeur du marché du travail. Nous devons nous préparer
 						à affronter un choc économique sans précédent.
@@ -145,7 +161,8 @@
 					<p>
 						Les <a
 							href="https://www.crowdstrike.com/cybersecurity-101/cyberattacks/ai-powered-cyberattacks/"
-							>dangers économiques et matériels</a
+							target="_blank"
+							rel="noopener noreferrer">dangers économiques et matériels</a
 						> liés aux intelligences artificielles menacent directement nos infrastructures, nos entreprises
 						et nos ressources. Cette technologie introduit des vulnérabilités inédites et des possibilités
 						de dysfonctionnements catastrophiques. Imaginez des attaques dévastatrices facilitées par
@@ -170,16 +187,20 @@
 						semble être la personne parfaite. Mais êtes-vous vraiment en train de discuter avec un
 						être humain ? Aujourd'hui, la réponse peut sembler évidente, mais cette réalité est sur
 						le point de changer radicalement. La technologie permettant de créer des conversations
-						<a href="https://techxplore.com/news/2024-02-secrets-social-bots-ai-role.html"
-							>indiscernables d'interactions humaines existe déjà</a
+						<a
+							href="https://techxplore.com/news/2024-02-secrets-social-bots-ai-role.html"
+							target="_blank"
+							rel="noopener noreferrer">indiscernables d'interactions humaines existe déjà</a
 						>. Elle sera bientôt déployée et rendra impossible toute distinction entre un humain et
 						une IA.
 					</p>
 					<p>
 						Cette évolution rapide révèle à quel point l'IA s'immisce dans notre quotidien, menace
 						notre intimité, notre sécurité et notre bien-être. Chaque jour, nous risquons de voir
-						notre vie privée violée et nos <a href="https://arxiv.org/pdf/2403.14380"
-							>opinions manipulées par la désinformation</a
+						notre vie privée violée et nos <a
+							href="https://arxiv.org/pdf/2403.14380"
+							target="_blank"
+							rel="noopener noreferrer">opinions manipulées par la désinformation</a
 						> : les conséquences seraient dévastatrices.
 					</p>
 					<Button href="{prefix}/dangers/pour-les-individus">En apprendre davantage</Button>
@@ -187,13 +208,16 @@
 					<p>
 						Selon la majorité des experts, les intelligences artificielles seront capables de
 						concevoir et synthétiser à très court terme des virus plus mortels que tout ce que nous
-						connaissons aujourd'hui. Le <a href="https://arxiv.org/abs/2306.03809"
-							>bioterrorisme assisté par l'IA</a
+						connaissons aujourd'hui. Le <a
+							href="https://arxiv.org/abs/2306.03809"
+							target="_blank"
+							rel="noopener noreferrer">bioterrorisme assisté par l'IA</a
 						>
 						n'est qu'un exemple parmi une multitude de menaces émergentes. Le risque de
 						<a
 							href="https://blog.checkpoint.com/2023/03/15/check-point-research-conducts-initial-security-analysis-of-chatgpt4-highlighting-potential-scenarios-for-accelerated-cybercrime/"
-							>cyberattaques dévastatrices</a
+							target="_blank"
+							rel="noopener noreferrer">cyberattaques dévastatrices</a
 						>, orchestrées ou amplifiées par des IA sophistiquées, plane sur nos infrastructures
 						critiques et nos systèmes de communication.
 					</p>
@@ -213,20 +237,23 @@
 						affirment qu'ils pourraient réussir dans les quatres prochaines années. Ils admettent ne
 						pas savoir comment contrôler leur création et reconnaissent publiquement que <a
 							href="https://www.cnn.com/2023/10/31/tech/sam-altman-ai-risk-taker/index.html"
-							>l'humanité pourrait s'éteindre</a
+							target="_blank"
+							rel="noopener noreferrer">l'humanité pourrait s'éteindre</a
 						> à cause de celle-ci.
 					</p>
 					<p>
 						Les plus éminents experts en IA ont signé une <a
 							href="https://futureoflife.org/open-letter/pause-giant-ai-experiments/"
-							>lettre ouverte</a
+							target="_blank"
+							rel="noopener noreferrer">lettre ouverte</a
 						> avertissant que "L'IA représente un risque existentiel pour l'humanité, au même titre que
 						les pandémies et les guerres nucléaires."
 					</p>
 					<p>
 						Selon le <a
 							href="https://wiki.aiimpacts.org/ai_timelines/predictions_of_human-level_ai_timelines/ai_timeline_surveys/2023_expert_survey_on_progress_in_ai"
-							>sondage 2023 de AI Impacts</a
+							target="_blank"
+							rel="noopener noreferrer">sondage 2023 de AI Impacts</a
 						> auprès de 2 778 chercheurs en IA, la probabilité médiane d'extinction est estimée à 5%,
 						et plus d'un tiers des répondants la situent au-dessus de 10%.
 					</p>

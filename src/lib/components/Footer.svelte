@@ -113,7 +113,9 @@
 			<a href="{prefix}#faq">{t.footer.faq}</a>
 			<a href="{prefix}/propositions">{t.footer.propositions}</a>
 			<a href="{prefix}/newsletters">{t.footer.newsletters}</a>
-			<a href="https://pauseia.substack.com/">{t.footer.blog}</a>
+			<a href="https://pauseia.substack.com/" target="_blank" rel="noopener noreferrer"
+				>{t.footer.blog}</a
+			>
 			<ExternalLink href="https://fresquedesrisquesdelia.org/" target="_blank"
 				>{t.footer.fresque}</ExternalLink
 			>
@@ -132,7 +134,9 @@
 			<ExternalLink href="https://pauseai-shop.fourthwall.com" target="_blank"
 				>{t.footer.merchandise}</ExternalLink
 			>
-			<a href="https://pauseai.info/protests">{t.footer.protests}</a>
+			<a href="https://pauseai.info/protests" target="_blank" rel="noopener noreferrer"
+				>{t.footer.protests}</a
+			>
 			<a href="{prefix}/recrutement-emploi">{t.footer.jobs}</a>
 		</div>
 		<div class="column">

@@ -276,7 +276,7 @@
 				<a href="{prefix}/dangers/economiques-et-materiels">graves dangers</a> de la course à
 				l'intelligence artificielle, et les incite à agir pour s'y opposer. Nous représentons en
 				France
-				<a href="https://pauseai.info">PauseAI Global</a>.
+				<a href="https://pauseai.info" target="_blank" rel="noopener noreferrer">PauseAI Global</a>.
 			</p>
 		{/if}
 		<div class="contact-cta">

@@ -15,9 +15,9 @@
 	<Fly>
 		<UnderlinedTitle id={label_id}>
 			{#if lang === 'en'}
-				The rise of artificial intelligence: an unprecedented challenge for humanity
+				The AI industry should not be allowed to gamble with our lives
 			{:else}
-				L'avènement de l'intelligence artificielle{'\u00A0'}: un défi sans précédent pour l'humanité
+				L'industrie de l'IA ne devrait pas avoir le droit de jouer avec nos vies
 			{/if}
 		</UnderlinedTitle>
 	</Fly>
@@ -25,59 +25,58 @@
 		<div class="lead" aria-labelledby={label_id}>
 			{#if lang === 'en'}
 				<p>
-					AI development is <a href="https://arxiv.org/abs/2001.08361"
-						>progressing at breakneck speed</a
-					>: in 2020, AI systems struggled to count to ten; today they already surpass human
-					capabilities in many domains. While AI promises potential positive advances, the flip side
-					is terrifying.
+					This is only the beginning. AI has started to take over our lives, and already we control
+					nothing. The risks are immense — for our democracies, our jobs, our mental health, the
+					working of the computer systems we depend on (the internet, banking, public services)…
+					Major AI-driven disasters can no longer be ruled out.
 				</p>
 				<p>
-					According to <a href="https://www.safe.ai/work/statement-on-ai-risk#open-letter"
-						>AI safety and ethics experts</a
-					>, unchecked development also entails major risks: large-scale disinformation, mass
-					manipulation, devastating cyberattacks, engineered pandemics, and loss of control over
-					autonomous systems, even threatening the very survival of humanity.
+					To make matters worse, the capabilities of frontier general-purpose AI models grow by the
+					day. That is what the handful of companies building them devote their enormous financial
+					resources to. Their successes in this area are deeply worrying.
 				</p>
 				<p>
-					Pause AI, in line with the warnings of AI safety researchers, promotes responsible
-					development of this rapidly evolving technology. We call for a moratorium on training more
-					dangerous systems, to avoid a global catastrophe.
+					And safety? No regulation worthy of the name. Not even any certainty that these systems
+					can really be controlled, by technology or by law. The leaders themselves, OpenAI and
+					Anthropic, keep issuing statements about the danger and the complexity of the safety
+					problem.
 				</p>
 				<p>
-					The dangers are real, but hope exists. By acting together, we can shape a future where AI
-					remains a beneficial tool for humanity.
+					Pause AI calls for an international public authority to oversee frontier AI. The AI
+					industry should not be allowed to gamble with our lives. And yet it is.
 				</p>
+				<p>If you think this has to stop, join us and sign our statement.</p>
 				<div class="buttons" in:fly={{ y: 20, duration: 300, delay: 700 }}>
-					<Button href="{prefix}/rejoindre">Join us</Button>
+					<Button href="{prefix}/declaration">Sign the statement</Button>
+					<Button href="{prefix}/rejoindre" alt>Join us</Button>
 				</div>
 			{:else}
 				<p>
-					Le développement d'intelligences artificielles <a href="https://arxiv.org/abs/2001.08361"
-						>progresse à une vitesse fulgurante</a
-					>{'\u00A0'}: en 2020, elles peinaient à compter jusqu'à dix{'\u00A0'}; aujourd'hui, elles
-					surpassent déjà les capacités humaines dans de nombreux domaines. Bien que l'IA promette
-					des avancées positives potentielles, le revers de la médaille est terrifiant.
+					Ce n'est que le début. L'IA a commencé à envahir nos vies, et déjà nous ne contrôlons
+					rien. Les risques sont immenses, pour nos démocraties, nos emplois, notre santé mentale,
+					le fonctionnement de notre informatique vitale (internet, système bancaire, services
+					publics)… Des catastrophes majeures dues à l'IA ne peuvent plus être exclues.
 				</p>
 				<p>
-					D'après <a href="https://www.safe.ai/work/statement-on-ai-risk#open-letter"
-						>les experts en sécurité et éthique de l'IA</a
-					>, un développement incontrôlé comporte des risques majeurs{'\u00A0'}: désinformation à
-					grande échelle, manipulation de masse, cyberattaques dévastatrices, pandémies
-					artificielles, et perte de contrôle de systèmes autonomes, allant jusqu'à menacer la
-					survie même de l'humanité.
+					Facteur aggravant, les capacités des modèles d'IA généralistes de pointe augmentent chaque
+					jour. C'est à cela que les quelques entreprises qui les développent consacrent leurs
+					énormes moyens financiers. Leurs succès dans ce domaine sont très inquiétants.
 				</p>
 				<p>
-					Pause IA, en accord avec les alertes des chercheurs en sécurité de l'IA, promeut un
-					développement responsable de cette technologie en pleine expansion. Nous appelons à un
-					moratoire sur l'entraînement de systèmes plus dangereux, afin d'éviter une catastrophe
-					mondiale.
+					Et la sécurité{'\u202F'}? Pas de régulation à la hauteur. Pas même de certitude que ces
+					systèmes soient réellement contrôlables, ni par la technologie, ni par la loi. Les
+					champions eux-mêmes, OpenAI et Anthropic, multiplient les déclarations sur le danger et la
+					complexité des enjeux de sécurité.
 				</p>
 				<p>
-					Les dangers sont réels, mais l'espoir existe. En agissant ensemble, nous pouvons façonner
-					un futur où l'IA demeure un outil bénéfique pour l'humanité.
+					Pause IA réclame la création d'une autorité publique internationale pour contrôler les IA
+					de pointe. L'industrie de l'IA ne devrait pas avoir le droit de jouer avec nos vies. Et
+					pourtant, elle l'a.
 				</p>
+				<p>Si vous pensez que cela doit cesser, rejoignez-nous, signez notre déclaration.</p>
 				<div class="buttons" in:fly={{ y: 20, duration: 300, delay: 700 }}>
-					<Button href="{prefix}/rejoindre">Rejoignez-nous</Button>
+					<Button href="{prefix}/declaration">Signer la déclaration</Button>
+					<Button href="{prefix}/rejoindre" alt>Rejoignez-nous</Button>
 				</div>
 			{/if}
 		</div>
