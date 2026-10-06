@@ -179,7 +179,8 @@ d.push('> `pnpm run plan-du-site`. Il est reconstruit à partir des routes,')
 d.push('> du menu principal, du pied de page et des articles du dépôt, donc il ne')
 d.push('> peut pas diverger du site.')
 d.push('>')
-d.push(`> Dernière génération : ${new Date().toISOString().slice(0, 10)}.`)
+const MARQUE_DATE = '@@DATE@@'
+d.push(`> Dernière génération : ${MARQUE_DATE}.`)
 d.push('')
 d.push('Ce document décrit le site **réel**. Le plan *souhaité* est une décision')
 d.push("d'équipe et se tient ailleurs.")
@@ -252,18 +253,38 @@ d.push('| --- | --- |')
 for (const a of listeArticles) d.push(`| ${a.titre} | \`src/posts${a.slug}.md\` |`)
 d.push('')
 
-// Formaté par Prettier avant écriture : sans cela, `pnpm lint` échouait après
-// chaque génération, quel que soit le point d'entrée utilisé.
-const brut = d.join('\n') + '\n'
-let final = brut
+/* La date de génération est le seul élément qui bouge tout seul : telle quelle,
+   le document changeait chaque jour même quand le site n'avait pas bougé, et
+   le workflow aurait commité du bruit à chaque déploiement. On compare donc le
+   contenu SANS la date, et on conserve l'ancienne quand rien d'autre n'a changé
+   — même principe que writeStableJson dans generate-elus.js. */
+const aujourdHui = new Date().toISOString().slice(0, 10)
+let precedent = null
+try {
+	precedent = await readFile(SORTIE, 'utf8')
+} catch {
+	/* première génération */
+}
+
+// Mise en forme AVANT la comparaison : le fichier déjà sur disque est passé par
+// Prettier, donc comparer le gabarit brut avec lui les trouvait toujours
+// différents, et la date était réécrite à chaque fois. La marque @@DATE@@
+// traverse Prettier sans dommage.
+let gabarit = d.join('\n') + '\n'
 try {
 	const prettier = await import('prettier')
 	const conf = (await prettier.resolveConfig(SORTIE)) ?? {}
-	final = await prettier.format(brut, { ...conf, filepath: SORTIE })
+	gabarit = await prettier.format(gabarit, { ...conf, filepath: SORTIE })
 } catch {
 	console.warn('⚠️  Prettier indisponible : document écrit sans mise en forme.')
 }
-await writeFile(SORTIE, final)
+
+const sansDate = (t) => (t ?? '').replace(/> Dernière génération : [^.]*\./, '')
+const datePrecedente = precedent?.match(/> Dernière génération : (\d{4}-\d{2}-\d{2})\./)?.[1]
+const date =
+	datePrecedente && sansDate(gabarit) === sansDate(precedent) ? datePrecedente : aujourdHui
+
+await writeFile(SORTIE, gabarit.replace(MARQUE_DATE, date))
 console.log(
 	`✓ docs/plan-du-site.md — ${statiques.length} pages, ${orphelines.length} hors menu, ${listeArticles.length} articles`
 )
