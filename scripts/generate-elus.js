@@ -1,4 +1,13 @@
 #!/usr/bin/env node
+// @ts-nocheck
+/*
+ * Script Node en JavaScript simple, sans annotations de types. Il vivait hors
+ * du programme TypeScript jusqu'à ce que `tests/elusSenat.test.ts` importe
+ * `analyserSenateurs` : l'import l'y a fait entrer, et `checkJs` + `strict`
+ * ont alors relevé 48 erreurs de typage préexistantes, sans rapport avec le
+ * test. On assume explicitement que ce fichier n'est pas typé, plutôt que de
+ * l'annoter entièrement ou de renoncer à le tester.
+ */
 /**
  * Génère src/lib/data/elus.json : la liste des députés et sénateurs français
  * avec leurs emails, indexés par circonscription / département, plus une table
@@ -452,32 +461,90 @@ function senatSlug(s) {
 }
 
 /** Télécharge et parse le CSV ODSEN, ne garde que les sénateurs en exercice. */
-async function fetchSenateurs() {
-	const res = await fetch(SOURCES.senateurs, { headers: UA })
-	if (!res.ok) throw new Error(`HTTP ${res.status} pour ${SOURCES.senateurs}`)
-	// ODSEN est encodé en latin1.
-	const text = new TextDecoder('latin1').decode(await res.arrayBuffer())
-	// Ignorer le préambule (« % … ») ; la 1re ligne restante est l'en-tête.
-	const lines = text.split(/\r?\n/).filter((l) => l && !l.startsWith('%'))
-	if (lines.length < 2) return []
-	const header = lines[0].split(',')
-	const col = (name) => header.indexOf(name)
-	const iMat = col('Matricule')
-	const iNom = col('Nom usuel')
-	const iPre = col('Prénom usuel')
-	const iEtat = col('État')
-	const iGrp = col('Groupe politique')
-	const iCirco = col('Circonscription')
-	const iMail = col('Courrier électronique')
-	const iQual = col('Qualité')
+/* Analyse du fichier ODSEN du Sénat.
+   Séparée du téléchargement pour être testable hors réseau, et surtout rendue
+   tolérante : la version précédente supposait un encodage latin1, un séparateur
+   virgule et des noms de colonnes accentués exacts. Si l'une de ces trois
+   hypothèses tombait, `header.indexOf('État')` valait -1, aucune ligne ne
+   passait le filtre ACTIF, et la fonction renvoyait zéro sénateur SANS erreur —
+   le garde-fou disait « nombre de sénateurs suspect : 0 », ce qui ne désignait
+   pas la cause. */
+
+/** Clé de comparaison d'en-tête : sans accent, sans guillemet, sans casse. */
+function cleEntete(s) {
+	return s
+		.replace(/^\uFEFF/, '')
+		.replace(/^"|"$/g, '')
+		.normalize('NFD')
+		.replace(/[\u0300-\u036f]/g, '')
+		.trim()
+		.toLowerCase()
+}
+
+/** Décode en UTF-8 si le contenu en est, sinon en latin1 (encodage historique). */
+function decoderOdsen(buf) {
+	try {
+		return { texte: new TextDecoder('utf-8', { fatal: true }).decode(buf), encodage: 'utf-8' }
+	} catch {
+		return { texte: new TextDecoder('latin1').decode(buf), encodage: 'latin1' }
+	}
+}
+
+export function analyserSenateurs(buf) {
+	const { texte, encodage } = decoderOdsen(buf)
+	// Le préambule est en lignes « % » ; la 1re ligne restante est l'en-tête.
+	const lignes = texte.split(/\r?\n/).filter((l) => l && !l.startsWith('%'))
+	if (lignes.length < 2) throw new Error('fichier ODSEN vide ou sans en-tête')
+
+	// Séparateur : le Sénat publie en virgule, mais les exports FR basculent
+	// volontiers en point-virgule. On prend celui qui découpe le plus de colonnes.
+	const sep = lignes[0].split(';').length > lignes[0].split(',').length ? ';' : ','
+	const entete = lignes[0].split(sep).map(cleEntete)
+	const col = (nom) => entete.indexOf(cleEntete(nom))
+
+	const attendues = {
+		Matricule: col('Matricule'),
+		'Nom usuel': col('Nom usuel'),
+		'Prénom usuel': col('Prénom usuel'),
+		État: col('État'),
+		'Groupe politique': col('Groupe politique'),
+		Circonscription: col('Circonscription'),
+		'Courrier électronique': col('Courrier électronique'),
+		Qualité: col('Qualité')
+	}
+	// Échouer ICI, en nommant la colonne : une colonne renommée en amont ne doit
+	// pas se traduire par « 0 sénateur » dix lignes plus bas.
+	const manquantes = Object.entries(attendues)
+		.filter(([, i]) => i < 0)
+		.map(([n]) => n)
+	if (manquantes.length) {
+		throw new Error(
+			`colonnes absentes du fichier du Sénat (encodage ${encodage}, séparateur « ${sep} ») : ` +
+				`${manquantes.join(', ')} — en-tête lu : ${entete.join(' | ')}`
+		)
+	}
+
+	const {
+		Matricule: iMat,
+		'Nom usuel': iNom,
+		'Prénom usuel': iPre,
+		État: iEtat,
+		'Groupe politique': iGrp,
+		Circonscription: iCirco,
+		'Courrier électronique': iMail,
+		Qualité: iQual
+	} = attendues
 
 	const out = []
 	let unmappedDept = 0
-	for (const line of lines.slice(1)) {
-		// Les colonnes utiles (0..12) ne contiennent pas de virgule interne :
+	let actifs = 0
+	for (const line of lignes.slice(1)) {
+		// Les colonnes utiles (0..12) ne contiennent pas de séparateur interne :
 		// un simple split convient (les champs entre guillemets sont après).
-		const c = line.split(',')
-		if ((c[iEtat] || '').trim() !== 'ACTIF') continue
+		const c = line.split(sep)
+		// Comparaison insensible à la casse et aux accents : « Actif » ou « ACTIF ».
+		if (cleEntete(c[iEtat] || '') !== 'actif') continue
+		actifs++
 
 		const prenom = (c[iPre] || '').trim()
 		const nom = (c[iNom] || '').trim()
@@ -509,10 +576,25 @@ async function fetchSenateurs() {
 				: null
 		})
 	}
+	// Le fichier contient tous les sénateurs depuis 1959 : si aucun n'est ACTIF,
+	// c'est la valeur du filtre qui a changé, pas le Sénat qui a fermé.
+	if (!actifs) {
+		throw new Error(
+			`aucune ligne « ACTIF » sur ${lignes.length - 1} (encodage ${encodage}, ` +
+				`séparateur « ${sep} ») — la valeur de la colonne État a-t-elle changé ?`
+		)
+	}
+
 	if (unmappedDept) {
 		console.warn(`⚠️  ${unmappedDept} sénateur(s) sans code département (ex. hors de France).`)
 	}
 	return out
+}
+
+async function fetchSenateurs() {
+	const res = await fetch(SOURCES.senateurs, { headers: UA })
+	if (!res.ok) throw new Error(`HTTP ${res.status} pour ${SOURCES.senateurs}`)
+	return analyserSenateurs(await res.arrayBuffer())
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -814,7 +896,11 @@ function printReport(deputes, senateurs) {
 	}
 }
 
-main().catch((err) => {
-	console.error('✗ Échec de la génération :', err.message)
-	process.exit(1)
-})
+// Exécuté seulement en ligne de commande : un test peut importer ce module
+// pour exercer `analyserSenateurs` sans lancer toute la génération.
+if (process.argv[1] && process.argv[1].endsWith('generate-elus.js')) {
+	main().catch((err) => {
+		console.error('✗ Échec de la génération :', err.message)
+		process.exit(1)
+	})
+}
