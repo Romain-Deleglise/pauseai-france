@@ -380,6 +380,13 @@
 
 <style>
 	.recruitment-landing {
+		/* <main> est un conteneur flex : sans min-inline-size, cet article refuse
+		   de descendre sous la largeur intrinsèque de son contenu (min-width:auto
+		   est la valeur par défaut d'un enfant flex). La page faisait 632 px de
+		   large sur un écran de 390 et défilait horizontalement. Même piège et
+		   même correctif que CampaignPage. */
+		min-inline-size: 0;
+		inline-size: 100%;
 		max-width: var(--width-wide);
 		margin: 0 auto;
 		padding: 2rem 1rem;
