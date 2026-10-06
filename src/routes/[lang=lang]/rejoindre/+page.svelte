@@ -70,6 +70,15 @@
 			</div>
 		</section>
 
+		<section class="difference">
+			<h2>What is the difference between a member and a volunteer?</h2>
+			<p>
+				A <strong>member</strong> formally supports the association through a membership fee and
+				participates in its governance (AGM). A <strong>volunteer</strong> gives their time to carry
+				out our missions. You can be one, the other, or both!
+			</p>
+		</section>
+
 		<div class="impact-highlight">
 			<h2><Zap size="1.2em" /> Quick action: Join Pause Action!</h2>
 			<p>
@@ -93,38 +102,6 @@
 
 		<section class="faq-section">
 			<UnderlinedTitle>Frequently asked questions</UnderlinedTitle>
-
-			<Accordion id="faq-diff" open={false}>
-				<svelte:fragment slot="head"
-					>What is the difference between a member and a volunteer?</svelte:fragment
-				>
-				<svelte:fragment slot="details">
-					<p>
-						A <strong>member</strong> formally supports the association through a membership fee and
-						participates in its governance (AGM). A <strong>volunteer</strong> gives their time to carry
-						out our missions. You can be one, the other, or both!
-					</p>
-				</svelte:fragment>
-			</Accordion>
-
-			<Accordion id="faq-time" open={false}>
-				<svelte:fragment slot="head"
-					>How much time do I need to commit as a volunteer?</svelte:fragment
-				>
-				<svelte:fragment slot="details">
-					<p>You decide!</p>
-					<ul>
-						<li><strong>Tier 0 (~10 min/week):</strong> Simple actions via the WhatsApp group.</li>
-						<li>
-							<strong>Tier 1 (1-4h/week):</strong> Participation in recruitment or advocacy campaigns.
-						</li>
-						<li>
-							<strong>Tier 2 (+5h/week):</strong> Integration into a team (Tech, Communication, etc.)
-							with project tracking and clear responsibilities.
-						</li>
-					</ul>
-				</svelte:fragment>
-			</Accordion>
 
 			<Accordion id="faq-skills" open={false}>
 				<svelte:fragment slot="head">I have no particular skills, can I still help?</svelte:fragment
@@ -188,6 +165,17 @@
 			</div>
 		</section>
 
+		<!-- Ce texte départageait membre et bénévole au fond d'un accordéon, tout
+		     en bas de page. Il répond à la question que posent les deux cartes
+		     ci-dessus : il est remonté juste après elles, et déplié. -->
+		<section class="difference">
+			<h2>Quelle est la différence entre un membre et un bénévole ?</h2>
+			<p>
+				Un <strong>membre</strong> soutient formellement l'association via une cotisation. Un
+				<strong>bénévole</strong> donne de son temps. Vous pouvez être l'un, l'autre, ou les deux !
+			</p>
+		</section>
+
 		<div class="impact-highlight">
 			<h2><Zap size="1.2em" /> L'action rapide : Rejoignez Pause Action !</h2>
 			<p>
@@ -210,37 +198,6 @@
 			</div>
 			<Button alt href="/fr/recrutement-emploi">Voir l'offre</Button>
 		</aside>
-
-		<section class="faq-section">
-			<UnderlinedTitle>Questions fréquentes</UnderlinedTitle>
-
-			<Accordion id="faq-diff" open={false}>
-				<svelte:fragment slot="head"
-					>Quelle est la différence entre un membre et un bénévole ?</svelte:fragment
-				>
-				<svelte:fragment slot="details">
-					<p>
-						Un <strong>membre</strong> soutient formellement l'association via une cotisation. Un
-						<strong>bénévole</strong> donne de son temps. Vous pouvez être l'un, l'autre, ou les deux
-						!
-					</p>
-				</svelte:fragment>
-			</Accordion>
-
-			<Accordion id="faq-time" open={false}>
-				<svelte:fragment slot="head"
-					>Combien de temps dois-je consacrer en tant que bénévole ?</svelte:fragment
-				>
-				<svelte:fragment slot="details">
-					<p>C'est vous qui décidez !</p>
-					<ul>
-						<li><strong>Tier 0 (~10 min/semaine) :</strong> Actions simples via WhatsApp.</li>
-						<li><strong>Tier 1 (1-4h/semaine) :</strong> Campagnes de plaidoyer.</li>
-						<li><strong>Tier 2 (+5h/semaine) :</strong> Intégration dans une équipe.</li>
-					</ul>
-				</svelte:fragment>
-			</Accordion>
-		</section>
 	{/if}
 </article>
 
@@ -431,6 +388,21 @@
 
 	.faq-section {
 		margin-top: 3rem;
+	}
+
+	.difference {
+		margin: 2rem 0;
+	}
+
+	.difference h2 {
+		margin: 0 0 0.75rem;
+		font-size: 1.5rem;
+	}
+
+	.difference p {
+		margin: 0;
+		max-inline-size: var(--width-text);
+		line-height: 1.7;
 	}
 
 	@media (max-width: 480px) {

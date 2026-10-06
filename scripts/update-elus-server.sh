@@ -42,6 +42,13 @@ ALERT_EMAIL="${ALERT_EMAIL:-romain@pauseia.fr}"
 notify_failure() {
 	local line=$1
 	local msg="Échec de la mise à jour des élus (pauseia.fr), ligne $line : ${BASH_COMMAND}"
+	# Sans ça, l'alerte ne disait que le numéro de ligne : il fallait ouvrir le
+	# journal du serveur pour savoir si c'était une source HS, un garde-fou ou
+	# autre chose. On y joint la fin de la sortie d'erreur du générateur.
+	# Tronqué à 1200 caractères : Discord refuse un contenu de plus de 2000.
+	if [[ -s "${ERR_LOG:-/dev/null}" ]]; then
+		msg+=$'\n\n'"$(tail -c 1200 "$ERR_LOG")"
+	fi
 	echo "✗ $msg" >&2
 	if [[ -n "$ALERT_WEBHOOK" ]]; then
 		# Format compatible Discord ({"content":...}) et Slack ({"text":...}).
@@ -80,7 +87,13 @@ echo "→ Génération des données des élus…"
 # cassés (plus lent). À lancer ponctuellement pour rafraîchir les photos.
 PHOTO_FLAG=""
 [[ -n "${CHECK_PHOTOS:-}" ]] && PHOTO_FLAG="--check-photos"
-node scripts/generate-elus.js --report $PHOTO_FLAG
+# Redirection directe plutôt qu'un `tee` en substitution de processus : quand
+# node échoue, il a rendu la main, donc le fichier est complet au moment où le
+# trap ERR le lit. Avec un tee, la lecture pouvait précéder la purge du tampon.
+ERR_LOG="$(mktemp -t update-elus-err.XXXXXX)"
+trap 'rm -f "$ERR_LOG"' EXIT
+node scripts/generate-elus.js --report $PHOTO_FLAG 2>"$ERR_LOG"
+cat "$ERR_LOG" >&2
 
 DATA_FILES=(src/lib/data/elus.json src/lib/data/code-postal-circo.json)
 if git diff --quiet -- "${DATA_FILES[@]}"; then
