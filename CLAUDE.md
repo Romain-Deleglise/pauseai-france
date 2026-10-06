@@ -431,6 +431,8 @@ Copy `template.env` to `.env` and configure:
 - `src/lib/types.ts` - TypeScript type definitions
 - `src/lib/config.ts` - Site configuration constants
 - `src/lib/routes.ts` - Static route enumeration for sitemaps
+- `scripts/plan-du-site.mjs` - Génère `docs/plan-du-site.md` (arborescence réelle,
+  menu, pied de page, pages hors menu) : `pnpm run plan-du-site`
 - `src/lib/typographyPlugin.js` - French typography transformation (remark + Vite plugin)
 - `src/lib/faqPlugin.js` - FAQ accordion transformation
 - `src/lib/rehypeWBWPlugins.js` - Wait But Why popup and box plugins
