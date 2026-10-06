@@ -62,7 +62,7 @@
 </script>
 
 <section aria-labelledby={label_id}>
-	<UnderlinedTitle id={label_id}
+	<UnderlinedTitle id={label_id} as="h3"
 		>{lang === 'en' ? 'Our newsletters' : 'Nos newsletters'}</UnderlinedTitle
 	>
 	<div class="articles-grid">

@@ -8,6 +8,7 @@
 	import Articles from '$components/home/articles.svelte'
 	import NewsletterCta from '$components/home/newsletter-cta.svelte'
 	import Faq from '$components/home/faq.svelte'
+	import Bande from '$components/home/Bande.svelte'
 	import Videos from '$components/home/videos.svelte'
 	import { bannerStore } from '$lib/stores/banner'
 	import { getT } from '$lib/i18n'
@@ -30,16 +31,19 @@
 
 <Lead {lang} />
 
-<WriteAction {lang} />
+<!-- Deux ensembles plutôt que neuf blocs de poids égal : « agir » d'un côté,
+     « s'informer » de l'autre. La bande teintée du premier suffit à séparer
+     les deux territoires ; la FAQ reste à part. -->
+<Bande titre={t.home.bande_agir_titre} fond="creme">
+	<WriteAction {lang} />
+	<Campaigns {lang} />
+	<LocalGroups {lang} />
+</Bande>
 
-<Campaigns {lang} />
-
-<LocalGroups {lang} />
-
-<NewsletterCta {lang} />
-
-<Videos videos={data.videos} {lang} />
-
-<Articles articles={data.articles} {lang} />
+<Bande titre={t.home.bande_informer_titre}>
+	<NewsletterCta {lang} />
+	<Videos videos={data.videos} {lang} />
+	<Articles articles={data.articles} {lang} />
+</Bande>
 
 <Faq {lang} />

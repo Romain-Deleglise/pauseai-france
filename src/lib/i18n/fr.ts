@@ -82,6 +82,8 @@ export default {
 		hero_title: "Pour garder l'IA sous contrôle,",
 		hero_highlight: 'agissons maintenant',
 		hero_cta: 'Passer à l’action',
+		bande_agir_titre: 'Agir',
+		bande_informer_titre: 'S’informer',
 		campaigns_title: 'Nos campagnes en cours',
 		campaigns_subtitle: 'Interpellez, écrivez, témoignez : chaque action compte.',
 		campaigns_cta: 'Participer',
