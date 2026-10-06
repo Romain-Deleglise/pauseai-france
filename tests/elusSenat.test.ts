@@ -72,3 +72,12 @@ describe('analyserSenateurs', () => {
 		expect(() => analyserSenateurs(octets('% que du préambule'))).toThrow(/vide ou sans en-tête/)
 	})
 })
+
+describe('source déplacée', () => {
+	it('dit que la source renvoie une page web plutôt que de lister 8 colonnes absentes', () => {
+		const html = '<!doctype html>\n<html><body>Portail open data</body></html>'
+		expect(() => analyserSenateurs(new TextEncoder().encode(html).buffer)).toThrow(
+			/page web, pas un CSV/
+		)
+	})
+})

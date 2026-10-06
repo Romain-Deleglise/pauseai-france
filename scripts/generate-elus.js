@@ -492,6 +492,15 @@ function decoderOdsen(buf) {
 
 export function analyserSenateurs(buf) {
 	const { texte, encodage } = decoderOdsen(buf)
+	// Une page web renvoyée en 200 à la place du fichier : l'URL a bougé, ou le
+	// portail sert une page d'accueil. Le dire tout de suite, sinon on énumère
+	// huit colonnes « absentes » d'un document HTML, ce qui désigne mal la cause.
+	if (/^\s*(<!doctype|<html|<\?xml)/i.test(texte)) {
+		throw new Error(
+			`la source du Sénat renvoie une page web, pas un CSV (${SOURCES.senateurs}) — ` +
+				`l'adresse du fichier ODSEN a probablement changé`
+		)
+	}
 	// Le préambule est en lignes « % » ; la 1re ligne restante est l'en-tête.
 	const lignes = texte.split(/\r?\n/).filter((l) => l && !l.startsWith('%'))
 	if (lignes.length < 2) throw new Error('fichier ODSEN vide ou sans en-tête')
