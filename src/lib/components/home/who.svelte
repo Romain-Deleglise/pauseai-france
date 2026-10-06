@@ -6,6 +6,7 @@
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
 	import Accordion from '$components/Accordion.svelte'
 	import FAQEn from '$posts/en/qui-sommes-nous.md'
+	import { equipes } from '$lib/data/equipes'
 	import type { TeamMember } from '$lib/notion'
 	import type { Lang } from '$lib/i18n'
 
@@ -335,6 +336,39 @@
 			: '+ une centaine de membres et bénévoles'}
 	</p>
 
+	<!-- Les équipes, décrites d'après le salon « Contribuer » du Discord. Les
+	     noms des référents n'y figurent pas : voir le commentaire de
+	     src/lib/data/equipes.ts. -->
+	<div class="team-section" id="nos-equipes">
+		<h2 class="section-title">{lang === 'en' ? 'Our teams' : 'Nos équipes'}</h2>
+		<p class="equipes-intro">
+			{lang === 'en'
+				? 'Teams are where the work happens. Their members put in more than five hours a week, and newcomers are brought in quickly so they can find their place.'
+				: 'Les équipes sont le cœur de l’action. Leurs membres s’y investissent plus de cinq heures par semaine, et nous faisons en sorte que les nouveaux venus trouvent vite leur place.'}
+		</p>
+
+		<ul class="equipes">
+			{#each equipes as equipe}
+				<li class="equipe">
+					<h3>{equipe.nom}</h3>
+					<p>{equipe.description}</p>
+					{#if equipe.rolesRecherches?.length}
+						<p class="recherche">
+							{lang === 'en' ? 'Looking for' : 'Nous cherchons'}
+							<span>{equipe.rolesRecherches.join(' · ')}</span>
+						</p>
+					{/if}
+				</li>
+			{/each}
+		</ul>
+
+		<p class="equipes-cta">
+			<Button href="{prefix}/rejoindre">
+				{lang === 'en' ? 'Join a team' : 'Rejoindre une équipe'}
+			</Button>
+		</p>
+	</div>
+
 	{#if lang !== 'en'}
 		<div class="team-section" id="nos-valeurs">
 			<h2 class="section-title">Nos valeurs</h2>
@@ -486,6 +520,65 @@
 </section>
 
 <style>
+	/* --- Nos équipes ------------------------------------------------------- */
+	.equipes-intro {
+		max-inline-size: var(--width-text);
+		margin: 0 auto 2rem;
+		color: var(--text-2);
+		line-height: 1.7;
+	}
+
+	.equipes {
+		list-style: none;
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+		gap: 1.25rem;
+		margin: 0;
+		padding: 0;
+		text-align: start;
+	}
+
+	.equipe {
+		display: flex;
+		flex-direction: column;
+		padding: 1.4rem;
+		background: var(--bg-card);
+		border: 1px solid var(--border);
+		border-radius: var(--radius-lg);
+		box-shadow: var(--shadow-card);
+	}
+
+	.equipe h3 {
+		margin: 0 0 0.6rem;
+		font-size: 1.15rem;
+		color: var(--text);
+	}
+
+	.equipe p {
+		margin: 0;
+		color: var(--text-2);
+		line-height: 1.6;
+	}
+
+	/* Les rôles cherchés sont l'information qui fait agir : on la détache du
+	   descriptif plutôt que de l'y noyer. */
+	.recherche {
+		margin-block-start: auto;
+		padding-block-start: 1rem;
+		font-size: 0.88rem;
+	}
+
+	.recherche span {
+		display: block;
+		margin-block-start: 0.2rem;
+		color: var(--brand-subtle);
+		font-weight: 600;
+	}
+
+	.equipes-cta {
+		margin: 2rem 0 0;
+	}
+
 	section {
 		max-width: 960px;
 		margin: 0 auto;
