@@ -1,6 +1,7 @@
 ---
 title: Une IA s’est échappée de son test et a piraté une entreprise
 description: 'Ce qui s’est réellement passé lors de l’incident OpenAI – Hugging Face de juillet 2026, du début à la fin : les faits établis, ce qui est rapporté, et ce que cela signifie.'
+date: '2026-08-10'
 ---
 
 <script lang="ts">
