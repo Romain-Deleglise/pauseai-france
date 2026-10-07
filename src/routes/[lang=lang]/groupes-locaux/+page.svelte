@@ -21,7 +21,12 @@
 		ChevronRight
 	} from 'lucide-svelte'
 	import type { ComponentType } from 'svelte'
-	import { localGroups, activeGroupsCount, formingGroupsCount } from '$lib/data/local-groups'
+	import {
+		localGroups,
+		activeGroupsCount,
+		formingGroupsCount,
+		moisDepuisLancement
+	} from '$lib/data/local-groups'
 	import { onMount } from 'svelte'
 	import type { PageData } from './$types'
 
@@ -30,6 +35,9 @@
 	$: lang = data.lang
 	$: isEn = lang === 'en'
 	$: prefix = isEn ? '/en' : '/fr'
+
+	// Mois écoulés depuis le lancement des groupes locaux (mars 2026).
+	const mois = moisDepuisLancement()
 
 	// Villes triées : groupes actifs d'abord, puis ceux en création.
 	$: sortedGroups = [...localGroups].sort(
@@ -523,9 +531,59 @@
 			{/if}
 		</section>
 	{/if}
+
+	<!-- Repère de temps en fin de page : tout ce qui précède (groupes, actions,
+	     bénévoles) tient dans ce laps de temps. Le nombre de mois est calculé à
+	     partir de la date de lancement, il ne peut pas se périmer. -->
+	<section class="depuis" aria-labelledby="depuis-titre">
+		<p class="depuis-kicker">{isEn ? 'All of this since' : 'Tout cela depuis'}</p>
+		<p class="depuis-date" id="depuis-titre">{isEn ? 'March 2026' : 'mars 2026'}</p>
+		<p class="depuis-texte">
+			{#if isEn}
+				Pause AI's local groups launched {mois} months ago. Everything above — the groups, the actions,
+				the volunteers — was built in that time, by people who simply decided to start.
+			{:else}
+				Les groupes locaux de Pause IA ont été lancés il y a {mois} mois. Tout ce qui précède — les groupes,
+				les actions, les bénévoles — a été construit dans ce laps de temps, par des gens qui ont simplement
+				décidé de commencer.
+			{/if}
+		</p>
+	</section>
 </article>
 
 <style>
+	/* Repère de temps de fin de page : volontairement sobre (pas de carte, pas
+	   de bordure orange), la date fait tout le travail. */
+	.depuis {
+		margin-block-start: 4rem;
+		padding-block: 2.75rem;
+		text-align: center;
+		border-block-start: 1px solid var(--border);
+	}
+	.depuis-kicker {
+		margin: 0;
+		font-size: 0.95rem;
+		font-weight: 600;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--text-2);
+	}
+	.depuis-date {
+		margin: 0.35rem 0 0;
+		font-size: clamp(2.4rem, 8vw, 4rem);
+		font-weight: 800;
+		line-height: 1.05;
+		letter-spacing: -0.02em;
+		color: var(--brand-subtle);
+	}
+	.depuis-texte {
+		max-inline-size: 36rem;
+		margin: 1.1rem auto 0;
+		font-size: 1.02rem;
+		line-height: 1.6;
+		color: var(--text-2);
+	}
+
 	article {
 		max-inline-size: var(--width-wide);
 		margin-inline: auto;
