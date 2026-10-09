@@ -34,6 +34,25 @@
 		padding-block: 3rem;
 	}
 
+	/* Sur le crème, les cartes se détachaient beaucoup moins bien que sur le
+	   blanc, et le ressenti était juste : ce n'est pas le texte qui perd (noir
+	   sur crème : 19,5:1 contre 21:1 sur blanc, imperceptible), c'est le CONTOUR
+	   des cartes. --border vaut #e5e7eb, un gris froid : 1,24:1 sur blanc, et
+	   seulement 1,15:1 sur le crème, où il jure en plus avec la teinte chaude.
+	   Résultat : des cartes blanches sur crème sans arête nette, donc une
+	   section qui paraît plate.
+
+	   La bande redéfinit donc le trait et l'ombre pour ses enfants, qui les
+	   consomment déjà par var(). Le trait est dérivé de l'encre et du fond :
+	   il reste neutre, prend la chaleur du crème, et se recalcule tout seul en
+	   thème sombre. Mesuré : 1,52:1 contre la bande et 1,64:1 contre la carte,
+	   au lieu de 1,15:1. */
+	.bande.creme {
+		--border: color-mix(in srgb, var(--text) 18%, var(--bg-subtle));
+		--shadow-card: 0 4px 18px rgba(var(--ink-rgb), 0.07);
+		--shadow-raised: 0 8px 26px rgba(var(--ink-rgb), 0.1);
+	}
+
 	/* z-index 0 et non -1 : à -1 le fond passait derrière le conteneur de page,
 	   qui est opaque, et devenait invisible. Les enfants remontent d'un cran. */
 	.bande.creme::before {
