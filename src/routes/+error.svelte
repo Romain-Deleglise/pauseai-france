@@ -33,7 +33,7 @@
 </script>
 
 <svelte:head>
-	<title>{status} — {info.title} | Pause IA</title>
+	<title>{status} · {info.title} | Pause IA</title>
 	<meta name="robots" content="noindex, nofollow" />
 </svelte:head>
 

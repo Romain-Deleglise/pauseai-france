@@ -86,7 +86,7 @@
 	<Fly>
 		<div class="content">
 			<p>
-				Veille critique par Pause IA : décryptages, enjeux de gouvernance, politiques publiques —
+				Veille critique par Pause IA : décryptages, enjeux de gouvernance, politiques publiques :
 				inscrivez-vous pour recevoir l'essentiel.
 			</p>
 
@@ -200,7 +200,7 @@
 	.form-card {
 		background-color: var(--white);
 		border: 1px solid var(--border);
-		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+		box-shadow: 0 8px 24px rgba(var(--ink-rgb), 0.08);
 		border-radius: var(--radius-md);
 		padding: 1.25rem;
 		display: grid;
@@ -238,7 +238,7 @@
 	input[type='email']:focus {
 		outline: none;
 		border-color: var(--brand);
-		box-shadow: 0 0 0 3px rgba(255, 147, 23, 0.1);
+		box-shadow: 0 0 0 3px rgba(var(--brand-rgb), 0.1);
 	}
 
 	input[type='email']:disabled {
@@ -328,7 +328,7 @@
 	}
 
 	input[type='checkbox']:focus + .checkmark {
-		box-shadow: 0 0 0 2px rgba(255, 147, 23, 0.2);
+		box-shadow: 0 0 0 2px rgba(var(--brand-rgb), 0.2);
 	}
 
 	.checkbox-content {
@@ -348,21 +348,21 @@
 		border-radius: var(--radius-sm);
 		text-align: center;
 		font-weight: 600;
-		background-color: rgba(255, 255, 255, 0.8);
-		border: 1px solid rgba(0, 0, 0, 0.08);
+		background-color: rgba(var(--on-dark-rgb), 0.8);
+		border: 1px solid rgba(var(--ink-rgb), 0.08);
 		color: var(--text);
 	}
 
 	.message.success {
-		background-color: rgba(34, 197, 94, 0.12);
-		border: 1px solid rgba(34, 197, 94, 0.35);
-		color: rgb(21, 128, 61);
+		background-color: var(--success-bg);
+		border: 1px solid var(--success-border);
+		color: var(--success);
 	}
 
 	.message.error {
-		background-color: rgba(239, 68, 68, 0.12);
-		border: 1px solid rgba(239, 68, 68, 0.35);
-		color: rgb(185, 28, 28);
+		background-color: var(--error-bg);
+		border: 1px solid var(--error-border);
+		color: var(--error);
 	}
 
 	.submit-button {

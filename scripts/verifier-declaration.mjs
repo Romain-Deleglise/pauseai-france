@@ -91,6 +91,6 @@ if (!snap.totalCount) {
 }
 
 console.log(
-	`\nCompteur « dans le monde » affiché : ${live.global ? live.global.totalCount + (live.local?.count ?? 0) : '—'} = ${live.global?.totalCount ?? '—'} (Global) + ${live.local?.count ?? '—'} (pauseia.fr)`
+	`\nCompteur « dans le monde » affiché : ${live.global ? live.global.totalCount + (live.local?.count ?? 0) : ' '} = ${live.global?.totalCount ?? ' '} (Global) + ${live.local?.count ?? ' '} (pauseia.fr)`
 )
 process.exit(ok ? 0 : 1)

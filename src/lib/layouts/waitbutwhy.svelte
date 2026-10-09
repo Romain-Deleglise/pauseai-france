@@ -212,7 +212,7 @@
 		color: black;
 		max-width: 40ch;
 		white-space: normal;
-		box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+		box-shadow: 0 2px 5px rgba(var(--ink-rgb), 0.2);
 		z-index: 100;
 		top: 100%;
 		left: 0;

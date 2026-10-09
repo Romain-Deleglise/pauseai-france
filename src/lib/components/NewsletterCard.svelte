@@ -73,7 +73,7 @@
 
 	.card-link:hover {
 		transform: translateY(-6px);
-		box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.12);
+		box-shadow: 0 20px 40px -12px rgba(var(--ink-rgb), 0.12);
 	}
 
 	.card {
@@ -128,7 +128,7 @@
 		text-transform: uppercase;
 		letter-spacing: 0.5px;
 		color: var(--brand-subtle);
-		background: rgba(255, 148, 22, 0.1);
+		background: rgba(var(--brand-rgb), 0.1);
 		padding: 0.25rem 0.625rem;
 		border-radius: var(--radius-sm);
 		width: fit-content;

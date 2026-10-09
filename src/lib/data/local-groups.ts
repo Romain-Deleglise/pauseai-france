@@ -26,3 +26,18 @@ export const localGroups: LocalGroup[] = [
 
 export const activeGroupsCount = localGroups.filter((g) => !g.forming).length
 export const formingGroupsCount = localGroups.filter((g) => g.forming).length
+
+/**
+ * Lancement des groupes locaux Pause IA (mars 2026).
+ * Source unique : la page groupes-locaux s'en sert pour afficher « tout cela
+ * en N mois », donc le compteur ne peut pas se désynchroniser de la date.
+ */
+export const LANCEMENT_GROUPES = { annee: 2026, mois: 3 } as const
+
+/** Nombre de mois révolus depuis le lancement, à la date donnée. */
+export function moisDepuisLancement(maintenant: Date = new Date()): number {
+	const mois =
+		(maintenant.getFullYear() - LANCEMENT_GROUPES.annee) * 12 +
+		(maintenant.getMonth() + 1 - LANCEMENT_GROUPES.mois)
+	return Math.max(0, mois)
+}

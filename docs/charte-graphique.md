@@ -1,8 +1,8 @@
-# Charte graphique — Pause IA
+# Charte graphique, Pause IA
 
 Extraite du code du site (`src/app.css`, `src/reset.css`, composants de `src/lib/components`).
 Source de vérité : **`src/app.css`**. Toute nouvelle page doit utiliser ces variables CSS,
-jamais des valeurs en dur — c'est ce qui garantit le fonctionnement du mode sombre.
+jamais des valeurs en dur, c'est ce qui garantit le fonctionnement du mode sombre.
 
 ## 1. Couleurs
 
@@ -22,7 +22,7 @@ jamais des valeurs en dur — c'est ce qui garantit le fonctionnement du mode so
 > `--brand` (#ff9416) n'a **jamais** un contraste suffisant pour du texte : 2,2:1
 > sur le crème, en dessous même du seuil des grands caractères. Pour un lien, un
 > chiffre ou un sur-titre, c'est `--brand-subtle` (4,9:1). `--brand` reste réservé
-> aux aplats — boutons, filets, puces, bordures.
+> aux aplats, boutons, filets, puces, bordures.
 
 > **Texte sur un aplat orange** : toujours `--on-brand` (7,9:1). Le blanc n'y
 > donne que 2,2:1.
@@ -81,7 +81,7 @@ et la variante claire `--btn-alt-*`. Focus visible : contour `#0097d8` de `0.25r
 
 ### Accent d'alerte
 
-`#d92d20` (rouge) — réservé aux moments critiques d'une chronologie. Pas de rouge
+`#d92d20` (rouge), réservé aux moments critiques d'une chronologie. Pas de rouge
 ailleurs dans l'interface.
 
 ## 2. Typographie
@@ -146,7 +146,7 @@ Piloté par `data-theme="dark"` sur `<html>`, posé avant le premier rendu par l
 script anti-FOUC d'`src/app.html`, et basculé via le store `src/lib/stores/theme.ts`.
 Une page conforme n'a **rien de spécifique à écrire** pour le mode sombre si elle
 n'utilise que les tokens ci-dessus. Les intégrations tierces (iframes) doivent en
-revanche recevoir le thème explicitement — voir `LumaCalendar.svelte`.
+revanche recevoir le thème explicitement, voir `LumaCalendar.svelte`.
 
 ## 6. Accessibilité
 
@@ -159,8 +159,8 @@ revanche recevoir le thème explicitement — voir `LumaCalendar.svelte`.
 `pnpm lint` exécute **stylelint** en plus de Prettier et ESLint. Trois règles
 tiennent la charte :
 
-- `color-no-hex` — aucune couleur en dur hors d'`app.css` ;
-- `color-named` — pas de `white` / `black` non plus ;
+- `color-no-hex`, aucune couleur en dur hors d'`app.css` ;
+- `color-named`, pas de `white` / `black` non plus ;
 - pas de `text-align: justify`.
 
 Les seules exceptions, déclarées dans `.stylelintrc.json` : `app.css` (la palette
@@ -169,8 +169,8 @@ Le hook de pre-commit lance stylelint sur les fichiers modifiés.
 
 ## 8. Version imprimable
 
-Un résumé mis en page de cette charte — nuancier, spécimens typographiques,
-briques — vit à côté de ce fichier :
+Un résumé mis en page de cette charte, nuancier, spécimens typographiques,
+briques, vit à côté de ce fichier :
 
 - `docs/charte-graphique.html` : la source, à ouvrir dans un navigateur ;
 - `docs/charte-graphique.pdf` : la version à diffuser.

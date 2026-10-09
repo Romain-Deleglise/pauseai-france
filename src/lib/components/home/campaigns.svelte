@@ -27,7 +27,7 @@
 {#if activeCampaigns.length > 0}
 	<section class="campaigns" aria-labelledby={label_id}>
 		<Fly>
-			<UnderlinedTitle id={label_id} as="h2">{t.home.campaigns_title}</UnderlinedTitle>
+			<UnderlinedTitle id={label_id} as="h3">{t.home.campaigns_title}</UnderlinedTitle>
 		</Fly>
 		<Fly>
 			<p class="subtitle">{t.home.campaigns_subtitle}</p>
@@ -199,7 +199,7 @@
 
 	.pill-progress {
 		color: var(--brand-subtle);
-		background-color: rgba(255, 148, 22, 0.12);
+		background-color: rgba(var(--brand-rgb), 0.12);
 	}
 
 	h3 {

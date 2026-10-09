@@ -70,21 +70,22 @@ This is a SvelteKit-based website with Markdown-powered content. Content files l
 
 #### Page Routes
 
-| Route                | Purpose                                        | Implementation                                                                  |
-| -------------------- | ---------------------------------------------- | ------------------------------------------------------------------------------- |
-| `/`                  | Homepage                                       | `src/routes/+page.svelte`                                                       |
-| `/posts`             | Blog posts list                                | `src/routes/posts/+page.svelte`                                                 |
-| `/[slug]`            | General content pages (dynamic)                | `src/routes/[slug]/+page.ts` - loads from `src/posts/{slug}.md`                 |
-| `/dangers`           | Redirects to first danger article              | `src/routes/dangers/+page.server.ts` - 307 redirect                             |
-| `/dangers/[slug]`    | Individual danger articles                     | `src/routes/dangers/[slug]/+page.ts` - loads from `src/posts/dangers/{slug}.md` |
-| `/qui-sommes-nous`   | About page                                     | `src/routes/qui-sommes-nous/+page.svelte`                                       |
-| `/dons`              | Donation page (HelloAsso card + bank transfer) | `src/routes/dons/+page.svelte`                                                  |
-| `/merci`             | Thank you / success page                       | `src/routes/merci/+page.svelte`                                                 |
-| `/rejoindre`         | Join / participation page                      | `src/routes/rejoindre/+page.svelte`                                             |
-| `/recrutement`       | Quick recruitment guide                        | `src/routes/recrutement/+page.svelte`                                           |
-| `/guide-recrutement` | Full recruitment guide (markdown)              | `src/routes/guide-recrutement/+page.md`                                         |
-| `/senat2025`         | Senate 2025 campaign page                      | `src/routes/senat2025/+page.svelte`                                             |
-| `/declaration`       | PauseAI statement (French form, CiviCRM)       | `src/routes/[lang=lang]/declaration/+page.svelte`                               |
+| Route                | Purpose                                        | Implementation                                                                                |
+| -------------------- | ---------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| `/`                  | Homepage                                       | `src/routes/+page.svelte`                                                                     |
+| `/posts`             | Blog posts list                                | `src/routes/posts/+page.svelte`                                                               |
+| `/[slug]`            | General content pages (dynamic)                | `src/routes/[slug]/+page.ts` - loads from `src/posts/{slug}.md`                               |
+| `/articles/[slug]`   | Campaign articles (dynamic)                    | `src/routes/[lang=lang]/articles/[slug]/+page.ts` - loads from `src/posts/articles/{slug}.md` |
+| `/dangers`           | Redirects to first danger article              | `src/routes/dangers/+page.server.ts` - 307 redirect                                           |
+| `/dangers/[slug]`    | Individual danger articles                     | `src/routes/dangers/[slug]/+page.ts` - loads from `src/posts/dangers/{slug}.md`               |
+| `/qui-sommes-nous`   | About page                                     | `src/routes/qui-sommes-nous/+page.svelte`                                                     |
+| `/dons`              | Donation page (HelloAsso card + bank transfer) | `src/routes/dons/+page.svelte`                                                                |
+| `/merci`             | Thank you / success page                       | `src/routes/merci/+page.svelte`                                                               |
+| `/rejoindre`         | Join / participation page                      | `src/routes/rejoindre/+page.svelte`                                                           |
+| `/recrutement`       | Quick recruitment guide                        | `src/routes/recrutement/+page.svelte`                                                         |
+| `/guide-recrutement` | Full recruitment guide (markdown)              | `src/routes/guide-recrutement/+page.md`                                                       |
+| `/senat2025`         | Senate 2025 campaign page                      | `src/routes/senat2025/+page.svelte`                                                           |
+| `/declaration`       | PauseAI statement (French form, CiviCRM)       | `src/routes/[lang=lang]/declaration/+page.svelte`                                             |
 
 **Special Routing Patterns:**
 
@@ -390,6 +391,23 @@ Husky runs before each commit (`.husky/pre-commit`):
 **Type Checking:**
 VSCode's ESLint TypeScript plugin may show false positives due to a [known issue](https://github.com/sveltejs/eslint-plugin-svelte/issues/413). Always use `pnpm check` for accurate type checking.
 
+**Ajouter un article de campagne :**
+
+1. Créer `src/posts/articles/AAAA-MM-JJ-slug.md` (slug en minuscules, mots
+   séparés par des tirets), avec `title`, `description` et `date` dans le
+   frontmatter. La date du nom de fichier doit être celle du frontmatter.
+2. L'article est servi à `/{lang}/articles/AAAA-MM-JJ-slug` et apparaît
+   automatiquement dans `/posts`, le sitemap et le flux.
+3. Version anglaise facultative : même nom sous `src/posts/en/articles/`. Sans
+   elle, `/en/articles/...` sert la version française.
+4. En cas de déplacement d'un article déjà publié, ajouter une redirection
+   **301** dans `static/_redirects` : l'ancienne adresse a pu être partagée.
+
+La convention est vérifiée par `tests/articles.test.ts` : un fichier mal nommé,
+sans date, ou un article daté laissé à la racine de `src/posts`, fait échouer la
+CI. Les pages institutionnelles (mentions légales, charte…) restent à la racine
+de `src/posts` et gardent leur URL `/{lang}/{slug}`.
+
 **Adding New Dangers Articles:**
 
 1. Create markdown in `src/posts/dangers/{slug}.md`
@@ -431,6 +449,8 @@ Copy `template.env` to `.env` and configure:
 - `src/lib/types.ts` - TypeScript type definitions
 - `src/lib/config.ts` - Site configuration constants
 - `src/lib/routes.ts` - Static route enumeration for sitemaps
+- `scripts/plan-du-site.mjs` - Génère `docs/plan-du-site.md` (arborescence réelle,
+  menu, pied de page, pages hors menu) : `pnpm run plan-du-site`
 - `src/lib/typographyPlugin.js` - French typography transformation (remark + Vite plugin)
 - `src/lib/faqPlugin.js` - FAQ accordion transformation
 - `src/lib/rehypeWBWPlugins.js` - Wait But Why popup and box plugins

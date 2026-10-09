@@ -38,7 +38,7 @@
 	const LUMA_CALENDAR_ID = 'cal-PLtig5in051g5mM'
 	const LUMA_CALENDAR_URL = 'https://luma.com/pause-ia'
 
-	$: title = isEn ? 'Campaign page template' : 'Page campagne — modèle'
+	$: title = isEn ? 'Campaign page template' : 'Page campagne · modèle'
 	$: description = isEn
 		? 'Reference page showing every building block of the campaign module: slogan, standfirst, key facts, ways to act, context, events.'
 		: 'Page de référence présentant toutes les briques du module campagne : slogan, chapeau, faits marquants, modes d’action, contexte, événements.'
@@ -52,18 +52,18 @@
 					{
 						statement: 'AI systems now beat humans at offensive cybersecurity.',
 						detail: 'Attack has become far cheaper than defence, and the gap is widening.',
-						href: '/en/personne-ne-controle-lia',
+						href: '/en/articles/2026-09-15-personne-ne-controle-lia',
 						linkLabel: 'Read our analysis'
 					},
 					{
 						statement: 'The labs themselves say they no longer fully control their models.',
 						detail: 'Autonomous agents escape the surveillance of the people who trained them.',
-						href: '/en/incident-openai-hugging-face',
+						href: '/en/articles/2026-08-10-incident-openai-hugging-face',
 						linkLabel: 'Read the incident report'
 					},
 					{
 						statement: 'Racing and safety are no longer compatible.',
-						href: '/en/course-et-securite-ne-sont-plus-compatibles',
+						href: '/en/articles/2026-09-17-course-et-securite-ne-sont-plus-compatibles',
 						linkLabel: 'Read our analysis'
 					}
 				]
@@ -71,18 +71,18 @@
 					{
 						statement: 'L’IA dépasse désormais les humains en matière de sécurité informatique.',
 						detail: 'L’attaque coûte bien moins cher que la défense, et l’écart se creuse.',
-						href: '/fr/personne-ne-controle-lia',
+						href: '/fr/articles/2026-09-15-personne-ne-controle-lia',
 						linkLabel: 'Lire notre analyse'
 					},
 					{
 						statement: 'Les laboratoires eux-mêmes reconnaissent ne plus maîtriser leurs modèles.',
 						detail: 'Des agents autonomes échappent à la surveillance de ceux qui les entraînent.',
-						href: '/fr/incident-openai-hugging-face',
+						href: '/fr/articles/2026-08-10-incident-openai-hugging-face',
 						linkLabel: 'Lire notre analyse de l’incident'
 					},
 					{
 						statement: 'Course à la puissance et sécurité ne sont plus compatibles.',
-						href: '/fr/course-et-securite-ne-sont-plus-compatibles',
+						href: '/fr/articles/2026-09-17-course-et-securite-ne-sont-plus-compatibles',
 						linkLabel: 'Lire notre analyse'
 					}
 				]
@@ -210,7 +210,7 @@
 		eyebrow={isEn ? 'Campaign under way' : 'Campagne en cours'}
 		date={isEn ? 'Since September 2026' : 'Depuis septembre 2026'}
 		lede={isEn
-			? 'The people who build these systems no longer fully control them. We are asking Parliament for a moratorium — write to your MPs in two minutes.'
+			? 'The people who build these systems no longer fully control them. We are asking Parliament for a moratorium, write to your MPs in two minutes.'
 			: 'Ceux qui construisent ces systèmes ne les maîtrisent plus complètement. Nous demandons un moratoire au Parlement : écrivez à vos élus en deux minutes.'}
 	>
 		<Button href="#agir">{isEn ? 'Take action' : 'Passer à l’action'}</Button>

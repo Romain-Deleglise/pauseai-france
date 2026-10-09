@@ -172,7 +172,7 @@
 
 	function getDeptLabel(code: string): string {
 		const name = DEPT_NAMES[code]
-		return name ? `${code} — ${name}` : code
+		return name ? `${code} · ${name}` : code
 	}
 
 	$: pressReleases = data.pressReleases.length > 0 ? data.pressReleases : fallbackPressReleases
@@ -861,7 +861,7 @@
 	.contact-email-main {
 		font-size: 1rem;
 		padding-bottom: 0.75rem;
-		border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+		border-bottom: 1px solid rgba(var(--ink-rgb), 0.06);
 	}
 
 	.contact-email-main a {
@@ -906,7 +906,7 @@
 		color: var(--text-secondary);
 		margin-bottom: 0;
 		padding-top: 1rem;
-		border-top: 1px solid rgba(0, 0, 0, 0.08);
+		border-top: 1px solid rgba(var(--ink-rgb), 0.08);
 	}
 
 	.redirect a {
@@ -973,7 +973,7 @@
 		font-size: 0.75rem;
 		font-weight: 700;
 		border-radius: var(--radius-pill);
-		background-color: rgba(0, 0, 0, 0.08);
+		background-color: rgba(var(--ink-rgb), 0.08);
 		color: var(--text-secondary);
 		line-height: 1;
 	}
@@ -1065,7 +1065,7 @@
 
 	.dept-clear-btn:hover {
 		color: var(--text);
-		background-color: rgba(0, 0, 0, 0.06);
+		background-color: rgba(var(--ink-rgb), 0.06);
 	}
 
 	.dept-dropdown {
@@ -1078,7 +1078,7 @@
 		background-color: var(--bg-card);
 		border: 1px solid var(--border);
 		border-radius: var(--radius-sm);
-		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+		box-shadow: 0 8px 24px rgba(var(--ink-rgb), 0.12);
 		z-index: 50;
 		list-style: none;
 		padding: 0.25rem;
@@ -1250,7 +1250,7 @@
 	}
 
 	.sidebar-item:hover {
-		background-color: rgba(0, 0, 0, 0.05);
+		background-color: rgba(var(--ink-rgb), 0.05);
 	}
 
 	.sidebar-item-title {
@@ -1296,7 +1296,7 @@
 		border-radius: var(--radius-md);
 		text-decoration: none;
 		color: var(--text);
-		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+		box-shadow: 0 1px 3px rgba(var(--ink-rgb), 0.06);
 		transition:
 			transform 0.2s ease,
 			box-shadow 0.2s ease,
@@ -1305,7 +1305,7 @@
 
 	.press-release-card:hover {
 		transform: translateY(-2px);
-		box-shadow: 0 8px 20px -6px rgba(0, 0, 0, 0.12);
+		box-shadow: 0 8px 20px -6px rgba(var(--ink-rgb), 0.12);
 		border-color: var(--brand);
 		color: var(--text);
 	}

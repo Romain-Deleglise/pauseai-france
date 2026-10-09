@@ -412,7 +412,7 @@
 			<div class="modal-header">
 				<div class="modal-title">
 					<strong>{selectedCandidate.name}</strong>
-					<span class="modal-city">— {selectedCandidate.city}</span>
+					<span class="modal-city">{selectedCandidate.city}</span>
 					<span
 						class="commitment-badge modal-badge {getCommitmentClass(selectedCandidate.commitments)}"
 					>
@@ -537,11 +537,11 @@
 	/* ── 1. Action section ── */
 	.action-section {
 		background: var(--bg-card);
-		border: 1px solid rgba(255, 148, 22, 0.25);
+		border: 1px solid rgba(var(--brand-rgb), 0.25);
 		border-radius: var(--radius-lg);
 		padding: 2.5rem 2.5rem 2rem;
 		margin-bottom: 4rem;
-		box-shadow: 0 2px 16px rgba(255, 148, 22, 0.08);
+		box-shadow: 0 2px 16px rgba(var(--brand-rgb), 0.08);
 	}
 
 	.action-inner h2 {
@@ -594,7 +594,7 @@
 
 	.candidate-card:hover {
 		transform: translateY(-3px);
-		box-shadow: 0 8px 28px rgba(0, 0, 0, 0.1);
+		box-shadow: 0 8px 28px rgba(var(--ink-rgb), 0.1);
 		border-color: var(--brand);
 		border-left-color: var(--brand-subtle);
 	}
@@ -699,7 +699,7 @@
 
 	.press-card:hover {
 		transform: translateX(3px);
-		box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+		box-shadow: 0 4px 16px rgba(var(--ink-rgb), 0.08);
 		border-color: var(--brand);
 		color: var(--text);
 	}
@@ -748,7 +748,7 @@
 	.modal-overlay {
 		position: fixed;
 		inset: 0;
-		background: rgba(0, 0, 0, 0.75);
+		background: rgba(var(--ink-rgb), 0.75);
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -766,7 +766,7 @@
 		background: var(--bg-card);
 		border-radius: var(--radius-lg);
 		overflow: hidden;
-		box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+		box-shadow: 0 20px 60px rgba(var(--ink-rgb), 0.4);
 		cursor: default;
 		display: flex;
 		flex-direction: column;
@@ -833,7 +833,7 @@
 		position: absolute;
 		top: 1rem;
 		right: 1rem;
-		background: rgba(0, 0, 0, 0.5);
+		background: rgba(var(--ink-rgb), 0.5);
 		color: var(--on-dark);
 		border: none;
 		width: 2.5rem;
@@ -843,7 +843,7 @@
 	}
 
 	.close-button--top:hover {
-		background: rgba(0, 0, 0, 0.85);
+		background: rgba(var(--ink-rgb), 0.85);
 		color: var(--on-dark);
 	}
 

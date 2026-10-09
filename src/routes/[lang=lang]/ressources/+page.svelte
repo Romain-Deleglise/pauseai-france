@@ -308,7 +308,7 @@
 		typeFilter.length > 0
 
 	// Track the category section currently in the viewport so the side TOC
-	// can highlight it. Uses IntersectionObserver — far cheaper than scroll
+	// can highlight it. Uses IntersectionObserver, far cheaper than scroll
 	// listeners and triggers exactly when a section header crosses the top
 	// 30% of the viewport.
 	let activeSection: Category | '' = ''
@@ -685,12 +685,12 @@
 	}
 
 	.toc-link:hover {
-		background: rgba(255, 148, 22, 0.08);
+		background: rgba(var(--brand-rgb), 0.08);
 		color: var(--brand-subtle);
 	}
 
 	.toc-link.active {
-		background: rgba(255, 148, 22, 0.1);
+		background: rgba(var(--brand-rgb), 0.1);
 		color: var(--brand-subtle);
 		border-left-color: var(--brand-subtle);
 		font-weight: 600;
@@ -698,7 +698,7 @@
 
 	:global([data-theme='dark']) .toc-link:hover,
 	:global([data-theme='dark']) .toc-link.active {
-		background: rgba(255, 148, 22, 0.12);
+		background: rgba(var(--brand-rgb), 0.12);
 		color: var(--brand-subtle);
 	}
 
@@ -715,7 +715,7 @@
 		height: 1.3rem;
 		padding: 0 0.35rem;
 		border-radius: var(--radius-pill);
-		background: rgba(0, 0, 0, 0.06);
+		background: rgba(var(--ink-rgb), 0.06);
 		color: var(--text-secondary);
 		font-size: 0.7rem;
 		font-weight: 600;
@@ -727,7 +727,7 @@
 	}
 
 	:global([data-theme='dark']) .toc-count {
-		background: rgba(255, 255, 255, 0.08);
+		background: rgba(var(--on-dark-rgb), 0.08);
 	}
 
 	@media (min-width: 1024px) {
@@ -754,7 +754,7 @@
 		background: var(--bg);
 		padding: 2rem 1.5rem 1.75rem;
 		border-radius: var(--radius-md);
-		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
+		box-shadow: 0 4px 6px rgba(var(--ink-rgb), 0.08);
 	}
 
 	.hero-description {
@@ -801,7 +801,7 @@
 	.search input:focus {
 		outline: none;
 		border-color: var(--brand);
-		box-shadow: 0 0 0 3px rgba(255, 148, 22, 0.15);
+		box-shadow: 0 0 0 3px rgba(var(--brand-rgb), 0.15);
 	}
 
 	.clear-btn {
@@ -816,18 +816,18 @@
 		height: 1.6rem;
 		border-radius: 50%;
 		border: none;
-		background: rgba(0, 0, 0, 0.06);
+		background: rgba(var(--ink-rgb), 0.06);
 		color: var(--text-secondary);
 		cursor: pointer;
 	}
 
 	.clear-btn:hover {
-		background: rgba(0, 0, 0, 0.12);
+		background: rgba(var(--ink-rgb), 0.12);
 		color: var(--text);
 	}
 
 	:global([data-theme='dark']) .clear-btn {
-		background: rgba(255, 255, 255, 0.08);
+		background: rgba(var(--on-dark-rgb), 0.08);
 	}
 
 	.filter-row {
@@ -959,7 +959,7 @@
 	}
 
 	:global([data-theme='dark']) .section-icon {
-		background: rgba(255, 148, 22, 0.15);
+		background: rgba(var(--brand-rgb), 0.15);
 		color: var(--brand-subtle);
 	}
 
@@ -1032,15 +1032,15 @@
 	.res-card:hover {
 		border-color: var(--brand);
 		transform: translateY(-1px);
-		box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+		box-shadow: 0 4px 14px rgba(var(--ink-rgb), 0.05);
 	}
 
 	:global([data-theme='dark']) .res-card {
-		background: rgba(255, 255, 255, 0.02);
+		background: rgba(var(--on-dark-rgb), 0.02);
 	}
 
 	:global([data-theme='dark']) .res-card:hover {
-		box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+		box-shadow: 0 4px 14px rgba(var(--ink-rgb), 0.35);
 	}
 
 	.res-card-main {
@@ -1142,7 +1142,7 @@
 		border: 1px solid var(--border);
 		border-radius: var(--radius-md);
 		text-align: center;
-		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.04);
+		box-shadow: 0 4px 6px rgba(var(--ink-rgb), 0.04);
 	}
 
 	.cta-card h3 {

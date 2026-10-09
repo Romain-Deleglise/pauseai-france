@@ -561,7 +561,7 @@ function cleanContent(html: string): string {
 		{ text: 'Gérer mes préférences', minPosition: 0.5 },
 		{ text: 'G\u00e9rer mes pr\u00e9f\u00e9rences', minPosition: 0.5 },
 		{ text: '32 boulevard de Strasbourg', minPosition: 0.5 },
-		{ text: 'Pause IA — 32', minPosition: 0.5 }
+		{ text: 'Pause IA · 32', minPosition: 0.5 }
 	]
 
 	// Find the earliest footer marker that appears after minPosition

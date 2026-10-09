@@ -1,4 +1,4 @@
-# Témoignages illustrés — diaporama
+# Témoignages illustrés · diaporama
 
 Les 19 visuels de témoignages (préparés sur Canva pour les réseaux sociaux)
 vivent ici au format **WebP** (`01.webp` … `19.webp`), repris automatiquement
@@ -7,7 +7,7 @@ triés par **nom de fichier**.
 
 ## Ajouter ou remplacer un visuel
 
-Déposez un fichier image dans ce dossier — c'est tout, il apparaît dans le
+Déposez un fichier image dans ce dossier, c'est tout, il apparaît dans le
 diaporama. Formats acceptés : **WebP** (recommandé), SVG, PNG, JPG, AVIF.
 
 Nommez avec un numéro à deux chiffres pour contrôler l'ordre :

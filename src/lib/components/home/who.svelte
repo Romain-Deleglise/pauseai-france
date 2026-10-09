@@ -6,6 +6,7 @@
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
 	import Accordion from '$components/Accordion.svelte'
 	import FAQEn from '$posts/en/qui-sommes-nous.md'
+	import { equipes } from '$lib/data/equipes'
 	import type { TeamMember } from '$lib/notion'
 	import type { Lang } from '$lib/i18n'
 
@@ -276,7 +277,7 @@
 				<a href="{prefix}/dangers/economiques-et-materiels">graves dangers</a> de la course à
 				l'intelligence artificielle, et les incite à agir pour s'y opposer. Nous représentons en
 				France
-				<a href="https://pauseai.info">PauseAI Global</a>.
+				<a href="https://pauseai.info" target="_blank" rel="noopener noreferrer">PauseAI Global</a>.
 			</p>
 		{/if}
 		<div class="contact-cta">
@@ -334,6 +335,33 @@
 			? '+ a hundred members and volunteers'
 			: '+ une centaine de membres et bénévoles'}
 	</p>
+
+	<!-- Vue d'ensemble des équipes : le visiteur doit comprendre de quoi
+	     l'association est faite et se dire « je pourrais être utile là ».
+	     Contenu et parti pris : src/lib/data/equipes.ts. -->
+	<div class="team-section" id="nos-equipes">
+		<h2 class="section-title">{lang === 'en' ? 'Our teams' : 'Nos équipes'}</h2>
+		<p class="equipes-intro">
+			{lang === 'en'
+				? 'Pause AI runs on seven teams. Whatever you know how to do, one of them needs it.'
+				: 'Pause IA tient sur sept équipes. Quoi que vous sachiez faire, l’une d’elles en a besoin.'}
+		</p>
+
+		<ul class="equipes">
+			{#each equipes as equipe}
+				<li class="equipe">
+					<h3>{equipe.nom}</h3>
+					<p>{equipe.description}</p>
+				</li>
+			{/each}
+		</ul>
+
+		<p class="equipes-cta">
+			<Button href="{prefix}/rejoindre">
+				{lang === 'en' ? 'Join a team' : 'Rejoindre une équipe'}
+			</Button>
+		</p>
+	</div>
 
 	{#if lang !== 'en'}
 		<div class="team-section" id="nos-valeurs">
@@ -486,6 +514,57 @@
 </section>
 
 <style>
+	/* --- Nos équipes ------------------------------------------------------- */
+	.equipes-intro {
+		max-inline-size: var(--width-text);
+		margin: 0 auto 2rem;
+		color: var(--text-2);
+		line-height: 1.7;
+	}
+
+	/* Deux colonnes fixes plutôt que des cartes qui s'étirent : sept entrées
+	   d'une ligne lues côte à côte, c'est vingt secondes de lecture au lieu
+	   d'un mur. Deux et non trois, sinon la dernière rangée laisse un orphelin. */
+	.equipes {
+		list-style: none;
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 0.1rem 2.5rem;
+		margin: 0;
+		padding: 0;
+		text-align: start;
+	}
+
+	@media (min-width: 640px) {
+		.equipes {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+
+	/* Plus d'encadré : avec une seule ligne de texte, la carte pesait plus que
+	   son contenu. Un filet en haut suffit à séparer les entrées. */
+	.equipe {
+		padding-block: 1rem;
+		border-block-start: 1px solid var(--border);
+	}
+
+	.equipe h3 {
+		margin: 0 0 0.3rem;
+		font-size: 1.05rem;
+		color: var(--text);
+	}
+
+	.equipe p {
+		margin: 0;
+		font-size: 0.95rem;
+		line-height: 1.55;
+		color: var(--text-2);
+	}
+
+	.equipes-cta {
+		margin: 2rem 0 0;
+	}
+
 	section {
 		max-width: 960px;
 		margin: 0 auto;

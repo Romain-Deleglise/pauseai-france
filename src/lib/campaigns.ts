@@ -30,9 +30,9 @@ export interface Campaign {
 	/** URL slug, e.g. 'municipales-2026' → /fr/municipales-2026 */
 	slug: string
 	status: CampaignStatus
-	/** Start date (YYYY-MM) — used for ordering and display */
+	/** Start date (YYYY-MM), used for ordering and display */
 	startDate: string
-	/** End date (YYYY-MM) — set when campaign ends */
+	/** End date (YYYY-MM), set when campaign ends */
 	endDate?: string
 	/** Override URL (absolute path). If omitted, defaults to /{lang}/{slug} */
 	url?: string
@@ -124,17 +124,17 @@ export const campaigns: Campaign[] = [
 					{
 						title: 'Personne ne contrôle l’IA, le danger est imminent',
 						source: 'Analyse, 15 septembre 2026',
-						url: '/fr/personne-ne-controle-lia'
+						url: '/fr/articles/2026-09-15-personne-ne-controle-lia'
 					},
 					{
 						title: 'Non, course et sécurité ne sont plus compatibles',
 						source: 'Analyse, 17 septembre 2026',
-						url: '/fr/course-et-securite-ne-sont-plus-compatibles'
+						url: '/fr/articles/2026-09-17-course-et-securite-ne-sont-plus-compatibles'
 					}
 				],
 				link: {
 					label: 'Lire notre analyse complète de l’incident',
-					url: '/fr/incident-openai-hugging-face'
+					url: '/fr/articles/2026-08-10-incident-openai-hugging-face'
 				}
 			},
 			en: {
@@ -149,17 +149,17 @@ export const campaigns: Campaign[] = [
 					{
 						title: 'Nobody controls AI, the danger is imminent',
 						source: 'Analysis, 15 September 2026',
-						url: '/en/personne-ne-controle-lia'
+						url: '/en/articles/2026-09-15-personne-ne-controle-lia'
 					},
 					{
 						title: 'No, racing and safety are no longer compatible',
 						source: 'Analysis, 17 September 2026',
-						url: '/en/course-et-securite-ne-sont-plus-compatibles'
+						url: '/en/articles/2026-09-17-course-et-securite-ne-sont-plus-compatibles'
 					}
 				],
 				link: {
 					label: 'Read our full analysis of the incident',
-					url: '/en/incident-openai-hugging-face'
+					url: '/en/articles/2026-08-10-incident-openai-hugging-face'
 				}
 			}
 		},
@@ -391,7 +391,7 @@ export const campaigns: Campaign[] = [
 						url: 'https://next.ink/229085/quand-lia-sinvite-dans-les-municipales/'
 					},
 					{
-						title: 'Journal de 18h — vendredi 13 mars 2026',
+						title: 'Journal de 18h · vendredi 13 mars 2026',
 						source: 'France Culture',
 						url: 'https://www.radiofrance.fr/franceculture/podcasts/journal-de-18h/journal-de-18h-emission-du-vendredi-13-mars-2026-9405796'
 					},

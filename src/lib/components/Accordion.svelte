@@ -93,8 +93,8 @@
 		border: 1px solid var(--border);
 		border-radius: var(--radius-md);
 		box-shadow:
-			0 1px 3px rgba(0, 0, 0, 0.08),
-			0 4px 12px rgba(0, 0, 0, 0.06);
+			0 1px 3px rgba(var(--ink-rgb), 0.08),
+			0 4px 12px rgba(var(--ink-rgb), 0.06);
 	}
 
 	.chevron {

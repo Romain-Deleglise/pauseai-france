@@ -80,13 +80,13 @@
 			name="description"
 			content="Report from the Senate colloquium on October 31, 2025: key points, executive summary and recommendations for controlling artificial intelligence."
 		/>
-		<title>Senate Colloquium — Report & Recommendations | Pause AI</title>
+		<title>Senate Colloquium · Report & Recommendations | Pause AI</title>
 	{:else}
 		<meta
 			name="description"
 			content="Compte-rendu du colloque au Sénat du 31 octobre 2025 : points clés, résumé exécutif et recommandations pour maîtriser l'intelligence artificielle."
 		/>
-		<title>Colloque Sénat — Compte-rendu & recommandations | Pause IA</title>
+		<title>Colloque Sénat · Compte-rendu & recommandations | Pause IA</title>
 	{/if}
 </svelte:head>
 
@@ -96,11 +96,11 @@
 		<img
 			src="/senat-2025-colloque.png"
 			alt={isEn
-				? 'Senate Colloquium — Artificial Intelligence: Securing Practices, Containing Risks'
-				: 'Colloque Sénat — Intelligence Artificielle : Sécuriser les pratiques, contenir les risques'}
+				? 'Senate Colloquium · Artificial Intelligence: Securing Practices, Containing Risks'
+				: 'Colloque Sénat · Intelligence Artificielle : Sécuriser les pratiques, contenir les risques'}
 		/>
 		<div class="hero-text">
-			<h1>{isEn ? 'SENATE COLLOQUIUM — OCTOBER 31, 2025' : 'COLLOQUE SÉNAT — 31 OCTOBRE 2025'}</h1>
+			<h1>{isEn ? 'SENATE COLLOQUIUM · OCTOBER 31, 2025' : 'COLLOQUE SÉNAT · 31 OCTOBRE 2025'}</h1>
 			<p class="subtitle">
 				{isEn
 					? 'Artificial Intelligence: Securing Practices, Containing Risks'
@@ -555,9 +555,9 @@
 		padding: 1rem;
 		background: linear-gradient(
 			180deg,
-			rgba(0, 0, 0, 0) 0%,
-			rgba(0, 0, 0, 0.55) 60%,
-			rgba(0, 0, 0, 0.75) 100%
+			rgba(var(--ink-rgb), 0) 0%,
+			rgba(var(--ink-rgb), 0.55) 60%,
+			rgba(var(--ink-rgb), 0.75) 100%
 		);
 		color: var(--on-dark);
 	}
@@ -759,7 +759,7 @@
 
 	button:hover:not(:disabled) {
 		transform: translateY(-2px);
-		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+		box-shadow: 0 4px 12px rgba(var(--ink-rgb), 0.15);
 	}
 
 	button:disabled {

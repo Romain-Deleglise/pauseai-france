@@ -9,7 +9,7 @@ phrase personnelle (facultative) + reconnaissance des bénéfices + appel +
 signature. Les **objets** et les **accroches** tournent au hasard pour éviter
 les envois identiques.
 
-> Règle de style : **aucun tiret long (—)**. Typographie française (espaces
+> Règle de style : **aucun tiret long ( )**. Typographie française (espaces
 > insécables, « guillemets ») appliquée automatiquement à l'affichage.
 
 ---

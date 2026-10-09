@@ -113,7 +113,7 @@
 		<span class="filet" aria-hidden="true"></span>
 		<p class="lede">
 			{isEn
-				? 'A collaborative workshop built around a deck of cards, to build an overall picture of artificial intelligence — from what it can do to the risks it carries, through to the possible solutions.'
+				? 'A collaborative workshop built around a deck of cards, to build an overall picture of artificial intelligence, from what it can do to the risks it carries, through to the possible solutions.'
 				: 'Un atelier collaboratif autour d’un jeu de cartes pour se faire une vision d’ensemble de l’intelligence artificielle, de ses capacités à ses risques, jusqu’aux solutions possibles.'}
 		</p>
 		<!-- Une seule action dominante : s'inscrire à un atelier, la vraie
@@ -171,8 +171,8 @@
 						</span>
 						<span class="sr">
 							{isEn
-								? `“${carte.en}” card — flip to read the back`
-								: `Carte « ${carte.fr} » — retourner pour lire le verso`}
+								? `“${carte.en}” card · flip to read the back`
+								: `Carte « ${carte.fr} » · retourner pour lire le verso`}
 						</span>
 					</button>
 				{/each}
@@ -303,7 +303,7 @@
 	}
 
 	/* Échelle typographique reprise de `PageHero`. Le filet orange est placé
-	   SOUS le titre, comme sur le croquis — la charte le met au-dessus, d'où le
+	   SOUS le titre, comme sur le croquis, la charte le met au-dessus, d'où le
 	   hero écrit ici plutôt qu'une option ajoutée à la brique partagée. */
 	.hero {
 		margin-block: 2.5rem var(--pas);
@@ -352,7 +352,7 @@
 	   une bande paysage jetait les deux tiers de l'image et coupait les têtes.
 	   Les tuiles sont donc en 4/5, proche du format d'origine, et le cadrage
 	   est calé vers le haut, là où sont les visages. En mobile elles défilent
-	   horizontalement au doigt plutôt que de rétrécir à la vignette — et les
+	   horizontalement au doigt plutôt que de rétrécir à la vignette, et les
 	   trois restent accessibles, au lieu d'en masquer une. */
 	.bandeau {
 		display: grid;
@@ -405,7 +405,7 @@
 	/* Éventail repris du hero du site de la fresque, mais plus ouvert : avec
 	   l'écartement d'origine, la carte du milieu recouvrait les trois quarts de
 	   ses voisines, qui n'étaient donc cliquables que sur un quart de leur
-	   surface — on visait une carte et c'est une autre qui se retournait.
+	   surface, on visait une carte et c'est une autre qui se retournait.
 	   La hauteur suit la largeur (aspect-ratio) : une hauteur fixe laissait les
 	   cartes dépasser du bloc dès que la colonne se resserrait. */
 	.pile {
@@ -460,7 +460,7 @@
 
 	/* L'éventail : la carte du milieu devant, les deux autres inclinées. Le
 	   `rotate`/`translate` de l'éventail est porté par `transform`, et le
-	   soulèvement au survol par `translate` — sinon le survol écrase
+	   soulèvement au survol par `translate`, sinon le survol écrase
 	   l'inclinaison. */
 	.carte-0 {
 		transform: translate(-50%, -50%) rotate(-9deg) translate(-36%, 9%);
@@ -572,8 +572,8 @@
 	}
 
 	/* Les deux cartes sont la carte de la charte, à hauteur égale. L'accent de
-	   marque passe par le filet — le motif signature de la charte, déjà en tête
-	   de page — plutôt que par un aplat : une bande orange pleine sur chacune
+	   marque passe par le filet, le motif signature de la charte, déjà en tête
+	   de page, plutôt que par un aplat : une bande orange pleine sur chacune
 	   saturait le bloc et pesait plus lourd que la section elle-même.
 	   Le vide au-dessus d'un bouton ne se règle pas en CSS mais dans le texte :
 	   les deux paragraphes font désormais la même longueur. */

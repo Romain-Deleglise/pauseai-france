@@ -214,19 +214,21 @@
 							Every month, new AI systems cross thresholds we thought were far away. Experts warn:
 							without guardrails, this race poses a catastrophic risk in the near term.
 						</p>
-						<p>The window is closing fast, let's act now.</p>
+						<p>The window to regain control is closing fast.</p>
 					{:else}
 						<p>
 							Chaque mois, de nouveaux systèmes franchissent des seuils que l'on pensait lointains.
 							Les experts alertent&nbsp;: sans garde-fous, cette course fait peser un risque
 							catastrophique à court terme.
 						</p>
-						<p>La fenêtre se referme, agissons maintenant.</p>
+						<p>La fenêtre pour reprendre la main se referme.</p>
 					{/if}
-					<div class="buttons">
-						<div in:fly={{ y: 20, duration: 300, delay: 700 }}>
-							<Button href="#ecrire-elus">{t.home.hero_cta}</Button>
-						</div>
+					<!-- Une seule action ici. « Signer la déclaration » est déjà le bouton
+					     principal du bloc juste en dessous : le mettre aussi dans le héros
+					     dédoublait la même action à huit cents pixels d'écart et partageait
+					     l'attention entre deux boutons de poids égal. -->
+					<div class="buttons" in:fly={{ y: 20, duration: 300, delay: 700 }}>
+						<Button href="#ecrire-elus">{t.home.hero_cta}</Button>
 					</div>
 				</div>
 			</div>
@@ -261,11 +263,11 @@
 		transform: translateX(-50%);
 		width: 100vw;
 		z-index: -1;
-		background: #fffaf5;
+		background: rgb(var(--hero-cream-rgb));
 	}
 
 	:global([data-theme='dark']) .hero-bg {
-		background: #1a1a1a;
+		background: rgb(var(--hero-dark-rgb));
 	}
 
 	/* Marquee scrolling rows */
@@ -299,10 +301,10 @@
 		display: block;
 		border-radius: var(--radius-sm);
 		flex-shrink: 0;
-		/* No filter — natural colors, overlay handles readability */
+		/* No filter, natural colors, overlay handles readability */
 	}
 
-	/* Scroll left — slow, contemplative */
+	/* Scroll left, slow, contemplative */
 	.row-left .marquee-track {
 		animation: scroll-left 235s linear infinite;
 	}
@@ -348,23 +350,29 @@
 		inset: 0;
 		background: linear-gradient(
 				to right,
-				rgba(255, 250, 245, 0.6) 0%,
-				rgba(255, 250, 245, 0.35) 20%,
-				rgba(255, 250, 245, 0.1) 40%,
+				rgba(var(--hero-cream-rgb), 0.6) 0%,
+				rgba(var(--hero-cream-rgb), 0.35) 20%,
+				rgba(var(--hero-cream-rgb), 0.1) 40%,
 				transparent 55%
 			),
 			linear-gradient(
 				to top,
-				rgba(255, 250, 245, 0.4) 0%,
+				rgba(var(--hero-cream-rgb), 0.4) 0%,
 				transparent 6%,
 				transparent 94%,
-				rgba(255, 250, 245, 0.4) 100%
+				rgba(var(--hero-cream-rgb), 0.4) 100%
 			);
 		pointer-events: none;
 	}
 
 	/* Text content */
+	/* `.corners` est positionné et vient plus tard dans le DOM : sans cran de
+	   superposition explicite il passait DEVANT le bouton « Passer à l'action »,
+	   qui disparaissait derrière la vague orange en bas du héros. Le contenu
+	   monte à 1, la décoration reste à 0 et ne capte plus les clics. */
 	.content {
+		position: relative;
+		z-index: 1;
 		color: var(--text);
 		display: flex;
 		flex-direction: column;
@@ -375,7 +383,7 @@
 
 	.content-box {
 		max-width: 28rem;
-		background: rgba(255, 250, 245, 0.82);
+		background: rgba(var(--hero-cream-rgb), 0.92);
 		backdrop-filter: blur(14px);
 		-webkit-backdrop-filter: blur(14px);
 		border-radius: var(--radius-lg);
@@ -404,6 +412,8 @@
 	}
 
 	.corners {
+		z-index: 0;
+		pointer-events: none;
 		width: 100vw;
 		bottom: -1px;
 		position: absolute;
@@ -413,7 +423,7 @@
 		flex-direction: row;
 		justify-content: space-between;
 		border-bottom: 4px solid var(--brand);
-		box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+		box-shadow: 0 6px 20px rgba(var(--ink-rgb), 0.1);
 	}
 
 	.buttons {
@@ -434,7 +444,7 @@
 			margin-right: -0.5rem;
 		}
 
-		/* Sub-pixel gap insurance — extend the bg 1px above the hero box
+		/* Sub-pixel gap insurance, extend the bg 1px above the hero box
 		   so no sliver of white is visible between header and photos. */
 		.hero-bg {
 			top: calc(var(--header-height, 4rem) - 1px);
@@ -482,20 +492,20 @@
 			margin-top: 1rem;
 		}
 
-		/* Overlay on mobile — readability handled by content-box backdrop */
+		/* Overlay on mobile, readability handled by content-box backdrop */
 		.mosaic-overlay {
 			background: linear-gradient(
 					to right,
-					rgba(255, 250, 245, 0.5) 0%,
-					rgba(255, 250, 245, 0.2) 40%,
+					rgba(var(--hero-cream-rgb), 0.5) 0%,
+					rgba(var(--hero-cream-rgb), 0.2) 40%,
 					transparent 65%
 				),
 				linear-gradient(
 					to top,
-					rgba(255, 250, 245, 0.5) 0%,
+					rgba(var(--hero-cream-rgb), 0.5) 0%,
 					transparent 8%,
 					transparent 92%,
-					rgba(255, 250, 245, 0.5) 100%
+					rgba(var(--hero-cream-rgb), 0.5) 100%
 				);
 		}
 
@@ -557,8 +567,8 @@
 			/* left:0 = hero's left edge, which is already at main's padding-left (6rem
 			   from viewport). Adding 6rem here would double the offset. */
 			left: 0;
-			width: calc(27rem + 3rem); /* content-box max-width + 2 × 1.5rem padding */
-			background: rgba(255, 250, 245, 0.82);
+			width: calc(33rem + 3rem); /* content-box max-width + 2 × 1.5rem padding */
+			background: rgba(var(--hero-cream-rgb), 0.92);
 			backdrop-filter: blur(14px);
 			-webkit-backdrop-filter: blur(14px);
 			border-radius: 16px 16px 0 0;
@@ -576,23 +586,23 @@
 			-webkit-backdrop-filter: none;
 			border-radius: 0;
 			padding: 1rem 1.5rem;
-			max-width: 27rem; /* fill the column */
+			max-width: 33rem; /* fill the column */
 		}
 
 		/* Lighter gradient: frosted column ensures readability on the left */
 		.mosaic-overlay {
 			background: linear-gradient(
 					to right,
-					rgba(255, 250, 245, 0.5) 0%,
-					rgba(255, 250, 245, 0.2) 22%,
+					rgba(var(--hero-cream-rgb), 0.5) 0%,
+					rgba(var(--hero-cream-rgb), 0.2) 22%,
 					transparent 46%
 				),
 				linear-gradient(
 					to top,
-					rgba(255, 250, 245, 0.4) 0%,
+					rgba(var(--hero-cream-rgb), 0.4) 0%,
 					transparent 6%,
 					transparent 94%,
-					rgba(255, 250, 245, 0.4) 100%
+					rgba(var(--hero-cream-rgb), 0.4) 100%
 				);
 		}
 	}
@@ -603,22 +613,47 @@
 		}
 	}
 
+	/* ─── Fenêtres basses ─────────────────────────────────────
+	   Le héros centre son contenu sur 100svh. Quand la hauteur utile tombe sous
+	   ~720 px (navigateur avec barre d'onglets ET barre de favoris, type Brave
+	   ou Chrome configuré ainsi, ou simplement un écran d'ordinateur portable),
+	   le bloc de texte ne tient plus : centré, il déborde autant en haut qu'en
+	   bas et le titre passe SOUS l'en-tête, qui est opaque.
+
+	   Mesuré : à 1280×600, le haut du h1 était 9 px au-dessus du bas de
+	   l'en-tête. Sous ce seuil on arrête donc de centrer et on aligne en haut :
+	   le contenu commence juste sous l'en-tête et le héros s'allonge si besoin
+	   (min-height, pas height fixe). */
+	@media (max-height: 720px) {
+		.hero {
+			align-items: flex-start;
+			padding-top: calc(-1 * var(--hero-top-offset, -5rem) + 1rem);
+		}
+
+		.content {
+			/* Annule le recentrage vertical du mode téléphone, qui remonterait
+			   le bloc sous l'en-tête. */
+			top: 0;
+			margin-bottom: 1.5rem;
+		}
+	}
+
 	/* ─── Dark mode ──────────────────────────────────────────── */
 	:global([data-theme='dark']) .mosaic-overlay {
 		background: linear-gradient(
 				to right,
-				rgba(26, 26, 26, 0.97) 0%,
-				rgba(26, 26, 26, 0.92) 12%,
-				rgba(26, 26, 26, 0.55) 25%,
-				rgba(26, 26, 26, 0.1) 38%,
+				rgba(var(--hero-dark-rgb), 0.97) 0%,
+				rgba(var(--hero-dark-rgb), 0.92) 12%,
+				rgba(var(--hero-dark-rgb), 0.55) 25%,
+				rgba(var(--hero-dark-rgb), 0.1) 38%,
 				transparent 48%
 			),
 			linear-gradient(
 				to top,
-				rgba(26, 26, 26, 0.4) 0%,
+				rgba(var(--hero-dark-rgb), 0.4) 0%,
 				transparent 6%,
 				transparent 94%,
-				rgba(26, 26, 26, 0.4) 100%
+				rgba(var(--hero-dark-rgb), 0.4) 100%
 			);
 	}
 
@@ -626,34 +661,34 @@
 		:global([data-theme='dark']) .mosaic-overlay {
 			background: linear-gradient(
 					to right,
-					rgba(26, 26, 26, 0.98) 0%,
-					rgba(26, 26, 26, 0.93) 15%,
-					rgba(26, 26, 26, 0.65) 35%,
-					rgba(26, 26, 26, 0.15) 55%,
+					rgba(var(--hero-dark-rgb), 0.98) 0%,
+					rgba(var(--hero-dark-rgb), 0.93) 15%,
+					rgba(var(--hero-dark-rgb), 0.65) 35%,
+					rgba(var(--hero-dark-rgb), 0.15) 55%,
 					transparent 65%
 				),
 				linear-gradient(
 					to top,
-					rgba(26, 26, 26, 0.5) 0%,
+					rgba(var(--hero-dark-rgb), 0.5) 0%,
 					transparent 8%,
 					transparent 92%,
-					rgba(26, 26, 26, 0.5) 100%
+					rgba(var(--hero-dark-rgb), 0.5) 100%
 				);
 		}
 	}
 
 	/* Dark mode: content box (mobile/tablet) needs a dark background.
-	   Light text (--text = #f0f0f0) on the default cream rgba(255,250,245,0.82)
+	   Light text (--text = #f0f0f0) on the default cream rgba(var(--hero-cream-rgb),0.82)
 	   is almost invisible. At ≥1024px the frost-col provides the backdrop instead. */
 	@media (max-width: 1023px) {
 		:global([data-theme='dark']) .content-box {
-			background: rgba(30, 30, 30, 0.9);
+			background: rgba(var(--overlay-dark-rgb), 0.94);
 		}
 	}
 
 	@media (min-width: 1024px) {
 		:global([data-theme='dark']) .frost-col {
-			background: rgba(30, 30, 30, 0.9);
+			background: rgba(var(--overlay-dark-rgb), 0.94);
 		}
 	}
 </style>

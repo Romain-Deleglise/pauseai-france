@@ -1,6 +1,6 @@
 ---
 title: Non, course et sécurité ne sont plus compatibles
-description: 'La démission de Jacob Coxon, l’incident Hugging Face, l’appel « Pacing the Frontier » : le danger est enfin reconnu. Mais l’auto-régulation des laboratoires ne suffira pas — seul un moratoire international peut nous protéger.'
+description: 'La démission de Jacob Coxon, l’incident Hugging Face, l’appel « Pacing the Frontier » : le danger est enfin reconnu. Mais l’auto-régulation des laboratoires ne suffira pas, seul un moratoire international peut nous protéger.'
 date: '2026-09-17'
 ---
 

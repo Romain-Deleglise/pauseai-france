@@ -108,7 +108,7 @@ p20). À **régénérer au prochain redécoupage** législatif.
   virgule comme le point-virgule, un BOM, des en-têtes entre guillemets ou
   accentués différemment, et la casse de la valeur `ACTIF`. Si une colonne
   attendue manque, le script échoue **en la nommant** au lieu de renvoyer zéro
-  sénateur — c'est ce silence qui avait produit « nombre de sénateurs
+  sénateur, c'est ce silence qui avait produit « nombre de sénateurs
   suspect : 0 ». Tests : `tests/elusSenat.test.ts`.
 - **En cas d'échec** : le journal complet est dans `journalctl -u update-elus`.
   Rien n'est écrit tant que les garde-fous ne passent pas, donc les données en
@@ -160,7 +160,7 @@ identique se répète dans toutes les boites parlementaires.
 **Accroches et objets tournants** : la rotation diversifie les envois et limite
 le repérage « copier-coller » par les équipes parlementaires.
 
-**Règle de style** : aucun tiret long (—) dans le texte destiné aux
+**Règle de style** : aucun tiret long ( ) dans le texte destiné aux
 utilisateurs.
 
 ---

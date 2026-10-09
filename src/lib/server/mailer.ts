@@ -38,6 +38,11 @@ export async function sendMail(mail: Mail): Promise<void> {
 		greetingTimeout: 10_000,
 		socketTimeout: 15_000
 	})
+	/* eslint-disable @typescript-eslint/no-unnecessary-condition --
+	   $env/dynamic/private type toutes les variables en `string`, mais à
+	   l'exécution une variable non définie vaut `undefined`. Retirer le `?.` et
+	   le `??` fait planter l'envoi dès qu'une variable manque : vérifié, deux
+	   tests de tests/mailer.test.ts tombent. La règle a tort ici. */
 	const redirect = privateEnv.MAIL_REDIRECT_TO?.trim()
 	await transport.sendMail({
 		from: { name: privateEnv.MAIL_FROM_NAME || 'Pause IA', address: privateEnv.MAIL_FROM ?? '' },

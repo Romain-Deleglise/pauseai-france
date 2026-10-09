@@ -59,10 +59,10 @@
 		<France class="france-map" />
 
 		<div class="text">
-			<p class="title">
+			<h3 class="title">
 				<MapPin size="1.2em" />
 				{isEn ? 'Local groups' : 'Groupes locaux'}
-			</p>
+			</h3>
 			<p class="desc">
 				{#if isEn}
 					Demonstrations, leafleting, outreach: Pause AI takes action near you. Join the movement in
@@ -111,15 +111,21 @@
 </section>
 
 <style>
+	/* Le panneau était un orange très pâle (brand 12 % + blanc). Posé sur la
+	   bande crème, qui est presque la même couleur, il disparaissait : le bloc
+	   ne ressortait pas de la page. Le fond passe donc par un token que la
+	   bande peut retourner — panneau blanc sur crème, panneau orangé sur blanc.
+	   Dans les deux cas il se détache. */
 	.local-groups {
 		display: flex;
 		flex-direction: column;
 		gap: 1.25rem;
 		padding: 2rem 1.75rem;
-		background: color-mix(in srgb, var(--brand) 12%, var(--bg));
+		background: var(--panneau-bg, color-mix(in srgb, var(--brand) 12%, var(--bg)));
 		border: 1px solid color-mix(in srgb, var(--brand) 35%, transparent);
 		border-radius: 1.25rem;
 		margin: 0 0 2rem;
+		box-shadow: var(--shadow-card);
 	}
 
 	.lg-top {

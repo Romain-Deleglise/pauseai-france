@@ -1,4 +1,9 @@
 #!/usr/bin/env node
+/* eslint-disable @typescript-eslint/ban-ts-comment --
+   Script Node historique, tiré dans le programme TypeScript parce qu'un test
+   en importe une fonction. Le typer entièrement (48 erreurs) est un chantier
+   à part ; `@ts-nocheck` est ici le moindre mal, et non un contournement
+   d'une erreur réelle du code applicatif. */
 // @ts-nocheck
 /*
  * Script Node en JavaScript simple, sans annotations de types. Il vivait hors
@@ -38,8 +43,8 @@
  *
  * Sources :
  *   - Députés : CSV « Députés actifs de l'Assemblée nationale » (data.gouv,
- *     législature en cours) — nom/prénom, département, circonscription, mail.
- *   - Sénateurs : open data officiel du Sénat (ODSEN) — emails publics.
+ *     législature en cours), nom/prénom, département, circonscription, mail.
+ *   - Sénateurs : open data officiel du Sénat (ODSEN), emails publics.
  *   - Motif institutionnel : prenom.nom@assemblee-nationale.fr (repli députés).
  *   - geo.api.gouv.fr (Etalab) : code postal → communes (INSEE) → département.
  *
@@ -98,7 +103,7 @@ const UA = { 'User-Agent': 'pauseia.fr elus generator (contact: campagne@pauseia
 // Le job ne tourne qu'une fois par semaine (timer systemd, lundi 4 h) et une
 // seule requête ratée faisait échouer toute la mise à jour : coupure réseau,
 // 5xx passager de data.gouv ou du Sénat, connexion qui pend. On réessaie, et on
-// borne chaque requête dans le temps — sans délai, une connexion suspendue
+// borne chaque requête dans le temps, sans délai, une connexion suspendue
 // bloquait le job indéfiniment.
 const FETCH_TIMEOUT_MS = 30_000
 const FETCH_ESSAIS = 3
@@ -114,7 +119,7 @@ async function fetchAvecReprise(url, enJson) {
 			if (!res.ok) {
 				const err = new Error(`HTTP ${res.status} pour ${url}`)
 				// 4xx (sauf 429) : la ressource a bougé ou n'existe plus, réessayer
-				// n'y changera rien — on échoue tout de suite, le message est parlant.
+				// n'y changera rien, on échoue tout de suite, le message est parlant.
 				if (res.status < 500 && res.status !== 429) err.definitif = true
 				throw err
 			}
@@ -123,7 +128,7 @@ async function fetchAvecReprise(url, enJson) {
 			derniere = err
 			if (err.definitif || essai === FETCH_ESSAIS) break
 			const attente = 2000 * 2 ** (essai - 1)
-			console.warn(`⚠️  ${err.message} — nouvel essai dans ${attente / 1000}s`)
+			console.warn(`⚠️  ${err.message}, nouvel essai dans ${attente / 1000}s`)
 			await new Promise((r) => setTimeout(r, attente))
 		}
 	}
@@ -466,8 +471,7 @@ function senatSlug(s) {
    tolérante : la version précédente supposait un encodage latin1, un séparateur
    virgule et des noms de colonnes accentués exacts. Si l'une de ces trois
    hypothèses tombait, `header.indexOf('État')` valait -1, aucune ligne ne
-   passait le filtre ACTIF, et la fonction renvoyait zéro sénateur SANS erreur —
-   le garde-fou disait « nombre de sénateurs suspect : 0 », ce qui ne désignait
+   passait le filtre ACTIF, et la fonction renvoyait zéro sénateur SANS erreur le garde-fou disait « nombre de sénateurs suspect : 0 », ce qui ne désignait
    pas la cause. */
 
 /** Clé de comparaison d'en-tête : sans accent, sans guillemet, sans casse. */
@@ -520,7 +524,7 @@ export function analyserSenateurs(buf) {
 	if (manquantes.length) {
 		throw new Error(
 			`colonnes absentes du fichier du Sénat (encodage ${encodage}, séparateur « ${sep} ») : ` +
-				`${manquantes.join(', ')} — en-tête lu : ${entete.join(' | ')}`
+				`${manquantes.join(', ')}, en-tête lu : ${entete.join(' | ')}`
 		)
 	}
 
@@ -581,7 +585,7 @@ export function analyserSenateurs(buf) {
 	if (!actifs) {
 		throw new Error(
 			`aucune ligne « ACTIF » sur ${lignes.length - 1} (encodage ${encodage}, ` +
-				`séparateur « ${sep} ») — la valeur de la colonne État a-t-elle changé ?`
+				`séparateur « ${sep} »), la valeur de la colonne État a-t-elle changé ?`
 		)
 	}
 

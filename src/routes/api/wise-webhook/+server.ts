@@ -68,7 +68,7 @@ export const GET: RequestHandler = () => {
 }
 
 export const POST: RequestHandler = async ({ request }) => {
-	// Lire le body brut — nécessaire pour vérifier la signature RSA
+	// Lire le body brut, nécessaire pour vérifier la signature RSA
 	const rawBody = await request.text()
 
 	// 1. Vérifier la signature Wise
@@ -91,7 +91,7 @@ export const POST: RequestHandler = async ({ request }) => {
 		return json({ error: 'Signature verification failed' }, { status: 401 })
 	}
 
-	// 2. Parser le payload — logger le tout pour identifier le champ du motif
+	// 2. Parser le payload, logger le tout pour identifier le champ du motif
 	let event: Record<string, unknown>
 	try {
 		event = JSON.parse(rawBody) as Record<string, unknown>
@@ -132,7 +132,7 @@ export const POST: RequestHandler = async ({ request }) => {
 
 	if (!reference) {
 		console.log(
-			`[wise-webhook] Virement sans référence DON (${data.amount}€) — aucune action CiviCRM`
+			`[wise-webhook] Virement sans référence DON (${data.amount}€), aucune action CiviCRM`
 		)
 		return json({ ok: true })
 	}

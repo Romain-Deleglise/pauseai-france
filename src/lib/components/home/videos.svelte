@@ -34,7 +34,9 @@
 </script>
 
 <section aria-labelledby={label_id}>
-	<UnderlinedTitle id={label_id}>{lang === 'en' ? 'Our videos' : 'Nos vidéos'}</UnderlinedTitle>
+	<UnderlinedTitle id={label_id} as="h3"
+		>{lang === 'en' ? 'Our videos' : 'Nos vidéos'}</UnderlinedTitle
+	>
 	<div class="video-grid">
 		{#each displayVideos as video (video.id)}
 			<YouTubeEmbed id={video.youtubeId} title={video.title} />
@@ -79,6 +81,16 @@
 		.video-grid {
 			grid-template-columns: repeat(4, 1fr);
 			max-width: none;
+		}
+	}
+	/* Sur téléphone la page faisait douze écrans : quatre vignettes en une
+	   colonne, c'est près de mille pixels pour un bloc secondaire. On en montre
+	   deux, le bouton « voir tout » juste en dessous mène au reste. Les quatre
+	   restent dans le HTML (référencement, et rien à recharger au
+	   redimensionnement), seules les deux dernières sont masquées. */
+	@media (max-width: 639px) {
+		.video-grid > :global(:nth-child(n + 3)) {
+			display: none;
 		}
 	}
 </style>

@@ -36,7 +36,7 @@
 		align-items: center;
 		justify-content: space-between;
 		padding: 0.625rem 1rem;
-		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		box-shadow: 0 2px 4px rgba(var(--ink-rgb), 0.1);
 	}
 
 	.banner-content {
@@ -75,14 +75,14 @@
 		font-weight: 700;
 		text-decoration: none;
 		color: var(--black);
-		background-color: rgba(255, 255, 255, 0.35);
+		background-color: rgba(var(--on-dark-rgb), 0.35);
 		padding: 0.25rem 0.5rem;
 		border-radius: 4px;
 		transition: all 0.2s ease;
 	}
 
 	:global(.banner a:hover) {
-		background-color: rgba(255, 255, 255, 0.6);
+		background-color: rgba(var(--on-dark-rgb), 0.6);
 	}
 
 	.close-btn {
@@ -101,7 +101,7 @@
 	}
 
 	.close-btn:hover {
-		background-color: rgba(0, 0, 0, 0.1);
+		background-color: rgba(var(--ink-rgb), 0.1);
 	}
 
 	@media (max-width: 640px) {

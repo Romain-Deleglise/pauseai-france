@@ -53,7 +53,7 @@
 
 	.article-link:hover {
 		transform: translateY(-4px);
-		box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.15);
+		box-shadow: 0 12px 24px -8px rgba(var(--ink-rgb), 0.15);
 	}
 
 	.article-link:hover article {
@@ -118,7 +118,7 @@
 		font-weight: 600;
 		text-transform: uppercase;
 		letter-spacing: 0.5px;
-		background-color: rgba(255, 148, 22, 0.12);
+		background-color: rgba(var(--brand-rgb), 0.12);
 		padding: 0.25rem 0.5rem;
 		border-radius: 4px;
 	}

@@ -99,12 +99,21 @@
 			id: 'agir',
 			label: t.nav.agir,
 			items: [
-				// Écrire aux élus et à la presse reste l'action prioritaire ; la
-				// déclaration vient juste après.
+				// Écrire aux élus et à la presse reste l'action prioritaire : elle est
+				// de premier niveau, jamais rangée derrière une page intermédiaire.
 				{ href: `${prefix}/ecrire-a-mes-elus`, label: t.nav.ecrire_elus },
 				{ href: `${prefix}/declaration`, label: t.nav.declaration },
-				{ href: `${prefix}/agir`, label: t.nav.comment_agir },
-				{ href: `${prefix}/groupes-locaux`, label: t.nav.groupes_locaux }
+				// Page hub : réseaux sociaux, Pause Action, participation aux
+				// campagnes. Les trois ne sont pas un sous-menu, ils sont sur la page.
+				{
+					href: `${prefix}/participer-a-notre-communication`,
+					label: t.nav.participer_communication
+				},
+				{ href: `${prefix}/groupes-locaux`, label: t.nav.pres_de_chez_vous },
+				// /recrutement n'est pas localisée : pas de préfixe de langue.
+				{ href: '/recrutement', label: t.nav.convaincre }
+				// « Comment agir ? » quitte le menu : la page reste en ligne (et liée
+				// depuis le pied de page) pour conserver son référencement.
 			]
 		},
 		{
@@ -144,7 +153,7 @@
 	// Language switcher: swap /fr/ <-> /en/ in current pathname
 	$: otherLang = lang === 'fr' ? 'en' : 'fr'
 
-	// Danger page slugs differ between languages — map them explicitly
+	// Danger page slugs differ between languages, map them explicitly
 	const DANGER_SLUGS: Record<'fr' | 'en', string[]> = {
 		fr: ['economiques-et-materiels', 'pour-les-individus', 'pour-la-societe', "pour-l'humanite"],
 		en: ['economic-and-material', 'for-individuals', 'for-society', 'for-humanity']
@@ -166,8 +175,8 @@
 
 	$: switchLangHref = getSwitchLangHref($page.url.pathname, lang, otherLang)
 
-	// Le bandeau vient de Notion. Si le bouton est annoncé sans URL — ou si une
-	// URL est saisie sans libellé — on complète avec la campagne en cours
+	// Le bandeau vient de Notion. Si le bouton est annoncé sans URL, ou si une
+	// URL est saisie sans libellé, on complète avec la campagne en cours
 	// plutôt que d'afficher un bouton mort ou de le faire disparaître.
 	$: featuredCampaign = getFeaturedCampaign()
 	$: bannerFallbackUrl = featuredCampaign ? `${prefix}/${featuredCampaign.slug}` : prefix
@@ -183,7 +192,7 @@
 <!--
   Wrapping Banner + nav in a single <header> solves two issues:
   1. The layout grid sees ONE element (auto row), so main gets the 1fr row correctly.
-  2. The Banner lives in the same sticky context as the nav — no z-index collision.
+  2. The Banner lives in the same sticky context as the nav, no z-index collision.
   Banner slides away via max-height CSS transition once the user scrolls.
 -->
 <header class="site-header" class:scrolled class:homepage={onHomepage}>
@@ -325,7 +334,7 @@
 				</button>
 			</div>
 
-			<!-- Mobile/tablet sidebar — use:portal pour l'appender à document.body
+			<!-- Mobile/tablet sidebar, use:portal pour l'appender à document.body
 			     et l'extraire du containing block créé par position:sticky -->
 			<div class="sidebar" class:open use:portal>
 				<div class="sidebar-head">
@@ -333,7 +342,7 @@
 						<Logo
 							height={36}
 							fill_pause={$theme === 'dark' ? 'white' : 'black'}
-							fill_circle="#FF9416"
+							fill_circle="var(--brand)"
 							fill_ai={$theme === 'dark' ? 'white' : 'black'}
 						/>
 					</a>
@@ -492,7 +501,7 @@
 	.site-header.scrolled {
 		background: var(--bg);
 		border-bottom-color: var(--border);
-		box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
+		box-shadow: 0 2px 16px rgba(var(--ink-rgb), 0.07);
 	}
 
 	/* On homepage the nav stays visible over the hero: give it an opaque
@@ -510,7 +519,7 @@
 			opacity 0.25s ease;
 		opacity: 1;
 		/* Prevent the browser's scroll-anchoring from adjusting scrollY when
-		   the banner collapses — that would create a feedback loop where the
+		   the banner collapses, that would create a feedback loop where the
 		   layout shift caused by the collapse brings scrollY back below the
 		   threshold, making the banner re-expand, then collapse again, etc. */
 		overflow-anchor: none;
@@ -521,7 +530,7 @@
 		opacity: 0;
 	}
 
-	/* Homepage: inverted — hidden at top, visible when scrolled past hero */
+	/* Homepage: inverted, hidden at top, visible when scrolled past hero */
 	.banner-wrapper.homepage {
 		max-height: 0;
 		opacity: 0;
@@ -589,7 +598,7 @@
 			background 0.15s;
 	}
 
-	/* "Donner" — brand orange */
+	/* "Donner", brand orange */
 	.btn-donate {
 		background: var(--brand);
 		color: var(--on-brand);
@@ -599,7 +608,7 @@
 		opacity: 0.85;
 	}
 
-	/* "Rejoindre" — black */
+	/* "Rejoindre", black */
 	.btn-join {
 		background: var(--black);
 		color: var(--white);
@@ -629,7 +638,7 @@
 	}
 
 	.theme-toggle:hover {
-		background: rgba(0, 0, 0, 0.08);
+		background: rgba(var(--ink-rgb), 0.08);
 	}
 
 	/* Dark mode: flip icon colors automatically via CSS currentColor */
@@ -657,11 +666,11 @@
 	}
 
 	.lang-toggle:hover {
-		background: rgba(0, 0, 0, 0.08);
+		background: rgba(var(--ink-rgb), 0.08);
 	}
 
 	:global([data-theme='dark']) .lang-toggle:hover {
-		background: rgba(255, 255, 255, 0.08);
+		background: rgba(var(--on-dark-rgb), 0.08);
 	}
 
 	.sidebar-lang-toggle {
@@ -670,7 +679,7 @@
 		text-decoration: none;
 		padding: 0.55rem 0.6rem;
 		border-radius: 0.45rem;
-		background: rgba(0, 0, 0, 0.05);
+		background: rgba(var(--ink-rgb), 0.05);
 		color: var(--text-secondary);
 		font-size: 0.95rem;
 		font-family: var(--font-heading);
@@ -679,17 +688,17 @@
 	}
 
 	.sidebar-lang-toggle:hover {
-		background: rgba(255, 148, 22, 0.1);
+		background: rgba(var(--brand-rgb), 0.1);
 		color: var(--brand-subtle);
 	}
 
 	:global([data-theme='dark']) .sidebar-lang-toggle {
-		background: rgba(255, 255, 255, 0.07);
+		background: rgba(var(--on-dark-rgb), 0.07);
 		color: var(--text);
 	}
 
 	:global([data-theme='dark']) .sidebar-lang-toggle:hover {
-		background: rgba(255, 148, 22, 0.15);
+		background: rgba(var(--brand-rgb), 0.15);
 		color: var(--brand-subtle);
 	}
 
@@ -701,7 +710,7 @@
 		padding: 0.55rem 0.6rem;
 		border: none;
 		border-radius: 0.45rem;
-		background: rgba(0, 0, 0, 0.05);
+		background: rgba(var(--ink-rgb), 0.05);
 		color: var(--text-secondary);
 		font-size: 0.95rem;
 		font-family: var(--font-heading);
@@ -711,17 +720,17 @@
 	}
 
 	.sidebar-theme-toggle:hover {
-		background: rgba(255, 148, 22, 0.1);
+		background: rgba(var(--brand-rgb), 0.1);
 		color: var(--brand-subtle);
 	}
 
 	:global([data-theme='dark']) .sidebar-theme-toggle {
-		background: rgba(255, 255, 255, 0.07);
+		background: rgba(var(--on-dark-rgb), 0.07);
 		color: var(--text);
 	}
 
 	:global([data-theme='dark']) .sidebar-theme-toggle:hover {
-		background: rgba(255, 148, 22, 0.15);
+		background: rgba(var(--brand-rgb), 0.15);
 		color: var(--brand-subtle);
 	}
 
@@ -804,7 +813,7 @@
 		overflow: hidden;
 		display: flex;
 		flex-direction: column;
-		box-shadow: -8px 0 40px rgba(0, 0, 0, 0.12);
+		box-shadow: -8px 0 40px rgba(var(--ink-rgb), 0.12);
 	}
 
 	.sidebar.open {
@@ -814,7 +823,7 @@
 	.sidebar-backdrop {
 		position: fixed;
 		inset: 0;
-		background: rgba(0, 0, 0, 0.35);
+		background: rgba(var(--ink-rgb), 0.35);
 		z-index: 999;
 		backdrop-filter: blur(2px);
 	}
@@ -824,7 +833,7 @@
 		justify-content: space-between;
 		align-items: center;
 		padding: 1.1rem 1.5rem;
-		border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+		border-bottom: 1px solid rgba(var(--ink-rgb), 0.07);
 		background: white;
 		flex-shrink: 0;
 		z-index: 10;
@@ -914,7 +923,7 @@
 
 	.sidebar-subsection a:hover,
 	.sidebar-subsection a.active {
-		background: rgba(255, 148, 22, 0.1);
+		background: rgba(var(--brand-rgb), 0.1);
 		color: var(--brand-subtle);
 	}
 
@@ -1016,15 +1025,15 @@
 
 	/* ─── Dark mode overrides ────────────────────────────────── */
 	:global([data-theme='dark']) .site-header.scrolled {
-		box-shadow: 0 2px 16px rgba(0, 0, 0, 0.4);
+		box-shadow: 0 2px 16px rgba(var(--ink-rgb), 0.4);
 	}
 
 	:global([data-theme='dark']) .sidebar-theme-toggle {
-		background: rgba(255, 255, 255, 0.07);
+		background: rgba(var(--on-dark-rgb), 0.07);
 		color: var(--text);
 	}
 
 	:global([data-theme='dark']) .theme-toggle:hover {
-		background: rgba(255, 255, 255, 0.08);
+		background: rgba(var(--on-dark-rgb), 0.08);
 	}
 </style>

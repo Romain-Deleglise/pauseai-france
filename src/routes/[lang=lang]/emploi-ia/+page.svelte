@@ -101,7 +101,7 @@
 			w.Activoice.init({
 				container: '#av-embed-container',
 				campaignId: ACTIVOICE_CAMPAIGN_ID,
-				embedOptions: { spinnerColor: '#FF9416' }
+				embedOptions: { spinnerColor: 'var(--brand)' }
 			})
 		}
 
@@ -298,7 +298,7 @@
 		flex-direction: row;
 		align-items: center;
 		gap: 1.25rem;
-		border: 1px solid rgba(255, 148, 22, 0.35);
+		border: 1px solid rgba(var(--brand-rgb), 0.35);
 		border-radius: var(--radius-md);
 		padding: 0.9rem 1.5rem;
 		margin: 2rem 0 3rem;
@@ -311,7 +311,7 @@
 
 	.stat-block:hover {
 		border-color: var(--brand);
-		box-shadow: 0 2px 12px rgba(255, 148, 22, 0.12);
+		box-shadow: 0 2px 12px rgba(var(--brand-rgb), 0.12);
 	}
 
 	.stat-number {
@@ -366,7 +366,7 @@
 		padding: 1.1rem 3rem 1.1rem 1.5rem;
 		border-radius: var(--radius-md);
 		margin: 0 0 3rem;
-		box-shadow: 0 2px 14px rgba(255, 148, 22, 0.28);
+		box-shadow: 0 2px 14px rgba(var(--brand-rgb), 0.28);
 		transition:
 			transform 0.15s,
 			box-shadow 0.2s,
@@ -376,7 +376,7 @@
 	.primary-cta:hover {
 		background: var(--brand);
 		transform: translateY(-1px);
-		box-shadow: 0 4px 18px rgba(255, 148, 22, 0.35);
+		box-shadow: 0 4px 18px rgba(var(--brand-rgb), 0.35);
 	}
 
 	.primary-cta-label {
@@ -439,7 +439,7 @@
 
 	.article-card:hover {
 		border-color: var(--brand);
-		box-shadow: 0 2px 12px rgba(255, 148, 22, 0.12);
+		box-shadow: 0 2px 12px rgba(var(--brand-rgb), 0.12);
 	}
 
 	/* ── Carte mise en avant : le bilan de la campagne ── */
@@ -447,11 +447,11 @@
 		border-color: var(--brand);
 		border-width: 2px;
 		background: var(--brand-light);
-		box-shadow: 0 2px 12px rgba(255, 148, 22, 0.14);
+		box-shadow: 0 2px 12px rgba(var(--brand-rgb), 0.14);
 	}
 
 	:global([data-theme='dark']) .article-card-featured {
-		background: rgba(255, 148, 22, 0.08);
+		background: rgba(var(--brand-rgb), 0.08);
 	}
 
 	.article-badge {
@@ -502,7 +502,7 @@
 	}
 
 	:global([data-theme='dark']) .bigger-problem {
-		background: rgba(255, 255, 255, 0.04);
+		background: rgba(var(--on-dark-rgb), 0.04);
 	}
 
 	.bigger-problem h2 {
@@ -558,7 +558,7 @@
 	}
 
 	:global([data-theme='dark']) .elus-example blockquote {
-		background: rgba(255, 255, 255, 0.03);
+		background: rgba(var(--on-dark-rgb), 0.03);
 	}
 
 	/* ── Press list ── */
@@ -585,7 +585,7 @@
 
 	.press-item:hover {
 		border-color: var(--brand);
-		box-shadow: 0 2px 8px rgba(255, 148, 22, 0.1);
+		box-shadow: 0 2px 8px rgba(var(--brand-rgb), 0.1);
 	}
 
 	.press-item-meta {
@@ -628,7 +628,7 @@
 		padding: 1.25rem 1.4rem 1.1rem;
 		border-width: 2px;
 		border-color: var(--brand);
-		background: rgba(255, 148, 22, 0.04);
+		background: rgba(var(--brand-rgb), 0.04);
 	}
 
 	.press-badge {

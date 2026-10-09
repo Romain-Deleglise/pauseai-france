@@ -41,3 +41,13 @@
 /fr/faq  /fr#faq  301!
 /en/faq  /en#faq  301!
 /faq     /fr#faq  301!
+
+# Articles de campagne déplacés sous /articles/AAAA-MM-JJ-slug (octobre 2026).
+# 301 et non 302 : ces adresses ont été partagées et indexées, le moteur doit
+# transférer le référencement vers la nouvelle.
+/fr/course-et-securite-ne-sont-plus-compatibles  /fr/articles/2026-09-17-course-et-securite-ne-sont-plus-compatibles  301!
+/en/course-et-securite-ne-sont-plus-compatibles  /en/articles/2026-09-17-course-et-securite-ne-sont-plus-compatibles  301!
+/fr/personne-ne-controle-lia                     /fr/articles/2026-09-15-personne-ne-controle-lia                     301!
+/en/personne-ne-controle-lia                     /en/articles/2026-09-15-personne-ne-controle-lia                     301!
+/fr/incident-openai-hugging-face                 /fr/articles/2026-08-10-incident-openai-hugging-face                 301!
+/en/incident-openai-hugging-face                 /en/articles/2026-08-10-incident-openai-hugging-face                 301!

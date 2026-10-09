@@ -1,0 +1,59 @@
+name: Plan du site
+
+# Régénère docs/plan-du-site.md et le commite si l'arborescence a bougé.
+#
+# Pourquoi un workflow et non le build Netlify : Netlify construit le site mais
+# ne peut rien réécrire dans le dépôt. Le document doit vivre dans le code pour
+# être lisible et commentable sur GitHub, donc c'est une action qui le met à
+# jour, au même moment que le déploiement (à chaque push sur main).
+#
+# Pas de boucle sans fin : un push fait avec GITHUB_TOKEN ne déclenche pas de
+# nouveau workflow. Le filtre `paths` évite en plus de tourner pour rien.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/routes/**'
+      - 'src/posts/**'
+      - 'src/lib/components/Header.svelte'
+      - 'src/lib/components/Footer.svelte'
+      - 'src/lib/i18n/**'
+      - 'scripts/plan-du-site.mjs'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  plan-du-site:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v5
+        with:
+          node-version-file: '.nvmrc'
+          # Même raison que les autres workflows : le cache automatique de la v5
+          # cherche pnpm avant que Corepack ne l'installe.
+          package-manager-cache: false
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Régénérer le plan du site
+        run: pnpm run plan-du-site
+
+      - name: Commiter si le plan a changé
+        run: |
+          if git diff --quiet -- docs/plan-du-site.md; then
+            echo "✓ Plan du site inchangé."
+            exit 0
+          fi
+          git -c user.name="Pause IA Bot" -c user.email="bot@pauseia.fr" \
+            commit -m "chore: mise a jour du plan du site" -- docs/plan-du-site.md
+          git push

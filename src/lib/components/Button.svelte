@@ -1,14 +1,25 @@
 <script lang="ts">
+	import { url as siteUrl } from '$config'
+
 	export let alt = false
 	export let href = ''
 	export let target = ''
 	export let rel = ''
 	export let type: 'button' | 'submit' | 'reset' = 'button'
 	export let disabled = false
+
+	/* Règle du site : un lien externe s'ouvre dans un nouvel onglet. Les liens
+	   des fichiers Markdown passent par `custom/a.svelte`, qui l'applique déjà ;
+	   les boutons ne l'avaient nulle part, et onze appels l'oubliaient. On le
+	   pose ici une fois plutôt qu'à chaque appel, un `target` explicite reste
+	   prioritaire. `rel` protège l'onglet d'origine (`noopener`). */
+	$: externe = Boolean(href) && /^https?:\/\//.test(href) && !href.startsWith(siteUrl)
+	$: cible = target || (externe ? '_blank' : '')
+	$: relation = rel || (cible === '_blank' ? 'noopener noreferrer' : '')
 </script>
 
 {#if href}
-	<a {href} {target} {rel} class:alt aria-disabled={disabled}>
+	<a {href} target={cible} rel={relation} class:alt aria-disabled={disabled}>
 		<slot />
 	</a>
 {:else}
@@ -52,21 +63,21 @@
 		background-color: var(--btn-alt-bg);
 		/* Fond clair en mode clair, sombre en mode sombre : le texte suit. */
 		color: var(--text) !important;
-		box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+		box-shadow: 0 2px 6px rgba(var(--ink-rgb), 0.1);
 	}
 
 	button:not(.alt):hover,
 	a:not(.alt):hover {
 		background-color: var(--btn-hover-bg);
 		transform: translateY(-1px);
-		box-shadow: 0 5px 16px rgba(255, 148, 22, 0.42);
+		box-shadow: 0 5px 16px rgba(var(--brand-rgb), 0.42);
 	}
 
 	button.alt:hover,
 	a.alt:hover {
 		background-color: var(--btn-alt-hover-bg);
 		transform: translateY(-1px);
-		box-shadow: 0 5px 12px rgba(0, 0, 0, 0.14);
+		box-shadow: 0 5px 12px rgba(var(--ink-rgb), 0.14);
 	}
 
 	button:active,

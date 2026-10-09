@@ -33,7 +33,7 @@ Que font les labos pour contourner cette impasse ? Ils procèdent pour ainsi dir
 Durant l’été, un coup de tonnerre a retenti dans la communauté des spécialistes de l’IA. L’écho s’en fait encore entendre aujourd’hui. Des agents entraînés par OpenAI dans un environnement contrôlé, sans accès à Internet, sont parvenus à prendre le contrôle des serveurs distants de la société Hugging Face. Cette société, qui vend des services aux laboratoires d’intelligence artificielle, est peu suspecte de vulnérabilité aux cyber-attaques. De fait, cette intrusion était extrêmement sophistiquée. Les agents IA, coopérant en « essaim » selon l’expression consacrée, ont réussi cet exploit au nez et à la barbe des ingénieurs d’OpenAI, récidivant même incognito après que ceux-ci ont cru les neutraliser.
 
 <aside class="note-lecture">
-	Le récit complet et sourcé de cet incident, des premiers signaux à l’enquête indépendante d’août, est sur notre <a href="/fr/incident-openai-hugging-face">page de synthèse</a>.
+	Le récit complet et sourcé de cet incident, des premiers signaux à l’enquête indépendante d’août, est sur notre <a href="/fr/articles/2026-08-10-incident-openai-hugging-face">page de synthèse</a>.
 </aside>
 
 ## OpenAI : pompier pyromane
@@ -74,4 +74,4 @@ Jacob Coxon est devenu célèbre le 9 septembre dernier. Son annonce sur X a fai
 
 ---
 
-À suivre : [Non, course et sécurité ne sont plus compatibles](/fr/course-et-securite-ne-sont-plus-compatibles)
+À suivre : [Non, course et sécurité ne sont plus compatibles](/fr/articles/2026-09-17-course-et-securite-ne-sont-plus-compatibles)

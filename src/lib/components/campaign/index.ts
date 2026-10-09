@@ -1,5 +1,5 @@
 /**
- * Module « page campagne » — briques réutilisables pour monter rapidement
+ * Module « page campagne », briques réutilisables pour monter rapidement
  * une page de campagne conforme à la charte graphique de Pause IA.
  *
  * Voir docs/module-campagne.md pour le mode d'emploi.

@@ -16,6 +16,7 @@
 		"test": "vitest --run",
 		"optimize-images": "node scripts/optimize-images.js",
 		"generate-elus": "node scripts/generate-elus.js",
+		"plan-du-site": "node scripts/plan-du-site.mjs",
 		"lint:css": "stylelint \"src/**/*.{css,svelte}\""
 	},
 	"devDependencies": {

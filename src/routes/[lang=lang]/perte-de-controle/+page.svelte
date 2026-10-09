@@ -144,7 +144,7 @@
 					? 'When AI masters computing better than the world’s best experts, we humans enter a zone of great danger.'
 					: 'Quand l’IA maîtrise l’informatique mieux que les meilleurs experts du monde, nous, humains, entrons dans une zone de grand danger.'}
 				category={isEn ? 'Analysis' : 'Analyse'}
-				url="{prefix}/personne-ne-controle-lia"
+				url="{prefix}/articles/2026-09-15-personne-ne-controle-lia"
 				linkText={isEn ? 'Read the article' : 'Lire l’article'}
 			/>
 		</div>
@@ -158,7 +158,7 @@
 					? 'The danger is finally being acknowledged. But the labs cannot regulate themselves: only an international moratorium can protect us.'
 					: 'Le danger est enfin reconnu. Mais les laboratoires ne peuvent pas s’auto-réguler : seul un moratoire international peut nous protéger.'}
 				category={isEn ? 'Analysis' : 'Analyse'}
-				url="{prefix}/course-et-securite-ne-sont-plus-compatibles"
+				url="{prefix}/articles/2026-09-17-course-et-securite-ne-sont-plus-compatibles"
 				linkText={isEn ? 'Read the article' : 'Lire l’article'}
 			/>
 		</div>

@@ -113,7 +113,9 @@
 			<a href="{prefix}#faq">{t.footer.faq}</a>
 			<a href="{prefix}/propositions">{t.footer.propositions}</a>
 			<a href="{prefix}/newsletters">{t.footer.newsletters}</a>
-			<a href="https://pauseia.substack.com/">{t.footer.blog}</a>
+			<a href="https://pauseia.substack.com/" target="_blank" rel="noopener noreferrer"
+				>{t.footer.blog}</a
+			>
 			<a href="{prefix}/fresque">{t.footer.fresque}</a>
 			<a href="{prefix}/agir">{t.footer.agir}</a>
 			<a href="{prefix}/dons">{t.footer.donner}</a>
@@ -130,7 +132,9 @@
 			<ExternalLink href="https://pauseai-shop.fourthwall.com" target="_blank"
 				>{t.footer.merchandise}</ExternalLink
 			>
-			<a href="https://pauseai.info/protests">{t.footer.protests}</a>
+			<a href="https://pauseai.info/protests" target="_blank" rel="noopener noreferrer"
+				>{t.footer.protests}</a
+			>
 			<a href="{prefix}/recrutement-emploi">{t.footer.jobs}</a>
 		</div>
 		<div class="column">
@@ -238,7 +242,7 @@
 		flex: 1;
 		min-width: 180px;
 		padding: 0.6rem 0.75rem;
-		border: 2px solid rgba(0, 0, 0, 0.15);
+		border: 2px solid rgba(var(--ink-rgb), 0.15);
 		border-radius: var(--radius-sm);
 		font-size: 0.95rem;
 		font-family: inherit;
