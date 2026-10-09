@@ -308,7 +308,7 @@
 		typeFilter.length > 0
 
 	// Track the category section currently in the viewport so the side TOC
-	// can highlight it. Uses IntersectionObserver — far cheaper than scroll
+	// can highlight it. Uses IntersectionObserver, far cheaper than scroll
 	// listeners and triggers exactly when a section header crosses the top
 	// 30% of the viewport.
 	let activeSection: Category | '' = ''

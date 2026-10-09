@@ -26,7 +26,7 @@
 			{#if lang === 'en'}
 				<p>
 					This is only the beginning. AI has started to take over our lives, and already we control
-					nothing. The risks are immense — for our democracies, our jobs, our mental health, the
+					nothing. The risks are immense, for our democracies, our jobs, our mental health, the
 					working of the computer systems we depend on (the internet, banking, public services)…
 					Major AI-driven disasters can no longer be ruled out.
 				</p>

@@ -11,7 +11,7 @@
 	/* Règle du site : un lien externe s'ouvre dans un nouvel onglet. Les liens
 	   des fichiers Markdown passent par `custom/a.svelte`, qui l'applique déjà ;
 	   les boutons ne l'avaient nulle part, et onze appels l'oubliaient. On le
-	   pose ici une fois plutôt qu'à chaque appel — un `target` explicite reste
+	   pose ici une fois plutôt qu'à chaque appel, un `target` explicite reste
 	   prioritaire. `rel` protège l'onglet d'origine (`noopener`). */
 	$: externe = Boolean(href) && /^https?:\/\//.test(href) && !href.startsWith(siteUrl)
 	$: cible = target || (externe ? '_blank' : '')

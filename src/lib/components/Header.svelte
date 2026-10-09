@@ -153,7 +153,7 @@
 	// Language switcher: swap /fr/ <-> /en/ in current pathname
 	$: otherLang = lang === 'fr' ? 'en' : 'fr'
 
-	// Danger page slugs differ between languages — map them explicitly
+	// Danger page slugs differ between languages, map them explicitly
 	const DANGER_SLUGS: Record<'fr' | 'en', string[]> = {
 		fr: ['economiques-et-materiels', 'pour-les-individus', 'pour-la-societe', "pour-l'humanite"],
 		en: ['economic-and-material', 'for-individuals', 'for-society', 'for-humanity']
@@ -175,8 +175,8 @@
 
 	$: switchLangHref = getSwitchLangHref($page.url.pathname, lang, otherLang)
 
-	// Le bandeau vient de Notion. Si le bouton est annoncé sans URL — ou si une
-	// URL est saisie sans libellé — on complète avec la campagne en cours
+	// Le bandeau vient de Notion. Si le bouton est annoncé sans URL, ou si une
+	// URL est saisie sans libellé, on complète avec la campagne en cours
 	// plutôt que d'afficher un bouton mort ou de le faire disparaître.
 	$: featuredCampaign = getFeaturedCampaign()
 	$: bannerFallbackUrl = featuredCampaign ? `${prefix}/${featuredCampaign.slug}` : prefix
@@ -192,7 +192,7 @@
 <!--
   Wrapping Banner + nav in a single <header> solves two issues:
   1. The layout grid sees ONE element (auto row), so main gets the 1fr row correctly.
-  2. The Banner lives in the same sticky context as the nav — no z-index collision.
+  2. The Banner lives in the same sticky context as the nav, no z-index collision.
   Banner slides away via max-height CSS transition once the user scrolls.
 -->
 <header class="site-header" class:scrolled class:homepage={onHomepage}>
@@ -334,7 +334,7 @@
 				</button>
 			</div>
 
-			<!-- Mobile/tablet sidebar — use:portal pour l'appender à document.body
+			<!-- Mobile/tablet sidebar, use:portal pour l'appender à document.body
 			     et l'extraire du containing block créé par position:sticky -->
 			<div class="sidebar" class:open use:portal>
 				<div class="sidebar-head">
@@ -519,7 +519,7 @@
 			opacity 0.25s ease;
 		opacity: 1;
 		/* Prevent the browser's scroll-anchoring from adjusting scrollY when
-		   the banner collapses — that would create a feedback loop where the
+		   the banner collapses, that would create a feedback loop where the
 		   layout shift caused by the collapse brings scrollY back below the
 		   threshold, making the banner re-expand, then collapse again, etc. */
 		overflow-anchor: none;
@@ -530,7 +530,7 @@
 		opacity: 0;
 	}
 
-	/* Homepage: inverted — hidden at top, visible when scrolled past hero */
+	/* Homepage: inverted, hidden at top, visible when scrolled past hero */
 	.banner-wrapper.homepage {
 		max-height: 0;
 		opacity: 0;
@@ -598,7 +598,7 @@
 			background 0.15s;
 	}
 
-	/* "Donner" — brand orange */
+	/* "Donner", brand orange */
 	.btn-donate {
 		background: var(--brand);
 		color: var(--on-brand);
@@ -608,7 +608,7 @@
 		opacity: 0.85;
 	}
 
-	/* "Rejoindre" — black */
+	/* "Rejoindre", black */
 	.btn-join {
 		background: var(--black);
 		color: var(--white);

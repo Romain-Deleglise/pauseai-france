@@ -7,7 +7,7 @@ declare global {
 		// interface PageData {}
 		// interface Platform {}
 	}
-	// Injected at build time by vite.config.ts — last commit date of
+	// Injected at build time by vite.config.ts : last commit date of
 	// src/lib/data/resources.ts in YYYY-MM-DD format.
 	const __RESOURCES_UPDATED__: string
 }

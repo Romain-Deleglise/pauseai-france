@@ -30,9 +30,9 @@ export interface Campaign {
 	/** URL slug, e.g. 'municipales-2026' → /fr/municipales-2026 */
 	slug: string
 	status: CampaignStatus
-	/** Start date (YYYY-MM) — used for ordering and display */
+	/** Start date (YYYY-MM), used for ordering and display */
 	startDate: string
-	/** End date (YYYY-MM) — set when campaign ends */
+	/** End date (YYYY-MM), set when campaign ends */
 	endDate?: string
 	/** Override URL (absolute path). If omitted, defaults to /{lang}/{slug} */
 	url?: string
@@ -391,7 +391,7 @@ export const campaigns: Campaign[] = [
 						url: 'https://next.ink/229085/quand-lia-sinvite-dans-les-municipales/'
 					},
 					{
-						title: 'Journal de 18h — vendredi 13 mars 2026',
+						title: 'Journal de 18h · vendredi 13 mars 2026',
 						source: 'France Culture',
 						url: 'https://www.radiofrance.fr/franceculture/podcasts/journal-de-18h/journal-de-18h-emission-du-vendredi-13-mars-2026-9405796'
 					},

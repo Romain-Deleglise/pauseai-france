@@ -540,12 +540,12 @@
 		<p class="depuis-date" id="depuis-titre">{isEn ? 'March 2026' : 'mars 2026'}</p>
 		<p class="depuis-texte">
 			{#if isEn}
-				Pause AI's local groups launched {mois} months ago. Everything above — the groups, the actions,
-				the volunteers — was built in that time, by people who simply decided to start.
+				Pause AI's local groups launched {mois} months ago. The groups, the actions and the volunteers
+				above were all built in that time, by people who simply decided to start.
 			{:else}
-				Les groupes locaux de Pause IA ont été lancés il y a {mois} mois. Tout ce qui précède — les groupes,
-				les actions, les bénévoles — a été construit dans ce laps de temps, par des gens qui ont simplement
-				décidé de commencer.
+				Les groupes locaux de Pause IA ont été lancés il y a {mois} mois. Les groupes, les actions et
+				les bénévoles que vous venez de voir ont tous été construits dans ce laps de temps, par des gens
+				qui ont simplement décidé de commencer.
 			{/if}
 		</p>
 	</section>

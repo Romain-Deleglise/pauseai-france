@@ -33,7 +33,7 @@ commentaire, un « j'aime » font sortir nos publications de notre cercle habitu
 ## Faire partie de Pause Action
 
 Pause Action est notre groupe WhatsApp d'actions rapides : chaque semaine, une
-action concrète, expliquée en trois lignes, réalisable en quelques minutes —
+action concrète, expliquée en trois lignes, réalisable en quelques minutes :
 signer, écrire, relayer, répondre à une consultation.
 
 <a class="cta-ligne" href="https://chat.whatsapp.com/LThhghXc0Hk3sTwQMyy1wU" target="_blank" rel="noopener noreferrer">
@@ -41,22 +41,31 @@ signer, écrire, relayer, répondre à une consultation.
     <strong>Rejoindre Pause Action</strong>
     <small>Groupe WhatsApp · une action par semaine · aucune obligation</small>
   </span>
-  <span class="cta-fleche" aria-hidden="true">→</span>
+  <span class="cta-fleche" aria-hidden="true">&rarr;</span>
 </a>
 
-## Participer à nos campagnes
+## Prêter main-forte à une équipe
 
-Nos campagnes ont besoin de mains : rédaction, visuels, montage vidéo, veille,
-traduction, relations presse, relecture. Aucune compétence militante n'est
-exigée — seulement un peu de temps et de l'envie.
+Nos campagnes ne sont pas faites par des professionnels : elles sont faites par
+des bénévoles répartis en équipes. Communication, rédaction, vidéo, traduction,
+relations presse, veille, relecture : chaque équipe a ses besoins du moment et
+accueille les nouveaux au fil de l'eau.
 
-<a class="cta-ligne" href="/{lang}/campagnes">
+Concrètement, vous rejoignez l'association, vous choisissez l'équipe qui
+correspond à ce que vous savez faire (ou à ce que vous avez envie d'apprendre),
+et le référent de l'équipe vous dit par où commencer. Pas de test d'entrée, pas
+de volume horaire imposé.
+
+<a class="cta-ligne" href="/{lang}/rejoindre">
   <span>
-    <strong>Voir nos campagnes en cours</strong>
-    <small>Choisissez celle qui vous parle, nous vous indiquons par où commencer</small>
+    <strong>Rejoindre l'association et une équipe</strong>
+    <small>Les équipes et leurs besoins sont décrits sur la page Qui sommes-nous</small>
   </span>
-  <span class="cta-fleche" aria-hidden="true">→</span>
+  <span class="cta-fleche" aria-hidden="true">&rarr;</span>
 </a>
+
+Vous préférez voir d'abord ce sur quoi nous travaillons ?
+<a href="/{lang}/campagnes">Découvrir nos campagnes en cours</a>.
 
 Vous cherchez plutôt une action ponctuelle à faire seul·e ?
 <a href="/{lang}/agir">Voir toutes les formes d'action</a>.

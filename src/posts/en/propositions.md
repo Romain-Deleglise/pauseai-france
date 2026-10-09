@@ -44,7 +44,7 @@ A transition to a world with more powerful AI must be managed fairly:
 
 ## Why These Proposals?
 
-These measures are not about stopping technological progress. They are about ensuring that this progress happens in a way that is safe, equitable, and subject to democratic control. The window to put these guardrails in place is closing — we must act now.
+These measures are not about stopping technological progress. They are about ensuring that this progress happens in a way that is safe, equitable, and subject to democratic control. The window to put these guardrails in place is closing, we must act now.
 
 <Callout title="Do you agree? Take action">
 

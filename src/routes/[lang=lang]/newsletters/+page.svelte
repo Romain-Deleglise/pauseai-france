@@ -519,7 +519,7 @@
 		color: var(--error);
 	}
 
-	/* Search bar — matches press page combobox style */
+	/* Search bar, matches press page combobox style */
 	.search-bar {
 		display: flex;
 		align-items: center;
@@ -606,7 +606,7 @@
 		margin-bottom: 1.5rem;
 	}
 
-	/* Mobile dropdown quick access — hidden on desktop */
+	/* Mobile dropdown quick access, hidden on desktop */
 	.mobile-nav {
 		display: none;
 		margin-bottom: 1.5rem;
@@ -655,7 +655,7 @@
 		align-items: flex-start;
 	}
 
-	/* Sidebar — hidden on mobile */
+	/* Sidebar, hidden on mobile */
 	.sidebar {
 		position: sticky;
 		top: 1rem;

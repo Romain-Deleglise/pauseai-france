@@ -3,7 +3,7 @@
 	import plan from '$lib/data/plan-du-site.json'
 
 	/* Page INTERNE : hors menu, hors pied de page, hors sitemap, et noindex.
-	   Elle existe pour travailler la structure du site en équipe — repérer les
+	   Elle existe pour travailler la structure du site en équipe, repérer les
 	   pages qu'aucun menu n'atteint, vérifier qu'une rubrique est cohérente.
 
 	   Le diagramme est dessiné en CSS, sans bibliothèque : une page de travail
@@ -11,14 +11,14 @@
 	   sombre et s'imprimer. Mermaid aurait ajouté ~1 Mo pour le même résultat.
 
 	   Les données viennent de src/lib/data/plan-du-site.json, régénéré à chaque
-	   déploiement par scripts/plan-du-site.mjs — même source que le document
+	   déploiement par scripts/plan-du-site.mjs, même source que le document
 	   docs/plan-du-site.md, donc les deux ne peuvent pas diverger. */
 	export let data: { lang?: string }
 
 	$: prefix = `/${data.lang ?? 'fr'}`
 </script>
 
-<PostMeta title="Plan du site — interne" description="Arborescence réelle du site." />
+<PostMeta title="Plan du site · interne" description="Arborescence réelle du site." />
 
 <svelte:head>
 	<meta name="robots" content="noindex, nofollow" />

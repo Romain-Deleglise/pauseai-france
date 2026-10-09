@@ -336,15 +336,15 @@
 			: '+ une centaine de membres et bénévoles'}
 	</p>
 
-	<!-- Les équipes, décrites d'après le salon « Contribuer » du Discord. Les
-	     noms des référents n'y figurent pas : voir le commentaire de
-	     src/lib/data/equipes.ts. -->
+	<!-- Vue d'ensemble des équipes : le visiteur doit comprendre de quoi
+	     l'association est faite et se dire « je pourrais être utile là ».
+	     Contenu et parti pris : src/lib/data/equipes.ts. -->
 	<div class="team-section" id="nos-equipes">
 		<h2 class="section-title">{lang === 'en' ? 'Our teams' : 'Nos équipes'}</h2>
 		<p class="equipes-intro">
 			{lang === 'en'
-				? 'Teams are where the work happens. Their members put in more than five hours a week, and newcomers are brought in quickly so they can find their place.'
-				: 'Les équipes sont le cœur de l’action. Leurs membres s’y investissent plus de cinq heures par semaine, et nous faisons en sorte que les nouveaux venus trouvent vite leur place.'}
+				? 'Pause AI runs on seven teams. Whatever you know how to do, writing, speaking, organising, coding, raising funds, one of them needs it. Newcomers are brought in quickly so they can find their place.'
+				: 'Pause IA tient sur sept équipes. Quoi que vous sachiez faire, écrire, parler, organiser, coder, chercher des financements, l’une d’elles en a besoin. Nous faisons en sorte que les nouveaux venus trouvent vite leur place.'}
 		</p>
 
 		<ul class="equipes">
@@ -352,12 +352,7 @@
 				<li class="equipe">
 					<h3>{equipe.nom}</h3>
 					<p>{equipe.description}</p>
-					{#if equipe.rolesRecherches?.length}
-						<p class="recherche">
-							{lang === 'en' ? 'Looking for' : 'Nous cherchons'}
-							<span>{equipe.rolesRecherches.join(' · ')}</span>
-						</p>
-					{/if}
+					<p class="exemple">{equipe.exemple}</p>
 				</li>
 			{/each}
 		</ul>
@@ -562,17 +557,15 @@
 
 	/* Les rôles cherchés sont l'information qui fait agir : on la détache du
 	   descriptif plutôt que de l'y noyer. */
-	.recherche {
+	/* L'exemple concret est poussé en bas de la carte pour que toutes les
+	   cartes alignent leur dernier bloc, quelle que soit la longueur du
+	   descriptif. */
+	.exemple {
 		margin-block-start: auto;
-		padding-block-start: 1rem;
+		padding-block-start: 0.9rem;
 		font-size: 0.88rem;
-	}
-
-	.recherche span {
-		display: block;
-		margin-block-start: 0.2rem;
-		color: var(--brand-subtle);
-		font-weight: 600;
+		line-height: 1.5;
+		color: var(--text-2);
 	}
 
 	.equipes-cta {

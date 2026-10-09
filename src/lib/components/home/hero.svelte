@@ -299,10 +299,10 @@
 		display: block;
 		border-radius: var(--radius-sm);
 		flex-shrink: 0;
-		/* No filter — natural colors, overlay handles readability */
+		/* No filter, natural colors, overlay handles readability */
 	}
 
-	/* Scroll left — slow, contemplative */
+	/* Scroll left, slow, contemplative */
 	.row-left .marquee-track {
 		animation: scroll-left 235s linear infinite;
 	}
@@ -364,7 +364,13 @@
 	}
 
 	/* Text content */
+	/* `.corners` est positionné et vient plus tard dans le DOM : sans cran de
+	   superposition explicite il passait DEVANT le bouton « Passer à l'action »,
+	   qui disparaissait derrière la vague orange en bas du héros. Le contenu
+	   monte à 1, la décoration reste à 0 et ne capte plus les clics. */
 	.content {
+		position: relative;
+		z-index: 1;
 		color: var(--text);
 		display: flex;
 		flex-direction: column;
@@ -404,6 +410,8 @@
 	}
 
 	.corners {
+		z-index: 0;
+		pointer-events: none;
 		width: 100vw;
 		bottom: -1px;
 		position: absolute;
@@ -434,7 +442,7 @@
 			margin-right: -0.5rem;
 		}
 
-		/* Sub-pixel gap insurance — extend the bg 1px above the hero box
+		/* Sub-pixel gap insurance, extend the bg 1px above the hero box
 		   so no sliver of white is visible between header and photos. */
 		.hero-bg {
 			top: calc(var(--header-height, 4rem) - 1px);
@@ -482,7 +490,7 @@
 			margin-top: 1rem;
 		}
 
-		/* Overlay on mobile — readability handled by content-box backdrop */
+		/* Overlay on mobile, readability handled by content-box backdrop */
 		.mosaic-overlay {
 			background: linear-gradient(
 					to right,
@@ -600,6 +608,31 @@
 	@media (min-width: 1280px) {
 		.content h1 {
 			font-size: 2.6rem;
+		}
+	}
+
+	/* ─── Fenêtres basses ─────────────────────────────────────
+	   Le héros centre son contenu sur 100svh. Quand la hauteur utile tombe sous
+	   ~720 px (navigateur avec barre d'onglets ET barre de favoris, type Brave
+	   ou Chrome configuré ainsi, ou simplement un écran d'ordinateur portable),
+	   le bloc de texte ne tient plus : centré, il déborde autant en haut qu'en
+	   bas et le titre passe SOUS l'en-tête, qui est opaque.
+
+	   Mesuré : à 1280×600, le haut du h1 était 9 px au-dessus du bas de
+	   l'en-tête. Sous ce seuil on arrête donc de centrer et on aligne en haut :
+	   le contenu commence juste sous l'en-tête et le héros s'allonge si besoin
+	   (min-height, pas height fixe). */
+	@media (max-height: 720px) {
+		.hero {
+			align-items: flex-start;
+			padding-top: calc(-1 * var(--hero-top-offset, -5rem) + 1rem);
+		}
+
+		.content {
+			/* Annule le recentrage vertical du mode téléphone, qui remonterait
+			   le bloc sous l'en-tête. */
+			top: 0;
+			margin-bottom: 1.5rem;
 		}
 	}
 

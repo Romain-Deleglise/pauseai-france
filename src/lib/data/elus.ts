@@ -5,7 +5,7 @@
 // Voir l'en-tête du script pour le détail des niveaux de confiance.
 //
 // Résolution :
-//  - Sénateurs : par DÉPARTEMENT (ils sont élus au département) — toujours fiable.
+//  - Sénateurs : par DÉPARTEMENT (ils sont élus au département), toujours fiable.
 //  - Députés : par CIRCONSCRIPTION exacte quand le code postal est présent dans
 //    code-postal-circo.json (géocodage fin) ; sinon repli sur tous les députés
 //    du département (l'utilisateur reconnaît le sien au nom de circonscription).

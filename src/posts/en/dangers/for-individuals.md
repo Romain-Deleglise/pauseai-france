@@ -16,7 +16,7 @@ Even in democracies, the proliferation of surveillance raises questions about th
 
 AI systems can generate highly persuasive content at scale: fake news articles, targeted political messages, or personalized advertising that exploits your psychological vulnerabilities. These systems can analyze your online behavior to identify your fears, desires, and biases, then craft messages specifically designed to influence your opinions and behaviors.
 
-Deepfakes — synthetic videos or audio showing people saying or doing things they never did — threaten to undermine trust in all media. Politicians, public figures, and ordinary people can be victims of these fakes, with severe consequences for their reputation and safety.
+Deepfakes (synthetic videos or audio showing people saying or doing things they never did) threaten to undermine trust in all media. Politicians, public figures, and ordinary people can be victims of these fakes, with severe consequences for their reputation and safety.
 
 ## Loss of Privacy
 
@@ -26,8 +26,8 @@ Data breaches become more dangerous when AI can combine and analyze data from mu
 
 ## Algorithmic Bias
 
-AI systems often reflect and amplify the biases present in their training data. This can lead to discrimination in hiring, credit access, housing, or criminal justice. People from marginalized groups — racial minorities, women, people with disabilities — are disproportionately affected by these automated biases.
+AI systems often reflect and amplify the biases present in their training data. This can lead to discrimination in hiring, credit access, housing, or criminal justice. People from marginalized groups (racial minorities, women, people with disabilities) are disproportionately affected by these automated biases.
 
 ## Loss of Autonomy
 
-As AI systems increasingly mediate our decisions — what we see, read, buy, or who we interact with — we risk losing our cognitive autonomy. Recommendation systems designed to maximize engagement can create filter bubbles, reinforcing our existing beliefs and isolating us from different perspectives.
+As AI systems increasingly mediate our decisions (what we see, read, buy, or who we interact with), we risk losing our cognitive autonomy. Recommendation systems designed to maximize engagement can create filter bubbles, reinforcing our existing beliefs and isolating us from different perspectives.

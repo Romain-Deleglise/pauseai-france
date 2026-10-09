@@ -132,7 +132,7 @@ export const staticPressCoverage: PressCoverage[] = [
 	{
 		id: 'static-dordogne-libre-2026-05',
 		title:
-			"« La question de la sécurité n'est pas posée » — le collectif Pause IA demande un moratoire sur le développement de l'intelligence artificielle",
+			"« La question de la sécurité n'est pas posée », le collectif Pause IA demande un moratoire sur le développement de l'intelligence artificielle",
 		source: 'Dordogne Libre',
 		date: '2026-05-01',
 		url: 'https://www.dordognelibre.fr/dordogne/la-question-de-la-securite-n-est-pas-posee-le-collectif-pause-ia-demande-un-moratoire-sur-le-developpement-de-l-intelligence-artificielle-28895566.php',

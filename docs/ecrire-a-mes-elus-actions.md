@@ -35,7 +35,7 @@ Deux modes de ciblage :
 3. Donner un `id` unique en minuscules (ex. `vote-loi-ia-2026`).
 4. Mettre `status: 'active'`.
 5. Adapter les textes (objet, hero, accroches, angles, appel). Tout est bilingue
-   `{ fr, en }`. **Pas de tiret long (—)** dans les textes.
+   `{ fr, en }`. **Pas de tiret long ( )** dans les textes.
 6. Définir la cible (voir ci-dessous).
 7. Ajouter l'action au tableau `eluActions`.
 8. Ouvrir une PR. Une fois mergée et déployée, partager le lien

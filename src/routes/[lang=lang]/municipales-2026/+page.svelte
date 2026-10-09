@@ -412,7 +412,7 @@
 			<div class="modal-header">
 				<div class="modal-title">
 					<strong>{selectedCandidate.name}</strong>
-					<span class="modal-city">— {selectedCandidate.city}</span>
+					<span class="modal-city">{selectedCandidate.city}</span>
 					<span
 						class="commitment-badge modal-badge {getCommitmentClass(selectedCandidate.commitments)}"
 					>

@@ -1,11 +1,11 @@
-# Plan du site — pauseia.fr
+# Plan du site, pauseia.fr
 
 > **Document généré.** Ne pas le modifier à la main : relancer
 > `pnpm run plan-du-site`. Il est reconstruit à partir des routes,
 > du menu principal, du pied de page et des articles du dépôt, donc il ne
 > peut pas diverger du site.
 >
-> Dernière génération : 2026-10-06.
+> Dernière génération : 2026-10-09.
 
 Ce document décrit le site **réel**. Le plan _souhaité_ est une décision
 d'équipe et se tient ailleurs.
@@ -96,13 +96,13 @@ flowchart LR
 
 ### Comprendre
 
-| Page                           | Chemin                                    |
-| ------------------------------ | ----------------------------------------- |
-| FAQ                            | `#faq`                                    |
-| Ressources                     | `/ressources`                             |
-| Newsletter                     | `/newsletters`                            |
-| Blog                           | _externe_ — https://pauseia.substack.com/ |
-| La fresque des risques de l’IA | `/fresque`                                |
+| Page                           | Chemin                                   |
+| ------------------------------ | ---------------------------------------- |
+| FAQ                            | `#faq`                                   |
+| Ressources                     | `/ressources`                            |
+| Newsletter                     | `/newsletters`                           |
+| Blog                           | _externe_, https://pauseia.substack.com/ |
+| La fresque des risques de l’IA | `/fresque`                               |
 
 ### Agir
 
@@ -112,7 +112,7 @@ flowchart LR
 | Signer la déclaration            | `/declaration`                      |
 | Participer à notre communication | `/participer-a-notre-communication` |
 | Agir près de chez vous           | `/groupes-locaux`                   |
-| Convaincre autour de vous        | _externe_ — /recrutement            |
+| Convaincre autour de vous        | _externe_, /recrutement             |
 
 ### Campagnes
 
@@ -124,10 +124,10 @@ flowchart LR
 
 ### Événements
 
-| Page                 | Chemin                                        |
-| -------------------- | --------------------------------------------- |
-| Colloque Sénat 2025  | `/senat2025`                                  |
-| Forum solutions 2025 | _externe_ — https://controleia.org/solutions/ |
+| Page                 | Chemin                                       |
+| -------------------- | -------------------------------------------- |
+| Colloque Sénat 2025  | `/senat2025`                                 |
+| Forum solutions 2025 | _externe_, https://controleia.org/solutions/ |
 
 ### À propos
 
@@ -141,46 +141,46 @@ flowchart LR
 
 ### Navigation
 
-| Lien                           | Chemin                                    |
-| ------------------------------ | ----------------------------------------- |
-| FAQ                            | `#faq`                                    |
-| Propositions                   | `/propositions`                           |
-| Newsletters                    | `/newsletters`                            |
-| Blog                           | _externe_ — https://pauseia.substack.com/ |
-| La fresque des risques de l’IA | `/fresque`                                |
-| Agir                           | `/agir`                                   |
-| Donner                         | `/dons`                                   |
-| Nous rejoindre                 | `/rejoindre`                              |
-| Qui sommes-nous ?              | `/qui-sommes-nous`                        |
+| Lien                           | Chemin                                   |
+| ------------------------------ | ---------------------------------------- |
+| FAQ                            | `#faq`                                   |
+| Propositions                   | `/propositions`                          |
+| Newsletters                    | `/newsletters`                           |
+| Blog                           | _externe_, https://pauseia.substack.com/ |
+| La fresque des risques de l’IA | `/fresque`                               |
+| Agir                           | `/agir`                                  |
+| Donner                         | `/dons`                                  |
+| Nous rejoindre                 | `/rejoindre`                             |
+| Qui sommes-nous ?              | `/qui-sommes-nous`                       |
 
 ### Agir
 
-| Lien                           | Chemin                                          |
-| ------------------------------ | ----------------------------------------------- |
-| Écrire aux élus et à la presse | `/ecrire-a-mes-elus`                            |
-| Signer la déclaration          | `/declaration`                                  |
-| Rejoindre Pause IA             | `/rejoindre`                                    |
-| Comment pouvez-vous aider ?    | `/agir`                                         |
-| Faire un don                   | `/dons`                                         |
-| Marchandises                   | _externe_ — https://pauseai-shop.fourthwall.com |
-| Manifestations                 | _externe_ — https://pauseai.info/protests       |
-| Offres d'emploi                | `/recrutement-emploi`                           |
+| Lien                           | Chemin                                         |
+| ------------------------------ | ---------------------------------------------- |
+| Écrire aux élus et à la presse | `/ecrire-a-mes-elus`                           |
+| Signer la déclaration          | `/declaration`                                 |
+| Rejoindre Pause IA             | `/rejoindre`                                   |
+| Comment pouvez-vous aider ?    | `/agir`                                        |
+| Faire un don                   | `/dons`                                        |
+| Marchandises                   | _externe_, https://pauseai-shop.fourthwall.com |
+| Manifestations                 | _externe_, https://pauseai.info/protests       |
+| Offres d'emploi                | `/recrutement-emploi`                          |
 
 ### Autres
 
-| Lien                         | Chemin                                                          |
-| ---------------------------- | --------------------------------------------------------------- |
-| Presse                       | `/presse`                                                       |
-| Financements                 | `/financements`                                                 |
-| Mentions légales             | `/mentions-legales`                                             |
-| Politique de confidentialité | `/politique-de-confidentialite`                                 |
-| Charte des valeurs           | `/charte-des-valeurs`                                           |
-| Licence : CC-BY 4.0          | _externe_ — https://creativecommons.org/licenses/by/4.0/deed.fr |
+| Lien                         | Chemin                                                         |
+| ---------------------------- | -------------------------------------------------------------- |
+| Presse                       | `/presse`                                                      |
+| Financements                 | `/financements`                                                |
+| Mentions légales             | `/mentions-legales`                                            |
+| Politique de confidentialité | `/politique-de-confidentialite`                                |
+| Charte des valeurs           | `/charte-des-valeurs`                                          |
+| Licence : CC-BY 4.0          | _externe_, https://creativecommons.org/licenses/by/4.0/deed.fr |
 
 ## Pages hors menu
 
 Ces pages sont en ligne et indexées, mais aucun menu ni pied de page n’y
-mène. Soit elles méritent une entrée, soit elles sont à retirer — c’est la
+mène. Soit elles méritent une entrée, soit elles sont à retirer, c’est la
 matière des tâches « harmoniser menu et pied de page » et « trier les
 versions anglaises ». Certaines sont normales : pages d’atterrissage de
 campagne, confirmations, remerciements.

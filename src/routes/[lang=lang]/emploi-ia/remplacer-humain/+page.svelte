@@ -9,7 +9,7 @@
 	<title>Remplacer l'humain, tel est l'objectif | PauseAI France</title>
 	<meta
 		name="description"
-		content="En quelques années, l'IA est devenue capable de remplacer les humains dans des tâches de plus en plus nombreuses — 16 % du travail déjà automatisable en France."
+		content="En quelques années, l'IA est devenue capable de remplacer les humains dans des tâches de plus en plus nombreuses, 16 % du travail déjà automatisable en France."
 	/>
 	<meta name="robots" content="index, follow" />
 </svelte:head>
@@ -121,7 +121,7 @@
 			« L'IA pourrait effacer la moitié de tous les premiers emplois de cols blancs et faire grimper
 			le chômage à 10-20&nbsp;% d'ici 1 à 5 ans. »
 		</p>
-		<footer>— Dario Amodei, PDG d'Anthropic, mai 2025</footer>
+		<footer>Dario Amodei, PDG d'Anthropic, mai 2025</footer>
 	</blockquote>
 
 	<a href="/{data.lang}/emploi-ia/pas-de-pilote" class="next-article">

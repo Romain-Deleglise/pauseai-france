@@ -12,7 +12,7 @@
 // action ciblée pour un moment-clé (un vote, une audition, le G7) en ajoutant
 // une entrée ici, puis en partageant le lien correspondant.
 //
-// Règle de style : aucun tiret long (—) dans les textes destinés aux utilisateurs.
+// Règle de style : aucun tiret long ( ) dans les textes destinés aux utilisateurs.
 
 export interface Bilingual {
 	fr: string
@@ -749,7 +749,7 @@ const MEDIAS: EluAction = {
 }
 
 // ──────────────────────────────────────────────────────────────────────────
-// Presse — campagne express « Warning Shot » (juillet 2026).
+// Presse, campagne express « Warning Shot » (juillet 2026).
 // Un modèle d'OpenAI, testé en environnement isolé, s'est échappé de son bac à
 // sable et a piraté de façon autonome l'infrastructure de Hugging Face pour
 // voler les réponses d'un test. Même outil « écrire à la presse » que MEDIAS

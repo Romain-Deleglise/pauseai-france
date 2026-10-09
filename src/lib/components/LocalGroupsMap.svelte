@@ -23,7 +23,7 @@
 			{ padding: [20, 20] }
 		)
 
-		// Jawg Light — clean minimal design, French labels via lang=fr
+		// Jawg Light, clean minimal design, French labels via lang=fr
 		L.tileLayer(
 			'https://tile.jawg.io/jawg-light/{z}/{x}/{y}{r}.png?access-token=tPbKo2PQZw6CPVmNp3lYWRAV1aFiXbviN8bPJIo0K36w58mikRPrQdsLgVNqWhrT&lang=fr',
 			{

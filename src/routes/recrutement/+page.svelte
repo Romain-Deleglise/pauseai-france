@@ -382,7 +382,7 @@
 
 <style>
 	/* Page refaite sur la charte : plus aucune couleur, aucun rayon ni aucune
-	   ombre en dur — tout passe par les tokens d'app.css, ce qui fait aussi
+	   ombre en dur, tout passe par les tokens d'app.css, ce qui fait aussi
 	   fonctionner le mode sombre. Les briques partagées (PageHero, Card,
 	   SectionTitle, Button) remplacent les cartes et boutons maison. */
 	.recruitment-landing {

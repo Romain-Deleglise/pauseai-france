@@ -13,7 +13,7 @@ Les pages campagne existantes (`municipales-2026`, `senat2025`, `geneve-2026`,
 `sommet-ia-2026`, `g7-2026`, `une-ia-sest-echappee`) redéfinissent chacune les mêmes
 styles : largeur d'article, hero avec filet orange, encadré `#fafafa` arrondi,
 grille de chiffres, chronologie, blocs d'action. Les valeurs divergent
-(54 rem / 60 rem de large, `#fafafa` en dur au lieu de `--bg-card` — donc cassé en
+(54 rem / 60 rem de large, `#fafafa` en dur au lieu de `--bg-card`, donc cassé en
 mode sombre), et chaque nouvelle campagne repart d'un copier-coller.
 
 Le module fixe ces décisions une fois.
@@ -33,13 +33,13 @@ retire plutôt que de les remplir à moitié.
 | 5     | **Autres façons d'aider** | `CampaignActions`             | Groupes locaux, relais, don                                                                   |
 | 6     | **Le contexte**           | `CampaignSection` + `Callout` | Le développement, pour qui veut aller plus loin, et la demande formulée noir sur blanc        |
 | 7     | **Les événements**        | `LumaCalendar`                | Quand la campagne en comporte                                                                 |
-| —     | _Chiffres clés_           | `CampaignStats`               | Facultatif : une campagne qui démarre n'a pas de chiffres                                     |
-| —     | _Chronologie_             | `CampaignTimeline`            | Facultatif : une action permanente n'a pas d'échéances                                        |
+| ,     | _Chiffres clés_           | `CampaignStats`               | Facultatif : une campagne qui démarre n'a pas de chiffres                                     |
+| ,     | _Chronologie_             | `CampaignTimeline`            | Facultatif : une action permanente n'a pas d'échéances                                        |
 
 Trois règles pour que ça reste lisible d'une campagne à l'autre :
 
 1. **Une affirmation, un lien.** Chaque fait de « L'essentiel » renvoie vers ce qui
-   le démontre — au minimum un de nos articles d'analyse. Un fait sans source n'a
+   le démontre, au minimum un de nos articles d'analyse. Un fait sans source n'a
    rien à faire là.
 2. **L'action se fait sur la page.** Le module de mails est intégré, pas mis en
    lien : chaque redirection perd des gens.
@@ -113,7 +113,7 @@ dans `src/lib/campaigns.ts` pour qu'elle apparaisse sur `/campagnes` et la page 
 
 Différences avec le bout de code d'intégration fourni par Luma :
 
-- **largeur fluide** au lieu de `width="600"` — sinon le calendrier déborde sur mobile
+- **largeur fluide** au lieu de `width="600"`, sinon le calendrier déborde sur mobile
   et laisse un blanc sur desktop ;
 - **thème synchronisé** : le paramètre `lt` suit le store `theme` du site, donc le
   calendrier passe en sombre avec le reste de la page (le `lt=light` en dur reste blanc) ;

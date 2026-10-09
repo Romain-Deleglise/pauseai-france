@@ -24,7 +24,7 @@ await page.pdf({
 	displayHeaderFooter: true,
 	headerTemplate: '<span></span>',
 	footerTemplate: `<div style="width:100%;font-family:sans-serif;font-size:7pt;color:#676e7a;padding:0 14mm;display:flex;justify-content:space-between;">
-		<span>Charte graphique — Pause IA</span><span class="pageNumber"></span>
+		<span>Charte graphique, Pause IA</span><span class="pageNumber"></span>
 	</div>`,
 	margin: { top: '16mm', right: '14mm', bottom: '18mm', left: '14mm' }
 })

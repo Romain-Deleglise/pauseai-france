@@ -58,7 +58,7 @@
 
 	<!--
 		The menu starts at top:100% with padding-top to bridge the gap
-		between trigger and the visual box — this prevents mouseleave
+		between trigger and the visual box, this prevents mouseleave
 		from firing when moving the cursor through the gap.
 	-->
 	<div class="menu" class:open role="menu">
@@ -158,11 +158,11 @@
 	/* ─── Dropdown menu ──────────────────────────────────────────── */
 	.menu {
 		position: absolute;
-		top: 100%; /* no gap — padding-top bridges hover area */
+		top: 100%; /* no gap, padding-top bridges hover area */
 		left: 50%;
 		transform: translateX(-50%) translateY(-4px);
 		min-width: 13rem;
-		padding-top: 0.5rem; /* hover bridge — invisible but keeps mouseenter active */
+		padding-top: 0.5rem; /* hover bridge, invisible but keeps mouseenter active */
 		z-index: 200;
 		opacity: 0;
 		visibility: hidden;

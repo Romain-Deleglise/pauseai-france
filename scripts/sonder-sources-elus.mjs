@@ -10,7 +10,7 @@
  * N'écrit rien et ne modifie rien : il liste les jeux trouvés et, pour chacun,
  * ses fichiers téléchargeables avec leur format et leur date de mise à jour.
  * Pour les fichiers tabulaires de taille raisonnable, il lit l'en-tête et dit
- * s'il contient une colonne d'adresse électronique — c'est le critère qui
+ * s'il contient une colonne d'adresse électronique, c'est le critère qui
  * décide, le garde-fou exigeant 80 % de sénateurs avec e-mail.
  */
 const API = 'https://www.data.gouv.fr/api/1'
@@ -45,7 +45,7 @@ async function entete(url) {
 		} catch {
 			texte = new TextDecoder('latin1').decode(buf)
 		}
-		if (/^\s*(<!doctype|<html)/i.test(texte)) return 'PAGE HTML — pas un fichier de données'
+		if (/^\s*(<!doctype|<html)/i.test(texte)) return 'PAGE HTML, pas un fichier de données'
 		const ligne = texte.split(/\r?\n/).find((l) => l && !l.startsWith('%') && !l.startsWith('#'))
 		return ligne ? ligne.slice(0, 400) : null
 	} catch {
@@ -62,12 +62,12 @@ for (const q of RECHERCHES) {
 		console.log(`\n### « ${q} » → échec : ${e.message}`)
 		continue
 	}
-	console.log(`\n${'═'.repeat(72)}\n### Recherche « ${q} » — ${data.total ?? '?'} résultats\n`)
+	console.log(`\n${'═'.repeat(72)}\n### Recherche « ${q} », ${data.total ?? '?'} résultats\n`)
 	for (const d of data.data ?? []) {
 		if (vus.has(d.id)) continue
 		vus.add(d.id)
 		console.log(`▸ ${d.title}`)
-		console.log(`  organisation : ${d.organization?.name ?? d.owner?.first_name ?? '—'}`)
+		console.log(`  organisation : ${d.organization?.name ?? d.owner?.first_name ?? ' '}`)
 		console.log(`  mis à jour   : ${(d.last_update || '').slice(0, 10)}`)
 		console.log(`  page         : ${d.page}`)
 		const fichiers = (d.resources ?? []).filter((r) =>

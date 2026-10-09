@@ -14,7 +14,7 @@ export type Category =
 	| 'declarations'
 	| 'newsletters'
 
-// Type of media — second filter axis on the /ressources page.
+// Type of media, second filter axis on the /ressources page.
 export type MediaType =
 	| 'book'
 	| 'paper'
@@ -53,7 +53,7 @@ export const MEDIA_TYPE_LABELS: Record<MediaType, string> = {
 	site: 'Site'
 }
 
-// Carte "fantasy" zones — kept as-is for backward compat with the map artwork
+// Carte "fantasy" zones, kept as-is for backward compat with the map artwork
 export type Zone =
 	| 'foret' // blogs
 	| 'monts' // newsletters
@@ -1036,7 +1036,7 @@ export const resources: Resource[] = [
 
 	// "Agir" / "Faire entendre votre voix" entries were removed from this page:
 	// they duplicate calls to action that already live under /campagnes, /agir
-	// and /rejoindre — surfacing them here blurred the page's purpose
+	// and /rejoindre, surfacing them here blurred the page's purpose
 	// ("comprendre" / library of resources).
 
 	// ── ENTRÉES "MAP-ONLY" (existing carte content kept for the map) ──

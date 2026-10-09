@@ -80,13 +80,13 @@
 			name="description"
 			content="Report from the Senate colloquium on October 31, 2025: key points, executive summary and recommendations for controlling artificial intelligence."
 		/>
-		<title>Senate Colloquium — Report & Recommendations | Pause AI</title>
+		<title>Senate Colloquium · Report & Recommendations | Pause AI</title>
 	{:else}
 		<meta
 			name="description"
 			content="Compte-rendu du colloque au Sénat du 31 octobre 2025 : points clés, résumé exécutif et recommandations pour maîtriser l'intelligence artificielle."
 		/>
-		<title>Colloque Sénat — Compte-rendu & recommandations | Pause IA</title>
+		<title>Colloque Sénat · Compte-rendu & recommandations | Pause IA</title>
 	{/if}
 </svelte:head>
 
@@ -96,11 +96,11 @@
 		<img
 			src="/senat-2025-colloque.png"
 			alt={isEn
-				? 'Senate Colloquium — Artificial Intelligence: Securing Practices, Containing Risks'
-				: 'Colloque Sénat — Intelligence Artificielle : Sécuriser les pratiques, contenir les risques'}
+				? 'Senate Colloquium · Artificial Intelligence: Securing Practices, Containing Risks'
+				: 'Colloque Sénat · Intelligence Artificielle : Sécuriser les pratiques, contenir les risques'}
 		/>
 		<div class="hero-text">
-			<h1>{isEn ? 'SENATE COLLOQUIUM — OCTOBER 31, 2025' : 'COLLOQUE SÉNAT — 31 OCTOBRE 2025'}</h1>
+			<h1>{isEn ? 'SENATE COLLOQUIUM · OCTOBER 31, 2025' : 'COLLOQUE SÉNAT · 31 OCTOBRE 2025'}</h1>
 			<p class="subtitle">
 				{isEn
 					? 'Artificial Intelligence: Securing Practices, Containing Risks'

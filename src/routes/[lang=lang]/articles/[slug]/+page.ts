@@ -7,7 +7,7 @@ type MdModule = typeof import('*.md')
  *
  * Un seul segment porte la date ET le titre. Une arborescence
  * /articles/2026/09/17/slug obligerait à servir aussi /articles/2026/ et
- * /articles/2026/09/, sans quoi ces adresses parentes renvoient 404 — un
+ * /articles/2026/09/, sans quoi ces adresses parentes renvoient 404, un
  * lecteur qui remonte l'URL, et les robots, les essaient.
  *
  * Même repli que les pages : en anglais on tente d'abord /posts/en/articles,

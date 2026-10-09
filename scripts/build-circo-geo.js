@@ -67,7 +67,7 @@ function main() {
 		const dept = Z_TO_INSEE[rawDept] ?? rawDept
 		const circo = parseInt(cc.slice(rawDept.length), 10)
 		if (Number.isNaN(circo)) {
-			console.warn(`⚠ circo illisible pour ${cc} (dept ${rawDept}) — ignorée`)
+			console.warn(`⚠ circo illisible pour ${cc} (dept ${rawDept}), ignorée`)
 			continue
 		}
 		if (!byDept.has(dept)) byDept.set(dept, [])

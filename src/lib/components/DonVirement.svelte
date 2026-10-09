@@ -26,7 +26,7 @@
 	/* Remise à zéro à l'ouverture.
 	   Ce bloc ne doit dépendre QUE de `show`. Il a dépendu de `firstFocusEl`,
 	   lié par `bind:this` au champ Prénom : chaque frappe relançait le cycle de
-	   mise à jour, le bloc repassait et vidait les champs — on ne pouvait rien
+	   mise à jour, le bloc repassait et vidait les champs, on ne pouvait rien
 	   saisir. Le corps est donc un appel de fonction, dont Svelte ne tire
 	   aucune dépendance supplémentaire. */
 	function reinitialiser() {
@@ -141,7 +141,7 @@
 			copiedField = field
 			setTimeout(() => (copiedField = null), 2000)
 		} catch {
-			// Clipboard not available — silently fail
+			// Clipboard not available, silently fail
 		}
 	}
 

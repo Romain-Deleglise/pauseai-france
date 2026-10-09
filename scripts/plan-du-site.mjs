@@ -2,7 +2,7 @@
 /**
  * Génère docs/plan-du-site.md : l'arborescence RÉELLE du site.
  *
- * Tout est lu dans le dépôt, jamais saisi à la main — le document ne peut donc
+ * Tout est lu dans le dépôt, jamais saisi à la main, le document ne peut donc
  * pas diverger du site :
  *   - les pages          : src/routes/**\/+page.svelte|md
  *   - le menu principal  : navGroups dans src/lib/components/Header.svelte
@@ -56,7 +56,7 @@ async function libelles() {
 
 /* Pages réelles. Toutes ne vivent pas sous [lang=lang] : quelques-unes sont
    françaises et sans préfixe (/recrutement, /guide-recrutement…). On retient la
-   distinction, sinon un lien vers /fr/guide-recrutement renvoie 404 — le build
+   distinction, sinon un lien vers /fr/guide-recrutement renvoie 404, le build
    l'a d'ailleurs refusé. `localise` dit si le chemin accepte un préfixe. */
 const RACINES = new Set()
 
@@ -125,7 +125,7 @@ async function articles() {
 		const t = (await lire(f)).match(/^title:\s*(.+)$/m)
 		out.push({
 			slug: '/' + f.replace('src/posts/', '').replace(/\.md$/, ''),
-			titre: t ? t[1].trim().replace(/^['"]|['"]$/g, '') : '—'
+			titre: t ? t[1].trim().replace(/^['"]|['"]$/g, '') : ' '
 		})
 	}
 	return out.sort((a, b) => a.slug.localeCompare(b.slug))
@@ -185,7 +185,7 @@ const diagramme = l.join('\n')
 
 // ── Document ─────────────────────────────────────────────────────────────────
 const d = []
-d.push('# Plan du site — pauseia.fr')
+d.push('# Plan du site, pauseia.fr')
 d.push('')
 d.push('> **Document généré.** Ne pas le modifier à la main : relancer')
 d.push('> `pnpm run plan-du-site`. Il est reconstruit à partir des routes,')
@@ -224,7 +224,7 @@ for (const g of groupes) {
 	d.push('| Page | Chemin |')
 	d.push('| --- | --- |')
 	for (const i of g.items)
-		d.push(`| ${i.label} | ${i.externe ? `_externe_ — ${i.href}` : `\`${i.href}\``} |`)
+		d.push(`| ${i.label} | ${i.externe ? `_externe_, ${i.href}` : `\`${i.href}\``} |`)
 	d.push('')
 }
 d.push('## Pied de page')
@@ -235,14 +235,14 @@ for (const c of colonnes) {
 	d.push('| Lien | Chemin |')
 	d.push('| --- | --- |')
 	for (const x of c.liens)
-		d.push(`| ${x.label} | ${x.externe ? `_externe_ — ${x.href}` : `\`${x.href}\``} |`)
+		d.push(`| ${x.label} | ${x.externe ? `_externe_, ${x.href}` : `\`${x.href}\``} |`)
 	d.push('')
 }
 d.push('## Pages hors menu')
 d.push('')
 if (orphelines.length) {
 	d.push('Ces pages sont en ligne et indexées, mais aucun menu ni pied de page n’y')
-	d.push('mène. Soit elles méritent une entrée, soit elles sont à retirer — c’est la')
+	d.push('mène. Soit elles méritent une entrée, soit elles sont à retirer, c’est la')
 	d.push('matière des tâches « harmoniser menu et pied de page » et « trier les')
 	d.push('versions anglaises ». Certaines sont normales : pages d’atterrissage de')
 	d.push('campagne, confirmations, remerciements.')
@@ -270,7 +270,7 @@ d.push('')
    le document changeait chaque jour même quand le site n'avait pas bougé, et
    le workflow aurait commité du bruit à chaque déploiement. On compare donc le
    contenu SANS la date, et on conserve l'ancienne quand rien d'autre n'a changé
-   — même principe que writeStableJson dans generate-elus.js. */
+  , même principe que writeStableJson dans generate-elus.js. */
 const aujourdHui = new Date().toISOString().slice(0, 10)
 let precedent = null
 try {
@@ -323,5 +323,5 @@ await writeFile(
 	) + '\n'
 )
 console.log(
-	`✓ docs/plan-du-site.md — ${statiques.length} pages, ${orphelines.length} hors menu, ${listeArticles.length} articles`
+	`✓ docs/plan-du-site.md, ${statiques.length} pages, ${orphelines.length} hors menu, ${listeArticles.length} articles`
 )

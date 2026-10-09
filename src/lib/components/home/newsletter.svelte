@@ -86,7 +86,7 @@
 	<Fly>
 		<div class="content">
 			<p>
-				Veille critique par Pause IA : décryptages, enjeux de gouvernance, politiques publiques —
+				Veille critique par Pause IA : décryptages, enjeux de gouvernance, politiques publiques :
 				inscrivez-vous pour recevoir l'essentiel.
 			</p>
 

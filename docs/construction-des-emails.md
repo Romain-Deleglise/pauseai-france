@@ -95,8 +95,7 @@ hookIndex, subjectIndex, focusIndex, balanceIndex, askIndex
   cet angle (`focus` ↔ `focusVariants`).
 
 Le bouton **« Proposer une autre version »** (`shuffleWording()`) re-tire ces
-index — donc objet + accroche + variante de paragraphe + équilibrage + appel —
-**sans toucher** aux choix de l'utilisateur (angle, longueur, nom, ville, phrase
+index, donc objet + accroche + variante de paragraphe + équilibrage + appel **sans toucher** aux choix de l'utilisateur (angle, longueur, nom, ville, phrase
 perso). Les index sont passés en paramètres à `buildParagraphs` pour que
 l'aperçu se recalcule à chaque re-tirage.
 
@@ -191,7 +190,7 @@ Tout se passe dans `src/lib/data/elu-actions.ts`.
 
 Règles de style :
 
-- **Aucun tiret cadratin (—)** dans les textes destinés aux utilisateurs.
+- **Aucun tiret cadratin ( )** dans les textes destinés aux utilisateurs.
 - Registre **naturel**, comme écrirait un citoyen / un lecteur ordinaire :
   éviter le vocabulaire trop soutenu (« dans vos colonnes », « au regard de son
   importance », etc.).

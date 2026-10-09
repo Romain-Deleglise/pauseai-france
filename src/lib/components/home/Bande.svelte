@@ -1,20 +1,16 @@
 <script lang="ts">
+	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
+
 	/**
 	 * Bande thématique de la page d'accueil : « Agir » puis « S'informer ».
 	 *
 	 * La page empilait neuf blocs de poids égal, sans hiérarchie. Le but est de
-	 * créer deux territoires — et c'est LE CHANGEMENT DE FOND qui le fait, pas
-	 * un en-tête de plus.
+	 * créer deux territoires, et c'est LE CHANGEMENT DE FOND qui le fait.
 	 *
-	 * Première version essayée : un gros titre avec filet de marque et un chapô.
-	 * Mauvaise idée. Le chapô répétait presque mot pour mot le sous-titre du
-	 * bloc situé trois lignes plus bas (« Interpellez, écrivez, témoignez :
-	 * chaque action compte »), et le filet entrait en concurrence avec le
-	 * sur-titre orange juste en dessous. Deux couches de titres pour une seule
-	 * information : la page en devenait illisible.
-	 *
-	 * D'où un simple repère : un mot, en petit, qui nomme le territoire sans
-	 * prétendre introduire ce qui suit. Les blocs s'introduisent déjà eux-mêmes.
+	 * Le titre reprend exactement la forme du titre de la F.A.Q.
+	 * (UnderlinedTitle) : ce sont les trois repères de même niveau de la page,
+	 * ils doivent se ressembler. Les blocs internes sont passés en h3, donc la
+	 * hiérarchie visuelle et la hiérarchie du document disent la même chose.
 	 */
 	export let titre: string
 	/** `creme` teinte la bande ; `aucun` la laisse sur le fond de page. */
@@ -24,7 +20,7 @@
 </script>
 
 <section class="bande {fond}" aria-labelledby={id}>
-	<h2 {id} class="repere">{titre}</h2>
+	<UnderlinedTitle {id}>{titre}</UnderlinedTitle>
 	<slot />
 </section>
 
@@ -55,7 +51,7 @@
 		z-index: 1;
 	}
 
-	/* app.css donne 5 rem — 10 rem en large — à toute `section`, y compris à la
+	/* app.css donne 5 rem (10 rem en large) à toute `section`, y compris à la
 	   bande et à chacun de ses enfants : un trou entre les deux bandes, et des
 	   blocs trop espacés pour se lire comme un groupe. La bande gère son rythme. */
 	.bande:not(:last-child) {
@@ -66,39 +62,9 @@
 		margin-block-end: 2.5rem;
 	}
 
-	/* Un repère, pas un titre. Première tentative : petit, orange, en capitales —
-	   exactement la forme du sur-titre que portent déjà les blocs à l'intérieur
-	   (« CE QUE VOUS POUVEZ FAIRE DE PLUS UTILE… »). Deux libellés identiques à
-	   quarante pixels d'écart : la page bégayait. Le repère prend donc une autre
-	   forme — un trait de marque suivi du mot, en encre courante — pour se
-	   distinguer sans peser. */
-	.repere {
-		display: flex;
-		align-items: center;
-		gap: 0.7rem;
-		margin: 0 0 1.75rem;
-		font-size: 1.05rem;
-		font-weight: 700;
-		letter-spacing: 0;
-		text-transform: none;
-		color: var(--text);
-	}
-
-	.repere::before {
-		content: '';
-		inline-size: 1.75rem;
-		block-size: 3px;
-		border-radius: var(--radius-pill);
-		background: var(--brand);
-	}
-
 	@media (max-width: 600px) {
 		.bande {
 			padding-block: 2rem;
-		}
-
-		.repere {
-			margin-block-end: 1.25rem;
 		}
 	}
 </style>

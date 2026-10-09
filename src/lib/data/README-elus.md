@@ -109,5 +109,5 @@ les vraies données.
 
 ## Sources
 
-- [NosDéputés.fr](https://www.nosdeputes.fr) / [NosSénateurs.fr](https://www.nossenateurs.fr) — Regards Citoyens, licence CC-BY-SA
+- [NosDéputés.fr](https://www.nosdeputes.fr) / [NosSénateurs.fr](https://www.nossenateurs.fr), Regards Citoyens, licence CC-BY-SA
 - Répertoire National des Élus (data.gouv.fr, ministère de l'Intérieur)

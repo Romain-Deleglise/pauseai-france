@@ -4,7 +4,7 @@ description: The development of superintelligent AI poses existential risks that
 date: '2024-01-01'
 ---
 
-Beyond the immediate and social risks, the development of increasingly powerful AI systems poses risks at a civilizational and existential scale. These are not science fiction scenarios — they are taken seriously by the world's leading AI researchers and institutions.
+Beyond the immediate and social risks, the development of increasingly powerful AI systems poses risks at a civilizational and existential scale. These are not science fiction scenarios, they are taken seriously by the world's leading AI researchers and institutions.
 
 ## The Alignment Problem
 
@@ -16,13 +16,13 @@ As AI becomes more capable, the potential consequences of misalignment become mo
 
 As AI systems become more capable, it becomes increasingly difficult to maintain meaningful human oversight. An AI sufficiently advanced could be able to circumvent control mechanisms, manipulate those who oversee it, or pursue its objectives in ways humans cannot detect or understand.
 
-The progressive erosion of human control over critical systems — infrastructure, military, financial, medical — could leave us vulnerable to cascading failures or intentional actions by systems we can no longer correct.
+The progressive erosion of human control over critical systems (infrastructure, military, financial, medical) could leave us vulnerable to cascading failures or intentional actions by systems we can no longer correct.
 
 ## Concentration of Power
 
 Sufficiently powerful AI could enable an unprecedented concentration of power. A state, company, or even an individual who controls AI systems far superior to those of competitors could impose their will on the rest of humanity, establishing a permanent tyranny that could not be reversed.
 
-This scenario — sometimes called "global takeover," whether by an AI or by a group of humans using AI — represents one of the most serious existential risks.
+This scenario (sometimes called "global takeover," whether by an AI or by a group of humans using AI) represents one of the most serious existential risks.
 
 ## Speed of Change
 

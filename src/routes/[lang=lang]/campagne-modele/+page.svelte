@@ -38,7 +38,7 @@
 	const LUMA_CALENDAR_ID = 'cal-PLtig5in051g5mM'
 	const LUMA_CALENDAR_URL = 'https://luma.com/pause-ia'
 
-	$: title = isEn ? 'Campaign page template' : 'Page campagne — modèle'
+	$: title = isEn ? 'Campaign page template' : 'Page campagne · modèle'
 	$: description = isEn
 		? 'Reference page showing every building block of the campaign module: slogan, standfirst, key facts, ways to act, context, events.'
 		: 'Page de référence présentant toutes les briques du module campagne : slogan, chapeau, faits marquants, modes d’action, contexte, événements.'
@@ -210,7 +210,7 @@
 		eyebrow={isEn ? 'Campaign under way' : 'Campagne en cours'}
 		date={isEn ? 'Since September 2026' : 'Depuis septembre 2026'}
 		lede={isEn
-			? 'The people who build these systems no longer fully control them. We are asking Parliament for a moratorium — write to your MPs in two minutes.'
+			? 'The people who build these systems no longer fully control them. We are asking Parliament for a moratorium, write to your MPs in two minutes.'
 			: 'Ceux qui construisent ces systèmes ne les maîtrisent plus complètement. Nous demandons un moratoire au Parlement : écrivez à vos élus en deux minutes.'}
 	>
 		<Button href="#agir">{isEn ? 'Take action' : 'Passer à l’action'}</Button>

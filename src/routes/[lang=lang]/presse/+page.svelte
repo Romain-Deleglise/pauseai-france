@@ -172,7 +172,7 @@
 
 	function getDeptLabel(code: string): string {
 		const name = DEPT_NAMES[code]
-		return name ? `${code} — ${name}` : code
+		return name ? `${code} · ${name}` : code
 	}
 
 	$: pressReleases = data.pressReleases.length > 0 ? data.pressReleases : fallbackPressReleases
