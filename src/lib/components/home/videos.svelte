@@ -83,4 +83,14 @@
 			max-width: none;
 		}
 	}
+	/* Sur téléphone la page faisait douze écrans : quatre vignettes en une
+	   colonne, c'est près de mille pixels pour un bloc secondaire. On en montre
+	   deux, le bouton « voir tout » juste en dessous mène au reste. Les quatre
+	   restent dans le HTML (référencement, et rien à recharger au
+	   redimensionnement), seules les deux dernières sont masquées. */
+	@media (max-width: 639px) {
+		.video-grid > :global(:nth-child(n + 3)) {
+			display: none;
+		}
+	}
 </style>

@@ -11,6 +11,7 @@
 
 	export let lang: Lang = 'fr'
 	$: t = getT(lang)
+	$: prefix = lang === 'en' ? '/en' : '/fr'
 
 	// 4 rows of photos, each row scrolls in its own direction
 	const row1 = [
@@ -214,19 +215,21 @@
 							Every month, new AI systems cross thresholds we thought were far away. Experts warn:
 							without guardrails, this race poses a catastrophic risk in the near term.
 						</p>
-						<p>The window is closing fast, let's act now.</p>
+						<p>The window to regain control is closing fast.</p>
 					{:else}
 						<p>
 							Chaque mois, de nouveaux systèmes franchissent des seuils que l'on pensait lointains.
 							Les experts alertent&nbsp;: sans garde-fous, cette course fait peser un risque
 							catastrophique à court terme.
 						</p>
-						<p>La fenêtre se referme, agissons maintenant.</p>
+						<p>La fenêtre pour reprendre la main se referme.</p>
 					{/if}
-					<div class="buttons">
-						<div in:fly={{ y: 20, duration: 300, delay: 700 }}>
-							<Button href="#ecrire-elus">{t.home.hero_cta}</Button>
-						</div>
+					<!-- Deux destinations réelles dès le premier écran : le visiteur qui
+					     arrive décidé ne doit pas avoir à chercher. L'action la plus utile
+					     d'abord, la déclaration juste après. -->
+					<div class="buttons" in:fly={{ y: 20, duration: 300, delay: 700 }}>
+						<Button href="#ecrire-elus">{t.home.hero_cta}</Button>
+						<Button href="{prefix}/declaration" alt>{t.home.hero_cta_2}</Button>
 					</div>
 				</div>
 			</div>
@@ -381,7 +384,7 @@
 
 	.content-box {
 		max-width: 28rem;
-		background: rgba(var(--hero-cream-rgb), 0.82);
+		background: rgba(var(--hero-cream-rgb), 0.92);
 		backdrop-filter: blur(14px);
 		-webkit-backdrop-filter: blur(14px);
 		border-radius: var(--radius-lg);
@@ -565,8 +568,8 @@
 			/* left:0 = hero's left edge, which is already at main's padding-left (6rem
 			   from viewport). Adding 6rem here would double the offset. */
 			left: 0;
-			width: calc(27rem + 3rem); /* content-box max-width + 2 × 1.5rem padding */
-			background: rgba(var(--hero-cream-rgb), 0.82);
+			width: calc(33rem + 3rem); /* content-box max-width + 2 × 1.5rem padding */
+			background: rgba(var(--hero-cream-rgb), 0.92);
 			backdrop-filter: blur(14px);
 			-webkit-backdrop-filter: blur(14px);
 			border-radius: 16px 16px 0 0;
@@ -584,7 +587,7 @@
 			-webkit-backdrop-filter: none;
 			border-radius: 0;
 			padding: 1rem 1.5rem;
-			max-width: 27rem; /* fill the column */
+			max-width: 33rem; /* fill the column */
 		}
 
 		/* Lighter gradient: frosted column ensures readability on the left */
@@ -680,13 +683,13 @@
 	   is almost invisible. At ≥1024px the frost-col provides the backdrop instead. */
 	@media (max-width: 1023px) {
 		:global([data-theme='dark']) .content-box {
-			background: rgba(var(--overlay-dark-rgb), 0.9);
+			background: rgba(var(--overlay-dark-rgb), 0.94);
 		}
 	}
 
 	@media (min-width: 1024px) {
 		:global([data-theme='dark']) .frost-col {
-			background: rgba(var(--overlay-dark-rgb), 0.9);
+			background: rgba(var(--overlay-dark-rgb), 0.94);
 		}
 	}
 </style>
