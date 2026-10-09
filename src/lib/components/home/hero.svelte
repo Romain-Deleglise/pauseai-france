@@ -11,7 +11,6 @@
 
 	export let lang: Lang = 'fr'
 	$: t = getT(lang)
-	$: prefix = lang === 'en' ? '/en' : '/fr'
 
 	// 4 rows of photos, each row scrolls in its own direction
 	const row1 = [
@@ -224,12 +223,12 @@
 						</p>
 						<p>La fenêtre pour reprendre la main se referme.</p>
 					{/if}
-					<!-- Deux destinations réelles dès le premier écran : le visiteur qui
-					     arrive décidé ne doit pas avoir à chercher. L'action la plus utile
-					     d'abord, la déclaration juste après. -->
+					<!-- Une seule action ici. « Signer la déclaration » est déjà le bouton
+					     principal du bloc juste en dessous : le mettre aussi dans le héros
+					     dédoublait la même action à huit cents pixels d'écart et partageait
+					     l'attention entre deux boutons de poids égal. -->
 					<div class="buttons" in:fly={{ y: 20, duration: 300, delay: 700 }}>
 						<Button href="#ecrire-elus">{t.home.hero_cta}</Button>
-						<Button href="{prefix}/declaration" alt>{t.home.hero_cta_2}</Button>
 					</div>
 				</div>
 			</div>

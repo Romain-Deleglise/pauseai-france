@@ -343,8 +343,8 @@
 		<h2 class="section-title">{lang === 'en' ? 'Our teams' : 'Nos équipes'}</h2>
 		<p class="equipes-intro">
 			{lang === 'en'
-				? 'Pause AI runs on seven teams. Whatever you know how to do, writing, speaking, organising, coding, raising funds, one of them needs it. Newcomers are brought in quickly so they can find their place.'
-				: 'Pause IA tient sur sept équipes. Quoi que vous sachiez faire, écrire, parler, organiser, coder, chercher des financements, l’une d’elles en a besoin. Nous faisons en sorte que les nouveaux venus trouvent vite leur place.'}
+				? 'Pause AI runs on seven teams. Whatever you know how to do, one of them needs it.'
+				: 'Pause IA tient sur sept équipes. Quoi que vous sachiez faire, l’une d’elles en a besoin.'}
 		</p>
 
 		<ul class="equipes">
@@ -352,7 +352,6 @@
 				<li class="equipe">
 					<h3>{equipe.nom}</h3>
 					<p>{equipe.description}</p>
-					<p class="exemple">{equipe.exemple}</p>
 				</li>
 			{/each}
 		</ul>
@@ -523,48 +522,42 @@
 		line-height: 1.7;
 	}
 
+	/* Deux colonnes fixes plutôt que des cartes qui s'étirent : sept entrées
+	   d'une ligne lues côte à côte, c'est vingt secondes de lecture au lieu
+	   d'un mur. Deux et non trois, sinon la dernière rangée laisse un orphelin. */
 	.equipes {
 		list-style: none;
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
-		gap: 1.25rem;
+		grid-template-columns: 1fr;
+		gap: 0.1rem 2.5rem;
 		margin: 0;
 		padding: 0;
 		text-align: start;
 	}
 
+	@media (min-width: 640px) {
+		.equipes {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+
+	/* Plus d'encadré : avec une seule ligne de texte, la carte pesait plus que
+	   son contenu. Un filet en haut suffit à séparer les entrées. */
 	.equipe {
-		display: flex;
-		flex-direction: column;
-		padding: 1.4rem;
-		background: var(--bg-card);
-		border: 1px solid var(--border);
-		border-radius: var(--radius-lg);
-		box-shadow: var(--shadow-card);
+		padding-block: 1rem;
+		border-block-start: 1px solid var(--border);
 	}
 
 	.equipe h3 {
-		margin: 0 0 0.6rem;
-		font-size: 1.15rem;
+		margin: 0 0 0.3rem;
+		font-size: 1.05rem;
 		color: var(--text);
 	}
 
 	.equipe p {
 		margin: 0;
-		color: var(--text-2);
-		line-height: 1.6;
-	}
-
-	/* Les rôles cherchés sont l'information qui fait agir : on la détache du
-	   descriptif plutôt que de l'y noyer. */
-	/* L'exemple concret est poussé en bas de la carte pour que toutes les
-	   cartes alignent leur dernier bloc, quelle que soit la longueur du
-	   descriptif. */
-	.exemple {
-		margin-block-start: auto;
-		padding-block-start: 0.9rem;
-		font-size: 0.88rem;
-		line-height: 1.5;
+		font-size: 0.95rem;
+		line-height: 1.55;
 		color: var(--text-2);
 	}
 

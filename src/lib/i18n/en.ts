@@ -83,7 +83,6 @@ export default {
 		hero_title: 'To keep AI under control,',
 		hero_highlight: "let's act now",
 		hero_cta: 'Write to my representatives',
-		hero_cta_2: 'Sign the statement',
 		bande_agir_titre: 'Take action',
 		bande_informer_titre: 'Learn more',
 		campaigns_title: 'Our active campaigns',

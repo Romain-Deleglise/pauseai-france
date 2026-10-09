@@ -51,6 +51,10 @@
 		--border: color-mix(in srgb, var(--text) 18%, var(--bg-subtle));
 		--shadow-card: 0 4px 18px rgba(var(--ink-rgb), 0.07);
 		--shadow-raised: 0 8px 26px rgba(var(--ink-rgb), 0.1);
+		/* Un panneau orange pâle sur du crème ne se voit pas : sur cette bande,
+		   les panneaux d'accent passent au blanc. Sur la bande blanche ils
+		   gardent leur orange pâle, qui y ressort très bien. */
+		--panneau-bg: var(--bg);
 	}
 
 	/* z-index 0 et non -1 : à -1 le fond passait derrière le conteneur de page,
