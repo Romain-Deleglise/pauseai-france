@@ -990,14 +990,14 @@
 	}
 
 	.tl-item.featured .tl-card {
-		box-shadow: 0 2px 14px rgba(0, 0, 0, 0.05);
+		box-shadow: 0 2px 14px rgba(var(--ink-rgb), 0.05);
 		padding: 0.6rem 0.6rem 0;
 	}
 
 	/* Survol = finition décorative uniquement (l'info reste toujours visible). */
 	.tl-item:hover .tl-card {
 		transform: translateX(4px);
-		box-shadow: 0 6px 20px rgba(0, 0, 0, 0.09);
+		box-shadow: 0 6px 20px rgba(var(--ink-rgb), 0.09);
 		border-color: var(--brand);
 	}
 
@@ -1210,14 +1210,14 @@
 		block-size: 2.1rem;
 		border: none;
 		border-radius: 50%;
-		background: rgba(0, 0, 0, 0.45);
+		background: rgba(var(--ink-rgb), 0.45);
 		color: var(--on-dark);
 		cursor: pointer;
 		transition: background 0.15s;
 	}
 
 	.gallery-nav:hover {
-		background: rgba(0, 0, 0, 0.7);
+		background: rgba(var(--ink-rgb), 0.7);
 	}
 
 	.gallery-nav.prev {
@@ -1235,7 +1235,7 @@
 		right: 0.5rem;
 		padding: 0.08rem 0.5rem;
 		border-radius: var(--radius-pill);
-		background: rgba(0, 0, 0, 0.55);
+		background: rgba(var(--ink-rgb), 0.55);
 		color: var(--on-dark);
 		font-size: 0.72rem;
 		font-weight: 600;
@@ -1347,7 +1347,7 @@
 	}
 
 	.cta-card.create .cta-icon {
-		background: rgba(255, 255, 255, 0.22);
+		background: rgba(var(--on-dark-rgb), 0.22);
 		color: var(--on-dark);
 	}
 

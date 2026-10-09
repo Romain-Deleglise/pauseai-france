@@ -435,7 +435,7 @@
 		margin: 0 auto 2rem;
 		padding: 1rem 1.25rem;
 		background: var(--brand-light);
-		border: 1px solid rgba(255, 148, 22, 0.2);
+		border: 1px solid rgba(var(--brand-rgb), 0.2);
 		border-radius: var(--radius-md);
 	}
 
@@ -463,7 +463,7 @@
 		flex: 1;
 		min-width: 160px;
 		padding: 0.5rem 0.75rem;
-		border: 1.5px solid rgba(0, 0, 0, 0.12);
+		border: 1.5px solid rgba(var(--ink-rgb), 0.12);
 		border-radius: var(--radius-sm);
 		font-size: 0.9rem;
 		font-family: inherit;
@@ -550,7 +550,7 @@
 
 	.search-input-wrapper:focus-within {
 		border-color: var(--brand);
-		box-shadow: 0 0 0 3px rgba(255, 148, 22, 0.1);
+		box-shadow: 0 0 0 3px rgba(var(--brand-rgb), 0.1);
 	}
 
 	.search-icon {
@@ -596,7 +596,7 @@
 
 	.clear-btn:hover {
 		color: var(--text);
-		background-color: rgba(0, 0, 0, 0.06);
+		background-color: rgba(var(--ink-rgb), 0.06);
 	}
 
 	/* Results count */
@@ -707,7 +707,7 @@
 	}
 
 	.sidebar-item:hover {
-		background-color: rgba(0, 0, 0, 0.05);
+		background-color: rgba(var(--ink-rgb), 0.05);
 	}
 
 	.sidebar-item-title {

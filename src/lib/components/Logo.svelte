@@ -1,8 +1,8 @@
 <script lang="ts">
 	export let animate = false
 	export let fill_pause = 'black'
-	export let fill_circle = '#FF9416'
-	export let fill_ai = '#FF9416'
+	export let fill_circle = 'var(--brand)'
+	export let fill_ai = 'var(--brand)'
 	export let height: number | undefined = undefined
 	export let width: number | undefined = undefined
 	export let only_circle = false

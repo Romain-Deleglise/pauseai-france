@@ -555,9 +555,9 @@
 		padding: 1rem;
 		background: linear-gradient(
 			180deg,
-			rgba(0, 0, 0, 0) 0%,
-			rgba(0, 0, 0, 0.55) 60%,
-			rgba(0, 0, 0, 0.75) 100%
+			rgba(var(--ink-rgb), 0) 0%,
+			rgba(var(--ink-rgb), 0.55) 60%,
+			rgba(var(--ink-rgb), 0.75) 100%
 		);
 		color: var(--on-dark);
 	}
@@ -759,7 +759,7 @@
 
 	button:hover:not(:disabled) {
 		transform: translateY(-2px);
-		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+		box-shadow: 0 4px 12px rgba(var(--ink-rgb), 0.15);
 	}
 
 	button:disabled {

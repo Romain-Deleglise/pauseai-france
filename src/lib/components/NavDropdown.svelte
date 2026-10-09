@@ -132,13 +132,13 @@
 
 	.trigger:hover,
 	.trigger.active {
-		background: rgba(0, 0, 0, 0.05);
+		background: rgba(var(--ink-rgb), 0.05);
 		color: var(--text);
 	}
 
 	:global([data-theme='dark']) .trigger:hover,
 	:global([data-theme='dark']) .trigger.active {
-		background: rgba(255, 255, 255, 0.07);
+		background: rgba(var(--on-dark-rgb), 0.07);
 	}
 
 	.trigger {
@@ -191,11 +191,11 @@
 
 	.menu-inner {
 		background: var(--menu-bg);
-		border: 1px solid rgba(255, 255, 255, 0.07);
+		border: 1px solid rgba(var(--on-dark-rgb), 0.07);
 		border-radius: 0.875rem;
 		box-shadow:
-			0 4px 6px -1px rgba(0, 0, 0, 0.3),
-			0 16px 40px rgba(0, 0, 0, 0.25);
+			0 4px 6px -1px rgba(var(--ink-rgb), 0.3),
+			0 16px 40px rgba(var(--ink-rgb), 0.25);
 		padding: 0.35rem;
 		overflow: hidden;
 	}
@@ -209,7 +209,7 @@
 		font-family: var(--font-heading);
 		font-weight: 600;
 		font-size: 0.88rem;
-		color: rgba(255, 255, 255, 0.75);
+		color: rgba(var(--on-dark-rgb), 0.75);
 		text-decoration: none;
 		border-radius: var(--radius-sm);
 		transition:
@@ -219,24 +219,24 @@
 	}
 
 	.menu a:hover {
-		background-color: rgba(255, 255, 255, 0.08);
+		background-color: rgba(var(--on-dark-rgb), 0.08);
 		color: var(--on-dark);
 	}
 
 	.menu a.active {
-		background-color: rgba(255, 148, 22, 0.18);
+		background-color: rgba(var(--brand-rgb), 0.18);
 		color: var(--brand-subtle);
 	}
 
 	.menu a.muted {
-		color: rgba(255, 255, 255, 0.62);
+		color: rgba(var(--on-dark-rgb), 0.62);
 		font-size: 0.85rem;
 		font-style: italic;
 	}
 
 	.menu a.muted:hover {
-		background-color: rgba(255, 255, 255, 0.04);
-		color: rgba(255, 255, 255, 0.85);
+		background-color: rgba(var(--on-dark-rgb), 0.04);
+		color: rgba(var(--on-dark-rgb), 0.85);
 	}
 
 	.ext-icon {

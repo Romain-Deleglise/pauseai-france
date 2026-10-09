@@ -1014,7 +1014,7 @@
 	textarea:focus {
 		outline: none;
 		border-color: var(--brand);
-		box-shadow: 0 0 0 3px rgba(255, 148, 22, 0.1);
+		box-shadow: 0 0 0 3px rgba(var(--brand-rgb), 0.1);
 	}
 
 	textarea {

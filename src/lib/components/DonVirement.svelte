@@ -317,7 +317,7 @@
 	.overlay {
 		position: fixed;
 		inset: 0;
-		background: rgba(0, 0, 0, 0.5);
+		background: rgba(var(--ink-rgb), 0.5);
 		z-index: 1000;
 	}
 
@@ -333,7 +333,7 @@
 		width: min(540px, calc(100vw - 2rem));
 		max-height: calc(100dvh - 2rem);
 		overflow-y: auto;
-		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+		box-shadow: 0 8px 32px rgba(var(--ink-rgb), 0.2);
 	}
 
 	.close-btn {

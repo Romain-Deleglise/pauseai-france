@@ -346,7 +346,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+		box-shadow: 0 2px 8px rgba(var(--ink-rgb), 0.25);
 		cursor: pointer;
 		z-index: 50;
 		transition:
@@ -356,7 +356,7 @@
 
 	.fullscreen-btn:hover {
 		transform: scale(1.1);
-		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+		box-shadow: 0 4px 12px rgba(var(--ink-rgb), 0.3);
 	}
 
 	.fullscreen-overlay {

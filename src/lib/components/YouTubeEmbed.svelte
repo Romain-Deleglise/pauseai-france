@@ -23,8 +23,8 @@
 		border-radius: var(--radius-md);
 		overflow: hidden;
 		box-shadow:
-			0 4px 6px -1px rgba(0, 0, 0, 0.1),
-			0 2px 4px -2px rgba(0, 0, 0, 0.1);
+			0 4px 6px -1px rgba(var(--ink-rgb), 0.1),
+			0 2px 4px -2px rgba(var(--ink-rgb), 0.1);
 		background-color: var(--black);
 		transition:
 			transform 0.2s ease,
@@ -33,7 +33,7 @@
 
 	.video-container:hover {
 		transform: translateY(-4px);
-		box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.2);
+		box-shadow: 0 12px 24px -8px rgba(var(--ink-rgb), 0.2);
 	}
 
 	iframe {

@@ -317,7 +317,7 @@
 	.modal-overlay {
 		position: fixed;
 		inset: 0;
-		background: rgba(0, 0, 0, 0.5);
+		background: rgba(var(--ink-rgb), 0.5);
 		z-index: 2000;
 		display: flex;
 		align-items: center;
@@ -335,7 +335,7 @@
 		max-height: 90dvh;
 		overflow-y: auto;
 		position: relative;
-		box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2);
+		box-shadow: 0 16px 48px rgba(var(--ink-rgb), 0.2);
 	}
 
 	.modal-close {

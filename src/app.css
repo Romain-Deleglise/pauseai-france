@@ -6,6 +6,24 @@
 	/* Colors */
 	--brand: #ff9416;
 	--brand-rgb: 255, 148, 22; /* composantes de --brand, pour les rgba() */
+	/* Composantes RVB des couleurs qui ne servent qu'en translucide. Elles
+	   existent pour que les rgba() du site ne portent plus de valeur en dur :
+	   une seule définition à changer, et stylelint n'a plus d'exception à
+	   tolérer. Les valeurs sont identiques à celles qu'elles remplacent, donc
+	   le rendu est inchangé.
+	   --ink-rgb : encre des ombres ; noire dans les deux thèmes, comme
+	   --shadow-card et --shadow-raised ci-dessous.
+	   --on-dark-rgb : blanc des voiles posés sur un fond sombre.
+	   --hero-cream-rgb / --hero-dark-rgb : fond de la mosaïque du héros et de
+	   son voile de lisibilité, en clair et en sombre. */
+	--ink-rgb: 0, 0, 0;
+	--on-dark-rgb: 255, 255, 255;
+	--hero-cream-rgb: 255, 250, 245;
+	--hero-dark-rgb: 26, 26, 26;
+	/* Encadrés translucides posés sur une image : bloc de texte du héros en
+	   thème sombre, et infobulle de la carte des groupes locaux. */
+	--overlay-dark-rgb: 30, 30, 30;
+	--tooltip-dark-rgb: 17, 17, 17;
 	--brand-light: #fff5e8;
 	--brand-subtle: #a85400; /* orange foncé : le seul orange lisible en texte
 	                            (4,9:1 sur le crème, 5,3:1 sur blanc) */

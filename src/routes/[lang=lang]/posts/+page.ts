@@ -9,6 +9,6 @@ import type { PageLoad } from './$types'
  * la liste n'a plus d'exception à gérer.
  */
 export const load: PageLoad = ({ params }) => {
-	const posts = getPosts('/articles', params.lang as 'fr' | 'en')
+	const posts = getPosts('/articles', params.lang)
 	return { posts }
 }

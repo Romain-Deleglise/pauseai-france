@@ -1,4 +1,9 @@
 #!/usr/bin/env node
+/* eslint-disable @typescript-eslint/ban-ts-comment --
+   Script Node historique, tiré dans le programme TypeScript parce qu'un test
+   en importe une fonction. Le typer entièrement (48 erreurs) est un chantier
+   à part ; `@ts-nocheck` est ici le moindre mal, et non un contournement
+   d'une erreur réelle du code applicatif. */
 // @ts-nocheck
 /*
  * Script Node en JavaScript simple, sans annotations de types. Il vivait hors

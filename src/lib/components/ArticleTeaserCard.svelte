@@ -71,7 +71,7 @@
 	.card:hover,
 	.card:focus-visible {
 		transform: translateY(-4px);
-		box-shadow: 0 16px 30px rgba(0, 0, 0, 0.08);
+		box-shadow: 0 16px 30px rgba(var(--ink-rgb), 0.08);
 		outline: none;
 	}
 
@@ -88,14 +88,14 @@
 		position: absolute;
 		top: 0.75rem;
 		right: 0.75rem;
-		background: rgba(255, 255, 255, 0.9);
+		background: rgba(var(--on-dark-rgb), 0.9);
 		backdrop-filter: blur(8px);
 		padding: 0.3rem 0.6rem;
 		border-radius: var(--radius-sm);
 		font-size: 0.65rem;
 		font-weight: 800;
 		color: var(--text);
-		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+		box-shadow: 0 4px 10px rgba(var(--ink-rgb), 0.1);
 		display: flex;
 		align-items: center;
 		gap: 0.35rem;
@@ -104,7 +104,7 @@
 		transition:
 			transform 200ms ease,
 			background 200ms ease;
-		border: 1px solid rgba(255, 255, 255, 0.2);
+		border: 1px solid rgba(var(--on-dark-rgb), 0.2);
 	}
 
 	.flag-icon {
@@ -112,7 +112,7 @@
 		height: auto;
 		border-radius: 1px;
 		display: block;
-		box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+		box-shadow: 0 1px 2px rgba(var(--ink-rgb), 0.1);
 	}
 
 	.card:hover .lang-badge {

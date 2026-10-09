@@ -25,24 +25,24 @@
 		<div class="lead" aria-labelledby={label_id}>
 			{#if lang === 'en'}
 				<p>
-					This is only the beginning. AI has started to take over our lives, and already we control
-					nothing. The risks are immense, for our democracies, our jobs, our mental health, the
-					working of the computer systems we depend on (the internet, banking, public services)…
-					Major AI-driven disasters can no longer be ruled out.
+					This is only the beginning. AI has started to take over our lives, and we are already
+					losing our grip on it. The risks are immense: our democracies, our jobs, our mental
+					health, the computer systems everything else runs on (the internet, banking, public
+					services)… Major AI-driven disasters can no longer be ruled out.
 				</p>
 				<p>
-					To make matters worse, the capabilities of frontier general-purpose AI models grow by the
-					day. That is what the handful of companies building them devote their enormous financial
-					resources to. Their successes in this area are deeply worrying.
+					Worse still, the capabilities of frontier general-purpose AI models grow by the day, and
+					that is precisely where the handful of companies building them pour their enormous
+					financial resources. They are succeeding, and that is what should worry us.
 				</p>
 				<p>
 					And safety? No regulation worthy of the name. Not even any certainty that these systems
-					can really be controlled, by technology or by law. The leaders themselves, OpenAI and
-					Anthropic, keep issuing statements about the danger and the complexity of the safety
-					problem.
+					can be controlled at all, by technology or by law. The frontrunners themselves, OpenAI and
+					Anthropic, keep publishing statements about the danger and about how hard the safety
+					problem is.
 				</p>
 				<p>
-					Pause AI calls for an international public authority to oversee frontier AI. The AI
+					Pause AI is calling for an international public authority to oversee frontier AI. The AI
 					industry should not be allowed to gamble with our lives. And yet it is.
 				</p>
 				<p>If you think this has to stop, join us and sign our statement.</p>

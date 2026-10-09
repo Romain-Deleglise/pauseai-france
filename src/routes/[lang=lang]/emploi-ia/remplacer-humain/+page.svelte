@@ -219,7 +219,7 @@
 	}
 
 	:global([data-theme='dark']) blockquote {
-		background: rgba(255, 255, 255, 0.04);
+		background: rgba(var(--on-dark-rgb), 0.04);
 	}
 
 	blockquote p {
@@ -253,7 +253,7 @@
 
 	.next-article:hover {
 		border-color: var(--brand);
-		box-shadow: 0 2px 12px rgba(255, 148, 22, 0.12);
+		box-shadow: 0 2px 12px rgba(var(--brand-rgb), 0.12);
 	}
 
 	.next-label {

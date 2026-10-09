@@ -105,8 +105,8 @@
 	}
 
 	button:not(.active):hover {
-		background: rgba(255, 148, 22, 0.1);
-		border-color: rgba(255, 148, 22, 0.45);
+		background: rgba(var(--brand-rgb), 0.1);
+		border-color: rgba(var(--brand-rgb), 0.45);
 	}
 
 	.panel {

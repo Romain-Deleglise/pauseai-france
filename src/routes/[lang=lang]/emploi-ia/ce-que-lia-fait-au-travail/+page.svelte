@@ -306,7 +306,7 @@
 	}
 
 	:global([data-theme='dark']) blockquote {
-		background: rgba(255, 255, 255, 0.04);
+		background: rgba(var(--on-dark-rgb), 0.04);
 	}
 
 	blockquote p {

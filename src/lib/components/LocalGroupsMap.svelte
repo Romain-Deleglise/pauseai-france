@@ -90,8 +90,8 @@
 		border-radius: var(--radius-lg);
 		overflow: hidden;
 		box-shadow:
-			0 4px 6px rgba(0, 0, 0, 0.04),
-			0 10px 40px rgba(0, 0, 0, 0.1);
+			0 4px 6px rgba(var(--ink-rgb), 0.04),
+			0 10px 40px rgba(var(--ink-rgb), 0.1);
 		border: 1px solid var(--border);
 	}
 
@@ -114,12 +114,12 @@
 		border-radius: 50%;
 		background: var(--brand);
 		border: 2.5px solid var(--white);
-		box-shadow: 0 2px 8px rgba(255, 148, 22, 0.55);
+		box-shadow: 0 2px 8px rgba(var(--brand-rgb), 0.55);
 		z-index: 2;
 	}
 
 	:global(.lm-forming .lm-dot) {
-		background: rgba(255, 148, 22, 0.35);
+		background: rgba(var(--brand-rgb), 0.35);
 		border: 2px dashed var(--brand);
 		box-shadow: none;
 		width: 16px;
@@ -134,7 +134,7 @@
 		width: 32px;
 		height: 32px;
 		border-radius: 50%;
-		background: rgba(255, 148, 22, 0.28);
+		background: rgba(var(--brand-rgb), 0.28);
 		animation: lm-pulse 2.5s ease-out infinite;
 		z-index: 1;
 	}
@@ -156,12 +156,12 @@
 	/* ── Tooltip ──────────────────────────────────────────────────────── */
 
 	:global(.map-tooltip) {
-		background: rgba(17, 17, 17, 0.93) !important;
+		background: rgba(var(--tooltip-dark-rgb), 0.93) !important;
 		color: var(--on-dark) !important;
 		border: none !important;
 		border-radius: 8px !important;
 		padding: 0 !important;
-		box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25) !important;
+		box-shadow: 0 4px 16px rgba(var(--ink-rgb), 0.25) !important;
 		font-family: inherit !important;
 	}
 
@@ -179,13 +179,13 @@
 	:global(.tt-status) {
 		font-size: 11px;
 		font-weight: 400;
-		color: rgba(255, 255, 255, 0.65);
+		color: rgba(var(--on-dark-rgb), 0.65);
 		padding: 0 13px 8px;
 		line-height: 1;
 	}
 
 	:global(.map-tooltip.leaflet-tooltip-top::before) {
-		border-top-color: rgba(17, 17, 17, 0.93) !important;
+		border-top-color: rgba(var(--tooltip-dark-rgb), 0.93) !important;
 	}
 
 	/* ── Leaflet overrides ────────────────────────────────────────────── */
@@ -202,7 +202,7 @@
 
 	:global(.leaflet-control-zoom) {
 		border: none !important;
-		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12) !important;
+		box-shadow: 0 2px 8px rgba(var(--ink-rgb), 0.12) !important;
 	}
 
 	:global(.leaflet-control-zoom a) {
@@ -243,7 +243,7 @@
 	}
 
 	.legend-dot.forming {
-		background: rgba(255, 148, 22, 0.35);
+		background: rgba(var(--brand-rgb), 0.35);
 		border: 2px dashed var(--brand);
 	}
 </style>

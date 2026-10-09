@@ -229,7 +229,7 @@
 		margin: 2rem 0;
 		padding: 1rem 1.5rem;
 		border-left: 4px solid var(--brand);
-		background: var(--bg-subtle, rgba(255, 148, 22, 0.06));
+		background: var(--bg-subtle, rgba(var(--brand-rgb), 0.06));
 		border-radius: 0 10px 10px 0;
 		font-style: italic;
 		color: var(--text);

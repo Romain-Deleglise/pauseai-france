@@ -199,7 +199,7 @@
 
 	.pill-progress {
 		color: var(--brand-subtle);
-		background-color: rgba(255, 148, 22, 0.12);
+		background-color: rgba(var(--brand-rgb), 0.12);
 	}
 
 	h3 {

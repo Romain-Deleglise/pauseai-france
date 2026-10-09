@@ -51,7 +51,7 @@
 		height: 100%;
 		border-radius: 50%;
 		object-fit: cover;
-		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+		box-shadow: 0 2px 8px rgba(var(--ink-rgb), 0.1);
 		border: 2px solid var(--border);
 	}
 

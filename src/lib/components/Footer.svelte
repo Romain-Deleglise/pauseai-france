@@ -242,7 +242,7 @@
 		flex: 1;
 		min-width: 180px;
 		padding: 0.6rem 0.75rem;
-		border: 2px solid rgba(0, 0, 0, 0.15);
+		border: 2px solid rgba(var(--ink-rgb), 0.15);
 		border-radius: var(--radius-sm);
 		font-size: 0.95rem;
 		font-family: inherit;

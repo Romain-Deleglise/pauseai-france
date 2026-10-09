@@ -226,11 +226,11 @@
 		line-height: 1;
 		padding-bottom: 0.2rem;
 		color: var(--brand-subtle);
-		background: rgba(255, 255, 255, 0.92);
+		background: rgba(var(--on-dark-rgb), 0.92);
 		border: 1px solid var(--border);
 		border-radius: 50%;
 		cursor: pointer;
-		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+		box-shadow: 0 2px 8px rgba(var(--ink-rgb), 0.12);
 		transition:
 			background 0.15s,
 			color 0.15s,
@@ -280,7 +280,7 @@
 		font-size: 0.75rem;
 		font-weight: 600;
 		color: var(--on-dark);
-		background: rgba(0, 0, 0, 0.6);
+		background: rgba(var(--ink-rgb), 0.6);
 		padding: 0.3rem 0.55rem;
 		border-radius: var(--radius-sm);
 		opacity: 0;
@@ -325,7 +325,7 @@
 		position: fixed;
 		inset: 0;
 		z-index: 1000;
-		background: rgba(0, 0, 0, 0.85);
+		background: rgba(var(--ink-rgb), 0.85);
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -354,7 +354,7 @@
 		font-size: 1.8rem;
 		line-height: 1;
 		color: var(--on-dark);
-		background: rgba(255, 255, 255, 0.15);
+		background: rgba(var(--on-dark-rgb), 0.15);
 		border: 0;
 		border-radius: 50%;
 		cursor: pointer;
@@ -364,7 +364,7 @@
 	}
 
 	.lightbox-close:hover {
-		background: rgba(255, 255, 255, 0.3);
+		background: rgba(var(--on-dark-rgb), 0.3);
 	}
 
 	.lightbox-arrow {
@@ -376,7 +376,7 @@
 		font-size: 2rem;
 		line-height: 1;
 		color: var(--on-dark);
-		background: rgba(255, 255, 255, 0.15);
+		background: rgba(var(--on-dark-rgb), 0.15);
 		border: 0;
 		border-radius: 50%;
 		cursor: pointer;
@@ -387,7 +387,7 @@
 	}
 
 	.lightbox-arrow:hover {
-		background: rgba(255, 255, 255, 0.3);
+		background: rgba(var(--on-dark-rgb), 0.3);
 	}
 
 	.lightbox-prev {
@@ -406,7 +406,7 @@
 		color: var(--on-dark);
 		font-size: 0.9rem;
 		font-weight: 600;
-		background: rgba(0, 0, 0, 0.5);
+		background: rgba(var(--ink-rgb), 0.5);
 		padding: 0.35rem 0.8rem;
 		border-radius: var(--radius-pill);
 	}

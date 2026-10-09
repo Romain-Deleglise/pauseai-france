@@ -261,11 +261,11 @@
 		transform: translateX(-50%);
 		width: 100vw;
 		z-index: -1;
-		background: #fffaf5;
+		background: rgb(var(--hero-cream-rgb));
 	}
 
 	:global([data-theme='dark']) .hero-bg {
-		background: #1a1a1a;
+		background: rgb(var(--hero-dark-rgb));
 	}
 
 	/* Marquee scrolling rows */
@@ -348,17 +348,17 @@
 		inset: 0;
 		background: linear-gradient(
 				to right,
-				rgba(255, 250, 245, 0.6) 0%,
-				rgba(255, 250, 245, 0.35) 20%,
-				rgba(255, 250, 245, 0.1) 40%,
+				rgba(var(--hero-cream-rgb), 0.6) 0%,
+				rgba(var(--hero-cream-rgb), 0.35) 20%,
+				rgba(var(--hero-cream-rgb), 0.1) 40%,
 				transparent 55%
 			),
 			linear-gradient(
 				to top,
-				rgba(255, 250, 245, 0.4) 0%,
+				rgba(var(--hero-cream-rgb), 0.4) 0%,
 				transparent 6%,
 				transparent 94%,
-				rgba(255, 250, 245, 0.4) 100%
+				rgba(var(--hero-cream-rgb), 0.4) 100%
 			);
 		pointer-events: none;
 	}
@@ -381,7 +381,7 @@
 
 	.content-box {
 		max-width: 28rem;
-		background: rgba(255, 250, 245, 0.82);
+		background: rgba(var(--hero-cream-rgb), 0.82);
 		backdrop-filter: blur(14px);
 		-webkit-backdrop-filter: blur(14px);
 		border-radius: var(--radius-lg);
@@ -421,7 +421,7 @@
 		flex-direction: row;
 		justify-content: space-between;
 		border-bottom: 4px solid var(--brand);
-		box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+		box-shadow: 0 6px 20px rgba(var(--ink-rgb), 0.1);
 	}
 
 	.buttons {
@@ -494,16 +494,16 @@
 		.mosaic-overlay {
 			background: linear-gradient(
 					to right,
-					rgba(255, 250, 245, 0.5) 0%,
-					rgba(255, 250, 245, 0.2) 40%,
+					rgba(var(--hero-cream-rgb), 0.5) 0%,
+					rgba(var(--hero-cream-rgb), 0.2) 40%,
 					transparent 65%
 				),
 				linear-gradient(
 					to top,
-					rgba(255, 250, 245, 0.5) 0%,
+					rgba(var(--hero-cream-rgb), 0.5) 0%,
 					transparent 8%,
 					transparent 92%,
-					rgba(255, 250, 245, 0.5) 100%
+					rgba(var(--hero-cream-rgb), 0.5) 100%
 				);
 		}
 
@@ -566,7 +566,7 @@
 			   from viewport). Adding 6rem here would double the offset. */
 			left: 0;
 			width: calc(27rem + 3rem); /* content-box max-width + 2 × 1.5rem padding */
-			background: rgba(255, 250, 245, 0.82);
+			background: rgba(var(--hero-cream-rgb), 0.82);
 			backdrop-filter: blur(14px);
 			-webkit-backdrop-filter: blur(14px);
 			border-radius: 16px 16px 0 0;
@@ -591,16 +591,16 @@
 		.mosaic-overlay {
 			background: linear-gradient(
 					to right,
-					rgba(255, 250, 245, 0.5) 0%,
-					rgba(255, 250, 245, 0.2) 22%,
+					rgba(var(--hero-cream-rgb), 0.5) 0%,
+					rgba(var(--hero-cream-rgb), 0.2) 22%,
 					transparent 46%
 				),
 				linear-gradient(
 					to top,
-					rgba(255, 250, 245, 0.4) 0%,
+					rgba(var(--hero-cream-rgb), 0.4) 0%,
 					transparent 6%,
 					transparent 94%,
-					rgba(255, 250, 245, 0.4) 100%
+					rgba(var(--hero-cream-rgb), 0.4) 100%
 				);
 		}
 	}
@@ -640,18 +640,18 @@
 	:global([data-theme='dark']) .mosaic-overlay {
 		background: linear-gradient(
 				to right,
-				rgba(26, 26, 26, 0.97) 0%,
-				rgba(26, 26, 26, 0.92) 12%,
-				rgba(26, 26, 26, 0.55) 25%,
-				rgba(26, 26, 26, 0.1) 38%,
+				rgba(var(--hero-dark-rgb), 0.97) 0%,
+				rgba(var(--hero-dark-rgb), 0.92) 12%,
+				rgba(var(--hero-dark-rgb), 0.55) 25%,
+				rgba(var(--hero-dark-rgb), 0.1) 38%,
 				transparent 48%
 			),
 			linear-gradient(
 				to top,
-				rgba(26, 26, 26, 0.4) 0%,
+				rgba(var(--hero-dark-rgb), 0.4) 0%,
 				transparent 6%,
 				transparent 94%,
-				rgba(26, 26, 26, 0.4) 100%
+				rgba(var(--hero-dark-rgb), 0.4) 100%
 			);
 	}
 
@@ -659,34 +659,34 @@
 		:global([data-theme='dark']) .mosaic-overlay {
 			background: linear-gradient(
 					to right,
-					rgba(26, 26, 26, 0.98) 0%,
-					rgba(26, 26, 26, 0.93) 15%,
-					rgba(26, 26, 26, 0.65) 35%,
-					rgba(26, 26, 26, 0.15) 55%,
+					rgba(var(--hero-dark-rgb), 0.98) 0%,
+					rgba(var(--hero-dark-rgb), 0.93) 15%,
+					rgba(var(--hero-dark-rgb), 0.65) 35%,
+					rgba(var(--hero-dark-rgb), 0.15) 55%,
 					transparent 65%
 				),
 				linear-gradient(
 					to top,
-					rgba(26, 26, 26, 0.5) 0%,
+					rgba(var(--hero-dark-rgb), 0.5) 0%,
 					transparent 8%,
 					transparent 92%,
-					rgba(26, 26, 26, 0.5) 100%
+					rgba(var(--hero-dark-rgb), 0.5) 100%
 				);
 		}
 	}
 
 	/* Dark mode: content box (mobile/tablet) needs a dark background.
-	   Light text (--text = #f0f0f0) on the default cream rgba(255,250,245,0.82)
+	   Light text (--text = #f0f0f0) on the default cream rgba(var(--hero-cream-rgb),0.82)
 	   is almost invisible. At ≥1024px the frost-col provides the backdrop instead. */
 	@media (max-width: 1023px) {
 		:global([data-theme='dark']) .content-box {
-			background: rgba(30, 30, 30, 0.9);
+			background: rgba(var(--overlay-dark-rgb), 0.9);
 		}
 	}
 
 	@media (min-width: 1024px) {
 		:global([data-theme='dark']) .frost-col {
-			background: rgba(30, 30, 30, 0.9);
+			background: rgba(var(--overlay-dark-rgb), 0.9);
 		}
 	}
 </style>
