@@ -598,15 +598,24 @@ export function analyserSenateurs(buf) {
 /*
  * Le fichier ODSEN est public : depuis une connexion ordinaire il se télécharge
  * sans rien demander, en-tête en clair avec sa colonne « Courrier électronique »
- * (vérifié le 10 octobre 2026 avec scripts/sonder-sources-elus.mjs). Mais depuis
- * le runner GitHub Actions, data.senat.fr renvoie une page HTML à la place du
- * CSV : le filtrage porte sur l'adresse IP, pas sur une authentification.
- * D'où la panne, et d'où ce repli.
+ * (vérifié le 10 octobre 2026 avec scripts/sonder-sources-elus.mjs). Aucune
+ * authentification n'est en jeu, contrairement à ce qui a d'abord été conclu.
+ *
+ * Ce qui arrive, par intermittence, c'est que data.senat.fr réponde à un client
+ * automatisé par une PAGE HTML au lieu du CSV. Observé sur le timer du serveur
+ * (l'alerte Discord d'octobre) ET sur un run GitHub Actions, alors qu'un run
+ * manuel du 10 octobre est passé sans erreur. Filtrage par adresse IP, quota,
+ * ou protection anti-robot : la cause exacte n'est pas établie, et comme la
+ * panne n'est pas reproductible à volonté, elle ne le sera pas facilement.
+ *
+ * D'où ce repli, qui vaut pour les deux chemins d'exécution : le timer systemd
+ * du serveur comme le workflow GitHub passent par cette fonction.
  *
  * data.gouv.fr publie le même jeu (« Les Sénateurs », publié par le Sénat
- * lui-même) et sert ses ressources derrière une URL stable de son côté. Le
- * runner atteint déjà data.gouv.fr sans problème, c'est de là que viennent les
- * députés. On passe donc par là quand l'accès direct est refusé.
+ * lui-même) et sert ses ressources derrière une URL stable de son côté. Les
+ * deux environnements atteignent déjà data.gouv.fr sans problème, c'est de là
+ * que viennent les députés, qui n'ont jamais échoué. On passe donc par là
+ * quand l'accès direct est refusé.
  *
  * L'identifiant de la ressource n'est pas écrit en dur : il est retrouvé via
  * l'API, ce qui survit à une republication du fichier.
