@@ -49,7 +49,10 @@ export const signataires: Signataire[] = [
 	},
 	{ nom: 'Adrien Fabre', qualite: 'économiste et chercheur au CNRS et au CIRED' },
 	{ nom: 'Jean-Lou Fourquet', qualite: 'ingénieur et coauteur de La Dictature des algorithmes' },
-	{ nom: 'Maxime Fournes', qualite: 'directeur de Pause AI Global' },
+	{
+		nom: 'Maxime Fournes',
+		qualite: 'président de Pause IA France et directeur de Pause AI Global'
+	},
 	{ nom: 'Ayoze García González', qualite: 'journaliste et directeur de Pause AI Espagne' },
 	{ nom: 'Martin Gibert', qualite: 'philosophe et chercheur en éthique' },
 	{
@@ -63,7 +66,7 @@ export const signataires: Signataire[] = [
 	},
 	{
 		nom: 'Elie Goudout',
-		qualite: 'normalien et ancien chercheur en IA de confiance chez Thalès'
+		qualite: 'normalien et ancien chercheur en IA de confiance chez Thales'
 	},
 	{
 		nom: 'Arthur Grimonpont',
@@ -95,13 +98,13 @@ export const signataires: Signataire[] = [
 			'fondateur et directeur exécutif du Center for Existential Safety et de l’International AI Governance Alliance'
 	},
 	{ nom: 'Jérémy Perret', qualite: 'chercheur indépendant en sécurité de l’IA' },
-	{ nom: 'Clémence Peyrot', qualite: 'directrice de Pause IA France' },
+	{ nom: 'Clémence Peyrot', qualite: 'directrice exécutive de Pause IA France' },
 	{ nom: 'Abel Quentin', qualite: 'écrivain' },
 	{ nom: 'Alexandre Ramé', qualite: 'docteur et chercheur en alignement et sécurité de l’IA' },
 	{ nom: 'Benjamin Schmidt', qualite: 'directeur de Pause AI Allemagne' },
-	{ nom: 'Gaetan Selle', qualite: 'réalisateur, producteur et cofondateur de The Flares' },
+	{ nom: 'Gaëtan Selle', qualite: 'réalisateur, producteur et cofondateur de The Flares' },
 	{
-		nom: 'Charbel-Raphaël Sergerie',
+		nom: 'Charbel-Raphaël Segerie',
 		qualite: 'directeur exécutif du Centre pour la sécurité de l’IA (CeSIA)'
 	},
 	{ nom: 'Peter Slattery', qualite: 'chercheur au Massachusetts Institute of Technology (MIT)' },
