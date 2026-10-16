@@ -1,7 +1,7 @@
 <script lang="ts">
 	import PostMeta from '$components/PostMeta.svelte'
 	import { PageHero } from '$components/ui'
-	import { miseAJour, signataires, tribuneTitre } from '$lib/data/tribune-signataires'
+	import { miseAJour, signataires, tribuneTitre } from '$lib/data/tribunes/le-monde-octobre-2026'
 	import type { PageData } from './$types'
 
 	export let data: PageData

@@ -25,6 +25,7 @@
 /ressources  /fr/ressources  301!
 /agir  /fr/agir  301!
 /declaration  /fr/declaration  301!
+/tribunes/*  /fr/tribunes/:splat  301!
 /statement  /fr/declaration  301!
 
 # ── Anciennes URL historiques ──────────────────────────────────────────
@@ -35,7 +36,6 @@
 /directeur-france  /fr/recrutement-emploi  301!
 
 # ── Raccourcis ─────────────────────────────────────────────────────────
-/signataires  /fr/tribune-signataires  301!
 /discord https://discord.gg/vyXGd7AeGc
 
 # La FAQ ne vit plus que sur la page d'accueil (une seule source de vérité).

@@ -9,8 +9,8 @@ const EXCLUDED = [
 	'/campagne-modele',
 	'/declaration/confirmer',
 	'/plan-du-site',
-	// Liste des signataires de la tribune : on y arrive par le lien publié.
-	'/tribune-signataires',
+	// Listes de signataires des tribunes : on y arrive par le lien publié.
+	'/tribunes/le-monde-octobre-2026',
 	// Sans offre en cours : la page existe (pied de page, 301 de
 	// /directeur-france) mais n'a rien à faire dans les résultats de recherche.
 	// À retirer d'ici quand un poste rouvre.

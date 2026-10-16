@@ -54,9 +54,9 @@ const config = {
 							// de page, donc invisible au robot d'exploration du prérendu.
 							'/fr/plan-du-site',
 							'/en/plan-du-site',
-							// Signataires de la tribune : jamais liée depuis le site.
-							'/fr/tribune-signataires',
-							'/en/tribune-signataires',
+							// Signataires des tribunes : jamais liées depuis le site.
+							'/fr/tribunes/le-monde-octobre-2026',
+							'/en/tribunes/le-monde-octobre-2026',
 							'/fr/campagnes',
 							'/en/campagnes',
 							'/fr/merci',
