@@ -54,6 +54,9 @@ const config = {
 							// de page, donc invisible au robot d'exploration du prérendu.
 							'/fr/plan-du-site',
 							'/en/plan-du-site',
+							// Signataires de la tribune : jamais liée depuis le site.
+							'/fr/tribune-signataires',
+							'/en/tribune-signataires',
 							'/fr/campagnes',
 							'/en/campagnes',
 							'/fr/merci',
