@@ -62,6 +62,10 @@ export const signataires: Signataire[] = [
 		qualite: 'philosophe, essayiste et enseignant à l’IÉSEG School of Management'
 	},
 	{
+		nom: 'Elie Goudout',
+		qualite: 'normalien et ancien chercheur en IA de confiance chez Thalès'
+	},
+	{
 		nom: 'Arthur Grimonpont',
 		qualite: 'responsable du plaidoyer au Centre pour la sécurité de l’IA (CeSIA)'
 	},
