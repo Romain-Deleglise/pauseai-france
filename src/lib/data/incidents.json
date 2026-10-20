@@ -1,0 +1,52 @@
+[
+	{
+		"id": "replit-2025",
+		"titre": "Un agent de programmation efface une base de données malgré l’interdiction",
+		"date": "2025-07",
+		"categorie": "agents",
+		"systeme": "Agent de programmation de Replit",
+		"resume": "Pendant une expérience menée par Jason Lemkin, fondateur de SaaStr, l’agent d’IA de Replit a exécuté des commandes qui ont effacé une base de données de production (1 206 dirigeants et plus de 1 196 entreprises), alors qu’il avait reçu la consigne de ne rien modifier sans autorisation. Il a ensuite donné une fausse explication, avant de reconnaître « un échec catastrophique ».",
+		"enjeu": "Un agent autonome a ignoré une consigne explicite, puis a dissimulé ce qu’il avait fait.",
+		"source": {
+			"titre": "eWeek, juillet 2025",
+			"url": "https://www.eweek.com/news/replit-ai-coding-assistant-failure/"
+		},
+		"voir_aussi": {
+			"titre": "Fiche dans l’AI Incident Database",
+			"url": "https://incidentdatabase.ai/entities/jason-lemkin/"
+		},
+		"statut": "valide"
+	},
+	{
+		"id": "openai-nsw-2026",
+		"titre": "Un agent d’OpenAI accède sans autorisation à des sites du gouvernement australien",
+		"date": "2026-06",
+		"categorie": "intrusions",
+		"systeme": "Agent d’IA d’OpenAI",
+		"resume": "En juin 2026, un agent d’IA d’OpenAI a accédé sans autorisation à plusieurs applications web du gouvernement de Nouvelle-Galles du Sud, dont des données non publiques sur les feux de brousse. Aucune donnée personnelle n’a été compromise, mais les autorités n’ont été prévenues que des mois plus tard. L’affaire, révélée début octobre, a déclenché des enquêtes des agences de cybersécurité.",
+		"enjeu": "Un système d’IA a agi hors du cadre prévu, sur des infrastructures publiques réelles.",
+		"source": {
+			"titre": "OCDE, observatoire des incidents d’IA, octobre 2026",
+			"url": "https://oecd.ai/en/incidents/2026-10-02-ef44"
+		},
+		"statut": "valide"
+	},
+	{
+		"id": "anthropic-visas-2026",
+		"titre": "Des agents d’Anthropic soumettent des demandes de visa sur le site du département d’État américain",
+		"date": "2026-10",
+		"categorie": "agents",
+		"systeme": "Agents d’IA d’Anthropic",
+		"resume": "Selon le New York Times, des agents d’IA d’Anthropic ont soumis 20 demandes de visa via un formulaire du site du département d’État américain. Elles étaient incomplètes et n’ont pas été traitées. Anthropic a décrit ces actions non prévues de ses agents dans un billet de blog, sans nommer les sites visés.",
+		"enjeu": "Des agents ont accompli dans le monde réel des actions que personne ne leur avait demandées.",
+		"source": {
+			"titre": "The New York Times, 9 octobre 2026",
+			"url": "https://www.nytimes.com/2026/10/09/technology/anthropic-rogue-ai-agents.html"
+		},
+		"voir_aussi": {
+			"titre": "Le billet d’Anthropic",
+			"url": "https://www.anthropic.com/research/investigating-unintended-model-actions"
+		},
+		"statut": "valide"
+	}
+]
