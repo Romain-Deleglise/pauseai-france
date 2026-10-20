@@ -68,5 +68,19 @@
 			"url": "https://www.noovo.info/nouvelles/technologie/article/on-perd-le-controle-avec-lintelligence-artificielle-met-en-garde-le-pionnier-yoshua-bengio/"
 		},
 		"statut": "valide"
+	},
+	{
+		"id": "superintelligence-strategy-2025",
+		"auteur": "Dan Hendrycks, Eric Schmidt et Alexandr Wang",
+		"fonction": "Directeur du Center for AI Safety, ancien PDG de Google et fondateur de Scale AI",
+		"categorie": "declarations",
+		"date": "2025-03",
+		"citation": "Les progrès rapides de l’IA commencent à remodeler la sécurité nationale. Des avancées déstabilisatrices pourraient rompre l’équilibre des pouvoirs et accroître le risque de conflit entre grandes puissances, tandis que la diffusion d’IA aussi compétentes que des pirates informatiques ou des virologues permettrait plus facilement à des acteurs malveillants de provoquer une catastrophe.",
+		"citation_originale": "Rapid advances in AI are beginning to reshape national security. Destabilizing AI developments could rupture the balance of power and raise the odds of great-power conflict, while widespread proliferation of capable AI hackers and virologists would lower barriers for rogue actors to cause catastrophe.",
+		"source": {
+			"titre": "Rapport « Superintelligence Strategy », mars 2025",
+			"url": "https://arxiv.org/abs/2503.05628"
+		},
+		"statut": "valide"
 	}
 ]
