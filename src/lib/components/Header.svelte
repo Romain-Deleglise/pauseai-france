@@ -95,6 +95,21 @@
 				// discours. La route reste en place : les liens existants fonctionnent.
 			]
 		},
+		// « Les faits » (démissions, citations, incidents) n'existe qu'en français :
+		// la catégorie n'apparaît pas sur le site anglais.
+		...(lang === 'fr'
+			? [
+					{
+						id: 'faits',
+						label: t.nav.faits,
+						items: [
+							{ href: `${prefix}/demissions`, label: t.nav.demissions },
+							{ href: `${prefix}/citations`, label: t.nav.citations },
+							{ href: `${prefix}/incidents`, label: t.nav.incidents }
+						]
+					}
+				]
+			: []),
 		{
 			id: 'agir',
 			label: t.nav.agir,
