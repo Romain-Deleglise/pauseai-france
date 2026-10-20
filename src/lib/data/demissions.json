@@ -46,5 +46,37 @@
 		},
 		"photo": null,
 		"statut": "valide"
+	},
+	{
+		"id": "david-robinson",
+		"nom": "David Robinson",
+		"labo": "OpenAI",
+		"poste": "Responsable sécurité (équipe Safety Systems)",
+		"date": "2026-09",
+		"citation": "Je rejoins d’autres personnes parties récemment : les entreprises qui développent cette technologie sont loin d’être assez prudentes.",
+		"citation_originale": "I agree with other recently departed staff that the companies building this technology aren't being nearly careful enough.",
+		"contexte": "David Robinson dirigeait des travaux à l’équipe Safety Systems d’OpenAI, où il s’occupait de la transparence sur la sécurité et de la rédaction des « system cards » qui accompagnent les modèles. Il a quitté l’entreprise fin septembre 2026 et a expliqué sa décision dans un essai publié dans The Atlantic, où il dénonce une culture d’« optimisme sans frein » et une course d’un lancement à l’autre. Il y affirme que sa décision de parler est personnelle, et OpenAI répond qu’elle suspend ou retient des modèles lorsqu’il faut ralentir.",
+		"source": {
+			"titre": "Business Insider, octobre 2026",
+			"url": "https://www.businessinsider.com/safety-leader-david-robinson-resigns-from-openai-2026-10"
+		},
+		"photo": null,
+		"statut": "valide"
+	},
+	{
+		"id": "jacob-coxon",
+		"nom": "Jacob Coxon",
+		"labo": "Anthropic",
+		"poste": "Chercheur en pré-entraînement",
+		"date": "2026-09",
+		"citation": "Aucune des deux entreprises n’agit de manière responsable. Elles foncent tout droit vers une superintelligence capable de s’améliorer elle-même, en jouant avec nos vies.",
+		"citation_originale": "Neither company is acting responsibly. They are racing straight to self-improving superintelligence and gambling with our lives.",
+		"contexte": "Après trois ans de recherche en pré-entraînement, d’abord chez OpenAI puis chez Anthropic, il annonce sa démission sur X le 9 septembre 2026. Il y dénonce la course entre les deux laboratoires, qu’il juge irresponsables tous les deux.",
+		"source": {
+			"titre": "X, septembre 2026",
+			"url": "https://x.com/hilbertspaess/status/2097476196791709843"
+		},
+		"photo": null,
+		"statut": "valide"
 	}
 ]

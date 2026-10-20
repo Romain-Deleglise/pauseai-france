@@ -17,7 +17,7 @@
 		date: string // AAAA-MM
 		citation: string // en français
 		citation_originale?: string // dans la langue d'origine, si traduite
-		contexte: string
+		contexte?: string // facultatif
 		source: { titre: string; url: string }
 		photo: { url: string; auteur: string; licence: string } | null
 		statut: 'a_verifier' | 'valide'
@@ -102,7 +102,7 @@
 					{/if}
 				</blockquote>
 
-				<p class="contexte">{d.contexte}</p>
+				{#if d.contexte}<p class="contexte">{d.contexte}</p>{/if}
 
 				<p class="source">
 					{isEn ? 'Source:' : 'Source :'}
