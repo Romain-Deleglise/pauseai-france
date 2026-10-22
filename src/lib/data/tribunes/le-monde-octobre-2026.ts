@@ -65,7 +65,7 @@ export const signataires: Signataire[] = [
 		qualite: 'philosophe, essayiste et enseignant à l’IÉSEG School of Management'
 	},
 	{
-		nom: 'Elie Goudout',
+		nom: 'Élie Goudout',
 		qualite: 'normalien et ancien chercheur en IA de confiance chez Thales'
 	},
 	{
@@ -100,6 +100,7 @@ export const signataires: Signataire[] = [
 	{ nom: 'Jérémy Perret', qualite: 'chercheur indépendant en sécurité de l’IA' },
 	{ nom: 'Clémence Peyrot', qualite: 'directrice exécutive de Pause IA France' },
 	{ nom: 'Abel Quentin', qualite: 'écrivain' },
+	{ nom: 'Thibaud Rahier', qualite: 'chercheur en machine learning à Criteo' },
 	{ nom: 'Alexandre Ramé', qualite: 'docteur et chercheur en alignement et sécurité de l’IA' },
 	{ nom: 'Benjamin Schmidt', qualite: 'directeur de Pause AI Allemagne' },
 	{ nom: 'Gaëtan Selle', qualite: 'réalisateur, producteur et cofondateur de The Flares' },
