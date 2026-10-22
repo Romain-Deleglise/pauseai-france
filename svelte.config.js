@@ -58,7 +58,6 @@ const config = {
 							'/fr/demissions',
 							'/fr/citations',
 							// Signataires des tribunes : jamais liées depuis le site.
-							'/fr/incidents',
 							'/fr/tribunes/le-monde-octobre-2026',
 							'/en/tribunes/le-monde-octobre-2026',
 							'/fr/campagnes',
