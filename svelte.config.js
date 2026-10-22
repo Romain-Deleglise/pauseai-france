@@ -54,11 +54,9 @@ const config = {
 							// de page, donc invisible au robot d'exploration du prérendu.
 							'/fr/plan-du-site',
 							'/en/plan-du-site',
-							// Espace « Les faits » (lié depuis le menu Comprendre, listé ici par sécurité).
+							// Espace « Les faits » : page d'accueil prérendue. Les sections
+							// (démissions, déclarations, sondages) lisent Notion à chaque visite.
 							'/fr/faits',
-							'/fr/faits/demissions',
-							'/fr/faits/declarations',
-							'/fr/faits/sondages',
 							// Signataires des tribunes : jamais liées depuis le site.
 							'/fr/tribunes/le-monde-octobre-2026',
 							'/en/tribunes/le-monde-octobre-2026',

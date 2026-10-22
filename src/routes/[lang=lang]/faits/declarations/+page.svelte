@@ -5,29 +5,12 @@
 	// Données : src/lib/data/declarations.json (bientôt la table Notion des bénévoles).
 	// Seules les entrées « valide » s'affichent en production ; en développement,
 	// celles « à vérifier » apparaissent aussi.
-	import { dev } from '$app/environment'
 	import PostMeta from '$components/PostMeta.svelte'
 	import RetourFaits from '$components/RetourFaits.svelte'
 	import { Card, FilterChips, PageHero } from '$components/ui'
 	import { ArrowUpRight, Search } from 'lucide-svelte'
-	import brutes from '$lib/data/declarations.json'
+	import type { CategorieDeclaration as Categorie, Declaration } from '$lib/server/faits'
 	import type { PageData } from './$types'
-
-	type Categorie = 'scientifiques' | 'labos' | 'personnalites' | 'lanceurs_alerte'
-
-	interface Declaration {
-		id: string
-		type: 'collectif' | 'individuel'
-		auteur: string // la personne, ou le nom du texte collectif
-		fonction: string // sa fonction, ou qui a signé le texte collectif
-		categorie?: Categorie // voix individuelles seulement
-		date: string // AAAA ou AAAA-MM
-		citation: string // en français
-		citation_originale?: string // dans la langue d'origine, si traduite
-		contexte?: string // ce qu'il faut savoir pour bien lire la citation
-		source: { titre: string; url: string }
-		statut: 'a_verifier' | 'valide'
-	}
 
 	export let data: PageData
 
@@ -44,12 +27,11 @@
 		lanceurs_alerte: isEn ? 'Whistleblowers' : 'Lanceurs d’alerte'
 	} as Record<Categorie, string>
 
-	const toutes = (brutes as Declaration[])
-		.filter((d) => dev || d.statut === 'valide')
-		.sort((a, b) => b.date.localeCompare(a.date))
-	const aVerifier = toutes.filter((d) => d.statut !== 'valide').length
-	const collectifs = toutes.filter((d) => d.type === 'collectif')
-	const voix = toutes.filter((d) => d.type === 'individuel')
+	// Déjà filtrées (Notion « Visible », ou JSON) et triées par +page.server.ts.
+	$: toutes = data.declarations
+	$: aVerifier = toutes.filter((d) => d.statut !== 'valide').length
+	$: collectifs = toutes.filter((d) => d.type === 'collectif')
+	$: voix = toutes.filter((d) => d.type === 'individuel')
 
 	let onglet: 'collectifs' | 'voix' = 'voix'
 	$: onglets = [
@@ -181,7 +163,13 @@
 
 				<div class="actions">
 					{#if d.citation_originale}
-						<button type="button" class="lien" on:click={() => basculer(d.id)}>
+						<button
+							type="button"
+							class="lien"
+							on:click={() => {
+								basculer(d.id)
+							}}
+						>
 							{traduite
 								? isEn
 									? 'Show original'

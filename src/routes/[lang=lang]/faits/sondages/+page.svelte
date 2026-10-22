@@ -2,25 +2,10 @@
 	// Sondages d'experts sur les risques de l'IA. Données : src/lib/data/sondages.json
 	// (bientôt la table Notion des bénévoles). Seuls les sondages « valide » s'affichent
 	// en production ; en développement, ceux « à vérifier » apparaissent aussi.
-	import { dev } from '$app/environment'
 	import PostMeta from '$components/PostMeta.svelte'
 	import RetourFaits from '$components/RetourFaits.svelte'
 	import { Card, PageHero } from '$components/ui'
-	import brutes from '$lib/data/sondages.json'
 	import type { PageData } from './$types'
-
-	interface Sondage {
-		id: string
-		titre: string
-		organisme: string
-		date: string // AAAA-MM : publication des résultats
-		repondants: string // qui a été interrogé, combien, quand
-		chiffre: string // le résultat clé, ex. « 5 % »
-		resultat: string // ce que mesure ce chiffre
-		precision?: string // un second résultat utile, facultatif
-		source: { titre: string; url: string }
-		statut: 'a_verifier' | 'valide'
-	}
 
 	export let data: PageData
 
@@ -30,10 +15,9 @@
 		? 'When AI researchers are asked about the risks of the technology they build, a significant share consider a catastrophe plausible.'
 		: 'Interrogés sur les risques de la technologie qu’ils développent, une part importante des chercheurs en IA jugent une catastrophe plausible.'
 
-	const tous = (brutes as Sondage[])
-		.filter((s) => dev || s.statut === 'valide')
-		.sort((a, b) => b.date.localeCompare(a.date))
-	const aVerifier = tous.filter((s) => s.statut !== 'valide').length
+	// Déjà filtrées (Notion « Visible », ou JSON) et triées par +page.server.ts.
+	$: tous = data.sondages
+	$: aVerifier = tous.filter((s) => s.statut !== 'valide').length
 
 	$: fmtDate = (aaaamm: string) =>
 		new Date(`${aaaamm}-01`).toLocaleDateString(isEn ? 'en-GB' : 'fr-FR', {

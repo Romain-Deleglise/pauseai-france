@@ -2,7 +2,7 @@
 	// Lien « ← Les faits » en haut de chaque section de l'espace « Les faits ».
 	import { ArrowLeft } from 'lucide-svelte'
 
-	export let lang: string = 'fr'
+	export let lang = 'fr'
 </script>
 
 <a class="retour" href="/{lang}/faits">

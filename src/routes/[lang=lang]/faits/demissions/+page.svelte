@@ -3,26 +3,10 @@
 	// Les données sont dans src/lib/data/demissions.json. Seules les entrées
 	// relues et validées (« statut » : "valide") s'affichent en production ;
 	// en développement, les entrées « à vérifier » apparaissent aussi, signalées.
-	import { dev } from '$app/environment'
 	import PostMeta from '$components/PostMeta.svelte'
 	import RetourFaits from '$components/RetourFaits.svelte'
 	import { Card, FilterChips, PageHero } from '$components/ui'
-	import brutes from '$lib/data/demissions.json'
 	import type { PageData } from './$types'
-
-	interface Demission {
-		id: string
-		nom: string
-		labo: string
-		poste: string
-		date: string // AAAA-MM
-		citation: string // en français
-		citation_originale?: string // dans la langue d'origine, si traduite
-		contexte?: string // facultatif
-		source: { titre: string; url: string }
-		photo: { url: string; auteur: string; licence: string } | null
-		statut: 'a_verifier' | 'valide'
-	}
 
 	export let data: PageData
 
@@ -32,10 +16,9 @@
 		? 'Researchers who left the major AI labs while publicly warning about the risks, in their own words.'
 		: 'Des chercheuses et chercheurs ont quitté les grands laboratoires d’IA en alertant publiquement sur les risques. Leurs raisons, dans leurs propres mots.'
 
-	const toutes = (brutes as Demission[])
-		.filter((d) => dev || d.statut === 'valide')
-		.sort((a, b) => b.date.localeCompare(a.date))
-	const aVerifier = toutes.filter((d) => d.statut !== 'valide').length
+	// Déjà filtrées (Notion « Visible », ou JSON) et triées par +page.server.ts.
+	$: toutes = data.demissions
+	$: aVerifier = toutes.filter((d) => d.statut !== 'valide').length
 
 	let labo = 'tous'
 	$: options = [
