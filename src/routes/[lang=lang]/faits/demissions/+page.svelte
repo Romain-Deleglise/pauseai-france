@@ -5,6 +5,7 @@
 	// en développement, les entrées « à vérifier » apparaissent aussi, signalées.
 	import { dev } from '$app/environment'
 	import PostMeta from '$components/PostMeta.svelte'
+	import RetourFaits from '$components/RetourFaits.svelte'
 	import { Card, FilterChips, PageHero } from '$components/ui'
 	import brutes from '$lib/data/demissions.json'
 	import type { PageData } from './$types'
@@ -63,6 +64,7 @@
 <PostMeta {title} {description} />
 
 <article>
+	<RetourFaits lang={data.lang} />
 	<PageHero>
 		{title}
 		<svelte:fragment slot="lede">{description}</svelte:fragment>
