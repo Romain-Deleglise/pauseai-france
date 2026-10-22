@@ -15,6 +15,7 @@ export default {
 		blog: 'Blog',
 		fresque: 'La fresque des risques de l’IA',
 		faits: 'Les faits',
+		idees_recues: 'Idées reçues',
 		comment_agir: 'Comment agir ?',
 		groupes_locaux: 'Groupes locaux',
 		toutes_campagnes: 'Toutes nos campagnes',
