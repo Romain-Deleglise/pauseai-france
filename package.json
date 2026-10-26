@@ -3,8 +3,8 @@
 	"name": "pause-ai",
 	"private": true,
 	"scripts": {
-		"dev": "vite dev --host 0.0.0.0",
-		"dev:watch": "svelte-kit sync && concurrently --names \"VITEST,SVELTE-CHECK,SERVER\" --prefix-colors \"bgMagenta.bold,bgCyan.bold,bgGreen.bold\" \"vitest\" \"svelte-check --tsconfig ./tsconfig.json --watch\" \"vite dev --host 0.0.0.0\"",
+		"dev": "vite dev",
+		"dev:watch": "svelte-kit sync && concurrently --names \"VITEST,SVELTE-CHECK,SERVER\" --prefix-colors \"bgMagenta.bold,bgCyan.bold,bgGreen.bold\" \"vitest\" \"svelte-check --tsconfig ./tsconfig.json --watch\" \"vite dev\"",
 		"build": "vite build",
 		"build:dev": "vite build --mode development",
 		"preview": "vite preview",
