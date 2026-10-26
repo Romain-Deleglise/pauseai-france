@@ -20,7 +20,7 @@
 		"lint:css": "stylelint \"src/**/*.{css,svelte}\""
 	},
 	"devDependencies": {
-		"@netlify/functions": "^4.3.0",
+		"@netlify/functions": "^6.0.3",
 		"@sveltejs/adapter-netlify": "^4.4.2",
 		"@sveltejs/enhanced-img": "^0.2.1",
 		"@sveltejs/kit": "^2.70.3",
@@ -59,7 +59,7 @@
 		"unist-util-visit": "^5.2.0",
 		"vfile": "^6.0.3",
 		"vite": "^5.4.21",
-		"vitest": "^2.1.9"
+		"vitest": "^3.2.7"
 	},
 	"dependencies": {
 		"@fontsource/ibm-plex-sans": "^5.3.0",
