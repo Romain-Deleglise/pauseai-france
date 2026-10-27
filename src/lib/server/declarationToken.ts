@@ -15,6 +15,10 @@ export interface DeclarationClaims {
 	n: boolean
 	/** ID de l'activité « commentaire » à valider, s'il y en a un. */
 	m?: number
+	/** Prénom et nom saisis, à appliquer si le contact porte un nom provisoire
+	 *  de don (« Donateur Stripe ») : seulement une fois l'adresse confirmée. */
+	f?: string
+	l?: string
 	/** Expiration (secondes depuis l'epoch). */
 	e: number
 }
@@ -50,7 +54,10 @@ export function verifyToken(token: string, now = Date.now()): DeclarationClaims 
 		if (typeof c !== 'number' || !Number.isInteger(c) || c <= 0) return null
 		if (typeof e !== 'number' || e * 1000 < now) return null
 		const m = typeof raw.m === 'number' && Number.isInteger(raw.m) && raw.m > 0 ? raw.m : undefined
-		return { c, p: raw.p === true, n: raw.n === true, m, e }
+		const text = (v: unknown) => (typeof v === 'string' && v.trim() ? v.slice(0, 64) : undefined)
+		const f = text(raw.f)
+		const l = text(raw.l)
+		return { c, p: raw.p === true, n: raw.n === true, m, ...(f && l ? { f, l } : {}), e }
 	} catch {
 		return null
 	}
