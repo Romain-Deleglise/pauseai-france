@@ -5,6 +5,7 @@ import {
 	callApi4,
 	confirmedComments,
 	createPendingComment,
+	isPlaceholderName,
 	groupStatuses,
 	resendWaitMs,
 	sentAtDetails,
@@ -135,7 +136,13 @@ async function fetchLocalStats(): Promise<NonNullable<DeclarationStats['local']>
 			title: v['contact_id.job_title']?.trim() || undefined,
 			comment: comments.get(Number(v.contact_id))
 		}))
-		.filter((s) => s.name)
+		// Un nom provisoire de don (« Donateur Stripe ») n'est pas un nom : la
+		// signature reste comptée, comme anonyme.
+		.filter(
+			(s, i) =>
+				s.name &&
+				!isPlaceholderName(rows[i]['contact_id.first_name'], rows[i]['contact_id.last_name'])
+		)
 
 	return { count: all.count ?? all.countMatched ?? 0, signatories }
 }
@@ -265,7 +272,11 @@ async function findOrCreateContact(
 	return { contact: { id: Number(id) }, created: true }
 }
 
-/** Complète le nom et la fonction du contact s'ils sont vides (jamais d'écrasement). */
+/**
+ * Complète le nom et la fonction du contact s'ils sont vides (jamais
+ * d'écrasement). Un nom provisoire de don (« Donateur Stripe ») n'est pas
+ * touché ici : il est remplacé à la confirmation, une fois l'adresse prouvée.
+ */
 async function completeContact(
 	c: KnownContact,
 	firstName: string,
@@ -273,8 +284,10 @@ async function completeContact(
 	title: string
 ) {
 	const values: Record<string, unknown> = {}
-	if (!c.first_name) values.first_name = firstName
-	if (!c.last_name) values.last_name = lastName
+	if (!isPlaceholderName(c.first_name, c.last_name)) {
+		if (!c.first_name) values.first_name = firstName
+		if (!c.last_name) values.last_name = lastName
+	}
 	if (title && !c.job_title) values.job_title = title
 	if (!Object.keys(values).length) return
 	await callApi4('Contact', 'update', {
@@ -378,7 +391,10 @@ export const POST: RequestHandler = async ({ request }) => {
 			c: contact.id,
 			p: Boolean(data.showName),
 			n: Boolean(data.newsletter),
-			...(commentId ? { m: commentId } : {})
+			...(commentId ? { m: commentId } : {}),
+			...(isPlaceholderName(contact.first_name, contact.last_name)
+				? { f: firstName, l: lastName }
+				: {})
 		})
 		const link = `${siteUrl}/${lang}/declaration/confirmer?t=${encodeURIComponent(token)}`
 		await sendMail(confirmationEmail({ to: email, firstName, link, lang }))
