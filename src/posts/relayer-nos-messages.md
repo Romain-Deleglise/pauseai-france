@@ -1,5 +1,6 @@
 ---
 title: Relayer nos messages
+rubrique: agir
 description: 'Réseaux sociaux et Pause Action : quelques minutes par semaine pour faire porter la voix de Pause IA bien au-delà de notre cercle.'
 ---
 

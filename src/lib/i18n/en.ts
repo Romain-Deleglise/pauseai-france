@@ -3,6 +3,7 @@ export default {
 		comprendre: 'Learn',
 		agir: 'Act',
 		campagnes: 'Campaigns',
+		article: 'Article',
 		actualites: 'News',
 		apropos: 'About',
 		dangers: 'Dangers of AI',

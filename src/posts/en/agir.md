@@ -1,5 +1,6 @@
 ---
 title: All the ways to act
+rubrique: agir
 description: The most useful actions to help keep AI under control, from 5 minutes to a lasting commitment.
 ---
 

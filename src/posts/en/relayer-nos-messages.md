@@ -1,5 +1,6 @@
 ---
 title: Share our messages
+rubrique: agir
 description: "Social media and Pause Action: a few minutes a week to carry Pause AI's voice far beyond our usual circle."
 ---
 

@@ -1,5 +1,6 @@
 ---
 title: What do we ask for?
+rubrique: apropos
 description: We call for a global pause on training frontier AI models, while international governance is put in place to oversee their development.
 ---
 

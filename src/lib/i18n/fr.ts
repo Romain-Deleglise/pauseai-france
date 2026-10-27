@@ -3,6 +3,7 @@ export default {
 		comprendre: 'Comprendre',
 		agir: 'Agir',
 		campagnes: 'Campagnes',
+		article: 'Article',
 		actualites: 'Actualités',
 		apropos: 'À propos',
 		dangers: "Les dangers de l'IA",

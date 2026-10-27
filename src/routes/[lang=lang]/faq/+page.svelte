@@ -6,7 +6,7 @@
 	import PostMeta from '$components/PostMeta.svelte'
 	import FaqList from '$components/FaqList.svelte'
 	import Button from '$components/Button.svelte'
-	import { PageHero } from '$components/ui'
+	import { Page } from '$components/ui'
 	import { parseFaq, flattenFaq, faqJsonLd } from '$lib/faq'
 	import { jsonLdTag } from '$lib/jsonLd'
 	import faqRaw from '$posts/faq.md?raw'
@@ -72,12 +72,13 @@
 	{@html jsonLdScript}
 </svelte:head>
 
-<article>
-	<PageHero>
-		{tr.heading}
-		<svelte:fragment slot="lede">{tr.intro}</svelte:fragment>
-	</PageHero>
-
+<Page
+	as="article"
+	width="content"
+	eyebrow={isEn ? 'About' : 'À propos'}
+	title={tr.heading}
+	lede={tr.intro}
+>
 	<div class="search">
 		<svg
 			class="search-icon"
@@ -114,17 +115,9 @@
 		<Button href="mailto:contact@pauseia.fr">{tr.contact}</Button>
 		<a href="{prefix}/qui-sommes-nous">{isEn ? 'Who are we?' : 'Qui sommes-nous ?'}</a>
 	</aside>
-</article>
+</Page>
 
 <style>
-	article {
-		max-inline-size: var(--width-content);
-		margin-inline: auto;
-		margin-top: 3rem;
-		margin-bottom: 5rem;
-		padding: 0 1.5rem;
-	}
-
 	.search {
 		position: relative;
 		margin-bottom: 1.5rem;
@@ -178,8 +171,5 @@
 	}
 
 	@media (max-width: 600px) {
-		article {
-			padding: 0 1.1rem;
-		}
 	}
 </style>

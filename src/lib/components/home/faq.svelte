@@ -14,11 +14,19 @@
 	$: isEn = lang === 'en'
 	$: prefix = `/${lang}`
 	$: all = parseFaq(isEn ? faqRawEn : faqRaw)
-	$: total = flattenFaq(all).length
-	// Aperçu : la première question de chaque thème. La FAQ complète et ses
-	// données structurées FAQPage vivent sur /[lang]/faq, la page que les
-	// moteurs de recherche doivent positionner : pas de doublon ici.
-	$: preview = all.map((c) => ({ ...c, items: c.items.slice(0, 1) }))
+	// Aperçu : six questions clés en liste simple (même ordre dans les deux
+	// langues). La FAQ complète et ses données structurées FAQPage vivent sur
+	// /[lang]/faq, la page que les moteurs doivent positionner : pas de
+	// doublon ici.
+	const PREVIEW = [0, 6, 10, 12, 2, 13]
+	$: flatItems = flattenFaq(all)
+	$: total = flatItems.length
+	$: preview = [
+		{
+			category: '',
+			items: PREVIEW.map((i) => flatItems[i]).filter(Boolean)
+		}
+	]
 </script>
 
 <section id="faq" class="faq" aria-labelledby={label_id}>
@@ -36,7 +44,7 @@
 		{/if}
 	</p>
 
-	<FaqList categories={preview} />
+	<FaqList categories={preview} flat />
 
 	<div class="more">
 		<Button href="{prefix}/faq">

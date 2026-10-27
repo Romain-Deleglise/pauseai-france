@@ -1,5 +1,6 @@
 ---
 title: Que demandons-nous ?
+rubrique: apropos
 description: Nous demandons une pause mondiale de l'entraînement des modèles d'IA de pointe, le temps qu'une gouvernance internationale se mette en place pour en encadrer le développement.
 ---
 
