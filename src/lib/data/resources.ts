@@ -159,22 +159,23 @@ export const resources: Resource[] = [
 		langs: ['fr'],
 		category: 'pause-ia',
 		type: 'article',
-		date: '2025-10'
+		date: 'octobre 2025'
 	},
 	{
 		id: 'pauseia-forum-solutions-2025',
 		title: {
-			fr: 'Reprendre le contrôle : Forum des solutions (2025)',
-			en: 'Taking back control: Solutions Forum (2025)'
+			fr: 'Reprendre le contrôle : Forum des solutions (8 février 2025)',
+			en: 'Taking back control: Solutions Forum (February 8, 2025)'
 		},
 		description: {
-			fr: 'Les approches et solutions pour une IA compatible avec l’humanité, présentées lors du forum.',
-			en: 'Approaches and solutions for AI compatible with humanity, presented at the forum.'
+			fr: 'Forum organisé à Paris : les approches et solutions pour une IA compatible avec l’humanité.',
+			en: 'Forum held in Paris: approaches and solutions for AI compatible with humanity.'
 		},
 		url: 'https://controleia.org/solutions/',
 		langs: ['fr'],
 		category: 'pause-ia',
-		type: 'site'
+		type: 'site',
+		date: 'février 2025'
 	},
 
 	// ── LIVRES ──────────────────────────────────────────────

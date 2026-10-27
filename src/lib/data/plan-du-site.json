@@ -30,8 +30,8 @@
 					"externe": false
 				},
 				{
-					"href": "/participer-a-notre-communication",
-					"label": "Participer à notre communication",
+					"href": "/relayer-nos-messages",
+					"label": "Relayer nos messages",
 					"externe": false
 				},
 				{
@@ -387,11 +387,15 @@
 		},
 		{
 			"slug": "/en/propositions",
-			"titre": "Our Proposals"
+			"titre": "What do we ask for?"
 		},
 		{
 			"slug": "/en/qui-sommes-nous",
 			"titre": "Who Are We?"
+		},
+		{
+			"slug": "/en/relayer-nos-messages",
+			"titre": "Share our messages"
 		},
 		{
 			"slug": "/faq",
@@ -406,10 +410,6 @@
 			"titre": "Mentions légales"
 		},
 		{
-			"slug": "/participer-a-notre-communication",
-			"titre": "Participer à notre communication"
-		},
-		{
 			"slug": "/politique-de-confidentialite",
 			"titre": "Politique de confidentialité"
 		},
@@ -420,6 +420,10 @@
 		{
 			"slug": "/qui-sommes-nous",
 			"titre": "Qui sommes-nous ?"
+		},
+		{
+			"slug": "/relayer-nos-messages",
+			"titre": "Relayer nos messages"
 		},
 		{
 			"slug": "/videos",
@@ -441,6 +445,6 @@
 	"total": {
 		"pages": 36,
 		"dynamiques": 6,
-		"articles": 33
+		"articles": 34
 	}
 }

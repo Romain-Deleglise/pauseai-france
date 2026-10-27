@@ -36,10 +36,10 @@ You don't need to devote your life to it: here are the most useful actions, from
     <strong>Act near you</strong>
     <small>Join or start a local group.</small>
   </a>
-  <a class="action-card" href="/{lang}/participer-a-notre-communication">
+  <a class="action-card" href="/{lang}/relayer-nos-messages">
     <span class="ac-emoji">📣</span>
-    <strong>Help with our communication</strong>
-    <small>Share our posts, join Pause Action, lend a hand on a campaign.</small>
+    <strong>Share our messages</strong>
+    <small>Share our posts, join Pause Action.</small>
   </a>
   <a class="action-card" href="/{lang}/dons">
     <span class="ac-emoji">💶</span>

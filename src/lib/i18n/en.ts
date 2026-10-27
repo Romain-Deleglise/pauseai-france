@@ -22,7 +22,7 @@ export default {
 		perte_de_controle: 'On the brink of losing control',
 		warning_shot: 'An AI escaped',
 		ecrire_elus: 'Write to reps & the press',
-		participer_communication: 'Help with our communication',
+		relayer_messages: 'Share our messages',
 		pres_de_chez_vous: 'Act near you',
 		convaincre: 'Convince those around you',
 		emploi_ia: 'AI will not destroy ONLY your job',

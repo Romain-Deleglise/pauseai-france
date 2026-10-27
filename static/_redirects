@@ -38,7 +38,12 @@
 /financements  /fr/financements  301!
 /faq  /fr/faq  301!
 /videos  /fr/videos  301!
-/participer-a-notre-communication  /fr/participer-a-notre-communication  301!
+/relayer-nos-messages  /fr/relayer-nos-messages  301!
+
+# « Participer à notre communication » renommée « Relayer nos messages » (oct. 2026)
+/participer-a-notre-communication     /fr/relayer-nos-messages  301!
+/fr/participer-a-notre-communication  /fr/relayer-nos-messages  301!
+/en/participer-a-notre-communication  /en/relayer-nos-messages  301!
 
 # ── Anciennes URL historiques ──────────────────────────────────────────
 /senat-2025  /fr/senat2025  301!

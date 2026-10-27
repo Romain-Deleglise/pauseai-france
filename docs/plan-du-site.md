@@ -14,7 +14,7 @@ d'équipe et se tient ailleurs.
 
 - **36 pages** (hors routes dynamiques), chacune en français et en anglais via le préfixe `/fr` ou `/en`
 - **6 gabarits dynamiques** (articles, campagnes, dangers…)
-- **33 articles** en Markdown dans `src/posts`
+- **34 articles** en Markdown dans `src/posts`
 - **20 pages hors menu** : en ligne, mais qu’aucun menu ni pied de page n’atteint
 
 ## Arborescence depuis le menu principal
@@ -31,7 +31,7 @@ flowchart LR
   accueil --> g1["Agir"]
   g1 --> n3["Écrire à vos élus ou à la presse<br/><small>/ecrire-a-mes-elus</small>"]
   g1 --> n4["Signer la déclaration<br/><small>/declaration</small>"]
-  g1 --> n5["Participer à notre communication<br/><small>/participer-a-notre-communication</small>"]
+  g1 --> n5["Relayer nos messages<br/><small>/relayer-nos-messages</small>"]
   g1 --> n6["Agir près de chez vous<br/><small>/groupes-locaux</small>"]
   g1 --> n7["Convaincre autour de vous ↗<br/><small>site externe</small>"]
   class n7 externe
@@ -100,14 +100,14 @@ flowchart LR
 
 ### Agir
 
-| Page                             | Chemin                              |
-| -------------------------------- | ----------------------------------- |
-| Écrire à vos élus ou à la presse | `/ecrire-a-mes-elus`                |
-| Signer la déclaration            | `/declaration`                      |
-| Participer à notre communication | `/participer-a-notre-communication` |
-| Agir près de chez vous           | `/groupes-locaux`                   |
-| Convaincre autour de vous        | _externe_, /recrutement             |
-| Toutes les façons d’agir         | `/agir`                             |
+| Page                             | Chemin                  |
+| -------------------------------- | ----------------------- |
+| Écrire à vos élus ou à la presse | `/ecrire-a-mes-elus`    |
+| Signer la déclaration            | `/declaration`          |
+| Relayer nos messages             | `/relayer-nos-messages` |
+| Agir près de chez vous           | `/groupes-locaux`       |
+| Convaincre autour de vous        | _externe_, /recrutement |
+| Toutes les façons d’agir         | `/agir`                 |
 
 ### Campagnes
 
@@ -232,15 +232,16 @@ Une seule route sert toutes les pages d’une famille ; le contenu vient de
 | Our funding                                                  | `src/posts/en/financements.md`                                                 |
 | Legal Notices                                                | `src/posts/en/mentions-legales.md`                                             |
 | Privacy Policy                                               | `src/posts/en/politique-de-confidentialite.md`                                 |
-| Our Proposals                                                | `src/posts/en/propositions.md`                                                 |
+| What do we ask for?                                          | `src/posts/en/propositions.md`                                                 |
 | Who Are We?                                                  | `src/posts/en/qui-sommes-nous.md`                                              |
+| Share our messages                                           | `src/posts/en/relayer-nos-messages.md`                                         |
 | FAQ                                                          | `src/posts/faq.md`                                                             |
 | Notre financement                                            | `src/posts/financements.md`                                                    |
 | Mentions légales                                             | `src/posts/mentions-legales.md`                                                |
-| Participer à notre communication                             | `src/posts/participer-a-notre-communication.md`                                |
 | Politique de confidentialité                                 | `src/posts/politique-de-confidentialite.md`                                    |
 | Que demandons-nous ?                                         | `src/posts/propositions.md`                                                    |
 | Qui sommes-nous ?                                            | `src/posts/qui-sommes-nous.md`                                                 |
+| Relayer nos messages                                         | `src/posts/relayer-nos-messages.md`                                            |
 | Vidéos                                                       | `src/posts/videos.md`                                                          |
 | Tests Wait but why                                           | `src/posts/waitbutwhy-test.md`                                                 |
 | Wait But Why - IA - Partie 1                                 | `src/posts/waitbutwhy1.md`                                                     |

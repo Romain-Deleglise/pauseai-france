@@ -39,10 +39,10 @@ Pas besoin d'y consacrer votre vie : voici les actions les plus utiles, de cinq 
     <strong>Agir près de chez vous</strong>
     <small>Rejoignez ou lancez un groupe local.</small>
   </a>
-  <a class="action-card" href="/{lang}/participer-a-notre-communication">
+  <a class="action-card" href="/{lang}/relayer-nos-messages">
     <span class="ac-emoji">📣</span>
-    <strong>Participer à notre communication</strong>
-    <small>Relayer nos messages, rejoindre Pause Action, aider sur une campagne.</small>
+    <strong>Relayer nos messages</strong>
+    <small>Partager nos publications, rejoindre Pause Action.</small>
   </a>
   <a class="action-card" href="/{lang}/dons">
     <span class="ac-emoji">💶</span>
