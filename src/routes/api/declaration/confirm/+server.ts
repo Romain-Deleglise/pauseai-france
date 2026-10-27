@@ -6,6 +6,7 @@ import {
 	logActivity,
 	newsletterGroups,
 	publicGroup,
+	replacePlaceholderName,
 	setGroups,
 	signatoriesGroup
 } from '$lib/server/declarationCivi'
@@ -35,7 +36,15 @@ export const POST: RequestHandler = async ({ request }) => {
 		if (claims.n) groups.push(...newsletterGroups())
 		await Promise.all([
 			setGroups(claims.c, groups, 'Added'),
-			claims.m ? confirmComment(claims.m) : Promise.resolve()
+			claims.m ? confirmComment(claims.m) : Promise.resolve(),
+			// Nom provisoire de don (« Donateur Stripe ») : remplacé par le nom
+			// saisi, maintenant que l'adresse est confirmée. Un échec ne bloque pas
+			// la signature.
+			claims.f && claims.l
+				? replacePlaceholderName(claims.c, claims.f, claims.l).catch((e: unknown) => {
+						console.warn('[declaration] nom provisoire non remplacé (ignoré) :', e)
+					})
+				: Promise.resolve()
 		])
 
 		if (!already) {

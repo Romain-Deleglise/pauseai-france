@@ -134,6 +134,58 @@ export async function logActivity(
 // supprimer l'activité dans CiviCRM.
 export const COMMENT_SUBJECT = 'Déclaration PauseAI : commentaire'
 
+// Noms provisoires posés par la synchronisation des dons (Stripe) sur les
+// contacts créés sans nom. Ils ne sont pas un vrai nom : jamais affichés, et
+// remplacés par celui saisi dans le formulaire une fois l'adresse confirmée.
+const PLACEHOLDER_NAMES = new Set([
+	'donateur stripe',
+	'stripe donateur',
+	'donatrice stripe',
+	'donateur',
+	'stripe',
+	'stripe donor',
+	'donor stripe',
+	'donor'
+])
+
+/** Vrai si prénom + nom est un nom provisoire de don (« Donateur Stripe »…). */
+export function isPlaceholderName(first?: string | null, last?: string | null): boolean {
+	const full = [first, last]
+		.filter(Boolean)
+		.join(' ')
+		.normalize('NFD')
+		.replace(/\p{Diacritic}/gu, '')
+		.replace(/\s+/g, ' ')
+		.trim()
+		.toLowerCase()
+	return PLACEHOLDER_NAMES.has(full)
+}
+
+/** Remplace un nom provisoire par le nom saisi (jamais un vrai nom). */
+export async function replacePlaceholderName(
+	contactId: number,
+	firstName: string,
+	lastName: string
+): Promise<void> {
+	const res = await callApi4<{ first_name?: string | null; last_name?: string | null }>(
+		'Contact',
+		'get',
+		{
+			checkPermissions: false,
+			select: ['first_name', 'last_name'],
+			where: [['id', '=', contactId]],
+			limit: 1
+		}
+	)
+	const c = res.values?.[0]
+	if (!c || !isPlaceholderName(c.first_name, c.last_name)) return
+	await callApi4('Contact', 'update', {
+		checkPermissions: false,
+		values: { first_name: firstName, last_name: lastName },
+		where: [['id', '=', contactId]]
+	})
+}
+
 /** Enregistre un commentaire en attente de confirmation ; renvoie l'ID de l'activité. */
 export async function createPendingComment(contactId: number, comment: string): Promise<number> {
 	const res = await callApi4<{ id: number }>('Activity', 'create', {
