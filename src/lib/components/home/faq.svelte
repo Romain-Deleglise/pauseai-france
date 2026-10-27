@@ -2,8 +2,8 @@
 	import UnderlinedTitle from '$components/UnderlinedTitle.svelte'
 	import FaqList from '$components/FaqList.svelte'
 	import Fly from '$components/Fly.svelte'
-	import { parseFaq, flattenFaq, faqJsonLd } from '$lib/faq'
-	import { jsonLdTag } from '$lib/jsonLd'
+	import Button from '$components/Button.svelte'
+	import { parseFaq, flattenFaq } from '$lib/faq'
 	import type { Lang } from '$lib/i18n'
 	import faqRaw from '$posts/faq.md?raw'
 	import faqRawEn from '$posts/en/faq.md?raw'
@@ -12,16 +12,14 @@
 
 	const label_id = 'faq-title'
 	$: isEn = lang === 'en'
-	$: categories = parseFaq(isEn ? faqRawEn : faqRaw)
-	// La FAQ n'existe plus qu'ici : les données structurées suivent, sinon on
-	// perdrait l'affichage enrichi de Google.
-	$: jsonLdScript = jsonLdTag(faqJsonLd(flattenFaq(categories)))
+	$: prefix = `/${lang}`
+	$: all = parseFaq(isEn ? faqRawEn : faqRaw)
+	$: total = flattenFaq(all).length
+	// Aperçu : la première question de chaque thème. La FAQ complète et ses
+	// données structurées FAQPage vivent sur /[lang]/faq, la page que les
+	// moteurs de recherche doivent positionner : pas de doublon ici.
+	$: preview = all.map((c) => ({ ...c, items: c.items.slice(0, 1) }))
 </script>
-
-<svelte:head>
-	<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-	{@html jsonLdScript}
-</svelte:head>
 
 <section id="faq" class="faq" aria-labelledby={label_id}>
 	<Fly>
@@ -38,7 +36,13 @@
 		{/if}
 	</p>
 
-	<FaqList {categories} />
+	<FaqList categories={preview} />
+
+	<div class="more">
+		<Button href="{prefix}/faq">
+			{isEn ? `See all ${total} questions` : `Voir les ${total} questions`}
+		</Button>
+	</div>
 </section>
 
 <style>
@@ -47,5 +51,9 @@
 		font-size: 1.05rem;
 		line-height: 1.6;
 		color: var(--text-2);
+	}
+
+	.more {
+		margin-top: 1.5rem;
 	}
 </style>

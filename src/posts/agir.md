@@ -1,5 +1,5 @@
 ---
-title: Passez à l’action
+title: Toutes les façons d’agir
 description: Les actions les plus utiles pour aider à garder l'IA sous contrôle, de 5 minutes à un engagement durable.
 original:
   title: Take action

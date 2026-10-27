@@ -50,10 +50,8 @@
 # ── Raccourcis ─────────────────────────────────────────────────────────
 /discord https://discord.gg/vyXGd7AeGc
 
-# La FAQ ne vit plus que sur la page d'accueil (une seule source de vérité).
-/fr/faq  /fr#faq  301!
-/en/faq  /en#faq  301!
-/faq     /fr#faq  301!
+# La FAQ a sa page dédiée (/fr/faq, /en/faq) : l'accueil n'en montre qu'un
+# aperçu. « /faq » est redirigée plus haut avec les autres pages sans préfixe.
 
 # Articles de campagne déplacés sous /articles/AAAA-MM-JJ-slug (octobre 2026).
 # 301 et non 302 : ces adresses ont été partagées et indexées, le moteur doit

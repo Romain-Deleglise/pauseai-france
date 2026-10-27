@@ -87,13 +87,11 @@
 			id: 'comprendre',
 			label: t.nav.comprendre,
 			items: [
-				{ href: `${prefix}#faq`, label: t.nav.faq },
 				{ href: `${prefix}/ressources`, label: t.nav.liens_utiles },
-				{ href: `${prefix}/newsletters`, label: t.nav.newsletter },
-				{ href: 'https://pauseia.substack.com/', label: t.nav.blog, external: true },
 				{ href: `${prefix}/fresque`, label: t.nav.fresque }
 				// « Les dangers de l'IA » est retiré du menu le temps de retravailler le
 				// discours. La route reste en place : les liens existants fonctionnent.
+				// La FAQ est rangée dans « À propos ».
 			]
 		},
 		{
@@ -112,32 +110,32 @@
 				},
 				{ href: `${prefix}/groupes-locaux`, label: t.nav.pres_de_chez_vous },
 				// /recrutement n'est pas localisée : pas de préfixe de langue.
-				{ href: '/recrutement', label: t.nav.convaincre }
-				// « Comment agir ? » quitte le menu : la page reste en ligne (et liée
-				// depuis le pied de page) pour conserver son référencement.
+				{ href: '/recrutement', label: t.nav.convaincre },
+				// La synthèse de tous les moyens d'agir ferme la liste, comme « Toutes
+				// nos campagnes » ferme celle des campagnes.
+				{ href: `${prefix}/agir`, label: t.nav.toutes_facons_agir }
 			]
 		},
 		{
 			id: 'campagnes',
 			label: t.nav.campagnes,
 			items: [
-				{ href: `${prefix}/campagnes`, label: t.nav.toutes_campagnes },
 				{ href: `${prefix}/perte-de-controle`, label: t.nav.perte_de_controle },
 				// « Une IA s'est échappée » est terminée : elle reste en ligne et
 				// listée sur /campagnes avec son bilan, mais quitte le menu.
-				{ href: `${prefix}/emploi-ia`, label: t.nav.emploi_ia }
+				{ href: `${prefix}/emploi-ia`, label: t.nav.emploi_ia },
+				{ href: `${prefix}/campagnes`, label: t.nav.toutes_campagnes }
 			]
 		},
 		{
-			id: 'evenements',
-			label: t.nav.evenements,
+			// Remplace l'ancien menu « Événements » : le colloque du Sénat 2025 et le
+			// Forum des solutions sont désormais dans Ressources › Pause IA.
+			id: 'actualites',
+			label: t.nav.actualites,
 			items: [
-				{ href: `${prefix}/senat2025`, label: t.nav.senat2025 },
-				{
-					href: 'https://controleia.org/solutions/',
-					label: t.nav.forum2025,
-					external: true
-				}
+				{ href: 'https://pauseia.substack.com/', label: t.nav.blog, external: true },
+				{ href: `${prefix}/presse`, label: t.nav.presse },
+				{ href: `${prefix}/newsletters`, label: t.nav.newsletter }
 			]
 		},
 		{
@@ -146,7 +144,7 @@
 			items: [
 				{ href: `${prefix}/qui-sommes-nous`, label: t.nav.qui_sommes_nous },
 				{ href: `${prefix}/propositions`, label: t.nav.propositions },
-				{ href: `${prefix}/presse`, label: t.nav.presse }
+				{ href: `${prefix}/faq`, label: t.nav.faq }
 			]
 		}
 	]

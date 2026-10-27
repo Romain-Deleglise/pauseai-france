@@ -1,5 +1,5 @@
 ---
-title: Take Action
+title: All the ways to act
 description: The most useful actions to help keep AI under control, from 5 minutes to a lasting commitment.
 ---
 

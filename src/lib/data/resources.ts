@@ -7,12 +7,7 @@
 export type Lang = 'fr' | 'en'
 
 export type Category =
-	| 'pause-ia'
-	| 'livres'
-	| 'comprendre'
-	| 'risques'
-	| 'declarations'
-	| 'newsletters'
+	'pause-ia' | 'livres' | 'comprendre' | 'risques' | 'declarations' | 'newsletters'
 
 // Type of media, second filter axis on the /ressources page.
 export type MediaType =
@@ -143,6 +138,40 @@ export const resources: Resource[] = [
 			en: 'A visual walkthrough of what AI is and its existential risks. Simplified explanations, illustrated with analogies.'
 		},
 		url: 'https://pauseia.notion.site/Comprendre-l-IA-et-ses-risques-existentiels-34d28fc94b7780739a4ffc204262495b',
+		langs: ['fr'],
+		category: 'pause-ia',
+		type: 'site'
+	},
+	// Anciennement dans le menu « Événements », supprimé : ces deux pages
+	// restent accessibles depuis les ressources de Pause IA.
+	{
+		id: 'pauseia-senat-2025',
+		title: {
+			fr: 'Colloque au Sénat (31 octobre 2025)',
+			en: 'Senate colloquium (October 31, 2025)'
+		},
+		description: {
+			fr: 'Compte rendu du colloque organisé par Pause IA au Sénat : points clés, résumé exécutif et recommandations pour maîtriser l’IA.',
+			en: 'Report from the colloquium organized by Pause AI at the French Senate: key points, executive summary and recommendations for controlling AI.'
+		},
+		url: '/fr/senat2025',
+		internal: true,
+		langs: ['fr'],
+		category: 'pause-ia',
+		type: 'article',
+		date: '2025-10'
+	},
+	{
+		id: 'pauseia-forum-solutions-2025',
+		title: {
+			fr: 'Reprendre le contrôle : Forum des solutions (2025)',
+			en: 'Taking back control: Solutions Forum (2025)'
+		},
+		description: {
+			fr: 'Les approches et solutions pour une IA compatible avec l’humanité, présentées lors du forum.',
+			en: 'Approaches and solutions for AI compatible with humanity, presented at the forum.'
+		},
+		url: 'https://controleia.org/solutions/',
 		langs: ['fr'],
 		category: 'pause-ia',
 		type: 'site'
