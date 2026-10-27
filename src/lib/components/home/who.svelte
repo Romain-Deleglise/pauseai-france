@@ -389,94 +389,17 @@
 			</p>
 		</div>
 
+		<!-- Le positionnement détaillé (quelle IA, pourquoi, que faire) vit sur
+		     « Que demandons-nous ? » : ici, la demande en une phrase et un renvoi. -->
 		<div class="team-section">
-			<h2 class="section-title">Notre positionnement</h2>
+			<h2 class="section-title">Notre demande</h2>
 			<p class="section-description">
-				Nous demandons un <a href="{prefix}/propositions"
-					>moratoire sur l'entraînement des systèmes d'IA généralistes</a
-				> jusqu'à ce que toutes les conditions de sécurité et de contrôle démocratique soient réunies.
+				Nous demandons une pause mondiale de l'entraînement des modèles d'IA de pointe, jusqu'à ce
+				que toutes les conditions de sécurité et de contrôle démocratique soient réunies.
 			</p>
-
-			<div class="accordion-stack">
-				<Accordion id="quelle-ia" noHash>
-					<svelte:fragment slot="head">Quelle IA&nbsp;?</svelte:fragment>
-					<svelte:fragment slot="details">
-						<ul class="bullet-list">
-							<li>Nous ne sommes pas contre toute forme d'IA.</li>
-							<li>
-								Nous sommes contre <strong
-									>le développement sans contrôle et sans limite de l'intelligence artificielle
-									généraliste</strong
-								> car il expose notre civilisation à des risques catastrophiques.
-							</li>
-						</ul>
-					</svelte:fragment>
-				</Accordion>
-
-				<Accordion id="pourquoi" noHash>
-					<svelte:fragment slot="head">Pourquoi&nbsp;?</svelte:fragment>
-					<svelte:fragment slot="details">
-						<ul class="bullet-list">
-							<li>
-								Les modèles d'IA généralistes (aujourd'hui tels que GPT, Claude, Gemini) deviennent
-								chaque jour plus puissants, ils sont faciles à utiliser et se déploient à grande
-								vitesse dans la société, sans réelles <a
-									href="https://www.gov.uk/government/publications/international-ai-safety-report-2025"
-									target="_blank"
-									rel="noopener noreferrer">normes de sécurité</a
-								> et hors de tout contrôle institutionnel.
-							</li>
-							<li>
-								Ils présentent déjà des risques majeurs pour la sécurité de nos <a
-									href="{prefix}/dangers/economiques-et-materiels">infrastructures</a
-								>, pour <a href="{prefix}/dangers/pour-la-societe">nos institutions</a>, pour
-								<a href="{prefix}/dangers/pour-les-individus">notre modèle social</a>.
-							</li>
-							<li>
-								Ces modèles d'IA commencent à <a
-									href="https://www.anthropic.com/research/alignment-faking"
-									target="_blank"
-									rel="noopener noreferrer">échapper à leurs créateurs</a
-								>. Certains le reconnaissent publiquement.
-							</li>
-							<li>
-								Dans un scénario catastrophe que l'on ne peut exclure, ils pourraient donner
-								naissance à une <a
-									href="https://www.safe.ai/work/statement-on-ai-risk"
-									target="_blank"
-									rel="noopener noreferrer">super-intelligence incontrôlable</a
-								>.
-							</li>
-						</ul>
-					</svelte:fragment>
-				</Accordion>
-
-				<Accordion id="que-faire" noHash>
-					<svelte:fragment slot="head">Que faire&nbsp;?</svelte:fragment>
-					<svelte:fragment slot="details">
-						<ul class="bullet-list">
-							<li>
-								Les discours «&nbsp;<a href="{prefix}/faq">rassuristes</a>&nbsp;» nous font perdre
-								du temps.
-								<em
-									>L'IA ne serait pas vraiment intelligente, les géants de la tech exagéreraient les
-									performances de leurs modèles, on serait à la veille de l'explosion d'une bulle
-									spéculative…</em
-								> Rien de tout cela ne nous protège du danger, bien au contraire.
-							</li>
-							<li>
-								La violence, que nous condamnons par principe, est également contre-productive. Elle
-								renforce des antagonismes stériles au moment où l'avenir de l'humanité est en jeu.
-							</li>
-							<li>
-								La seule réponse au danger est la mise en place d'une <a
-									href="{prefix}/propositions">gouvernance mondiale</a
-								> qui ait les moyens institutionnels, techniques et financiers de contrôler l'IA.
-							</li>
-						</ul>
-					</svelte:fragment>
-				</Accordion>
-			</div>
+			<p class="equipes-cta">
+				<Button alt href="{prefix}/propositions">Lire notre demande en détail</Button>
+			</p>
 		</div>
 
 		<p class="independence">
@@ -587,34 +510,6 @@
 		font-size: 1.1rem;
 		line-height: 1.7;
 		color: var(--text);
-	}
-
-	.bullet-list {
-		list-style: none;
-		padding: 0;
-		margin: 0;
-	}
-
-	.bullet-list li {
-		position: relative;
-		padding: 0.25rem 0 0.25rem 1.5rem;
-		margin-bottom: 0.5rem;
-		line-height: 1.6;
-	}
-
-	.bullet-list li::before {
-		content: '';
-		position: absolute;
-		left: 0;
-		top: 0.85rem;
-		width: 0.5rem;
-		height: 0.5rem;
-		border-radius: 50%;
-		background: var(--text-secondary);
-	}
-
-	.bullet-list li:last-child {
-		margin-bottom: 0;
 	}
 
 	.accordion-stack {
