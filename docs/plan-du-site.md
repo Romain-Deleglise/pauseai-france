@@ -5,17 +5,17 @@
 > du menu principal, du pied de page et des articles du dépôt, donc il ne
 > peut pas diverger du site.
 >
-> Dernière génération : 2026-10-09.
+> Dernière génération : 2026-10-27.
 
 Ce document décrit le site **réel**. Le plan _souhaité_ est une décision
 d'équipe et se tient ailleurs.
 
 ## En un coup d’œil
 
-- **34 pages** (hors routes dynamiques), chacune en français et en anglais via le préfixe `/fr` ou `/en`
+- **35 pages** (hors routes dynamiques), chacune en français et en anglais via le préfixe `/fr` ou `/en`
 - **6 gabarits dynamiques** (articles, campagnes, dangers…)
 - **33 articles** en Markdown dans `src/posts`
-- **18 pages hors menu** : en ligne, mais qu’aucun menu ni pied de page n’atteint
+- **19 pages hors menu** : en ligne, mais qu’aucun menu ni pied de page n’atteint
 
 ## Arborescence depuis le menu principal
 
@@ -86,8 +86,10 @@ flowchart LR
   class n34 orpheline
   orph -.-> n35["/sommet-ia-2026"]
   class n35 orpheline
-  orph -.-> n36["/une-ia-sest-echappee"]
+  orph -.-> n36["/tribunes/le-monde-octobre-2026"]
   class n36 orpheline
+  orph -.-> n37["/une-ia-sest-echappee"]
+  class n37 orpheline
   classDef externe stroke-dasharray: 4 3
   classDef orpheline fill:#fff5e8,stroke:#ff9416
 ```
@@ -139,43 +141,45 @@ flowchart LR
 
 ## Pied de page
 
-### Navigation
+### S'informer
 
-| Lien                           | Chemin                                   |
-| ------------------------------ | ---------------------------------------- |
-| FAQ                            | `#faq`                                   |
-| Propositions                   | `/propositions`                          |
-| Newsletters                    | `/newsletters`                           |
-| Blog                           | _externe_, https://pauseia.substack.com/ |
-| La fresque des risques de l’IA | `/fresque`                               |
-| Agir                           | `/agir`                                  |
-| Donner                         | `/dons`                                  |
-| Nous rejoindre                 | `/rejoindre`                             |
-| Qui sommes-nous ?              | `/qui-sommes-nous`                       |
+| Lien                        | Chemin                                   |
+| --------------------------- | ---------------------------------------- |
+| Ressources                  | `/ressources`                            |
+| Fresque des risques de l’IA | `/fresque`                               |
+| Newsletter                  | `/newsletters`                           |
+| Blog                        | _externe_, https://pauseia.substack.com/ |
 
 ### Agir
 
-| Lien                           | Chemin                                         |
-| ------------------------------ | ---------------------------------------------- |
-| Écrire aux élus et à la presse | `/ecrire-a-mes-elus`                           |
-| Signer la déclaration          | `/declaration`                                 |
-| Rejoindre Pause IA             | `/rejoindre`                                   |
-| Comment pouvez-vous aider ?    | `/agir`                                        |
-| Faire un don                   | `/dons`                                        |
-| Marchandises                   | _externe_, https://pauseai-shop.fourthwall.com |
-| Manifestations                 | _externe_, https://pauseai.info/protests       |
-| Offres d'emploi                | `/recrutement-emploi`                          |
+| Lien                             | Chemin                                         |
+| -------------------------------- | ---------------------------------------------- |
+| Rejoindre Pause IA               | `/rejoindre`                                   |
+| Rejoindre un groupe local        | `/groupes-locaux`                              |
+| Toutes les façons d'agir         | `/agir`                                        |
+| Écrire à vos élus et à la presse | `/ecrire-a-mes-elus`                           |
+| Signer notre déclaration         | `/declaration`                                 |
+| Faire un don                     | `/dons`                                        |
+| Boutique                         | _externe_, https://pauseai-shop.fourthwall.com |
 
-### Autres
+### Pause IA
 
-| Lien                         | Chemin                                                         |
-| ---------------------------- | -------------------------------------------------------------- |
-| Presse                       | `/presse`                                                      |
-| Financements                 | `/financements`                                                |
-| Mentions légales             | `/mentions-legales`                                            |
-| Politique de confidentialité | `/politique-de-confidentialite`                                |
-| Charte des valeurs           | `/charte-des-valeurs`                                          |
-| Licence : CC-BY 4.0          | _externe_, https://creativecommons.org/licenses/by/4.0/deed.fr |
+| Lien                | Chemin                |
+| ------------------- | --------------------- |
+| Qui sommes-nous ?   | `/qui-sommes-nous`    |
+| Charte des valeurs  | `/charte-des-valeurs` |
+| Nos demandes        | `/propositions`       |
+| Notre financement   | `/financements`       |
+| Espace presse       | `/presse`             |
+| Foire aux questions | `/faq`                |
+| Offres d'emploi     | `/recrutement-emploi` |
+
+### Informations légales
+
+| Lien                         | Chemin                          |
+| ---------------------------- | ------------------------------- |
+| Mentions légales             | `/mentions-legales`             |
+| Politique de confidentialité | `/politique-de-confidentialite` |
 
 ## Pages hors menu
 
@@ -202,6 +206,7 @@ campagne, confirmations, remerciements.
 - `/posts`
 - `/recrutement`
 - `/sommet-ia-2026`
+- `/tribunes/le-monde-octobre-2026`
 - `/une-ia-sest-echappee`
 
 ## Gabarits dynamiques

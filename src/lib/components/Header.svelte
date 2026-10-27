@@ -7,6 +7,7 @@
 	import { bannerStore } from '$lib/stores/banner'
 	import { theme } from '$lib/stores/theme'
 	import { getT } from '$lib/i18n'
+	import { switchLangHref as switchLangHrefFor } from '$lib/langSwitch'
 	import type { Lang } from '$lib/i18n'
 
 	import { onMount } from 'svelte'
@@ -151,29 +152,10 @@
 	]
 
 	// Language switcher: swap /fr/ <-> /en/ in current pathname
+	let otherLang: 'fr' | 'en'
 	$: otherLang = lang === 'fr' ? 'en' : 'fr'
 
-	// Danger page slugs differ between languages, map them explicitly
-	const DANGER_SLUGS: Record<'fr' | 'en', string[]> = {
-		fr: ['economiques-et-materiels', 'pour-les-individus', 'pour-la-societe', "pour-l'humanite"],
-		en: ['economic-and-material', 'for-individuals', 'for-society', 'for-humanity']
-	}
-
-	function getSwitchLangHref(pathname: string, currentLang: string, other: string) {
-		const slugsFrom = DANGER_SLUGS[currentLang as 'fr' | 'en']
-		const slugsTo = DANGER_SLUGS[other as 'fr' | 'en']
-		{
-			const dangerMatch = pathname.match(new RegExp(`^/${currentLang}/dangers/(.+)$`))
-			if (dangerMatch) {
-				const idx = slugsFrom.indexOf(dangerMatch[1])
-				if (idx >= 0) return `/${other}/dangers/${slugsTo[idx]}`
-			}
-		}
-
-		return pathname.replace(`/${currentLang}`, `/${other}`) || `/${other}`
-	}
-
-	$: switchLangHref = getSwitchLangHref($page.url.pathname, lang, otherLang)
+	$: switchLangHref = switchLangHrefFor($page.url.pathname, lang, otherLang)
 
 	// Le bandeau vient de Notion. Si le bouton est annoncé sans URL, ou si une
 	// URL est saisie sans libellé, on complète avec la campagne en cours
