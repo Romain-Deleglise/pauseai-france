@@ -290,6 +290,24 @@ describe('POST /api/declaration (signature → e-mail de confirmation)', () => {
 		})
 	})
 
+	it('donateur Stripe : le nom provisoire n’est pas touché à la signature, le nom saisi part dans le jeton', async () => {
+		existingContact('Donateur', 'Stripe')
+		await post({ firstName: 'Ada', lastName: 'Lovelace', email: 'a@b.fr', title: 'Députée' })
+		const update = calls.find((c) => c.entity === 'Contact' && c.action === 'update')
+		expect(update?.params.values).toEqual({ job_title: 'Députée' })
+		const { verifyToken } = await import('../src/lib/server/declarationToken')
+		expect(verifyToken(tokenFromMail())).toMatchObject({ c: 7, f: 'Ada', l: 'Lovelace' })
+	})
+
+	it('contact avec un vrai nom : aucun nom dans le jeton', async () => {
+		existingContact('Jean', 'Dupont')
+		await post({ firstName: 'Usurpateur', lastName: 'X', email: 'jean@dupont.fr' })
+		const { verifyToken } = await import('../src/lib/server/declarationToken')
+		const claims = verifyToken(tokenFromMail())
+		expect(claims?.f).toBeUndefined()
+		expect(claims?.l).toBeUndefined()
+	})
+
 	it('commentaire : enregistré « Scheduled », son ID part dans le jeton', async () => {
 		existingContact('Ada', 'Lovelace')
 		civi['Activity.create'] = (p) =>
@@ -396,7 +414,10 @@ describe('POST /api/declaration (signature → e-mail de confirmation)', () => {
 })
 
 describe('POST /api/declaration/confirm (clic dans l’e-mail)', () => {
-	const token = async (claims: { c: number; p: boolean; n: boolean; m?: number }, now?: number) => {
+	const token = async (
+		claims: { c: number; p: boolean; n: boolean; m?: number; f?: string; l?: string },
+		now?: number
+	) => {
 		const { createToken } = await import('../src/lib/server/declarationToken')
 		return createToken(claims, now)
 	}
@@ -419,6 +440,24 @@ describe('POST /api/declaration/confirm (clic dans l’e-mail)', () => {
 				['subject', '=', 'Déclaration PauseAI : commentaire']
 			]
 		})
+	})
+
+	it('donateur Stripe : le nom provisoire est remplacé à la confirmation', async () => {
+		civi['Contact.get'] = () => ({ values: [{ first_name: 'Donateur', last_name: 'Stripe' }] })
+		const t = await token({ c: 7, p: true, n: false, f: 'Ada', l: 'Lovelace' })
+		const res = await confirm(t)
+		expect(res.body).toMatchObject({ success: true })
+		const update = calls.find((c) => c.entity === 'Contact' && c.action === 'update')
+		expect(update?.params).toMatchObject({
+			values: { first_name: 'Ada', last_name: 'Lovelace' },
+			where: [['id', '=', 7]]
+		})
+	})
+
+	it('nom déjà corrigé entre-temps : la confirmation ne l’écrase pas', async () => {
+		civi['Contact.get'] = () => ({ values: [{ first_name: 'Ada', last_name: 'King' }] })
+		await confirm(await token({ c: 7, p: true, n: false, f: 'Ada', l: 'Lovelace' }))
+		expect(calls.some((c) => c.entity === 'Contact' && c.action === 'update')).toBe(false)
 	})
 
 	it('sans nom public ni newsletter : 73 seulement', async () => {
@@ -466,7 +505,9 @@ describe('GET /api/declaration (compteur et listes)', () => {
 						'contact_id.last_name': 'Lovelace',
 						'contact_id.job_title': 'Députée'
 					},
-					{ 'contact_id.first_name': null, 'contact_id.last_name': null }
+					{ 'contact_id.first_name': null, 'contact_id.last_name': null },
+					// Nom provisoire de don : jamais affiché.
+					{ contact_id: 12, 'contact_id.first_name': 'Donateur', 'contact_id.last_name': 'Stripe' }
 				]
 			}
 		}
