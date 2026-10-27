@@ -28,6 +28,18 @@
 /tribunes/*  /fr/tribunes/:splat  301!
 /statement  /fr/declaration  301!
 
+# Pages tirées de src/posts (servies sous /fr/<slug>) : liens partagés ou
+# anciens liens du site sans préfixe. /charte-des-valeurs était en 404
+# (signalé sur Discord le 25/10/2026).
+/charte-des-valeurs  /fr/charte-des-valeurs  301!
+/mentions-legales  /fr/mentions-legales  301!
+/politique-de-confidentialite  /fr/politique-de-confidentialite  301!
+/propositions  /fr/propositions  301!
+/financements  /fr/financements  301!
+/faq  /fr/faq  301!
+/videos  /fr/videos  301!
+/participer-a-notre-communication  /fr/participer-a-notre-communication  301!
+
 # ── Anciennes URL historiques ──────────────────────────────────────────
 /senat-2025  /fr/senat2025  301!
 /nous-rejoindre  /fr/rejoindre  301!
