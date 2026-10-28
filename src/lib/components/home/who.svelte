@@ -272,8 +272,8 @@
 			<FAQEn />
 		{:else}
 			<p class="lead">
-				Nous sommes une <a href="/mentions-legales">association</a> qui alerte les citoyens et les
-				pouvoirs publics français sur les
+				Nous sommes une <a href="{prefix}/mentions-legales">association</a> qui alerte les citoyens
+				et les pouvoirs publics français sur les
 				<a href="{prefix}/dangers/economiques-et-materiels">graves dangers</a> de la course à
 				l'intelligence artificielle, et les incite à agir pour s'y opposer. Nous représentons en
 				France
@@ -385,14 +385,14 @@
 			</div>
 
 			<p class="section-description charte-link">
-				Ces valeurs constituent notre <a href="/charte-des-valeurs">charte des valeurs</a>.
+				Ces valeurs constituent notre <a href="{prefix}/charte-des-valeurs">charte des valeurs</a>.
 			</p>
 		</div>
 
 		<div class="team-section">
 			<h2 class="section-title">Notre positionnement</h2>
 			<p class="section-description">
-				Nous demandons un <a href="/propositions"
+				Nous demandons un <a href="{prefix}/propositions"
 					>moratoire sur l'entraînement des systèmes d'IA généralistes</a
 				> jusqu'à ce que toutes les conditions de sécurité et de contrôle démocratique soient réunies.
 			</p>
@@ -468,8 +468,8 @@
 								renforce des antagonismes stériles au moment où l'avenir de l'humanité est en jeu.
 							</li>
 							<li>
-								La seule réponse au danger est la mise en place d'une <a href="/propositions"
-									>gouvernance mondiale</a
+								La seule réponse au danger est la mise en place d'une <a
+									href="{prefix}/propositions">gouvernance mondiale</a
 								> qui ait les moyens institutionnels, techniques et financiers de contrôler l'IA.
 							</li>
 						</ul>
