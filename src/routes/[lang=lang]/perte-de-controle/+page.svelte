@@ -220,31 +220,28 @@
 
 	<!-- ── Marche du 14 novembre ────────────────────────────── -->
 	<!--
-		Le minutage détaillé (rassemblement, départs, arrivée) reste sur la page
-		Luma, seule source : l'écrire en double garantirait qu'un changement de
-		dernière minute laisse une fausse information en ligne. Ici, ce qui ne
-		bougera pas : la date, l'heure, le point de départ et le pourquoi.
+		Le trajet détaillé et le minutage restent sur la page Luma, seule source :
+		les écrire en double garantirait qu'un changement de dernière minute laisse
+		une fausse information en ligne. Ici, seulement ce qui ne bougera pas.
 	-->
 	<CampaignSection
 		id="marche"
 		variant="card"
 		title={isEn
-			? 'March for an AI treaty — Paris, 14 November'
-			: 'Marche pour un traité en IA — Paris, 14 novembre'}
+			? 'March for an AI treaty, in Paris on 14 November'
+			: 'Marche pour un traité en IA, à Paris le 14 novembre'}
 	>
 		{#if isEn}
 			<p>
-				On 18 November, Trump meets Xi Jinping at the APEC summit. Four days earlier,
+				On 18 November, Trump meets Xi Jinping at the APEC summit. Four days earlier, on
 				<strong>Saturday 14 November from 11am to 1pm</strong>, Pause IA and
-				<strong>Stop The AI Race</strong> march together in Paris to ask the two leaders for an agreement
-				to stop the AI arms race.
+				<strong>Stop The AI Race</strong> march together in Paris to ask both leaders for an agreement
+				that ends the AI arms race.
 			</p>
 			<p>
-				From the <strong>United States Embassy</strong> (place de la Concorde) to the Chinese Embassy,
-				then on to the Trocadéro — the Parvis des Droits de l’Homme, where the UN adopted the Universal
-				Declaration of Human Rights. The same day, people march in San Francisco, New York and Washington.
+				We set off from the United States Embassy, place de la Concorde, and walk to the Trocadéro.
+				The same day, people march in San Francisco, New York and Washington. Bring a sign.
 			</p>
-			<p>Bring a sign, and bring your friends.</p>
 		{:else}
 			<p>
 				Le 18 novembre, Trump rencontre Xi Jinping au sommet de l’APEC. Quatre jours plus tôt, le
@@ -253,11 +250,9 @@
 				un accord mettant fin à la course aux armements de l’IA.
 			</p>
 			<p>
-				De l’<strong>ambassade des États-Unis</strong> (place de la Concorde) à l’ambassade de Chine,
-				puis jusqu’au Trocadéro — le Parvis des Droits de l’Homme, où l’ONU a adopté la Déclaration universelle
-				des droits de l’homme. Le même jour, on marche aussi à San Francisco, New York et Washington.
+				Départ de l’ambassade des États-Unis, place de la Concorde, jusqu’au Trocadéro. Le même
+				jour, on marche aussi à San Francisco, New York et Washington. Apportez une pancarte.
 			</p>
-			<p>Apportez une pancarte, et venez avec vos amis.</p>
 		{/if}
 		<p class="cta-row">
 			<Button href="https://luma.com/stop-pjeb">
