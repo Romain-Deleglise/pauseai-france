@@ -218,6 +218,54 @@
 		</ol>
 	</CampaignSection>
 
+	<!-- ── Marche du 14 novembre ────────────────────────────── -->
+	<!--
+		Le minutage détaillé (rassemblement, départs, arrivée) reste sur la page
+		Luma, seule source : l'écrire en double garantirait qu'un changement de
+		dernière minute laisse une fausse information en ligne. Ici, ce qui ne
+		bougera pas : la date, l'heure, le point de départ et le pourquoi.
+	-->
+	<CampaignSection
+		id="marche"
+		variant="card"
+		title={isEn
+			? 'March for an AI treaty — Paris, 14 November'
+			: 'Marche pour un traité en IA — Paris, 14 novembre'}
+	>
+		{#if isEn}
+			<p>
+				On 18 November, Trump meets Xi Jinping at the APEC summit. Four days earlier,
+				<strong>Saturday 14 November from 11am to 1pm</strong>, Pause IA and
+				<strong>Stop The AI Race</strong> march together in Paris to ask the two leaders for an agreement
+				to stop the AI arms race.
+			</p>
+			<p>
+				From the <strong>United States Embassy</strong> (place de la Concorde) to the Chinese Embassy,
+				then on to the Trocadéro — the Parvis des Droits de l’Homme, where the UN adopted the Universal
+				Declaration of Human Rights. The same day, people march in San Francisco, New York and Washington.
+			</p>
+			<p>Bring a sign, and bring your friends.</p>
+		{:else}
+			<p>
+				Le 18 novembre, Trump rencontre Xi Jinping au sommet de l’APEC. Quatre jours plus tôt, le
+				<strong>samedi 14 novembre de 11 h à 13 h</strong>, Pause IA et
+				<strong>Stop The AI Race</strong> marchent ensemble à Paris pour demander aux deux dirigeants
+				un accord mettant fin à la course aux armements de l’IA.
+			</p>
+			<p>
+				De l’<strong>ambassade des États-Unis</strong> (place de la Concorde) à l’ambassade de Chine,
+				puis jusqu’au Trocadéro — le Parvis des Droits de l’Homme, où l’ONU a adopté la Déclaration universelle
+				des droits de l’homme. Le même jour, on marche aussi à San Francisco, New York et Washington.
+			</p>
+			<p>Apportez une pancarte, et venez avec vos amis.</p>
+		{/if}
+		<p class="cta-row">
+			<Button href="https://luma.com/stop-pjeb">
+				{isEn ? 'Register for the march' : 'S’inscrire à la marche'}
+			</Button>
+		</p>
+	</CampaignSection>
+
 	<!-- ── Rejoindre un groupe local ────────────────────────── -->
 	<CampaignSection
 		id="groupes-locaux"
