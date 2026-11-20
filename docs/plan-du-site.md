@@ -5,17 +5,17 @@
 > du menu principal, du pied de page et des articles du dépôt, donc il ne
 > peut pas diverger du site.
 >
-> Dernière génération : 2026-11-17.
+> Dernière génération : 2026-11-20.
 
 Ce document décrit le site **réel**. Le plan _souhaité_ est une décision
 d'équipe et se tient ailleurs.
 
 ## En un coup d’œil
 
-- **38 pages** (hors routes dynamiques), chacune en français et en anglais via le préfixe `/fr` ou `/en`
+- **39 pages** (hors routes dynamiques), chacune en français et en anglais via le préfixe `/fr` ou `/en`
 - **7 gabarits dynamiques** (articles, campagnes, dangers…)
 - **37 articles** en Markdown dans `src/posts`
-- **21 pages hors menu** : en ligne, mais qu’aucun menu ni pied de page n’atteint
+- **22 pages hors menu** : en ligne, mais qu’aucun menu ni pied de page n’atteint
 
 ## Arborescence depuis le menu principal
 
@@ -63,28 +63,30 @@ flowchart LR
   class n22 orpheline
   orph -.-> n23["/geneve-2026"]
   class n23 orpheline
-  orph -.-> n24["/guide-court"]
+  orph -.-> n24["/guide"]
   class n24 orpheline
-  orph -.-> n25["/merci"]
+  orph -.-> n25["/guide-court"]
   class n25 orpheline
-  orph -.-> n26["/modeles"]
+  orph -.-> n26["/merci"]
   class n26 orpheline
-  orph -.-> n27["/municipales-2026"]
+  orph -.-> n27["/modeles"]
   class n27 orpheline
-  orph -.-> n28["/plan-du-site"]
+  orph -.-> n28["/municipales-2026"]
   class n28 orpheline
-  orph -.-> n29["/posts"]
+  orph -.-> n29["/plan-du-site"]
   class n29 orpheline
-  orph -.-> n30["/senat2025"]
+  orph -.-> n30["/posts"]
   class n30 orpheline
-  orph -.-> n31["/sensibiliser-votre-entourage"]
+  orph -.-> n31["/senat2025"]
   class n31 orpheline
-  orph -.-> n32["/sommet-ia-2026"]
+  orph -.-> n32["/sensibiliser-votre-entourage"]
   class n32 orpheline
-  orph -.-> n33["/tribunes/le-monde-octobre-2026"]
+  orph -.-> n33["/sommet-ia-2026"]
   class n33 orpheline
-  orph -.-> n34["/une-ia-sest-echappee"]
+  orph -.-> n34["/tribunes/le-monde-octobre-2026"]
   class n34 orpheline
+  orph -.-> n35["/une-ia-sest-echappee"]
+  class n35 orpheline
   classDef externe stroke-dasharray: 4 3
   classDef orpheline fill:#fff5e8,stroke:#ff9416
 ```
@@ -184,6 +186,7 @@ campagne, confirmations, remerciements.
 - `/emploi-ia/questionnaire`
 - `/g7-2026`
 - `/geneve-2026`
+- `/guide`
 - `/guide-court`
 - `/merci`
 - `/modeles`
